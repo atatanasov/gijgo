@@ -1,0 +1,36 @@
+{
+  "name": "gijgo",
+  "version": "0.6.0",
+  "description": "jQuery Grid by Gijgo.com is a plug-in for the jQuery Javascript library. It is a very fast and extandable tool,  and will add advanced interaction controls to any HTML table. This plugin support pagination, javascript and server side data sources, jQuery UI and Bootstrap. Free open source tool distributed under MIT License.",
+  "main": "grid-0.5.6.js",
+  "homepage": "http://gijgo.com/",
+  "bugs": {
+    "email": "nascovt@gmail.com"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "jquery",
+    "grid",
+    "gijgo",
+    "javascript",
+    "plugin",
+    "datagrid",
+    "table"
+  ],
+  "author": "Atanas Atanasov",
+  "license": "MIT",
+  "dependencies": {
+    "jquery": ">=1.9.1"
+  },
+  "devDependencies": {
+    "grunt": "~0.4.5",
+    "grunt-contrib-concat": "^0.5.1",
+    "grunt-contrib-copy": "^0.8.2",
+    "grunt-contrib-jshint": "^0.11.3",
+    "grunt-contrib-nodeunit": "~0.4.1",
+    "grunt-contrib-uglify": "~0.5.0",
+    "grunt-copy": "^0.1.0"
+  }
+}
