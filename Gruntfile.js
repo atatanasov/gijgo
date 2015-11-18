@@ -70,9 +70,12 @@
 
     grunt.registerMultiTask('extractExamples', 'Extract examples from js files', function () {
         var fs = require('fs'),
-            self = this;
+            dest = this.files[0].dest;
 
-        grunt.log.write('Loaded dependencies...').ok();
+        fs.readdirSync(dest).forEach(function (filename) {
+            var filepath = dest + filename;
+            fs.unlinkSync(filepath);
+        });
 
         //make grunt know this task is async.
         var done = this.async();
@@ -82,7 +85,7 @@
             //file.src is the list of all matching file names.
             file.src.forEach(function (f) {
                 fs.readFile(f, 'utf8', function (err, data) {
-                    var i, j, isExampleMode, isExampleStart, result, lines, buffer, widget, plugin, field;
+                    var i, j, isExampleMode, isExampleStart, result, lines, buffer, widget, plugin, field, filepath;
                     if (err) {
                         return console.log(err);
                     }
@@ -103,8 +106,8 @@
                             isExampleStart = true;
                             if (result) {
                                 buffer.push(result);
-                                result = { text: '', name: '', libs: lines[i].replace(/\*.?\@example/g, '') };
                             }
+                            result = { text: '', name: '', libs: lines[i].replace(/\*.?\@example/g, '') };
                         } else if (isExampleMode && /\*\//g.test(lines[i])) {
                             isExampleMode = false;
                             isExampleStart = false;
@@ -118,20 +121,20 @@
                                 result.text += lines[i].trim().replace('*', '') + '\r\n';
                             }
                         } else if (/^\s+[A-Za-z]+\:\s/g.test(lines[i])) {
+                            if (result) {
+                                buffer.push(result);
+                            }
                             field = lines[i].substr(0, lines[i].indexOf(':')).trim();
                             for (j = 0; j < buffer.length; j++) {
-                                if (!buffer[j].name) {
-                                    buffer[j].name = widget + '.' + plugin + '.' + field;
+                                if (buffer[j].name == '') {
+                                    buffer[j].name = widget + '.' + plugin + '.' + field + '.' + j;
                                 }
                             }
                         }
                     }
-                    for (i = 0; i < buffer.length; i++) {                        
-                        fs.writeFile(file.dest + buffer[i].name + ".html", buffer[i].libs + '\r\n' + buffer[i].text, function (err) {
-                            if (err) {
-                                return console.log(err);
-                            }
-                        });
+                    for (i = 0; i < buffer.length; i++) {
+                        filepath = file.dest + buffer[i].name + ".html";
+                        fs.writeFileSync(filepath, buffer[i].libs + '\r\n' + buffer[i].text);
                     }                    
                     return null;
                 });
