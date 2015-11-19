@@ -76,6 +76,7 @@
             var filepath = dest + filename;
             fs.unlinkSync(filepath);
         });
+        fs.unlinkSync(dest + '../index.html');
 
         //make grunt know this task is async.
         var done = this.async();
@@ -153,10 +154,12 @@ var writer = {
             if (buffer[i].text) {
                 filepath = dest + buffer[i].name + ".html";
                 fs.writeFileSync(filepath, writer.buildHtmlFile(buffer[i]));
-                index += '<li><a href="' + filepath + '">' + buffer[i].name + '</a></li>';
+                index += '<li><a href="' + filepath + '">' + buffer[i].name + '</a></li>\r\n';
             }
         }
-        fs.writeFileSync(dest + '../index.html', '<ul>' + index + '</ul>');
+        if (index) {
+            fs.appendFileSync(dest + '../index.html', '<ul>\r\n' + index + '</ul>\r\n');
+        }
     },
 
     buildHtmlFile: function (record) {
@@ -175,14 +178,14 @@ var writer = {
                 switch (names[i].trim())
                 {
                     case 'bootstrap':
-                        result += '  <link href="/node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" type="text/css">\r\n';
-                        result += '  <link href="/node_modules/bootstrap/dist/css/bootstrap-theme.min.css" rel="stylesheet" type="text/css">\r\n';
+                        result += '  <link href="../node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" type="text/css">\r\n';
+                        result += '  <link href="../node_modules/bootstrap/dist/css/bootstrap-theme.min.css" rel="stylesheet" type="text/css">\r\n';
                         break;
-                    case 'dialog.base':
-                        result += '  <script src="/dialog/build/gialog.base.js"></script>\r\n';
+                    case 'dialog':
+                        result += '  <script src="../dialog/build/dialog.base.js"></script>\r\n';
                         break;
-                    case 'draggable.base':
-                        result += '  <script src="/draggable/build/draggable.base.js"></script>\r\n';
+                    case 'draggable':
+                        result += '  <script src="../draggable/build/draggable.base.js"></script>\r\n';
                         break;
                 }
             }
