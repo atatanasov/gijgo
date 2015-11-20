@@ -6,22 +6,35 @@
         concat: {
             dialog: {
                 files : {
-                    'dialog/build/dialog.base.js': ['dialog/src/dialog.base.config.js', 'dialog/src/dialog.base.events.js', 'dialog/src/dialog.base.private.js', 'dialog/src/dialog.base.methods.js'],
-                    'dialog/build/dialog.jqueryui.js': ['dialog/src/dialog.jqueryui.js'],
-                    'dialog/build/dialog.foundation.js': ['dialog/src/dialog.foundation.js'],
-                    'dialog/build/dialog.all.js': ['dialog/build/dialog.base.js', 'dialog/build/dialog.jqueryui.js', 'dialog/build/dialog.foundation.js']
+                    'build/modular/dialog/js/dialog.base.js': ['src/dialog/js/dialog.base.config.js', 'src/dialog/js/dialog.base.events.js', 'src/dialog/js/dialog.base.private.js', 'src/dialog/js/dialog.base.methods.js'],
+                    'build/modular/dialog/js/dialog.jqueryui.js': ['src/dialog/js/dialog.jqueryui.js'],
+                    'build/modular/dialog/js/dialog.foundation.js': ['src/dialog/js/dialog.foundation.js'],
+
+                    'build/combined/js/dialog.js': ['build/modular/dialog/js/dialog.base.js', 'build/modular/dialog/js/dialog.jqueryui.js', 'build/modular/dialog/js/dialog.foundation.js'],
+
+                    'build/modular/dialog/css/dialog.base.css': ['src/dialog/css/dialog.base.css'],
+                    'build/modular/dialog/css/dialog.jqueryui.css': ['src/dialog/css/dialog.jqueryui.css'],
+                    'build/modular/dialog/css/dialog.foundation.css': ['src/dialog/css/dialog.foundation.css'],
+
+                    'build/combined/css/dialog.base.css': ['build/modular/dialog/css/dialog.base.css', 'build/modular/dialog/css/dialog.jqueryui.css', 'build/modular/dialog/css/dialog.foundation.css'],
+                }
+            },
+            draggable: {
+                files: {
+                    'build/modular/draggable/js/draggable.base.js': ['src/draggable/js/draggable.base.js'],
+                    'build/combined/js/draggable.js': ['src/draggable/js/draggable.base.js']
                 }
             }
         },
         extractExamples: {
             files: {
-                src: ['dialog/src/*.js'],
-                dest: 'examples/'
+                src: ['build/modular/dialog/js/*.js'],
+                dest: 'examples/dialog/'
             }
         },
         replace: {
             minifyComments: {
-                src: ['dialog/build/*.js'],      // source files array (supports minimatch)
+                src: ['build/*.js'],      // source files array (supports minimatch)
                 overwrite: true,                 // overwrite matched source files 
                 replacements: [{
                     from: /(.|\n|\r)+/g,
@@ -55,10 +68,10 @@
             options: {},
             dialog: {
                 files: {
-                    'dialog/build/dialog.all.min.js': ['dialog/build/dialog.all.js'],
-                    'dialog/build/dialog.base.min.js': ['dialog/build/dialog.base.js'],
-                    'dialog/build/dialog.jqueryui.min.js': ['dialog/build/dialog.jqueryui.js'],
-                    'dialog/build/dialog.foundation.min.js': ['dialog/build/dialog.foundation.js']
+                    'build/combined/js/dialog.min.js': ['build/combined/js/dialog.js'],
+                    'build/modular/dialog/js/dialog.base.min.js': ['build/modular/dialog/js/dialog.base.js'],
+                    'build/modular/dialog/js/dialog.jqueryui.min.js': ['build/modular/dialog/js/dialog.jqueryui.js'],
+                    'build/modular/dialog/js/dialog.foundation.min.js': ['build/modular/dialog/js/dialog.foundation.js']
                 }
             }
         }
@@ -72,16 +85,18 @@
         var fs = require('fs'),
             dest = this.files[0].dest;
 
-        fs.readdirSync(dest).forEach(function (filename) {
-            var filepath = dest + filename;
-            fs.unlinkSync(filepath);
-        });
-        fs.unlinkSync(dest + '../index.html');
+        if (fs.existsSync(dest + '../../index.html')) {
+            fs.unlinkSync(dest + '../../index.html');
+        }
 
         //make grunt know this task is async.
         var done = this.async();
 
         this.files.forEach(function (file) {
+            //fs.readdirSync(file.dest).forEach(function (filename) {
+            //    var filepath = file.dest + filename;
+            //    fs.unlinkSync(filepath);
+            //});
             grunt.log.writeln('Processing ' + file.src.length + ' files.');
             //file.src is the list of all matching file names.
             file.src.forEach(function (f) {
@@ -172,20 +187,22 @@ var writer = {
 
     analyzeLibs: function (libs) {
         var i, libs, result = '<head>\r\n';
+        result += '  <script src="../../node_modules/jquery/dist/jquery.min.js"></script>\r\n';
         if (libs) {
             names = libs.replace('<!--', '').replace('-->', '').trim().split(',');
             for (i = 0; i < names.length; i++) {
                 switch (names[i].trim())
                 {
                     case 'bootstrap':
-                        result += '  <link href="../node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" type="text/css">\r\n';
-                        result += '  <link href="../node_modules/bootstrap/dist/css/bootstrap-theme.min.css" rel="stylesheet" type="text/css">\r\n';
+                        result += '  <link href="../../node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" type="text/css">\r\n';
+                        result += '  <link href="../../node_modules/bootstrap/dist/css/bootstrap-theme.min.css" rel="stylesheet" type="text/css">\r\n';
                         break;
-                    case 'dialog':
-                        result += '  <script src="../dialog/build/dialog.base.js"></script>\r\n';
+                    case 'dialog.base':
+                        result += '  <script src="../../build/modular/dialog/js/dialog.base.js"></script>\r\n';
+                        result += '  <link href="../../build/modular/dialog/css/dialog.base.css" rel="stylesheet" type="text/css">\r\n';
                         break;
-                    case 'draggable':
-                        result += '  <script src="../draggable/build/draggable.base.js"></script>\r\n';
+                    case 'draggable.base':
+                        result += '  <script src="../../build/modular/draggable/js/draggable.base.js"></script>\r\n';
                         break;
                 }
             }

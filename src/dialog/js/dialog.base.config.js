@@ -23,14 +23,14 @@ gj.dialog.configuration = {
           * If false, the dialog will stay hidden until the open() method is called.
           * @type boolean
           * @default true
-          * @example <!-- draggable, dialog, bootstrap -->
+          * @example <!-- draggable.base, dialog.base, bootstrap -->
           * <div id="dialog">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
           * <script>
           *     $("#dialog").dialog({
           *         autoOpen: true
           *     });
           * </script>
-          * @example <!-- draggable, dialog, bootstrap -->
+          * @example <!-- draggable.base, dialog.base, bootstrap -->
           * <div id="dialog" style="display: none">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
           * <button onclick="dialog.open()">Open Dialog</button>
           * <script>
