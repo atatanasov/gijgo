@@ -8,7 +8,7 @@ gj.dialog.public = {
      * @method
      * @fires opening, opened
      * @return dialog
-     * @example <!-- draggable, dialog, bootstrap -->
+     * @example <!-- draggable.base, dialog.base, bootstrap -->
      * <div id="dialog" style="display: none">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
      * <button onclick="dialog.open()">Open Dialog</button>
      * <script>
@@ -26,7 +26,7 @@ gj.dialog.public = {
      * @method
      * @fires closinging, closed
      * @return dialog
-     * @example <!-- draggable, dialog, bootstrap -->
+     * @example <!-- draggable.base, dialog.base, bootstrap -->
      * <div id="dialog" style="display: none">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
      * <button onclick="dialog.open()">Open Dialog</button>
      * <button onclick="dialog.close()">Close Dialog</button>
@@ -42,7 +42,7 @@ gj.dialog.public = {
      * Check if the dialog is currently open.
      * @method
      * @return boolean
-     * @example <!-- draggable, dialog, bootstrap -->
+     * @example <!-- draggable.base, dialog.base, bootstrap -->
      * <div id="dialog" style="display: none">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
      * <button onclick="dialog.open()">Open Dialog</button>
      * <button onclick="dialog.close()">Close Dialog</button>

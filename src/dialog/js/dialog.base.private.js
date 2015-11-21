@@ -91,7 +91,7 @@
             gj.dialog.private.draggable($dialog, $header);
         }
 
-        if (data.resizable) {
+        if (data.resizable && $.fn.draggable) {
             gj.dialog.private.resizable($dialog);
         }
 
