@@ -93,3 +93,36 @@
     -webkit-overflow-scrolling: touch;
     outline: 0;
 }
+
+.gj-content {
+    border: 1px solid #999;
+    background-color: #fff;
+    border-radius: 6px;
+    outline: 0;
+}
+
+.gj-header {
+    min-height: 16.43px;
+    padding: 15px;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.gj-title {
+    margin: 2px;
+}
+
+.gj-close {
+    -webkit-appearance: none;
+    padding: 0;
+    cursor: pointer;
+    background: 0 0;
+    border: 0;
+    float: right;
+    font-size: 21px;
+    color: #000;
+}
+
+.gj-body {
+    position: relative;
+    padding: 15px;
+}

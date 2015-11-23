@@ -8,15 +8,16 @@
                 files : {
                     'build/modular/dialog/js/dialog.base.js': ['src/dialog/js/dialog.base.config.js', 'src/dialog/js/dialog.base.events.js', 'src/dialog/js/dialog.base.private.js', 'src/dialog/js/dialog.base.methods.js'],
                     'build/modular/dialog/js/dialog.jqueryui.js': ['src/dialog/js/dialog.jqueryui.js'],
+                    'build/modular/dialog/js/dialog.bootstrap.js': ['src/dialog/js/dialog.bootstrap.js'],
                     'build/modular/dialog/js/dialog.foundation.js': ['src/dialog/js/dialog.foundation.js'],
 
-                    'build/combined/js/dialog.js': ['build/modular/dialog/js/dialog.base.js', 'build/modular/dialog/js/dialog.jqueryui.js', 'build/modular/dialog/js/dialog.foundation.js'],
+                    'build/combined/js/dialog.js': ['build/modular/dialog/js/dialog.base.js', 'build/modular/dialog/js/dialog.jqueryui.js', 'build/modular/dialog/js/dialog.bootstrap.js', 'build/modular/dialog/js/dialog.foundation.js'],
 
                     'build/modular/dialog/css/dialog.base.css': ['src/dialog/css/dialog.base.css'],
                     'build/modular/dialog/css/dialog.jqueryui.css': ['src/dialog/css/dialog.jqueryui.css'],
                     'build/modular/dialog/css/dialog.foundation.css': ['src/dialog/css/dialog.foundation.css'],
 
-                    'build/combined/css/dialog.base.css': ['build/modular/dialog/css/dialog.base.css', 'build/modular/dialog/css/dialog.jqueryui.css', 'build/modular/dialog/css/dialog.foundation.css'],
+                    'build/combined/css/dialog.css': ['build/modular/dialog/css/dialog.base.css', 'build/modular/dialog/css/dialog.jqueryui.css', 'build/modular/dialog/css/dialog.foundation.css'],
                 }
             },
             draggable: {
@@ -222,6 +223,9 @@ var writer = {
                         break;
                     case 'dialog.jqueryui':
                         result += '  <script src="../../build/modular/dialog/js/dialog.jqueryui.js"></script>\r\n';
+                        break;
+                    case 'dialog.bootstrap':
+                        result += '  <script src="../../build/modular/dialog/js/dialog.bootstrap.js"></script>\r\n';
                         break;
                     case 'dialog.foundation':
                         result += '  <script src="../../build/modular/dialog/js/dialog.foundation.js"></script>\r\n';

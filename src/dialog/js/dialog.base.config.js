@@ -23,18 +23,19 @@ gj.dialog.configuration = {
           * If false, the dialog will stay hidden until the open() method is called.
           * @type boolean
           * @default true
-          * @example <!-- draggable.base, dialog.base, bootstrap -->
+          * @example <!-- dialog.base -->
           * <div id="dialog">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
           * <script>
           *     $("#dialog").dialog({
           *         autoOpen: true
           *     });
           * </script>
-          * @example <!-- draggable.base, dialog.base, bootstrap -->
+          * @example <!-- dialog.base, dialog.bootstrap, bootstrap -->
           * <div id="dialog" style="display: none">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
           * <button onclick="dialog.open()">Open Dialog</button>
           * <script>
           *     var dialog = $("#dialog").dialog({
+          *         uiLibrary: 'bootstrap',
           *         autoOpen: false
           *     });
           * </script>
@@ -215,8 +216,8 @@ gj.dialog.configuration = {
         title: 'Dialog',
         /** The name of the UI library that is going to be in use. Currently we support only jQuery UI and Bootstrap. 
           * @additionalinfo The css files for jQuery UI, Foundation or Bootstrap should be manually included to the page where the dialog is in use.
-          * @type (jqueryui|bootstrap|foundation)
-          * @default "bootstrap"
+          * @type string (jqueryui|bootstrap|foundation)
+          * @default undefined
           * @example  <!-- draggable.base, dialog.base, dialog.jqueryui, jqueryui -->
           * <div id="dialog">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
           * <script>
@@ -247,15 +248,15 @@ gj.dialog.configuration = {
           *     });
           * </script>
           */
-        uiLibrary: 'bootstrap',
+        uiLibrary: undefined,
         style: {
-            modal: 'modal',
-            content: 'modal-content',
-            header: 'modal-header',
-            headerTitle: 'modal-title',
-            headerCloseButton: 'close',
-            body: 'modal-body',
-            footer: 'gj-dialog-footer modal-footer'
+            modal: 'gj-modal',
+            content: 'gj-content',
+            header: 'gj-header',
+            headerTitle: 'gj-title',
+            headerCloseButton: 'gj-close',
+            body: 'gj-body',
+            footer: 'gj-dialog-footer'
         }
     }
 };
