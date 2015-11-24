@@ -2,12 +2,8 @@
   * @widget Dialog 
   * @plugin jQuery UI
   */
-if (typeof (gj.dialog.plugins) === 'undefined') {
-    gj.dialog.plugins = {};
-}
-
 gj.dialog.plugins.jqueryui = {
-    'configuration': {
+    config: {
         style: {
             modal: 'gj-modal',
             content: 'ui-widget ui-widget-content gj-dialog-content',
@@ -21,7 +17,7 @@ gj.dialog.plugins.jqueryui = {
 
     'configure': function ($dialog) {
         if ($dialog.data('uiLibrary') === 'jqueryui') {
-            $dialog.data('style', gj.dialog.plugins.jqueryui.configuration.style);
+            $dialog.data('style', gj.dialog.plugins.jqueryui.config.style);
         }
     }
 };

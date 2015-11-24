@@ -2,12 +2,8 @@
   * @widget Dialog 
   * @plugin Foundation
   */
-if (typeof (gj.dialog.plugins) === 'undefined') {
-    gj.dialog.plugins = {};
-}
-
 gj.dialog.plugins.foundation = {
-    'configuration': {
+    config: {
         style: {
             modal: 'reveal-modal-bg',
             content: 'reveal-modal gj-dialog-fd-content',
@@ -21,7 +17,7 @@ gj.dialog.plugins.foundation = {
 
     'configure': function ($dialog) {
         if ($dialog.data('uiLibrary') === 'foundation') {
-            $dialog.data('style', gj.dialog.plugins.foundation.configuration.style);
+            $dialog.data('style', gj.dialog.plugins.foundation.config.style);
         }
     }
 };

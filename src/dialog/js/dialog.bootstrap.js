@@ -2,12 +2,8 @@
   * @widget Dialog 
   * @plugin Bootstrap
   */
-if (typeof (gj.dialog.plugins) === 'undefined') {
-    gj.dialog.plugins = {};
-}
-
 gj.dialog.plugins.bootstrap = {
-    'configuration': {
+    config: {
         style: {
             modal: 'modal',
             content: 'modal-content',
@@ -21,7 +17,7 @@ gj.dialog.plugins.bootstrap = {
 
     'configure': function ($dialog) {
         if ($dialog.data('uiLibrary') === 'bootstrap') {
-            $dialog.data('style', gj.dialog.plugins.bootstrap.configuration.style);
+            $dialog.data('style', gj.dialog.plugins.bootstrap.config.style);
         }
     }
 };

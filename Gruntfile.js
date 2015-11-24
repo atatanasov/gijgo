@@ -6,7 +6,7 @@
         concat: {
             dialog: {
                 files : {
-                    'build/modular/dialog/js/dialog.base.js': ['src/dialog/js/dialog.base.config.js', 'src/dialog/js/dialog.base.events.js', 'src/dialog/js/dialog.base.private.js', 'src/dialog/js/dialog.base.methods.js'],
+                    'build/modular/dialog/js/dialog.base.js': ['src/dialog/js/dialog.base.config.js', 'src/dialog/js/dialog.base.events.js', 'src/dialog/js/dialog.base.methods.js', 'src/dialog/js/dialog.base.widget.js'],
                     'build/modular/dialog/js/dialog.jqueryui.js': ['src/dialog/js/dialog.jqueryui.js'],
                     'build/modular/dialog/js/dialog.bootstrap.js': ['src/dialog/js/dialog.bootstrap.js'],
                     'build/modular/dialog/js/dialog.foundation.js': ['src/dialog/js/dialog.foundation.js'],
