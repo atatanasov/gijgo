@@ -85,8 +85,6 @@
             $dialog.close();
         });
 
-        gj.dialog.methods.setPosition($dialog);
-
         if (data.draggable && $.fn.draggable) {
             gj.dialog.methods.draggable($dialog, $header);
         }
@@ -94,6 +92,8 @@
         if (data.resizable && $.fn.draggable) {
             gj.dialog.methods.resizable($dialog);
         }
+
+        gj.dialog.methods.setPosition($dialog);
 
         if (data.modal) {
             $dialog.wrapAll('<div data-role="modal" class="' + data.style.modal + '"/>');

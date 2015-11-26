@@ -17,15 +17,26 @@ if (typeof (gj.draggable) === 'undefined') {
     gj.draggable = {};
 }
 
-gj.draggable.configuration = {
-    base: {
-        /** If specified, restricts dragging from starting unless the mousedown occurs on the specified element.
-          * Only elements that descend from the draggable element are permitted.
-          * @type jquery element
-          */
-        handle: undefined,
-        style: {}
-    }
+gj.draggable.config = {
+    /** If specified, restricts dragging from starting unless the mousedown occurs on the specified element.
+      * Only elements that descend from the draggable element are permitted.
+      * @type jquery element
+      * @default undefined
+      * @example <!-- draggable.base -->
+      * <style>
+      * .element { border: 1px solid #999; width: 300px; height: 400px; }
+      * .handle { background-color: #DDD; cursor: move; width: 200px; margin: 5px auto 0px auto; text-align: center; padding: 5px; }
+      * </style>
+      * <div id="element" class="element">
+      *   <div id="handle" class="handle">Handle for dragging</div>
+      * </div>
+      * <script>
+      *     $('#element').draggable({
+      *         handle: $('#handle')
+      *     });
+      * </script>
+      */
+    handle: undefined
 };
 
 gj.draggable.public = {
@@ -51,6 +62,14 @@ gj.draggable.public = {
                 $dragEl.on(option, jsConfig[option]);
                 delete jsConfig[option];
             }
+        }
+
+        $dragEl.css('position', 'absolute');
+        if ($dragEl.css('top')) {
+            $dragEl.css('top', '0px');
+        }
+        if ($dragEl.css('left')) {
+            $dragEl.css('left', '0px');
         }
 
         $clickEl.on('mousedown', function (e) {
@@ -126,6 +145,17 @@ gj.draggable.events = {
          * @event drag
          * @param {object} e - event data
          * @param {object} offset - Current offset position as { top, left } object.
+         * @example <!-- draggable.base -->
+         * <div id="element" style="border: 1px solid #999;">
+         *   <div id="handle">Handle for dragging</div>
+         * </div>
+         * <script>
+         *     $('#element').draggable({
+         *         drag: function (e, top, left) {
+         *             alert('The drag event is fired.');
+         *         }
+         *     });
+         * </script>
          */
         $dragEl.trigger('drag', [{ top: offsetY, left: offsetX }]);
     },

@@ -28,10 +28,12 @@
             }
         },
         extractExamples: {
-            files: {
-                src: ['build/modular/dialog/js/*.js'],
-                dest: 'examples/dialog/'
-            }
+            dialog: {
+                files: [
+                    { src: ['src/dialog/js/*.js'], dest: 'examples/dialog/' },
+                    { src: ['src/draggable/js/*.js'], dest: 'examples/draggable/' }
+                ]
+            }            
         },
         replace: {
             minifyComments: {
@@ -83,26 +85,21 @@
     grunt.loadNpmTasks('grunt-contrib-uglify');
 
     grunt.registerMultiTask('extractExamples', 'Extract examples from js files', function () {
-        var fs = require('fs'),
-            dest = this.files[0].dest;
-
-        if (fs.existsSync(dest + '../../index.html')) {
-            fs.unlinkSync(dest + '../../index.html');
-        }
+        var fs = require('fs');
 
         //make grunt know this task is async.
         var done = this.async();
 
         this.files.forEach(function (file) {
-            //fs.readdirSync(file.dest).forEach(function (filename) {
-            //    var filepath = file.dest + filename;
-            //    fs.unlinkSync(filepath);
-            //});
+            fs.readdirSync(file.dest).forEach(function (filename) {
+                var filepath = file.dest + filename;
+                fs.unlinkSync(filepath);
+            });
             grunt.log.writeln('Processing ' + file.src.length + ' files.');
             //file.src is the list of all matching file names.
             file.src.forEach(function (f) {
                 fs.readFile(f, 'utf8', function (err, data) {
-                    var i, j, k, isExampleMode, isExampleStart, result, lines, buffer, widget, plugin, field, filepath;
+                    var i, isExampleMode, isExampleStart, result, lines, buffer, widget, plugin, field, filepath;
                     if (err) {
                         return console.log(err);
                     }
@@ -127,27 +124,24 @@
                             result = { text: '', name: '', libs: lines[i].replace(/\*.?\@example/g, '') };
                         } else if (isExampleMode && /\*\//g.test(lines[i])) {
                             isExampleMode = false;
-                            isExampleStart = false;
+                            if (result) {
+                                buffer.push(result);
+                                result = undefined;
+                            }
                         }
 
                         if (isExampleMode) {
                             if (isExampleStart) {
-                                //TODO: parse references
                                 isExampleStart = false;
                             } else {
                                 result.text += lines[i].trim().replace('*', '') + '\r\n';
                             }
                         } else if (/^\s+[A-Za-z]+\:\s/g.test(lines[i])) {
-                            if (result) {
-                                buffer.push(result);
-                            }
                             field = lines[i].substr(0, lines[i].indexOf(':')).trim();
-                            k = 1;
-                            for (j = 0; j < buffer.length; j++) {
-                                if (buffer[j].name == '') {
-                                    buffer[j].name = widget + '.' + plugin + '.' + field + '.' + k++;
-                                }
-                            }
+                            writer.updateMissingNames(buffer, widget, plugin, field);
+                        } else if (/^\s+self\..+=[ ]function/g.test(lines[i])) {
+                            field = lines[i].substring(lines[i].indexOf('.') + 1, lines[i].indexOf('=')).trim();
+                            writer.updateMissingNames(buffer, widget, plugin, field);
                         }
                     }
                     writer.createHtmlFiles(fs, buffer, file.dest);                 
@@ -158,7 +152,7 @@
     });
 
     // Default task(s).
-    grunt.registerTask('default', ['concat', 'extractExamples', 'replace', 'uglify']);
+    grunt.registerTask('default', ['concat', 'extractExamples:dialog', 'replace', 'uglify']);
 
 };
 
@@ -174,7 +168,17 @@ var writer = {
             }
         }
         if (index) {
-            fs.appendFileSync(dest + '../../index.html', '<ul>\r\n' + index + '</ul>\r\n');
+            fs.appendFileSync(dest + 'index.html', '<ul>\r\n' + index + '</ul>\r\n');
+        }
+    },
+
+    updateMissingNames: function (buffer, widget, plugin, field) {
+        var j, k = 1;
+        for (j = 0; j < buffer.length; j++) {
+            if (buffer[j].name === '' && buffer[j].text) {
+                buffer[j].name = widget + '.' + plugin + '.' + field + '.' + k;
+                k++;
+            }
         }
     },
 
