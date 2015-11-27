@@ -159,12 +159,12 @@
 
 var writer = {
     createHtmlFiles: function (fs, buffer, dest) {
-        var i, filepath, libs, index = '';
+        var i, filename, libs, index = '';
         for (i = 0; i < buffer.length; i++) {
             if (buffer[i].text) {
-                filepath = dest + buffer[i].name + ".html";
-                fs.writeFileSync(filepath, writer.buildHtmlFile(buffer[i]));
-                index += '<li><a href="' + filepath + '">' + buffer[i].name + '</a></li>\r\n';
+                filename = buffer[i].name + ".html";
+                fs.writeFileSync(dest + filename, writer.buildHtmlFile(buffer[i]));
+                index += '<li><a href="' + filename + '">' + buffer[i].name + '</a></li>\r\n';
             }
         }
         if (index) {
