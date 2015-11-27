@@ -1,0 +1,339 @@
+﻿/** 
+  * @widget Grid 
+  * @plugin Pagination
+  */
+if (typeof (gj.grid.plugins) === 'undefined') {
+    gj.grid.plugins = {};
+}
+
+gj.grid.plugins.pagination = {
+    'configuration': {
+        pager: {
+            /** This setting control the visualization of the pager. If this setting is enabled the pager would show.
+              * @alias pager.enable
+              * @type boolean
+              * @default false
+              */
+            enable: false,
+
+            /** The maximum number of records that can be show by page.
+                * @alias pager.limit
+                * @type int
+                * @default 10
+                */
+            limit: 10,
+
+            /** Array that contains the possible page sizes of the grid.
+                * When this setting is set, then a drop down with the options for each page size is visualized in the pager.
+                * @alias pager.sizes
+                * @type array
+                * @default undefined
+                */
+            sizes: undefined,
+
+            /** Array that contains a list with jquery objects that are going to be used on the left side of the pager.
+                * @alias pager.leftControls
+                * @type array
+                * @default array
+                */
+            leftControls: [
+                $('<div title="First" data-role="page-first" class="ui-icon ui-icon-seek-first ui-grid-icon"></div>'),
+                $('<div title="Previous" data-role="page-previous" class="ui-icon ui-icon-seek-prev ui-grid-icon"></div>'),
+                $('<div>Page</div>'),
+                $('<div></div>').append($('<input type="text" data-role="page-number" class="ui-grid-pager" value="0">')),
+                $('<div>of&nbsp;</div>'),
+                $('<div data-role="page-label-last">0</div>'),
+                $('<div title="Next" data-role="page-next" class="ui-icon ui-icon-seek-next ui-grid-icon"></div>'),
+                $('<div title="Last" data-role="page-last" class="ui-icon ui-icon-seek-end ui-grid-icon"></div>'),
+                $('<div title="Reload" data-role="page-refresh" class="ui-icon ui-icon-refresh ui-grid-icon"></div>'),
+                $('<div></div>').append($('<select data-role="page-size" class="ui-grid-page-sizer"></select>'))
+            ],
+
+            /** Array that contains a list with jquery objects that are going to be used on the right side of the pager.
+                * @alias pager.rightControls
+                * @type array
+                * @default array
+                */
+            rightControls: [
+                $('<div>Displaying records&nbsp;</div>'),
+                $('<div data-role="record-first">0</div>'),
+                $('<div>&nbsp;-&nbsp;</div>'),
+                $('<div data-role="record-last">0</div>'),
+                $('<div>&nbsp;of&nbsp;</div>'),
+                $('<div data-role="record-total">0</div>').css({ "margin-right": "5px" })
+            ]
+        }
+    },
+
+    'private': {
+        init: function ($grid) {
+            var $row, $cell, data, controls, $leftPanel, $rightPanel, $tfoot, leftControls, rightControls, i;
+
+            data = $grid.data('grid');
+
+            if (data.pager && data.pager.enable) {
+                //if ($.isArray(data.dataSource)) {
+                //    data.dataSource = data.dataSource.slice(0, data.pager.limit);
+                //}
+                data.params[data.defaultParams.page] = 1;
+                data.params[data.defaultParams.limit] = data.pager.limit;
+
+                $row = $('<tr/>');
+                $cell = $('<th/>').addClass(data.style.pager.cell);
+                $row.append($cell);
+
+                $leftPanel = $('<div />').css({ 'float': 'left' });
+                $rightPanel = $('<div />').css({ 'float': 'right' });
+                if (/msie/.test(navigator.userAgent.toLowerCase())) {
+                    $rightPanel.css({ 'padding-top': '3px' });
+                }
+
+                $cell.append($leftPanel).append($rightPanel);
+
+                $tfoot = $('<tfoot />').append($row);
+                $grid.append($tfoot);
+                gj.grid.plugins.pagination.private.updatePagerColSpan($grid);
+
+                leftControls = gj.grid.private.clone(data.pager.leftControls); //clone array
+                $.each(leftControls, function () {
+                    $leftPanel.append(this);
+                });
+
+                rightControls = gj.grid.private.clone(data.pager.rightControls); //clone array
+                $.each(rightControls, function () {
+                    $rightPanel.append(this);
+                });
+
+                controls = $grid.find('TFOOT [data-role]');
+                for (i = 0; i < controls.length; i++) {
+                    gj.grid.plugins.pagination.private.initPagerControl($(controls[i]), $grid);
+                }
+            }
+        },
+
+        initPagerControl: function ($control, $grid) {
+            var data = $grid.data('grid');
+            switch ($control.data('role')) {
+                case 'page-number':
+                    $control.on('keypress', function (e) {
+                        if (e.keyCode === 13) {
+                            $(this).trigger('change');
+                        }
+                    });
+                    break;
+                case 'page-size':
+                    if (data.pager.sizes && 0 < data.pager.sizes.length) {
+                        $control.show();
+                        $.each(data.pager.sizes, function () {
+                            $control.append($('<option/>').attr('value', this.toString()).text(this.toString()));
+                        });
+                        $control.change(function () {
+                            var newSize = parseInt(this.value, 10);
+                            data.params[data.defaultParams.limit] = newSize;
+                            gj.grid.plugins.pagination.private.changePage($grid, 1);
+                            gj.grid.plugins.pagination.events.pageSizeChange($grid, newSize);
+                        });
+                        $control.val(data.params[data.defaultParams.limit]);
+                    } else {
+                        $control.hide();
+                    }
+                    break;
+                case 'page-refresh':
+                    $control.on('click', function () { $grid.reload(); });
+                    break;
+            }
+
+        },
+
+        reloadPager: function ($grid, totalRecords) {
+            var page, limit, lastPage, firstRecord, lastRecord, data;
+
+            data = $grid.data('grid');
+
+            if (data.pager.enable) {
+                page = (0 === totalRecords) ? 0 : data.params[data.defaultParams.page];
+                limit = parseInt(data.params[data.defaultParams.limit], 10);
+                lastPage = Math.ceil(totalRecords / limit);
+                firstRecord = (0 === page) ? 0 : (limit * (page - 1)) + 1;
+                lastRecord = (firstRecord + limit) > totalRecords ? totalRecords : (firstRecord + limit) - 1;
+
+                controls = $grid.find('TFOOT [data-role]');
+                for (i = 0; i < controls.length; i++) {
+                    gj.grid.plugins.pagination.private.reloadPagerControl($(controls[i]), $grid, page, lastPage, firstRecord, lastRecord, totalRecords);
+                }
+
+                gj.grid.plugins.pagination.private.updatePagerColSpan($grid);
+            }
+        },
+
+        reloadPagerControl: function ($control, $grid, page, lastPage, firstRecord, lastRecord, totalRecords) {
+            var data = $grid.data('grid');
+            switch ($control.data('role')) {
+                case 'page-first':
+                    if (page < 2) {
+                        $control.addClass(data.style.pager.stateDisabled).off('click');
+                    } else {
+                        $control.removeClass(data.style.pager.stateDisabled).off('click').on('click', gj.grid.plugins.pagination.private.CreateFirstPageHandler($grid));
+                    }
+                    break;
+                case 'page-previous':
+                    if (page < 2) {
+                        $control.addClass(data.style.pager.stateDisabled).off('click');
+                    } else {
+                        $control.removeClass(data.style.pager.stateDisabled).off('click').on('click', gj.grid.plugins.pagination.private.CreatePrevPageHandler($grid));
+                    }
+                    break;
+                case 'page-number':
+                    $control.val(page).off('change').on('change', gj.grid.plugins.pagination.private.CreateChangePageHandler($grid, page, lastPage));
+                    break;
+                case 'page-label-last':
+                    $control.text(lastPage);
+                    break;
+                case 'page-next':
+                    if (lastPage === page) {
+                        $control.addClass(data.style.pager.stateDisabled).off('click');
+                    } else {
+                        $control.removeClass(data.style.pager.stateDisabled).off('click').on('click', gj.grid.plugins.pagination.private.CreateNextPageHandler($grid));
+                    }
+                    break;
+                case 'page-last':
+                    if (lastPage === page) {
+                        $control.addClass(data.style.pager.stateDisabled).off('click');
+                    } else {
+                        $control.removeClass(data.style.pager.stateDisabled).off('click').on('click', gj.grid.plugins.pagination.private.CreateLastPageHandler($grid, lastPage));
+                    }
+                    break;
+                case 'record-first':
+                    $control.text(firstRecord);
+                    break;
+                case 'record-last':
+                    $control.text(lastRecord);
+                    break;
+                case 'record-total':
+                    $control.text(totalRecords);
+                    break;
+            }
+        },
+
+        CreateFirstPageHandler: function ($grid) {
+            return function () {
+                gj.grid.plugins.pagination.private.changePage($grid, 1);
+            };
+        },
+
+        CreatePrevPageHandler: function ($grid) {
+            return function () {
+                var data = $grid.data('grid'),
+                    currentPage = data.params[data.defaultParams.page],
+                    newPage = (currentPage && currentPage > 1) ? currentPage - 1 : 1;
+                gj.grid.plugins.pagination.private.changePage($grid, newPage);
+            };
+        },
+
+        CreateNextPageHandler: function ($grid) {
+            return function () {
+                var data = $grid.data('grid'),
+                    currentPage = data.params[data.defaultParams.page];
+                gj.grid.plugins.pagination.private.changePage($grid, currentPage + 1);
+            };
+        },
+
+        CreateLastPageHandler: function ($grid, lastPage) {
+            return function () {
+                gj.grid.plugins.pagination.private.changePage($grid, lastPage);
+            };
+        },
+
+        CreateChangePageHandler: function ($grid, currentPage, lastPage) {
+            return function (e) {
+                var data = $grid.data('grid'),
+                    newPage = parseInt(this.value, 10);
+                if (newPage && !isNaN(newPage) && newPage <= lastPage) {
+                    gj.grid.plugins.pagination.private.changePage($grid, newPage);
+                } else {
+                    this.value = currentPage;
+                    alert('Please enter a valid number.');
+                }
+            };
+        },
+
+        changePage: function ($grid, newPage) {
+            var data = $grid.data('grid');
+            $grid.find('TFOOT [data-role="page-number"]').val(newPage);
+            data.params[data.defaultParams.page] = newPage;
+            gj.grid.plugins.pagination.events.pageChanging($grid, newPage);
+            $grid.reload();
+        },
+
+        updatePagerColSpan: function ($grid) {
+            var $cell = $grid.find('tfoot > tr > th');
+            if ($cell && $cell.length) {
+                $cell.attr('colspan', gj.grid.private.countVisibleColumns($grid));
+            }
+        }
+    },
+
+    'public': {
+    },
+
+    'events': {
+        /**
+         * Triggered when the page size is changed.
+         *
+         * @event pageSizeChange
+         * @property {object} e - event data
+         * @property {int} newSize - The new page size
+         * @example <table id="grid"></table>
+         * <script>
+         *     var grid = $('#grid').grid({
+         *         dataSource: '/Grid/GetPlayers',
+         *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
+         *         pager: { enable: true, limit: 2, sizes: [2, 5, 10, 20] }
+         *     });
+         *     grid.on('pageSizeChange', function (e, newSize) {
+         *         alert('The new page size is ' + newSize + '.');
+         *     });
+         * </script>
+         */
+        pageSizeChange: function ($grid, newSize) {
+            $grid.trigger('pageSizeChange', [newSize]);
+        },
+
+        /**
+         * Triggered before the change of the page.
+         *
+         * @event pageChanging
+         * @property {object} e - event data
+         * @property {int} newPage - The new page
+         * @example <table id="grid"></table>
+         * <script>
+         *     var grid = $('#grid').grid({
+         *         dataSource: '/Grid/GetPlayers',
+         *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
+         *         pager: { enable: true, limit: 2, sizes: [2, 5, 10, 20] }
+         *     });
+         *     grid.on('pageChanging', function (e, newPage) {
+         *         alert('The new page is ' + newPage + '.');
+         *     });
+         * </script>
+         */
+        pageChanging: function ($grid, newSize) {
+            $grid.trigger('pageChanging', [newSize]);
+        }
+    },
+
+    'init': function ($grid) {
+        gj.grid.plugins.pagination.private.init($grid);
+        $grid.on('dataBound', function (e, records, totalRecords) {
+            gj.grid.plugins.pagination.private.reloadPager($grid, totalRecords);
+        });
+        $grid.on('columnShow', function (e, column) {
+            gj.grid.plugins.pagination.private.updatePagerColSpan($grid);
+        });
+        $grid.on('columnHide', function (e, column) {
+            gj.grid.plugins.pagination.private.updatePagerColSpan($grid);
+        });
+    }
+};
+
+$.extend(true, gj.grid.configuration.base, gj.grid.plugins.pagination.configuration);
