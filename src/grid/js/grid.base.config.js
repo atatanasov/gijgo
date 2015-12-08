@@ -19,7 +19,7 @@ if (typeof (gj.grid) === 'undefined') {
     };
 }
 
-gj.grid.configuration = {
+gj.grid.config = {
 
     /** The data source of the widget which is used table rows.<br />
      * @additionalinfo If set to string, then the grid is going to use this string as a url for ajax requests to the server.<br />
@@ -27,14 +27,16 @@ gj.grid.configuration = {
      * If set to array, then the grid is going to use the array as data for rows.
      * @type (string|object|array)
      * @default undefined
-     * @example <table id="grid"></table>
+     * @example <!-- grid.base -->
+     * <table id="grid"></table>
      * <script>
-     *     var grid = $("#grid").grid({
-     *         dataSource: "/Grid/GetPlayers",
-     *         columns: [ { field: "Name" }, { field: "PlaceOfBirth" } ]
+     *     var grid = $('#grid').grid({
+     *         dataSource: 'Players.txt',
+     *         columns: [ { field: 'Name' }, { field: 'PlaceOfBirth' } ]
      *     });
      * </script>
-     * @example <table id="grid" data-source="/Grid/GetPlayers">
+     * @example <!-- grid.base -->
+     * <table id="grid" data-source="Players.txt">
      *     <thead>
      *         <tr>
      *             <th width="20">ID</th>
@@ -46,27 +48,29 @@ gj.grid.configuration = {
      * <script>
      *     $("#grid").grid();
      * </script>
-     * @example <table id="grid"></table>
+     * @example <!-- grid.base -->
+     * <table id="grid"></table>
      * <script>
      *     var grid, onSuccessFunc = function (response) { 
      *         alert("The result contains " + response.records.length + " records.");
      *         grid.render(response);
      *     };
-     *     grid = $("#grid").grid({
-     *         dataSource: { url: "/Grid/GetPlayers", data: {}, success: onSuccessFunc },
-     *         columns: [ { field: "Name" }, { field: "PlaceOfBirth" } ]
+     *     grid = $('#grid').grid({
+     *         dataSource: { url: 'Players.txt', data: {}, success: onSuccessFunc },
+     *         columns: [ { field: 'Name' }, { field: 'PlaceOfBirth' } ]
      *     });
      * </script>
-     * @example <table id="grid"></table>
+     * @example <!-- grid.base -->
+     * <table id="grid"></table>
      * <script>
      *     var data = [
      *         { "ID": 1, "Name": "Hristo Stoichkov", "PlaceOfBirth": "Plovdiv, Bulgaria" },
      *         { "ID": 2, "Name": "Ronaldo Luis Nazario de Lima", "PlaceOfBirth": "Rio de Janeiro, Brazil" },
      *         { "ID": 3, "Name": "David Platt", "PlaceOfBirth": "Chadderton, Lancashire, England" }
      *     ];
-     *     $("#grid").grid({
+     *     $('#grid').grid({
      *         dataSource: data,
-     *         columns: [ { field: "ID" }, { field: "Name" }, { field: "PlaceOfBirth" } ]
+     *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
      *     });
      * </script>
      */
@@ -74,11 +78,12 @@ gj.grid.configuration = {
 
     /** An array that holds the configurations of each column from the grid.
      * @type array
-     * @example <table id="grid"></table>
+     * @example <!-- grid.base -->
+     * <table id="grid"></table>
      * <script>
-     *     $("#grid").grid({
-     *         dataSource: "/Grid/GetPlayers",
-     *         columns: [ { field: "ID", width: 30 }, { field: "Name" }, { field: "PlaceOfBirth", name: "Birth Place" } ]
+     *     $('#grid').grid({
+     *         dataSource: 'Players.txt',
+     *         columns: [ { field: 'ID', width: 30 }, { field: 'Name' }, { field: 'PlaceOfBirth', name: 'Birth Place' } ]
      *     });
      * </script>
      */
@@ -86,10 +91,11 @@ gj.grid.configuration = {
 
     /** Auto generate column for each field in the datasource when set to true.
      * @type array
-     * @example <table id="grid"></table>
+     * @example <!-- grid.base --> 
+     * <table id="grid"></table>
      * <script>
-     *     $("#grid").grid({
-     *         dataSource: "/Grid/GetPlayers",
+     *     $('#grid').grid({
+     *         dataSource: 'Players.txt',
      *         autoGenerateColumns: true
      *     });
      * </script>
@@ -98,7 +104,8 @@ gj.grid.configuration = {
 
     /** An object that holds the default configuration settings of each column from the grid.
      * @type object
-     * @example <table id="grid"></table>
+     * @example <!-- grid.base -->
+     * <table id="grid"></table>
      * <script>
      *     $("#grid").grid({
      *         dataSource: "/Grid/GetPlayers",
@@ -113,7 +120,8 @@ gj.grid.configuration = {
          * @alias column.hidden
          * @type boolean
          * @default false
-         * @example <table id="grid"></table>
+         * @example <!-- grid.base -->
+         * <table id="grid"></table>
          * <script>
          *     $("#grid").grid({
          *         dataSource: "/Grid/GetPlayers",
@@ -128,7 +136,8 @@ gj.grid.configuration = {
          * @alias column.width
          * @type int|string
          * @default undefined
-         * @example <table id="grid"></table>
+         * @example <!-- grid.base -->
+         * <table id="grid"></table>
          * <script>
          *     $("#grid").grid({
          *         dataSource: "/Grid/GetPlayers",
@@ -147,7 +156,8 @@ gj.grid.configuration = {
          * @alias column.sortable
          * @type boolean
          * @default false
-         * @example <table id="grid"></table>
+         * @example <!-- grid.base -->
+         * <table id="grid"></table>
          * <script>
          *     $("#grid").grid({
          *         dataSource: "/Grid/GetPlayers",
@@ -166,7 +176,8 @@ gj.grid.configuration = {
          * @alias column.type
          * @type checkbox|icon|date
          * @default undefined
-         * @example <table id="grid"></table>
+         * @example <!-- grid.base -->
+         * <table id="grid"></table>
          * <script>
          *     $("#grid").grid({
          *         dataSource: "/Grid/GetPlayers",
@@ -185,7 +196,8 @@ gj.grid.configuration = {
          * @alias column.title
          * @type string
          * @default undefined
-         * @example <table id="grid"></table>
+         * @example <!-- grid.base -->
+         * <table id="grid"></table>
          * <script>
          *     $("#grid").grid({
          *         dataSource: "/Grid/GetPlayers",
@@ -205,7 +217,8 @@ gj.grid.configuration = {
          * @alias column.field
          * @type string
          * @default undefined
-         * @example <table id="grid"></table>
+         * @example <!-- grid.base -->
+         * <table id="grid"></table>
          * <script>
          *     $("#grid").grid({
          *         dataSource: "/Grid/GetPlayers",
@@ -224,7 +237,8 @@ gj.grid.configuration = {
          * @alias column.align
          * @type left|right|center|justify|initial|inherit
          * @default "left"
-         * @example <table id="grid"></table>
+         * @example <!-- grid.base -->
+         * <table id="grid"></table>
          * <script>
          *     $("#grid").grid({
          *         dataSource: "/Grid/GetPlayers",
@@ -242,7 +256,8 @@ gj.grid.configuration = {
          * @alias column.cssClass
          * @type string
          * @default undefined
-         * @example <table id="grid"></table>
+         * @example <!-- grid.base -->
+         * <table id="grid"></table>
          * <style>
          * .nowrap { white-space: nowrap }
          * .bold { font-weight: bold }
@@ -264,7 +279,8 @@ gj.grid.configuration = {
          * @alias column.headerCssClass
          * @type string
          * @default undefined
-         * @example <table id="grid"></table>
+         * @example <!-- grid.base -->
+         * <table id="grid"></table>
          * <style>
          * .italic { font-style: italic }
          * </style>
@@ -285,7 +301,8 @@ gj.grid.configuration = {
          * @alias column.tooltip
          * @type string
          * @default undefined
-         * @example <table id="grid"></table>
+         * @example <!-- grid.base -->
+         * <table id="grid"></table>
          * <script>
          *     $("#grid").grid({
          *         dataSource: "/Grid/GetPlayers",
@@ -304,7 +321,8 @@ gj.grid.configuration = {
          * @alias column.icon
          * @type string
          * @default undefined
-         * @example <table id="grid"></table>
+         * @example <!-- grid.base -->
+         * <table id="grid"></table>
          * <script>
          *     $("#grid").grid({
          *         dataSource: "/Grid/GetPlayers",
@@ -324,7 +342,8 @@ gj.grid.configuration = {
          * @alias column.events
          * @type function
          * @default undefined
-         * @example <table id="grid"></table>
+         * @example <!-- grid.base -->
+         * <table id="grid"></table>
          * <script>
          *     $("#grid").grid({
          *         dataSource: "/Grid/GetPlayers",
@@ -387,7 +406,8 @@ gj.grid.configuration = {
          * @alias column.format
          * @type string
          * @default undefined
-         * @example <table id="grid"></table>
+         * @example <!-- grid.base -->
+         * <table id="grid"></table>
          * <script src="http://stevenlevithan.com/assets/misc/date.format.js"></script>
          * <script>
          *     $("#grid").grid({
@@ -414,7 +434,8 @@ gj.grid.configuration = {
          * @alias column.tmpl
          * @type string
          * @default undefined
-         * @example <table id="grid"></table>
+         * @example <!-- grid.base -->
+         * <table id="grid"></table>
          * <script>
          *     $("#grid").grid({
          *         dataSource: "/Grid/GetPlayers",
@@ -486,7 +507,8 @@ gj.grid.configuration = {
      * @additionalinfo The css files for jQuery UI or Bootstrap should be manually included to the page where the grid is in use.
      * @type (jqueryui|bootstrap)
      * @default "jqueryui"
-     * @example <table id="grid"></table>
+     * @example <!-- grid.base -->
+     * <table id="grid"></table>
      * <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" rel="stylesheet">
      * <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
      * <script>
@@ -532,8 +554,8 @@ gj.grid.configuration = {
      * If the type is set to multiple the user will be able to select more then one row from the grid.
      * @type (single|multiple)
      * @default "single"
-     * @example $("table").grid({  });
-     * @example <table id="grid"></table>
+     * @example <!-- grid.base -->
+     * <table id="grid"></table>
      * <script>
      *     $("#grid").grid({
      *         dataSource: "/Grid/GetPlayers",
@@ -550,7 +572,8 @@ gj.grid.configuration = {
      * If this setting is set to "checkbox" a column with checkboxes will appear as first row of the grid and when the user select a row, then this row will be highlighted and the checkbox selected.
      * @type (basic|checkbox)
      * @default "basic"
-     * @example <table id="grid"></table>
+     * @example <!-- grid.base -->
+     * <table id="grid"></table>
      * <script>
      *     $("#grid").grid({
      *         dataSource: "/Grid/GetPlayers",
@@ -565,7 +588,8 @@ gj.grid.configuration = {
     /** When this setting is enabled the content of the grid will be loaded automatically after the creation of the grid.
      * @type boolean
      * @default true
-     * @example <table id="grid"></table>
+     * @example <!-- grid.base -->
+     * <table id="grid"></table>
      * <script>
      *     var grid = $("#grid").grid({ 
      *         dataSource: "/Grid/GetPlayers", 
@@ -588,7 +612,8 @@ gj.grid.configuration = {
     /** The text that is going to be displayed if the grid is empty.
      * @type string
      * @default "No records found."
-     * @example <table id="grid"></table>
+     * @example <!-- grid.base -->
+     * <table id="grid"></table>
      * <script>
      *     $("#grid").grid({
      *         dataSource: { url: "/Grid/GetPlayers", data: { searchString: "sadasd" } },
@@ -602,7 +627,8 @@ gj.grid.configuration = {
     /** Width of the grid.
      * @type int
      * @default undefined
-     * @example <table id="grid"></table>
+     * @example <!-- grid.base -->
+     * <table id="grid"></table>
      * <script>
      *     $("#grid").grid({
      *         dataSource: "/Grid/GetPlayers",
@@ -622,7 +648,8 @@ gj.grid.configuration = {
     /** The size of the font in the grid.
      * @type string
      * @default undefined
-     * @example <table id="grid"></table>
+     * @example <!-- grid.base -->
+     * <table id="grid"></table>
      * <script>
      *     $('#grid').grid({
      *         dataSource: '/Grid/GetPlayers',

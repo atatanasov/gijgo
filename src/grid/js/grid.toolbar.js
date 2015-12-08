@@ -127,4 +127,4 @@ gj.grid.plugins.toolbar = {
     }
 };
 
-$.extend(true, gj.grid.configuration, gj.grid.plugins.toolbar.configuration);
+$.extend(true, gj.grid.config, gj.grid.plugins.toolbar.configuration);

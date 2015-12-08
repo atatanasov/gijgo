@@ -336,4 +336,4 @@ gj.grid.plugins.pagination = {
     }
 };
 
-$.extend(true, gj.grid.configuration.base, gj.grid.plugins.pagination.configuration);
+$.extend(true, gj.grid.config, gj.grid.plugins.pagination.configuration);

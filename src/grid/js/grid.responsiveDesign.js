@@ -300,4 +300,4 @@ gj.grid.plugins.responsiveDesign = {
     }
 };
 
-$.extend(true, gj.grid.configuration, gj.grid.plugins.responsiveDesign.configuration);
+$.extend(true, gj.grid.config, gj.grid.plugins.responsiveDesign.configuration);

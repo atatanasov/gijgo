@@ -170,4 +170,4 @@ gj.grid.plugins.expandCollapseRows = {
     }
 };
 
-$.extend(true, gj.grid.configuration.base, gj.grid.plugins.expandCollapseRows.configuration);
+$.extend(true, gj.grid.config, gj.grid.plugins.expandCollapseRows.configuration);

@@ -1,0 +1,104 @@
+﻿DIV.gj-grid-wrapper {
+    margin: auto;
+    position: relative;
+    clear:both;
+}
+
+TABLE.gj-grid-table {
+    margin: auto;    
+    border-collapse: collapse;
+    width: 100%;
+    table-layout: fixed;
+}
+
+TABLE.gj-grid-table THEAD TH.gj-grid-thead-sortable
+{
+    cursor: pointer;
+}
+
+TABLE.gj-grid-table THEAD TH #checkAllBoxes
+{
+    margin: auto;
+}
+
+TABLE.gj-grid-table > tbody > tr > td
+{
+    cursor: default;
+    overflow: hidden;
+}
+
+TABLE.gj-grid-table TFOOT TH.ui-grid-pager-cell
+{
+    height: 20px;
+    padding: 0px;
+    cursor: default;
+    border: 1px solid menutext;
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    /*user-select: none;*/
+}
+
+TABLE.gj-grid-table TFOOT DIV.ui-grid-icon
+{
+    margin: 0 2px;
+    cursor: pointer;
+    overflow: visible;   
+}
+
+TABLE.gj-grid-table TFOOT DIV.ui-grid-pager
+{
+    overflow: hidden;
+}
+
+TABLE.gj-grid-table TFOOT INPUT.ui-grid-pager
+{    
+    padding: 1px;
+    width: 26px;
+    height: 17px;
+    font: bold 11px Verdana;
+    margin: 0 5px;
+    text-align: right;
+}
+
+TABLE.gj-grid-table TFOOT SELECT.ui-grid-page-sizer
+{    
+    padding: 0px;
+    height: 17px;
+    font: bold 11px Verdana;
+    margin: 0 5px;
+    text-align: right;
+    width: 50px;
+}
+
+.gj-grid-wrapper TABLE.gj-grid-table DIV
+{
+	vertical-align: middle;
+	text-indent: 0;
+    display: inline-block;
+}
+
+DIV.gj-grid-wrapper DIV.gj-grid-loading-cover
+{
+    background: #BBBBBB;
+    opacity: 0.5;
+    position: absolute;
+    vertical-align: middle;
+}
+
+DIV.gj-grid-wrapper DIV.gj-grid-loading-text
+{
+    position: absolute;
+    font-weight: bold;
+}
+
+.gj-dirty {
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 3px;
+    border-color: #f00 transparent transparent #f00;
+    padding: 0;
+    overflow: hidden;
+    vertical-align: top;
+}

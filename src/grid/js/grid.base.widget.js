@@ -11,7 +11,8 @@ gj.grid.public = {
      * @param {object} params - An object that contains a list with parameters that are going to be send to the server.
      * @fires beforeEmptyRowInsert, dataBinding, dataBound, cellDataBound
      * @return void
-     * @example <input type="text" id="txtSearch">
+     * @example <!-- grid.base -->
+     * <input type="text" id="txtSearch">
      * <button id="btnSearch">Search</button>
      * <br/><br/>
      * <table id="grid"></table>
@@ -29,12 +30,12 @@ gj.grid.public = {
         var data, ajaxOptions, records;
         data = this.data('grid');
         $.extend(data.params, params);
-        gj.grid.private.StartLoading(this);
+        gj.grid.methods.StartLoading(this);
         if ($.isArray(data.dataSource)) {
-            records = gj.grid.private.GetRecords(data, data.dataSource);
-            gj.grid.private.loadData(this, records, records.length);
+            records = gj.grid.methods.GetRecords(data, data.dataSource);
+            gj.grid.methods.loadData(this, records, records.length);
         } else if (typeof (data.dataSource) === "string") {
-            ajaxOptions = { url: data.dataSource, data: data.params, success: gj.grid.private.LoaderSuccessHandler(this) };
+            ajaxOptions = { url: data.dataSource, data: data.params, success: gj.grid.methods.LoaderSuccessHandler(this) };
             if (this.xhr) {
                 this.xhr.abort();
             }
@@ -49,7 +50,7 @@ gj.grid.public = {
                 ajaxOptions.data = JSON.stringify(ajaxOptions.data);
             }
             if (!ajaxOptions.success) {
-                ajaxOptions.success = gj.grid.private.LoaderSuccessHandler(this);
+                ajaxOptions.success = gj.grid.methods.LoaderSuccessHandler(this);
             }
             if (this.xhr) {
                 this.xhr.abort();
@@ -63,7 +64,8 @@ gj.grid.public = {
      * Clear the content in the grid.
      * @method
      * @return void
-     * @example <button id="btnClear">Clear</button>
+     * @example <!-- grid.base -->
+     * <button id="btnClear">Clear</button>
      * <br/><br/>
      * <table id="grid"></table>
      * <script>
@@ -83,8 +85,8 @@ gj.grid.public = {
             this.find("input#checkAllBoxes").hide();
         }
         this.children("tbody").empty();
-        gj.grid.private.StopLoading(this);
-        gj.grid.private.AppendEmptyRow(this, "&nbsp;");
+        gj.grid.methods.StopLoading(this);
+        gj.grid.methods.AppendEmptyRow(this, "&nbsp;");
         gj.grid.events.dataBound(this, [], 0);
         return this;
     },
@@ -93,7 +95,8 @@ gj.grid.public = {
      * Return the number of records presented on the screen.
      * @method
      * @return int
-     * @example <button id="btnShowCount">Show Count</button>
+     * @example <!-- grid.base -->
+     * <button id="btnShowCount">Show Count</button>
      * <br/><br/>
      * <table id="grid"></table>
      * <script>
@@ -116,7 +119,8 @@ gj.grid.public = {
      * @param {object} response - An object that contains the data that needs to be loaded in the grid.
      * @fires beforeEmptyRowInsert, dataBinding, dataBound, cellDataBound
      * @return void
-     * @example <table id="grid"></table>
+     * @example <!-- grid.base -->
+     * <table id="grid"></table>
      * <script>
      *     var grid, onSuccessFunc; 
      *     onSuccessFunc = function (response) { 
@@ -134,12 +138,15 @@ gj.grid.public = {
         if (response) {
             data = this.data('grid');
             if (data) {
-                records = gj.grid.private.GetRecords(data, response);
+                if (typeof (response) === "string" && JSON) {
+                    response = JSON.parse(response);
+                }
+                records = gj.grid.methods.GetRecords(data, response);
                 totalRecords = response[data.mapping.totalRecordsField];
                 if (!totalRecords || isNaN(totalRecords)) {
                     totalRecords = 0;
                 }
-                gj.grid.private.loadData(this, records, totalRecords);
+                gj.grid.methods.loadData(this, records, totalRecords);
             }
         }
     },
@@ -153,7 +160,8 @@ gj.grid.public = {
      * @param {bool} keepWrapperTag - If this flag is set to false, then the table wrapper tag will be removed from the HTML dom tree.
      * @fires destroying
      * @return void
-     * @example <button id="btnDestroy">Destroy</button>
+     * @example <!-- grid.base -->
+     * <button id="btnDestroy">Destroy</button>
      * <button id="btnCreate">Create</button>
      * <br/><br/>
      * <table id="grid"></table>
@@ -173,7 +181,8 @@ gj.grid.public = {
      *         createFunc();
      *     });
      * </script>
-     * @example <button id="btnRemove">Remove</button>
+     * @example <!-- grid.base -->
+     * <button id="btnRemove">Remove</button>
      * <br/><br/>
      * <table id="grid"></table>
      * <script>
@@ -190,7 +199,7 @@ gj.grid.public = {
         var data = this.data('grid');
         if (data) {
             gj.grid.events.destroying(this);
-            gj.grid.private.StopLoading(this);
+            gj.grid.methods.StopLoading(this);
             this.xhr && this.xhr.abort();
             this.off();
             if (keepWrapperTag === false && this.parent('div[data-role="wrapper"]').length > 0) {
@@ -210,7 +219,8 @@ gj.grid.public = {
      * @method
      * @param {string} id - The id of the row that needs to be selected
      * @return void
-     * @example <input type="text" id="txtNumber" value="1" />
+     * @example <!-- grid.base -->
+     * <input type="text" id="txtNumber" value="1" />
      * <button id="btnSelect">Select</button>
      * <br/><br/>
      * <table id="grid"></table>
@@ -226,9 +236,9 @@ gj.grid.public = {
      * </script>
      */
     setSelected: function (id) {
-        var $row = gj.grid.private.getRowById(this, id);
+        var $row = gj.grid.methods.getRowById(this, id);
         if ($row) {
-            gj.grid.private.setSelected(this, $row, id);
+            gj.grid.methods.setSelected(this, $row, id);
         }
     },
 
@@ -237,7 +247,8 @@ gj.grid.public = {
      * If the multiple selection method is one this method is going to return only the id of the first selected record.
      * @method
      * @return string
-     * @example <button id="btnShowSelection">Show Selection</button>
+     * @example <!-- grid.base -->
+     * <button id="btnShowSelection">Show Selection</button>
      * <br/><br/>
      * <table id="grid"></table>
      * <script>
@@ -252,14 +263,15 @@ gj.grid.public = {
      * </script>
      */
     getSelected: function () {
-        return gj.grid.private._GetSelected(this);
+        return gj.grid.methods._GetSelected(this);
     },
 
     /**
      * Return an array with the ids of the selected record.
      * @method
      * @return array
-     * @example <button id="btnShowSelection">Show Selections</button>
+     * @example <!-- grid.base -->
+     * <button id="btnShowSelection">Show Selections</button>
      * <br/><br/>
      * <table id="grid"></table>
      * <script>
@@ -278,14 +290,15 @@ gj.grid.public = {
      * </script>
      */
     getSelections: function () {
-        return gj.grid.private._GetSelections(this);
+        return gj.grid.methods._GetSelections(this);
     },
 
     /**
      * Select all records from the grid.
      * @method
      * @return void
-     * @example <button id="btnSelectAll">Select All</button>
+     * @example <!-- grid.base -->
+     * <button id="btnSelectAll">Select All</button>
      * <br/><br/>
      * <table id="grid"></table>
      * <script>
@@ -305,7 +318,7 @@ gj.grid.public = {
             data = this.data('grid');
         $grid.find("thead input#checkAllBoxes").prop("checked", true);
         $grid.find("tbody tr").each(function () {
-            gj.grid.private.SelectRow($grid, data, $(this));
+            gj.grid.methods.SelectRow($grid, data, $(this));
         });
     },
 
@@ -313,7 +326,8 @@ gj.grid.public = {
      * Unselect all records from the grid.
      * @method
      * @return void
-     * @example <button id="btnSelectAll">Select All</button>
+     * @example <!-- grid.base -->
+     * <button id="btnSelectAll">Select All</button>
      * <button id="btnUnSelectAll">UnSelect All</button>
      * <br/><br/>
      * <table id="grid"></table>
@@ -337,7 +351,7 @@ gj.grid.public = {
             data = this.data('grid');
         this.find("thead input#checkAllBoxes").prop("checked", false);
         this.find("tbody tr").each(function () {
-            gj.grid.private.UnselectRow($grid, data, $(this));
+            gj.grid.methods.UnselectRow($grid, data, $(this));
         });
     },
 
@@ -346,7 +360,8 @@ gj.grid.public = {
      * @method
      * @param {string} id - The id of the row that needs to be returned.
      * @return object
-     * @example <button id="btnGetData">Get Data</button>
+     * @example <!-- grid.base -->
+     * <button id="btnGetData">Get Data</button>
      * <br/><br/>
      * <table id="grid"></table>
      * <script>
@@ -362,7 +377,7 @@ gj.grid.public = {
      * </script>
      */
     getById: function (id) {
-        return gj.grid.private.getRecordById(this, id);
+        return gj.grid.methods.getRecordById(this, id);
     },
 
     /**
@@ -370,7 +385,8 @@ gj.grid.public = {
      * @method
      * @param {int} position - The position of the row that needs to be return.
      * @return object
-     * @example <button id="btnGetData">Get Data</button>
+     * @example <!-- grid.base -->
+     * <button id="btnGetData">Get Data</button>
      * <br/><br/>
      * <table id="grid"></table>
      * <script>
@@ -385,14 +401,15 @@ gj.grid.public = {
      * </script>
      */
     get: function (position) {
-        return gj.grid.private.getByPosition(this, position);
+        return gj.grid.methods.getByPosition(this, position);
     },
 
     /**
      * Return an array with all records presented in the grid.
      * @method
      * @return array
-     * @example <button id="btnGetAllName">Get All Names</button>
+     * @example <!-- grid.base -->
+     * <button id="btnGetAllName">Get All Names</button>
      * <br/><br/>
      * <table id="grid"></table>
      * <script>
@@ -410,7 +427,7 @@ gj.grid.public = {
      * </script>
      */
     getAll: function () {
-        return gj.grid.private.GetAll(this);
+        return gj.grid.methods.GetAll(this);
     },
 
     /**
@@ -418,7 +435,8 @@ gj.grid.public = {
      * @method
      * @param {string} field - The name of the field bound to the column.
      * @return grid
-     * @example <button id="btnShowColumn">Show Column</button>
+     * @example <!-- grid.base -->
+     * <button id="btnShowColumn">Show Column</button>
      * <br/><br/>
      * <table id="grid"></table>
      * <script>
@@ -433,7 +451,7 @@ gj.grid.public = {
      */
     showColumn: function (field) {
         var data = this.data('grid'),
-            position = gj.grid.private.GetColumnPosition(data.columns, field),
+            position = gj.grid.methods.GetColumnPosition(data.columns, field),
             $cells;
 
         if (position > -1) {
@@ -445,7 +463,7 @@ gj.grid.public = {
 
             $cells = this.find('tbody > tr[data-role="empty"] > td');
             if ($cells && $cells.length) {
-                $cells.attr('colspan', gj.grid.private.countVisibleColumns(this));
+                $cells.attr('colspan', gj.grid.methods.countVisibleColumns(this));
             }
 
             gj.grid.events.columnShow(this, data.columns[position]);
@@ -459,7 +477,8 @@ gj.grid.public = {
      * @method
      * @param {string} field - The name of the field bound to the column.
      * @return grid
-     * @example <button id="btnHideColumn">Hide Column</button>
+     * @example <!-- grid.base -->
+     * <button id="btnHideColumn">Hide Column</button>
      * <br/><br/>
      * <table id="grid"></table>
      * <script>
@@ -474,7 +493,7 @@ gj.grid.public = {
      */
     hideColumn: function (field) {
         var data = this.data('grid'),
-            position = gj.grid.private.GetColumnPosition(data.columns, field),
+            position = gj.grid.methods.GetColumnPosition(data.columns, field),
             $cells;
 
         if (position > -1) {
@@ -486,7 +505,7 @@ gj.grid.public = {
 
             $cells = this.find('tbody > tr[data-role="empty"] > td');
             if ($cells && $cells.length) {
-                $cells.attr('colspan', gj.grid.private.countVisibleColumns(this));
+                $cells.attr('colspan', gj.grid.methods.countVisibleColumns(this));
             }
 
             gj.grid.events.columnHide(this, data.columns[position]);
@@ -500,7 +519,8 @@ gj.grid.public = {
      * @method
      * @param {object} record - Object with data for the new record.
      * @return grid
-     * @example <button id="btnAdd">Add Row</button>
+     * @example <!-- grid.base -->
+     * <button id="btnAdd">Add Row</button>
      * <br/><br/>
      * <table id="grid"></table>
      * <script>
@@ -520,7 +540,7 @@ gj.grid.public = {
             $rows.remove();
         }
         position = this.count();
-        gj.grid.private.RowRenderer(this, null, record, position);
+        gj.grid.methods.RowRenderer(this, null, record, position);
         return this;
     },
 
@@ -530,7 +550,8 @@ gj.grid.public = {
      * @param {string} id - The id of the row that needs to be updated
      * @param {object} record - Object with data for the new record.
      * @return grid
-     * @example <table id="grid"></table>
+     * @example <!-- grid.base -->
+     * <table id="grid"></table>
      * <script>
      *     var grid, data;
      *     function Edit(e) {
@@ -552,14 +573,14 @@ gj.grid.public = {
      * </script>
      */
     updateRow: function (id, record) {
-        var $row = gj.grid.private.getRowById(this, id);
-        gj.grid.private.RowRenderer(this, $row, record, $row.index());
+        var $row = gj.grid.methods.getRowById(this, id);
+        gj.grid.methods.RowRenderer(this, $row, record, $row.index());
         return this;
     },
 
     //TODO: needs to be removed
     setCellContent: function (id, index, value) {
-        gj.grid.private.SetCellContent(this, id, index, value);
+        gj.grid.methods.SetCellContent(this, id, index, value);
     },
 
     /**
@@ -567,7 +588,8 @@ gj.grid.public = {
      * @method
      * @param {string} id - Id of the record that needs to be removed.
      * @return grid
-     * @example <table id="grid"></table>
+     * @example <!-- grid.base -->
+     * <table id="grid"></table>
      * <script>
      *     var grid;
      *     function Delete(e) {
@@ -592,12 +614,12 @@ gj.grid.public = {
      * </script>
      */
     removeRow: function (id) {
-        var $row = gj.grid.private.getRowById(this, id);
+        var $row = gj.grid.methods.getRowById(this, id);
         if ($row) {
             gj.grid.events.rowRemoving(this, $row, id, $row.data('row'));
             $row.remove();
             if (this.count() == 0) {
-                gj.grid.private.AppendEmptyRow(this);
+                gj.grid.methods.AppendEmptyRow(this);
             }
         }
         return this;
@@ -613,7 +635,7 @@ gj.grid.public = {
             };
             var grid = new Grid();
             $.extend(this, grid);
-            return gj.grid.private.init.apply(this, arguments);
+            return gj.grid.methods.init.apply(this, arguments);
         } else if (gj.grid.public[method]) {
             return gj.grid.public[method].apply(this, Array.prototype.slice.call(arguments, 1));
         } else {

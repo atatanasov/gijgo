@@ -3,6 +3,15 @@
     // Project configuration.
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
+        extractExamples: {
+            generate: {
+                files: [
+                    { src: ['src/dialog/js/*.js'], dest: 'examples/dialog/' },
+                    { src: ['src/draggable/js/*.js'], dest: 'examples/draggable/' },
+                    { src: ['src/grid/js/*.js'], dest: 'examples/grid/' }
+                ]
+            }
+        },
         concat: {
             dialog: {
                 files : {
@@ -25,15 +34,29 @@
                     'build/modular/draggable/js/draggable.base.js': ['src/draggable/js/draggable.base.js'],
                     'build/combined/js/draggable.js': ['src/draggable/js/draggable.base.js']
                 }
+            },
+            grid: {
+                files: {
+                    'build/modular/grid/js/grid.base.js': ['src/grid/js/grid.base.config.js', 'src/grid/js/grid.base.events.js', 'src/grid/js/grid.base.methods.js', 'src/grid/js/grid.base.widget.js'],
+                    'build/modular/grid/js/grid.bootstrap.js': ['src/grid/js/grid.bootstrap.js'],
+                    'build/modular/grid/js/grid.expandCollapseRows.js': ['src/grid/js/grid.expandCollapseRows.js'],
+                    'build/modular/grid/js/grid.inlineEditing.js': ['src/grid/js/grid.inlineEditing.js'],
+                    'build/modular/grid/js/grid.pagination.js': ['src/grid/js/grid.pagination.js'],
+                    'build/modular/grid/js/grid.responsiveDesign.js': ['src/grid/js/grid.responsiveDesign.js'],
+                    'build/modular/grid/js/grid.toolbar.js': ['src/grid/js/grid.toolbar.js'],
+
+                    'build/combined/js/grid.js': ['build/modular/grid/js/grid.base.js', 'build/modular/grid/js/grid.bootstrap.js', 'build/modular/grid/js/grid.expandCollapseRows.js', 'build/modular/grid/js/grid.inlineEditing.js', 'build/modular/grid/js/grid.pagination.js', 'build/modular/grid/js/grid.responsiveDesign.js', 'build/modular/grid/js/grid.toolbar.js'],
+
+                    'build/modular/grid/css/grid.base.css': ['src/grid/css/grid.base.css'],
+                    'build/modular/grid/css/grid.jqueryui.css': ['src/grid/css/grid.jqueryui.css'],
+                    'build/modular/grid/css/grid.bootstrap.css': ['src/grid/css/grid.bootstrap.css'],
+                    'build/modular/grid/css/grid.responsiveDesign.css': ['src/grid/css/grid.responsiveDesign.css'],
+
+                    'build/combined/css/grid.css': ['build/modular/grid/css/grid.base.css', 'build/modular/grid/css/grid.jqueryui.css', 'build/modular/grid/css/grid.bootstrap.css', 'build/modular/grid/css/grid.responsiveDesign.css'],
+
+                    'examples/grid/Players.txt': ['src/grid/js/Players.txt']
+                }
             }
-        },
-        extractExamples: {
-            dialog: {
-                files: [
-                    { src: ['src/dialog/js/*.js'], dest: 'examples/dialog/' },
-                    { src: ['src/draggable/js/*.js'], dest: 'examples/draggable/' }
-                ]
-            }            
         },
         replace: {
             minifyComments: {
@@ -88,7 +111,7 @@
         var fs = require('fs');
 
         //make grunt know this task is async.
-        var done = this.async();
+        //var done = this.async();
 
         this.files.forEach(function (file) {
             fs.readdirSync(file.dest).forEach(function (filename) {
@@ -98,61 +121,57 @@
             grunt.log.writeln('Processing ' + file.src.length + ' files.');
             //file.src is the list of all matching file names.
             file.src.forEach(function (f) {
-                fs.readFile(f, 'utf8', function (err, data) {
-                    var i, isExampleMode, isExampleStart, result, lines, buffer, widget, plugin, field, filepath;
-                    if (err) {
-                        return console.log(err);
-                    }
+                var i, isExampleMode, isExampleStart, result, lines, buffer, widget, plugin, field, filepath, data;
+                data = fs.readFileSync(f, 'utf8');
                     
-                    isExampleMode = false;
-                    lines = data.split('\n');
-                    result = { text: '', name: '', libs: '' };
-                    buffer = [];
-                    for (i = 0; i < lines.length; i++) {
-                        if (/\*.?\@widget/g.test(lines[i])) {
-                            widget = lines[i].replace(/\*.?\@widget/g, '').trim();
-                        } else if (/\*.?\@plugin/g.test(lines[i])) {
-                            plugin = lines[i].replace(/\*.?\@plugin/g, '').trim();
-                        }
+                isExampleMode = false;
+                lines = data.split('\n');
+                result = { text: '', name: '', libs: '' };
+                buffer = [];
+                for (i = 0; i < lines.length; i++) {
+                    if (/\*.?\@widget/g.test(lines[i])) {
+                        widget = lines[i].replace(/\*.?\@widget/g, '').trim();
+                    } else if (/\*.?\@plugin/g.test(lines[i])) {
+                        plugin = lines[i].replace(/\*.?\@plugin/g, '').trim();
+                    }
                         
-                        if (/\*.?\@example/g.test(lines[i])) {
-                            isExampleMode = true;
-                            isExampleStart = true;
-                            if (result) {
-                                buffer.push(result);
-                            }
-                            result = { text: '', name: '', libs: lines[i].replace(/\*.?\@example/g, '') };
-                        } else if (isExampleMode && /\*\//g.test(lines[i])) {
-                            isExampleMode = false;
-                            if (result) {
-                                buffer.push(result);
-                                result = undefined;
-                            }
+                    if (/\*.?\@example/g.test(lines[i])) {
+                        isExampleMode = true;
+                        isExampleStart = true;
+                        if (result) {
+                            buffer.push(result);
                         }
-
-                        if (isExampleMode) {
-                            if (isExampleStart) {
-                                isExampleStart = false;
-                            } else {
-                                result.text += lines[i].trim().replace('*', '') + '\r\n';
-                            }
-                        } else if (/^\s+[A-Za-z]+\:\s/g.test(lines[i])) {
-                            field = lines[i].substr(0, lines[i].indexOf(':')).trim();
-                            writer.updateMissingNames(buffer, widget, plugin, field);
-                        } else if (/^\s+self\..+=[ ]function/g.test(lines[i])) {
-                            field = lines[i].substring(lines[i].indexOf('.') + 1, lines[i].indexOf('=')).trim();
-                            writer.updateMissingNames(buffer, widget, plugin, field);
+                        result = { text: '', name: '', libs: lines[i].replace(/\*.?\@example/g, '') };
+                    } else if (isExampleMode && /\*\//g.test(lines[i])) {
+                        isExampleMode = false;
+                        if (result) {
+                            buffer.push(result);
+                            result = undefined;
                         }
                     }
-                    writer.createHtmlFiles(fs, buffer, file.dest);                 
-                    return null;
-                });
+
+                    if (isExampleMode) {
+                        if (isExampleStart) {
+                            isExampleStart = false;
+                        } else {
+                            result.text += lines[i].trim().replace('*', '') + '\r\n';
+                        }
+                    } else if (/^\s+[A-Za-z]+\:\s/g.test(lines[i])) {
+                        field = lines[i].substr(0, lines[i].indexOf(':')).trim();
+                        writer.updateMissingNames(buffer, widget, plugin, field);
+                    } else if (/^\s+self\..+=[ ]function/g.test(lines[i])) {
+                        field = lines[i].substring(lines[i].indexOf('.') + 1, lines[i].indexOf('=')).trim();
+                        writer.updateMissingNames(buffer, widget, plugin, field);
+                    }
+                }
+                writer.createHtmlFiles(fs, buffer, file.dest);                 
+                return null;
             });
         });
     });
 
     // Default task(s).
-    grunt.registerTask('default', ['concat', 'extractExamples:dialog', 'replace', 'uglify']);
+    grunt.registerTask('default', ['extractExamples', 'concat', 'replace', 'uglify']);
 
 };
 
@@ -219,6 +238,9 @@ var writer = {
                     case 'dialog.foundation':
                         result += '  <link href="../../build/modular/dialog/css/dialog.foundation.css" rel="stylesheet" type="text/css">\r\n';
                         break;
+                    case 'grid.base':
+                        result += '  <link href="../../build/modular/grid/css/grid.base.css" rel="stylesheet" type="text/css">\r\n';
+                        break;
                 }
                 //include js files
                 switch (names[i].trim()) {
@@ -236,6 +258,9 @@ var writer = {
                         break;
                     case 'draggable.base':
                         result += '  <script src="../../build/modular/draggable/js/draggable.base.js"></script>\r\n';
+                        break;
+                    case 'grid.base':
+                        result += '  <script src="../../build/modular/grid/js/grid.base.js"></script>\r\n';
                         break;
                 }
             }

@@ -30,10 +30,10 @@
     },
 
     SetOptions: function ($grid, jsConfig) {
-        var options = $.extend(true, {}, gj.grid.configuration.base),
+        var options = $.extend(true, {}, gj.grid.config),
             htmlConfig = gj.grid.methods.getHTMLConfiguration($grid);
         if ((jsConfig.uiLibrary && jsConfig.uiLibrary === 'bootstrap') || (htmlConfig.uiLibrary && htmlConfig.uiLibrary === 'bootstrap')) {
-            $.extend(true, options, gj.grid.configuration.bootstrap);
+            $.extend(true, options, gj.grid.config.bootstrap);
         }
         $.extend(true, options, htmlConfig);
         $.extend(true, options, jsConfig);
