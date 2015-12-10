@@ -1,4 +1,9 @@
-﻿bootstrap: {
+﻿/** 
+  * @widget Grid 
+  * @plugin Bootstrap
+  */
+gj.grid.plugins.bootstrap = {
+    config: {
         style: {
             wrapper: "gj-grid-wrapper",
             table: "gj-grid-table table table-bordered table-hover",
@@ -9,17 +14,17 @@
                 sortDescIcon: "glyphicon glyphicon-sort-by-alphabet-alt"
             },
             content: {
-                    rowHover: "",
-                    rowSelected: "active"
+                rowHover: "",
+                rowSelected: "active"
             },
             pager: {
-                    cell: "gj-grid-bootstrap-tfoot-cell",
-                    stateDisabled: "ui-state-disabled"
+                cell: "gj-grid-bootstrap-tfoot-cell",
+                stateDisabled: "ui-state-disabled"
             },
             expandIcon: "glyphicon glyphicon-plus",
             collapseIcon: "glyphicon glyphicon-minus"
         },
-    pager: {
+        pager: {
             leftControls: [
                 $('<button type="button" data-role="page-first" title="First Page" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-step-backward"></span></button>'),
                 $('<div>&nbsp;</div>'),
@@ -48,5 +53,13 @@
                 $('<div>&nbsp;of&nbsp;</div>'),
                 $('<div data-role="record-total">0</div>').css({ "margin-right": "5px" })
             ]
+        }
+    },
+
+    'configure': function ($grid) {
+        var data = $grid.data('grid');
+        if (data.uiLibrary === 'bootstrap') {
+            $.extend(true, data, gj.grid.plugins.bootstrap.config);
+        }
     }
-}
+};

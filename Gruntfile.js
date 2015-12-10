@@ -39,6 +39,7 @@
                 files: {
                     'build/modular/grid/js/grid.base.js': ['src/grid/js/grid.base.config.js', 'src/grid/js/grid.base.events.js', 'src/grid/js/grid.base.methods.js', 'src/grid/js/grid.base.widget.js'],
                     'build/modular/grid/js/grid.bootstrap.js': ['src/grid/js/grid.bootstrap.js'],
+                    'build/modular/grid/js/grid.jqueryui.js': ['src/grid/js/grid.jqueryui.js'],
                     'build/modular/grid/js/grid.expandCollapseRows.js': ['src/grid/js/grid.expandCollapseRows.js'],
                     'build/modular/grid/js/grid.inlineEditing.js': ['src/grid/js/grid.inlineEditing.js'],
                     'build/modular/grid/js/grid.pagination.js': ['src/grid/js/grid.pagination.js'],
@@ -52,9 +53,7 @@
                     'build/modular/grid/css/grid.bootstrap.css': ['src/grid/css/grid.bootstrap.css'],
                     'build/modular/grid/css/grid.responsiveDesign.css': ['src/grid/css/grid.responsiveDesign.css'],
 
-                    'build/combined/css/grid.css': ['build/modular/grid/css/grid.base.css', 'build/modular/grid/css/grid.jqueryui.css', 'build/modular/grid/css/grid.bootstrap.css', 'build/modular/grid/css/grid.responsiveDesign.css'],
-
-                    'examples/grid/Players.txt': ['src/grid/js/Players.txt']
+                    'build/combined/css/grid.css': ['build/modular/grid/css/grid.base.css', 'build/modular/grid/css/grid.jqueryui.css', 'build/modular/grid/css/grid.bootstrap.css', 'build/modular/grid/css/grid.responsiveDesign.css']
                 }
             }
         },
@@ -96,16 +95,28 @@
                 files: {
                     'build/combined/js/dialog.min.js': ['build/combined/js/dialog.js'],
                     'build/modular/dialog/js/dialog.base.min.js': ['build/modular/dialog/js/dialog.base.js'],
+                    'build/modular/dialog/js/dialog.bootstrap.min.js': ['build/modular/dialog/js/dialog.bootstrap.js'],
                     'build/modular/dialog/js/dialog.jqueryui.min.js': ['build/modular/dialog/js/dialog.jqueryui.js'],
                     'build/modular/dialog/js/dialog.foundation.min.js': ['build/modular/dialog/js/dialog.foundation.js']
                 }
+            },
+            grid: {
+                files: {
+                    'build/combined/js/grid.min.js': ['build/combined/js/grid.js'],
+                    'build/modular/grid/js/grid.base.min.js': ['build/modular/grid/js/grid.base.js']
+                }
             }
+        },
+        watch: {
+            files: ['src/*/*.js', 'src/*/*.css'],
+            tasks: ['extractExamples', 'concat', 'replace', 'uglify']
         }
     });
 
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-text-replace');
     grunt.loadNpmTasks('grunt-contrib-uglify');
+    grunt.loadNpmTasks('grunt-contrib-watch');
 
     grunt.registerMultiTask('extractExamples', 'Extract examples from js files', function () {
         var fs = require('fs');
@@ -238,6 +249,9 @@ var writer = {
                     case 'grid.base':
                         result += '  <link href="../../build/modular/grid/css/grid.base.css" rel="stylesheet" type="text/css">\r\n';
                         break;
+                    case 'grid.jqueryui':
+                        result += '  <link href="../../build/modular/grid/css/grid.jqueryui.css" rel="stylesheet" type="text/css">\r\n';
+                        break;
                 }
                 //include js files
                 switch (names[i].trim()) {
@@ -258,6 +272,9 @@ var writer = {
                         break;
                     case 'grid.base':
                         result += '  <script src="../../build/modular/grid/js/grid.base.js"></script>\r\n';
+                        break;
+                    case 'grid.jqueryui':
+                        result += '  <script src="../../build/modular/grid/js/grid.jqueryui.js"></script>\r\n';
                         break;
                 }
             }

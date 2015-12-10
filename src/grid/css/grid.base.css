@@ -102,3 +102,29 @@ DIV.gj-grid-wrapper DIV.gj-grid-loading-text
     overflow: hidden;
     vertical-align: top;
 }
+
+/* Base Theme */
+.gj-grid-base-table {
+    border: 1px solid #ddd;
+}
+
+.gj-grid-base-thead-th {
+    background-color: #f5f5f5;
+    border: 1px solid #ddd;
+}
+
+.gj-grid-base-hover {
+
+}
+
+.gj-grid-base-active {
+
+}
+
+.gj-content {
+    border: 1px solid #999;
+    background-color: #fff;
+    border-radius: 6px;
+    outline: 0;
+}
+

@@ -3,12 +3,11 @@
     init: function (jsConfig) {
         var plugin, option, data = this.data('grid');
         if (!data) {
-            gj.grid.methods.SetOptions(this, jsConfig || {});
-            gj.grid.methods.InitGrid(this);
+            gj.grid.methods.configure(this, jsConfig || {});
             //Initialize all plugins
             for (plugin in gj.grid.plugins) {
                 if (gj.grid.plugins.hasOwnProperty(plugin)) {
-                    gj.grid.plugins[plugin].init(this);
+                    gj.grid.plugins[plugin].configure(this);
                 }
             }
             data = this.data('grid');
@@ -19,6 +18,7 @@
                     delete data[option];
                 }
             }
+            gj.grid.methods.initialize(this);
             gj.grid.methods.HeaderRenderer(this);
             gj.grid.methods.AppendEmptyRow(this, "&nbsp;");
             gj.grid.events.initialized(this);
@@ -29,7 +29,7 @@
         return this;
     },
 
-    SetOptions: function ($grid, jsConfig) {
+    configure: function ($grid, jsConfig) {
         var options = $.extend(true, {}, gj.grid.config),
             htmlConfig = gj.grid.methods.getHTMLConfiguration($grid);
         if ((jsConfig.uiLibrary && jsConfig.uiLibrary === 'bootstrap') || (htmlConfig.uiLibrary && htmlConfig.uiLibrary === 'bootstrap')) {
@@ -104,7 +104,7 @@
         };
     },
 
-    InitGrid: function ($grid) {
+    initialize: function ($grid) {
         var data = $grid.data('grid'),
             $wrapper = $grid.parent('div[data-role="wrapper"]');
 

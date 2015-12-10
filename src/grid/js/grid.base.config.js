@@ -30,7 +30,7 @@ gj.grid.config = {
      * @example <!-- grid.base -->
      * <table id="grid"></table>
      * <script>
-     *     var grid = $('#grid').grid({
+     *     $('#grid').grid({
      *         dataSource: '/DataSources/GetPlayers',
      *         columns: [ { field: 'Name' }, { field: 'PlaceOfBirth' } ]
      *     });
@@ -505,12 +505,35 @@ gj.grid.config = {
 
     /** The name of the UI library that is going to be in use. Currently we support only jQuery UI and bootstrap.
      * @additionalinfo The css files for jQuery UI or Bootstrap should be manually included to the page where the grid is in use.
-     * @type (jqueryui|bootstrap)
-     * @default "jqueryui"
+     * @type (base|jqueryui|bootstrap)
+     * @default "base"
      * @example <!-- grid.base -->
      * <table id="grid"></table>
-     * <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" rel="stylesheet">
-     * <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+     * <script>
+     *     $('#grid').grid({
+     *         dataSource: '/DataSources/GetPlayers',
+     *         columns: [
+     *             { field: 'ID' },
+     *             { field: 'Name' },
+     *             { field: 'PlaceOfBirth' }
+     *         ]
+     *     });
+     * </script>
+     * @example <!-- grid.base, grid.jqueryui, jqueryui -->
+     * <table id="grid"></table>
+     * <script>
+     *     $('#grid').grid({
+     *         dataSource: '/DataSources/GetPlayers',
+     *         uiLibrary: 'jqueryui',
+     *         columns: [
+     *             { field: 'ID' },
+     *             { field: 'Name' },
+     *             { field: 'PlaceOfBirth' }
+     *         ]
+     *     });
+     * </script>
+     * @example <!-- grid.base, grid.bootstrap, grid.pagination, bootstrap -->
+     * <table id="grid"></table>
      * <script>
      *     $('#grid').grid({
      *         dataSource: '/DataSources/GetPlayers',
@@ -524,22 +547,22 @@ gj.grid.config = {
      *     });
      * </script>
      */
-    uiLibrary: 'jqueryui',
+    uiLibrary: 'base',
 
     style: {
         wrapper: 'gj-grid-wrapper',
-        table: 'gj-grid-table ui-widget-content gj-grid-ui-table',
+        table: 'gj-grid-table gj-grid-base-table',
         loadingCover: 'gj-grid-loading-cover',
         loadingText: 'gj-grid-loading-text',
         header: {
-            cell: 'ui-widget-header ui-state-default gj-grid-ui-thead-th',
+            cell: 'gj-grid-base-thead-th',
             sortable: 'gj-grid-thead-sortable',
             sortAscIcon: 'gj-grid-ui-thead-th-sort-icon ui-icon ui-icon-arrowthick-1-s',
             sortDescIcon: 'gj-grid-ui-thead-th-sort-icon ui-icon ui-icon-arrowthick-1-n'
         },
         content: {
-            rowHover: 'ui-state-hover',
-            rowSelected: 'ui-state-active'
+            rowHover: 'gj-grid-base-hover',
+            rowSelected: 'gj-grid-base-active'
         },
         pager: {
             cell: 'ui-widget-header ui-state-default ui-grid-pager-cell',
