@@ -15,7 +15,7 @@ gj.grid.plugins.expandCollapseRows = {
           * @example <table id="grid"></table>
           * <script>
           *     $('#grid').grid({
-          *         dataSource: '/Grid/GetPlayers',
+          *         dataSource: '/DataSources/GetPlayers',
           *         detailTemplate: '<div><b>DateOfBirth:</b> {DateOfBirth}</div>',
           *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
           *     });
@@ -26,7 +26,7 @@ gj.grid.plugins.expandCollapseRows = {
 
     'private': {
         detailExpand: function ($cell, $grid) {
-            var $contentRow = $cell.closest("tr"),
+            var $contentRow = $cell.closest('tr'),
                 $detailsRow = $('<tr data-role="details"></tr>'),
                 $detailsCell = $('<td colspan="' + gj.grid.private.countVisibleColumns($grid) + '"></td>'),
                 data = $grid.data('grid'),
@@ -44,7 +44,7 @@ gj.grid.plugins.expandCollapseRows = {
         detailCollapse: function ($cell, $grid) {
             var $contentRow = $cell.closest('tr'),
                 $detailsRow = $contentRow.next('tr[data-role="details"]'),
-                $detailWrapper = $detailsRow.find("td>div");
+                $detailWrapper = $detailsRow.find('td>div');
             $detailsRow.remove();
             $cell.find('span').attr('class', $grid.data('grid').style.expandIcon); //TODO: move to the plugin
             $cell.off('click').on('click', function () {
@@ -86,7 +86,7 @@ gj.grid.plugins.expandCollapseRows = {
              * @example <table id="grid"></table>
              * <script>
              *     var grid = $('#grid').grid({
-             *         dataSource: '/Grid/GetPlayers',
+             *         dataSource: '/DataSources/GetPlayers',
              *         detailTemplate: '<div/>',
              *         columns: [ 
              *             { field: 'ID' }, 
@@ -112,7 +112,7 @@ gj.grid.plugins.expandCollapseRows = {
              * @example <table id="grid"></table>
              * <script>
              *     var grid = $('#grid').grid({
-             *         dataSource: '/Grid/GetPlayers',
+             *         dataSource: '/DataSources/GetPlayers',
              *         detailTemplate: '<div/>',
              *         columns: [ 
              *             { field: 'ID' }, 

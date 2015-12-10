@@ -15,7 +15,7 @@ gj.grid.plugins.toolbar = {
               * @example <table id="grid"></table>
               * <script>
               *     var grid = $('#grid').grid({
-              *         dataSource: '/Grid/GetPlayers',
+              *         dataSource: '/DataSources/GetPlayers',
               *         toolbarTemplate: '<span data-role="title">Grid Title</span> <span onclick="grid.reload()" style="float:right; cursor: pointer;">click here to refresh &nbsp;</span>',
               *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
               *     });
@@ -29,7 +29,7 @@ gj.grid.plugins.toolbar = {
               * @example <table id="grid"></table>
               * <script>
               *     $('#grid').grid({
-              *         dataSource: '/Grid/GetPlayers',
+              *         dataSource: '/DataSources/GetPlayers',
               *         title: 'Players',
               *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
               *     });
@@ -38,13 +38,13 @@ gj.grid.plugins.toolbar = {
             title: undefined,
 
             style: {
-                toolbar: "ui-widget-header ui-state-default gj-grid-ui-toolbar"
+                toolbar: 'ui-widget-header ui-state-default gj-grid-ui-toolbar'
             }
         },
 
         bootstrap: {
             style: {
-                toolbar: "gj-grid-bootstrap-toolbar"
+                toolbar: 'gj-grid-bootstrap-toolbar'
             }
         }
     },
@@ -67,7 +67,7 @@ gj.grid.plugins.toolbar = {
          * <table id="grid"></table>
          * <script>
          *     var grid = $('#grid').grid({
-         *         dataSource: '/Grid/GetPlayers',
+         *         dataSource: '/DataSources/GetPlayers',
          *         title: 'Initial Grid Title',
          *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
          *     });
@@ -78,7 +78,7 @@ gj.grid.plugins.toolbar = {
          * <table id="grid"></table>
          * <script>
          *     var grid = $('#grid').grid({
-         *         dataSource: '/Grid/GetPlayers',
+         *         dataSource: '/DataSources/GetPlayers',
          *         toolbarTemplate: '<div data-role="title">Initial Grid Title</div>',
          *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
          *     });
@@ -121,7 +121,7 @@ gj.grid.plugins.toolbar = {
             }        
             
             if (data.minWidth) {
-                $toolbar.css("min-width", data.minWidth);
+                $toolbar.css('min-width', data.minWidth);
             }
         }
     }

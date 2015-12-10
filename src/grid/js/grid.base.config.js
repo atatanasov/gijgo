@@ -31,12 +31,12 @@ gj.grid.config = {
      * <table id="grid"></table>
      * <script>
      *     var grid = $('#grid').grid({
-     *         dataSource: 'Players.txt',
+     *         dataSource: '/DataSources/GetPlayers',
      *         columns: [ { field: 'Name' }, { field: 'PlaceOfBirth' } ]
      *     });
      * </script>
      * @example <!-- grid.base -->
-     * <table id="grid" data-source="Players.txt">
+     * <table id="grid" data-source="/DataSources/GetPlayers">
      *     <thead>
      *         <tr>
      *             <th width="20">ID</th>
@@ -46,17 +46,17 @@ gj.grid.config = {
      *     </thead>
      * </table>
      * <script>
-     *     $("#grid").grid();
+     *     $('#grid').grid();
      * </script>
      * @example <!-- grid.base -->
      * <table id="grid"></table>
      * <script>
-     *     var grid, onSuccessFunc = function (response) { 
-     *         alert("The result contains " + response.records.length + " records.");
+     *     var grid, onSuccessFunc = function (response) {
+     *         alert('The result contains ' + response.records.length + ' records.');
      *         grid.render(response);
      *     };
      *     grid = $('#grid').grid({
-     *         dataSource: { url: 'Players.txt', data: {}, success: onSuccessFunc },
+     *         dataSource: { url: '/DataSources/GetPlayers', data: {}, success: onSuccessFunc },
      *         columns: [ { field: 'Name' }, { field: 'PlaceOfBirth' } ]
      *     });
      * </script>
@@ -64,9 +64,9 @@ gj.grid.config = {
      * <table id="grid"></table>
      * <script>
      *     var data = [
-     *         { "ID": 1, "Name": "Hristo Stoichkov", "PlaceOfBirth": "Plovdiv, Bulgaria" },
-     *         { "ID": 2, "Name": "Ronaldo Luis Nazario de Lima", "PlaceOfBirth": "Rio de Janeiro, Brazil" },
-     *         { "ID": 3, "Name": "David Platt", "PlaceOfBirth": "Chadderton, Lancashire, England" }
+     *         { 'ID': 1, 'Name': 'Hristo Stoichkov', 'PlaceOfBirth': 'Plovdiv, Bulgaria' },
+     *         { 'ID': 2, 'Name': 'Ronaldo Luis Nazario de Lima', 'PlaceOfBirth': 'Rio de Janeiro, Brazil' },
+     *         { 'ID': 3, 'Name': 'David Platt', 'PlaceOfBirth': 'Chadderton, Lancashire, England' }
      *     ];
      *     $('#grid').grid({
      *         dataSource: data,
@@ -82,7 +82,7 @@ gj.grid.config = {
      * <table id="grid"></table>
      * <script>
      *     $('#grid').grid({
-     *         dataSource: 'Players.txt',
+     *         dataSource: '/DataSources/GetPlayers',
      *         columns: [ { field: 'ID', width: 30 }, { field: 'Name' }, { field: 'PlaceOfBirth', name: 'Birth Place' } ]
      *     });
      * </script>
@@ -95,7 +95,7 @@ gj.grid.config = {
      * <table id="grid"></table>
      * <script>
      *     $('#grid').grid({
-     *         dataSource: 'Players.txt',
+     *         dataSource: '/DataSources/GetPlayers',
      *         autoGenerateColumns: true
      *     });
      * </script>
@@ -107,10 +107,10 @@ gj.grid.config = {
      * @example <!-- grid.base -->
      * <table id="grid"></table>
      * <script>
-     *     $("#grid").grid({
-     *         dataSource: "/Grid/GetPlayers",
+     *     $('#grid').grid({
+     *         dataSource: '/DataSources/GetPlayers',
      *         defaultColumnSettings: { align: 'right' },
-     *         columns: [ { field: "ID", width: 30 }, { field: "Name" }, { field: "PlaceOfBirth", name: "Birth Place" } ]
+     *         columns: [ { field: 'ID', width: 30 }, { field: 'Name' }, { field: 'PlaceOfBirth', name: 'Birth Place' } ]
      *     });
      * </script>
      */
@@ -123,9 +123,9 @@ gj.grid.config = {
          * @example <!-- grid.base -->
          * <table id="grid"></table>
          * <script>
-         *     $("#grid").grid({
-         *         dataSource: "/Grid/GetPlayers",
-         *         columns: [ { field: "ID", width: 30 }, { field: "Name" }, { field: "PlaceOfBirth", hidden: true } ]
+         *     $('#grid').grid({
+         *         dataSource: '/DataSources/GetPlayers',
+         *         columns: [ { field: 'ID', width: 30 }, { field: 'Name' }, { field: 'PlaceOfBirth', hidden: true } ]
          *     });
          * </script>
          */
@@ -139,12 +139,12 @@ gj.grid.config = {
          * @example <!-- grid.base -->
          * <table id="grid"></table>
          * <script>
-         *     $("#grid").grid({
-         *         dataSource: "/Grid/GetPlayers",
+         *     $('#grid').grid({
+         *         dataSource: '/DataSources/GetPlayers',
          *         columns: [
-         *             { field: "ID", width: 20 },
-         *             { field: "Name", width: 120 },
-         *             { field: "PlaceOfBirth" }
+         *             { field: 'ID', width: 20 },
+         *             { field: 'Name', width: 120 },
+         *             { field: 'PlaceOfBirth' }
          *         ]
          *     });
          * </script>
@@ -159,13 +159,13 @@ gj.grid.config = {
          * @example <!-- grid.base -->
          * <table id="grid"></table>
          * <script>
-         *     $("#grid").grid({
-         *         dataSource: "/Grid/GetPlayers",
+         *     $('#grid').grid({
+         *         dataSource: '/DataSources/GetPlayers',
          *         columns: [
-         *             { field: "ID" },
-         *             { field: "Name", sortable: true },
-         *             { field: "PlaceOfBirth", sortable: false },
-         *             { field: "DateOfBirth", type: "date", title: "Birth Date" }
+         *             { field: 'ID' },
+         *             { field: 'Name', sortable: true },
+         *             { field: 'PlaceOfBirth', sortable: false },
+         *             { field: 'DateOfBirth', type: 'date', title: 'Birth Date' }
          *         ]
          *     });
          * </script>
@@ -179,13 +179,13 @@ gj.grid.config = {
          * @example <!-- grid.base -->
          * <table id="grid"></table>
          * <script>
-         *     $("#grid").grid({
-         *         dataSource: "/Grid/GetPlayers",
+         *     $('#grid').grid({
+         *         dataSource: '/DataSources/GetPlayers',
          *         columns: [
-         *             { field: "ID", width: 24 },
-         *             { field: "Name", title: "Player" },
-         *             { field: "PlaceOfBirth", title: "Place of Birth" },
-         *             { field: "DateOfBirth", type: "date", title: "Birth Date" }
+         *             { field: 'ID', width: 24 },
+         *             { field: 'Name', title: 'Player' },
+         *             { field: 'PlaceOfBirth', title: 'Place of Birth' },
+         *             { field: 'DateOfBirth', type: 'date', title: 'Birth Date' }
          *         ]
          *     });
          * </script>
@@ -199,13 +199,13 @@ gj.grid.config = {
          * @example <!-- grid.base -->
          * <table id="grid"></table>
          * <script>
-         *     $("#grid").grid({
-         *         dataSource: "/Grid/GetPlayers",
+         *     $('#grid').grid({
+         *         dataSource: '/DataSources/GetPlayers',
          *         columns: [
-         *             { field: "ID" },
-         *             { field: "Name", title: "Player" },
-         *             { field: "PlaceOfBirth", title: "Place of Birth" },
-         *             { field: "DateOfBirth", type: "date", title: "Birth Date" }
+         *             { field: 'ID' },
+         *             { field: 'Name', title: 'Player' },
+         *             { field: 'PlaceOfBirth', title: 'Place of Birth' },
+         *             { field: 'DateOfBirth', type: 'date', title: 'Birth Date' }
          *         ]
          *     });
          * </script>
@@ -220,13 +220,13 @@ gj.grid.config = {
          * @example <!-- grid.base -->
          * <table id="grid"></table>
          * <script>
-         *     $("#grid").grid({
-         *         dataSource: "/Grid/GetPlayers",
+         *     $('#grid').grid({
+         *         dataSource: '/DataSources/GetPlayers',
          *         columns: [
-         *             { field: "ID" },
-         *             { field: "Name" },
-         *             { field: "PlaceOfBirth", title: "Place of Birth" },
-         *             { field: "DateOfBirth", type: "date" }
+         *             { field: 'ID' },
+         *             { field: 'Name' },
+         *             { field: 'PlaceOfBirth', title: 'Place of Birth' },
+         *             { field: 'DateOfBirth', type: 'date' }
          *         ]
          *     });
          * </script>
@@ -240,17 +240,17 @@ gj.grid.config = {
          * @example <!-- grid.base -->
          * <table id="grid"></table>
          * <script>
-         *     $("#grid").grid({
-         *         dataSource: "/Grid/GetPlayers",
+         *     $('#grid').grid({
+         *         dataSource: '/DataSources/GetPlayers',
          *         columns: [
-         *             { field: "ID", align: "center" },
-         *             { field: "Name", align: "right" },
-         *             { field: "PlaceOfBirth", align: "left" }
+         *             { field: 'ID', align: 'center' },
+         *             { field: 'Name', align: 'right' },
+         *             { field: 'PlaceOfBirth', align: 'left' }
          *         ]
          *     });
          * </script>
          */
-        align: "left",
+        align: 'left',
 
         /** The name(s) of css class(es) that are going to be applied to all cells inside that column, except the header cell.
          * @alias column.cssClass
@@ -263,12 +263,12 @@ gj.grid.config = {
          * .bold { font-weight: bold }
          * </style>
          * <script>
-         *     $("#grid").grid({
-         *         dataSource: "/Grid/GetPlayers",
+         *     $('#grid').grid({
+         *         dataSource: '/DataSources/GetPlayers',
          *         columns: [
-         *             { field: "ID", width: 20 },
-         *             { field: "Name", width: 100, cssClass: "nowrap bold" },
-         *             { field: "PlaceOfBirth" }
+         *             { field: 'ID', width: 20 },
+         *             { field: 'Name', width: 100, cssClass: 'nowrap bold' },
+         *             { field: 'PlaceOfBirth' }
          *         ]
          *     });
          * </script>
@@ -285,12 +285,12 @@ gj.grid.config = {
          * .italic { font-style: italic }
          * </style>
          * <script>
-         *     $("#grid").grid({
-         *         dataSource: "/Grid/GetPlayers",
+         *     $('#grid').grid({
+         *         dataSource: '/DataSources/GetPlayers',
          *         columns: [
-         *             { field: "ID", width: 20 },
-         *             { field: "Name", width: 100, headerCssClass: "italic" },
-         *             { field: "PlaceOfBirth" }
+         *             { field: 'ID', width: 20 },
+         *             { field: 'Name', width: 100, headerCssClass: 'italic' },
+         *             { field: 'PlaceOfBirth' }
          *         ]
          *     });
          * </script>
@@ -304,12 +304,12 @@ gj.grid.config = {
          * @example <!-- grid.base -->
          * <table id="grid"></table>
          * <script>
-         *     $("#grid").grid({
-         *         dataSource: "/Grid/GetPlayers",
+         *     $('#grid').grid({
+         *         dataSource: '/DataSources/GetPlayers',
          *         columns: [
-         *             { field: "ID", tooltip: "This is my tooltip 1." },
-         *             { field: "Name", tooltip: "This is my tooltip 2." },
-         *             { field: "PlaceOfBirth", tooltip: "This is my tooltip 3." }
+         *             { field: 'ID', tooltip: 'This is my tooltip 1.' },
+         *             { field: 'Name', tooltip: 'This is my tooltip 2.' },
+         *             { field: 'PlaceOfBirth', tooltip: 'This is my tooltip 3.' }
          *         ]
          *     });
          * </script>
@@ -324,13 +324,13 @@ gj.grid.config = {
          * @example <!-- grid.base -->
          * <table id="grid"></table>
          * <script>
-         *     $("#grid").grid({
-         *         dataSource: "/Grid/GetPlayers",
+         *     $('#grid').grid({
+         *         dataSource: '/DataSources/GetPlayers',
          *         columns: [
-         *             { field: "ID" },
-         *             { field: "Name" },
-         *             { field: "PlaceOfBirth" },
-         *             { title: "", field: "Edit", width: 20, type: "icon", icon: "ui-icon-pencil", events: { "click": function (e) { alert("name=" + e.data.record.Name); } } }
+         *             { field: 'ID' },
+         *             { field: 'Name' },
+         *             { field: 'PlaceOfBirth' },
+         *             { title: '', field: 'Edit', width: 20, type: 'icon', icon: 'ui-icon-pencil', events: { 'click': function (e) { alert('name=' + e.data.record.Name); } } }
          *         ]
          *     });
          * </script>
@@ -345,35 +345,35 @@ gj.grid.config = {
          * @example <!-- grid.base -->
          * <table id="grid"></table>
          * <script>
-         *     $("#grid").grid({
-         *         dataSource: "/Grid/GetPlayers",
+         *     $('#grid').grid({
+         *         dataSource: '/DataSources/GetPlayers',
          *         columns: [
-         *             { field: "ID" },
+         *             { field: 'ID' },
          *             { 
-         *               field: "Name", 
+         *               field: 'Name', 
          *               events: {
-         *                 "mouseenter": function (e) {
+         *                 'mouseenter': function (e) {
          *                     e.stopPropagation();
-         *                     $(e.currentTarget).css("background-color", "red");
+         *                     $(e.currentTarget).css('background-color', 'red');
          *                 },
-         *                 "mouseleave": function (e) {
+         *                 'mouseleave': function (e) {
          *                     e.stopPropagation();
-         *                     $(e.currentTarget).css("background-color", ""); 
+         *                     $(e.currentTarget).css('background-color', ''); 
          *                 }
          *               }
          *             },
-         *             { field: "PlaceOfBirth" },
+         *             { field: 'PlaceOfBirth' },
          *             { 
-         *               title: "", field: "Info", width: 20, type: "icon", icon: "ui-icon-info", 
+         *               title: '', field: 'Info', width: 20, type: 'icon', icon: 'ui-icon-info', 
          *               events: { 
-         *                 "click": function (e) { 
-         *                     alert("record with id=" + e.data.id + " is clicked."); } 
+         *                 'click': function (e) { 
+         *                     alert('record with id=' + e.data.id + ' is clicked.'); } 
          *                 }
          *             }
          *         ]
          *     });
          * </script>
-         * @example <table id="grid" data-source="/Grid/GetPlayers">
+         * @example <table id="grid" data-source="/DataSources/GetPlayers">
          *     <thead>
          *         <tr>
          *             <th data-field="ID" width="24">ID</th>
@@ -386,16 +386,16 @@ gj.grid.config = {
          * <script>
          *     function onMouseEnter (e) {
          *         e.stopPropagation();
-         *         $(e.currentTarget).css("background-color", "red");
+         *         $(e.currentTarget).css('background-color', 'red');
          *     }
          *     function onMouseLeave (e) {
          *         e.stopPropagation();
-         *         $(e.currentTarget).css("background-color", ""); 
+         *         $(e.currentTarget).css('background-color', ''); 
          *     }
          *     function onClick(e) {
-         *         alert("record with id=" + e.data.id + " is clicked.");
+         *         alert('record with id=' + e.data.id + ' is clicked.');
          *     }
-         *     $("#grid").grid();
+         *     $('#grid').grid();
          * </script>
          */
         events: undefined,
@@ -410,12 +410,12 @@ gj.grid.config = {
          * <table id="grid"></table>
          * <script src="http://stevenlevithan.com/assets/misc/date.format.js"></script>
          * <script>
-         *     $("#grid").grid({
-         *         dataSource: "/Grid/GetPlayers",
+         *     $('#grid').grid({
+         *         dataSource: '/DataSources/GetPlayers',
          *         columns: [
-         *             { field: "ID" },
-         *             { field: "Name" },
-         *             { field: "DateOfBirth", type: 'date', format: 'HH:MM:ss mm/dd/yyyy' }
+         *             { field: 'ID' },
+         *             { field: 'Name' },
+         *             { field: 'DateOfBirth', type: 'date', format: 'HH:MM:ss mm/dd/yyyy' }
          *         ]
          *     });
          * </script>
@@ -437,12 +437,12 @@ gj.grid.config = {
          * @example <!-- grid.base -->
          * <table id="grid"></table>
          * <script>
-         *     $("#grid").grid({
-         *         dataSource: "/Grid/GetPlayers",
+         *     $('#grid').grid({
+         *         dataSource: '/DataSources/GetPlayers',
          *         columns: [
-         *             { field: "ID" },
-         *             { field: "Name" },
-         *             { title: "Info", tmpl: "{Name} is born in {PlaceOfBirth}." }
+         *             { field: 'ID' },
+         *             { field: 'Name' },
+         *             { title: 'Info', tmpl: '{Name} is born in {PlaceOfBirth}.' }
          *         ]
          *     });
          * </script>
@@ -456,14 +456,14 @@ gj.grid.config = {
          * @type string
          * @default "records"
          */
-        dataField: "records",
+        dataField: 'records',
 
         /** The name of the object in the server response, that contains the number of all records on the server.
          * @alias mapping.totalRecordsField
          * @type string
          * @default "total"
          */
-        totalRecordsField: "total"
+        totalRecordsField: 'total'
     },
 
     params: {},
@@ -476,7 +476,7 @@ gj.grid.config = {
          * @type string
          * @default "sortBy"
          */
-        sortBy: "sortBy",
+        sortBy: 'sortBy',
 
         /** The name of the parameter that is going to send the direction for sorting.
          * The "sortable" setting for at least one column should be enabled in order this parameter to be in use.
@@ -484,7 +484,7 @@ gj.grid.config = {
          * @type string
          * @default "direction"
          */
-        direction: "direction",
+        direction: 'direction',
 
         /** The name of the parameter that is going to send the number of the page.
          * The pager should be enabled in order this parameter to be in use.
@@ -492,7 +492,7 @@ gj.grid.config = {
          * @type string
          * @default "page"
          */
-        page: "page",
+        page: 'page',
 
         /** The name of the parameter that is going to send the maximum number of records per page.
          * The pager should be enabled in order this parameter to be in use.
@@ -500,7 +500,7 @@ gj.grid.config = {
          * @type string
          * @default "limit"
          */
-        limit: "limit"
+        limit: 'limit'
     },
 
     /** The name of the UI library that is going to be in use. Currently we support only jQuery UI and bootstrap.
@@ -512,42 +512,42 @@ gj.grid.config = {
      * <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" rel="stylesheet">
      * <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
      * <script>
-     *     $("#grid").grid({
-     *         dataSource: "/Grid/GetPlayers",
-     *         uiLibrary: "bootstrap",
+     *     $('#grid').grid({
+     *         dataSource: '/DataSources/GetPlayers',
+     *         uiLibrary: 'bootstrap',
      *         columns: [
-     *             { field: "ID" },
-     *             { field: "Name" },
-     *             { field: "PlaceOfBirth" }
+     *             { field: 'ID' },
+     *             { field: 'Name' },
+     *             { field: 'PlaceOfBirth' }
      *         ],
      *         pager: { enable: true, limit: 2, sizes: [2, 5, 10, 20] }
      *     });
      * </script>
      */
-    uiLibrary: "jqueryui",
+    uiLibrary: 'jqueryui',
 
     style: {
-        wrapper: "gj-grid-wrapper",
-        table: "gj-grid-table ui-widget-content gj-grid-ui-table",
-        loadingCover: "gj-grid-loading-cover",
-        loadingText: "gj-grid-loading-text",
+        wrapper: 'gj-grid-wrapper',
+        table: 'gj-grid-table ui-widget-content gj-grid-ui-table',
+        loadingCover: 'gj-grid-loading-cover',
+        loadingText: 'gj-grid-loading-text',
         header: {
-            cell: "ui-widget-header ui-state-default gj-grid-ui-thead-th",
-            sortable: "gj-grid-thead-sortable",
-            sortAscIcon: "gj-grid-ui-thead-th-sort-icon ui-icon ui-icon-arrowthick-1-s",
-            sortDescIcon: "gj-grid-ui-thead-th-sort-icon ui-icon ui-icon-arrowthick-1-n"
+            cell: 'ui-widget-header ui-state-default gj-grid-ui-thead-th',
+            sortable: 'gj-grid-thead-sortable',
+            sortAscIcon: 'gj-grid-ui-thead-th-sort-icon ui-icon ui-icon-arrowthick-1-s',
+            sortDescIcon: 'gj-grid-ui-thead-th-sort-icon ui-icon ui-icon-arrowthick-1-n'
         },
         content: {
-            rowHover: "ui-state-hover",
-            rowSelected: "ui-state-active"
+            rowHover: 'ui-state-hover',
+            rowSelected: 'ui-state-active'
         },
         pager: {
-            cell: "ui-widget-header ui-state-default ui-grid-pager-cell",
-            stateDisabled: "ui-state-disabled"
+            cell: 'ui-widget-header ui-state-default ui-grid-pager-cell',
+            stateDisabled: 'ui-state-disabled'
         },
         //TODO: move to expand/collapse plugin
-        expandIcon: "ui-icon ui-icon-plus",
-        collapseIcon: "ui-icon ui-icon-minus"
+        expandIcon: 'ui-icon ui-icon-plus',
+        collapseIcon: 'ui-icon ui-icon-minus'
     },
 
     /** The type of the row selection.<br/>
@@ -557,11 +557,11 @@ gj.grid.config = {
      * @example <!-- grid.base -->
      * <table id="grid"></table>
      * <script>
-     *     $("#grid").grid({
-     *         dataSource: "/Grid/GetPlayers",
-     *         selectionType: "multiple",
-     *         selectionMethod: "checkbox",
-     *         columns: [ { field: "ID" }, { field: "Name" }, { field: "PlaceOfBirth" } ]
+     *     $('#grid').grid({
+     *         dataSource: '/DataSources/GetPlayers',
+     *         selectionType: 'multiple',
+     *         selectionMethod: 'checkbox',
+     *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
      *     });
      * </script>
      */
@@ -575,11 +575,11 @@ gj.grid.config = {
      * @example <!-- grid.base -->
      * <table id="grid"></table>
      * <script>
-     *     $("#grid").grid({
-     *         dataSource: "/Grid/GetPlayers",
-     *         selectionType: "single",
-     *         selectionMethod: "checkbox",
-     *         columns: [ { field: "ID" }, { field: "Name" }, { field: "PlaceOfBirth" } ]
+     *     $('#grid').grid({
+     *         dataSource: '/DataSources/GetPlayers',
+     *         selectionType: 'single',
+     *         selectionMethod: 'checkbox',
+     *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
      *     });
      * </script>
      */
@@ -591,19 +591,19 @@ gj.grid.config = {
      * @example <!-- grid.base -->
      * <table id="grid"></table>
      * <script>
-     *     var grid = $("#grid").grid({ 
-     *         dataSource: "/Grid/GetPlayers", 
+     *     var grid = $('#grid').grid({ 
+     *         dataSource: '/DataSources/GetPlayers', 
      *         autoLoad: false,
-     *         columns: [ { field: "ID" }, { field: "Name" } ]
+     *         columns: [ { field: 'ID' }, { field: 'Name' } ]
      *     });
      *     grid.reload(); //call .reload() explicitly in order to load the data in the grid
      * </script>
      * @example <table id="grid"></table>
      * <script>
-     *     $("#grid").grid({ 
-     *         dataSource: "/Grid/GetPlayers",
+     *     $('#grid').grid({ 
+     *         dataSource: '/DataSources/GetPlayers',
      *         autoLoad: true,
-     *         columns: [ { field: "ID" }, { field: "Name" } ]
+     *         columns: [ { field: 'ID' }, { field: 'Name' } ]
      *     });
      * </script>
      */
@@ -615,14 +615,14 @@ gj.grid.config = {
      * @example <!-- grid.base -->
      * <table id="grid"></table>
      * <script>
-     *     $("#grid").grid({
-     *         dataSource: { url: "/Grid/GetPlayers", data: { searchString: "sadasd" } },
-     *         notFoundText: "No records found custom message",
-     *         columns: [ { field: "ID" }, { field: "Name" }, { field: "PlaceOfBirth" } ]
+     *     $('#grid').grid({
+     *         dataSource: { url: '/DataSources/GetPlayers', data: { searchString: 'sadasd' } },
+     *         notFoundText: 'No records found custom message',
+     *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
      *     });
      * </script>
      */
-    notFoundText: "No records found.",
+    notFoundText: 'No records found.',
 
     /** Width of the grid.
      * @type int
@@ -630,10 +630,10 @@ gj.grid.config = {
      * @example <!-- grid.base -->
      * <table id="grid"></table>
      * <script>
-     *     $("#grid").grid({
-     *         dataSource: "/Grid/GetPlayers",
+     *     $('#grid').grid({
+     *         dataSource: '/DataSources/GetPlayers',
      *         width: 400,
-     *         columns: [ { field: "ID" }, { field: "Name" }, { field: "PlaceOfBirth" } ]
+     *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
      *     });
      * </script>
      */
@@ -652,7 +652,7 @@ gj.grid.config = {
      * <table id="grid"></table>
      * <script>
      *     $('#grid').grid({
-     *         dataSource: '/Grid/GetPlayers',
+     *         dataSource: '/DataSources/GetPlayers',
      *         fontSize: '14px',
      *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
      *     });

@@ -110,9 +110,6 @@
     grunt.registerMultiTask('extractExamples', 'Extract examples from js files', function () {
         var fs = require('fs');
 
-        //make grunt know this task is async.
-        //var done = this.async();
-
         this.files.forEach(function (file) {
             fs.readdirSync(file.dest).forEach(function (filename) {
                 var filepath = file.dest + filename;

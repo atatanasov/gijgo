@@ -286,7 +286,7 @@ gj.grid.plugins.pagination = {
          * @example <table id="grid"></table>
          * <script>
          *     var grid = $('#grid').grid({
-         *         dataSource: '/Grid/GetPlayers',
+         *         dataSource: '/DataSources/GetPlayers',
          *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
          *         pager: { enable: true, limit: 2, sizes: [2, 5, 10, 20] }
          *     });
@@ -308,7 +308,7 @@ gj.grid.plugins.pagination = {
          * @example <table id="grid"></table>
          * <script>
          *     var grid = $('#grid').grid({
-         *         dataSource: '/Grid/GetPlayers',
+         *         dataSource: '/DataSources/GetPlayers',
          *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
          *         pager: { enable: true, limit: 2, sizes: [2, 5, 10, 20] }
          *     });

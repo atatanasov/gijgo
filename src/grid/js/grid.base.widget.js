@@ -17,12 +17,12 @@ gj.grid.public = {
      * <br/><br/>
      * <table id="grid"></table>
      * <script>
-     *     var grid = $("#grid").grid({
-     *         dataSource: "/Grid/GetPlayers",
-     *         columns: [ { field: "ID" }, { field: "Name" }, { field: "PlaceOfBirth" } ]
+     *     var grid = $('#grid').grid({
+     *         dataSource: '/DataSources/GetPlayers',
+     *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
      *     });
-     *     $("#btnSearch").on("click", function () {
-     *         grid.reload({ searchString: $("#txtSearch").val() });
+     *     $('#btnSearch').on('click', function () {
+     *         grid.reload({ searchString: $('#txtSearch').val() });
      *     });
      * </script>
      */
@@ -34,19 +34,19 @@ gj.grid.public = {
         if ($.isArray(data.dataSource)) {
             records = gj.grid.methods.GetRecords(data, data.dataSource);
             gj.grid.methods.loadData(this, records, records.length);
-        } else if (typeof (data.dataSource) === "string") {
+        } else if (typeof (data.dataSource) === 'string') {
             ajaxOptions = { url: data.dataSource, data: data.params, success: gj.grid.methods.LoaderSuccessHandler(this) };
             if (this.xhr) {
                 this.xhr.abort();
             }
             this.xhr = $.ajax(ajaxOptions);
-        } else if (typeof (data.dataSource) === "object") {
+        } else if (typeof (data.dataSource) === 'object') {
             if (!data.dataSource.data) {
                 data.dataSource.data = {};
             }
             $.extend(data.dataSource.data, data.params);
             ajaxOptions = $.extend(true, {}, data.dataSource); //clone dataSource object
-            if (ajaxOptions.dataType === "json" && typeof (ajaxOptions.data) === "object") {
+            if (ajaxOptions.dataType === 'json' && typeof (ajaxOptions.data) === 'object') {
                 ajaxOptions.data = JSON.stringify(ajaxOptions.data);
             }
             if (!ajaxOptions.success) {
@@ -69,11 +69,11 @@ gj.grid.public = {
      * <br/><br/>
      * <table id="grid"></table>
      * <script>
-     *     var grid = $("#grid").grid({
-     *         dataSource: "/Grid/GetPlayers",
-     *         columns: [ { field: "ID" }, { field: "Name" }, { field: "PlaceOfBirth" } ]
+     *     var grid = $('#grid').grid({
+     *         dataSource: '/DataSources/GetPlayers',
+     *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
      *     });
-     *     $("#btnClear").on("click", function () {
+     *     $('#btnClear').on('click', function () {
      *         grid.clear();
      *     });
      * </script>
@@ -81,12 +81,12 @@ gj.grid.public = {
     clear: function () {
         var data = this.data('grid');
         this.xhr && this.xhr.abort();
-        if ("checkbox" === data.selectionMethod) {
-            this.find("input#checkAllBoxes").hide();
+        if ('checkbox' === data.selectionMethod) {
+            this.find('input#checkAllBoxes').hide();
         }
-        this.children("tbody").empty();
+        this.children('tbody').empty();
         gj.grid.methods.StopLoading(this);
-        gj.grid.methods.AppendEmptyRow(this, "&nbsp;");
+        gj.grid.methods.AppendEmptyRow(this, '&nbsp;');
         gj.grid.events.dataBound(this, [], 0);
         return this;
     },
@@ -100,11 +100,11 @@ gj.grid.public = {
      * <br/><br/>
      * <table id="grid"></table>
      * <script>
-     *     var grid = $("#grid").grid({
-     *         dataSource: "/Grid/GetPlayers",
-     *         columns: [ { field: "ID" }, { field: "Name" }, { field: "PlaceOfBirth" } ]
+     *     var grid = $('#grid').grid({
+     *         dataSource: '/DataSources/GetPlayers',
+     *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
      *     });
-     *     $("#btnShowCount").on("click", function () {
+     *     $('#btnShowCount').on('click', function () {
      *         alert(grid.count());
      *     });
      * </script>
@@ -127,9 +127,9 @@ gj.grid.public = {
      *         //you can modify the response here if needed
      *         grid.render(response);
      *     };
-     *     grid = $("#grid").grid({
-     *         dataSource: { url: "/Grid/GetPlayers", success: onSuccessFunc },
-     *         columns: [ { field: "Name" }, { field: "PlaceOfBirth" } ]
+     *     grid = $('#grid').grid({
+     *         dataSource: { url: '/DataSources/GetPlayers', success: onSuccessFunc },
+     *         columns: [ { field: 'Name' }, { field: 'PlaceOfBirth' } ]
      *     });
      * </script>
      */
@@ -138,7 +138,7 @@ gj.grid.public = {
         if (response) {
             data = this.data('grid');
             if (data) {
-                if (typeof (response) === "string" && JSON) {
+                if (typeof (response) === 'string' && JSON) {
                     response = JSON.parse(response);
                 }
                 records = gj.grid.methods.GetRecords(data, response);
@@ -168,16 +168,16 @@ gj.grid.public = {
      * <script>
      *     var grid, createFunc;
      *     createFunc = function() {
-     *         grid = $("#grid").grid({
-     *             dataSource: "/version_0_4/Demos/GetPlayers",
-     *             columns: [ { field: "ID" }, { field: "Name" }, { field: "PlaceOfBirth" } ]
+     *         grid = $('#grid').grid({
+     *             dataSource: '/DataSources/GetPlayers',
+     *             columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
      *         });
      *     };
      *     createFunc();
-     *     $("#btnDestroy").on("click", function () {
+     *     $('#btnDestroy').on('click', function () {
      *         grid.destroy(true, true);
      *     });
-     *     $("#btnCreate").on("click", function () {
+     *     $('#btnCreate').on('click', function () {
      *         createFunc();
      *     });
      * </script>
@@ -186,11 +186,11 @@ gj.grid.public = {
      * <br/><br/>
      * <table id="grid"></table>
      * <script>
-     *     var grid = $("#grid").grid({
-     *         dataSource: "/Grid/GetPlayers",
-     *         columns: [ { field: "ID" }, { field: "Name" }, { field: "PlaceOfBirth" } ]
+     *     var grid = $('#grid').grid({
+     *         dataSource: '/DataSources/GetPlayers',
+     *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
      *     });
-     *     $("#btnRemove").on("click", function () {
+     *     $('#btnRemove').on('click', function () {
      *         grid.destroy();
      *     });
      * </script>
@@ -225,13 +225,13 @@ gj.grid.public = {
      * <br/><br/>
      * <table id="grid"></table>
      * <script>
-     *     var grid = $("#grid").grid({
-     *         dataSource: "/Grid/GetPlayers",
-     *         columns: [ { field: "ID" }, { field: "Name" }, { field: "PlaceOfBirth" } ],
-     *         selectionMethod: "checkbox"
+     *     var grid = $('#grid').grid({
+     *         dataSource: '/DataSources/GetPlayers',
+     *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
+     *         selectionMethod: 'checkbox'
      *     });
-     *     $("#btnSelect").on("click", function () {
-     *         grid.setSelected(parseInt($("#txtNumber").val(), 10));
+     *     $('#btnSelect').on('click', function () {
+     *         grid.setSelected(parseInt($('#txtNumber').val(), 10));
      *     });
      * </script>
      */
@@ -252,12 +252,12 @@ gj.grid.public = {
      * <br/><br/>
      * <table id="grid"></table>
      * <script>
-     *     var grid = $("#grid").grid({
-     *         dataSource: "/Grid/GetPlayers",
-     *         columns: [ { field: "ID" }, { field: "Name" }, { field: "PlaceOfBirth" } ],
-     *         selectionMethod: "checkbox"
+     *     var grid = $('#grid').grid({
+     *         dataSource: '/DataSources/GetPlayers',
+     *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
+     *         selectionMethod: 'checkbox'
      *     });
-     *     $("#btnShowSelection").on("click", function () {
+     *     $('#btnShowSelection').on('click', function () {
      *         alert(grid.getSelected());
      *     });
      * </script>
@@ -275,13 +275,13 @@ gj.grid.public = {
      * <br/><br/>
      * <table id="grid"></table>
      * <script>
-     *     var grid = $("#grid").grid({
-     *         dataSource: "/Grid/GetPlayers",
-     *         columns: [ { field: "ID" }, { field: "Name" }, { field: "PlaceOfBirth" } ],
-     *         selectionMethod: "checkbox",
-     *         selectionType: "multiple"
+     *     var grid = $('#grid').grid({
+     *         dataSource: '/DataSources/GetPlayers',
+     *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
+     *         selectionMethod: 'checkbox',
+     *         selectionType: 'multiple'
      *     });
-     *     $("#btnShowSelection").on("click", function () {
+     *     $('#btnShowSelection').on('click', function () {
      *         var selections = grid.getSelections();
      *         $.each(selections, function() {
      *             alert(this);
@@ -302,13 +302,13 @@ gj.grid.public = {
      * <br/><br/>
      * <table id="grid"></table>
      * <script>
-     *     var grid = $("#grid").grid({
-     *         dataSource: "/Grid/GetPlayers",
-     *         columns: [ { field: "ID" }, { field: "Name" }, { field: "PlaceOfBirth" } ],
-     *         selectionMethod: "checkbox",
-     *         selectionType: "multiple"
+     *     var grid = $('#grid').grid({
+     *         dataSource: '/DataSources/GetPlayers',
+     *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
+     *         selectionMethod: 'checkbox',
+     *         selectionType: 'multiple'
      *     });
-     *     $("#btnSelectAll").on("click", function () {
+     *     $('#btnSelectAll').on('click', function () {
      *         grid.selectAll();
      *     });
      * </script>
@@ -316,8 +316,8 @@ gj.grid.public = {
     selectAll: function () {
         var $grid = this,
             data = this.data('grid');
-        $grid.find("thead input#checkAllBoxes").prop("checked", true);
-        $grid.find("tbody tr").each(function () {
+        $grid.find('thead input#checkAllBoxes').prop('checked', true);
+        $grid.find('tbody tr').each(function () {
             gj.grid.methods.SelectRow($grid, data, $(this));
         });
     },
@@ -332,16 +332,16 @@ gj.grid.public = {
      * <br/><br/>
      * <table id="grid"></table>
      * <script>
-     *     var grid = $("#grid").grid({
-     *         dataSource: "/Grid/GetPlayers",
-     *         columns: [ { field: "ID" }, { field: "Name" }, { field: "PlaceOfBirth" } ],
-     *         selectionMethod: "checkbox",
-     *         selectionType: "multiple"
+     *     var grid = $('#grid').grid({
+     *         dataSource: '/DataSources/GetPlayers',
+     *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
+     *         selectionMethod: 'checkbox',
+     *         selectionType: 'multiple'
      *     });
-     *     $("#btnSelectAll").on("click", function () {
+     *     $('#btnSelectAll').on('click', function () {
      *         grid.selectAll();
      *     });
-     *     $("#btnUnSelectAll").on("click", function () {
+     *     $('#btnUnSelectAll').on('click', function () {
      *         grid.unSelectAll();
      *     });
      * </script>
@@ -349,8 +349,8 @@ gj.grid.public = {
     unSelectAll: function () {
         var $grid = $(this),
             data = this.data('grid');
-        this.find("thead input#checkAllBoxes").prop("checked", false);
-        this.find("tbody tr").each(function () {
+        this.find('thead input#checkAllBoxes').prop('checked', false);
+        this.find('tbody tr').each(function () {
             gj.grid.methods.UnselectRow($grid, data, $(this));
         });
     },
@@ -365,14 +365,14 @@ gj.grid.public = {
      * <br/><br/>
      * <table id="grid"></table>
      * <script>
-     *     var grid = $("#grid").grid({
-     *         dataSource: "/Grid/GetPlayers",
-     *         columns: [ { field: "ID" }, { field: "Name" }, { field: "PlaceOfBirth" } ],
-     *         dataKey: "ID" //define the name of the column that you want to use as ID here.
+     *     var grid = $('#grid').grid({
+     *         dataSource: '/DataSources/GetPlayers',
+     *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
+     *         dataKey: 'ID' //define the name of the column that you want to use as ID here.
      *     });
-     *     $("#btnGetData").on("click", function () {
-     *         var data = grid.getById("2");
-     *         alert(data.Name + " born in " + data.PlaceOfBirth);
+     *     $('#btnGetData').on('click', function () {
+     *         var data = grid.getById('2');
+     *         alert(data.Name + ' born in ' + data.PlaceOfBirth);
      *     });
      * </script>
      */
@@ -390,13 +390,13 @@ gj.grid.public = {
      * <br/><br/>
      * <table id="grid"></table>
      * <script>
-     *     var grid = $("#grid").grid({
-     *         dataSource: "/Grid/GetPlayers",
-     *         columns: [ { field: "ID" }, { field: "Name" }, { field: "PlaceOfBirth" } ]
+     *     var grid = $('#grid').grid({
+     *         dataSource: '/DataSources/GetPlayers',
+     *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
      *     });
-     *     $("#btnGetData").on("click", function () {
+     *     $('#btnGetData').on('click', function () {
      *         var data = grid.get(3);
-     *         alert(data.Name + " born in " + data.PlaceOfBirth);
+     *         alert(data.Name + ' born in ' + data.PlaceOfBirth);
      *     });
      * </script>
      */
@@ -413,14 +413,14 @@ gj.grid.public = {
      * <br/><br/>
      * <table id="grid"></table>
      * <script>
-     *     var grid = $("#grid").grid({
-     *         dataSource: "/Grid/GetPlayers",
-     *         columns: [ { field: "ID" }, { field: "Name" }, { field: "PlaceOfBirth" } ]
+     *     var grid = $('#grid').grid({
+     *         dataSource: '/DataSources/GetPlayers',
+     *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
      *     });
-     *     $("#btnGetAllName").on("click", function () {
-     *         var records = grid.getAll(), names = "";
+     *     $('#btnGetAllName').on('click', function () {
+     *         var records = grid.getAll(), names = '';
      *         $.each(records, function () { 
-     *             names += this.record.Name + "(id=" + this.id + "),";
+     *             names += this.record.Name + '(id=' + this.id + '),';
      *         });
      *         alert(names);
      *     });
@@ -440,12 +440,12 @@ gj.grid.public = {
      * <br/><br/>
      * <table id="grid"></table>
      * <script>
-     *     var grid = $("#grid").grid({
-     *         dataSource: "/Grid/GetPlayers",
-     *         columns: [ { field: "ID" }, { field: "Name" }, { field: "PlaceOfBirth", hidden: true } ]
+     *     var grid = $('#grid').grid({
+     *         dataSource: '/DataSources/GetPlayers',
+     *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth', hidden: true } ]
      *     });
-     *     $("#btnShowColumn").on("click", function () {
-     *         grid.showColumn("PlaceOfBirth");
+     *     $('#btnShowColumn').on('click', function () {
+     *         grid.showColumn('PlaceOfBirth');
      *     });
      * </script>
      */
@@ -455,9 +455,9 @@ gj.grid.public = {
             $cells;
 
         if (position > -1) {
-            this.find("thead>tr>th:eq(" + position + ")").show();
-            $.each(this.find("tbody>tr"), function () {
-                $(this).find("td:eq(" + position + ")").show();
+            this.find('thead>tr>th:eq(' + position + ')').show();
+            $.each(this.find('tbody>tr'), function () {
+                $(this).find('td:eq(' + position + ')').show();
             });
             data.columns[position].hidden = false;
 
@@ -482,12 +482,12 @@ gj.grid.public = {
      * <br/><br/>
      * <table id="grid"></table>
      * <script>
-     *     var grid = $("#grid").grid({
-     *         dataSource: "/Grid/GetPlayers",
-     *         columns: [ { field: "ID" }, { field: "Name" }, { field: "PlaceOfBirth" } ]
+     *     var grid = $('#grid').grid({
+     *         dataSource: '/DataSources/GetPlayers',
+     *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
      *     });
-     *     $("#btnHideColumn").on("click", function () {
-     *         grid.hideColumn("PlaceOfBirth");
+     *     $('#btnHideColumn').on('click', function () {
+     *         grid.hideColumn('PlaceOfBirth');
      *     });
      * </script>
      */
@@ -497,9 +497,9 @@ gj.grid.public = {
             $cells;
 
         if (position > -1) {
-            this.find("thead>tr>th:eq(" + position + ")").hide();
-            $.each(this.find("tbody>tr"), function () {
-                $(this).find("td:eq(" + position + ")").hide();
+            this.find('thead>tr>th:eq(' + position + ')').hide();
+            $.each(this.find('tbody>tr'), function () {
+                $(this).find('td:eq(' + position + ')').hide();
             });
             data.columns[position].hidden = true;
 
@@ -524,12 +524,12 @@ gj.grid.public = {
      * <br/><br/>
      * <table id="grid"></table>
      * <script>
-     *     var grid = $("#grid").grid({
-     *         dataSource: "/Grid/GetPlayers",
-     *         columns: [ { field: "ID" }, { field: "Name" }, { field: "PlaceOfBirth" } ]
+     *     var grid = $('#grid').grid({
+     *         dataSource: '/DataSources/GetPlayers',
+     *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
      *     });
-     *     $("#btnAdd").on("click", function () {
-     *         grid.addRow({ "ID": grid.count() + 1, "Name": "Test Player", "PlaceOfBirth": "Test City, Test Country" });
+     *     $('#btnAdd').on('click', function () {
+     *         grid.addRow({ 'ID': grid.count() + 1, 'Name': 'Test Player', 'PlaceOfBirth': 'Test City, Test Country' });
      *     });
      * </script>
      */
@@ -555,19 +555,19 @@ gj.grid.public = {
      * <script>
      *     var grid, data;
      *     function Edit(e) {
-     *         grid.updateRow(e.data.id, { "ID": e.data.id, "Name": "Ronaldo", "PlaceOfBirth": "Rio, Brazil" });
+     *         grid.updateRow(e.data.id, { 'ID': e.data.id, 'Name': 'Ronaldo', 'PlaceOfBirth': 'Rio, Brazil' });
      *     }
-     *     grid = $("#grid").grid({
+     *     grid = $('#grid').grid({
      *         dataSource: [
-     *             { "ID": 1, "Name": "Hristo Stoichkov", "PlaceOfBirth": "Plovdiv, Bulgaria" },
-     *             { "ID": 2, "Name": "Ronaldo Luis Nazario de Lima", "PlaceOfBirth": "Rio de Janeiro, Brazil" },
-     *             { "ID": 3, "Name": "David Platt", "PlaceOfBirth": "Chadderton, Lancashire, England" }
+     *             { 'ID': 1, 'Name': 'Hristo Stoichkov', 'PlaceOfBirth': 'Plovdiv, Bulgaria' },
+     *             { 'ID': 2, 'Name': 'Ronaldo Luis Nazario de Lima', 'PlaceOfBirth': 'Rio de Janeiro, Brazil' },
+     *             { 'ID': 3, 'Name': 'David Platt', 'PlaceOfBirth': 'Chadderton, Lancashire, England' }
      *         ],
      *         columns: [ 
-     *             { field: "ID" },
-     *             { field: "Name" },
-     *             { field: "PlaceOfBirth" },
-     *             { title: "", width: 20, type: "icon", icon: "ui-icon-pencil", events: { "click": Edit } }
+     *             { field: 'ID' },
+     *             { field: 'Name' },
+     *             { field: 'PlaceOfBirth' },
+     *             { title: '', width: 20, type: 'icon', icon: 'ui-icon-pencil', events: { 'click': Edit } }
      *         ]
      *     });
      * </script>
