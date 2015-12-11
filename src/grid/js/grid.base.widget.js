@@ -30,12 +30,12 @@ gj.grid.public = {
         var data, ajaxOptions, records;
         data = this.data('grid');
         $.extend(data.params, params);
-        gj.grid.methods.StartLoading(this);
+        gj.grid.methods.startLoading(this);
         if ($.isArray(data.dataSource)) {
-            records = gj.grid.methods.GetRecords(data, data.dataSource);
+            records = gj.grid.methods.getRecords(data, data.dataSource);
             gj.grid.methods.loadData(this, records, records.length);
         } else if (typeof (data.dataSource) === 'string') {
-            ajaxOptions = { url: data.dataSource, data: data.params, success: gj.grid.methods.LoaderSuccessHandler(this) };
+            ajaxOptions = { url: data.dataSource, data: data.params, success: gj.grid.methods.defaultSuccessHandler(this) };
             if (this.xhr) {
                 this.xhr.abort();
             }
@@ -50,7 +50,7 @@ gj.grid.public = {
                 ajaxOptions.data = JSON.stringify(ajaxOptions.data);
             }
             if (!ajaxOptions.success) {
-                ajaxOptions.success = gj.grid.methods.LoaderSuccessHandler(this);
+                ajaxOptions.success = gj.grid.methods.defaultSuccessHandler(this);
             }
             if (this.xhr) {
                 this.xhr.abort();
@@ -78,15 +78,15 @@ gj.grid.public = {
      *     });
      * </script>
      */
-    clear: function () {
+    clear: function (showNotFoundText) {
         var data = this.data('grid');
         this.xhr && this.xhr.abort();
         if ('checkbox' === data.selectionMethod) {
             this.find('input#checkAllBoxes').hide();
         }
         this.children('tbody').empty();
-        gj.grid.methods.StopLoading(this);
-        gj.grid.methods.AppendEmptyRow(this, '&nbsp;');
+        gj.grid.methods.stopLoading(this);
+        gj.grid.methods.appendEmptyRow(this, showNotFoundText ? data.notFoundText : '&nbsp;');
         gj.grid.events.dataBound(this, [], 0);
         return this;
     },
@@ -141,7 +141,7 @@ gj.grid.public = {
                 if (typeof (response) === 'string' && JSON) {
                     response = JSON.parse(response);
                 }
-                records = gj.grid.methods.GetRecords(data, response);
+                records = gj.grid.methods.getRecords(data, response);
                 totalRecords = response[data.mapping.totalRecordsField];
                 if (!totalRecords || isNaN(totalRecords)) {
                     totalRecords = 0;
@@ -199,7 +199,7 @@ gj.grid.public = {
         var data = this.data('grid');
         if (data) {
             gj.grid.events.destroying(this);
-            gj.grid.methods.StopLoading(this);
+            gj.grid.methods.stopLoading(this);
             this.xhr && this.xhr.abort();
             this.off();
             if (keepWrapperTag === false && this.parent('div[data-role="wrapper"]').length > 0) {
@@ -263,7 +263,7 @@ gj.grid.public = {
      * </script>
      */
     getSelected: function () {
-        return gj.grid.methods._GetSelected(this);
+        return gj.grid.methods.getSelected(this);
     },
 
     /**
@@ -290,7 +290,7 @@ gj.grid.public = {
      * </script>
      */
     getSelections: function () {
-        return gj.grid.methods._GetSelections(this);
+        return gj.grid.methods.getSelections(this);
     },
 
     /**
@@ -318,7 +318,7 @@ gj.grid.public = {
             data = this.data('grid');
         $grid.find('thead input#checkAllBoxes').prop('checked', true);
         $grid.find('tbody tr').each(function () {
-            gj.grid.methods.SelectRow($grid, data, $(this));
+            gj.grid.methods.selectRow($grid, data, $(this));
         });
     },
 
@@ -351,7 +351,7 @@ gj.grid.public = {
             data = this.data('grid');
         this.find('thead input#checkAllBoxes').prop('checked', false);
         this.find('tbody tr').each(function () {
-            gj.grid.methods.UnselectRow($grid, data, $(this));
+            gj.grid.methods.unselectRow($grid, data, $(this));
         });
     },
 
@@ -427,7 +427,7 @@ gj.grid.public = {
      * </script>
      */
     getAll: function () {
-        return gj.grid.methods.GetAll(this);
+        return gj.grid.methods.getAll(this);
     },
 
     /**
@@ -451,7 +451,7 @@ gj.grid.public = {
      */
     showColumn: function (field) {
         var data = this.data('grid'),
-            position = gj.grid.methods.GetColumnPosition(data.columns, field),
+            position = gj.grid.methods.getColumnPosition(data.columns, field),
             $cells;
 
         if (position > -1) {
@@ -493,7 +493,7 @@ gj.grid.public = {
      */
     hideColumn: function (field) {
         var data = this.data('grid'),
-            position = gj.grid.methods.GetColumnPosition(data.columns, field),
+            position = gj.grid.methods.getColumnPosition(data.columns, field),
             $cells;
 
         if (position > -1) {
@@ -540,7 +540,7 @@ gj.grid.public = {
             $rows.remove();
         }
         position = this.count();
-        gj.grid.methods.RowRenderer(this, null, record, position);
+        gj.grid.methods.renderRow(this, null, record, position);
         return this;
     },
 
@@ -574,13 +574,13 @@ gj.grid.public = {
      */
     updateRow: function (id, record) {
         var $row = gj.grid.methods.getRowById(this, id);
-        gj.grid.methods.RowRenderer(this, $row, record, $row.index());
+        gj.grid.methods.renderRow(this, $row, record, $row.index());
         return this;
     },
 
     //TODO: needs to be removed
     setCellContent: function (id, index, value) {
-        gj.grid.methods.SetCellContent(this, id, index, value);
+        gj.grid.methods.setCellContent(this, id, index, value);
     },
 
     /**
@@ -619,7 +619,7 @@ gj.grid.public = {
             gj.grid.events.rowRemoving(this, $row, id, $row.data('row'));
             $row.remove();
             if (this.count() == 0) {
-                gj.grid.methods.AppendEmptyRow(this);
+                gj.grid.methods.appendEmptyRow(this);
             }
         }
         return this;

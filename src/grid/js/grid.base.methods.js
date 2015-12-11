@@ -19,8 +19,8 @@
                 }
             }
             gj.grid.methods.initialize(this);
-            gj.grid.methods.HeaderRenderer(this);
-            gj.grid.methods.AppendEmptyRow(this, "&nbsp;");
+            gj.grid.methods.renderHeader(this);
+            gj.grid.methods.appendEmptyRow(this, '&nbsp;');
             gj.grid.events.initialized(this);
             if (data.autoLoad) {
                 this.reload();
@@ -98,7 +98,7 @@
         return result;
     },
 
-    LoaderSuccessHandler: function ($grid) {
+    defaultSuccessHandler: function ($grid) {
         return function (response) {
             $grid.render(response);
         };
@@ -116,22 +116,22 @@
         }
 
         if (data.width) {
-            $grid.parent().css("width", data.width);
+            $grid.parent().css('width', data.width);
         }
         if (data.minWidth) {
-            $grid.css("min-width", data.minWidth);
+            $grid.css('min-width', data.minWidth);
         }
         if (data.fontSize) {
-            $grid.css("font-size", data.fontSize);
+            $grid.css('font-size', data.fontSize);
         }
         $grid.addClass(data.style.table);
-        if ("checkbox" === data.selectionMethod) {
+        if ('checkbox' === data.selectionMethod) {
             data.columns = [{ title: '', field: data.dataKey, width: (data.uiLibrary === 'jqueryui' ? 24 : 30), align: 'center', type: 'checkbox' }].concat(data.columns);
         }
-        $grid.append($("<tbody/>"));
+        $grid.append($('<tbody/>'));
     },
 
-    HeaderRenderer: function ($grid) {
+    renderHeader: function ($grid) {
         var data, columns, style, sortBy, direction, $thead, $row, $cell, i, $checkAllBoxes;
 
         data = $grid.data('grid');
@@ -159,7 +159,7 @@
             $cell.css('text-align', columns[i].align || 'left');
             if (columns[i].sortable) {
                 $cell.addClass(style.sortable);
-                $cell.on('click', gj.grid.methods.CreateSortHandler($grid, $cell));
+                $cell.on('click', gj.grid.methods.createSortHandler($grid, $cell));
             }
             if ('checkbox' === data.selectionMethod && 'multiple' === data.selectionType && 'checkbox' === columns[i].type) {
                 $checkAllBoxes = $cell.find('input[id="checkAllBoxes"]'); //TODO: use data-role instead of id. this is going to cause some other bugs.
@@ -188,7 +188,7 @@
         $thead.empty().append($row);
     },
 
-    CreateSortHandler: function ($grid, $cell) {
+    createSortHandler: function ($grid, $cell) {
         return function () {
             var $sortIcon, data, cellData, style, params = {};
             if ($grid.count() > 0) {
@@ -214,23 +214,23 @@
         };
     },
 
-    StartLoading: function ($grid) {
+    startLoading: function ($grid) {
         var $tbody, $cover, $loading, width, height, top, data;
-        gj.grid.methods.StopLoading($grid);
+        gj.grid.methods.stopLoading($grid);
         data = $grid.data('grid');
         if (0 === $grid.outerHeight()) {
             return;
         }
-        $tbody = $grid.children("tbody");
+        $tbody = $grid.children('tbody');
         width = $tbody.outerWidth(false);
         height = $tbody.outerHeight(false);
-        top = $tbody.prev().outerHeight(false) + $grid.prevAll().outerHeight(false) + parseInt($grid.parent().css("padding-top").replace('px', ''), 10);
-        $cover = $("<div data-role='loading-cover' />").addClass(data.style.loadingCover).css({
+        top = $tbody.prev().outerHeight(false) + $grid.prevAll().outerHeight(false) + parseInt($grid.parent().css('padding-top').replace('px', ''), 10);
+        $cover = $('<div data-role="loading-cover" />').addClass(data.style.loadingCover).css({
             width: width,
             height: height,
             top: top
         });
-        $loading = $("<div data-role='loading-text'>Loading...</div>").addClass(data.style.loadingText);
+        $loading = $('<div data-role="loading-text">Loading...</div>').addClass(data.style.loadingText);
         $loading.insertAfter($grid);
         $cover.insertAfter($grid);
         $loading.css({
@@ -239,24 +239,24 @@
         });
     },
 
-    StopLoading: function ($grid) {
-        $grid.parent().find("div[data-role='loading-cover']").remove();
-        $grid.parent().find("div[data-role='loading-text']").remove();
+    stopLoading: function ($grid) {
+        $grid.parent().find('div[data-role="loading-cover"]').remove();
+        $grid.parent().find('div[data-role="loading-text"]').remove();
     },
 
-    CreateAddRowHoverHandler: function ($row, cssClass) {
+    createAddRowHoverHandler: function ($row, cssClass) {
         return function () {
             $row.addClass(cssClass);
         };
     },
 
-    CreateRemoveRowHoverHandler: function ($row, cssClass) {
+    createRemoveRowHoverHandler: function ($row, cssClass) {
         return function () {
             $row.removeClass(cssClass);
         };
     },
 
-    AppendEmptyRow: function ($grid, caption) {
+    appendEmptyRow: function ($grid, caption) {
         var data, $row, $cell, $wrapper;
         data = $grid.data('grid');
         $row = $('<tr data-role="empty"/>');
@@ -291,7 +291,7 @@
             }
             gj.grid.methods.setDefaultColumnConfig(data.columns, data.defaultColumnSettings);
         }
-        gj.grid.methods.HeaderRenderer($grid);
+        gj.grid.methods.renderHeader($grid);
     },
 
     loadData: function ($grid, records, totalRecords) {
@@ -301,7 +301,7 @@
         gj.grid.events.dataBinding($grid, records);
         data = $grid.data('grid');
         recLen = records.length;
-        gj.grid.methods.StopLoading($grid);
+        gj.grid.methods.stopLoading($grid);
 
         if (data.autoGenerateColumns) {
             gj.grid.methods.autoGenerateColumns($grid, records);
@@ -320,7 +320,7 @@
         $tbody.find('tr[data-role="empty"]').remove();
         if (0 === recLen) {
             $tbody.empty();
-            gj.grid.methods.AppendEmptyRow($grid);
+            gj.grid.methods.appendEmptyRow($grid);
         }
 
         $rows = $tbody.children('tr');
@@ -329,7 +329,7 @@
         for (i = 0; i < rowCount; i++) {
             if (i < recLen) {
                 $row = $rows.eq(i);
-                gj.grid.methods.RowRenderer($grid, $row, records[i], i);
+                gj.grid.methods.renderRow($grid, $row, records[i], i);
             } else {
                 $tbody.find('tr:gt(' + (i - 1) + ')').remove();
                 break;
@@ -337,42 +337,42 @@
         }
 
         for (i = rowCount; i < recLen; i++) {
-            gj.grid.methods.RowRenderer($grid, null, records[i], i);
+            gj.grid.methods.renderRow($grid, null, records[i], i);
         }
         gj.grid.events.dataBound($grid, records, totalRecords);
     },
 
-    RowRenderer: function ($grid, $row, record, position) {
+    renderRow: function ($grid, $row, record, position) {
         var id, $cell, i, data, mode;
         data = $grid.data('grid');
         if (!$row || $row.length === 0) {
-            mode = "create";
-            $row = $($grid.find("tbody")[0].insertRow(position));
+            mode = 'create';
+            $row = $($grid.find('tbody')[0].insertRow(position));
             $row.attr('data-role', 'row');
             $row.bind({
-                "mouseenter.grid": gj.grid.methods.CreateAddRowHoverHandler($row, data.style.content.rowHover),
-                "mouseleave.grid": gj.grid.methods.CreateRemoveRowHoverHandler($row, data.style.content.rowHover)
+                'mouseenter.grid': gj.grid.methods.createAddRowHoverHandler($row, data.style.content.rowHover),
+                'mouseleave.grid': gj.grid.methods.createRemoveRowHoverHandler($row, data.style.content.rowHover)
             });
         } else {
-            mode = "update";
-            $row.removeClass(data.style.content.rowSelected).off("click");
+            mode = 'update';
+            $row.removeClass(data.style.content.rowSelected).off('click');
         }
         id = (data.dataKey && record[data.dataKey]) ? record[data.dataKey] : (position + 1);
-        $row.data("row", { id: id, record: record });
-        $row.on("click", gj.grid.methods.CreateRowClickHandler($grid, id, record));
+        $row.data('row', { id: id, record: record });
+        $row.on('click', gj.grid.methods.createRowClickHandler($grid, id, record));
         for (i = 0; i < data.columns.length; i++) {
-            if (mode === "update") {
-                $cell = $row.find("td:eq(" + i + ")");
-                gj.grid.methods.CellRenderer($grid, $cell, data.columns[i], record, id);
+            if (mode === 'update') {
+                $cell = $row.find('td:eq(' + i + ')');
+                gj.grid.methods.renderCell($grid, $cell, data.columns[i], record, id);
             } else {
-                $cell = gj.grid.methods.CellRenderer($grid, null, data.columns[i], record, id);
+                $cell = gj.grid.methods.renderCell($grid, null, data.columns[i], record, id);
                 $row.append($cell);
             }
         }
         gj.grid.events.rowDataBound($grid, $row, id, record);
     },
 
-    CellRenderer: function ($grid, $cell, column, record, id, mode) {
+    renderCell: function ($grid, $cell, column, record, id, mode) {
         var text, $wrapper, mode, $icon, data;
 
         data = $grid.data('grid');
@@ -447,8 +447,8 @@
         var dt, day, month;
         if (text && column.type) {
             switch (column.type) {
-                case "date":
-                    if (text.indexOf("/Date(") > -1) {
+                case 'date':
+                    if (text.indexOf('/Date(') > -1) {
                         dt = new Date(parseInt(text.substr(6), 10));
                     } else {
                         var parts = text.match(/(\d+)/g);
@@ -459,15 +459,15 @@
                     if (dt.format && column.format) {
                         text = dt.format(column.format); //using 3rd party plugin "Date Format 1.2.3 by (c) 2007-2009 Steven Levithan <stevenlevithan.com>"
                     } else {
-                        day = dt.getDate().toString().length === 2 ? dt.getDate() : "0" + dt.getDate();
+                        day = dt.getDate().toString().length === 2 ? dt.getDate() : '0' + dt.getDate();
                         month = (dt.getMonth() + 1).toString();
-                        month = month.length === 2 ? month : "0" + month;
-                        text = month + "/" + day + "/" + dt.getFullYear();
+                        month = month.length === 2 ? month : '0' + month;
+                        text = month + '/' + day + '/' + dt.getFullYear();
                     }
                     break;
             }
         } else {
-            text = (typeof (text) === "undefined" || text === null) ? "" : text.toString();
+            text = (typeof (text) === 'undefined' || text === null) ? '' : text.toString();
         }
         if (column.decimalDigits && text) {
             text = parseFloat(text).toFixed(column.decimalDigits);
@@ -475,7 +475,7 @@
         return text;
     },
 
-    GetRecords: function (data, response) {
+    getRecords: function (data, response) {
         var records = [];
         if ($.isArray(response)) {
             records = response;
@@ -485,30 +485,30 @@
         return records;
     },
 
-    CreateRowClickHandler: function ($grid, id, record) {
+    createRowClickHandler: function ($grid, id, record) {
         return function (e) {
             gj.grid.methods.setSelected($grid, $(this), id);
         };
     },
 
-    SelectRow: function ($grid, data, $row) {
+    selectRow: function ($grid, data, $row) {
         $row.addClass(data.style.content.rowSelected);
 
-        gj.grid.events.rowSelect($grid, $row, $row.data("row").id, $row.data("row").record);
+        gj.grid.events.rowSelect($grid, $row, $row.data('row').id, $row.data('row').record);
 
-        if ("checkbox" === data.selectionMethod) {
-            $row.find("td:nth-child(1) input[type='checkbox']").prop("checked", true);
+        if ('checkbox' === data.selectionMethod) {
+            $row.find('td:nth-child(1) input[type="checkbox"]').prop('checked', true);
         }
     },
 
-    UnselectRow: function ($grid, data, $row) {
+    unselectRow: function ($grid, data, $row) {
         if ($row.hasClass(data.style.content.rowSelected)) {
             $row.removeClass(data.style.content.rowSelected);
 
-            gj.grid.events.rowUnselect($grid, $row, $row.data("row").id, $row.data("row").record)
+            gj.grid.events.rowUnselect($grid, $row, $row.data('row').id, $row.data('row').record)
 
-            if ("checkbox" === data.selectionMethod) {
-                $row.find("td:nth-child(1) input[type='checkbox']").prop("checked", false);
+            if ('checkbox' === data.selectionMethod) {
+                $row.find('td:nth-child(1) input[type="checkbox"]').prop('checked', false);
             }
         }
     },
@@ -516,38 +516,38 @@
     setSelected: function ($grid, $row, id) {
         var data = $grid.data('grid');
         if ($row.hasClass(data.style.content.rowSelected)) {
-            gj.grid.methods.UnselectRow($grid, data, $row);
+            gj.grid.methods.unselectRow($grid, data, $row);
         } else {
-            if ("single" === data.selectionType) {
+            if ('single' === data.selectionType) {
                 $row.siblings().each(function () {
-                    gj.grid.methods.UnselectRow($grid, data, $(this));
+                    gj.grid.methods.unselectRow($grid, data, $(this));
                 });
             }
-            gj.grid.methods.SelectRow($grid, data, $row);
+            gj.grid.methods.selectRow($grid, data, $row);
         }
     },
 
-    _GetSelected: function ($grid) {
+    getSelected: function ($grid) {
         var result, data, selections;
-        data = $grid.data("grid");
-        selections = $grid.find("tbody > tr." + data.style.content.rowSelected);
+        data = $grid.data('grid');
+        selections = $grid.find('tbody > tr.' + data.style.content.rowSelected);
         if (selections.length > 0) {
-            result = $(selections[0]).data("row").id;
+            result = $(selections[0]).data('row').id;
         }
         return result;
     },
 
-    GetSelectedRows: function ($grid) {
-        var data = $grid.data("grid");
-        return $grid.find("tbody > tr." + data.style.content.rowSelected);
+    getSelectedRows: function ($grid) {
+        var data = $grid.data('grid');
+        return $grid.find('tbody > tr.' + data.style.content.rowSelected);
     },
 
-    _GetSelections: function ($grid) {
+    getSelections: function ($grid) {
         var result = [],
-            $selections = gj.grid.methods.GetSelectedRows($grid);
+            $selections = gj.grid.methods.getSelectedRows($grid);
         if (0 < $selections.length) {
             $selections.each(function () {
-                result.push($(this).data("row").id);
+                result.push($(this).data('row').id);
             });
         }
         return result;
@@ -555,9 +555,9 @@
 
     getRecordById: function ($grid, id) {
         var result = {}, rows, i, rowData;
-        rows = $grid.find("tbody > tr");
+        rows = $grid.find('tbody > tr');
         for (i = 0; i < rows.length; i++) {
-            rowData = $(rows[i]).data("row");
+            rowData = $(rows[i]).data('row');
             if (rowData.id === id) {
                 result = rowData.record;
                 break;
@@ -568,9 +568,9 @@
 
     getRowById: function ($grid, id) {
         var result = null, rows, i, rowData;
-        rows = $grid.find("tbody > tr");
+        rows = $grid.find('tbody > tr');
         for (i = 0; i < rows.length; i++) {
-            rowData = $(rows[i]).data("row");
+            rowData = $(rows[i]).data('row');
             if (rowData.id === id) {
                 result = $(rows[i]);
                 break;
@@ -581,9 +581,9 @@
 
     getByPosition: function ($grid, position) {
         var result = {}, $rows, data;
-        $rows = $grid.find("tbody > tr");
+        $rows = $grid.find('tbody > tr');
         if ($rows.length >= position) {
-            data = $rows.eq(position - 1).data("row");
+            data = $rows.eq(position - 1).data('row');
             if (data && data.record) {
                 result = data.record;
             }
@@ -591,7 +591,7 @@
         return result;
     },
 
-    GetColumnPosition: function (columns, field) {
+    getColumnPosition: function (columns, field) {
         var position = -1, i;
         for (i = 0; i < columns.length; i++) {
             if (columns[i].field === field) {
@@ -602,8 +602,8 @@
         return position;
     },
 
-    GetColumnInfo: function ($grid, field) {
-        var i, result = {}, data = $grid.data("grid");
+    getColumnInfo: function ($grid, field) {
+        var i, result = {}, data = $grid.data('grid');
         for (i = 0; i < data.columns.length; i += 1) {
             if (data.columns[i].field === field) {
                 result = data.columns[i];
@@ -613,27 +613,27 @@
         return result;
     },
 
-    GetCell: function ($grid, id, index) {
+    getCell: function ($grid, id, index) {
         var result = {}, rows, i, rowData, position;
-        position = gj.grid.methods.GetColumnPosition($grid, index);
-        rows = $grid.find("tbody > tr");
+        position = gj.grid.methods.getColumnPosition($grid, index);
+        rows = $grid.find('tbody > tr');
         for (i = 0; i < rows.length; i += 1) {
-            rowData = $(rows[i]).data("row");
+            rowData = $(rows[i]).data('row');
             if (rowData.id === id) {
-                result = $(rows[i].cells[position]).find("div");
+                result = $(rows[i].cells[position]).find('div');
                 break;
             }
         }
         return result;
     },
 
-    SetCellContent: function ($grid, id, index, value) {
-        var column, $cellWrapper = gj.grid.methods.GetCell($grid, id, index);
+    setCellContent: function ($grid, id, index, value) {
+        var column, $cellWrapper = gj.grid.methods.getCell($grid, id, index);
         $cellWrapper.empty();
-        if (typeof (value) === "object") {
+        if (typeof (value) === 'object') {
             $cellWrapper.append(value);
         } else {
-            column = gj.grid.methods.GetColumnInfo($grid, index);
+            column = gj.grid.methods.getColumnInfo($grid, index);
             gj.grid.methods.setCellText($cellWrapper, column, value);
         }
     },
@@ -646,13 +646,13 @@
         return target;
     },
 
-    GetAll: function ($grid) {
+    getAll: function ($grid) {
         var result = [],
-                rows = $grid.find("tbody > tr"),
+                rows = $grid.find('tbody > tr'),
                 i, record;
 
         for (i = 0; i < rows.length; i++) {
-            record = $(rows[i]).data("row");
+            record = $(rows[i]).data('row');
             if (record) {
                 result.push(record);
             }

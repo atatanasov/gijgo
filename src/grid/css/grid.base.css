@@ -108,17 +108,28 @@ DIV.gj-grid-wrapper DIV.gj-grid-loading-text
     border: 1px solid #ddd;
 }
 
-.gj-grid-base-thead-th {
+.gj-grid-base-table thead tr th {
     background-color: #f5f5f5;
+    border: 1px solid #ddd;
+    padding: 3px;
+    font-weight: normal;
+}
+
+.gj-grid-base-table tbody tr:hover {
+    background-color: #f5f5f5;
+}
+
+.gj-grid-base-table tbody tr td {
     border: 1px solid #ddd;
 }
 
-.gj-grid-base-hover {
-
+.gj-grid-base-table tbody tr td div[data-role="display"] {
+    padding: 3px;
+    overflow: hidden;
 }
 
 .gj-grid-base-active {
-
+    background-color: #f5f5f5;
 }
 
 .gj-content {

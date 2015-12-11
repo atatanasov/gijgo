@@ -513,7 +513,7 @@ gj.grid.config = {
      *     $('#grid').grid({
      *         dataSource: '/DataSources/GetPlayers',
      *         columns: [
-     *             { field: 'ID' },
+     *             { field: 'ID', width: 24 },
      *             { field: 'Name' },
      *             { field: 'PlaceOfBirth' }
      *         ]
@@ -555,13 +555,13 @@ gj.grid.config = {
         loadingCover: 'gj-grid-loading-cover',
         loadingText: 'gj-grid-loading-text',
         header: {
-            cell: 'gj-grid-base-thead-th',
+            cell: undefined,
             sortable: 'gj-grid-thead-sortable',
-            sortAscIcon: 'gj-grid-ui-thead-th-sort-icon ui-icon ui-icon-arrowthick-1-s',
-            sortDescIcon: 'gj-grid-ui-thead-th-sort-icon ui-icon ui-icon-arrowthick-1-n'
+            sortAscIcon: '',
+            sortDescIcon: ''
         },
         content: {
-            rowHover: 'gj-grid-base-hover',
+            rowHover: undefined,
             rowSelected: 'gj-grid-base-active'
         },
         pager: {
