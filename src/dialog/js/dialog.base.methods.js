@@ -238,5 +238,9 @@
             gj.dialog.events.closed($dialog);
         }
         return $dialog;
+    },
+
+    isOpen: function ($dialog) {
+        return $dialog.is(':visible');
     }
 };

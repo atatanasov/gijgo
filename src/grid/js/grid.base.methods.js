@@ -670,5 +670,173 @@
             }
         }
         return count;
+    },
+
+    reload: function ($grid, params) {
+        var data, ajaxOptions, records;
+        data = $grid.data('grid');
+        $.extend(data.params, params);
+        gj.grid.methods.startLoading($grid);
+        if ($.isArray(data.dataSource)) {
+            records = gj.grid.methods.getRecords(data, data.dataSource);
+            gj.grid.methods.loadData($grid, records, records.length);
+        } else if (typeof (data.dataSource) === 'string') {
+            ajaxOptions = { url: data.dataSource, data: data.params, success: gj.grid.methods.defaultSuccessHandler($grid) };
+            if ($grid.xhr) {
+                $grid.xhr.abort();
+            }
+            $grid.xhr = $.ajax(ajaxOptions);
+        } else if (typeof (data.dataSource) === 'object') {
+            if (!data.dataSource.data) {
+                data.dataSource.data = {};
+            }
+            $.extend(data.dataSource.data, data.params);
+            ajaxOptions = $.extend(true, {}, data.dataSource); //clone dataSource object
+            if (ajaxOptions.dataType === 'json' && typeof (ajaxOptions.data) === 'object') {
+                ajaxOptions.data = JSON.stringify(ajaxOptions.data);
+            }
+            if (!ajaxOptions.success) {
+                ajaxOptions.success = gj.grid.methods.defaultSuccessHandler($grid);
+            }
+            if ($grid.xhr) {
+                $grid.xhr.abort();
+            }
+            $grid.xhr = $.ajax(ajaxOptions);
+        }
+        return $grid;
+    },
+
+    clear: function ($grid, showNotFoundText) {
+        var data = $grid.data('grid');
+        $grid.xhr && $grid.xhr.abort();
+        if ('checkbox' === data.selectionMethod) {
+            $grid.find('input#checkAllBoxes').hide();
+        }
+        $grid.children('tbody').empty();
+        gj.grid.methods.stopLoading($grid);
+        gj.grid.methods.appendEmptyRow($grid, showNotFoundText ? data.notFoundText : '&nbsp;');
+        gj.grid.events.dataBound($grid, [], 0);
+        return $grid;
+    },
+
+    render: function ($grid, response) {
+        var data, records, totalRecords;
+        if (response) {
+            data = $grid.data('grid');
+            if (data) {
+                if (typeof (response) === 'string' && JSON) {
+                    response = JSON.parse(response);
+                }
+                records = gj.grid.methods.getRecords(data, response);
+                totalRecords = response[data.mapping.totalRecordsField];
+                if (!totalRecords || isNaN(totalRecords)) {
+                    totalRecords = 0;
+                }
+                gj.grid.methods.loadData($grid, records, totalRecords);
+            }
+        }
+    },
+
+    destroy: function ($grid, keepTableTag, keepWrapperTag) {
+        var data = $grid.data('grid');
+        if (data) {
+            gj.grid.events.destroying($grid);
+            gj.grid.methods.stopLoading($grid);
+            $grid.xhr && $grid.xhr.abort();
+            $grid.off();
+            if (keepWrapperTag === false && $grid.parent('div[data-role="wrapper"]').length > 0) {
+                $grid.unwrap();
+            }
+            $grid.removeData();
+            if (keepTableTag === false) {
+                $grid.remove();
+            } else {
+                $grid.removeClass().empty();
+            }
+        }
+        return $grid;
+    },
+
+    setSelected: function ($grid, id) {
+        var $row = gj.grid.methods.getRowById($grid, id);
+        if ($row) {
+            gj.grid.methods.setSelected($grid, $row, id);
+        }
+        return $grid;
+    },
+
+    selectAll: function ($grid) {
+        var data = $grid.data('grid');
+        $grid.find('thead input#checkAllBoxes').prop('checked', true);
+        $grid.find('tbody tr').each(function () {
+            gj.grid.methods.selectRow($grid, data, $(this));
+        });
+        return $grid;
+    },
+
+    unSelectAll: function ($grid) {
+        var data = $grid.data('grid');
+        $grid.find('thead input#checkAllBoxes').prop('checked', false);
+        $grid.find('tbody tr').each(function () {
+            gj.grid.methods.unselectRow($grid, data, $(this));
+        });
+        return $grid;
+    },
+
+    showColumn: function ($grid, field) {
+        var data = $grid.data('grid'),
+            position = gj.grid.methods.getColumnPosition(data.columns, field),
+            $cells;
+
+        if (position > -1) {
+            $grid.find('thead>tr>th:eq(' + position + ')').show();
+            $.each($grid.find('tbody>tr'), function () {
+                $(this).find('td:eq(' + position + ')').show();
+            });
+            data.columns[position].hidden = false;
+
+            $cells = $grid.find('tbody > tr[data-role="empty"] > td');
+            if ($cells && $cells.length) {
+                $cells.attr('colspan', gj.grid.methods.countVisibleColumns($grid));
+            }
+
+            gj.grid.events.columnShow($grid, data.columns[position]);
+        }
+
+        return $grid;
+    },
+
+    hideColumn: function ($grid, field) {
+        var data = $grid.data('grid'),
+            position = gj.grid.methods.getColumnPosition(data.columns, field),
+            $cells;
+
+        if (position > -1) {
+            $grid.find('thead>tr>th:eq(' + position + ')').hide();
+            $.each($grid.find('tbody>tr'), function () {
+                $(this).find('td:eq(' + position + ')').hide();
+            });
+            data.columns[position].hidden = true;
+
+            $cells = $grid.find('tbody > tr[data-role="empty"] > td');
+            if ($cells && $cells.length) {
+                $cells.attr('colspan', gj.grid.methods.countVisibleColumns($grid));
+            }
+
+            gj.grid.events.columnHide($grid, data.columns[position]);
+        }
+
+        return $grid;
+    },
+
+    addRow: function ($grid, record) {
+        var position, $rows = $grid.find('tbody > tr');
+        //clear empty row if exists
+        if ($rows.length === 1 && $rows.data('role') === 'empty') {
+            $rows.remove();
+        }
+        position = $grid.count();
+        gj.grid.methods.renderRow($grid, null, record, position);
+        return $grid;
     }
 };

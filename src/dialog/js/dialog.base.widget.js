@@ -15,7 +15,7 @@ function Dialog($dialog, arguments) {
      * <div id="dialog" style="display: none">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
      * <button onclick="dialog.open()">Open Dialog</button>
      * <script>
-     *     var dialog = $("#dialog").dialog({
+     *     var dialog = $('#dialog').dialog({
      *         autoOpen: false
      *     });
      * </script>
@@ -34,7 +34,7 @@ function Dialog($dialog, arguments) {
      * <button onclick="dialog.open()">Open Dialog</button>
      * <button onclick="dialog.close()">Close Dialog</button>
      * <script>
-     *     var dialog = $("#dialog").dialog();
+     *     var dialog = $('#dialog').dialog();
      * </script>
      */
     self.close = function () {
@@ -49,13 +49,13 @@ function Dialog($dialog, arguments) {
      * <div id="dialog" style="display: none">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
      * <button onclick="dialog.open()">Open Dialog</button>
      * <button onclick="dialog.close()">Close Dialog</button>
-     * <button onclick="alert(dialog.isOpen())">isOpen</button>
+     * <button onclick="alert($('#dialog').dialog('isOpen'))">isOpen</button>
      * <script>
-     *     var dialog = $("#dialog").dialog();
+     *     var dialog = $('#dialog').dialog();
      * </script>
      */
     self.isOpen = function () {
-        return this.is(':visible');
+        return methods.isOpen(this);
     }
 
     $.extend($dialog, self);
@@ -69,9 +69,9 @@ function Dialog($dialog, arguments) {
         if (typeof method === 'object' || !method) {
             return new Dialog(this, arguments);
         } else if (gj.dialog.methods[method]) {
-            return gj.dialog.methods[method].apply(this, Array.prototype.slice.call(arguments, 1));
+            return gj.dialog.methods[method].apply(this, [this].concat(Array.prototype.slice.call(arguments, 1)));
         } else {
-            throw "Method " + method + " does not exist.";
+            throw 'Method ' + method + ' does not exist.';
         }
     };
 })(jQuery);

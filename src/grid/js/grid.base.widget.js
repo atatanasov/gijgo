@@ -2,8 +2,11 @@
   * @widget Grid 
   * @plugin Base
   */
-gj.grid.public = {
-    xhr: null,
+function Grid($grid, arguments) {
+    var self = this,
+        methods = gj.grid.methods;
+
+    self.xhr = null;
 
     /**
      * Reload the data in the grid from a data source.
@@ -26,43 +29,14 @@ gj.grid.public = {
      *     });
      * </script>
      */
-    reload: function (params) {
-        var data, ajaxOptions, records;
-        data = this.data('grid');
-        $.extend(data.params, params);
-        gj.grid.methods.startLoading(this);
-        if ($.isArray(data.dataSource)) {
-            records = gj.grid.methods.getRecords(data, data.dataSource);
-            gj.grid.methods.loadData(this, records, records.length);
-        } else if (typeof (data.dataSource) === 'string') {
-            ajaxOptions = { url: data.dataSource, data: data.params, success: gj.grid.methods.defaultSuccessHandler(this) };
-            if (this.xhr) {
-                this.xhr.abort();
-            }
-            this.xhr = $.ajax(ajaxOptions);
-        } else if (typeof (data.dataSource) === 'object') {
-            if (!data.dataSource.data) {
-                data.dataSource.data = {};
-            }
-            $.extend(data.dataSource.data, data.params);
-            ajaxOptions = $.extend(true, {}, data.dataSource); //clone dataSource object
-            if (ajaxOptions.dataType === 'json' && typeof (ajaxOptions.data) === 'object') {
-                ajaxOptions.data = JSON.stringify(ajaxOptions.data);
-            }
-            if (!ajaxOptions.success) {
-                ajaxOptions.success = gj.grid.methods.defaultSuccessHandler(this);
-            }
-            if (this.xhr) {
-                this.xhr.abort();
-            }
-            this.xhr = $.ajax(ajaxOptions);
-        }
-        return this;
-    },
+    self.reload = function (params) {
+        return methods.reload(this, params);
+    };
 
     /**
      * Clear the content in the grid.
      * @method
+     * @param {boolean} showNotFoundText - Indicates if the "Not Found" text is going to show after the clearing of the grid.
      * @return void
      * @example <!-- grid.base -->
      * <button id="btnClear">Clear</button>
@@ -78,18 +52,9 @@ gj.grid.public = {
      *     });
      * </script>
      */
-    clear: function (showNotFoundText) {
-        var data = this.data('grid');
-        this.xhr && this.xhr.abort();
-        if ('checkbox' === data.selectionMethod) {
-            this.find('input#checkAllBoxes').hide();
-        }
-        this.children('tbody').empty();
-        gj.grid.methods.stopLoading(this);
-        gj.grid.methods.appendEmptyRow(this, showNotFoundText ? data.notFoundText : '&nbsp;');
-        gj.grid.events.dataBound(this, [], 0);
-        return this;
-    },
+    self.clear = function (showNotFoundText) {
+        return methods.clear(this, showNotFoundText);
+    };
 
     /**
      * Return the number of records presented on the screen.
@@ -109,9 +74,10 @@ gj.grid.public = {
      *     });
      * </script>
      */
-    count: function () {
+    self.count = function () {
+        //TODO: needs to be moved to methods
         return $(this).find('tbody tr[data-role="row"]').length;
-    },
+    };
 
     /**
      * Render data in the grid
@@ -133,23 +99,9 @@ gj.grid.public = {
      *     });
      * </script>
      */
-    render: function (response) {
-        var data, records, totalRecords;
-        if (response) {
-            data = this.data('grid');
-            if (data) {
-                if (typeof (response) === 'string' && JSON) {
-                    response = JSON.parse(response);
-                }
-                records = gj.grid.methods.getRecords(data, response);
-                totalRecords = response[data.mapping.totalRecordsField];
-                if (!totalRecords || isNaN(totalRecords)) {
-                    totalRecords = 0;
-                }
-                gj.grid.methods.loadData(this, records, totalRecords);
-            }
-        }
-    },
+    self.render = function (response) {
+        return methods.render($grid, response);
+    };
 
     /**
      * Destroy the grid. This method remove all data from the grid and all events attached to the grid.
@@ -195,24 +147,9 @@ gj.grid.public = {
      *     });
      * </script>
      */
-    destroy: function (keepTableTag, keepWrapperTag) {
-        var data = this.data('grid');
-        if (data) {
-            gj.grid.events.destroying(this);
-            gj.grid.methods.stopLoading(this);
-            this.xhr && this.xhr.abort();
-            this.off();
-            if (keepWrapperTag === false && this.parent('div[data-role="wrapper"]').length > 0) {
-                this.unwrap();
-            }
-            this.removeData();
-            if (keepTableTag === false) {
-                this.remove();
-            } else {
-                this.removeClass().empty();
-            }
-        }
-    },
+    self.destroy = function (keepTableTag, keepWrapperTag) {
+        return methods.destroy(this, keepTableTag, keepWrapperTag);
+    };
 
     /**
      * Select a row from the grid based on id parameter.
@@ -235,12 +172,9 @@ gj.grid.public = {
      *     });
      * </script>
      */
-    setSelected: function (id) {
-        var $row = gj.grid.methods.getRowById(this, id);
-        if ($row) {
-            gj.grid.methods.setSelected(this, $row, id);
-        }
-    },
+    self.setSelected = function (id) {
+        return methods.setSelected(this, id);
+    };
 
     /**
      * Return the id of the selected record.
@@ -262,9 +196,9 @@ gj.grid.public = {
      *     });
      * </script>
      */
-    getSelected: function () {
-        return gj.grid.methods.getSelected(this);
-    },
+    self.getSelected = function () {
+        return methods.getSelected(this);
+    };
 
     /**
      * Return an array with the ids of the selected record.
@@ -289,9 +223,9 @@ gj.grid.public = {
      *     });
      * </script>
      */
-    getSelections: function () {
-        return gj.grid.methods.getSelections(this);
-    },
+    self.getSelections = function () {
+        return methods.getSelections(this);
+    };
 
     /**
      * Select all records from the grid.
@@ -313,14 +247,9 @@ gj.grid.public = {
      *     });
      * </script>
      */
-    selectAll: function () {
-        var $grid = this,
-            data = this.data('grid');
-        $grid.find('thead input#checkAllBoxes').prop('checked', true);
-        $grid.find('tbody tr').each(function () {
-            gj.grid.methods.selectRow($grid, data, $(this));
-        });
-    },
+    self.selectAll = function () {
+        return methods.selectAll(this);
+    };
 
     /**
      * Unselect all records from the grid.
@@ -346,14 +275,9 @@ gj.grid.public = {
      *     });
      * </script>
      */
-    unSelectAll: function () {
-        var $grid = $(this),
-            data = this.data('grid');
-        this.find('thead input#checkAllBoxes').prop('checked', false);
-        this.find('tbody tr').each(function () {
-            gj.grid.methods.unselectRow($grid, data, $(this));
-        });
-    },
+    self.unSelectAll = function () {
+        return methods.unSelectAll(this);
+    };
 
     /**
      * Return record by id of the record.
@@ -376,9 +300,9 @@ gj.grid.public = {
      *     });
      * </script>
      */
-    getById: function (id) {
-        return gj.grid.methods.getRecordById(this, id);
-    },
+    self.getById = function (id) {
+        return methods.getRecordById(this, id);
+    };
 
     /**
      * Return record from the grid based on position.
@@ -400,9 +324,9 @@ gj.grid.public = {
      *     });
      * </script>
      */
-    get: function (position) {
-        return gj.grid.methods.getByPosition(this, position);
-    },
+    self.get = function (position) {
+        return methods.getByPosition(this, position);
+    };
 
     /**
      * Return an array with all records presented in the grid.
@@ -426,9 +350,9 @@ gj.grid.public = {
      *     });
      * </script>
      */
-    getAll: function () {
-        return gj.grid.methods.getAll(this);
-    },
+    self.getAll = function () {
+        return methods.getAll(this);
+    };
 
     /**
      * Show hidden column.
@@ -449,28 +373,9 @@ gj.grid.public = {
      *     });
      * </script>
      */
-    showColumn: function (field) {
-        var data = this.data('grid'),
-            position = gj.grid.methods.getColumnPosition(data.columns, field),
-            $cells;
-
-        if (position > -1) {
-            this.find('thead>tr>th:eq(' + position + ')').show();
-            $.each(this.find('tbody>tr'), function () {
-                $(this).find('td:eq(' + position + ')').show();
-            });
-            data.columns[position].hidden = false;
-
-            $cells = this.find('tbody > tr[data-role="empty"] > td');
-            if ($cells && $cells.length) {
-                $cells.attr('colspan', gj.grid.methods.countVisibleColumns(this));
-            }
-
-            gj.grid.events.columnShow(this, data.columns[position]);
-        }
-
-        return this;
-    },
+    self.showColumn = function (field) {
+        return methods.showColumn(this, field);
+    };
 
     /**
      * Hide column from the grid.
@@ -491,28 +396,9 @@ gj.grid.public = {
      *     });
      * </script>
      */
-    hideColumn: function (field) {
-        var data = this.data('grid'),
-            position = gj.grid.methods.getColumnPosition(data.columns, field),
-            $cells;
-
-        if (position > -1) {
-            this.find('thead>tr>th:eq(' + position + ')').hide();
-            $.each(this.find('tbody>tr'), function () {
-                $(this).find('td:eq(' + position + ')').hide();
-            });
-            data.columns[position].hidden = true;
-
-            $cells = this.find('tbody > tr[data-role="empty"] > td');
-            if ($cells && $cells.length) {
-                $cells.attr('colspan', gj.grid.methods.countVisibleColumns(this));
-            }
-
-            gj.grid.events.columnHide(this, data.columns[position]);
-        }
-
-        return this;
-    },
+    self.hideColumn = function (field) {
+        return methods.hideColumn(this, field);
+    };
 
     /**
      * Add new row to the grid.
@@ -533,16 +419,9 @@ gj.grid.public = {
      *     });
      * </script>
      */
-    addRow: function (record) {
-        var position, $rows = this.find('tbody > tr');
-        //clear empty row if exists
-        if ($rows.length === 1 && $rows.data('role') === 'empty') {
-            $rows.remove();
-        }
-        position = this.count();
-        gj.grid.methods.renderRow(this, null, record, position);
-        return this;
-    },
+    self.addRow = function (record) {
+        return methods.addRow(this, record);
+    };
 
     /**
      * Update row data.
@@ -572,16 +451,16 @@ gj.grid.public = {
      *     });
      * </script>
      */
-    updateRow: function (id, record) {
-        var $row = gj.grid.methods.getRowById(this, id);
-        gj.grid.methods.renderRow(this, $row, record, $row.index());
+    self.updateRow = function (id, record) {
+        var $row = methods.getRowById(this, id);
+        methods.renderRow(this, $row, record, $row.index());
         return this;
-    },
+    };
 
     //TODO: needs to be removed
-    setCellContent: function (id, index, value) {
-        gj.grid.methods.setCellContent(this, id, index, value);
-    },
+    self.setCellContent = function (id, index, value) {
+        methods.setCellContent(this, id, index, value);
+    };
 
     /**
      * Remove row from the grid
@@ -613,29 +492,28 @@ gj.grid.public = {
      *     });
      * </script>
      */
-    removeRow: function (id) {
-        var $row = gj.grid.methods.getRowById(this, id);
+    self.removeRow = function (id) {
+        var $row = methods.getRowById(this, id);
         if ($row) {
             gj.grid.events.rowRemoving(this, $row, id, $row.data('row'));
             $row.remove();
             if (this.count() == 0) {
-                gj.grid.methods.appendEmptyRow(this);
+                methods.appendEmptyRow(this);
             }
         }
         return this;
-    }
+    };
+
+    $.extend($grid, self);
+    methods.init.apply($grid, arguments);
+
+    return $grid;
 };
 
 (function ($) {
     $.fn.grid = function (method) {
         if (typeof method === 'object' || !method) {
-            function Grid() {
-                var self = this;
-                $.extend(self, gj.grid.public);
-            };
-            var grid = new Grid();
-            $.extend(this, grid);
-            return gj.grid.methods.init.apply(this, arguments);
+            return new Grid(this, arguments);
         } else if (gj.grid.public[method]) {
             return gj.grid.public[method].apply(this, Array.prototype.slice.call(arguments, 1));
         } else {

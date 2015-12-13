@@ -10,24 +10,25 @@ gj.grid.plugins.inlineEditing = {
     'configuration': {
         defaultColumnSettings: {
             /** Provides a way to specify a custom editing UI for the column.
-              * @alias column.editor
-              * @type function|boolean
-              * @default undefined
-              * @example <table id="grid"></table>
-              * <script>
-              *     function edit($container, currentValue) {
-              *         $container.append('<input type="text" value="' + currentValue + '"/>');
-              *     }
-              *     $('#grid').grid({
-              *         dataSource: '/DataSources/GetPlayers',
-              *         columns: [
-              *             { field: 'ID' },
-              *             { field: 'Name', editor: edit },
-              *             { field: 'PlaceOfBirth', editor: true }
-              *         ]
-              *     });
-              * </script>
-              */
+             * @alias column.editor
+             * @type function|boolean
+             * @default undefined
+             * @example <!-- grid.base, grid.inlineEditing -->
+             * <table id="grid"></table>
+             * <script>
+             *     function edit($container, currentValue) {
+             *         $container.append('<input type="text" value="' + currentValue + '"/>');
+             *     }
+             *     $('#grid').grid({
+             *         dataSource: '/DataSources/GetPlayers',
+             *         columns: [
+             *             { field: 'ID' },
+             *             { field: 'Name', editor: edit },
+             *             { field: 'PlaceOfBirth', editor: true }
+             *         ]
+             *     });
+             * </script>
+             */
             editor: undefined
         }
     },
@@ -74,7 +75,7 @@ gj.grid.plugins.inlineEditing = {
                 oldValue = record[column.field];
                 $displayContainer = $cell.find('div[data-role="display"]');
                 if (newValue !== oldValue) {
-                    gj.grid.private.setCellText($displayContainer, column, newValue);
+                    gj.grid.methods.setCellText($displayContainer, column, newValue);
                     record[column.field] = newValue;
                     if ($cell.find('span.gj-dirty').length === 0) {
                         if ($cell.css('padding-top') !== '0px') {
@@ -138,7 +139,8 @@ gj.grid.plugins.inlineEditing = {
          * Return array with all changes
          * @method
          * @return array
-         * @example <button id="btnGetChanges">Get Changes</button>
+         * @example <!-- grid.base, grid.inlineEditing -->
+         * <button id="btnGetChanges">Get Changes</button>
          * <br/><br/>
          * <table id="grid"></table>
          * <script>
@@ -169,7 +171,8 @@ gj.grid.plugins.inlineEditing = {
              * @param {object} record - the data of the row record
              * @param {object} oldValue - the old cell value
              * @param {object} newValue - the new cell value
-             * @example <table id="grid"></table>
+             * @example <!-- grid.base, grid.inlineEditing -->
+             * <table id="grid"></table>
              * <script>
              *     var grid = $('#grid').grid({
              *         dataSource: '/DataSources/GetPlayers',
@@ -184,7 +187,7 @@ gj.grid.plugins.inlineEditing = {
         }
     },
 
-    'init': function ($grid) {
+    'configure': function ($grid) {
         $.extend(true, $grid, gj.grid.plugins.inlineEditing.public);
         $grid.on('cellDataBound', function (e, $wrapper, id, column, record) {
             if (column.editor) {

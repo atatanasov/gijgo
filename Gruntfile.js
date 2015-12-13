@@ -276,6 +276,9 @@ var writer = {
                     case 'grid.jqueryui':
                         result += '  <script src="../../build/modular/grid/js/grid.jqueryui.js"></script>\r\n';
                         break;
+                    case 'grid.inlineEditing':
+                        result += '  <script src="../../build/modular/grid/js/grid.inlineEditing.js"></script>\r\n';
+                        break;
                 }
             }
         }
