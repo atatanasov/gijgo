@@ -13,7 +13,8 @@ gj.grid.plugins.responsiveDesign = {
              * This setting is in use only if the resizeMonitoring setting is set to true.
              * @type int
              * @default 500
-             * @example <table id="grid"></table>
+             * @example <!-- grid.base, grid.responiveDesign -->
+             * <table id="grid"></table>
              * <script>
              *     var grid = $('#grid').grid({
              *         dataSource: '/DataSources/GetPlayers',
@@ -32,7 +33,8 @@ gj.grid.plugins.responsiveDesign = {
              * The columns without priority setting are always visible and can't hide in small screen resolutions.
              * @type boolean
              * @default false
-             * @example <table id="grid"></table>
+             * @example <!-- grid.base, grid.responiveDesign -->
+             * <table id="grid"></table>
              * <script>
              *     $('#grid').grid({
              *         dataSource: '/DataSources/GetPlayers',
@@ -50,7 +52,8 @@ gj.grid.plugins.responsiveDesign = {
              * This setting works only if the responsive setting is set to true and the detailTemplate is set.
              * @type boolean
              * @default false
-             * @example <table id="grid"></table>
+             * @example <!-- grid.base, grid.expandCollapseRows, grid.responiveDesign -->
+             * <table id="grid"></table>
              * <script>
              *     $('#grid').grid({
              *         dataSource: '/DataSources/GetPlayers',
@@ -73,7 +76,8 @@ gj.grid.plugins.responsiveDesign = {
                  * @alias column.priority
                  * @type int
                  * @default undefined
-                 * @example <table id="grid"></table>
+                 * @example <!-- grid.base, grid.responiveDesign -->
+                 * <table id="grid"></table>
                  * <script>
                  *     $('#grid').grid({
                  *         dataSource: '/DataSources/GetPlayers',
@@ -93,7 +97,8 @@ gj.grid.plugins.responsiveDesign = {
                  * @alias column.minWidth
                  * @type int
                  * @default 150
-                 * @example <table id="grid"></table>
+                 * @example <!-- grid.base, grid.responiveDesign -->
+                 * <table id="grid"></table>
                  * <script>
                  *     $('#grid').grid({
                  *         dataSource: '/DataSources/GetPlayers',
@@ -158,7 +163,7 @@ gj.grid.plugins.responsiveDesign = {
                         column = data.columns[j];
                         $placeholder = rowData.details && rowData.details.find('div[data-id="' + column.field + '"]');
                         if (data.columns[j].hidden) {
-                            text = gj.grid.private.formatText(rowData.record[column.field], column);
+                            text = gj.grid.methods.formatText(rowData.record[column.field], column);
                             if (!$placeholder || !$placeholder.length) {
                                 $placeholder = $('<div data-id="' + column.field + '"><b>' + (column.title || column.field) + '</b>: ' + text + '</div>');
                                 $placeholder.addClass(data.style.rowDetailItem);
@@ -189,7 +194,8 @@ gj.grid.plugins.responsiveDesign = {
          * Show column if the space for the grid is expanding and hide columns when the space for the grid is decreasing.
          * @method
          * @return void
-         * @example <button onclick="grid.makeResponsive()">Make Responsive</button>
+         * @example <!-- grid.base, grid.responiveDesign -->
+         * <button onclick="grid.makeResponsive()">Make Responsive</button>
          * <br/><br/>
          * <table id="grid"></table>
          * <script>
@@ -237,29 +243,30 @@ gj.grid.plugins.responsiveDesign = {
     },
 
     'events': {
+        /**
+         * Event fires when the grid width is changed. The "responsive" configuration setting should be set to true in order this event to fire.
+         *
+         * @event resize
+         * @property {object} e - event data
+         * @example <!-- grid.base, grid.responiveDesign -->
+         * <table id="grid"></table>
+         * <script>
+         *     var grid = $('#grid').grid({
+         *         dataSource: '/DataSources/GetPlayers',
+         *         responsive: true,
+         *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
+         *     });
+         *     grid.on('resize', function (e, newWidth, oldWidth) {
+         *         alert('resize is fired.');
+         *     });
+         * </script>
+         */
         resize: function ($grid, newWidth, oldWidth) {
-            /**
-             * Event fires when the grid width is changed. The "responsive" configuration setting should be set to true in order this event to fire.
-             *
-             * @event resize
-             * @property {object} e - event data
-             * @example <table id="grid"></table>
-             * <script>
-             *     var grid = $('#grid').grid({
-             *         dataSource: '/DataSources/GetPlayers',
-             *         responsive: true,
-             *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
-             *     });
-             *     grid.on('resize', function (e, newWidth, oldWidth) {
-             *         alert('resize is fired.');
-             *     });
-             * </script>
-             */
             $grid.trigger('resize', [newWidth, oldWidth]);
         }
     },
 
-    'init': function ($grid) {
+    'configure': function ($grid) {
         $.extend(true, $grid, gj.grid.plugins.responsiveDesign.public);
         var data = $grid.data('grid');
         if (data.responsive) {

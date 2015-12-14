@@ -95,7 +95,7 @@ gj.grid.plugins.toolbar = {
         }
     },
 
-    'init': function ($grid) {
+    'configure': function ($grid) {
         var data, $toolbar, $title;
         $.extend(true, $grid, gj.grid.plugins.toolbar.public);
         data = $grid.data('grid');

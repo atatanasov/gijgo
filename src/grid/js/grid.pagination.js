@@ -92,14 +92,14 @@ gj.grid.plugins.pagination = {
 
                 $tfoot = $('<tfoot />').append($row);
                 $grid.append($tfoot);
-                gj.grid.plugins.pagination.private.updatePagerColSpan($grid);
+                gj.grid.plugins.pagination.methods.updatePagerColSpan($grid);
 
-                leftControls = gj.grid.private.clone(data.pager.leftControls); //clone array
+                leftControls = gj.grid.methods.clone(data.pager.leftControls); //clone array
                 $.each(leftControls, function () {
                     $leftPanel.append(this);
                 });
 
-                rightControls = gj.grid.private.clone(data.pager.rightControls); //clone array
+                rightControls = gj.grid.methods.clone(data.pager.rightControls); //clone array
                 $.each(rightControls, function () {
                     $rightPanel.append(this);
                 });
@@ -268,7 +268,7 @@ gj.grid.plugins.pagination = {
         updatePagerColSpan: function ($grid) {
             var $cell = $grid.find('tfoot > tr > th');
             if ($cell && $cell.length) {
-                $cell.attr('colspan', gj.grid.private.countVisibleColumns($grid));
+                $cell.attr('colspan', gj.grid.methods.countVisibleColumns($grid));
             }
         }
     },
@@ -283,7 +283,8 @@ gj.grid.plugins.pagination = {
          * @event pageSizeChange
          * @property {object} e - event data
          * @property {int} newSize - The new page size
-         * @example <table id="grid"></table>
+         * @example <!-- grid.base, grid.pagination -->
+         * <table id="grid"></table>
          * <script>
          *     var grid = $('#grid').grid({
          *         dataSource: '/DataSources/GetPlayers',
@@ -305,7 +306,8 @@ gj.grid.plugins.pagination = {
          * @event pageChanging
          * @property {object} e - event data
          * @property {int} newPage - The new page
-         * @example <table id="grid"></table>
+         * @example <!-- grid.base, grid.pagination -->
+         * <table id="grid"></table>
          * <script>
          *     var grid = $('#grid').grid({
          *         dataSource: '/DataSources/GetPlayers',
@@ -322,7 +324,7 @@ gj.grid.plugins.pagination = {
         }
     },
 
-    'init': function ($grid) {
+    'configure': function ($grid) {
         gj.grid.plugins.pagination.private.init($grid);
         $grid.on('dataBound', function (e, records, totalRecords) {
             gj.grid.plugins.pagination.private.reloadPager($grid, totalRecords);

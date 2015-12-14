@@ -249,8 +249,14 @@ var writer = {
                     case 'grid.base':
                         result += '  <link href="../../build/modular/grid/css/grid.base.css" rel="stylesheet" type="text/css">\r\n';
                         break;
+                    case 'grid.bootstrap':
+                        result += '  <link href="../../build/modular/grid/css/grid.bootstrap.css" rel="stylesheet" type="text/css">\r\n';
+                        break;
                     case 'grid.jqueryui':
                         result += '  <link href="../../build/modular/grid/css/grid.jqueryui.css" rel="stylesheet" type="text/css">\r\n';
+                        break;
+                    case 'grid.responsiveDesign':
+                        result += '  <link href="../../build/modular/grid/css/grid.responsiveDesign.css" rel="stylesheet" type="text/css">\r\n';
                         break;
                 }
                 //include js files
@@ -273,11 +279,26 @@ var writer = {
                     case 'grid.base':
                         result += '  <script src="../../build/modular/grid/js/grid.base.js"></script>\r\n';
                         break;
-                    case 'grid.jqueryui':
-                        result += '  <script src="../../build/modular/grid/js/grid.jqueryui.js"></script>\r\n';
+                    case 'grid.bootstrap':
+                        result += '  <script src="../../build/modular/grid/js/grid.bootstrap.js"></script>\r\n';
+                        break;
+                    case 'grid.expandCollapseRows':
+                        result += '  <script src="../../build/modular/grid/js/grid.expandCollapseRows.js"></script>\r\n';
                         break;
                     case 'grid.inlineEditing':
                         result += '  <script src="../../build/modular/grid/js/grid.inlineEditing.js"></script>\r\n';
+                        break;
+                    case 'grid.jqueryui':
+                        result += '  <script src="../../build/modular/grid/js/grid.jqueryui.js"></script>\r\n';
+                        break;
+                    case 'grid.pagination':
+                        result += '  <script src="../../build/modular/grid/js/grid.pagination.js"></script>\r\n';
+                        break;
+                    case 'grid.responsiveDesign':
+                        result += '  <script src="../../build/modular/grid/js/grid.responsiveDesign.js"></script>\r\n';
+                        break;
+                    case 'grid.toolbar':
+                        result += '  <script src="../../build/modular/grid/js/grid.toolbar.js"></script>\r\n';
                         break;
                 }
             }

@@ -12,7 +12,8 @@ gj.grid.plugins.expandCollapseRows = {
           * Automatically add expand collapse column as a first column in the grid during initialization.
           * @type string
           * @default undefined
-          * @example <table id="grid"></table>
+          * @example <!-- grid.base, grid.expandCollapseRows -->
+          * <table id="grid"></table>
           * <script>
           *     $('#grid').grid({
           *         dataSource: '/DataSources/GetPlayers',
@@ -28,7 +29,7 @@ gj.grid.plugins.expandCollapseRows = {
         detailExpand: function ($cell, $grid) {
             var $contentRow = $cell.closest('tr'),
                 $detailsRow = $('<tr data-role="details"></tr>'),
-                $detailsCell = $('<td colspan="' + gj.grid.private.countVisibleColumns($grid) + '"></td>'),
+                $detailsCell = $('<td colspan="' + gj.grid.methods.countVisibleColumns($grid) + '"></td>'),
                 data = $grid.data('grid'),
                 rowData = $contentRow.data('row'),
                 $detailWrapper = $(rowData.details);
@@ -56,7 +57,7 @@ gj.grid.plugins.expandCollapseRows = {
         updateDetailsColSpan: function ($grid) {
             var $cells = $grid.find('tbody > tr[data-role="details"] > td');
             if ($cells && $cells.length) {
-                $cells.attr('colspan', gj.grid.private.countVisibleColumns($grid));
+                $cells.attr('colspan', gj.grid.methods.countVisibleColumns($grid));
             }
         }
     },
@@ -75,65 +76,68 @@ gj.grid.plugins.expandCollapseRows = {
     },
 
     'events': {
+        /**
+         * Event fires when detail row is showing
+         *
+         * @event detailExpand
+         * @param {object} e - event data
+         * @param {object} detailWrapper - the detail wrapper as jQuery object 
+         * @param {object} record - the data of the row record 
+         * @example <!-- grid.base, grid.expandCollapseRows -->
+         * <table id="grid"></table>
+         * <script>
+         *     var grid = $('#grid').grid({
+         *         dataSource: '/DataSources/GetPlayers',
+         *         detailTemplate: '<div/>',
+         *         columns: [ 
+         *             { field: 'ID' }, 
+         *             { field: 'Name' },
+         *             { field: 'PlaceOfBirth' }
+         *         ]
+         *     });
+         *     grid.on('detailExpand', function (e, $detailWrapper, record) {
+         *         $detailWrapper.empty().append('Place of Birth: ' + record.PlaceOfBirth);
+         *     });
+         * </script>
+         */
         detailExpand: function ($grid, $detailWrapper, record) {
-            /**
-             * Event fires when detail row is showing
-             *
-             * @event detailExpand
-             * @param {object} e - event data
-             * @param {object} detailWrapper - the detail wrapper as jQuery object 
-             * @param {object} record - the data of the row record 
-             * @example <table id="grid"></table>
-             * <script>
-             *     var grid = $('#grid').grid({
-             *         dataSource: '/DataSources/GetPlayers',
-             *         detailTemplate: '<div/>',
-             *         columns: [ 
-             *             { field: 'ID' }, 
-             *             { field: 'Name' },
-             *             { field: 'PlaceOfBirth' }
-             *         ]
-             *     });
-             *     grid.on('detailExpand', function (e, $detailWrapper, record) {
-             *         $detailWrapper.empty().append('Place of Birth: ' + record.PlaceOfBirth);
-             *     });
-             * </script>
-             */
             $grid.trigger('detailExpand', [$detailWrapper, record]);
         },
+
+        /**
+         * Event fires when detail row is hiding
+         *
+         * @event detailCollapse
+         * @param {object} e - event data
+         * @param {object} detailWrapper - the detail wrapper as jQuery object 
+         * @param {object} record - the data of the row record 
+         * @example <!-- grid.base, grid.expandCollapseRows -->
+         * <table id="grid"></table>
+         * <script>
+         *     var grid = $('#grid').grid({
+         *         dataSource: '/DataSources/GetPlayers',
+         *         detailTemplate: '<div/>',
+         *         columns: [ 
+         *             { field: 'ID' }, 
+         *             { field: 'Name' },
+         *             { field: 'PlaceOfBirth' }
+         *         ]
+         *     });
+         *     grid.on('detailExpand', function (e, $detailWrapper, record) {
+         *         $detailWrapper.append('Place of Birth: ' + record.PlaceOfBirth);
+         *     });
+         *     grid.on('detailCollapse', function (e, $detailWrapper, record) {
+         *         $detailWrapper.empty();
+         *         alert('detailCollapse is fired.');
+         *     });
+         * </script>
+         */
         detailCollapse: function ($grid, $detailWrapper, record) {
-            /**
-             * Event fires when detail row is hiding
-             *
-             * @event detailCollapse
-             * @param {object} e - event data
-             * @param {object} detailWrapper - the detail wrapper as jQuery object 
-             * @param {object} record - the data of the row record 
-             * @example <table id="grid"></table>
-             * <script>
-             *     var grid = $('#grid').grid({
-             *         dataSource: '/DataSources/GetPlayers',
-             *         detailTemplate: '<div/>',
-             *         columns: [ 
-             *             { field: 'ID' }, 
-             *             { field: 'Name' },
-             *             { field: 'PlaceOfBirth' }
-             *         ]
-             *     });
-             *     grid.on('detailExpand', function (e, $detailWrapper, record) {
-             *         $detailWrapper.append('Place of Birth: ' + record.PlaceOfBirth);
-             *     });
-             *     grid.on('detailCollapse', function (e, $detailWrapper, record) {
-             *         $detailWrapper.empty();
-             *         alert('detailCollapse is fired.');
-             *     });
-             * </script>
-             */
             $grid.trigger('detailCollapse', [$detailWrapper, record]);
         }
     },
 
-    'init': function ($grid) {
+    'configure': function ($grid) {
         $.extend(true, $grid, gj.grid.plugins.expandCollapseRows.public);
         var data = $grid.data('grid');
         if (typeof (data.detailTemplate) !== 'undefined') {
