@@ -349,10 +349,8 @@
             mode = 'create';
             $row = $($grid.find('tbody')[0].insertRow(position));
             $row.attr('data-role', 'row');
-            $row.bind({
-                'mouseenter.grid': gj.grid.methods.createAddRowHoverHandler($row, data.style.content.rowHover),
-                'mouseleave.grid': gj.grid.methods.createRemoveRowHoverHandler($row, data.style.content.rowHover)
-            });
+            $row.on('mouseenter', gj.grid.methods.createAddRowHoverHandler($row, data.style.content.rowHover));
+            $row.on('mouseleave', gj.grid.methods.createRemoveRowHoverHandler($row, data.style.content.rowHover));
         } else {
             mode = 'update';
             $row.removeClass(data.style.content.rowSelected).off('click');
@@ -487,7 +485,7 @@
 
     createRowClickHandler: function ($grid, id, record) {
         return function (e) {
-            gj.grid.methods.setSelected($grid, $(this), id);
+            gj.grid.methods.setSelected($grid, id, $(this));
         };
     },
 
@@ -513,18 +511,42 @@
         }
     },
 
-    setSelected: function ($grid, $row, id) {
+    setSelected: function ($grid, id, $row) {
         var data = $grid.data('grid');
-        if ($row.hasClass(data.style.content.rowSelected)) {
-            gj.grid.methods.unselectRow($grid, data, $row);
-        } else {
-            if ('single' === data.selectionType) {
-                $row.siblings().each(function () {
-                    gj.grid.methods.unselectRow($grid, data, $(this));
-                });
-            }
-            gj.grid.methods.selectRow($grid, data, $row);
+        if (!$row || !$row.length) {
+            $row = gj.grid.methods.getRowById($grid, id);
         }
+        if ($row) {
+            if ($row.hasClass(data.style.content.rowSelected)) {
+                gj.grid.methods.unselectRow($grid, data, $row);
+            } else {
+                if ('single' === data.selectionType) {
+                    $row.siblings().each(function () {
+                        gj.grid.methods.unselectRow($grid, data, $(this));
+                    });
+                }
+                gj.grid.methods.selectRow($grid, data, $row);
+            }
+        }
+        return $grid;
+    },
+
+    selectAll: function ($grid) {
+        var data = $grid.data('grid');
+        $grid.find('thead input#checkAllBoxes').prop('checked', true);
+        $grid.find('tbody tr').each(function () {
+            gj.grid.methods.selectRow($grid, data, $(this));
+        });
+        return $grid;
+    },
+
+    unSelectAll: function ($grid) {
+        var data = $grid.data('grid');
+        $grid.find('thead input#checkAllBoxes').prop('checked', false);
+        $grid.find('tbody tr').each(function () {
+            gj.grid.methods.unselectRow($grid, data, $(this));
+        });
+        return $grid;
     },
 
     getSelected: function ($grid) {
@@ -754,32 +776,6 @@
                 $grid.removeClass().empty();
             }
         }
-        return $grid;
-    },
-
-    setSelected: function ($grid, id) {
-        var $row = gj.grid.methods.getRowById($grid, id);
-        if ($row) {
-            gj.grid.methods.setSelected($grid, $row, id);
-        }
-        return $grid;
-    },
-
-    selectAll: function ($grid) {
-        var data = $grid.data('grid');
-        $grid.find('thead input#checkAllBoxes').prop('checked', true);
-        $grid.find('tbody tr').each(function () {
-            gj.grid.methods.selectRow($grid, data, $(this));
-        });
-        return $grid;
-    },
-
-    unSelectAll: function ($grid) {
-        var data = $grid.data('grid');
-        $grid.find('thead input#checkAllBoxes').prop('checked', false);
-        $grid.find('tbody tr').each(function () {
-            gj.grid.methods.unselectRow($grid, data, $(this));
-        });
         return $grid;
     },
 
