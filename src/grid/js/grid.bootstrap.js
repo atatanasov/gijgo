@@ -5,24 +5,24 @@
 gj.grid.plugins.bootstrap = {
     config: {
         style: {
-            wrapper: "gj-grid-wrapper",
-            table: "gj-grid-table table table-bordered table-hover",
+            wrapper: 'gj-grid-wrapper',
+            table: 'gj-grid-table table table-bordered table-hover',
             header: {
-                cell: "gj-grid-bootstrap-thead-cell",
-                sortable: "gj-grid-thead-sortable",
-                sortAscIcon: "glyphicon glyphicon-sort-by-alphabet",
-                sortDescIcon: "glyphicon glyphicon-sort-by-alphabet-alt"
+                cell: 'gj-grid-bootstrap-thead-cell',
+                sortable: 'gj-cursor-pointer',
+                sortAscIcon: 'glyphicon glyphicon-sort-by-alphabet',
+                sortDescIcon: 'glyphicon glyphicon-sort-by-alphabet-alt'
             },
             content: {
-                rowHover: "",
-                rowSelected: "active"
+                rowHover: '',
+                rowSelected: 'active'
             },
             pager: {
-                cell: "gj-grid-bootstrap-tfoot-cell",
-                stateDisabled: "ui-state-disabled"
+                cell: 'gj-grid-bootstrap-tfoot-cell',
+                stateDisabled: 'ui-state-disabled'
             },
-            expandIcon: "glyphicon glyphicon-plus",
-            collapseIcon: "glyphicon glyphicon-minus"
+            expandIcon: 'glyphicon glyphicon-plus',
+            collapseIcon: 'glyphicon glyphicon-minus'
         },
         pager: {
             leftControls: [

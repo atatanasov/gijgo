@@ -11,7 +11,7 @@ gj.grid.plugins.jqueryui = {
             //loadingText: 'gj-grid-loading-text',
             header: {
                 cell: 'ui-widget-header ui-state-default gj-grid-ui-thead-th',
-                sortable: 'gj-grid-thead-sortable',
+                sortable: 'gj-cursor-pointer',
                 sortAscIcon: 'gj-grid-ui-thead-th-sort-icon ui-icon ui-icon-arrowthick-1-s',
                 sortDescIcon: 'gj-grid-ui-thead-th-sort-icon ui-icon ui-icon-arrowthick-1-n'
             },

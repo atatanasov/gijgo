@@ -7,61 +7,101 @@ if (typeof (gj.grid.plugins) === 'undefined') {
 }
 
 gj.grid.plugins.pagination = {
-    'configuration': {
-        pager: {
-            /** This setting control the visualization of the pager. If this setting is enabled the pager would show.
-              * @alias pager.enable
-              * @type boolean
-              * @default false
-              */
-            enable: false,
+    'config': {
+        base: {
+            style: {
+                pager: {
+                    cell: '',
+                    stateDisabled: ''
+                }
+            },
+            pager: {
+                /** This setting control the visualization of the pager. If this setting is enabled the pager would show.
+                 * @alias pager.enable
+                 * @type boolean
+                 * @default false
+                 */
+                enable: false,
 
-            /** The maximum number of records that can be show by page.
-                * @alias pager.limit
-                * @type int
-                * @default 10
-                */
-            limit: 10,
+                /** The maximum number of records that can be show by page.
+                 * @alias pager.limit
+                 * @type int
+                 * @default 10
+                 */
+                limit: 10,
 
-            /** Array that contains the possible page sizes of the grid.
-                * When this setting is set, then a drop down with the options for each page size is visualized in the pager.
-                * @alias pager.sizes
-                * @type array
-                * @default undefined
-                */
-            sizes: undefined,
+                /** Array that contains the possible page sizes of the grid.
+                 * When this setting is set, then a drop down with the options for each page size is visualized in the pager.
+                 * @alias pager.sizes
+                 * @type array
+                 * @default undefined
+                 */
+                sizes: undefined,
 
-            /** Array that contains a list with jquery objects that are going to be used on the left side of the pager.
-                * @alias pager.leftControls
-                * @type array
-                * @default array
-                */
-            leftControls: [
-                $('<div title="First" data-role="page-first" class="ui-icon ui-icon-seek-first ui-grid-icon"></div>'),
-                $('<div title="Previous" data-role="page-previous" class="ui-icon ui-icon-seek-prev ui-grid-icon"></div>'),
-                $('<div>Page</div>'),
-                $('<div></div>').append($('<input type="text" data-role="page-number" class="ui-grid-pager" value="0">')),
-                $('<div>of&nbsp;</div>'),
-                $('<div data-role="page-label-last">0</div>'),
-                $('<div title="Next" data-role="page-next" class="ui-icon ui-icon-seek-next ui-grid-icon"></div>'),
-                $('<div title="Last" data-role="page-last" class="ui-icon ui-icon-seek-end ui-grid-icon"></div>'),
-                $('<div title="Reload" data-role="page-refresh" class="ui-icon ui-icon-refresh ui-grid-icon"></div>'),
-                $('<div></div>').append($('<select data-role="page-size" class="ui-grid-page-sizer"></select>'))
-            ],
+                /** Array that contains a list with jquery objects that are going to be used on the left side of the pager.
+                 * @alias pager.leftControls
+                 * @type array
+                 * @default array
+                 */
+                leftControls: [
+                    $('<button title="First" data-role="page-first" class="gj-cursor-pointer">first</button> &nbsp;'),
+                    $('<button title="Previous" data-role="page-previous" class="gj-cursor-pointer">previous</button> &nbsp;'),
+                    $('<div>Page</div>'),
+                    $('<div></div>').append($('<input type="text" data-role="page-number" class="" value="0">')),
+                    $('<div>of&nbsp;</div>'),
+                    $('<div data-role="page-label-last">0</div>'),
+                    $('<button title="Next" data-role="page-next" class="gj-cursor-pointer">next</button>'),
+                    $('<button title="Last" data-role="page-last" class="gj-cursor-pointer">last</button>'),
+                    $('<button title="Reload" data-role="page-refresh" class="gj-cursor-pointer">reload</button>'),
+                    $('<div></div>').append($('<select data-role="page-size" class=""></select>'))
+                ],
 
-            /** Array that contains a list with jquery objects that are going to be used on the right side of the pager.
-                * @alias pager.rightControls
-                * @type array
-                * @default array
-                */
-            rightControls: [
-                $('<div>Displaying records&nbsp;</div>'),
-                $('<div data-role="record-first">0</div>'),
-                $('<div>&nbsp;-&nbsp;</div>'),
-                $('<div data-role="record-last">0</div>'),
-                $('<div>&nbsp;of&nbsp;</div>'),
-                $('<div data-role="record-total">0</div>').css({ "margin-right": "5px" })
-            ]
+                /** Array that contains a list with jquery objects that are going to be used on the right side of the pager.
+                 * @alias pager.rightControls
+                 * @type array
+                 * @default array
+                 */
+                rightControls: [
+                    $('<div>Displaying records&nbsp;</div>'),
+                    $('<div data-role="record-first">0</div>'),
+                    $('<div>&nbsp;-&nbsp;</div>'),
+                    $('<div data-role="record-last">0</div>'),
+                    $('<div>&nbsp;of&nbsp;</div>'),
+                    $('<div data-role="record-total">0</div>').css({ "margin-right": "5px" })
+                ]
+            }
+        },
+        jqueryui: {
+            style: {
+                cell: 'ui-widget-header ui-state-default ui-grid-pager-cell',
+                stateDisabled: 'ui-state-disabled'
+            },
+            pager: {
+                leftControls: [
+                    $('<div title="First" data-role="page-first" class="ui-icon ui-icon-seek-first ui-grid-icon"></div>'),
+                    $('<div title="Previous" data-role="page-previous" class="ui-icon ui-icon-seek-prev ui-grid-icon"></div>'),
+                    $('<div>Page</div>'),
+                    $('<div></div>').append($('<input type="text" data-role="page-number" class="ui-grid-pager" value="0">')),
+                    $('<div>of&nbsp;</div>'),
+                    $('<div data-role="page-label-last">0</div>'),
+                    $('<div title="Next" data-role="page-next" class="ui-icon ui-icon-seek-next ui-grid-icon"></div>'),
+                    $('<div title="Last" data-role="page-last" class="ui-icon ui-icon-seek-end ui-grid-icon"></div>'),
+                    $('<div title="Reload" data-role="page-refresh" class="ui-icon ui-icon-refresh ui-grid-icon"></div>'),
+                    $('<div></div>').append($('<select data-role="page-size" class="ui-grid-page-sizer"></select>'))
+                ],
+
+                rightControls: [
+                    $('<div>Displaying records&nbsp;</div>'),
+                    $('<div data-role="record-first">0</div>'),
+                    $('<div>&nbsp;-&nbsp;</div>'),
+                    $('<div data-role="record-last">0</div>'),
+                    $('<div>&nbsp;of&nbsp;</div>'),
+                    $('<div data-role="record-total">0</div>').css({ "margin-right": "5px" })
+                ]
+            }
+        },
+        bootstrap: {
+
         }
     },
 
@@ -326,7 +366,16 @@ gj.grid.plugins.pagination = {
     },
 
     'configure': function ($grid) {
-        gj.grid.plugins.pagination.private.init($grid);
+        var data = $grid.data('grid');
+        if (data.uiLibrary === 'jqueryui') {
+            $.extend(true, data, gj.grid.plugins.pagination.config.jqueryui);
+        } else if (data.uiLibrary === 'bootstrap') {
+            $.extend(true, data, gj.grid.plugins.pagination.config.bootstrap);
+        }
+
+        $grid.on('initialized', function (e) {
+            gj.grid.plugins.pagination.private.init($grid);
+        });
         $grid.on('dataBound', function (e, records, totalRecords) {
             gj.grid.plugins.pagination.private.reloadPager($grid, totalRecords);
         });
@@ -338,5 +387,4 @@ gj.grid.plugins.pagination = {
         });
     }
 };
-
-$.extend(true, gj.grid.config, gj.grid.plugins.pagination.configuration);
+$.extend(true, gj.grid.config, gj.grid.plugins.pagination.config.base);

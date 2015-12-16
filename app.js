@@ -36,6 +36,8 @@ server.get('/DataSources/GetPlayers', function (req, res) {
         limit = parseInt(params.limit, 10);
         startInd = (page - 1) * limit;
         result = data.slice(startInd, startInd + limit);
+    } else {
+        result = data;
     }
 
     res.setHeader('Content-Type', 'application/json');

@@ -52,8 +52,9 @@
                     'build/modular/grid/css/grid.jqueryui.css': ['src/grid/css/grid.jqueryui.css'],
                     'build/modular/grid/css/grid.bootstrap.css': ['src/grid/css/grid.bootstrap.css'],
                     'build/modular/grid/css/grid.responsiveDesign.css': ['src/grid/css/grid.responsiveDesign.css'],
+                    'build/modular/grid/css/grid.pagination.css': ['src/grid/css/grid.pagination.css'],
 
-                    'build/combined/css/grid.css': ['build/modular/grid/css/grid.base.css', 'build/modular/grid/css/grid.jqueryui.css', 'build/modular/grid/css/grid.bootstrap.css', 'build/modular/grid/css/grid.responsiveDesign.css']
+                    'build/combined/css/grid.css': ['build/modular/grid/css/grid.base.css', 'build/modular/grid/css/grid.jqueryui.css', 'build/modular/grid/css/grid.bootstrap.css', 'build/modular/grid/css/grid.responsiveDesign.css', 'src/grid/css/grid.pagination.css']
                 }
             }
         },
@@ -257,6 +258,9 @@ var writer = {
                         break;
                     case 'grid.responsiveDesign':
                         result += '  <link href="../../build/modular/grid/css/grid.responsiveDesign.css" rel="stylesheet" type="text/css">\r\n';
+                        break;
+                    case 'grid.pagination':
+                        result += '  <link href="../../build/modular/grid/css/grid.pagination.css" rel="stylesheet" type="text/css">\r\n';
                         break;
                 }
                 //include js files

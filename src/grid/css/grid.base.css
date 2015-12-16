@@ -1,4 +1,9 @@
-﻿DIV.gj-grid-wrapper {
+﻿.gj-cursor-pointer
+{
+    cursor: pointer;
+}
+
+DIV.gj-grid-wrapper {
     margin: auto;
     position: relative;
     clear:both;
@@ -9,11 +14,6 @@ TABLE.gj-grid-table {
     border-collapse: collapse;
     width: 100%;
     table-layout: fixed;
-}
-
-TABLE.gj-grid-table THEAD TH.gj-grid-thead-sortable
-{
-    cursor: pointer;
 }
 
 TABLE.gj-grid-table THEAD TH #checkAllBoxes

@@ -556,17 +556,13 @@ gj.grid.config = {
         loadingText: 'gj-grid-loading-text',
         header: {
             cell: undefined,
-            sortable: 'gj-grid-thead-sortable',
+            sortable: 'gj-cursor-pointer',
             sortAscIcon: '',
             sortDescIcon: ''
         },
         content: {
             rowHover: undefined,
             rowSelected: 'gj-grid-base-active'
-        },
-        pager: {
-            cell: 'ui-widget-header ui-state-default ui-grid-pager-cell',
-            stateDisabled: 'ui-state-disabled'
         },
         //TODO: move to expand/collapse plugin
         expandIcon: 'ui-icon ui-icon-plus',
