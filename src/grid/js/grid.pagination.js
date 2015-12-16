@@ -92,7 +92,7 @@ gj.grid.plugins.pagination = {
 
                 $tfoot = $('<tfoot />').append($row);
                 $grid.append($tfoot);
-                gj.grid.plugins.pagination.methods.updatePagerColSpan($grid);
+                gj.grid.plugins.pagination.private.updatePagerColSpan($grid);
 
                 leftControls = gj.grid.methods.clone(data.pager.leftControls); //clone array
                 $.each(leftControls, function () {
@@ -306,12 +306,13 @@ gj.grid.plugins.pagination = {
          * @event pageChanging
          * @property {object} e - event data
          * @property {int} newPage - The new page
-         * @example <!-- grid.base, grid.pagination -->
+         * @example <!-- grid.base, grid.pagination, grid.jqueryui, jqueryui -->
          * <table id="grid"></table>
          * <script>
          *     var grid = $('#grid').grid({
          *         dataSource: '/DataSources/GetPlayers',
-         *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
+         *         uiLibrary: 'jqueryui',
+         *         columns: [ { field: 'ID' }, { field: 'Name', sortable: true }, { field: 'PlaceOfBirth' } ],
          *         pager: { enable: true, limit: 2, sizes: [2, 5, 10, 20] }
          *     });
          *     grid.on('pageChanging', function (e, newPage) {
