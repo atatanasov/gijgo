@@ -1,0 +1,25 @@
+﻿/* Base Theme */
+.gj-grid-base-table tfoot th {
+    background-color: #f5f5f5;
+    border: 1px solid #ddd;
+    padding: 3px;
+    font-weight: normal;
+    line-height: 29px;
+}
+
+.gj-grid-base-table tfoot th button {
+    margin: 0 3px 0 3px;
+    background-color: #f5f5f5;
+    border-radius: 4px;
+    text-decoration: none;
+    padding: 6px 12px;
+    border: 1px solid #ddd;
+    color: #337ab7;
+    width: 34px;
+}
+
+.gj-grid-base-table tfoot th input {
+    margin: 0 5px 0 5px;
+    width: 26px;
+    text-align: right;
+}

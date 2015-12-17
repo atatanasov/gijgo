@@ -44,16 +44,11 @@ gj.grid.plugins.pagination = {
                  * @default array
                  */
                 leftControls: [
-                    $('<button title="First" data-role="page-first" class="gj-cursor-pointer">first</button> &nbsp;'),
-                    $('<button title="Previous" data-role="page-previous" class="gj-cursor-pointer">previous</button> &nbsp;'),
-                    $('<div>Page</div>'),
-                    $('<div></div>').append($('<input type="text" data-role="page-number" class="" value="0">')),
-                    $('<div>of&nbsp;</div>'),
-                    $('<div data-role="page-label-last">0</div>'),
-                    $('<button title="Next" data-role="page-next" class="gj-cursor-pointer">next</button>'),
-                    $('<button title="Last" data-role="page-last" class="gj-cursor-pointer">last</button>'),
-                    $('<button title="Reload" data-role="page-refresh" class="gj-cursor-pointer">reload</button>'),
-                    $('<div></div>').append($('<select data-role="page-size" class=""></select>'))
+                    $('<button title="Previous" data-role="page-previous" class="gj-cursor-pointer"><span>«</span></button>'),
+                    $('<button data-role="" class="gj-cursor-pointer"><span>1</span></button>'),
+                    $('<button data-role="" class="gj-cursor-pointer"><span>2</span></button>'),
+                    $('<button data-role="" class="gj-cursor-pointer"><span>3</span></button>'),
+                    $('<button title="Next" data-role="page-next" class="gj-cursor-pointer"><span>»</span></button> &nbsp;')
                 ],
 
                 /** Array that contains a list with jquery objects that are going to be used on the right side of the pager.

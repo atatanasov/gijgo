@@ -106,6 +106,8 @@ DIV.gj-grid-wrapper DIV.gj-grid-loading-text
 /* Base Theme */
 .gj-grid-base-table {
     border: 1px solid #ddd;
+    font-family: Helvetica,Arial,sans-serif;
+    font-size: 14px;
 }
 
 .gj-grid-base-table thead tr th {
