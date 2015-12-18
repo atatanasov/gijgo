@@ -45,9 +45,9 @@ gj.grid.plugins.pagination = {
                  */
                 leftControls: [
                     $('<button title="Previous" data-role="page-previous" class="gj-cursor-pointer"><span>«</span></button>'),
-                    $('<button data-role="" class="gj-cursor-pointer"><span>1</span></button>'),
-                    $('<button data-role="" class="gj-cursor-pointer"><span>2</span></button>'),
-                    $('<button data-role="" class="gj-cursor-pointer"><span>3</span></button>'),
+                    $('<button data-role="page-button-one" class="gj-cursor-pointer">1</button>'),
+                    $('<button data-role="page-button-two" class="gj-cursor-pointer">2</button>'),
+                    $('<button data-role="page-button-three" class="gj-cursor-pointer">3</button>'),
                     $('<button title="Next" data-role="page-next" class="gj-cursor-pointer"><span>»</span></button> &nbsp;')
                 ],
 
@@ -139,7 +139,7 @@ gj.grid.plugins.pagination = {
                     $rightPanel.append(this);
                 });
 
-                controls = $grid.find('TFOOT [data-role]');
+                controls = $grid.find('tfoot [data-role]');
                 for (i = 0; i < controls.length; i++) {
                     gj.grid.plugins.pagination.private.initPagerControl($(controls[i]), $grid);
                 }
@@ -202,41 +202,49 @@ gj.grid.plugins.pagination = {
         },
 
         reloadPagerControl: function ($control, $grid, page, lastPage, firstRecord, lastRecord, totalRecords) {
-            var data = $grid.data('grid');
+            var data = $grid.data('grid'),
+                newPage;
             switch ($control.data('role')) {
                 case 'page-first':
-                    if (page < 2) {
-                        $control.addClass(data.style.pager.stateDisabled).off('click');
-                    } else {
-                        $control.removeClass(data.style.pager.stateDisabled).off('click').on('click', gj.grid.plugins.pagination.private.CreateFirstPageHandler($grid));
-                    }
+                    gj.grid.plugins.pagination.private.assignPageHandler($grid, $control, 1, page < 2);
                     break;
                 case 'page-previous':
-                    if (page < 2) {
-                        $control.addClass(data.style.pager.stateDisabled).off('click');
-                    } else {
-                        $control.removeClass(data.style.pager.stateDisabled).off('click').on('click', gj.grid.plugins.pagination.private.CreatePrevPageHandler($grid));
-                    }
+                    gj.grid.plugins.pagination.private.assignPageHandler($grid, $control, page - 1, page < 2);
                     break;
                 case 'page-number':
-                    $control.val(page).off('change').on('change', gj.grid.plugins.pagination.private.CreateChangePageHandler($grid, page, lastPage));
+                    $control.val(page).off('change').on('change', gj.grid.plugins.pagination.private.createChangePageHandler($grid, page, lastPage));
                     break;
                 case 'page-label-last':
                     $control.text(lastPage);
                     break;
                 case 'page-next':
-                    if (lastPage === page) {
-                        $control.addClass(data.style.pager.stateDisabled).off('click');
-                    } else {
-                        $control.removeClass(data.style.pager.stateDisabled).off('click').on('click', gj.grid.plugins.pagination.private.CreateNextPageHandler($grid));
-                    }
+                    gj.grid.plugins.pagination.private.assignPageHandler($grid, $control, page + 1, lastPage === page);
                     break;
                 case 'page-last':
-                    if (lastPage === page) {
-                        $control.addClass(data.style.pager.stateDisabled).off('click');
+                    gj.grid.plugins.pagination.private.assignPageHandler($grid, $control, lastPage, lastPage === page);
+                    break;
+                case 'page-button-one':
+                    newPage = (page === 1) ? 1 : ((page == lastPage) ? (page - 2) : (page - 1));
+                    $control.off('click').text(newPage);
+                    if (newPage === page) {
+                        $control.css('background-color', 'white');
                     } else {
-                        $control.removeClass(data.style.pager.stateDisabled).off('click').on('click', gj.grid.plugins.pagination.private.CreateLastPageHandler($grid, lastPage));
+                        $control.on('click', function () {
+                            gj.grid.plugins.pagination.private.changePage($grid, newPage);
+                        });
                     }
+                    break;
+                case 'page-button-two':
+                    newPage = (page === 1) ? 2 : ((page == lastPage) ? lastPage - 1 : page);
+                    $control.off('click').text(newPage).on('click', function () {
+                        gj.grid.plugins.pagination.private.changePage($grid, newPage);
+                    });
+                    break;
+                case 'page-button-three':
+                    newPage = (page === 1) ? page + 2 : ((page == lastPage) ? page : (page + 1));
+                    $control.off('click').text(newPage).on('click', function () {
+                        gj.grid.plugins.pagination.private.changePage($grid, newPage);
+                    });
                     break;
                 case 'record-first':
                     $control.text(firstRecord);
@@ -250,36 +258,18 @@ gj.grid.plugins.pagination = {
             }
         },
 
-        CreateFirstPageHandler: function ($grid) {
-            return function () {
-                gj.grid.plugins.pagination.private.changePage($grid, 1);
-            };
+        assignPageHandler: function ($grid, $control, newPage, disabled) {
+            var style = $grid.data('grid').style.pager;
+            if (disabled) {
+                $control.addClass(style.stateDisabled).prop('disabled', true).off('click');
+            } else {
+                $control.removeClass(style.stateDisabled).prop('disabled', false).off('click').on('click', function () {
+                    gj.grid.plugins.pagination.private.changePage($grid, newPage);
+                });
+            }
         },
 
-        CreatePrevPageHandler: function ($grid) {
-            return function () {
-                var data = $grid.data('grid'),
-                    currentPage = data.params[data.defaultParams.page],
-                    newPage = (currentPage && currentPage > 1) ? currentPage - 1 : 1;
-                gj.grid.plugins.pagination.private.changePage($grid, newPage);
-            };
-        },
-
-        CreateNextPageHandler: function ($grid) {
-            return function () {
-                var data = $grid.data('grid'),
-                    currentPage = data.params[data.defaultParams.page];
-                gj.grid.plugins.pagination.private.changePage($grid, currentPage + 1);
-            };
-        },
-
-        CreateLastPageHandler: function ($grid, lastPage) {
-            return function () {
-                gj.grid.plugins.pagination.private.changePage($grid, lastPage);
-            };
-        },
-
-        CreateChangePageHandler: function ($grid, currentPage, lastPage) {
+        createChangePageHandler: function ($grid, currentPage, lastPage) {
             return function (e) {
                 var data = $grid.data('grid'),
                     newPage = parseInt(this.value, 10);
