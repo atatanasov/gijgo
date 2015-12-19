@@ -18,6 +18,10 @@
     width: 34px;
 }
 
+.gj-grid-base-table tfoot th button.gj-grid-base-active {
+    background-color: #fff;
+}
+
 .gj-grid-base-table tfoot th input {
     margin: 0 5px 0 5px;
     width: 26px;

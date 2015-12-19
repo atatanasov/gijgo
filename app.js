@@ -15,7 +15,8 @@ server.get('/DataSources/GetPlayers', function (req, res) {
 		{ 'ID': '3', 'Name': 'David Platt', 'PlaceOfBirth': 'Chadderton, Lancashire, England', 'DateOfBirth': '\/Date(-112417200000)\/', 'IsActive': false },
 		{ 'ID': '4', 'Name': 'Manuel Neuer', 'PlaceOfBirth': 'Gelsenkirchen, West Germany', 'DateOfBirth': '\/Date(512258400000)\/', 'IsActive': true },
 		{ 'ID': '5', 'Name': 'James Rodríguez', 'PlaceOfBirth': 'Cúcuta, Colombia', 'DateOfBirth': '\/Date(679266000000)\/', 'IsActive': true },
-		{ 'ID': '6', 'Name': 'Dimitar Berbatov', 'PlaceOfBirth': 'Blagoevgrad, Bulgaria', 'DateOfBirth': '\/Date(349653600000)\/', 'IsActive': true }
+		{ 'ID': '6', 'Name': 'Dimitar Berbatov', 'PlaceOfBirth': 'Blagoevgrad, Bulgaria', 'DateOfBirth': '\/Date(349653600000)\/', 'IsActive': true },
+		{ 'ID': '7', 'Name': 'Robert Lewandowski', 'PlaceOfBirth': 'Warsaw, Poland', 'DateOfBirth': '\/Date(588168000000)\/', 'IsActive': true }
     ];
     result = [];
 
