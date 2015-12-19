@@ -22,10 +22,7 @@ gj.grid.plugins.jqueryui = {
             pager: {
                 cell: 'ui-widget-header ui-state-default ui-grid-pager-cell',
                 stateDisabled: 'ui-state-disabled'
-            }//,
-            ////TODO: move to expand/collapse plugin
-            //expandIcon: 'ui-icon ui-icon-plus',
-            //collapseIcon: 'ui-icon ui-icon-minus'
+            }
         },
     },
 

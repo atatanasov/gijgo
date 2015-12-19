@@ -20,9 +20,7 @@ gj.grid.plugins.bootstrap = {
             pager: {
                 cell: 'gj-grid-bootstrap-tfoot-cell',
                 stateDisabled: 'ui-state-disabled'
-            },
-            expandIcon: 'glyphicon glyphicon-plus',
-            collapseIcon: 'glyphicon glyphicon-minus'
+            }
         },
         pager: {
             leftControls: [

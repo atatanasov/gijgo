@@ -563,10 +563,7 @@ gj.grid.config = {
         content: {
             rowHover: undefined,
             rowSelected: 'gj-grid-base-active'
-        },
-        //TODO: move to expand/collapse plugin
-        expandIcon: 'ui-icon ui-icon-plus',
-        collapseIcon: 'ui-icon ui-icon-minus'
+        }
     },
 
     /** The type of the row selection.<br/>

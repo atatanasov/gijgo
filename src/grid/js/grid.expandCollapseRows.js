@@ -7,22 +7,41 @@ if (typeof (gj.grid.plugins) === 'undefined') {
 }
 
 gj.grid.plugins.expandCollapseRows = {
-    'configuration': {
-        /** Template for the content in the detail section of the row.
-          * Automatically add expand collapse column as a first column in the grid during initialization.
-          * @type string
-          * @default undefined
-          * @example <!-- grid.base, grid.expandCollapseRows -->
-          * <table id="grid"></table>
-          * <script>
-          *     $('#grid').grid({
-          *         dataSource: '/DataSources/GetPlayers',
-          *         detailTemplate: '<div><b>DateOfBirth:</b> {DateOfBirth}</div>',
-          *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
-          *     });
-          * </script>
-          */
-        detailTemplate: undefined
+    config: {
+        base: {
+            /** Template for the content in the detail section of the row.
+             * Automatically add expand collapse column as a first column in the grid during initialization.
+             * @type string
+             * @default undefined
+             * @example <!-- grid.base, grid.expandCollapseRows -->
+             * <table id="grid"></table>
+             * <script>
+             *     $('#grid').grid({
+             *         dataSource: '/DataSources/GetPlayers',
+             *         detailTemplate: '<div><b>DateOfBirth:</b> {DateOfBirth}</div>',
+             *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
+             *     });
+             * </script>
+             */
+            detailTemplate: undefined,
+
+            style: {
+                expandIcon: '',
+                collapseIcon: ''
+            }
+        },
+        jqueryui: {
+            style: {
+                expandIcon: 'ui-icon ui-icon-plus',
+                collapseIcon: 'ui-icon ui-icon-minus'
+            }
+        },
+        bootstrap: {
+            style: {
+                expandIcon: 'glyphicon glyphicon-plus',
+                collapseIcon: 'glyphicon glyphicon-minus'
+            }
+        }
     },
 
     'private': {
@@ -63,6 +82,7 @@ gj.grid.plugins.expandCollapseRows = {
     },
 
     'public': {
+        //TODO: add documentation
         collapseAll: function () {
             var $grid = this;
             $grid.find('tbody tr[data-role="row"]').each(function () {
@@ -70,8 +90,12 @@ gj.grid.plugins.expandCollapseRows = {
             });
         },
 
+        //TODO: add documentation
         expandAll: function () {
-
+            var $grid = this;
+            $grid.find('tbody tr[data-role="row"]').each(function () {
+                gj.grid.plugins.expandCollapseRows.private.detailExpand($(this).first(), $grid);
+            });
         }
     },
 
@@ -138,8 +162,16 @@ gj.grid.plugins.expandCollapseRows = {
     },
 
     'configure': function ($grid) {
-        $.extend(true, $grid, gj.grid.plugins.expandCollapseRows.public);
         var data = $grid.data('grid');
+
+        $.extend(true, $grid, gj.grid.plugins.expandCollapseRows.public);
+
+        if (data.uiLibrary === 'jqueryui') {
+            $.extend(true, data, gj.grid.plugins.expandCollapseRows.config.jqueryui);
+        } else if (data.uiLibrary === 'bootstrap') {
+            $.extend(true, data, gj.grid.plugins.expandCollapseRows.config.bootstrap);
+        }
+
         if (typeof (data.detailTemplate) !== 'undefined') {
             data.columns = [{
                 title: '',
@@ -174,4 +206,4 @@ gj.grid.plugins.expandCollapseRows = {
     }
 };
 
-$.extend(true, gj.grid.config, gj.grid.plugins.expandCollapseRows.configuration);
+$.extend(true, gj.grid.config, gj.grid.plugins.expandCollapseRows.config.base);
