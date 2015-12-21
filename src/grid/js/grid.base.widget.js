@@ -1,5 +1,5 @@
-﻿/** 
-  * @widget Grid 
+﻿/**
+  * @widget Grid
   * @plugin Base
   */
 function Grid($grid, arguments) {
@@ -88,8 +88,8 @@ function Grid($grid, arguments) {
      * @example <!-- grid.base -->
      * <table id="grid"></table>
      * <script>
-     *     var grid, onSuccessFunc; 
-     *     onSuccessFunc = function (response) { 
+     *     var grid, onSuccessFunc;
+     *     onSuccessFunc = function (response) {
      *         //you can modify the response here if needed
      *         grid.render(response);
      *     };
@@ -343,7 +343,7 @@ function Grid($grid, arguments) {
      *     });
      *     $('#btnGetAllName').on('click', function () {
      *         var records = grid.getAll(), names = '';
-     *         $.each(records, function () { 
+     *         $.each(records, function () {
      *             names += this.record.Name + '(id=' + this.id + '),';
      *         });
      *         alert(names);
@@ -442,7 +442,7 @@ function Grid($grid, arguments) {
      *             { 'ID': 2, 'Name': 'Ronaldo Luis Nazario de Lima', 'PlaceOfBirth': 'Rio de Janeiro, Brazil' },
      *             { 'ID': 3, 'Name': 'David Platt', 'PlaceOfBirth': 'Chadderton, Lancashire, England' }
      *         ],
-     *         columns: [ 
+     *         columns: [
      *             { field: 'ID' },
      *             { field: 'Name' },
      *             { field: 'PlaceOfBirth' },
@@ -483,7 +483,7 @@ function Grid($grid, arguments) {
      *             { 'ID': 2, 'Name': 'Ronaldo Luís Nazário de Lima', 'PlaceOfBirth': 'Rio de Janeiro, Brazil' },
      *             { 'ID': 3, 'Name': 'David Platt', 'PlaceOfBirth': 'Chadderton, Lancashire, England' }
      *         ],
-     *         columns: [ 
+     *         columns: [
      *             { field: 'ID' },
      *             { field: 'Name' },
      *             { field: 'PlaceOfBirth' },
@@ -508,7 +508,7 @@ function Grid($grid, arguments) {
     methods.init.apply($grid, arguments);
 
     return $grid;
-};
+}
 
 (function ($) {
     $.fn.grid = function (method) {

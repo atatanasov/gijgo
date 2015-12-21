@@ -1,4 +1,4 @@
-﻿/* global window alert jQuery */
+﻿/* global window alert jQuery gj */
 /*
  * Gijgo JavaScript Library v0.6.0
  * http://gijgo.com/
@@ -6,14 +6,14 @@
  * Copyright 2014, 2015 gijgo.com
  * Released under the MIT license
  */
-/** 
-  * @widget Grid 
+/**
+  * @widget Grid
   * @plugin Base
   */
-if (typeof (gj) === 'undefined') {
+if (typeof(gj) === 'undefined') {
     gj = {};
 }
-if (typeof (gj.grid) === 'undefined') {
+if (typeof(gj.grid) === 'undefined') {
     gj.grid = {
         plugins: {}
     };
@@ -91,7 +91,7 @@ gj.grid.config = {
 
     /** Auto generate column for each field in the datasource when set to true.
      * @type array
-     * @example <!-- grid.base --> 
+     * @example <!-- grid.base -->
      * <table id="grid"></table>
      * <script>
      *     $('#grid').grid({
@@ -349,8 +349,8 @@ gj.grid.config = {
          *         dataSource: '/DataSources/GetPlayers',
          *         columns: [
          *             { field: 'ID' },
-         *             { 
-         *               field: 'Name', 
+         *             {
+         *               field: 'Name',
          *               events: {
          *                 'mouseenter': function (e) {
          *                     e.stopPropagation();
@@ -358,16 +358,16 @@ gj.grid.config = {
          *                 },
          *                 'mouseleave': function (e) {
          *                     e.stopPropagation();
-         *                     $(e.currentTarget).css('background-color', ''); 
+         *                     $(e.currentTarget).css('background-color', '');
          *                 }
          *               }
          *             },
          *             { field: 'PlaceOfBirth' },
-         *             { 
-         *               title: '', field: 'Info', width: 20, type: 'icon', icon: 'ui-icon-info', 
-         *               events: { 
-         *                 'click': function (e) { 
-         *                     alert('record with id=' + e.data.id + ' is clicked.'); } 
+         *             {
+         *               title: '', field: 'Info', width: 20, type: 'icon', icon: 'ui-icon-info',
+         *               events: {
+         *                 'click': function (e) {
+         *                     alert('record with id=' + e.data.id + ' is clicked.'); }
          *                 }
          *             }
          *         ]
@@ -391,7 +391,7 @@ gj.grid.config = {
          *     }
          *     function onMouseLeave (e) {
          *         e.stopPropagation();
-         *         $(e.currentTarget).css('background-color', ''); 
+         *         $(e.currentTarget).css('background-color', '');
          *     }
          *     function onClick(e) {
          *         alert('record with id=' + e.data.id + ' is clicked.');
@@ -401,7 +401,7 @@ gj.grid.config = {
          */
         events: undefined,
 
-        /** Format the date when the type of the column is date. 
+        /** Format the date when the type of the column is date.
          * This configuration setting is going to work only if you have implementation of format method for the Date object.
          * You can use external libraries like http://blog.stevenlevithan.com/archives/date-time-format for that.
          * @alias column.format
@@ -608,8 +608,8 @@ gj.grid.config = {
      * @example <!-- grid.base -->
      * <table id="grid"></table>
      * <script>
-     *     var grid = $('#grid').grid({ 
-     *         dataSource: '/DataSources/GetPlayers', 
+     *     var grid = $('#grid').grid({
+     *         dataSource: '/DataSources/GetPlayers',
      *         autoLoad: false,
      *         columns: [ { field: 'ID' }, { field: 'Name' } ]
      *     });
@@ -617,7 +617,7 @@ gj.grid.config = {
      * </script>
      * @example <table id="grid"></table>
      * <script>
-     *     $('#grid').grid({ 
+     *     $('#grid').grid({
      *         dataSource: '/DataSources/GetPlayers',
      *         autoLoad: true,
      *         columns: [ { field: 'ID' }, { field: 'Name' } ]

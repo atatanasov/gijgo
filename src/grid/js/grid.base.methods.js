@@ -575,7 +575,7 @@
 
     getRecordById: function ($grid, id) {
         var result = {}, rows, i, rowData;
-        rows = $grid.find('tbody > tr');
+        rows = $grid.find('tbody > tr[data-role="row"]');
         for (i = 0; i < rows.length; i++) {
             rowData = $(rows[i]).data('row');
             if (rowData.id === id) {
@@ -601,7 +601,7 @@
 
     getByPosition: function ($grid, position) {
         var result = {}, $rows, data;
-        $rows = $grid.find('tbody > tr');
+        $rows = $grid.find('tbody > tr[data-role="row"]');
         if ($rows.length >= position) {
             data = $rows.eq(position - 1).data('row');
             if (data && data.record) {
@@ -636,7 +636,7 @@
     getCell: function ($grid, id, index) {
         var result = {}, rows, i, rowData, position;
         position = gj.grid.methods.getColumnPosition($grid, index);
-        rows = $grid.find('tbody > tr');
+        rows = $grid.find('tbody > tr[data-role="row"]');
         for (i = 0; i < rows.length; i += 1) {
             rowData = $(rows[i]).data('row');
             if (rowData.id === id) {
@@ -668,7 +668,7 @@
 
     getAll: function ($grid) {
         var result = [],
-                rows = $grid.find('tbody > tr'),
+                rows = $grid.find('tbody > tr[data-role="row"]'),
                 i, record;
 
         for (i = 0; i < rows.length; i++) {

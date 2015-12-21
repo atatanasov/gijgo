@@ -1,5 +1,5 @@
-﻿/** 
-  * @widget Grid 
+﻿/**
+  * @widget Grid
   * @plugin Base
   */
 gj.grid.events = {
@@ -12,7 +12,7 @@ gj.grid.events = {
      * <table id="grid"></table>
      * <script>
      *     var grid = $('#grid').grid({
-     *         dataSource: { 
+     *         dataSource: {
      *             url: '/DataSources/GetPlayers',
      *             data: { searchString: 'not existing data' } //search for not existing data in order to fire the event
      *         },
@@ -100,7 +100,7 @@ gj.grid.events = {
      *
      * @event cellDataBound
      * @param {object} e - event data
-     * @param {object} $wrapper - the cell wrapper presented as jquery object 
+     * @param {object} $wrapper - the cell wrapper presented as jquery object
      * @param {string} id - the id of the record
      * @param {object} column - the column configuration data
      * @param {object} record - the data of the row record
@@ -127,7 +127,7 @@ gj.grid.events = {
      *
      * @event rowSelect
      * @param {object} e - event data
-     * @param {object} $row - the row presented as jquery object 
+     * @param {object} $row - the row presented as jquery object
      * @param {string} id - the id of the record
      * @param {object} record - the data of the row record
      * @example <!-- grid.base -->
@@ -152,7 +152,7 @@ gj.grid.events = {
      *
      * @event rowUnselect
      * @param {object} e - event data
-     * @param {object} $row - the row presented as jquery object 
+     * @param {object} $row - the row presented as jquery object
      * @param {string} id - the id of the record
      * @param {object} record - the data of the row record
      * @example <!-- grid.base -->
