@@ -7,12 +7,13 @@ if (typeof (gj.grid.plugins) === 'undefined') {
 }
 
 gj.grid.plugins.toolbar = {
-    'configuration': {
+    config: {
         base: {
             /** Template for the content in the toolbar. Appears in a separate row on top of the grid.
               * @type string
               * @default undefined
-              * @example <table id="grid"></table>
+              * @example <!-- grid.base, grid.toolbar -->
+              * <table id="grid"></table>
               * <script>
               *     var grid = $('#grid').grid({
               *         dataSource: '/DataSources/GetPlayers',
@@ -26,7 +27,8 @@ gj.grid.plugins.toolbar = {
             /** The title of the grid. Appears in a separate row on top of the grid.
               * @type string
               * @default undefined
-              * @example <table id="grid"></table>
+              * @example <!-- grid.base, grid.toolbar -->
+              * <table id="grid"></table>
               * <script>
               *     $('#grid').grid({
               *         dataSource: '/DataSources/GetPlayers',
@@ -50,6 +52,35 @@ gj.grid.plugins.toolbar = {
     },
 
     'private': {
+        init: function ($grid) {
+            var data, $toolbar, $title;
+            data = $grid.data();
+            $toolbar = $grid.prev('div[data-role="toolbar"]');
+            if (typeof (data.toolbarTemplate) !== 'undefined' || typeof (data.title) !== 'undefined' || $toolbar.length > 0) {
+                if ($toolbar.length === 0) {
+                    $toolbar = $('<div data-role="toolbar"></div>');
+                    $grid.before($toolbar);
+                }
+                $toolbar.addClass(data.style.toolbar);
+
+                if ($toolbar.children().length === 0 && data.toolbarTemplate) {
+                    $toolbar.append(data.toolbarTemplate);
+                }
+
+                $title = $toolbar.find('[data-role="title"]');
+                if ($title.length === 0) {
+                    $title = $('<div data-role="title"/>');
+                    $toolbar.prepend($title);
+                }
+                if (data.title) {
+                    $title.text(data.title);
+                }
+
+                if (data.minWidth) {
+                    $toolbar.css('min-width', data.minWidth);
+                }
+            }
+        }
     },
 
     'public': {        
@@ -61,7 +92,8 @@ gj.grid.plugins.toolbar = {
          * @method
          * @param {object} text - The text of the new grid title.
          * @return string or grid object
-         * @example <button onclick="grid.title('New Title')">Set New Title</button>
+         * @example <!-- grid.base, grid.toolbar -->
+         * <button onclick="grid.title('New Title')">Set New Title</button>
          * <button onclick="alert(grid.title())">Get Title</button>
          * <br/><br/>
          * <table id="grid"></table>
@@ -72,7 +104,8 @@ gj.grid.plugins.toolbar = {
          *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
          *     });
          * </script>
-         * @example <button onclick="grid.title('New Title')">Set New Title</button>
+         * @example <!-- grid.base, grid.toolbar -->
+         * <button onclick="grid.title('New Title')">Set New Title</button>
          * <button onclick="alert(grid.title())">Get Title</button>
          * <br/><br/>
          * <table id="grid"></table>
@@ -96,35 +129,11 @@ gj.grid.plugins.toolbar = {
     },
 
     'configure': function ($grid) {
-        var data, $toolbar, $title;
         $.extend(true, $grid, gj.grid.plugins.toolbar.public);
-        data = $grid.data('grid');
-        $toolbar = $grid.prev('div[data-role="toolbar"]');
-        if (typeof (data.toolbarTemplate) !== 'undefined' || typeof (data.title) !== 'undefined' || $toolbar.length > 0) {
-            if ($toolbar.length === 0) {
-                $toolbar = $('<div data-role="toolbar"></div>');
-                $grid.before($toolbar);
-            }
-            $toolbar.addClass(data.style.toolbar);
-
-            if ($toolbar.children().length === 0 && data.toolbarTemplate) {
-                $toolbar.append(data.toolbarTemplate);
-            }
-
-            $title = $toolbar.find('[data-role="title"]');
-            if ($title.length === 0) {
-                $title = $('<div data-role="title"/>');
-                $toolbar.prepend($title);
-            }
-            if (data.title) {
-                $title.text(data.title);
-            }        
-            
-            if (data.minWidth) {
-                $toolbar.css('min-width', data.minWidth);
-            }
-        }
+        $grid.on('initialized', function () {
+            gj.grid.plugins.toolbar.private.init($grid);
+        });
     }
 };
 
-$.extend(true, gj.grid.config, gj.grid.plugins.toolbar.configuration);
+$.extend(true, gj.grid.config, gj.grid.plugins.toolbar.config.base);

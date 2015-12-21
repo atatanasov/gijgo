@@ -55,7 +55,7 @@ gj.grid.plugins.bootstrap = {
     },
 
     'configure': function ($grid) {
-        var data = $grid.data('grid');
+        var data = $grid.data();
         if (data.uiLibrary === 'bootstrap') {
             $.extend(true, data, gj.grid.plugins.bootstrap.config);
         }

@@ -105,7 +105,7 @@ gj.grid.plugins.pagination = {
         init: function ($grid) {
             var $row, $cell, data, controls, $leftPanel, $rightPanel, $tfoot, leftControls, rightControls, i;
 
-            data = $grid.data('grid');
+            data = $grid.data();
 
             if (data.pager && data.pager.enable) {
                 //if ($.isArray(data.dataSource)) {
@@ -148,7 +148,7 @@ gj.grid.plugins.pagination = {
         },
 
         initPagerControl: function ($control, $grid) {
-            var data = $grid.data('grid');
+            var data = $grid.data();
             switch ($control.data('role')) {
                 case 'page-number':
                     $control.on('keypress', function (e) {
@@ -184,7 +184,7 @@ gj.grid.plugins.pagination = {
         reloadPager: function ($grid, totalRecords) {
             var page, limit, lastPage, firstRecord, lastRecord, data;
 
-            data = $grid.data('grid');
+            data = $grid.data();
 
             if (data.pager.enable) {
                 page = (0 === totalRecords) ? 0 : data.params[data.defaultParams.page];
@@ -203,7 +203,7 @@ gj.grid.plugins.pagination = {
         },
 
         reloadPagerControl: function ($control, $grid, page, lastPage, firstRecord, lastRecord, totalRecords) {
-            var data = $grid.data('grid'),
+            var data = $grid.data(),
                 newPage;
             switch ($control.data('role')) {
                 case 'page-first':
@@ -249,7 +249,7 @@ gj.grid.plugins.pagination = {
         },
 
         assignPageHandler: function ($grid, $control, newPage, disabled) {
-            var style = $grid.data('grid').style.pager;
+            var style = $grid.data().style.pager;
             if (disabled) {
                 $control.addClass(style.stateDisabled).prop('disabled', true).off('click');
             } else {
@@ -260,7 +260,7 @@ gj.grid.plugins.pagination = {
         },
 
         assignButtonHandler: function ($grid, $control, page, newPage) {
-            var style = $grid.data('grid').style.pager;
+            var style = $grid.data().style.pager;
             $control.off('click').text(newPage);
             if (newPage === page) {
                 $control.addClass(style.activeButton);
@@ -273,7 +273,7 @@ gj.grid.plugins.pagination = {
 
         createChangePageHandler: function ($grid, currentPage, lastPage) {
             return function (e) {
-                var data = $grid.data('grid'),
+                var data = $grid.data(),
                     newPage = parseInt(this.value, 10);
                 if (newPage && !isNaN(newPage) && newPage <= lastPage) {
                     gj.grid.plugins.pagination.private.changePage($grid, newPage);
@@ -285,7 +285,7 @@ gj.grid.plugins.pagination = {
         },
 
         changePage: function ($grid, newPage) {
-            var data = $grid.data('grid');
+            var data = $grid.data();
             $grid.find('TFOOT [data-role="page-number"]').val(newPage);
             data.params[data.defaultParams.page] = newPage;
             gj.grid.plugins.pagination.events.pageChanging($grid, newPage);
@@ -353,7 +353,7 @@ gj.grid.plugins.pagination = {
     },
 
     'configure': function ($grid) {
-        var data = $grid.data('grid');
+        var data = $grid.data();
         if (data.uiLibrary === 'jqueryui') {
             $.extend(true, data, gj.grid.plugins.pagination.config.jqueryui);
         } else if (data.uiLibrary === 'bootstrap') {

@@ -7,7 +7,7 @@ if (typeof (gj.grid.plugins) === 'undefined') {
 }
 
 gj.grid.plugins.responsiveDesign = {
-    'configuration': {
+    config: {
         base: {
             /** The interval in milliseconds for checking if the grid is resizing.
              * This setting is in use only if the resizeMonitoring setting is set to true.
@@ -154,7 +154,7 @@ gj.grid.plugins.responsiveDesign = {
         updateDetails: function ($grid) {      
             var $rows, data, i, j, $row, rowData, $placeholder, column, text;
             $rows = $grid.find('tbody > tr');
-            data = $grid.data('grid');
+            data = $grid.data();
             for (i = 0; i < $rows.length; i++) {
                 $row = $($rows[i]);
                 if ($row.data('role') === 'row') {
@@ -213,7 +213,7 @@ gj.grid.plugins.responsiveDesign = {
         makeResponsive: function () {
             var i, $column,
                 extraWidth = 0,
-                config = this.data('grid'),
+                config = this.data(),
                 columns = gj.grid.plugins.responsiveDesign.private.orderColumns(config);
             //calculate extra width
             for (i = 0; i < columns.length; i++) {
@@ -268,7 +268,7 @@ gj.grid.plugins.responsiveDesign = {
 
     'configure': function ($grid) {
         $.extend(true, $grid, gj.grid.plugins.responsiveDesign.public);
-        var data = $grid.data('grid');
+        var data = $grid.data();
         if (data.responsive) {
             $grid.on('initialized', function () {
                 $grid.makeResponsive();
@@ -307,4 +307,4 @@ gj.grid.plugins.responsiveDesign = {
     }
 };
 
-$.extend(true, gj.grid.config, gj.grid.plugins.responsiveDesign.configuration);
+$.extend(true, gj.grid.config, gj.grid.plugins.responsiveDesign.config.base);

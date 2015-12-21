@@ -1,30 +1,28 @@
 ﻿gj.grid.methods = {
 
     init: function (jsConfig) {
-        var plugin, option, data = this.data('grid');
-        if (!data) {
-            gj.grid.methods.configure(this, jsConfig || {});
-            //Initialize all plugins
-            for (plugin in gj.grid.plugins) {
-                if (gj.grid.plugins.hasOwnProperty(plugin)) {
-                    gj.grid.plugins[plugin].configure(this);
-                }
+        var plugin, option, data;
+        gj.grid.methods.configure(this, jsConfig || {});
+        //Initialize all plugins
+        for (plugin in gj.grid.plugins) {
+            if (gj.grid.plugins.hasOwnProperty(plugin)) {
+                gj.grid.plugins[plugin].configure(this);
             }
-            data = this.data('grid');
-            //Initialize events configured as options
-            for (option in data) {
-                if (gj.grid.events.hasOwnProperty(option)) {
-                    this.on(option, data[option]);
-                    delete data[option];
-                }
+        }
+        data = this.data();
+        //Initialize events configured as options
+        for (option in data) {
+            if (gj.grid.events.hasOwnProperty(option)) {
+                this.on(option, data[option]);
+                delete data[option];
             }
-            gj.grid.methods.initialize(this);
-            gj.grid.methods.renderHeader(this);
-            gj.grid.methods.appendEmptyRow(this, '&nbsp;');
-            gj.grid.events.initialized(this);
-            if (data.autoLoad) {
-                this.reload();
-            }
+        }
+        gj.grid.methods.initialize(this);
+        gj.grid.methods.renderHeader(this);
+        gj.grid.methods.appendEmptyRow(this, '&nbsp;');
+        gj.grid.events.initialized(this);
+        if (data.autoLoad) {
+            this.reload();
         }
         return this;
     },
@@ -38,7 +36,7 @@
         $.extend(true, options, htmlConfig);
         $.extend(true, options, jsConfig);
         gj.grid.methods.setDefaultColumnConfig(options.columns, options.defaultColumnSettings);
-        $grid.data('grid', options);
+        $grid.data(options);
     },
 
     setDefaultColumnConfig: function (columns, defaultColumnSettings) {
@@ -105,7 +103,7 @@
     },
 
     initialize: function ($grid) {
-        var data = $grid.data('grid'),
+        var data = $grid.data(),
             $wrapper = $grid.parent('div[data-role="wrapper"]');
 
         if ($wrapper.length === 0) {
@@ -134,7 +132,7 @@
     renderHeader: function ($grid) {
         var data, columns, style, sortBy, direction, $thead, $row, $cell, i, $checkAllBoxes;
 
-        data = $grid.data('grid');
+        data = $grid.data();
         columns = data.columns;
         style = data.style.header;
         sortBy = data.params[data.defaultParams.sortBy];
@@ -192,7 +190,7 @@
         return function () {
             var $sortIcon, data, cellData, style, params = {};
             if ($grid.count() > 0) {
-                data = $grid.data('grid');
+                data = $grid.data();
                 cellData = $cell.data('cell');
                 cellData.direction = (cellData.direction === 'asc' ? 'desc' : 'asc');
                 params[data.defaultParams.sortBy] = cellData.field;
@@ -217,7 +215,7 @@
     startLoading: function ($grid) {
         var $tbody, $cover, $loading, width, height, top, data;
         gj.grid.methods.stopLoading($grid);
-        data = $grid.data('grid');
+        data = $grid.data();
         if (0 === $grid.outerHeight()) {
             return;
         }
@@ -258,7 +256,7 @@
 
     appendEmptyRow: function ($grid, caption) {
         var data, $row, $cell, $wrapper;
-        data = $grid.data('grid');
+        data = $grid.data();
         $row = $('<tr data-role="empty"/>');
         $cell = $('<td/>').css({ 'width': '100%', 'text-align': 'center' });
         $cell.attr('colspan', gj.grid.methods.countVisibleColumns($grid));
@@ -273,7 +271,7 @@
 
     autoGenerateColumns: function ($grid, records) {
         var names, value, type,
-            data = $grid.data('grid');
+            data = $grid.data();
         data.columns = [];
         if (records.length > 0) {
             names = Object.getOwnPropertyNames(records[0]);
@@ -299,7 +297,7 @@
             $tbody, $rows, $row, $checkAllBoxes;
 
         gj.grid.events.dataBinding($grid, records);
-        data = $grid.data('grid');
+        data = $grid.data();
         recLen = records.length;
         gj.grid.methods.stopLoading($grid);
 
@@ -344,7 +342,7 @@
 
     renderRow: function ($grid, $row, record, position) {
         var id, $cell, i, data, mode;
-        data = $grid.data('grid');
+        data = $grid.data();
         if (!$row || $row.length === 0) {
             mode = 'create';
             $row = $($grid.find('tbody')[0].insertRow(position));
@@ -373,7 +371,7 @@
     renderCell: function ($grid, $cell, column, record, id, mode) {
         var text, $wrapper, mode, $icon, data;
 
-        data = $grid.data('grid');
+        data = $grid.data();
 
         if (!$cell || $cell.length === 0) {
             $cell = $('<td/>').css('text-align', column.align || 'left');
@@ -512,7 +510,7 @@
     },
 
     setSelected: function ($grid, id, $row) {
-        var data = $grid.data('grid');
+        var data = $grid.data();
         if (!$row || !$row.length) {
             $row = gj.grid.methods.getRowById($grid, id);
         }
@@ -532,7 +530,7 @@
     },
 
     selectAll: function ($grid) {
-        var data = $grid.data('grid');
+        var data = $grid.data();
         $grid.find('thead input#checkAllBoxes').prop('checked', true);
         $grid.find('tbody tr').each(function () {
             gj.grid.methods.selectRow($grid, data, $(this));
@@ -541,7 +539,7 @@
     },
 
     unSelectAll: function ($grid) {
-        var data = $grid.data('grid');
+        var data = $grid.data();
         $grid.find('thead input#checkAllBoxes').prop('checked', false);
         $grid.find('tbody tr').each(function () {
             gj.grid.methods.unselectRow($grid, data, $(this));
@@ -551,7 +549,7 @@
 
     getSelected: function ($grid) {
         var result, data, selections;
-        data = $grid.data('grid');
+        data = $grid.data();
         selections = $grid.find('tbody > tr.' + data.style.content.rowSelected);
         if (selections.length > 0) {
             result = $(selections[0]).data('row').id;
@@ -560,7 +558,7 @@
     },
 
     getSelectedRows: function ($grid) {
-        var data = $grid.data('grid');
+        var data = $grid.data();
         return $grid.find('tbody > tr.' + data.style.content.rowSelected);
     },
 
@@ -625,7 +623,7 @@
     },
 
     getColumnInfo: function ($grid, field) {
-        var i, result = {}, data = $grid.data('grid');
+        var i, result = {}, data = $grid.data();
         for (i = 0; i < data.columns.length; i += 1) {
             if (data.columns[i].field === field) {
                 result = data.columns[i];
@@ -684,7 +682,7 @@
 
     countVisibleColumns: function ($grid) {
         var columns, count, i;
-        columns = $grid.data('grid').columns;
+        columns = $grid.data().columns;
         count = 0;
         for (i = 0; i < columns.length; i++) {
             if (columns[i].hidden !== true) {
@@ -696,7 +694,7 @@
 
     reload: function ($grid, params) {
         var data, ajaxOptions, records;
-        data = $grid.data('grid');
+        data = $grid.data();
         $.extend(data.params, params);
         gj.grid.methods.startLoading($grid);
         if ($.isArray(data.dataSource)) {
@@ -729,7 +727,7 @@
     },
 
     clear: function ($grid, showNotFoundText) {
-        var data = $grid.data('grid');
+        var data = $grid.data();
         $grid.xhr && $grid.xhr.abort();
         if ('checkbox' === data.selectionMethod) {
             $grid.find('input#checkAllBoxes').hide();
@@ -744,7 +742,7 @@
     render: function ($grid, response) {
         var data, records, totalRecords;
         if (response) {
-            data = $grid.data('grid');
+            data = $grid.data();
             if (data) {
                 if (typeof (response) === 'string' && JSON) {
                     response = JSON.parse(response);
@@ -760,7 +758,7 @@
     },
 
     destroy: function ($grid, keepTableTag, keepWrapperTag) {
-        var data = $grid.data('grid');
+        var data = $grid.data();
         if (data) {
             gj.grid.events.destroying($grid);
             gj.grid.methods.stopLoading($grid);
@@ -780,7 +778,7 @@
     },
 
     showColumn: function ($grid, field) {
-        var data = $grid.data('grid'),
+        var data = $grid.data(),
             position = gj.grid.methods.getColumnPosition(data.columns, field),
             $cells;
 
@@ -803,7 +801,7 @@
     },
 
     hideColumn: function ($grid, field) {
-        var data = $grid.data('grid'),
+        var data = $grid.data(),
             position = gj.grid.methods.getColumnPosition(data.columns, field),
             $cells;
 

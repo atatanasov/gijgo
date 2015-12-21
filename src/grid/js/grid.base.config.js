@@ -373,7 +373,8 @@ gj.grid.config = {
          *         ]
          *     });
          * </script>
-         * @example <table id="grid" data-source="/DataSources/GetPlayers">
+         * @example <!-- grid.base -->
+         * <table id="grid" data-source="/DataSources/GetPlayers">
          *     <thead>
          *         <tr>
          *             <th data-field="ID" width="24">ID</th>

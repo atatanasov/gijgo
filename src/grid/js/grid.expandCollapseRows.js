@@ -49,7 +49,7 @@ gj.grid.plugins.expandCollapseRows = {
             var $contentRow = $cell.closest('tr'),
                 $detailsRow = $('<tr data-role="details"></tr>'),
                 $detailsCell = $('<td colspan="' + gj.grid.methods.countVisibleColumns($grid) + '"></td>'),
-                data = $grid.data('grid'),
+                data = $grid.data(),
                 rowData = $contentRow.data('row'),
                 $detailWrapper = $(rowData.details);
             $detailsRow.append($detailsCell.append($detailWrapper));
@@ -66,7 +66,7 @@ gj.grid.plugins.expandCollapseRows = {
                 $detailsRow = $contentRow.next('tr[data-role="details"]'),
                 $detailWrapper = $detailsRow.find('td>div');
             $detailsRow.remove();
-            $cell.find('span').attr('class', $grid.data('grid').style.expandIcon); //TODO: move to the plugin
+            $cell.find('span').attr('class', $grid.data().style.expandIcon); //TODO: move to the plugin
             $cell.off('click').on('click', function () {
                 gj.grid.plugins.expandCollapseRows.private.detailExpand($(this), $grid);
             });
@@ -162,7 +162,7 @@ gj.grid.plugins.expandCollapseRows = {
     },
 
     'configure': function ($grid) {
-        var data = $grid.data('grid');
+        var data = $grid.data();
 
         $.extend(true, $grid, gj.grid.plugins.expandCollapseRows.public);
 

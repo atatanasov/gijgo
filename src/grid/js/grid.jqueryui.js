@@ -27,7 +27,7 @@ gj.grid.plugins.jqueryui = {
     },
 
     'configure': function ($grid) {
-        var data = $grid.data('grid');
+        var data = $grid.data();
         if (data.uiLibrary === 'jqueryui') {
             $.extend(true, data, gj.grid.plugins.jqueryui.config);
         }

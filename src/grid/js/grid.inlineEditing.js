@@ -97,7 +97,7 @@ gj.grid.plugins.inlineEditing = {
         },
 
         updateChanges: function ($grid, column, sourceRecord, newValue) {
-            var targetRecords, filterResult, newRecord, data = $grid.data('grid');
+            var targetRecords, filterResult, newRecord, data = $grid.data();
             if (!data.guid) {
                 data.guid = gj.grid.plugins.inlineEditing.private.generateGUID();
             }
@@ -155,7 +155,7 @@ gj.grid.plugins.inlineEditing = {
          * </script>
          */
         getChanges: function () {
-            return JSON.parse(sessionStorage.getItem('gj.grid.' + this.data('grid').guid));
+            return JSON.parse(sessionStorage.getItem('gj.grid.' + this.data().guid));
         }
     },
 
@@ -200,7 +200,7 @@ gj.grid.plugins.inlineEditing = {
         //$grid.on('rowSelect', function (e, $row, id, record) {
         //    $row.siblings().find("td[data-mode='edit']").each(function () {
         //        var $cell = $(this),
-        //            column = $grid.data('grid').columns[$cell.parent().children().index(this)];
+        //            column = $grid.data().columns[$cell.parent().children().index(this)];
         //        gj.grid.plugins.inlineEditing.private.OnCellDisplay($cell, column);
         //    });
         //});
