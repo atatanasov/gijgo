@@ -2,7 +2,7 @@
   * @widget Grid
   * @plugin Base
   */
-function Grid($grid, arguments) {
+function Grid($grid, arguments, skipInit) {
     var self = this,
         methods = gj.grid.methods;
 
@@ -108,8 +108,8 @@ function Grid($grid, arguments) {
      * @additionalinfo The grid table tag and wrapper tag are kept by default after the execution of destroy method,
      * but you can remove them if you pass false to the keepTableTag and keepWrapperTag parameters.
      * @method
-     * @param {bool} keepTableTag - If this flag is set to false, then the table tag will be removed from the HTML dom tree.
-     * @param {bool} keepWrapperTag - If this flag is set to false, then the table wrapper tag will be removed from the HTML dom tree.
+     * @param {bool} keepTableTag - If this flag is set to false, the table tag will be removed from the HTML dom tree.
+     * @param {bool} keepWrapperTag - If this flag is set to false, the table wrapper tag will be removed from the HTML dom tree.
      * @fires destroying
      * @return void
      * @example <!-- grid.base -->
@@ -118,16 +118,15 @@ function Grid($grid, arguments) {
      * <br/><br/>
      * <table id="grid"></table>
      * <script>
-     *     var grid, createFunc;
-     *     createFunc = function() {
-     *         grid = $('#grid').grid({
+     *     var createFunc = function() {
+     *         $('#grid').grid({
      *             dataSource: '/DataSources/GetPlayers',
      *             columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
      *         });
      *     };
      *     createFunc();
      *     $('#btnDestroy').on('click', function () {
-     *         grid.destroy(true, true);
+     *         $('#grid').grid('destroy', true, true);
      *     });
      *     $('#btnCreate').on('click', function () {
      *         createFunc();
@@ -505,19 +504,26 @@ function Grid($grid, arguments) {
     };
 
     $.extend($grid, self);
-    methods.init.apply($grid, arguments);
+    if (!skipInit) {
+        methods.init.apply($grid, arguments);
+    }
 
     return $grid;
 }
 
 (function ($) {
     $.fn.grid = function (method) {
+        var $grid;
         if (typeof method === 'object' || !method) {
-            return new Grid(this, arguments);
-        } else if (gj.grid.public[method]) {
-            return gj.grid.public[method].apply(this, Array.prototype.slice.call(arguments, 1));
+            $grid = new Grid(this, arguments);
+            return $grid;
         } else {
-            throw 'Method ' + method + ' does not exist.';
+            $grid = new Grid(this, null, true);
+            if ($grid[method]) {
+                return $grid[method].apply(this, Array.prototype.slice.call(arguments, 1));
+            } else {
+                throw 'Method ' + method + ' does not exist.';
+            }
         }
     };
 })(jQuery);

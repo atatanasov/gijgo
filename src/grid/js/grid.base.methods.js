@@ -18,9 +18,6 @@
             }
         }
         gj.grid.methods.initialize(this);
-        gj.grid.methods.renderHeader(this);
-        gj.grid.methods.appendEmptyRow(this, '&nbsp;');
-        gj.grid.events.initialized(this);
         if (data.autoLoad) {
             this.reload();
         }
@@ -127,6 +124,10 @@
             data.columns = [{ title: '', field: data.dataKey, width: (data.uiLibrary === 'jqueryui' ? 24 : 30), align: 'center', type: 'checkbox' }].concat(data.columns);
         }
         $grid.append($('<tbody/>'));
+
+        gj.grid.methods.renderHeader(this);
+        gj.grid.methods.appendEmptyRow(this, '&nbsp;');
+        gj.grid.events.initialized(this);
     },
 
     renderHeader: function ($grid) {
