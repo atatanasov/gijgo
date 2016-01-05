@@ -125,9 +125,9 @@
         }
         $grid.append($('<tbody/>'));
 
-        gj.grid.methods.renderHeader(this);
-        gj.grid.methods.appendEmptyRow(this, '&nbsp;');
-        gj.grid.events.initialized(this);
+        gj.grid.methods.renderHeader($grid);
+        gj.grid.methods.appendEmptyRow($grid, '&nbsp;');
+        gj.grid.events.initialized($grid);
     },
 
     renderHeader: function ($grid) {
@@ -259,7 +259,7 @@
         var data, $row, $cell, $wrapper;
         data = $grid.data();
         $row = $('<tr data-role="empty"/>');
-        $cell = $('<td/>').css({ 'width': '100%', 'text-align': 'center' });
+        $cell = $('<td/>').css({ width: '100%', 'text-align': 'center' });
         $cell.attr('colspan', gj.grid.methods.countVisibleColumns($grid));
         $wrapper = $('<div />').html(caption || data.notFoundText);
         $cell.append($wrapper);
@@ -293,17 +293,17 @@
         gj.grid.methods.renderHeader($grid);
     },
 
-    loadData: function ($grid, records, totalRecords) {
-        var data, records, i, j, recLen, rowCount,
+    loadData: function ($grid) {
+        var data, i, j, recLen, rowCount,
             $tbody, $rows, $row, $checkAllBoxes;
 
-        gj.grid.events.dataBinding($grid, records);
         data = $grid.data();
-        recLen = records.length;
+        gj.grid.events.dataBinding($grid, data.records);
+        recLen = data.records.length;
         gj.grid.methods.stopLoading($grid);
 
         if (data.autoGenerateColumns) {
-            gj.grid.methods.autoGenerateColumns($grid, records);
+            gj.grid.methods.autoGenerateColumns($grid, data.records);
         }
 
         $tbody = $grid.find('tbody');
@@ -328,7 +328,7 @@
         for (i = 0; i < rowCount; i++) {
             if (i < recLen) {
                 $row = $rows.eq(i);
-                gj.grid.methods.renderRow($grid, $row, records[i], i);
+                gj.grid.methods.renderRow($grid, $row, data.records[i], i);
             } else {
                 $tbody.find('tr:gt(' + (i - 1) + ')').remove();
                 break;
@@ -336,9 +336,9 @@
         }
 
         for (i = rowCount; i < recLen; i++) {
-            gj.grid.methods.renderRow($grid, null, records[i], i);
+            gj.grid.methods.renderRow($grid, null, data.records[i], i);
         }
-        gj.grid.events.dataBound($grid, records, totalRecords);
+        gj.grid.events.dataBound($grid, data.records, data.totalRecords);
     },
 
     renderRow: function ($grid, $row, record, position) {
@@ -370,7 +370,7 @@
     },
 
     renderCell: function ($grid, $cell, column, record, id, mode) {
-        var text, $wrapper, mode, $icon, data;
+        var text, $wrapper, $icon, data;
 
         data = $grid.data();
 
@@ -397,7 +397,7 @@
             if ('create' === mode) {
                 $wrapper.append($('<span/>')
                     .addClass(data.uiLibrary === 'bootstrap' ? 'glyphicon' : 'ui-icon')
-                    .addClass(column.icon).css({ 'cursor': 'pointer' }));
+                    .addClass(column.icon).css({ cursor: 'pointer' }));
             }
         } else if (column.tmpl) {
             text = column.tmpl;
@@ -472,13 +472,22 @@
         return text;
     },
 
-    getRecords: function (data, response) {
-        var records = [];
+    setRecordsData: function ($grid, response) {
+        var records = [],
+            totalRecords = 0,
+            data = $grid.data();
         if ($.isArray(response)) {
             records = response;
+            totalRecords = response.length;
         } else if (data && data.mapping && $.isArray(response[data.mapping.dataField])) {
             records = response[data.mapping.dataField];
+            totalRecords = response[data.mapping.totalRecordsField];
+            if (!totalRecords || isNaN(totalRecords)) {
+                totalRecords = 0;
+            }
         }
+        $grid.data('records', records);
+        $grid.data('totalRecords', totalRecords);
         return records;
     },
 
@@ -575,13 +584,19 @@
     },
 
     getRecordById: function ($grid, id) {
-        var result = {}, rows, i, rowData;
-        rows = $grid.find('tbody > tr[data-role="row"]');
-        for (i = 0; i < rows.length; i++) {
-            rowData = $(rows[i]).data('row');
-            if (rowData.id === id) {
-                result = rowData.record;
-                break;
+        var result = null, i,
+            primaryKey = $grid.data('dataKey'),
+            records = $grid.data('records');
+        if (primaryKey) {
+            for (i = 0; i < records.length; i++) {
+                if (records[i][primaryKey] === id) {
+                    result = records[i];
+                    break;
+                }
+            }
+        } else {
+            if (records[id - 1]) {
+                result = records[id - 1];
             }
         }
         return result;
@@ -699,8 +714,8 @@
         $.extend(data.params, params);
         gj.grid.methods.startLoading($grid);
         if ($.isArray(data.dataSource)) {
-            records = gj.grid.methods.getRecords(data, data.dataSource);
-            gj.grid.methods.loadData($grid, records, records.length);
+            gj.grid.methods.setRecordsData($grid, data.dataSource);
+            gj.grid.methods.loadData($grid);
         } else if (typeof (data.dataSource) === 'string') {
             ajaxOptions = { url: data.dataSource, data: data.params, success: gj.grid.methods.defaultSuccessHandler($grid) };
             if ($grid.xhr) {
@@ -743,18 +758,11 @@
     render: function ($grid, response) {
         var data, records, totalRecords;
         if (response) {
-            data = $grid.data();
-            if (data) {
-                if (typeof (response) === 'string' && JSON) {
-                    response = JSON.parse(response);
-                }
-                records = gj.grid.methods.getRecords(data, response);
-                totalRecords = response[data.mapping.totalRecordsField];
-                if (!totalRecords || isNaN(totalRecords)) {
-                    totalRecords = 0;
-                }
-                gj.grid.methods.loadData($grid, records, totalRecords);
+            if (typeof (response) === 'string' && JSON) {
+                response = JSON.parse(response);
             }
+            records = gj.grid.methods.setRecordsData($grid, response);
+            gj.grid.methods.loadData($grid);
         }
     },
 

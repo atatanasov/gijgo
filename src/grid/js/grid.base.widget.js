@@ -504,7 +504,7 @@ function Grid($grid, arguments, skipInit) {
     };
 
     $.extend($grid, self);
-    if (!skipInit) {
+    if (false !== skipInit) {
         methods.init.apply($grid, arguments);
     }
 
