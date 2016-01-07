@@ -300,7 +300,7 @@ function Grid($grid, arguments, skipInit) {
      * </script>
      */
     self.getById = function (id) {
-        return methods.getRecordById(this, id);
+        return methods.getById(this, id);
     };
 
     /**
@@ -343,7 +343,7 @@ function Grid($grid, arguments, skipInit) {
      *     $('#btnGetAllName').on('click', function () {
      *         var records = grid.getAll(), names = '';
      *         $.each(records, function () {
-     *             names += this.record.Name + '(id=' + this.id + '),';
+     *             names += this.Name + '(id=' + this.ID + '),';
      *         });
      *         alert(names);
      *     });
@@ -451,9 +451,7 @@ function Grid($grid, arguments, skipInit) {
      * </script>
      */
     self.updateRow = function (id, record) {
-        var $row = methods.getRowById(this, id);
-        methods.renderRow(this, $row, record, $row.index());
-        return this;
+        return methods.updateRow(this, id, record);
     };
 
     //TODO: needs to be removed
@@ -486,21 +484,13 @@ function Grid($grid, arguments, skipInit) {
      *             { field: 'ID' },
      *             { field: 'Name' },
      *             { field: 'PlaceOfBirth' },
-     *             { title: '', width: 20, type: 'icon', icon: 'ui-icon-close', events: { 'click': Delete } }
+     *             { title: '', width: 60, align: 'center', tmpl: 'Delete', events: { 'click': Delete } }
      *         ]
      *     });
      * </script>
      */
     self.removeRow = function (id) {
-        var $row = methods.getRowById(this, id);
-        if ($row) {
-            gj.grid.events.rowRemoving(this, $row, id, $row.data('row'));
-            $row.remove();
-            if (this.count() == 0) {
-                methods.appendEmptyRow(this);
-            }
-        }
-        return this;
+        return methods.removeRow(this, id);
     };
 
     $.extend($grid, self);
