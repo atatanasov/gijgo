@@ -3,7 +3,8 @@
   "ignore": [],
   "options": {
     "this": true,
-    "strict": false
+    "browser": true,
+    "for":  true
   },
   "globalVariables": []
 }

@@ -75,6 +75,9 @@ TABLE.gj-grid-table TFOOT SELECT.ui-grid-page-sizer
 	vertical-align: middle;
 	text-indent: 0;
     display: inline-block;
+    white-space: pre-wrap;
+    -ms-word-break: break-word;
+    word-break: break-word;
 }
 
 DIV.gj-grid-wrapper DIV.gj-grid-loading-cover

@@ -1,4 +1,5 @@
-﻿gj.grid.methods = {
+﻿/*global gj $*/
+gj.grid.methods = {
 
     init: function (jsConfig) {
         var plugin, option, data;
@@ -37,7 +38,7 @@
     },
 
     setDefaultColumnConfig: function (columns, defaultColumnSettings) {
-        var column;
+        var column, i;
         if (columns && columns.length) {
             for (i = 0; i < columns.length; i++) {
                 column = $.extend(true, {}, defaultColumnSettings);
@@ -131,7 +132,7 @@
     },
 
     renderHeader: function ($grid) {
-        var data, columns, style, sortBy, direction, $thead, $row, $cell, i, $checkAllBoxes;
+        var data, columns, style, $thead, $row, $cell, i, $checkAllBoxes;
 
         data = $grid.data();
         columns = data.columns;
@@ -271,8 +272,7 @@
     },
 
     autoGenerateColumns: function ($grid, records) {
-        var names, value, type,
-            data = $grid.data();
+        var names, value, type, i, data = $grid.data();
         data.columns = [];
         if (records.length > 0) {
             names = Object.getOwnPropertyNames(records[0]);
@@ -280,10 +280,10 @@
                 value = records[0][names[i]];
                 type = 'text';
                 if (value) {
-                    if (value.indexOf('/Date(') > -1) {
-                        type = 'date';
-                    } else if (typeof value === 'number') {
+                    if (typeof value === 'number') {
                         type = 'number';
+                    } else if (value.indexOf('/Date(') > -1) {
+                        type = 'date';
                     }
                 }
                 data.columns.push({ field: names[i], type: type });
@@ -294,8 +294,7 @@
     },
 
     loadData: function ($grid) {
-        var data, i, j, recLen, rowCount,
-            $tbody, $rows, $row, $checkAllBoxes;
+        var data, i, recLen, rowCount, $tbody, $rows, $row, $checkAllBoxes;
 
         data = $grid.data();
         gj.grid.events.dataBinding($grid, data.records);
@@ -358,9 +357,9 @@
             mode = 'update';
             $row.removeClass(data.style.content.rowSelected).off('click');
         }
-        id = gj.grid.methods.getId(record, data.dataKey, (position + 1));        
+        id = gj.grid.methods.getId(record, data.dataKey, (position + 1));
         $row.attr('data-position', position + 1); //$row.data('row', { id: id, record: record });
-        $row.on('click', gj.grid.methods.createRowClickHandler($grid, id, record));
+        $row.on('click', gj.grid.methods.createRowClickHandler($grid, id));
         for (i = 0; i < data.columns.length; i++) {
             if (mode === 'update') {
                 $cell = $row.find('td:eq(' + i + ')');
@@ -374,7 +373,7 @@
     },
 
     renderCell: function ($grid, $cell, column, record, id, mode) {
-        var text, $wrapper, $icon, key;
+        var text, $wrapper, key;
 
         if (!$cell || $cell.length === 0) {
             $cell = $('<td/>').css('text-align', column.align || 'left');
@@ -443,27 +442,27 @@
     },
 
     formatText: function (text, column) {
-        var dt, day, month;
+        var dt, day, month, parts;
         if (text && column.type) {
             switch (column.type) {
-                case 'date':
-                    if (text.indexOf('/Date(') > -1) {
-                        dt = new Date(parseInt(text.substr(6), 10));
-                    } else {
-                        var parts = text.match(/(\d+)/g);
-                        // new Date(year, month, date, hours, minutes, seconds);
-                        dt = new Date(parts[0], parts[1] - 1, parts[2], parts[3], parts[4], parts[5]); // months are 0-based
-                    }
+            case 'date':
+                if (text.indexOf('/Date(') > -1) {
+                    dt = new Date(parseInt(text.substr(6), 10));
+                } else {
+                    parts = text.match(/(\d+)/g);
+                    // new Date(year, month, date, hours, minutes, seconds);
+                    dt = new Date(parts[0], parts[1] - 1, parts[2], parts[3], parts[4], parts[5]); // months are 0-based
+                }
 
-                    if (dt.format && column.format) {
-                        text = dt.format(column.format); //using 3rd party plugin "Date Format 1.2.3 by (c) 2007-2009 Steven Levithan <stevenlevithan.com>"
-                    } else {
-                        day = dt.getDate().toString().length === 2 ? dt.getDate() : '0' + dt.getDate();
-                        month = (dt.getMonth() + 1).toString();
-                        month = month.length === 2 ? month : '0' + month;
-                        text = month + '/' + day + '/' + dt.getFullYear();
-                    }
-                    break;
+                if (dt.format && column.format) {
+                    text = dt.format(column.format); //using 3rd party plugin "Date Format 1.2.3 by (c) 2007-2009 Steven Levithan <stevenlevithan.com>"
+                } else {
+                    day = dt.getDate().toString().length === 2 ? dt.getDate() : '0' + dt.getDate();
+                    month = (dt.getMonth() + 1).toString();
+                    month = month.length === 2 ? month : '0' + month;
+                    text = month + '/' + day + '/' + dt.getFullYear();
+                }
+                break;
             }
         } else {
             text = (typeof (text) === 'undefined' || text === null) ? '' : text.toString();
@@ -493,8 +492,8 @@
         return records;
     },
 
-    createRowClickHandler: function ($grid, id, record) {
-        return function (e) {
+    createRowClickHandler: function ($grid, id) {
+        return function () {
             gj.grid.methods.setSelected($grid, id, $(this));
         };
     },
@@ -579,8 +578,7 @@
     },
 
     getSelections: function ($grid) {
-        var result = [],
-            $selections = gj.grid.methods.getSelectedRows($grid);
+        var result = [], position, record, $selections = gj.grid.methods.getSelectedRows($grid);
         if (0 < $selections.length) {
             $selections.each(function () {
                 position = $(this).data('position');
@@ -592,9 +590,7 @@
     },
 
     getById: function ($grid, id) {
-        var result = null, i,
-            primaryKey = $grid.data('dataKey'),
-            records = $grid.data('records');
+        var result = null, i, primaryKey = $grid.data('dataKey'), records = $grid.data('records');
         if (primaryKey) {
             for (i = 0; i < records.length; i++) {
                 if (records[i][primaryKey] === id) {
@@ -609,9 +605,7 @@
     },
 
     getRowById: function ($grid, id) {
-        var records = $grid.data('records'),
-            primaryKey = $grid.data('dataKey'),
-            position;
+        var records = $grid.data('records'), primaryKey = $grid.data('dataKey'), position, i;
         if (primaryKey) {
             for (i = 0; i < records.length; i++) {
                 if (records[i][primaryKey] === id) {
@@ -652,7 +646,7 @@
     },
 
     getCell: function ($grid, id, index) {
-        var result = {}, position, $row;
+        var position, $row;
         position = gj.grid.methods.getColumnPosition($grid, index);
         $row = gj.grid.methods.getRowById($grid, id);
         return $row.find('td:eq(' + position + ') div');
@@ -694,14 +688,14 @@
     },
 
     reload: function ($grid, params) {
-        var data, ajaxOptions, records;
+        var data, ajaxOptions;
         data = $grid.data();
         $.extend(data.params, params);
         gj.grid.methods.startLoading($grid);
         if ($.isArray(data.dataSource)) {
             gj.grid.methods.setRecordsData($grid, data.dataSource);
             gj.grid.methods.loadData($grid);
-        } else if (typeof (data.dataSource) === 'string') {
+        } else if (typeof(data.dataSource) === 'string') {
             ajaxOptions = { url: data.dataSource, data: data.params, success: gj.grid.methods.defaultSuccessHandler($grid) };
             if ($grid.xhr) {
                 $grid.xhr.abort();
@@ -713,7 +707,7 @@
             }
             $.extend(data.dataSource.data, data.params);
             ajaxOptions = $.extend(true, {}, data.dataSource); //clone dataSource object
-            if (ajaxOptions.dataType === 'json' && typeof (ajaxOptions.data) === 'object') {
+            if (ajaxOptions.dataType === 'json' && typeof(ajaxOptions.data) === 'object') {
                 ajaxOptions.data = JSON.stringify(ajaxOptions.data);
             }
             if (!ajaxOptions.success) {
@@ -741,9 +735,8 @@
     },
 
     render: function ($grid, response) {
-        var data, records, totalRecords;
         if (response) {
-            if (typeof (response) === 'string' && JSON) {
+            if (typeof(response) === 'string' && JSON) {
                 response = JSON.parse(response);
             }
             records = gj.grid.methods.setRecordsData($grid, response);

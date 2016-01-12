@@ -348,6 +348,24 @@ function Grid($grid, arguments, skipInit) {
      *         alert(names);
      *     });
      * </script>
+     * @example <!-- grid.base -->
+     * <button id="btnAdd">Add New Row</button>
+     * <br/><br/>
+     * <table id="grid"></table>
+     * <script>
+     *     var grid = $('#grid').grid({
+     *         dataSource:  [
+     *             { 'ID': 1, 'Name': 'Hristo Stoichkov', 'PlaceOfBirth': 'Plovdiv, Bulgaria' },
+     *             { 'ID': 2, 'Name': 'Ronaldo Luis Nazario de Lima', 'PlaceOfBirth': 'Rio de Janeiro, Brazil' },
+     *             { 'ID': 3, 'Name': 'David Platt', 'PlaceOfBirth': 'Chadderton, Lancashire, England' }
+     *         ],
+     *         autoGenerateColumns: true
+     *     });
+     *     $('#btnAdd').on('click', function () {
+     *         grid.getAll().push({ 'ID': grid.count() + 1, 'Name': 'Test Player', 'PlaceOfBirth': 'Test City, Test Country' });
+     *         grid.reload();
+     *     });
+     * </script>
      */
     self.getAll = function () {
         return methods.getAll(this);
