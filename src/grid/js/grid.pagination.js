@@ -1,13 +1,13 @@
-﻿/** 
-  * @widget Grid 
+﻿/**
+  * @widget Grid
   * @plugin Pagination
   */
-if (typeof (gj.grid.plugins) === 'undefined') {
+if (typeof(gj.grid.plugins) === 'undefined') {
     gj.grid.plugins = {};
 }
 
 gj.grid.plugins.pagination = {
-    'config': {
+    config: {
         base: {
             style: {
                 pager: {
@@ -17,13 +17,6 @@ gj.grid.plugins.pagination = {
                 }
             },
             pager: {
-                /** This setting control the visualization of the pager. If this setting is enabled the pager would show.
-                 * @alias pager.enable
-                 * @type boolean
-                 * @default false
-                 */
-                enable: false,
-
                 /** The maximum number of records that can be show by page.
                  * @alias pager.limit
                  * @type int
@@ -107,10 +100,7 @@ gj.grid.plugins.pagination = {
 
             data = $grid.data();
 
-            if (data.pager && data.pager.enable) {
-                //if ($.isArray(data.dataSource)) {
-                //    data.dataSource = data.dataSource.slice(0, data.pager.limit);
-                //}
+            if (data.pager) {
                 data.params[data.defaultParams.page] = 1;
                 data.params[data.defaultParams.limit] = data.pager.limit;
 
@@ -182,11 +172,11 @@ gj.grid.plugins.pagination = {
         },
 
         reloadPager: function ($grid, totalRecords) {
-            var page, limit, lastPage, firstRecord, lastRecord, data;
+            var page, limit, lastPage, firstRecord, lastRecord, data, controls, i;
 
             data = $grid.data();
 
-            if (data.pager.enable) {
+            if (data.pager) {
                 page = (0 === totalRecords) ? 0 : data.params[data.defaultParams.page];
                 limit = parseInt(data.params[data.defaultParams.limit], 10);
                 lastPage = Math.ceil(totalRecords / limit);
@@ -203,8 +193,7 @@ gj.grid.plugins.pagination = {
         },
 
         reloadPagerControl: function ($control, $grid, page, lastPage, firstRecord, lastRecord, totalRecords) {
-            var data = $grid.data(),
-                newPage;
+            var newPage;
             switch ($control.data('role')) {
                 case 'page-first':
                     gj.grid.plugins.pagination.private.assignPageHandler($grid, $control, 1, page < 2);
@@ -272,7 +261,7 @@ gj.grid.plugins.pagination = {
         },
 
         createChangePageHandler: function ($grid, currentPage, lastPage) {
-            return function (e) {
+            return function () {
                 var data = $grid.data(),
                     newPage = parseInt(this.value, 10);
                 if (newPage && !isNaN(newPage) && newPage <= lastPage) {
@@ -316,7 +305,7 @@ gj.grid.plugins.pagination = {
          *     var grid = $('#grid').grid({
          *         dataSource: '/DataSources/GetPlayers',
          *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
-         *         pager: { enable: true, limit: 2, sizes: [2, 5, 10, 20] }
+         *         pager: { limit: 2, sizes: [2, 5, 10, 20] }
          *     });
          *     grid.on('pageSizeChange', function (e, newSize) {
          *         alert('The new page size is ' + newSize + '.');
@@ -340,7 +329,7 @@ gj.grid.plugins.pagination = {
          *         dataSource: '/DataSources/GetPlayers',
          *         uiLibrary: 'jqueryui',
          *         columns: [ { field: 'ID' }, { field: 'Name', sortable: true }, { field: 'PlaceOfBirth' } ],
-         *         pager: { enable: true, limit: 2, sizes: [2, 5, 10, 20] }
+         *         pager: { limit: 2, sizes: [2, 5, 10, 20] }
          *     });
          *     grid.on('pageChanging', function (e, newPage) {
          *         alert('The new page is ' + newPage + '.');
@@ -352,7 +341,7 @@ gj.grid.plugins.pagination = {
         }
     },
 
-    'configure': function ($grid) {
+    configure: function ($grid) {
         var data = $grid.data();
         if (data.uiLibrary === 'jqueryui') {
             $.extend(true, data, gj.grid.plugins.pagination.config.jqueryui);
@@ -360,16 +349,16 @@ gj.grid.plugins.pagination = {
             $.extend(true, data, gj.grid.plugins.pagination.config.bootstrap);
         }
 
-        $grid.on('initialized', function (e) {
+        $grid.on('initialized', function () {
             gj.grid.plugins.pagination.private.init($grid);
         });
         $grid.on('dataBound', function (e, records, totalRecords) {
             gj.grid.plugins.pagination.private.reloadPager($grid, totalRecords);
         });
-        $grid.on('columnShow', function (e, column) {
+        $grid.on('columnShow', function () {
             gj.grid.plugins.pagination.private.updatePagerColSpan($grid);
         });
-        $grid.on('columnHide', function (e, column) {
+        $grid.on('columnHide', function () {
             gj.grid.plugins.pagination.private.updatePagerColSpan($grid);
         });
     }

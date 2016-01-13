@@ -294,15 +294,16 @@ gj.grid.methods = {
     },
 
     loadData: function ($grid) {
-        var data, i, recLen, rowCount, $tbody, $rows, $row, $checkAllBoxes;
+        var data, records, i, recLen, rowCount, $tbody, $rows, $row, $checkAllBoxes;
 
         data = $grid.data();
-        gj.grid.events.dataBinding($grid, data.records);
-        recLen = data.records.length;
+        records = gj.grid.methods.getRecordsForRendering($grid);
+        gj.grid.events.dataBinding($grid, records);
+        recLen = records.length;
         gj.grid.methods.stopLoading($grid);
 
         if (data.autoGenerateColumns) {
-            gj.grid.methods.autoGenerateColumns($grid, data.records);
+            gj.grid.methods.autoGenerateColumns($grid, records);
         }
 
         $tbody = $grid.find('tbody');
@@ -327,7 +328,7 @@ gj.grid.methods = {
         for (i = 0; i < rowCount; i++) {
             if (i < recLen) {
                 $row = $rows.eq(i);
-                gj.grid.methods.renderRow($grid, $row, data.records[i], i);
+                gj.grid.methods.renderRow($grid, $row, records[i], i);
             } else {
                 $tbody.find('tr:gt(' + (i - 1) + ')').remove();
                 break;
@@ -335,9 +336,9 @@ gj.grid.methods = {
         }
 
         for (i = rowCount; i < recLen; i++) {
-            gj.grid.methods.renderRow($grid, null, data.records[i], i);
+            gj.grid.methods.renderRow($grid, null, records[i], i);
         }
-        gj.grid.events.dataBound($grid, data.records, data.totalRecords);
+        gj.grid.events.dataBound($grid, records, data.totalRecords);
     },
 
     getId: function (record, dataKey, position) {
@@ -471,6 +472,10 @@ gj.grid.methods = {
             text = parseFloat(text).toFixed(column.decimalDigits);
         }
         return text;
+    },
+
+    getRecordsForRendering: function ($grid) {
+        return $grid.data('records');
     },
 
     setRecordsData: function ($grid, response) {
