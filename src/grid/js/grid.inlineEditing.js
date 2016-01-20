@@ -71,7 +71,7 @@ gj.grid.plugins.inlineEditing = {
             if ($cell.attr('data-mode') === 'edit') {
                 $editorContainer = $cell.find('div[data-role="edit"]');
                 newValue = $editorContainer.find('input, select').first().val();
-                record = $cell.parent().data('row').record;
+                record = $grid.get($cell.parent().data('position'));
                 oldValue = record[column.field];
                 $displayContainer = $cell.find('div[data-role="display"]');
                 if (newValue !== oldValue) {

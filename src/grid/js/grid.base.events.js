@@ -273,7 +273,7 @@ gj.grid.events = {
     },
 
     /**
-     * Event fires when grid is initialized
+     * Event fires when grid is initialized.
      *
      * @event initialized
      * @param {object} e - event data

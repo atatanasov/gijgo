@@ -152,31 +152,29 @@ gj.grid.plugins.responsiveDesign = {
         },
         
         updateDetails: function ($grid) {      
-            var $rows, data, i, j, $row, rowData, $placeholder, column, text;
-            $rows = $grid.find('tbody > tr');
+            var rows, data, i, j, $row, details, $placeholder, column, tmp;
+            rows = $grid.find('tbody > tr[data-role="row"]');
             data = $grid.data();
-            for (i = 0; i < $rows.length; i++) {
-                $row = $($rows[i]);
-                if ($row.data('role') === 'row') {
-                    rowData = $row.data('row');
-                    for (j = 0; j < data.columns.length; j++) {
-                        column = data.columns[j];
-                        $placeholder = rowData.details && rowData.details.find('div[data-id="' + column.field + '"]');
-                        if (data.columns[j].hidden) {
-                            text = gj.grid.methods.formatText(rowData.record[column.field], column);
-                            if (!$placeholder || !$placeholder.length) {
-                                $placeholder = $('<div data-id="' + column.field + '"><b>' + (column.title || column.field) + '</b>: ' + text + '</div>');
-                                $placeholder.addClass(data.style.rowDetailItem);
-                                if (!rowData.details || !rowData.details.length) {
-                                    rowData.details = $('<div/>');
-                                }
-                                rowData.details.append($placeholder);
-                            } else {
-                                $placeholder.html('<b>' + column.title + '</b>: ' + text);
+            for (i = 0; i < rows.length; i++) {
+                $row = $(rows[i]);
+                details = $row.data('details');
+                for (j = 0; j < data.columns.length; j++) {
+                    column = data.columns[j];
+                    $placeholder = details && details.find('div[data-id="' + column.field + '"]');
+                    if (data.columns[j].hidden) {
+                        tmp = '<b>' + (column.title || column.field) + '</b>: {' + column.field + '}';
+                        if (!$placeholder || !$placeholder.length) {
+                            $placeholder = $('<div data-id="' + column.field + '"/>').html(tmp);
+                            $placeholder.addClass(data.style.rowDetailItem);
+                            if (!details || !details.length) {
+                                details = $('<div class="row"/>');
                             }
-                        } else if ($placeholder && $placeholder.length) {
-                            $placeholder.remove();
+                            details.append($placeholder);
+                        } else {
+                            $placeholder.empty().html(tmp);
                         }
+                    } else if ($placeholder && $placeholder.length) {
+                        $placeholder.remove();
                     }
                 }
             }
