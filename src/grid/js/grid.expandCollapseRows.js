@@ -48,23 +48,15 @@ gj.grid.plugins.expandCollapseRows = {
         detailExpand: function ($grid, $cell) {
             var $contentRow = $cell.closest('tr'),
                 $detailsRow = $('<tr data-role="details"></tr>'),
-                $detailsCell = $('<td colspan="' + gj.grid.methods.countVisibleColumns($grid) + '"></td>'),
-                data = $grid.data(),
-                $detailWrapper = $contentRow.data('details'),
-                record = $grid.get($contentRow.data('position')),
-                content = $detailWrapper.html();
+                $detailsCell = $('<td colspan="' + gj.grid.methods.countVisibleColumns($grid) + '"></td>');
 
-            $detailWrapper.html().replace(/\{(.+?)\}/g, function ($0, $1) {
-                var column = gj.grid.methods.getColumnInfo($grid, $1);
-                content = content.replace($0, gj.grid.methods.formatText(record[$1], column));
-            });
-            $detailWrapper.html(content);
-            $detailsRow.append($detailsCell.append($detailWrapper));
+            $detailsRow.append($detailsCell.append($contentRow.data('details')));
             $detailsRow.insertAfter($contentRow);
-            $cell.find('span').attr('class', data.style.collapseIcon); //TODO: move to the plugin
+            $cell.find('span').attr('class', $grid.data().style.collapseIcon); //TODO: move to the plugin
             $cell.off('click').on('click', function () {
                 gj.grid.plugins.expandCollapseRows.private.detailCollapse($grid, $(this));
             });
+            $grid.updateDetails($contentRow);
             gj.grid.plugins.expandCollapseRows.events.detailExpand($grid, $detailWrapper, record);
         },
 
@@ -103,6 +95,20 @@ gj.grid.plugins.expandCollapseRows = {
             $grid.find('tbody tr[data-role="row"]').each(function () {
                 gj.grid.plugins.expandCollapseRows.private.detailExpand($grid, $(this).find('td').first());
             });
+        },
+
+        //TODO: add documentation
+        updateDetails: function ($contentRow) {
+            var $grid = this,
+                $detailWrapper = $contentRow.data('details'),
+                content = $detailWrapper.html(),
+                record = $grid.get($contentRow.data('position'));
+
+            $detailWrapper.html().replace(/\{(.+?)\}/g, function ($0, $1) {
+                var column = gj.grid.methods.getColumnInfo($grid, $1);
+                content = content.replace($0, gj.grid.methods.formatText(record[$1], column));
+            });
+            $detailWrapper.html(content);
         }
     },
 

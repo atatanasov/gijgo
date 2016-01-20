@@ -52,7 +52,7 @@ gj.grid.plugins.responsiveDesign = {
              * This setting works only if the responsive setting is set to true and the detailTemplate is set.
              * @type boolean
              * @default false
-             * @example <!-- grid.base, grid.expandCollapseRows, grid.responsiveDesign -->
+             * @example <!-- grid.base, grid.bootstrap, bootstrap, grid.expandCollapseRows, grid.responsiveDesign -->
              * <table id="grid"></table>
              * <script>
              *     $('#grid').grid({
@@ -60,10 +60,11 @@ gj.grid.plugins.responsiveDesign = {
              *         detailTemplate: '<div class="row"></div>',
              *         responsive: true,
              *         showHiddenColumnsAsDetails: true,
+             *         uiLibrary: 'bootstrap',
              *         columns: [
-             *             { field: 'ID', width: 20 },
-             *             { field: 'Name', minWidth: 220, priority: 1 },
-             *             { field: 'PlaceOfBirth', minWidth: 220, priority: 2 }
+             *             { field: 'ID', width: 34 },
+             *             { field: 'Name', minWidth: 320, priority: 1 },
+             *             { field: 'PlaceOfBirth', minWidth: 320, priority: 2 }
              *         ]
              *     });
              * </script>
@@ -122,6 +123,12 @@ gj.grid.plugins.responsiveDesign = {
             style: {
                 rowDetailItem: 'col-lg-4'
             }
+        },
+
+        jqueryui: {
+            style: {
+                rowDetailItem: ''
+            }
         }
     },
 
@@ -177,6 +184,7 @@ gj.grid.plugins.responsiveDesign = {
                         $placeholder.remove();
                     }
                 }
+                $grid.updateDetails($row);
             }
         }
     },
@@ -267,6 +275,11 @@ gj.grid.plugins.responsiveDesign = {
     'configure': function ($grid) {
         $.extend(true, $grid, gj.grid.plugins.responsiveDesign.public);
         var data = $grid.data();
+        if (data.uiLibrary === 'jqueryui') {
+            $.extend(true, data, gj.grid.plugins.responsiveDesign.config.jqueryui);
+        } else if (data.uiLibrary === 'bootstrap') {
+            $.extend(true, data, gj.grid.plugins.responsiveDesign.config.bootstrap);
+        }
         if (data.responsive) {
             $grid.on('initialized', function () {
                 $grid.makeResponsive();
