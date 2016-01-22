@@ -18,10 +18,6 @@ gj.grid.plugins.jqueryui = {
             content: {
                 rowHover: 'ui-state-hover',
                 rowSelected: 'ui-state-active'
-            },
-            pager: {
-                cell: 'ui-widget-header ui-state-default ui-grid-pager-cell',
-                stateDisabled: 'ui-state-disabled'
             }
         },
     },

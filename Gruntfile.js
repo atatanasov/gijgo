@@ -263,6 +263,8 @@ var writer = {
                         result += '  <link href="../../build/modular/grid/css/grid.pagination.css" rel="stylesheet" type="text/css">\r\n';
                         break;
                 }
+            }
+            for (i = 0; i < names.length; i++) {
                 //include js files
                 switch (names[i].trim()) {
                     case 'dialog.base':

@@ -53,12 +53,22 @@ gj.grid.plugins.pagination = {
                  * @alias pager.sizes
                  * @type array
                  * @default undefined
-                 * @example <!-- grid.base, grid.pagination, grid.bootstrap, bootstrap -->
+                 * @example <!-- bootstrap, grid.base, grid.bootstrap, grid.pagination  -->
                  * <table id="grid"></table>
                  * <script>
                  *     var grid = $('#grid').grid({
                  *         dataSource: '/DataSources/GetPlayers',
                  *         uiLibrary: 'bootstrap',
+                 *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
+                 *         pager: { limit: 2, sizes: [2, 5, 10, 20] }
+                 *     });
+                 * </script>
+                 * @example <!-- jqueryui, grid.base, grid.jqueryui, grid.pagination  -->
+                 * <table id="grid"></table>
+                 * <script>
+                 *     var grid = $('#grid').grid({
+                 *         dataSource: '/DataSources/GetPlayers',
+                 *         uiLibrary: 'jqueryui',
                  *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
                  *         pager: { limit: 2, sizes: [2, 5, 10, 20] }
                  *     });
@@ -96,8 +106,10 @@ gj.grid.plugins.pagination = {
         },
         jqueryui: {
             style: {
-                cell: 'ui-widget-header ui-state-default ui-grid-pager-cell',
-                stateDisabled: 'ui-state-disabled'
+                pager: {
+                    cell: 'ui-widget-header ui-state-default ui-grid-pager-cell',
+                    stateDisabled: 'ui-state-disabled'
+                }
             },
             pager: {
                 leftControls: [
@@ -127,7 +139,7 @@ gj.grid.plugins.pagination = {
             style: {
                 pager: {
                     cell: 'gj-grid-bootstrap-tfoot-cell',
-                    stateDisabled: 'ui-state-disabled'
+                    stateDisabled: ''
                 }
             },
             pager: {

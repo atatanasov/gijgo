@@ -27,49 +27,6 @@ TABLE.gj-grid-table > tbody > tr > td
     overflow: hidden;
 }
 
-TABLE.gj-grid-table TFOOT TH.ui-grid-pager-cell
-{
-    height: 20px;
-    padding: 0px;
-    cursor: default;
-    border: 1px solid menutext;
-    -moz-user-select: none;
-    -khtml-user-select: none;
-    /*user-select: none;*/
-}
-
-TABLE.gj-grid-table TFOOT DIV.ui-grid-icon
-{
-    margin: 0 2px;
-    cursor: pointer;
-    overflow: visible;   
-}
-
-TABLE.gj-grid-table TFOOT DIV.ui-grid-pager
-{
-    overflow: hidden;
-}
-
-TABLE.gj-grid-table TFOOT INPUT.ui-grid-pager
-{    
-    padding: 1px;
-    width: 26px;
-    height: 17px;
-    font: bold 11px Verdana;
-    margin: 0 5px;
-    text-align: right;
-}
-
-TABLE.gj-grid-table TFOOT SELECT.ui-grid-page-sizer
-{    
-    padding: 0px;
-    height: 17px;
-    font: bold 11px Verdana;
-    margin: 0 5px;
-    text-align: right;
-    width: 50px;
-}
-
 .gj-grid-wrapper TABLE.gj-grid-table DIV
 {
 	vertical-align: middle;
