@@ -21,6 +21,30 @@ gj.grid.plugins.pagination = {
                  * @alias pager.limit
                  * @type int
                  * @default 10
+                 * @example <!-- grid.base, grid.pagination -->
+                 * <table id="grid"></table>
+                 * <script>
+                 *     var data, grid;
+                 *     data = [
+                 *         { 'ID': 1, 'Name': 'Hristo Stoichkov', 'PlaceOfBirth': 'Plovdiv, Bulgaria' },
+                 *         { 'ID': 2, 'Name': 'Ronaldo Luis Nazario de Lima', 'PlaceOfBirth': 'Rio de Janeiro, Brazil' },
+                 *         { 'ID': 3, 'Name': 'David Platt', 'PlaceOfBirth': 'Chadderton, Lancashire, England' }
+                 *     ];
+                 *     grid = $('#grid').grid({
+                 *         dataSource: data,
+                 *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
+                 *         pager: { limit: 2 }
+                 *     });
+                 * </script>
+                 * @example <!-- grid.base, grid.pagination -->
+                 * <table id="grid"></table>
+                 * <script>
+                 *     var grid = $('#grid').grid({
+                 *         dataSource: '/DataSources/GetPlayers',
+                 *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
+                 *         pager: { limit: 2 }
+                 *     });
+                 * </script>
                  */
                 limit: 10,
 
@@ -29,6 +53,16 @@ gj.grid.plugins.pagination = {
                  * @alias pager.sizes
                  * @type array
                  * @default undefined
+                 * @example <!-- grid.base, grid.pagination, grid.bootstrap, bootstrap -->
+                 * <table id="grid"></table>
+                 * <script>
+                 *     var grid = $('#grid').grid({
+                 *         dataSource: '/DataSources/GetPlayers',
+                 *         uiLibrary: 'bootstrap',
+                 *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
+                 *         pager: { limit: 2, sizes: [2, 5, 10, 20] }
+                 *     });
+                 * </script>
                  */
                 sizes: undefined,
 
@@ -90,11 +124,46 @@ gj.grid.plugins.pagination = {
             }
         },
         bootstrap: {
-
+            style: {
+                pager: {
+                    cell: 'gj-grid-bootstrap-tfoot-cell',
+                    stateDisabled: 'ui-state-disabled'
+                }
+            },
+            pager: {
+                leftControls: [
+                    $('<button type="button" data-role="page-first" title="First Page" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-step-backward"></span></button>'),
+                    $('<div>&nbsp;</div>'),
+                    $('<button type="button" data-role="page-previous" title="Previous Page" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-backward"></span></button>'),
+                    $('<div>&nbsp;</div>'),
+                    $('<div>Page</div>'),
+                    $('<div>&nbsp;</div>'),
+                    $('<div></div>').append($('<input data-role="page-number" class="form-control input-sm" style="width: 40px; text-align: right;" type="text" value="0">')),
+                    $('<div>&nbsp;</div>'),
+                    $('<div>of&nbsp;</div>'),
+                    $('<div data-role="page-label-last">0</div>'),
+                    $('<div>&nbsp;</div>'),
+                    $('<button type="button" data-role="page-next" title="Next Page" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-forward"></span></button>'),
+                    $('<div>&nbsp;</div>'),
+                    $('<button type="button" data-role="page-last" title="Last Page" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-step-forward"></span></button>'),
+                    $('<div>&nbsp;</div>'),
+                    $('<button type="button" data-role="page-refresh" title="Reload" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-refresh"></span></button>'),
+                    $('<div>&nbsp;</div>'),
+                    $('<div></div>').append($('<select data-role="page-size" class="form-control input-sm"></select></div>'))
+                ],
+                rightControls: [
+                    $('<div>Displaying records&nbsp;</div>'),
+                    $('<div data-role="record-first">0</div>'),
+                    $('<div>&nbsp;-&nbsp;</div>'),
+                    $('<div data-role="record-last">0</div>'),
+                    $('<div>&nbsp;of&nbsp;</div>'),
+                    $('<div data-role="record-total">0</div>').css({ "margin-right": "5px" })
+                ]
+            }
         }
     },
 
-    'private': {
+    private: {
         init: function ($grid) {
             var $row, $cell, data, controls, $leftPanel, $rightPanel, $tfoot, leftControls, rightControls, i;
 
@@ -215,15 +284,15 @@ gj.grid.plugins.pagination = {
                     break;
                 case 'page-button-one':
                     newPage = (page === 1) ? 1 : ((page == lastPage) ? (page - 2) : (page - 1));
-                    gj.grid.plugins.pagination.private.assignButtonHandler($grid, $control, page, newPage);
+                    gj.grid.plugins.pagination.private.assignButtonHandler($grid, $control, page, newPage, lastPage);
                     break;
                 case 'page-button-two':
                     newPage = (page === 1) ? 2 : ((page == lastPage) ? lastPage - 1 : page);
-                    gj.grid.plugins.pagination.private.assignButtonHandler($grid, $control, page, newPage);
+                    gj.grid.plugins.pagination.private.assignButtonHandler($grid, $control, page, newPage, lastPage);
                     break;
                 case 'page-button-three':
                     newPage = (page === 1) ? page + 2 : ((page == lastPage) ? page : (page + 1));
-                    gj.grid.plugins.pagination.private.assignButtonHandler($grid, $control, page, newPage);
+                    gj.grid.plugins.pagination.private.assignButtonHandler($grid, $control, page, newPage, lastPage);
                     break;
                 case 'record-first':
                     $control.text(firstRecord);
@@ -248,15 +317,19 @@ gj.grid.plugins.pagination = {
             }
         },
 
-        assignButtonHandler: function ($grid, $control, page, newPage) {
+        assignButtonHandler: function ($grid, $control, page, newPage, lastPage) {
             var style = $grid.data().style.pager;
-            $control.off('click').text(newPage);
-            if (newPage === page) {
-                $control.addClass(style.activeButton);
+            if (newPage < 1 || newPage > lastPage) {
+                $control.hide();
             } else {
-                $control.removeClass(style.activeButton).on('click', function () {
-                    gj.grid.plugins.pagination.private.changePage($grid, newPage);
-                });
+                $control.show().off('click').text(newPage);
+                if (newPage === page) {
+                    $control.addClass(style.activeButton);
+                } else {
+                    $control.removeClass(style.activeButton).on('click', function () {
+                        gj.grid.plugins.pagination.private.changePage($grid, newPage);
+                    });
+                }
             }
         },
 
@@ -286,13 +359,22 @@ gj.grid.plugins.pagination = {
             if ($cell && $cell.length) {
                 $cell.attr('colspan', gj.grid.methods.countVisibleColumns($grid));
             }
+        },
+
+        getRecordsForRendering: function ($grid) {
+            var data = $grid.data(),
+                limit = parseInt(data.params[data.defaultParams.limit], 10),
+                page = data.params[data.defaultParams.page],
+                start = (page - 1) * limit;
+            
+            return data.records.slice(start, start + limit);
         }
     },
 
-    'public': {
+    public: {
     },
 
-    'events': {
+    events: {
         /**
          * Triggered when the page size is changed.
          *
@@ -347,6 +429,10 @@ gj.grid.plugins.pagination = {
             $.extend(true, data, gj.grid.plugins.pagination.config.jqueryui);
         } else if (data.uiLibrary === 'bootstrap') {
             $.extend(true, data, gj.grid.plugins.pagination.config.bootstrap);
+        }
+
+        if ($.isArray(data.dataSource)) {
+            gj.grid.methods.getRecordsForRendering = gj.grid.plugins.pagination.private.getRecordsForRendering;
         }
 
         $grid.on('initialized', function () {
