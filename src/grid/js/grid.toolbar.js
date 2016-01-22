@@ -51,7 +51,7 @@ gj.grid.plugins.toolbar = {
         }
     },
 
-    'private': {
+    private: {
         init: function ($grid) {
             var data, $toolbar, $title;
             data = $grid.data();
@@ -83,7 +83,7 @@ gj.grid.plugins.toolbar = {
         }
     },
 
-    'public': {        
+    public: {        
         /**
          * Get or set grid title.
          * @additionalinfo When you pass value in the text parameter this value with be in use for the new title of the grid and the method will return grid object.<br/>
@@ -128,7 +128,7 @@ gj.grid.plugins.toolbar = {
         }
     },
 
-    'configure': function ($grid) {
+    configure: function ($grid) {
         $.extend(true, $grid, gj.grid.plugins.toolbar.public);
         $grid.on('initialized', function () {
             gj.grid.plugins.toolbar.private.init($grid);

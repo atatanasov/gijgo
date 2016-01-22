@@ -27,7 +27,7 @@ TABLE.gj-grid-table > tbody > tr > td
     overflow: hidden;
 }
 
-.gj-grid-wrapper TABLE.gj-grid-table DIV
+TABLE.gj-grid-table DIV
 {
 	vertical-align: middle;
 	text-indent: 0;
@@ -73,8 +73,7 @@ DIV.gj-grid-wrapper DIV.gj-grid-loading-text
 .gj-grid-base-table thead tr th {
     background-color: #f5f5f5;
     border: 1px solid #ddd;
-    padding: 3px;
-    font-weight: normal;
+    padding: 2px 1px 2px 1px;
 }
 
 .gj-grid-base-table tbody tr:hover {
@@ -88,6 +87,10 @@ DIV.gj-grid-wrapper DIV.gj-grid-loading-text
 .gj-grid-base-table tbody tr td div[data-role="display"] {
     padding: 3px;
     overflow: hidden;
+}
+
+.gj-grid-base-table thead tr th div {
+    padding: 3px;
 }
 
 .gj-grid-base-active {

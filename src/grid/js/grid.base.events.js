@@ -109,11 +109,11 @@ gj.grid.events = {
      * <script>
      *     var grid = $('#grid').grid({
      *         dataSource: '/DataSources/GetPlayers',
-     *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' }, { field: 'IsBulgarian', title: 'Is Bulgarian' } ]
+     *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' }, { field: 'Bulgarian', title: 'Is Bulgarian?' } ]
      *     });
      *     grid.on('cellDataBound', function (e, $wrapper, id, column, record) {
-     *         if ('IsBulgarian' === column.field) {
-     *             $wrapper.text(record.PlaceOfBirth.indexOf('Bulgaria') > -1 ? 'Bulgarian' : '');
+     *         if ('Bulgarian' === column.field) {
+     *             $wrapper.text(record.PlaceOfBirth.indexOf('Bulgaria') > -1 ? 'Yes' : 'No');
      *         }
      *     });
      * </script>
@@ -181,18 +181,20 @@ gj.grid.events = {
      * @param {object} id - the id of the record
      * @param {object} record - the data of the row record
      * @example <!-- grid.base -->
+     * <button onclick="grid.removeRow('1')">Remove Row</button><br/>
      * <table id="grid"></table>
      * <script>
      *     var grid = $('#grid').grid({
      *         dataKey: 'ID',
-     *         dataSource: '/DataSources/GetPlayers',
+     *         dataSource: [
+     *             { 'ID': 1, 'Name': 'Hristo Stoichkov', 'PlaceOfBirth': 'Plovdiv, Bulgaria' },
+     *             { 'ID': 2, 'Name': 'Ronaldo Luis Nazario de Lima', 'PlaceOfBirth': 'Rio de Janeiro, Brazil' },
+     *             { 'ID': 3, 'Name': 'David Platt', 'PlaceOfBirth': 'Chadderton, Lancashire, England' }
+     *         ],
      *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
      *     });
      *     grid.on('rowRemoving', function (e, $row, id, record) {
      *         alert('rowRemoving is fired for row with id=' + id + '.');
-     *     });
-     *     grid.on('dataBound', function (e, records, totalRecords) {
-     *         grid.removeRow('1');
      *     });
      * </script>
      */

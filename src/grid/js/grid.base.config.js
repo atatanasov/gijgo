@@ -39,7 +39,7 @@ gj.grid.config = {
      * <table id="grid" data-source="/DataSources/GetPlayers">
      *     <thead>
      *         <tr>
-     *             <th width="20">ID</th>
+     *             <th width="20" data-field="ID">#</th>
      *             <th>Name</th>
      *             <th>PlaceOfBirth</th>
      *         </tr>
@@ -321,11 +321,12 @@ gj.grid.config = {
          * @alias column.icon
          * @type string
          * @default undefined
-         * @example <!-- grid.base -->
+         * @example <!-- jqueryui, grid.base, grid.jqueryui -->
          * <table id="grid"></table>
          * <script>
          *     $('#grid').grid({
          *         dataSource: '/DataSources/GetPlayers',
+         *         uiLibrary: 'jqueryui',
          *         columns: [
          *             { field: 'ID' },
          *             { field: 'Name' },
@@ -342,11 +343,12 @@ gj.grid.config = {
          * @alias column.events
          * @type function
          * @default undefined
-         * @example <!-- grid.base -->
+         * @example <!-- jqueryui, grid.base, grid.jqueryui -->
          * <table id="grid"></table>
          * <script>
          *     $('#grid').grid({
          *         dataSource: '/DataSources/GetPlayers',
+         *         uiLibrary: 'jqueryui',
          *         columns: [
          *             { field: 'ID' },
          *             {
@@ -373,8 +375,8 @@ gj.grid.config = {
          *         ]
          *     });
          * </script>
-         * @example <!-- grid.base -->
-         * <table id="grid" data-source="/DataSources/GetPlayers">
+         * @example <!-- jqueryui, grid.base, grid.jqueryui -->
+         * <table id="grid" data-source="/DataSources/GetPlayers" data-ui-library="jqueryui">
          *     <thead>
          *         <tr>
          *             <th data-field="ID" width="24">ID</th>
@@ -544,7 +546,7 @@ gj.grid.config = {
      *             { field: 'Name' },
      *             { field: 'PlaceOfBirth' }
      *         ],
-     *         pager: { enable: true, limit: 2, sizes: [2, 5, 10, 20] }
+     *         pager: { limit: 2, sizes: [2, 5, 10, 20] }
      *     });
      * </script>
      */
@@ -615,7 +617,8 @@ gj.grid.config = {
      *     });
      *     grid.reload(); //call .reload() explicitly in order to load the data in the grid
      * </script>
-     * @example <table id="grid"></table>
+     * @example <!-- grid.base -->
+     * <table id="grid"></table>
      * <script>
      *     $('#grid').grid({
      *         dataSource: '/DataSources/GetPlayers',
@@ -670,7 +673,7 @@ gj.grid.config = {
      * <script>
      *     $('#grid').grid({
      *         dataSource: '/DataSources/GetPlayers',
-     *         fontSize: '14px',
+     *         fontSize: '16px',
      *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
      *     });
      * </script>

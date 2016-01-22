@@ -32,6 +32,16 @@ server.get('/DataSources/GetPlayers', function (req, res) {
         }
     }
 
+    if (params.searchString) {
+        result = [];
+        for (var i = 0; i < data.length; i++) {
+            if (data[i].Name.indexOf(params.searchString) > -1) {
+                result.push(data[i]);
+            }
+        }
+        data = result;
+    }
+
     if (params.page && params.limit) {
         page = parseInt(params.page, 10);
         limit = parseInt(params.limit, 10);

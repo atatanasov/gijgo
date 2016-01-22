@@ -204,10 +204,23 @@ gj.grid.methods = {
                 if ($sortIcon.length === 0) {
                     $sortIcon = $('<span data-role="sorticon" style="float: left; margin-left:5px;"/>');
                     $cell.append($sortIcon);
-                } else {
-                    $sortIcon.removeClass('asc' === cellData.direction ? style.sortDescIcon : style.sortAscIcon);
                 }
-                $sortIcon.addClass('asc' === cellData.direction ? style.sortAscIcon : style.sortDescIcon);
+
+                if ('asc' === cellData.direction) {
+                    $sortIcon.empty().removeClass(style.sortDescIcon);
+                    if (style.sortAscIcon) {
+                        $sortIcon.addClass(style.sortAscIcon);
+                    } else {
+                        $sortIcon.text('▲');
+                    }
+                } else {
+                    $sortIcon.empty().removeClass(style.sortAscIcon);
+                    if (style.sortDescIcon) {
+                        $sortIcon.addClass(style.sortDescIcon);
+                    } else {
+                        $sortIcon.text('▼');
+                    }
+                }
 
                 $grid.reload(params);
             }
@@ -536,8 +549,9 @@ gj.grid.methods = {
             } else {
                 if ('single' === data.selectionType) {
                     $row.siblings().each(function () {
-                        var $row = $(this);
-                        gj.grid.methods.unselectRow($grid, data, $row, $grid.get($row.data('position')));
+                        var $row = $(this),
+                            id = gj.grid.methods.getId($row, data.dataKey, $row.data('position'));
+                        gj.grid.methods.unselectRow($grid, data, $row, id);
                     });
                 }
                 gj.grid.methods.selectRow($grid, data, $row, id);

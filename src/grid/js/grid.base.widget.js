@@ -428,7 +428,11 @@ function Grid($grid, arguments, skipInit) {
      * <table id="grid"></table>
      * <script>
      *     var grid = $('#grid').grid({
-     *         dataSource: '/DataSources/GetPlayers',
+     *         dataSource: [
+     *             { 'ID': 1, 'Name': 'Hristo Stoichkov', 'PlaceOfBirth': 'Plovdiv, Bulgaria' },
+     *             { 'ID': 2, 'Name': 'Ronaldo Luis Nazario de Lima', 'PlaceOfBirth': 'Rio de Janeiro, Brazil' },
+     *             { 'ID': 3, 'Name': 'David Platt', 'PlaceOfBirth': 'Chadderton, Lancashire, England' }
+     *         ],
      *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
      *     });
      *     $('#btnAdd').on('click', function () {
@@ -446,7 +450,7 @@ function Grid($grid, arguments, skipInit) {
      * @param {string} id - The id of the row that needs to be updated
      * @param {object} record - Object with data for the new record.
      * @return grid
-     * @example <!-- grid.base -->
+     * @example <!-- jqueryui, grid.base, grid.jqueryui -->
      * <table id="grid"></table>
      * <script>
      *     var grid, data;
@@ -459,6 +463,7 @@ function Grid($grid, arguments, skipInit) {
      *             { 'ID': 2, 'Name': 'Ronaldo Luis Nazario de Lima', 'PlaceOfBirth': 'Rio de Janeiro, Brazil' },
      *             { 'ID': 3, 'Name': 'David Platt', 'PlaceOfBirth': 'Chadderton, Lancashire, England' }
      *         ],
+     *         uiLibrary: 'jqueryui',
      *         columns: [
      *             { field: 'ID' },
      *             { field: 'Name' },

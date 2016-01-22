@@ -236,6 +236,7 @@ var writer = {
                         result += '  <link href="http://cdn.foundation5.zurb.com/foundation.css" rel="stylesheet" type="text/css">\r\n';
                         break;
                     case 'jqueryui':
+                        result += '  <link href="../../node_modules/jquery-ui/themes/base/jquery.ui.core.css" rel="stylesheet" type="text/css">\r\n';
                         result += '  <link href="../../node_modules/jquery-ui/themes/base/jquery.ui.theme.css" rel="stylesheet" type="text/css">\r\n';
                         break;
                     case 'dialog.base':
