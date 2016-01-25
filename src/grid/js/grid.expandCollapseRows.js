@@ -22,6 +22,16 @@ gj.grid.plugins.expandCollapseRows = {
              *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'DateOfBirth', type: 'date' } ]
              *     });
              * </script>
+             * @example <!-- bootstrap, grid.base, grid.bootstrap, grid.expandCollapseRows -->
+             * <table id="grid"></table>
+             * <script>
+             *     $('#grid').grid({
+             *         dataSource: '/DataSources/GetPlayers',
+             *         uiLibrary: 'bootstrap',
+             *         detailTemplate: '<div><b>Place Of Birth:</b> {PlaceOfBirth}</div>',
+             *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'DateOfBirth', type: 'date' } ]
+             *     });
+             * </script>
              */
             detailTemplate: undefined,
 
@@ -48,28 +58,37 @@ gj.grid.plugins.expandCollapseRows = {
         detailExpand: function ($grid, $cell) {
             var $contentRow = $cell.closest('tr'),
                 $detailsRow = $('<tr data-role="details"></tr>'),
-                $detailsCell = $('<td colspan="' + gj.grid.methods.countVisibleColumns($grid) + '"></td>');
+                $detailsCell = $('<td colspan="' + gj.grid.methods.countVisibleColumns($grid) + '"></td>'),
+                data = $grid.data();
 
             $detailsRow.append($detailsCell.append($contentRow.data('details')));
             $detailsRow.insertAfter($contentRow);
-            $cell.find('span').attr('class', $grid.data().style.collapseIcon); //TODO: move to the plugin
+            if (data.style.collapseIcon) {
+                $cell.find('span').attr('class', data.style.collapseIcon);
+            } else {
+                $cell.find('div[data-role="display"]').text('-');
+            }
             $cell.off('click').on('click', function () {
                 gj.grid.plugins.expandCollapseRows.private.detailCollapse($grid, $(this));
             });
             $grid.updateDetails($contentRow);
-            gj.grid.plugins.expandCollapseRows.events.detailExpand($grid, $detailWrapper, record);
+            gj.grid.plugins.expandCollapseRows.events.detailExpand($grid, $detailsRow.find('td>div'), $grid.get($contentRow.data('position')));
         },
 
         detailCollapse: function ($grid, $cell) {
             var $contentRow = $cell.closest('tr'),
                 $detailsRow = $contentRow.next('tr[data-role="details"]'),
-                $detailWrapper = $detailsRow.find('td>div');
+                data = $grid.data();
             $detailsRow.remove();
-            $cell.find('span').attr('class', $grid.data().style.expandIcon); //TODO: move to the plugin
+            if (data.style.expandIcon) {
+                $cell.find('span').attr('class', data.style.expandIcon);
+            } else {
+                $cell.find('div[data-role="display"]').text('+');
+            }
             $cell.off('click').on('click', function () {
                 gj.grid.plugins.expandCollapseRows.private.detailExpand($grid, $(this));
             });
-            gj.grid.plugins.expandCollapseRows.events.detailCollapse($grid, $detailWrapper, $grid.get($contentRow.data('position')));
+            gj.grid.plugins.expandCollapseRows.events.detailCollapse($grid, $detailsRow.find('td>div'), $grid.get($contentRow.data('position')));
         },
 
         updateDetailsColSpan: function ($grid) {
@@ -125,15 +144,11 @@ gj.grid.plugins.expandCollapseRows = {
          * <script>
          *     var grid = $('#grid').grid({
          *         dataSource: '/DataSources/GetPlayers',
-         *         detailTemplate: '<div/>',
-         *         columns: [ 
-         *             { field: 'ID' }, 
-         *             { field: 'Name' },
-         *             { field: 'PlaceOfBirth' }
-         *         ]
+         *         detailTemplate: '<div></div>',
+         *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'DateOfBirth', type: 'date' } ]
          *     });
          *     grid.on('detailExpand', function (e, $detailWrapper, record) {
-         *         $detailWrapper.empty().append('Place of Birth: ' + record.PlaceOfBirth);
+         *         $detailWrapper.empty().append('<b>Place Of Birth:</b> ' + record.PlaceOfBirth);
          *     });
          * </script>
          */
@@ -153,15 +168,11 @@ gj.grid.plugins.expandCollapseRows = {
          * <script>
          *     var grid = $('#grid').grid({
          *         dataSource: '/DataSources/GetPlayers',
-         *         detailTemplate: '<div/>',
-         *         columns: [ 
-         *             { field: 'ID' }, 
-         *             { field: 'Name' },
-         *             { field: 'PlaceOfBirth' }
-         *         ]
+         *         detailTemplate: '<div></div>',
+         *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'DateOfBirth', type: 'date' } ]
          *     });
          *     grid.on('detailExpand', function (e, $detailWrapper, record) {
-         *         $detailWrapper.append('Place of Birth: ' + record.PlaceOfBirth);
+         *         $detailWrapper.append('<b>Place Of Birth:</b>' + record.PlaceOfBirth);
          *     });
          *     grid.on('detailCollapse', function (e, $detailWrapper, record) {
          *         $detailWrapper.empty();
@@ -175,7 +186,7 @@ gj.grid.plugins.expandCollapseRows = {
     },
 
     'configure': function ($grid) {
-        var data = $grid.data();
+        var data = $grid.data(), column;
 
         $.extend(true, $grid, gj.grid.plugins.expandCollapseRows.public);
 
@@ -186,19 +197,25 @@ gj.grid.plugins.expandCollapseRows = {
         }
 
         if (typeof (data.detailTemplate) !== 'undefined') {
-            data.columns = [{
+            column = {
                 title: '',
                 field: data.dataKey,
-                width: (data.uiLibrary === 'jqueryui' ? 24 : 30),
+                width: (data.uiLibrary === 'bootstrap' ? 34 : 24),
                 align: 'center',
-                type: 'icon',
-                icon: data.style.expandIcon,
                 events: {
                     'click': function () {
                         gj.grid.plugins.expandCollapseRows.private.detailExpand($grid, $(this));
                     }
                 }
-            }].concat(data.columns);
+            };
+            if (data.style.expandIcon) {
+                column.type = 'icon';
+                column.icon = data.style.expandIcon;
+            } else {
+                column.tmpl = '+';
+                column.cssClass = 'gj-cursor-pointer';
+            }
+            data.columns = [column].concat(data.columns);
 
             $grid.on('rowDataBound', function (e, $row, id, record) {
                 $row.data('details', $(data.detailTemplate));

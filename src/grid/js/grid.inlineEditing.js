@@ -87,12 +87,12 @@ gj.grid.plugins.inlineEditing = {
                         style = style ? ' style="' + style + '"' : '';
                         $cell.prepend($('<span class="gj-dirty"' + style + '></span>'));
                     }
-                    $cell.attr('data-mode', 'display');
                     gj.grid.plugins.inlineEditing.events.cellDataChanged($grid, $cell, column, record, oldValue, newValue);
                     gj.grid.plugins.inlineEditing.private.updateChanges($grid, column, record, newValue);
                 }
                 $editorContainer.hide();
                 $displayContainer.show();
+                $cell.attr('data-mode', 'display');
             }
         },
 

@@ -16,14 +16,11 @@ TABLE.gj-grid-table {
     table-layout: fixed;
 }
 
-TABLE.gj-grid-table THEAD TH #checkAllBoxes
-{
+TABLE.gj-grid-table THEAD TH #checkAllBoxes {
     margin: auto;
 }
 
-TABLE.gj-grid-table > tbody > tr > td
-{
-    cursor: default;
+TABLE.gj-grid-table > tbody > tr > td {
     overflow: hidden;
 }
 
@@ -86,7 +83,6 @@ DIV.gj-grid-wrapper DIV.gj-grid-loading-text
 
 .gj-grid-base-table tbody tr td div[data-role="display"] {
     padding: 3px;
-    overflow: hidden;
 }
 
 .gj-grid-base-table thead tr th div {
