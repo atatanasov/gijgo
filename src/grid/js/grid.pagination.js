@@ -393,11 +393,12 @@ gj.grid.plugins.pagination = {
          * @event pageSizeChange
          * @property {object} e - event data
          * @property {int} newSize - The new page size
-         * @example <!-- grid.base, grid.pagination -->
+         * @example <!-- bootstrap, grid.base, grid.bootstrap, grid.pagination -->
          * <table id="grid"></table>
          * <script>
          *     var grid = $('#grid').grid({
          *         dataSource: '/DataSources/GetPlayers',
+         *         uiLibrary: 'bootstrap',
          *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
          *         pager: { limit: 2, sizes: [2, 5, 10, 20] }
          *     });
