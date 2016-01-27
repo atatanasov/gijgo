@@ -148,4 +148,4 @@ gj.grid.plugins.toolbar = {
     }
 };
 
-$.extend(true, gj.grid.config, gj.grid.plugins.toolbar.config.base);
+$.extend(true, gj.grid.config.base, gj.grid.plugins.toolbar.config.base);

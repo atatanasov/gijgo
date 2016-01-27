@@ -207,4 +207,4 @@ gj.grid.plugins.inlineEditing = {
     }
 };
 
-$.extend(true, gj.grid.config, gj.grid.plugins.inlineEditing.configuration);
+$.extend(true, gj.grid.config.base, gj.grid.plugins.inlineEditing.configuration);

@@ -38,30 +38,26 @@
             grid: {
                 files: {
                     'build/modular/grid/js/grid.base.js': ['src/grid/js/grid.base.config.js', 'src/grid/js/grid.base.events.js', 'src/grid/js/grid.base.methods.js', 'src/grid/js/grid.base.widget.js'],
-                    'build/modular/grid/js/grid.bootstrap.js': ['src/grid/js/grid.bootstrap.js'],
-                    'build/modular/grid/js/grid.jqueryui.js': ['src/grid/js/grid.jqueryui.js'],
                     'build/modular/grid/js/grid.expandCollapseRows.js': ['src/grid/js/grid.expandCollapseRows.js'],
                     'build/modular/grid/js/grid.inlineEditing.js': ['src/grid/js/grid.inlineEditing.js'],
                     'build/modular/grid/js/grid.pagination.js': ['src/grid/js/grid.pagination.js'],
                     'build/modular/grid/js/grid.responsiveDesign.js': ['src/grid/js/grid.responsiveDesign.js'],
                     'build/modular/grid/js/grid.toolbar.js': ['src/grid/js/grid.toolbar.js'],
 
-                    'build/combined/js/grid.js': ['build/modular/grid/js/grid.base.js', 'build/modular/grid/js/grid.bootstrap.js', 'build/modular/grid/js/grid.expandCollapseRows.js', 'build/modular/grid/js/grid.inlineEditing.js', 'build/modular/grid/js/grid.pagination.js', 'build/modular/grid/js/grid.responsiveDesign.js', 'build/modular/grid/js/grid.toolbar.js'],
+                    'build/combined/js/grid.js': ['build/modular/grid/js/grid.base.js', 'build/modular/grid/js/grid.expandCollapseRows.js', 'build/modular/grid/js/grid.inlineEditing.js', 'build/modular/grid/js/grid.pagination.js', 'build/modular/grid/js/grid.responsiveDesign.js', 'build/modular/grid/js/grid.toolbar.js'],
 
                     'build/modular/grid/css/grid.base.css': ['src/grid/css/grid.base.css'],
-                    'build/modular/grid/css/grid.jqueryui.css': ['src/grid/css/grid.jqueryui.css'],
-                    'build/modular/grid/css/grid.bootstrap.css': ['src/grid/css/grid.bootstrap.css'],
                     'build/modular/grid/css/grid.responsiveDesign.css': ['src/grid/css/grid.responsiveDesign.css'],
                     'build/modular/grid/css/grid.pagination.css': ['src/grid/css/grid.pagination.css'],
 
-                    'build/combined/css/grid.css': ['build/modular/grid/css/grid.base.css', 'build/modular/grid/css/grid.jqueryui.css', 'build/modular/grid/css/grid.bootstrap.css', 'build/modular/grid/css/grid.responsiveDesign.css', 'src/grid/css/grid.pagination.css']
+                    'build/combined/css/grid.css': ['build/modular/grid/css/grid.base.css', 'build/modular/grid/css/grid.responsiveDesign.css', 'src/grid/css/grid.pagination.css']
                 }
             }
         },
         replace: {
             minifyComments: {
-                src: ['build/*.js'],      // source files array (supports minimatch)
-                overwrite: true,                 // overwrite matched source files 
+                src: ['build/modular/*/js/*.js', 'build/combined/js/*.js'], // source files array (supports minimatch)
+                overwrite: true, // overwrite matched source files 
                 replacements: [{
                     from: /(.|\n|\r)+/g,
                     to: function (matchedWord, index, fullText, regexMatches) {
@@ -104,7 +100,12 @@
             grid: {
                 files: {
                     'build/combined/js/grid.min.js': ['build/combined/js/grid.js'],
-                    'build/modular/grid/js/grid.base.min.js': ['build/modular/grid/js/grid.base.js']
+                    'build/modular/grid/js/grid.base.min.js': ['build/modular/grid/js/grid.base.js'],
+                    'build/modular/grid/js/grid.expandCollapseRows.min.js': ['build/modular/grid/js/grid.expandCollapseRows.js'],
+                    'build/modular/grid/js/grid.inlineEditing.min.js': ['build/modular/grid/js/grid.inlineEditing.js'],
+                    'build/modular/grid/js/grid.pagination.min.js': ['build/modular/grid/js/grid.pagination.js'],
+                    'build/modular/grid/js/grid.responsiveDesign.min.js': ['build/modular/grid/js/grid.responsiveDesign.js'],
+                    'build/modular/grid/js/grid.toolbar.min.js': ['build/modular/grid/js/grid.toolbar.js']
                 }
             }
         },
@@ -251,12 +252,6 @@ var writer = {
                     case 'grid.base':
                         result += '  <link href="../../build/modular/grid/css/grid.base.css" rel="stylesheet" type="text/css">\r\n';
                         break;
-                    case 'grid.bootstrap':
-                        result += '  <link href="../../build/modular/grid/css/grid.bootstrap.css" rel="stylesheet" type="text/css">\r\n';
-                        break;
-                    case 'grid.jqueryui':
-                        result += '  <link href="../../build/modular/grid/css/grid.jqueryui.css" rel="stylesheet" type="text/css">\r\n';
-                        break;
                     case 'grid.responsiveDesign':
                         result += '  <link href="../../build/modular/grid/css/grid.responsiveDesign.css" rel="stylesheet" type="text/css">\r\n';
                         break;
@@ -286,17 +281,11 @@ var writer = {
                     case 'grid.base':
                         result += '  <script src="../../build/modular/grid/js/grid.base.js"></script>\r\n';
                         break;
-                    case 'grid.bootstrap':
-                        result += '  <script src="../../build/modular/grid/js/grid.bootstrap.js"></script>\r\n';
-                        break;
                     case 'grid.expandCollapseRows':
                         result += '  <script src="../../build/modular/grid/js/grid.expandCollapseRows.js"></script>\r\n';
                         break;
                     case 'grid.inlineEditing':
                         result += '  <script src="../../build/modular/grid/js/grid.inlineEditing.js"></script>\r\n';
-                        break;
-                    case 'grid.jqueryui':
-                        result += '  <script src="../../build/modular/grid/js/grid.jqueryui.js"></script>\r\n';
                         break;
                     case 'grid.pagination':
                         result += '  <script src="../../build/modular/grid/js/grid.pagination.js"></script>\r\n';

@@ -52,7 +52,7 @@ gj.grid.plugins.responsiveDesign = {
              * This setting works only if the responsive setting is set to true and the detailTemplate is set.
              * @type boolean
              * @default false
-             * @example <!-- grid.base, grid.bootstrap, bootstrap, grid.expandCollapseRows, grid.responsiveDesign -->
+             * @example <!-- bootstrap, grid.base, grid.expandCollapseRows, grid.responsiveDesign -->
              * <table id="grid"></table>
              * <script>
              *     $('#grid').grid({
@@ -318,4 +318,4 @@ gj.grid.plugins.responsiveDesign = {
     }
 };
 
-$.extend(true, gj.grid.config, gj.grid.plugins.responsiveDesign.config.base);
+$.extend(true, gj.grid.config.base, gj.grid.plugins.responsiveDesign.config.base);

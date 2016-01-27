@@ -22,7 +22,7 @@ gj.grid.plugins.expandCollapseRows = {
              *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'DateOfBirth', type: 'date' } ]
              *     });
              * </script>
-             * @example <!-- bootstrap, grid.base, grid.bootstrap, grid.expandCollapseRows -->
+             * @example <!-- bootstrap, grid.base, grid.expandCollapseRows -->
              * <table id="grid"></table>
              * <script>
              *     $('#grid').grid({
@@ -236,4 +236,4 @@ gj.grid.plugins.expandCollapseRows = {
     }
 };
 
-$.extend(true, gj.grid.config, gj.grid.plugins.expandCollapseRows.config.base);
+$.extend(true, gj.grid.config.base, gj.grid.plugins.expandCollapseRows.config.base);

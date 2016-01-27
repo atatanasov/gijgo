@@ -26,10 +26,12 @@ gj.grid.methods = {
     },
 
     configure: function ($grid, jsConfig) {
-        var options = $.extend(true, {}, gj.grid.config),
+        var options = $.extend(true, {}, gj.grid.config.base),
             htmlConfig = gj.grid.methods.getHTMLConfiguration($grid);
         if ((jsConfig.uiLibrary && jsConfig.uiLibrary === 'bootstrap') || (htmlConfig.uiLibrary && htmlConfig.uiLibrary === 'bootstrap')) {
             $.extend(true, options, gj.grid.config.bootstrap);
+        } else if ((jsConfig.uiLibrary && jsConfig.uiLibrary === 'jqueryui') || (htmlConfig.uiLibrary && htmlConfig.uiLibrary === 'jqueryui')) {
+            $.extend(true, options, gj.grid.config.jqueryui);
         }
         $.extend(true, options, htmlConfig);
         $.extend(true, options, jsConfig);

@@ -450,7 +450,7 @@ function Grid($grid, arguments, skipInit) {
      * @param {string} id - The id of the row that needs to be updated
      * @param {object} record - Object with data for the new record.
      * @return grid
-     * @example <!-- jqueryui, grid.base, grid.jqueryui -->
+     * @example <!-- jqueryui, grid.base -->
      * <table id="grid"></table>
      * <script>
      *     var grid, data;
