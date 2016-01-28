@@ -131,7 +131,7 @@
             grunt.log.writeln('Processing ' + file.src.length + ' files.');
             //file.src is the list of all matching file names.
             file.src.forEach(function (f) {
-                var i, isExampleMode, isExampleStart, result, lines, buffer, widget, plugin, field, filepath, data;
+                var i, isExampleMode, isExampleStart, result, lines, buffer, widget, plugin, alias, field, data, exampleInfo;
                 data = fs.readFileSync(f, 'utf8');
                     
                 isExampleMode = false;
@@ -143,6 +143,8 @@
                         widget = lines[i].replace(/\*.?\@widget/g, '').trim();
                     } else if (/\*.?\@plugin/g.test(lines[i])) {
                         plugin = lines[i].replace(/\*.?\@plugin/g, '').trim();
+                    } else if (/\*.?\@alias/g.test(lines[i])) {
+                        alias = lines[i].replace(/\*.?\@alias/g, '').trim();
                     }
                         
                     if (/\*.?\@example/g.test(lines[i])) {
@@ -151,7 +153,13 @@
                         if (result) {
                             buffer.push(result);
                         }
-                        result = { text: '', name: '', libs: lines[i].replace(/\*.?\@example/g, '') };
+                        exampleInfo = lines[i].replace(/\*.?\@example/g, '').trim();
+                        result = {
+                            text: '',
+                            name: '',
+                            libs: exampleInfo.indexOf('<') === 0 ? exampleInfo : exampleInfo.substring(exampleInfo.indexOf(' ') + 1),
+                            exampleName: exampleInfo.indexOf('<') === 0 ? undefined : exampleInfo.substring(0, exampleInfo.indexOf(' '))
+                        };
                     } else if (isExampleMode && /\*\//g.test(lines[i])) {
                         isExampleMode = false;
                         if (result) {
@@ -167,10 +175,12 @@
                             result.text += lines[i].trim().replace('*', '') + '\r\n';
                         }
                     } else if (/^\s+[A-Za-z]+\:\s/g.test(lines[i])) {
-                        field = lines[i].substr(0, lines[i].indexOf(':')).trim();
+                        field = alias || lines[i].substr(0, lines[i].indexOf(':')).trim();
+                        alias = undefined;
                         writer.updateMissingNames(buffer, widget, plugin, field);
                     } else if (/^\s+self\..+=[ ]function/g.test(lines[i])) {
-                        field = lines[i].substring(lines[i].indexOf('.') + 1, lines[i].indexOf('=')).trim();
+                        field = alias || lines[i].substring(lines[i].indexOf('.') + 1, lines[i].indexOf('=')).trim();
+                        alias = undefined;
                         writer.updateMissingNames(buffer, widget, plugin, field);
                     }
                 }
@@ -205,7 +215,7 @@ var writer = {
         var j, k = 1;
         for (j = 0; j < buffer.length; j++) {
             if (buffer[j].name === '' && buffer[j].text) {
-                buffer[j].name = widget + '.' + plugin + '.' + field + '.' + k;
+                buffer[j].name = widget + '.' + plugin.split(' ').join('') + '.' + field + '.' + (buffer[j].exampleName || k);
                 k++;
             }
         }
@@ -216,7 +226,7 @@ var writer = {
             writer.analyzeLibs(record.libs) +
             '<body>\r\n' +
             record.text +
-            '</body\r\n</html>';
+            '</body>\r\n</html>';
     },
 
     analyzeLibs: function (libs) {

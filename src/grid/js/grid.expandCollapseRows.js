@@ -13,7 +13,7 @@ gj.grid.plugins.expandCollapseRows = {
              * Automatically add expand collapse column as a first column in the grid during initialization.
              * @type string
              * @default undefined
-             * @example <!-- grid.base, grid.expandCollapseRows -->
+             * @example base.theme <!-- grid.base, grid.expandCollapseRows -->
              * <table id="grid"></table>
              * <script>
              *     $('#grid').grid({
@@ -22,7 +22,7 @@ gj.grid.plugins.expandCollapseRows = {
              *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'DateOfBirth', type: 'date' } ]
              *     });
              * </script>
-             * @example <!-- bootstrap, grid.base, grid.expandCollapseRows -->
+             * @example bootstrap <!-- bootstrap, grid.base, grid.expandCollapseRows -->
              * <table id="grid"></table>
              * <script>
              *     $('#grid').grid({
@@ -139,7 +139,7 @@ gj.grid.plugins.expandCollapseRows = {
          * @param {object} e - event data
          * @param {object} detailWrapper - the detail wrapper as jQuery object 
          * @param {object} record - the data of the row record 
-         * @example <!-- grid.base, grid.expandCollapseRows -->
+         * @example sample <!-- grid.base, grid.expandCollapseRows -->
          * <table id="grid"></table>
          * <script>
          *     var grid = $('#grid').grid({
@@ -163,7 +163,7 @@ gj.grid.plugins.expandCollapseRows = {
          * @param {object} e - event data
          * @param {object} detailWrapper - the detail wrapper as jQuery object 
          * @param {object} record - the data of the row record 
-         * @example <!-- grid.base, grid.expandCollapseRows -->
+         * @example sample <!-- grid.base, grid.expandCollapseRows -->
          * <table id="grid"></table>
          * <script>
          *     var grid = $('#grid').grid({

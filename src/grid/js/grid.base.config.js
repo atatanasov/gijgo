@@ -27,7 +27,7 @@ gj.grid.config = {
          * If set to array, then the grid is going to use the array as data for rows.
          * @type (string|object|array)
          * @default undefined
-         * @example <!-- grid.base -->
+         * @example Remote.JS.Configuration <!-- grid.base -->
          * <table id="grid"></table>
          * <script>
          *     $('#grid').grid({
@@ -35,7 +35,7 @@ gj.grid.config = {
          *         columns: [ { field: 'Name' }, { field: 'PlaceOfBirth' } ]
          *     });
          * </script>
-         * @example <!-- grid.base -->
+         * @example Remote.Html.Configuration <!-- grid.base -->
          * <table id="grid" data-source="/DataSources/GetPlayers">
          *     <thead>
          *         <tr>
@@ -48,7 +48,7 @@ gj.grid.config = {
          * <script>
          *     $('#grid').grid();
          * </script>
-         * @example <!-- grid.base -->
+         * @example Remote.Custom.Render <!-- grid.base -->
          * <table id="grid"></table>
          * <script>
          *     var grid, onSuccessFunc = function (response) {
@@ -60,7 +60,7 @@ gj.grid.config = {
          *         columns: [ { field: 'Name' }, { field: 'PlaceOfBirth' } ]
          *     });
          * </script>
-         * @example <!-- grid.base -->
+         * @example Local.DataSource <!-- grid.base -->
          * <table id="grid"></table>
          * <script>
          *     var data = [
@@ -78,7 +78,7 @@ gj.grid.config = {
 
         /** An array that holds the configurations of each column from the grid.
          * @type array
-         * @example <!-- grid.base -->
+         * @example JS.Configuration <!-- grid.base -->
          * <table id="grid"></table>
          * <script>
          *     $('#grid').grid({
@@ -91,7 +91,7 @@ gj.grid.config = {
 
         /** Auto generate column for each field in the datasource when set to true.
          * @type array
-         * @example <!-- grid.base -->
+         * @example sample <!-- grid.base -->
          * <table id="grid"></table>
          * <script>
          *     $('#grid').grid({
@@ -104,7 +104,7 @@ gj.grid.config = {
 
         /** An object that holds the default configuration settings of each column from the grid.
          * @type object
-         * @example <!-- grid.base -->
+         * @example sample <!-- grid.base -->
          * <table id="grid"></table>
          * <script>
          *     $('#grid').grid({
@@ -120,7 +120,7 @@ gj.grid.config = {
              * @alias column.hidden
              * @type boolean
              * @default false
-             * @example <!-- grid.base -->
+             * @example sample <!-- grid.base -->
              * <table id="grid"></table>
              * <script>
              *     $('#grid').grid({
@@ -136,7 +136,7 @@ gj.grid.config = {
              * @alias column.width
              * @type int|string
              * @default undefined
-             * @example <!-- grid.base -->
+             * @example sample <!-- grid.base -->
              * <table id="grid"></table>
              * <script>
              *     $('#grid').grid({
@@ -156,7 +156,7 @@ gj.grid.config = {
              * @alias column.sortable
              * @type boolean
              * @default false
-             * @example <!-- grid.base -->
+             * @example sample <!-- grid.base -->
              * <table id="grid"></table>
              * <script>
              *     $('#grid').grid({
@@ -176,7 +176,7 @@ gj.grid.config = {
              * @alias column.type
              * @type checkbox|icon|date
              * @default undefined
-             * @example <!-- grid.base -->
+             * @example sample <!-- grid.base -->
              * <table id="grid"></table>
              * <script>
              *     $('#grid').grid({
@@ -196,7 +196,7 @@ gj.grid.config = {
              * @alias column.title
              * @type string
              * @default undefined
-             * @example <!-- grid.base -->
+             * @example sample <!-- grid.base -->
              * <table id="grid"></table>
              * <script>
              *     $('#grid').grid({
@@ -217,7 +217,7 @@ gj.grid.config = {
              * @alias column.field
              * @type string
              * @default undefined
-             * @example <!-- grid.base -->
+             * @example sample <!-- grid.base -->
              * <table id="grid"></table>
              * <script>
              *     $('#grid').grid({
@@ -237,7 +237,7 @@ gj.grid.config = {
              * @alias column.align
              * @type left|right|center|justify|initial|inherit
              * @default "left"
-             * @example <!-- grid.base -->
+             * @example sample <!-- grid.base -->
              * <table id="grid"></table>
              * <script>
              *     $('#grid').grid({
@@ -256,7 +256,7 @@ gj.grid.config = {
              * @alias column.cssClass
              * @type string
              * @default undefined
-             * @example <!-- grid.base -->
+             * @example sample <!-- grid.base -->
              * <table id="grid"></table>
              * <style>
              * .nowrap { white-space: nowrap }
@@ -279,7 +279,7 @@ gj.grid.config = {
              * @alias column.headerCssClass
              * @type string
              * @default undefined
-             * @example <!-- grid.base -->
+             * @example sample <!-- grid.base -->
              * <table id="grid"></table>
              * <style>
              * .italic { font-style: italic }
@@ -301,7 +301,7 @@ gj.grid.config = {
              * @alias column.tooltip
              * @type string
              * @default undefined
-             * @example <!-- grid.base -->
+             * @example sample <!-- grid.base -->
              * <table id="grid"></table>
              * <script>
              *     $('#grid').grid({
@@ -321,7 +321,7 @@ gj.grid.config = {
              * @alias column.icon
              * @type string
              * @default undefined
-             * @example <!-- jqueryui, grid.base -->
+             * @example sample <!-- jqueryui, grid.base -->
              * <table id="grid"></table>
              * <script>
              *     $('#grid').grid({
@@ -343,7 +343,7 @@ gj.grid.config = {
              * @alias column.events
              * @type function
              * @default undefined
-             * @example <!-- jqueryui, grid.base -->
+             * @example javascript.configuration <!-- jqueryui, grid.base -->
              * <table id="grid"></table>
              * <script>
              *     $('#grid').grid({
@@ -375,7 +375,7 @@ gj.grid.config = {
              *         ]
              *     });
              * </script>
-             * @example <!-- jqueryui, grid.base -->
+             * @example html.configuration <!-- jqueryui, grid.base -->
              * <table id="grid" data-source="/DataSources/GetPlayers" data-ui-library="jqueryui">
              *     <thead>
              *         <tr>
@@ -409,7 +409,7 @@ gj.grid.config = {
              * @alias column.format
              * @type string
              * @default undefined
-             * @example <!-- grid.base -->
+             * @example sample <!-- grid.base -->
              * <table id="grid"></table>
              * <script src="http://stevenlevithan.com/assets/misc/date.format.js"></script>
              * <script>
@@ -437,7 +437,7 @@ gj.grid.config = {
              * @alias column.tmpl
              * @type string
              * @default undefined
-             * @example <!-- grid.base -->
+             * @example sample <!-- grid.base -->
              * <table id="grid"></table>
              * <script>
              *     $('#grid').grid({
@@ -510,7 +510,7 @@ gj.grid.config = {
          * @additionalinfo The css files for jQuery UI or Bootstrap should be manually included to the page where the grid is in use.
          * @type (base|jqueryui|bootstrap)
          * @default "base"
-         * @example <!-- grid.base -->
+         * @example base.theme <!-- grid.base -->
          * <table id="grid"></table>
          * <script>
          *     $('#grid').grid({
@@ -522,7 +522,7 @@ gj.grid.config = {
          *         ]
          *     });
          * </script>
-         * @example <!-- jqueryui, grid.base -->
+         * @example jqueryui <!-- jqueryui, grid.base -->
          * <table id="grid"></table>
          * <script>
          *     $('#grid').grid({
@@ -535,7 +535,7 @@ gj.grid.config = {
          *         ]
          *     });
          * </script>
-         * @example <!-- bootstrap, grid.base, grid.pagination -->
+         * @example bootstrap <!-- bootstrap, grid.base, grid.pagination -->
          * <table id="grid"></table>
          * <script>
          *     $('#grid').grid({
@@ -573,7 +573,7 @@ gj.grid.config = {
          * If the type is set to multiple the user will be able to select more then one row from the grid.
          * @type (single|multiple)
          * @default "single"
-         * @example <!-- grid.base -->
+         * @example sample <!-- grid.base -->
          * <table id="grid"></table>
          * <script>
          *     $('#grid').grid({
@@ -591,7 +591,7 @@ gj.grid.config = {
          * If this setting is set to "checkbox" a column with checkboxes will appear as first row of the grid and when the user select a row, then this row will be highlighted and the checkbox selected.
          * @type (basic|checkbox)
          * @default "basic"
-         * @example <!-- grid.base -->
+         * @example sample <!-- grid.base -->
          * <table id="grid"></table>
          * <script>
          *     $('#grid').grid({
@@ -607,7 +607,7 @@ gj.grid.config = {
         /** When this setting is enabled the content of the grid will be loaded automatically after the creation of the grid.
          * @type boolean
          * @default true
-         * @example <!-- grid.base -->
+         * @example disabled <!-- grid.base -->
          * <table id="grid"></table>
          * <script>
          *     var grid = $('#grid').grid({
@@ -617,7 +617,7 @@ gj.grid.config = {
          *     });
          *     grid.reload(); //call .reload() explicitly in order to load the data in the grid
          * </script>
-         * @example <!-- grid.base -->
+         * @example enabled <!-- grid.base -->
          * <table id="grid"></table>
          * <script>
          *     $('#grid').grid({
@@ -632,7 +632,7 @@ gj.grid.config = {
         /** The text that is going to be displayed if the grid is empty.
          * @type string
          * @default "No records found."
-         * @example <!-- grid.base -->
+         * @example sample <!-- grid.base -->
          * <table id="grid"></table>
          * <script>
          *     $('#grid').grid({
@@ -647,7 +647,7 @@ gj.grid.config = {
         /** Width of the grid.
          * @type int
          * @default undefined
-         * @example <!-- grid.base -->
+         * @example sample <!-- grid.base -->
          * <table id="grid"></table>
          * <script>
          *     $('#grid').grid({
@@ -668,7 +668,7 @@ gj.grid.config = {
         /** The size of the font in the grid.
          * @type string
          * @default undefined
-         * @example <!-- grid.base -->
+         * @example sample <!-- grid.base -->
          * <table id="grid"></table>
          * <script>
          *     $('#grid').grid({

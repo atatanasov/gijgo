@@ -7,13 +7,13 @@ if (typeof (gj.grid.plugins) === 'undefined') {
 }
 
 gj.grid.plugins.inlineEditing = {
-    'configuration': {
+    config: {
         defaultColumnSettings: {
             /** Provides a way to specify a custom editing UI for the column.
              * @alias column.editor
              * @type function|boolean
              * @default undefined
-             * @example <!-- grid.base, grid.inlineEditing -->
+             * @example sample <!-- grid.base, grid.inlineEditing -->
              * <table id="grid"></table>
              * <script>
              *     function edit($container, currentValue) {
@@ -33,7 +33,7 @@ gj.grid.plugins.inlineEditing = {
         }
     },
 
-    'private': {
+    private: {
         OnCellEdit: function ($grid, $cell, column, record) {
             var $editorContainer, $editorField;
             if ($cell.attr('data-mode') !== 'edit' && column.editor) {
@@ -134,12 +134,12 @@ gj.grid.plugins.inlineEditing = {
         }
     },
 
-    'public': {
+    public: {
         /**
          * Return array with all changes
          * @method
          * @return array
-         * @example <!-- grid.base, grid.inlineEditing -->
+         * @example sample <!-- grid.base, grid.inlineEditing -->
          * <button id="btnGetChanges">Get Changes</button>
          * <br/><br/>
          * <table id="grid"></table>
@@ -159,35 +159,35 @@ gj.grid.plugins.inlineEditing = {
         }
     },
 
-    'events': {
+    events: {
+        /**
+         * Event fires after inline edit of a cell in the grid.
+         *
+         * @event cellDataChanged
+         * @param {object} e - event data
+         * @param {object} $cell - the cell presented as jquery object 
+         * @param {object} column - the column configuration data
+         * @param {object} record - the data of the row record
+         * @param {object} oldValue - the old cell value
+         * @param {object} newValue - the new cell value
+         * @example sample <!-- grid.base, grid.inlineEditing -->
+         * <table id="grid"></table>
+         * <script>
+         *     var grid = $('#grid').grid({
+         *         dataSource: '/DataSources/GetPlayers',
+         *         columns: [ { field: 'ID' }, { field: 'Name', editor: true }, { field: 'PlaceOfBirth', editor: true } ]
+         *     });
+         *     grid.on('cellDataChanged', function (e, $cell, column, record, oldValue, newValue) {
+         *         alert('"' + oldValue + '" is changed to "' + newValue + '"');
+         *     });
+         * </script>
+         */
         cellDataChanged: function ($grid, $cell, column, record, oldValue, newValue) {
-            /**
-             * Event fires after inline edit of a cell in the grid.
-             *
-             * @event cellDataChanged
-             * @param {object} e - event data
-             * @param {object} $cell - the cell presented as jquery object 
-             * @param {object} column - the column configuration data
-             * @param {object} record - the data of the row record
-             * @param {object} oldValue - the old cell value
-             * @param {object} newValue - the new cell value
-             * @example <!-- grid.base, grid.inlineEditing -->
-             * <table id="grid"></table>
-             * <script>
-             *     var grid = $('#grid').grid({
-             *         dataSource: '/DataSources/GetPlayers',
-             *         columns: [ { field: 'ID' }, { field: 'Name', editor: true }, { field: 'PlaceOfBirth', editor: true } ]
-             *     });
-             *     grid.on('cellDataChanged', function (e, $cell, column, record, oldValue, newValue) {
-             *         alert('"' + oldValue + '" is changed to "' + newValue + '"');
-             *     });
-             * </script>
-             */
             $grid.trigger('cellDataChanged', [$cell, column, record, oldValue, newValue]);
         }
     },
 
-    'configure': function ($grid) {
+    configure: function ($grid) {
         $.extend(true, $grid, gj.grid.plugins.inlineEditing.public);
         $grid.on('cellDataBound', function (e, $wrapper, id, column, record) {
             if (column.editor) {
@@ -196,15 +196,7 @@ gj.grid.plugins.inlineEditing = {
                 });
             }
         });
-        //TODO: remove. looks like we not need that.
-        //$grid.on('rowSelect', function (e, $row, id, record) {
-        //    $row.siblings().find("td[data-mode='edit']").each(function () {
-        //        var $cell = $(this),
-        //            column = $grid.data().columns[$cell.parent().children().index(this)];
-        //        gj.grid.plugins.inlineEditing.private.OnCellDisplay($cell, column);
-        //    });
-        //});
     }
 };
 
-$.extend(true, gj.grid.config.base, gj.grid.plugins.inlineEditing.configuration);
+$.extend(true, gj.grid.config.base, gj.grid.plugins.inlineEditing.config);

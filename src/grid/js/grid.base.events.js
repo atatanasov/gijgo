@@ -8,7 +8,7 @@ gj.grid.events = {
      * @event beforeEmptyRowInsert
      * @param {object} e - event data
      * @param {object} $row - The empty row as jquery object
-     * @example <!-- grid.base -->
+     * @example sample <!-- grid.base -->
      * <table id="grid"></table>
      * <script>
      *     var grid = $('#grid').grid({
@@ -33,7 +33,7 @@ gj.grid.events = {
      * @event dataBinding
      * @param {object} e - event data
      * @param {array} records - the list of records received from the server
-     * @example <!-- grid.base -->
+     * @example sample <!-- grid.base -->
      * <table id="grid"></table>
      * <script>
      *     var grid = $('#grid').grid({
@@ -56,7 +56,7 @@ gj.grid.events = {
      * @param {object} e - event data
      * @param {array} records - the list of records received from the server
      * @param {int} totalRecords - the number of the all records that can be presented in the grid
-     * @example <!-- grid.base -->
+     * @example sample <!-- grid.base -->
      * <table id="grid"></table>
      * <script>
      *     var grid = $('#grid').grid({
@@ -79,7 +79,7 @@ gj.grid.events = {
      * @param {object} $row - the row presented as jquery object
      * @param {object} id - the id of the record
      * @param {object} record - the data of the row record
-     * @example <!-- grid.base -->
+     * @example sample <!-- grid.base -->
      * <table id="grid"></table>
      * <script>
      *     var grid = $('#grid').grid({
@@ -104,7 +104,7 @@ gj.grid.events = {
      * @param {string} id - the id of the record
      * @param {object} column - the column configuration data
      * @param {object} record - the data of the row record
-     * @example <!-- grid.base -->
+     * @example sample <!-- grid.base -->
      * <table id="grid"></table>
      * <script>
      *     var grid = $('#grid').grid({
@@ -130,7 +130,7 @@ gj.grid.events = {
      * @param {object} $row - the row presented as jquery object
      * @param {string} id - the id of the record
      * @param {object} record - the data of the row record
-     * @example <!-- grid.base -->
+     * @example sample <!-- grid.base -->
      * <table id="grid"></table>
      * <script>
      *     var grid = $('#grid').grid({
@@ -155,7 +155,7 @@ gj.grid.events = {
      * @param {object} $row - the row presented as jquery object
      * @param {string} id - the id of the record
      * @param {object} record - the data of the row record
-     * @example <!-- grid.base -->
+     * @example sample <!-- grid.base -->
      * <table id="grid"></table>
      * <script>
      *     var grid = $('#grid').grid({
@@ -180,7 +180,7 @@ gj.grid.events = {
      * @param {object} $row - the row presented as jquery object
      * @param {object} id - the id of the record
      * @param {object} record - the data of the row record
-     * @example <!-- grid.base -->
+     * @example sample <!-- grid.base -->
      * <button onclick="grid.removeRow('1')">Remove Row</button><br/>
      * <table id="grid"></table>
      * <script>
@@ -207,7 +207,7 @@ gj.grid.events = {
      *
      * @event destroying
      * @param {object} e - event data
-     * @example <!-- grid.base -->
+     * @example sample <!-- grid.base -->
      * <button id="btnDestroy">Destroy</button>
      * <br/><br/>
      * <table id="grid"></table>
@@ -234,7 +234,7 @@ gj.grid.events = {
      * @event columnHide
      * @param {object} e - event data
      * @param {object} column - The data about the column that is hidding
-     * @example <!-- grid.base -->
+     * @example sample <!-- grid.base -->
      * <table id="grid"></table>
      * <script>
      *     var grid = $('#grid').grid({
@@ -257,7 +257,7 @@ gj.grid.events = {
      * @event columnShow
      * @param {object} e - event data
      * @param {object} column - The data about the column that is showing
-     * @example <!-- grid.base -->
+     * @example sample <!-- grid.base -->
      * <table id="grid"></table>
      * <script>
      *     var grid = $('#grid').grid({
@@ -279,7 +279,7 @@ gj.grid.events = {
      *
      * @event initialized
      * @param {object} e - event data
-     * @example <!-- grid.base -->
+     * @example sample <!-- grid.base -->
      * <table id="grid"></table>
      * <script>
      *     var grid = $('#grid').grid({

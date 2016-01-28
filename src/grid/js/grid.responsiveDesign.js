@@ -13,7 +13,7 @@ gj.grid.plugins.responsiveDesign = {
              * This setting is in use only if the resizeMonitoring setting is set to true.
              * @type int
              * @default 500
-             * @example <!-- grid.base, grid.responsiveDesign -->
+             * @example sample <!-- grid.base, grid.responsiveDesign -->
              * <table id="grid"></table>
              * <script>
              *     var grid = $('#grid').grid({
@@ -28,12 +28,13 @@ gj.grid.plugins.responsiveDesign = {
              * </script>
              */
             resizeCheckInterval: 500,
+
             /** This setting enables responsive behaviour of the grid where some column are invisible when there is not enough space on the screen for them.
              * The visibility of the columns in this mode is driven by the column minWidth and priority settings.
              * The columns without priority setting are always visible and can't hide in small screen resolutions.
              * @type boolean
              * @default false
-             * @example <!-- grid.base, grid.responsiveDesign -->
+             * @example sample <!-- grid.base, grid.responsiveDesign -->
              * <table id="grid"></table>
              * <script>
              *     $('#grid').grid({
@@ -48,11 +49,12 @@ gj.grid.plugins.responsiveDesign = {
              * </script>
              */
             responsive: false,
+
             /** Automatically adds hidden columns to the details section of the row.
              * This setting works only if the responsive setting is set to true and the detailTemplate is set.
              * @type boolean
              * @default false
-             * @example <!-- bootstrap, grid.base, grid.expandCollapseRows, grid.responsiveDesign -->
+             * @example sample <!-- bootstrap, grid.base, grid.expandCollapseRows, grid.responsiveDesign -->
              * <table id="grid"></table>
              * <script>
              *     $('#grid').grid({
@@ -70,6 +72,7 @@ gj.grid.plugins.responsiveDesign = {
              * </script>
              */
             showHiddenColumnsAsDetails: false,
+
             defaultColumn: {
                 /** The priority of the column compared to other columns in the grid.
                  * The columns are hiding based on the priorities.
@@ -77,7 +80,7 @@ gj.grid.plugins.responsiveDesign = {
                  * @alias column.priority
                  * @type int
                  * @default undefined
-                 * @example <!-- grid.base, grid.responsiveDesign -->
+                 * @example sample <!-- grid.base, grid.responsiveDesign -->
                  * <table id="grid"></table>
                  * <script>
                  *     $('#grid').grid({
@@ -92,13 +95,14 @@ gj.grid.plugins.responsiveDesign = {
                  * </script>
                  */
                 priority: undefined,
+
                 /** The minimum width of the column.
                  * The column is getting invisible when there is not enough space in the grid for this minimum width.
                  * This setting is working only when the responsive setting is set to true and the column priority setting is set.
                  * @alias column.minWidth
                  * @type int
                  * @default 150
-                 * @example <!-- grid.base, grid.responsiveDesign -->
+                 * @example sample <!-- grid.base, grid.responsiveDesign -->
                  * <table id="grid"></table>
                  * <script>
                  *     $('#grid').grid({
@@ -200,7 +204,7 @@ gj.grid.plugins.responsiveDesign = {
          * Show column if the space for the grid is expanding and hide columns when the space for the grid is decreasing.
          * @method
          * @return void
-         * @example <!-- grid.base, grid.responsiveDesign -->
+         * @example sample <!-- grid.base, grid.responsiveDesign -->
          * <button onclick="grid.makeResponsive()">Make Responsive</button>
          * <br/><br/>
          * <table id="grid"></table>
@@ -254,7 +258,7 @@ gj.grid.plugins.responsiveDesign = {
          *
          * @event resize
          * @property {object} e - event data
-         * @example <!-- grid.base, grid.responsiveDesign -->
+         * @example sample <!-- grid.base, grid.responsiveDesign -->
          * <table id="grid"></table>
          * <script>
          *     var grid = $('#grid').grid({

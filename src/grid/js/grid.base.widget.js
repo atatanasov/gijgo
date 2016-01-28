@@ -14,7 +14,7 @@ function Grid($grid, arguments, skipInit) {
      * @param {object} params - An object that contains a list with parameters that are going to be send to the server.
      * @fires beforeEmptyRowInsert, dataBinding, dataBound, cellDataBound
      * @return void
-     * @example <!-- grid.base -->
+     * @example sample <!-- grid.base -->
      * <input type="text" id="txtSearch">
      * <button id="btnSearch">Search</button>
      * <br/><br/>
@@ -38,7 +38,7 @@ function Grid($grid, arguments, skipInit) {
      * @method
      * @param {boolean} showNotFoundText - Indicates if the "Not Found" text is going to show after the clearing of the grid.
      * @return void
-     * @example <!-- grid.base -->
+     * @example sample <!-- grid.base -->
      * <button id="btnClear">Clear</button>
      * <br/><br/>
      * <table id="grid"></table>
@@ -60,7 +60,7 @@ function Grid($grid, arguments, skipInit) {
      * Return the number of records presented on the screen.
      * @method
      * @return int
-     * @example <!-- grid.base -->
+     * @example sample <!-- grid.base -->
      * <button id="btnShowCount">Show Count</button>
      * <br/><br/>
      * <table id="grid"></table>
@@ -85,7 +85,7 @@ function Grid($grid, arguments, skipInit) {
      * @param {object} response - An object that contains the data that needs to be loaded in the grid.
      * @fires beforeEmptyRowInsert, dataBinding, dataBound, cellDataBound
      * @return void
-     * @example <!-- grid.base -->
+     * @example sample <!-- grid.base -->
      * <table id="grid"></table>
      * <script>
      *     var grid, onSuccessFunc;
@@ -112,7 +112,7 @@ function Grid($grid, arguments, skipInit) {
      * @param {bool} keepWrapperTag - If this flag is set to false, the table wrapper tag will be removed from the HTML dom tree.
      * @fires destroying
      * @return void
-     * @example <!-- grid.base -->
+     * @example keep.wrapper.and.table <!-- grid.base -->
      * <button id="btnDestroy">Destroy</button>
      * <button id="btnCreate">Create</button>
      * <br/><br/>
@@ -132,7 +132,7 @@ function Grid($grid, arguments, skipInit) {
      *         createFunc();
      *     });
      * </script>
-     * @example <!-- grid.base -->
+     * @example remove.wrapper.and.table <!-- grid.base -->
      * <button id="btnRemove">Remove</button>
      * <br/><br/>
      * <table id="grid"></table>
@@ -155,7 +155,7 @@ function Grid($grid, arguments, skipInit) {
      * @method
      * @param {string} id - The id of the row that needs to be selected
      * @return void
-     * @example <!-- grid.base -->
+     * @example sample <!-- grid.base -->
      * <input type="text" id="txtNumber" value="1" />
      * <button id="btnSelect">Select</button>
      * <br/><br/>
@@ -180,7 +180,7 @@ function Grid($grid, arguments, skipInit) {
      * If the multiple selection method is one this method is going to return only the id of the first selected record.
      * @method
      * @return string
-     * @example <!-- grid.base -->
+     * @example sample <!-- grid.base -->
      * <button id="btnShowSelection">Show Selection</button>
      * <br/><br/>
      * <table id="grid"></table>
@@ -203,7 +203,7 @@ function Grid($grid, arguments, skipInit) {
      * Return an array with the ids of the selected record.
      * @method
      * @return array
-     * @example <!-- grid.base -->
+     * @example sample <!-- grid.base -->
      * <button id="btnShowSelection">Show Selections</button>
      * <br/><br/>
      * <table id="grid"></table>
@@ -230,7 +230,7 @@ function Grid($grid, arguments, skipInit) {
      * Select all records from the grid.
      * @method
      * @return void
-     * @example <!-- grid.base -->
+     * @example sample <!-- grid.base -->
      * <button id="btnSelectAll">Select All</button>
      * <br/><br/>
      * <table id="grid"></table>
@@ -254,7 +254,7 @@ function Grid($grid, arguments, skipInit) {
      * Unselect all records from the grid.
      * @method
      * @return void
-     * @example <!-- grid.base -->
+     * @example sample <!-- grid.base -->
      * <button id="btnSelectAll">Select All</button>
      * <button id="btnUnSelectAll">UnSelect All</button>
      * <br/><br/>
@@ -283,7 +283,7 @@ function Grid($grid, arguments, skipInit) {
      * @method
      * @param {string} id - The id of the row that needs to be returned.
      * @return object
-     * @example <!-- grid.base -->
+     * @example sample <!-- grid.base -->
      * <button id="btnGetData">Get Data</button>
      * <br/><br/>
      * <table id="grid"></table>
@@ -308,7 +308,7 @@ function Grid($grid, arguments, skipInit) {
      * @method
      * @param {int} position - The position of the row that needs to be return.
      * @return object
-     * @example <!-- grid.base -->
+     * @example sample <!-- grid.base -->
      * <button id="btnGetData">Get Data</button>
      * <br/><br/>
      * <table id="grid"></table>
@@ -331,7 +331,7 @@ function Grid($grid, arguments, skipInit) {
      * Return an array with all records presented in the grid.
      * @method
      * @return array
-     * @example <!-- grid.base -->
+     * @example remote.data <!-- grid.base -->
      * <button id="btnGetAllName">Get All Names</button>
      * <br/><br/>
      * <table id="grid"></table>
@@ -348,7 +348,7 @@ function Grid($grid, arguments, skipInit) {
      *         alert(names);
      *     });
      * </script>
-     * @example <!-- grid.base -->
+     * @example local.data <!-- grid.base -->
      * <button id="btnAdd">Add New Row</button>
      * <br/><br/>
      * <table id="grid"></table>
@@ -376,7 +376,7 @@ function Grid($grid, arguments, skipInit) {
      * @method
      * @param {string} field - The name of the field bound to the column.
      * @return grid
-     * @example <!-- grid.base -->
+     * @example sample <!-- grid.base -->
      * <button id="btnShowColumn">Show Column</button>
      * <br/><br/>
      * <table id="grid"></table>
@@ -399,7 +399,7 @@ function Grid($grid, arguments, skipInit) {
      * @method
      * @param {string} field - The name of the field bound to the column.
      * @return grid
-     * @example <!-- grid.base -->
+     * @example sample <!-- grid.base -->
      * <button id="btnHideColumn">Hide Column</button>
      * <br/><br/>
      * <table id="grid"></table>
@@ -422,7 +422,7 @@ function Grid($grid, arguments, skipInit) {
      * @method
      * @param {object} record - Object with data for the new record.
      * @return grid
-     * @example <!-- grid.base -->
+     * @example sample <!-- grid.base -->
      * <button id="btnAdd">Add Row</button>
      * <br/><br/>
      * <table id="grid"></table>
@@ -450,7 +450,7 @@ function Grid($grid, arguments, skipInit) {
      * @param {string} id - The id of the row that needs to be updated
      * @param {object} record - Object with data for the new record.
      * @return grid
-     * @example <!-- jqueryui, grid.base -->
+     * @example sample <!-- jqueryui, grid.base -->
      * <table id="grid"></table>
      * <script>
      *     var grid, data;
@@ -487,7 +487,7 @@ function Grid($grid, arguments, skipInit) {
      * @method
      * @param {string} id - Id of the record that needs to be removed.
      * @return grid
-     * @example <!-- grid.base -->
+     * @example sample <!-- grid.base -->
      * <table id="grid"></table>
      * <script>
      *     var grid;

@@ -21,7 +21,7 @@ gj.grid.plugins.pagination = {
                  * @alias pager.limit
                  * @type int
                  * @default 10
-                 * @example <!-- grid.base, grid.pagination -->
+                 * @example local.data <!-- grid.base, grid.pagination -->
                  * <table id="grid"></table>
                  * <script>
                  *     var data, grid;
@@ -36,7 +36,7 @@ gj.grid.plugins.pagination = {
                  *         pager: { limit: 2 }
                  *     });
                  * </script>
-                 * @example <!-- grid.base, grid.pagination -->
+                 * @example remote.data <!-- grid.base, grid.pagination -->
                  * <table id="grid"></table>
                  * <script>
                  *     var grid = $('#grid').grid({
@@ -53,7 +53,7 @@ gj.grid.plugins.pagination = {
                  * @alias pager.sizes
                  * @type array
                  * @default undefined
-                 * @example <!-- bootstrap, grid.base, grid.pagination  -->
+                 * @example bootstrap <!-- bootstrap, grid.base, grid.pagination  -->
                  * <table id="grid"></table>
                  * <script>
                  *     var grid = $('#grid').grid({
@@ -63,7 +63,7 @@ gj.grid.plugins.pagination = {
                  *         pager: { limit: 2, sizes: [2, 5, 10, 20] }
                  *     });
                  * </script>
-                 * @example <!-- jqueryui, grid.base, grid.pagination  -->
+                 * @example jqueryui <!-- jqueryui, grid.base, grid.pagination  -->
                  * <table id="grid"></table>
                  * <script>
                  *     var grid = $('#grid').grid({
@@ -393,7 +393,7 @@ gj.grid.plugins.pagination = {
          * @event pageSizeChange
          * @property {object} e - event data
          * @property {int} newSize - The new page size
-         * @example <!-- bootstrap, grid.base, grid.pagination -->
+         * @example sample <!-- bootstrap, grid.base, grid.pagination -->
          * <table id="grid"></table>
          * <script>
          *     var grid = $('#grid').grid({
@@ -417,7 +417,7 @@ gj.grid.plugins.pagination = {
          * @event pageChanging
          * @property {object} e - event data
          * @property {int} newPage - The new page
-         * @example <!-- jqueryui, grid.base, grid.pagination -->
+         * @example sample <!-- jqueryui, grid.base, grid.pagination -->
          * <table id="grid"></table>
          * <script>
          *     var grid = $('#grid').grid({
