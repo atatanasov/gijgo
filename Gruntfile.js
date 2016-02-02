@@ -3,6 +3,11 @@
     // Project configuration.
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
+        copy: {
+            files: { cwd: 'node_modules/jquery/dist', src: '**/*', dest: 'build/libraries/jquery', expand: true },
+            files: { cwd: 'node_modules/bootstrap/dist', src: '**/*', dest: 'build/libraries/bootstrap', expand: true },
+            files: { cwd: 'node_modules/jquery-ui/themes/base', src: '**/*', dest: 'build/libraries/jquery-ui', expand: true }
+        },
         extractExamples: {
             generate: {
                 files: [
@@ -111,7 +116,7 @@
         },
         watch: {
             files: ['src/*/*.js', 'src/*/*.css'],
-            tasks: ['extractExamples', 'concat', 'replace', 'uglify']
+            tasks: ['copy', 'extractExamples', 'concat', 'replace', 'uglify']
         }
     });
 
@@ -119,6 +124,7 @@
     grunt.loadNpmTasks('grunt-text-replace');
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-watch');
+    grunt.loadNpmTasks('grunt-contrib-copy');
 
     grunt.registerMultiTask('extractExamples', 'Extract examples from js files', function () {
         var fs = require('fs');
@@ -191,7 +197,7 @@
     });
 
     // Default task(s).
-    grunt.registerTask('default', ['extractExamples', 'concat', 'replace', 'uglify']);
+    grunt.registerTask('default', ['copy', 'extractExamples', 'concat', 'replace', 'uglify']);
 
 };
 
@@ -233,22 +239,22 @@ var writer = {
         var i, libs, result = '<head>\r\n';
         result += '  <meta charset="utf-8" />\r\n';
         result += '  <title>Example</title>\r\n';
-        result += '  <script src="../../node_modules/jquery/dist/jquery.min.js"></script>\r\n';
+        result += '  <script src="../../build/libraries/jquery/jquery.min.js"></script>\r\n';
         if (libs) {
             names = libs.replace('<!--', '').replace('-->', '').trim().split(',');
             for (i = 0; i < names.length; i++) {
                 //include css files
                 switch (names[i].trim()) {
                     case 'bootstrap':
-                        result += '  <link href="../../node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" type="text/css">\r\n';
-                        result += '  <link href="../../node_modules/bootstrap/dist/css/bootstrap-theme.min.css" rel="stylesheet" type="text/css">\r\n';
+                        result += '  <link href="../../build/libraries/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">\r\n';
+                        result += '  <link href="../../build/libraries/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet" type="text/css">\r\n';
                         break;
                     case 'foundation': 
                         result += '  <link href="http://cdn.foundation5.zurb.com/foundation.css" rel="stylesheet" type="text/css">\r\n';
                         break;
                     case 'jqueryui':
-                        result += '  <link href="../../node_modules/jquery-ui/themes/base/jquery.ui.core.css" rel="stylesheet" type="text/css">\r\n';
-                        result += '  <link href="../../node_modules/jquery-ui/themes/base/jquery.ui.theme.css" rel="stylesheet" type="text/css">\r\n';
+                        result += '  <link href="../../build/libraries/jquery-ui/jquery.ui.core.css" rel="stylesheet" type="text/css">\r\n';
+                        result += '  <link href="../../build/libraries/jquery-ui/jquery.ui.theme.css" rel="stylesheet" type="text/css">\r\n';
                         break;
                     case 'dialog.base':
                         result += '  <link href="../../build/modular/dialog/css/dialog.base.css" rel="stylesheet" type="text/css">\r\n';
