@@ -22,7 +22,7 @@ gj.draggable.config = {
      * Only elements that descend from the draggable element are permitted.
      * @type jquery element
      * @default undefined
-     * @example <!-- draggable.base -->
+     * @example sample <!-- draggable.base -->
      * <style>
      * .element { border: 1px solid #999; width: 300px; height: 400px; }
      * .handle { background-color: #DDD; cursor: move; width: 200px; margin: 5px auto 0px auto; text-align: center; padding: 5px; }
@@ -136,7 +136,7 @@ gj.draggable.events = {
      * @event drag
      * @param {object} e - event data
      * @param {object} offset - Current offset position as { top, left } object.
-     * @example <!-- draggable.base -->
+     * @example sample <!-- draggable.base -->
      * <style>
      * .element { border: 1px solid #999; width: 300px; height: 200px; cursor: move; text-align: center; background-color: #DDD; }
      * </style>
@@ -160,7 +160,7 @@ gj.draggable.events = {
      *
      * @event start
      * @param {object} e - event data
-     * @example <!-- draggable.base -->
+     * @example sample <!-- draggable.base -->
      * <style>
      * .element { border: 1px solid #999; width: 300px; height: 200px; cursor: move; text-align: center; background-color: #DDD; }
      * </style>
@@ -184,7 +184,7 @@ gj.draggable.events = {
      *
      * @event stop
      * @param {object} e - event data
-     * @example <!-- draggable.base -->
+     * @example sample <!-- draggable.base -->
      * <style>
      * .element { border: 1px solid #999; width: 300px; height: 200px; cursor: move; text-align: center; background-color: #DDD; }
      * </style>

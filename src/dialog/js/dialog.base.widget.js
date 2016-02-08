@@ -11,7 +11,7 @@ function Dialog($dialog, arguments) {
      * @method
      * @fires opening, opened
      * @return dialog
-     * @example <!-- draggable.base, dialog.base, bootstrap -->
+     * @example sample <!-- draggable.base, dialog.base, bootstrap -->
      * <div id="dialog" style="display: none">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
      * <button onclick="dialog.open()">Open Dialog</button>
      * <script>
@@ -29,7 +29,7 @@ function Dialog($dialog, arguments) {
      * @method
      * @fires closinging, closed
      * @return dialog
-     * @example <!-- draggable.base, dialog.base, bootstrap -->
+     * @example sample <!-- draggable.base, dialog.base, bootstrap -->
      * <div id="dialog" style="display: none">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
      * <button onclick="dialog.open()">Open Dialog</button>
      * <button onclick="dialog.close()">Close Dialog</button>
@@ -45,7 +45,7 @@ function Dialog($dialog, arguments) {
      * Check if the dialog is currently open.
      * @method
      * @return boolean
-     * @example <!-- draggable.base, dialog.base, bootstrap -->
+     * @example sample <!-- draggable.base, dialog.base, bootstrap -->
      * <div id="dialog" style="display: none">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
      * <button onclick="dialog.open()">Open Dialog</button>
      * <button onclick="dialog.close()">Close Dialog</button>

@@ -8,7 +8,7 @@ gj.dialog.events = {
      *
      * @event initialized
      * @param {object} e - event data
-     * @example <!-- draggable.base, dialog.base, bootstrap -->
+     * @example sample <!-- draggable.base, dialog.base, bootstrap -->
      * <div id="dialog" style="display: none">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
      * <button onclick="dialog.open()">Open Dialog</button>
      * <script>
@@ -28,7 +28,7 @@ gj.dialog.events = {
      * Triggered before the dialog is opened.
      * @event opening
      * @param {object} e - event data
-     * @example <!-- draggable.base, dialog.base, bootstrap -->
+     * @example sample <!-- draggable.base, dialog.base, bootstrap -->
      * <div id="dialog" style="display: none">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
      * <button onclick="dialog.open()">Open Dialog</button>
      * <script>
@@ -51,7 +51,7 @@ gj.dialog.events = {
      * Triggered when the dialog is opened.
      * @event opened
      * @param {object} e - event data
-     * @example <!-- draggable.base, dialog.base, bootstrap -->
+     * @example sample <!-- draggable.base, dialog.base, bootstrap -->
      * <div id="dialog" style="display: none">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
      * <button onclick="dialog.open()">Open Dialog</button>
      * <script>
@@ -74,7 +74,7 @@ gj.dialog.events = {
      * Triggered before the dialog is closed.
      * @event closing
      * @param {object} e - event data
-     * @example <!-- draggable.base, dialog.base, bootstrap -->
+     * @example sample <!-- draggable.base, dialog.base, bootstrap -->
      * <div id="dialog" style="display: none">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
      * <button onclick="dialog.open()">Open Dialog</button>
      * <script>
@@ -97,7 +97,7 @@ gj.dialog.events = {
      * Triggered when the dialog is closed.
      * @event closed
      * @param {object} e - event data
-     * @example <!-- draggable.base, dialog.base, bootstrap -->
+     * @example sample <!-- draggable.base, dialog.base, bootstrap -->
      * <div id="dialog" style="display: none">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
      * <button onclick="dialog.open()">Open Dialog</button>
      * <script>
@@ -116,18 +116,11 @@ gj.dialog.events = {
         $dialog.trigger("closed");
     },
 
-    //focus: function ($dialog) {
-    //    /**
-    //     * 
-    //     */
-    //    $dialog.trigger("focus");
-    //},
-
     /**
      * Triggered while the dialog is being dragged.
      * @event drag
      * @param {object} e - event data
-     * @example <!-- draggable.base, dialog.base, bootstrap -->
+     * @example sample <!-- draggable.base, dialog.base, bootstrap -->
      * <div id="dialog" style="display: none">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
      * <div id="logPanel" class="col-xs-12 well pre-scrollable" style="height: 200px"></div>
      * <script>
@@ -153,7 +146,7 @@ gj.dialog.events = {
      * Triggered when the user starts dragging the dialog.
      * @event dragStart
      * @param {object} e - event data
-     * @example <!-- draggable.base, dialog.base, bootstrap -->
+     * @example sample <!-- draggable.base, dialog.base, bootstrap -->
      * <div id="dialog" style="display: none">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
      * <div id="logPanel" class="col-xs-12 well pre-scrollable" style="height: 200px"></div>
      * <script>
@@ -179,7 +172,7 @@ gj.dialog.events = {
      * Triggered after the dialog has been dragged.
      * @event dragStop
      * @param {object} e - event data
-     * @example <!-- draggable.base, dialog.base, bootstrap -->
+     * @example sample <!-- draggable.base, dialog.base, bootstrap -->
      * <div id="dialog" style="display: none">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
      * <div id="logPanel" class="col-xs-12 well pre-scrollable" style="height: 200px"></div>
      * <script>
@@ -205,7 +198,7 @@ gj.dialog.events = {
      * Triggered while the dialog is being resized.
      * @event resize
      * @param {object} e - event data
-     * @example <!-- draggable.base, dialog.base, bootstrap -->
+     * @example sample <!-- draggable.base, dialog.base, bootstrap -->
      * <div id="dialog" style="display: none">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
      * <div id="logPanel" class="col-xs-12 well pre-scrollable" style="height: 200px"></div>
      * <script>
@@ -232,7 +225,7 @@ gj.dialog.events = {
      * Triggered when the user starts resizing the dialog.
      * @event resizeStart
      * @param {object} e - event data
-     * @example <!-- draggable.base, dialog.base, bootstrap -->
+     * @example sample <!-- draggable.base, dialog.base, bootstrap -->
      * <div id="dialog" style="display: none">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
      * <div id="logPanel" class="col-xs-12 well pre-scrollable" style="height: 200px"></div>
      * <script>
@@ -259,7 +252,7 @@ gj.dialog.events = {
      * Triggered after the dialog has been resized.
      * @event resizeStop
      * @param {object} e - event data
-     * @example <!-- draggable.base, dialog.base, bootstrap -->
+     * @example sample <!-- draggable.base, dialog.base, bootstrap -->
      * <div id="dialog" style="display: none">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
      * <div id="logPanel" class="col-xs-12 well pre-scrollable" style="height: 200px"></div>
      * <script>

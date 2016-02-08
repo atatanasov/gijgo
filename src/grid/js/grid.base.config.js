@@ -341,7 +341,7 @@ gj.grid.config = {
             /** Configuration object with event names as keys and functions as values that are going to be bind to each cell from the column.
              * Each function is going to receive event information as a parameter with info in the "data" field for id, field name and record data.
              * @alias column.events
-             * @type function
+             * @type object
              * @default undefined
              * @example javascript.configuration <!-- jqueryui, grid.base -->
              * <table id="grid"></table>
