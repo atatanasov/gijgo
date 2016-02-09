@@ -4,9 +4,13 @@
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
         copy: {
-            files: { cwd: 'node_modules/jquery/dist', src: '**/*', dest: 'build/libraries/jquery', expand: true },
-            files: { cwd: 'node_modules/bootstrap/dist', src: '**/*', dest: 'build/libraries/bootstrap', expand: true },
-            files: { cwd: 'node_modules/jquery-ui/themes/base', src: '**/*', dest: 'build/libraries/jquery-ui', expand: true }
+            main: {
+                files: [
+                    { cwd: 'node_modules/jquery/dist', src: '**/*', dest: 'build/libraries/jquery', expand: true },
+                    { cwd: 'node_modules/bootstrap/dist', src: '**/*', dest: 'build/libraries/bootstrap', expand: true },
+                    { cwd: 'node_modules/jquery-ui/themes/base', src: '**/*', dest: 'build/libraries/jquery-ui', expand: true }
+                ]
+            }
         },
         extractExamples: {
             generate: {
@@ -93,6 +97,12 @@
         },
         uglify: {
             options: {},
+            draggable: {
+                files: {
+                    'build/combined/js/draggable.min.js': ['build/combined/js/draggable.js'],
+                    'build/modular/draggable/js/draggable.base.min.js': ['build/modular/draggable/js/draggable.base.js']
+                }
+            },
             dialog: {
                 files: {
                     'build/combined/js/dialog.min.js': ['build/combined/js/dialog.js'],
@@ -114,17 +124,27 @@
                 }
             }
         },
+        cssmin: {
+            target: {
+                files: [
+                    { expand: true, cwd: 'build/combined/css', src: ['*.css', '!*.min.css'], dest: 'build/combined/css', ext: '.min.css' },
+                    { expand: true, cwd: 'build/modular/dialog/css', src: ['*.css', '!*.min.css'], dest: 'build/modular/dialog/css', ext: '.min.css' },
+                    { expand: true, cwd: 'build/modular/grid/css', src: ['*.css', '!*.min.css'], dest: 'build/modular/grid/css', ext: '.min.css' }
+                ]
+            }
+        },
         watch: {
-            files: ['src/*/*.js', 'src/*/*.css'],
-            tasks: ['copy', 'extractExamples', 'concat', 'replace', 'uglify']
+            files: ['src/**/*.js', 'src/**/*.css'],
+            tasks: ['copy', 'extractExamples', 'concat', 'replace', 'uglify', 'cssmin']
         }
     });
 
+    grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-text-replace');
     grunt.loadNpmTasks('grunt-contrib-uglify');
+    grunt.loadNpmTasks('grunt-contrib-cssmin');
     grunt.loadNpmTasks('grunt-contrib-watch');
-    grunt.loadNpmTasks('grunt-contrib-copy');
 
     grunt.registerMultiTask('extractExamples', 'Extract examples from js files', function () {
         var fs = require('fs');
@@ -197,7 +217,7 @@
     });
 
     // Default task(s).
-    grunt.registerTask('default', ['copy', 'extractExamples', 'concat', 'replace', 'uglify']);
+    grunt.registerTask('default', ['copy', 'extractExamples', 'concat', 'replace', 'uglify', 'cssmin', 'watch']);
 
 };
 
