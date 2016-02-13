@@ -137,15 +137,8 @@ gj.grid.plugins.toolbar = {
     configure: function ($grid) {
         var data = $grid.data();
         $.extend(true, $grid, gj.grid.plugins.toolbar.public);
-        if (data.uiLibrary === 'jqueryui') {
-            $.extend(true, data, gj.grid.plugins.toolbar.config.jqueryui);
-        } else if (data.uiLibrary === 'bootstrap') {
-            $.extend(true, data, gj.grid.plugins.toolbar.config.bootstrap);
-        }
         $grid.on('initialized', function () {
             gj.grid.plugins.toolbar.private.init($grid);
         });
     }
 };
-
-$.extend(true, gj.grid.config.base, gj.grid.plugins.toolbar.config.base);

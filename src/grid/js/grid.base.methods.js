@@ -2,39 +2,50 @@
 gj.grid.methods = {
 
     init: function (jsConfig) {
-        var plugin, option, data;
-        gj.grid.methods.configure(this, jsConfig || {});
+        var clientConfig, plugin, option, data;
+
+        clientConfig = $.extend(true, {}, gj.grid.methods.getHTMLConfiguration(this) || {});
+        $.extend(true, clientConfig, jsConfig || {});
+
+        gj.grid.methods.configure(this, clientConfig);
         //Initialize all plugins
         for (plugin in gj.grid.plugins) {
             if (gj.grid.plugins.hasOwnProperty(plugin)) {
-                gj.grid.plugins[plugin].configure(this);
-            }
+                gj.grid.plugins[plugin].configure(this, clientConfig);
         }
+    }
         data = this.data();
         //Initialize events configured as options
         for (option in data) {
             if (gj.grid.events.hasOwnProperty(option)) {
                 this.on(option, data[option]);
                 delete data[option];
-            }
         }
+    }
         gj.grid.methods.initialize(this);
         if (data.autoLoad) {
             this.reload();
-        }
+    }
         return this;
     },
 
-    configure: function ($grid, jsConfig) {
+    configure: function ($grid, clientConfig) {
         var options = $.extend(true, {}, gj.grid.config.base),
-            htmlConfig = gj.grid.methods.getHTMLConfiguration($grid);
-        if ((jsConfig.uiLibrary && jsConfig.uiLibrary === 'bootstrap') || (htmlConfig.uiLibrary && htmlConfig.uiLibrary === 'bootstrap')) {
-            $.extend(true, options, gj.grid.config.bootstrap);
-        } else if ((jsConfig.uiLibrary && jsConfig.uiLibrary === 'jqueryui') || (htmlConfig.uiLibrary && htmlConfig.uiLibrary === 'jqueryui')) {
-            $.extend(true, options, gj.grid.config.jqueryui);
+            uiLibrary = clientConfig.uiLibrary || options.uiLibrary;
+        if (gj.grid.config[uiLibrary]) {
+            $.extend(true, options, gj.grid.config[uiLibrary]);
         }
-        $.extend(true, options, htmlConfig);
-        $.extend(true, options, jsConfig);
+        for (plugin in gj.grid.plugins) {
+            if (gj.grid.plugins.hasOwnProperty(plugin)) {
+                if (gj.grid.plugins[plugin].config.base) {
+                    $.extend(true, options, gj.grid.plugins[plugin].config.base);
+                }
+                if (gj.grid.plugins[plugin].config[uiLibrary]) {
+                    $.extend(true, options, gj.grid.plugins[plugin].config[uiLibrary]);
+                }
+            }
+        }
+        $.extend(true, options, clientConfig);
         gj.grid.methods.setDefaultColumnConfig(options.columns, options.defaultColumnSettings);
         $grid.data(options);
     },
@@ -421,7 +432,7 @@ gj.grid.methods = {
             column.tmpl.replace(/\{(.+?)\}/g, function ($0, $1) {
                 text = text.replace($0, gj.grid.methods.formatText(record[$1], column));
             });
-            $wrapper.text(text);
+            $wrapper.html(text);
         } else {
             gj.grid.methods.setCellText($wrapper, column, record[column.field]);
         }

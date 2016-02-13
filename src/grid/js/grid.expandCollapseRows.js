@@ -190,12 +190,6 @@ gj.grid.plugins.expandCollapseRows = {
 
         $.extend(true, $grid, gj.grid.plugins.expandCollapseRows.public);
 
-        if (data.uiLibrary === 'jqueryui') {
-            $.extend(true, data, gj.grid.plugins.expandCollapseRows.config.jqueryui);
-        } else if (data.uiLibrary === 'bootstrap') {
-            $.extend(true, data, gj.grid.plugins.expandCollapseRows.config.bootstrap);
-        }
-
         if (typeof (data.detailTemplate) !== 'undefined') {
             column = {
                 title: '',
@@ -235,5 +229,3 @@ gj.grid.plugins.expandCollapseRows = {
         }
     }
 };
-
-$.extend(true, gj.grid.config.base, gj.grid.plugins.expandCollapseRows.config.base);

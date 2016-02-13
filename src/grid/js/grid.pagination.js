@@ -1,7 +1,7 @@
 ﻿/**
-  * @widget Grid
-  * @plugin Pagination
-  */
+ * @widget Grid
+ * @plugin Pagination
+ */
 if (typeof(gj.grid.plugins) === 'undefined') {
     gj.grid.plugins = {};
 }
@@ -436,30 +436,25 @@ gj.grid.plugins.pagination = {
         }
     },
 
-    configure: function ($grid) {
+    configure: function ($grid, clientConfig) {
         var data = $grid.data();
-        if (data.uiLibrary === 'jqueryui') {
-            $.extend(true, data, gj.grid.plugins.pagination.config.jqueryui);
-        } else if (data.uiLibrary === 'bootstrap') {
-            $.extend(true, data, gj.grid.plugins.pagination.config.bootstrap);
-        }
+        if (clientConfig.pager) {
+            if ($.isArray(data.dataSource)) {
+                gj.grid.methods.getRecordsForRendering = gj.grid.plugins.pagination.private.getRecordsForRendering;
+            }
 
-        if ($.isArray(data.dataSource)) {
-            gj.grid.methods.getRecordsForRendering = gj.grid.plugins.pagination.private.getRecordsForRendering;
+            $grid.on('initialized', function () {
+                gj.grid.plugins.pagination.private.init($grid);
+            });
+            $grid.on('dataBound', function (e, records, totalRecords) {
+                gj.grid.plugins.pagination.private.reloadPager($grid, totalRecords);
+            });
+            $grid.on('columnShow', function () {
+                gj.grid.plugins.pagination.private.updatePagerColSpan($grid);
+            });
+            $grid.on('columnHide', function () {
+                gj.grid.plugins.pagination.private.updatePagerColSpan($grid);
+            });
         }
-
-        $grid.on('initialized', function () {
-            gj.grid.plugins.pagination.private.init($grid);
-        });
-        $grid.on('dataBound', function (e, records, totalRecords) {
-            gj.grid.plugins.pagination.private.reloadPager($grid, totalRecords);
-        });
-        $grid.on('columnShow', function () {
-            gj.grid.plugins.pagination.private.updatePagerColSpan($grid);
-        });
-        $grid.on('columnHide', function () {
-            gj.grid.plugins.pagination.private.updatePagerColSpan($grid);
-        });
     }
 };
-$.extend(true, gj.grid.config.base, gj.grid.plugins.pagination.config.base);

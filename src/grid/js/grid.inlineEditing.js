@@ -198,5 +198,3 @@ gj.grid.plugins.inlineEditing = {
         });
     }
 };
-
-$.extend(true, gj.grid.config.base, gj.grid.plugins.inlineEditing.config);

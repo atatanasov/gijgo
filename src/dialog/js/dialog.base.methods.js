@@ -26,8 +26,15 @@
     },
 
     configure: function ($dialog, jsConfig) {
-        var options = $.extend(true, {}, gj.dialog.config),
+        var options = $.extend(true, {}, gj.dialog.config.base),
             htmlConfig = gj.dialog.methods.getHTMLConfiguration($dialog);
+        if ((jsConfig.uiLibrary && jsConfig.uiLibrary === 'bootstrap') || (htmlConfig.uiLibrary && htmlConfig.uiLibrary === 'bootstrap')) {
+            $.extend(true, options, gj.dialog.config.bootstrap);
+        } else if ((jsConfig.uiLibrary && jsConfig.uiLibrary === 'jqueryui') || (htmlConfig.uiLibrary && htmlConfig.uiLibrary === 'jqueryui')) {
+            $.extend(true, options, gj.dialog.config.jqueryui);
+        } else if ((jsConfig.uiLibrary && jsConfig.uiLibrary === 'foundation') || (htmlConfig.uiLibrary && htmlConfig.uiLibrary === 'foundation')) {
+            $.extend(true, options, gj.dialog.config.foundation);
+        }
         $.extend(true, options, htmlConfig);
         $.extend(true, options, jsConfig);
         $dialog.data(options);

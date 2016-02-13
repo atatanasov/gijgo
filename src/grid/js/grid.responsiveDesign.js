@@ -279,11 +279,6 @@ gj.grid.plugins.responsiveDesign = {
     'configure': function ($grid) {
         $.extend(true, $grid, gj.grid.plugins.responsiveDesign.public);
         var data = $grid.data();
-        if (data.uiLibrary === 'jqueryui') {
-            $.extend(true, data, gj.grid.plugins.responsiveDesign.config.jqueryui);
-        } else if (data.uiLibrary === 'bootstrap') {
-            $.extend(true, data, gj.grid.plugins.responsiveDesign.config.bootstrap);
-        }
         if (data.responsive) {
             $grid.on('initialized', function () {
                 $grid.makeResponsive();
@@ -321,5 +316,3 @@ gj.grid.plugins.responsiveDesign = {
         }
     }
 };
-
-$.extend(true, gj.grid.config.base, gj.grid.plugins.responsiveDesign.config.base);
