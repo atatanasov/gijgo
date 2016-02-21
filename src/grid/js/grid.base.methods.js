@@ -426,6 +426,7 @@ gj.grid.methods = {
                 $wrapper.append($('<span/>')
                     .addClass($grid.data().uiLibrary === 'bootstrap' ? 'glyphicon' : 'ui-icon')
                     .addClass(column.icon).css({ cursor: 'pointer' }));
+                column.stopPropagation = true;
             }
         } else if (column.tmpl) {
             text = column.tmpl;
@@ -447,7 +448,12 @@ gj.grid.methods = {
         if (column.events) {
             for (key in column.events) {
                 if (column.events.hasOwnProperty(key)) {
-                    $cell.on(key, { id: id, field: column.field, record: record }, column.events[key]);
+                    $cell.on(key, { id: id, field: column.field, record: record }, function (e) {
+                        if (column.stopPropagation) {
+                            e.stopPropagation();
+                        }
+                        column.events[key](e);
+                    });
                 }
             }
         }

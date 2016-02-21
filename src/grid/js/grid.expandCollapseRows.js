@@ -196,6 +196,7 @@ gj.grid.plugins.expandCollapseRows = {
                 field: data.dataKey,
                 width: (data.uiLibrary === 'bootstrap' ? 34 : 24),
                 align: 'center',
+                stopPropagation: true,
                 events: {
                     'click': function () {
                         gj.grid.plugins.expandCollapseRows.private.detailExpand($grid, $(this));

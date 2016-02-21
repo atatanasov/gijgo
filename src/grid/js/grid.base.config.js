@@ -450,7 +450,27 @@ gj.grid.config = {
              *     });
              * </script>
              */
-            tmpl: undefined
+            tmpl: undefined,
+
+            /** If set to true stop event propagation when event occur.
+             * @alias column.stopPropagation
+             * @type boolean
+             * @default false
+             * @example sample <!-- jqueryui, grid.base -->
+             * <table id="grid" data-source="/DataSources/GetPlayers"></table>
+             * <script>
+             *     $('#grid').grid({
+             *         uiLibrary: 'jqueryui',
+             *         columns: [
+             *             { field: 'ID' },
+             *             { field: 'Name', events: { 'click': function (e) { alert('name=' + e.data.record.Name); } }  },
+             *             { field: 'PlaceOfBirth', stopPropagation: true, events: { 'click': function (e) { alert('name=' + e.data.record.Name); } }   },
+             *             { title: '', field: 'Edit', width: 20, type: 'icon', icon: 'ui-icon-pencil', events: { 'click': function (e) { alert('name=' + e.data.record.Name); } } }
+             *         ]
+             *     });
+             * </script>
+             */
+            stopPropagation: false
         },
 
         mapping: {
