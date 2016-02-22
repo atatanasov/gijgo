@@ -185,7 +185,7 @@ gj.grid.events = {
      * <table id="grid"></table>
      * <script>
      *     var grid = $('#grid').grid({
-     *         dataKey: 'ID',
+     *         primaryKey: 'ID',
      *         dataSource: [
      *             { 'ID': 1, 'Name': 'Hristo Stoichkov', 'PlaceOfBirth': 'Plovdiv, Bulgaria' },
      *             { 'ID': 2, 'Name': 'Ronaldo Luis Nazario de Lima', 'PlaceOfBirth': 'Rio de Janeiro, Brazil' },

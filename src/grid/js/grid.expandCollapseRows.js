@@ -193,7 +193,7 @@ gj.grid.plugins.expandCollapseRows = {
         if (typeof (data.detailTemplate) !== 'undefined') {
             column = {
                 title: '',
-                field: data.dataKey,
+                field: data.primaryKey,
                 width: (data.uiLibrary === 'bootstrap' ? 34 : 24),
                 align: 'center',
                 stopPropagation: true,

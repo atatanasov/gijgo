@@ -291,7 +291,7 @@ function Grid($grid, arguments, skipInit) {
      *     var grid = $('#grid').grid({
      *         dataSource: '/DataSources/GetPlayers',
      *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
-     *         dataKey: 'ID' //define the name of the column that you want to use as ID here.
+     *         primaryKey: 'ID' //define the name of the column that you want to use as ID here.
      *     });
      *     $('#btnGetData').on('click', function () {
      *         var data = grid.getById('2');
@@ -497,7 +497,7 @@ function Grid($grid, arguments, skipInit) {
      *         }
      *     }
      *     grid = $('#grid').grid({
-     *         dataKey: 'ID',
+     *         primaryKey: 'ID',
      *         dataSource: [
      *             { 'ID': 1, 'Name': 'Hristo Stoichkov', 'PlaceOfBirth': 'Plovdiv, Bulgaria' },
      *             { 'ID': 2, 'Name': 'Ronaldo Luís Nazário de Lima', 'PlaceOfBirth': 'Rio de Janeiro, Brazil' },

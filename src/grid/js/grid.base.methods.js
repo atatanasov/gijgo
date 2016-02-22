@@ -135,7 +135,7 @@ gj.grid.methods = {
         }
         $grid.addClass(data.style.table);
         if ('checkbox' === data.selectionMethod) {
-            data.columns = [{ title: '', field: data.dataKey, width: (data.uiLibrary === 'jqueryui' ? 24 : 30), align: 'center', type: 'checkbox' }].concat(data.columns);
+            data.columns = [{ title: '', field: data.primaryKey, width: (data.uiLibrary === 'jqueryui' ? 24 : 30), align: 'center', type: 'checkbox' }].concat(data.columns);
         }
         $grid.append($('<tbody/>'));
 
@@ -367,8 +367,8 @@ gj.grid.methods = {
         gj.grid.events.dataBound($grid, records, data.totalRecords);
     },
 
-    getId: function (record, dataKey, position) {
-        return (dataKey && record[dataKey]) ? record[dataKey] : position;
+    getId: function (record, primaryKey, position) {
+        return (primaryKey && record[primaryKey]) ? record[primaryKey] : position;
     },
 
     renderRow: function ($grid, $row, record, position) {
@@ -384,7 +384,7 @@ gj.grid.methods = {
             mode = 'update';
             $row.removeClass(data.style.content.rowSelected).off('click');
         }
-        id = gj.grid.methods.getId(record, data.dataKey, (position + 1));
+        id = gj.grid.methods.getId(record, data.primaryKey, (position + 1));
         $row.attr('data-position', position + 1); //$row.data('row', { id: id, record: record });
         $row.on('click', gj.grid.methods.createRowClickHandler($grid, id));
         for (i = 0; i < data.columns.length; i++) {
@@ -569,7 +569,7 @@ gj.grid.methods = {
                 if ('single' === data.selectionType) {
                     $row.siblings().each(function () {
                         var $row = $(this),
-                            id = gj.grid.methods.getId($row, data.dataKey, $row.data('position'));
+                            id = gj.grid.methods.getId($row, data.primaryKey, $row.data('position'));
                         gj.grid.methods.unselectRow($grid, data, $row, id);
                     });
                 }
@@ -605,7 +605,7 @@ gj.grid.methods = {
         if (selections.length > 0) {
             position = $(selections[0]).data('position');
             record = $grid.get(position);
-            result = gj.grid.methods.getId(record, $grid.data().dataKey, position);
+            result = gj.grid.methods.getId(record, $grid.data().primaryKey, position);
         }
         return result;
     },
@@ -621,14 +621,14 @@ gj.grid.methods = {
             $selections.each(function () {
                 position = $(this).data('position');
                 record = $grid.get(position);
-                result.push(gj.grid.methods.getId(record, $grid.data().dataKey, position));
+                result.push(gj.grid.methods.getId(record, $grid.data().primaryKey, position));
             });
         }
         return result;
     },
 
     getById: function ($grid, id) {
-        var result = null, i, primaryKey = $grid.data('dataKey'), records = $grid.data('records');
+        var result = null, i, primaryKey = $grid.data('primaryKey'), records = $grid.data('records');
         if (primaryKey) {
             for (i = 0; i < records.length; i++) {
                 if (records[i][primaryKey] === id) {
@@ -643,7 +643,7 @@ gj.grid.methods = {
     },
 
     getRowById: function ($grid, id) {
-        var records = $grid.data('records'), primaryKey = $grid.data('dataKey'), position, i;
+        var records = $grid.data('records'), primaryKey = $grid.data('primaryKey'), position, i;
         if (primaryKey) {
             for (i = 0; i < records.length; i++) {
                 if (records[i][primaryKey] === id) {

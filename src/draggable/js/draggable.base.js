@@ -24,7 +24,7 @@ gj.draggable.config = {
      * @default undefined
      * @example sample <!-- draggable.base -->
      * <style>
-     * .element { border: 1px solid #999; width: 300px; height: 400px; }
+     * .element { border: 1px solid #999; width: 300px; height: 200px; }
      * .handle { background-color: #DDD; cursor: move; width: 200px; margin: 5px auto 0px auto; text-align: center; padding: 5px; }
      * </style>
      * <div id="element" class="element">

@@ -21,7 +21,7 @@ if (typeof(gj.grid) === 'undefined') {
 
 gj.grid.config = {
     base: {
-        /** The data source of the widget which is used table rows.<br />
+        /** The data source of the widget which is used table rows.
          * @additionalinfo If set to string, then the grid is going to use this string as a url for ajax requests to the server.<br />
          * If set to object, then the grid is going to use this object as settings for the <a href="http://api.jquery.com/jquery.ajax/" target="_new">jquery ajax</a> function.<br />
          * If set to array, then the grid is going to use the array as data for rows.
@@ -606,7 +606,7 @@ gj.grid.config = {
          */
         selectionType: 'single',
 
-        /** The type of the row selection mechanism.<br/>
+        /** The type of the row selection mechanism.
          * @additionalinfo If this setting is set to "basic" when the user select a row, then this row will be highlighted.<br/>
          * If this setting is set to "checkbox" a column with checkboxes will appear as first row of the grid and when the user select a row, then this row will be highlighted and the checkbox selected.
          * @type (basic|checkbox)
@@ -700,7 +700,33 @@ gj.grid.config = {
          */
         fontSize: undefined,
 
-        dataKey: undefined
+        /** Name of column that contains the record id. 
+         * @additionalinfo If you set primary key, we assume that this number is unique for each records presented in the grid.<br/>
+         * For example this should contains the column with primary key from your relation db table.<br/>
+         * If the primaryKey is undefined, we autogenerate id for each record in the table by starting from 1.
+         * @type string
+         * @default undefined
+         * @example sample <!-- grid.base -->
+         * <table id="grid"></table>
+         * <script>
+         *     var data = [
+         *         { 'ID': 101, 'Name': 'Hristo Stoichkov', 'PlaceOfBirth': 'Plovdiv, Bulgaria' },
+         *         { 'ID': 102, 'Name': 'Ronaldo Luis Nazario de Lima', 'PlaceOfBirth': 'Rio de Janeiro, Brazil' },
+         *         { 'ID': 103, 'Name': 'David Platt', 'PlaceOfBirth': 'Chadderton, Lancashire, England' }
+         *     ];
+         *     $('#grid').grid({
+         *         dataSource: data,
+         *         primaryKey: 'ID',
+         *         columns: [ 
+         *             { field: 'ID', width: 32 },
+         *             { field: 'Name' },
+         *             { field: 'PlaceOfBirth' } ,
+         *             { tmpl: '<a href="#">click me</a>', events: { click: function(e) { alert('Your id is ' + e.data.id); } }, width: 60, stopPropagation: true } 
+         *         ]
+         *     });
+         * </script>
+         */
+        primaryKey: undefined
     },
 
     jqueryui: {

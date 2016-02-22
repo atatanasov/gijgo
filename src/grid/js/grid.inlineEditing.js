@@ -101,11 +101,11 @@ gj.grid.plugins.inlineEditing = {
             if (!data.guid) {
                 data.guid = gj.grid.plugins.inlineEditing.private.generateGUID();
             }
-            if (data.dataKey) {
+            if (data.primaryKey) {
                 targetRecords = JSON.parse(sessionStorage.getItem('gj.grid.' + data.guid));
                 if (targetRecords) {
                     filterResult = targetRecords.filter(function (record) {
-                        return record[data.dataKey] === sourceRecord[data.dataKey];
+                        return record[data.primaryKey] === sourceRecord[data.primaryKey];
                     });
                 } else {
                     targetRecords = [];
@@ -114,8 +114,8 @@ gj.grid.plugins.inlineEditing = {
                     filterResult[0][column.field] = newValue;
                 } else {
                     newRecord = {};
-                    newRecord[data.dataKey] = sourceRecord[data.dataKey];
-                    if (data.dataKey !== column.field) {
+                    newRecord[data.primaryKey] = sourceRecord[data.primaryKey];
+                    if (data.primaryKey !== column.field) {
                         newRecord[column.field] = newValue;
                     }
                     targetRecords.push(newRecord);
@@ -145,7 +145,7 @@ gj.grid.plugins.inlineEditing = {
          * <table id="grid"></table>
          * <script>
          *     var grid = $('#grid').grid({
-         *         dataKey: 'ID',
+         *         primaryKey: 'ID',
          *         dataSource: '/DataSources/GetPlayers',
          *         columns: [ { field: 'ID' }, { field: 'Name', editor: true }, { field: 'PlaceOfBirth', editor: true } ]
          *     });
