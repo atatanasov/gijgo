@@ -452,7 +452,7 @@ gj.grid.methods = {
                         if (column.stopPropagation) {
                             e.stopPropagation();
                         }
-                        column.events[key](e);
+                        column.events[key].call(this, e);
                     });
                 }
             }
