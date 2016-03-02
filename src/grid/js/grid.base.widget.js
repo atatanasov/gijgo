@@ -2,7 +2,7 @@
   * @widget Grid
   * @plugin Base
   */
-function Grid($grid, arguments, skipInit) {
+function Grid($grid, arguments) {
     var self = this,
         methods = gj.grid.methods;
 
@@ -517,7 +517,7 @@ function Grid($grid, arguments, skipInit) {
     };
 
     $.extend($grid, self);
-    if (false !== skipInit) {
+    if (true !== $grid.data('initialized')) {
         methods.init.apply($grid, arguments);
     }
 
@@ -531,7 +531,7 @@ function Grid($grid, arguments, skipInit) {
             $grid = new Grid(this, arguments);
             return $grid;
         } else {
-            $grid = new Grid(this, null, true);
+            $grid = new Grid(this, null);
             if ($grid[method]) {
                 return $grid[method].apply(this, Array.prototype.slice.call(arguments, 1));
             } else {

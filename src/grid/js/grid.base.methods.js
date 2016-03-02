@@ -12,20 +12,22 @@ gj.grid.methods = {
         for (plugin in gj.grid.plugins) {
             if (gj.grid.plugins.hasOwnProperty(plugin)) {
                 gj.grid.plugins[plugin].configure(this, clientConfig);
+            }
         }
-    }
         data = this.data();
         //Initialize events configured as options
         for (option in data) {
             if (gj.grid.events.hasOwnProperty(option)) {
                 this.on(option, data[option]);
                 delete data[option];
+            }
         }
-    }
         gj.grid.methods.initialize(this);
+        this.attr('data-initialized', true);
+
         if (data.autoLoad) {
             this.reload();
-    }
+        }
         return this;
     },
 
