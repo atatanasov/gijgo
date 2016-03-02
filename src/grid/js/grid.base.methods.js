@@ -798,6 +798,7 @@ gj.grid.methods = {
             if (keepTableTag === false) {
                 $grid.remove();
             } else {
+                $grid.attr('data-initialized', false);
                 $grid.removeClass().empty();
             }
         }
