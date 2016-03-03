@@ -248,25 +248,38 @@ var writer = {
     },
 
     analyzeLibs: function (libs) {
-        var i, libs, result = '<head>\r\n';
+        var i, libs, local = false, result = '<head>\r\n';
         result += '  <meta charset="utf-8" />\r\n';
         result += '  <title>Example</title>\r\n';
-        result += '  <script src="../../build/libraries/jquery/jquery.min.js"></script>\r\n';
+        if (local) {
+            result += '  <script src="../../build/libraries/jquery/jquery.min.js"></script>\r\n';
+        } else {
+            result += '  <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>\r\n';
+        }
         if (libs) {
             names = libs.replace('<!--', '').replace('-->', '').trim().split(',');
             for (i = 0; i < names.length; i++) {
                 //include css files
                 switch (names[i].trim()) {
                     case 'bootstrap':
-                        result += '  <link href="../../build/libraries/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">\r\n';
-                        result += '  <link href="../../build/libraries/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet" type="text/css">\r\n';
+                        if (local) {
+                            result += '  <link href="../../build/libraries/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">\r\n';
+                            result += '  <link href="../../build/libraries/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet" type="text/css">\r\n';
+                        } else {
+                            result += '  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" type="text/css">\r\n';
+                            result += '  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" rel="stylesheet" type="text/css">\r\n';
+                        }
                         break;
                     case 'foundation': 
                         result += '  <link href="http://cdn.foundation5.zurb.com/foundation.css" rel="stylesheet" type="text/css">\r\n';
                         break;
                     case 'jqueryui':
-                        result += '  <link href="../../build/libraries/jquery-ui/jquery.ui.core.css" rel="stylesheet" type="text/css">\r\n';
-                        result += '  <link href="../../build/libraries/jquery-ui/jquery.ui.theme.css" rel="stylesheet" type="text/css">\r\n';
+                        if (local) {
+                            result += '  <link href="../../build/libraries/jquery-ui/jquery.ui.core.css" rel="stylesheet" type="text/css">\r\n';
+                            result += '  <link href="../../build/libraries/jquery-ui/jquery.ui.theme.css" rel="stylesheet" type="text/css">\r\n';
+                        } else {
+                            result += '  <link href="https://code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css" rel="stylesheet" type="text/css">\r\n';
+                        }
                         break;
                     case 'dialog.base':
                         result += '  <link href="../../build/modular/dialog/css/dialog.base.css" rel="stylesheet" type="text/css">\r\n';
