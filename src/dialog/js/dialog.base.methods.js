@@ -142,11 +142,11 @@
         $dialog.draggable({
             handle: $header,
             start: function () {
-                $dialog.addClass('gj-unselectable');
+                $dialog.addClass('gj-dialog-unselectable');
                 gj.dialog.events.dragStart($dialog);
             },
             stop: function () {
-                $dialog.removeClass('gj-unselectable');
+                $dialog.removeClass('gj-dialog-unselectable');
                 gj.dialog.events.dragStop($dialog);
             }
         });
@@ -156,11 +156,11 @@
         var config = {
             'drag': gj.dialog.methods.resize,
             'start': function () {
-                $dialog.addClass('gj-unselectable');
+                $dialog.addClass('gj-dialog-unselectable');
                 gj.dialog.events.resizeStart($dialog);
             },
             'stop': function () {
-                $dialog.removeClass('gj-unselectable');
+                $dialog.removeClass('gj-dialog-unselectable');
                 gj.dialog.events.resizeStop($dialog);
             }
         };

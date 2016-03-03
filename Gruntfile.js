@@ -44,14 +44,16 @@
                     'build/modular/grid/js/grid.pagination.js': ['src/grid/js/grid.pagination.js'],
                     'build/modular/grid/js/grid.responsiveDesign.js': ['src/grid/js/grid.responsiveDesign.js'],
                     'build/modular/grid/js/grid.toolbar.js': ['src/grid/js/grid.toolbar.js'],
+                    'build/modular/grid/js/grid.resizableColumns.js': ['src/grid/js/grid.resizableColumns.js'],
 
-                    'build/combined/js/grid.js': ['build/modular/grid/js/grid.base.js', 'build/modular/grid/js/grid.expandCollapseRows.js', 'build/modular/grid/js/grid.inlineEditing.js', 'build/modular/grid/js/grid.pagination.js', 'build/modular/grid/js/grid.responsiveDesign.js', 'build/modular/grid/js/grid.toolbar.js'],
+                    'build/combined/js/grid.js': ['build/modular/grid/js/grid.base.js', 'build/modular/grid/js/grid.expandCollapseRows.js', 'build/modular/grid/js/grid.inlineEditing.js', 'build/modular/grid/js/grid.pagination.js', 'build/modular/grid/js/grid.responsiveDesign.js', 'build/modular/grid/js/grid.toolbar.js', 'src/grid/js/grid.resizableColumns.js'],
 
                     'build/modular/grid/css/grid.base.css': ['src/grid/css/grid.base.css'],
                     'build/modular/grid/css/grid.responsiveDesign.css': ['src/grid/css/grid.responsiveDesign.css'],
                     'build/modular/grid/css/grid.pagination.css': ['src/grid/css/grid.pagination.css'],
+                    'build/modular/grid/css/grid.resizableColumns.css': ['src/grid/css/grid.resizableColumns.css'],
 
-                    'build/combined/css/grid.css': ['build/modular/grid/css/grid.base.css', 'build/modular/grid/css/grid.responsiveDesign.css', 'src/grid/css/grid.pagination.css']
+                    'build/combined/css/grid.css': ['build/modular/grid/css/grid.base.css', 'build/modular/grid/css/grid.responsiveDesign.css', 'src/grid/css/grid.pagination.css', 'src/grid/css/grid.resizableColumns.css']
                 }
             }
         },
@@ -109,7 +111,8 @@
                     'build/modular/grid/js/grid.inlineEditing.min.js': ['build/modular/grid/js/grid.inlineEditing.js'],
                     'build/modular/grid/js/grid.pagination.min.js': ['build/modular/grid/js/grid.pagination.js'],
                     'build/modular/grid/js/grid.responsiveDesign.min.js': ['build/modular/grid/js/grid.responsiveDesign.js'],
-                    'build/modular/grid/js/grid.toolbar.min.js': ['build/modular/grid/js/grid.toolbar.js']
+                    'build/modular/grid/js/grid.toolbar.min.js': ['build/modular/grid/js/grid.toolbar.js'],
+                    'build/modular/grid/js/grid.resizableColumns.min.js': ['build/modular/grid/js/grid.resizableColumns.js']
                 }
             }
         },
@@ -277,6 +280,9 @@ var writer = {
                     case 'grid.pagination':
                         result += '  <link href="../../build/modular/grid/css/grid.pagination.css" rel="stylesheet" type="text/css">\r\n';
                         break;
+                    case 'grid.resizableColumns':
+                        result += '  <link href="../../build/modular/grid/css/grid.resizableColumns.css" rel="stylesheet" type="text/css">\r\n';
+                        break;
                 }
             }
             for (i = 0; i < names.length; i++) {
@@ -305,6 +311,9 @@ var writer = {
                         break;
                     case 'grid.toolbar':
                         result += '  <script src="../../build/modular/grid/js/grid.toolbar.js"></script>\r\n';
+                        break;
+                    case 'grid.resizableColumns':
+                        result += '  <script src="../../build/modular/grid/js/grid.resizableColumns.js"></script>\r\n';
                         break;
                 }
             }

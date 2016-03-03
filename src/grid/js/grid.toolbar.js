@@ -135,7 +135,6 @@ gj.grid.plugins.toolbar = {
     },
 
     configure: function ($grid) {
-        var data = $grid.data();
         $.extend(true, $grid, gj.grid.plugins.toolbar.public);
         $grid.on('initialized', function () {
             gj.grid.plugins.toolbar.private.init($grid);
