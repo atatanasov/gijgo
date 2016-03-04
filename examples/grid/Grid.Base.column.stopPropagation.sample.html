@@ -1,0 +1,24 @@
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Example</title>
+  <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+  <link href="https://code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css" rel="stylesheet" type="text/css">
+  <link href="../../dist/modular/grid/css/grid.base.css" rel="stylesheet" type="text/css">
+  <script src="../../dist/modular/grid/js/grid.base.js"></script>
+</head>
+<body>
+ <table id="grid" data-source="/DataSources/GetPlayers"></table>
+ <script>
+     $('#grid').grid({
+         uiLibrary: 'jqueryui',
+         columns: [
+             { field: 'ID' },
+             { field: 'Name', events: { 'click': function (e) { alert('name=' + e.data.record.Name); } }  },
+             { field: 'PlaceOfBirth', stopPropagation: true, events: { 'click': function (e) { alert('name=' + e.data.record.Name); } }   },
+             { title: '', field: 'Edit', width: 20, type: 'icon', icon: 'ui-icon-pencil', events: { 'click': function (e) { alert('name=' + e.data.record.Name); } } }
+         ]
+     });
+ </script>
+</body>
+</html>

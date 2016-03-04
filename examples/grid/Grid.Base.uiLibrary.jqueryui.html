@@ -1,0 +1,24 @@
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Example</title>
+  <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+  <link href="https://code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css" rel="stylesheet" type="text/css">
+  <link href="../../dist/modular/grid/css/grid.base.css" rel="stylesheet" type="text/css">
+  <script src="../../dist/modular/grid/js/grid.base.js"></script>
+</head>
+<body>
+ <table id="grid"></table>
+ <script>
+     $('#grid').grid({
+         dataSource: '/DataSources/GetPlayers',
+         uiLibrary: 'jqueryui',
+         columns: [
+             { field: 'ID' },
+             { field: 'Name' },
+             { field: 'PlaceOfBirth' }
+         ]
+     });
+ </script>
+</body>
+</html>

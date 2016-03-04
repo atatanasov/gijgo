@@ -6,9 +6,9 @@
         copy: {
             main: {
                 files: [
-                    { cwd: 'node_modules/jquery/dist', src: '**/*', dest: 'build/libraries/jquery', expand: true },
-                    { cwd: 'node_modules/bootstrap/dist', src: '**/*', dest: 'build/libraries/bootstrap', expand: true },
-                    { cwd: 'node_modules/jquery-ui/themes/base', src: '**/*', dest: 'build/libraries/jquery-ui', expand: true }
+                    { cwd: 'node_modules/jquery/dist', src: '**/*', dest: 'dist/libraries/jquery', expand: true },
+                    { cwd: 'node_modules/bootstrap/dist', src: '**/*', dest: 'dist/libraries/bootstrap', expand: true },
+                    { cwd: 'node_modules/jquery-ui/themes/base', src: '**/*', dest: 'dist/libraries/jquery-ui', expand: true }
                 ]
             }
         },
@@ -24,42 +24,42 @@
         concat: {
             dialog: {
                 files : {
-                    'build/modular/dialog/js/dialog.base.js': ['src/dialog/js/dialog.base.config.js', 'src/dialog/js/dialog.base.events.js', 'src/dialog/js/dialog.base.methods.js', 'src/dialog/js/dialog.base.widget.js'],
-                    'build/combined/js/dialog.js': ['build/modular/dialog/js/dialog.base.js'],
-                    'build/modular/dialog/css/dialog.base.css': ['src/dialog/css/dialog.base.css'],
-                    'build/combined/css/dialog.css': ['build/modular/dialog/css/dialog.base.css'],
+                    'dist/modular/dialog/js/dialog.base.js': ['src/dialog/js/dialog.base.config.js', 'src/dialog/js/dialog.base.events.js', 'src/dialog/js/dialog.base.methods.js', 'src/dialog/js/dialog.base.widget.js'],
+                    'dist/combined/js/dialog.js': ['dist/modular/dialog/js/dialog.base.js'],
+                    'dist/modular/dialog/css/dialog.base.css': ['src/dialog/css/dialog.base.css'],
+                    'dist/combined/css/dialog.css': ['dist/modular/dialog/css/dialog.base.css'],
                 }
             },
             draggable: {
                 files: {
-                    'build/modular/draggable/js/draggable.base.js': ['src/draggable/js/draggable.base.js'],
-                    'build/combined/js/draggable.js': ['src/draggable/js/draggable.base.js']
+                    'dist/modular/draggable/js/draggable.base.js': ['src/draggable/js/draggable.base.js'],
+                    'dist/combined/js/draggable.js': ['src/draggable/js/draggable.base.js']
                 }
             },
             grid: {
                 files: {
-                    'build/modular/grid/js/grid.base.js': ['src/grid/js/grid.base.config.js', 'src/grid/js/grid.base.events.js', 'src/grid/js/grid.base.methods.js', 'src/grid/js/grid.base.widget.js'],
-                    'build/modular/grid/js/grid.expandCollapseRows.js': ['src/grid/js/grid.expandCollapseRows.js'],
-                    'build/modular/grid/js/grid.inlineEditing.js': ['src/grid/js/grid.inlineEditing.js'],
-                    'build/modular/grid/js/grid.pagination.js': ['src/grid/js/grid.pagination.js'],
-                    'build/modular/grid/js/grid.responsiveDesign.js': ['src/grid/js/grid.responsiveDesign.js'],
-                    'build/modular/grid/js/grid.toolbar.js': ['src/grid/js/grid.toolbar.js'],
-                    'build/modular/grid/js/grid.resizableColumns.js': ['src/grid/js/grid.resizableColumns.js'],
+                    'dist/modular/grid/js/grid.base.js': ['src/grid/js/grid.base.config.js', 'src/grid/js/grid.base.events.js', 'src/grid/js/grid.base.methods.js', 'src/grid/js/grid.base.widget.js'],
+                    'dist/modular/grid/js/grid.expandCollapseRows.js': ['src/grid/js/grid.expandCollapseRows.js'],
+                    'dist/modular/grid/js/grid.inlineEditing.js': ['src/grid/js/grid.inlineEditing.js'],
+                    'dist/modular/grid/js/grid.pagination.js': ['src/grid/js/grid.pagination.js'],
+                    'dist/modular/grid/js/grid.responsiveDesign.js': ['src/grid/js/grid.responsiveDesign.js'],
+                    'dist/modular/grid/js/grid.toolbar.js': ['src/grid/js/grid.toolbar.js'],
+                    'dist/modular/grid/js/grid.resizableColumns.js': ['src/grid/js/grid.resizableColumns.js'],
 
-                    'build/combined/js/grid.js': ['build/modular/grid/js/grid.base.js', 'build/modular/grid/js/grid.expandCollapseRows.js', 'build/modular/grid/js/grid.inlineEditing.js', 'build/modular/grid/js/grid.pagination.js', 'build/modular/grid/js/grid.responsiveDesign.js', 'build/modular/grid/js/grid.toolbar.js', 'src/grid/js/grid.resizableColumns.js'],
+                    'dist/combined/js/grid.js': ['dist/modular/grid/js/grid.base.js', 'dist/modular/grid/js/grid.expandCollapseRows.js', 'dist/modular/grid/js/grid.inlineEditing.js', 'dist/modular/grid/js/grid.pagination.js', 'dist/modular/grid/js/grid.responsiveDesign.js', 'dist/modular/grid/js/grid.toolbar.js', 'src/grid/js/grid.resizableColumns.js'],
 
-                    'build/modular/grid/css/grid.base.css': ['src/grid/css/grid.base.css'],
-                    'build/modular/grid/css/grid.responsiveDesign.css': ['src/grid/css/grid.responsiveDesign.css'],
-                    'build/modular/grid/css/grid.pagination.css': ['src/grid/css/grid.pagination.css'],
-                    'build/modular/grid/css/grid.resizableColumns.css': ['src/grid/css/grid.resizableColumns.css'],
+                    'dist/modular/grid/css/grid.base.css': ['src/grid/css/grid.base.css'],
+                    'dist/modular/grid/css/grid.responsiveDesign.css': ['src/grid/css/grid.responsiveDesign.css'],
+                    'dist/modular/grid/css/grid.pagination.css': ['src/grid/css/grid.pagination.css'],
+                    'dist/modular/grid/css/grid.resizableColumns.css': ['src/grid/css/grid.resizableColumns.css'],
 
-                    'build/combined/css/grid.css': ['build/modular/grid/css/grid.base.css', 'build/modular/grid/css/grid.responsiveDesign.css', 'src/grid/css/grid.pagination.css', 'src/grid/css/grid.resizableColumns.css']
+                    'dist/combined/css/grid.css': ['dist/modular/grid/css/grid.base.css', 'dist/modular/grid/css/grid.responsiveDesign.css', 'src/grid/css/grid.pagination.css', 'src/grid/css/grid.resizableColumns.css']
                 }
             }
         },
         replace: {
             minifyComments: {
-                src: ['build/modular/*/js/*.js', 'build/combined/js/*.js'], // source files array (supports minimatch)
+                src: ['dist/modular/*/js/*.js', 'dist/combined/js/*.js'], // source files array (supports minimatch)
                 overwrite: true, // overwrite matched source files 
                 replacements: [{
                     from: /(.|\n|\r)+/g,
@@ -93,35 +93,35 @@
             options: {},
             draggable: {
                 files: {
-                    'build/combined/js/draggable.min.js': ['build/combined/js/draggable.js'],
-                    'build/modular/draggable/js/draggable.base.min.js': ['build/modular/draggable/js/draggable.base.js']
+                    'dist/combined/js/draggable.min.js': ['dist/combined/js/draggable.js'],
+                    'dist/modular/draggable/js/draggable.base.min.js': ['dist/modular/draggable/js/draggable.base.js']
                 }
             },
             dialog: {
                 files: {
-                    'build/combined/js/dialog.min.js': ['build/combined/js/dialog.js'],
-                    'build/modular/dialog/js/dialog.base.min.js': ['build/modular/dialog/js/dialog.base.js']
+                    'dist/combined/js/dialog.min.js': ['dist/combined/js/dialog.js'],
+                    'dist/modular/dialog/js/dialog.base.min.js': ['dist/modular/dialog/js/dialog.base.js']
                 }
             },
             grid: {
                 files: {
-                    'build/combined/js/grid.min.js': ['build/combined/js/grid.js'],
-                    'build/modular/grid/js/grid.base.min.js': ['build/modular/grid/js/grid.base.js'],
-                    'build/modular/grid/js/grid.expandCollapseRows.min.js': ['build/modular/grid/js/grid.expandCollapseRows.js'],
-                    'build/modular/grid/js/grid.inlineEditing.min.js': ['build/modular/grid/js/grid.inlineEditing.js'],
-                    'build/modular/grid/js/grid.pagination.min.js': ['build/modular/grid/js/grid.pagination.js'],
-                    'build/modular/grid/js/grid.responsiveDesign.min.js': ['build/modular/grid/js/grid.responsiveDesign.js'],
-                    'build/modular/grid/js/grid.toolbar.min.js': ['build/modular/grid/js/grid.toolbar.js'],
-                    'build/modular/grid/js/grid.resizableColumns.min.js': ['build/modular/grid/js/grid.resizableColumns.js']
+                    'dist/combined/js/grid.min.js': ['dist/combined/js/grid.js'],
+                    'dist/modular/grid/js/grid.base.min.js': ['dist/modular/grid/js/grid.base.js'],
+                    'dist/modular/grid/js/grid.expandCollapseRows.min.js': ['dist/modular/grid/js/grid.expandCollapseRows.js'],
+                    'dist/modular/grid/js/grid.inlineEditing.min.js': ['dist/modular/grid/js/grid.inlineEditing.js'],
+                    'dist/modular/grid/js/grid.pagination.min.js': ['dist/modular/grid/js/grid.pagination.js'],
+                    'dist/modular/grid/js/grid.responsiveDesign.min.js': ['dist/modular/grid/js/grid.responsiveDesign.js'],
+                    'dist/modular/grid/js/grid.toolbar.min.js': ['dist/modular/grid/js/grid.toolbar.js'],
+                    'dist/modular/grid/js/grid.resizableColumns.min.js': ['dist/modular/grid/js/grid.resizableColumns.js']
                 }
             }
         },
         cssmin: {
             target: {
                 files: [
-                    { expand: true, cwd: 'build/combined/css', src: ['*.css', '!*.min.css'], dest: 'build/combined/css', ext: '.min.css' },
-                    { expand: true, cwd: 'build/modular/dialog/css', src: ['*.css', '!*.min.css'], dest: 'build/modular/dialog/css', ext: '.min.css' },
-                    { expand: true, cwd: 'build/modular/grid/css', src: ['*.css', '!*.min.css'], dest: 'build/modular/grid/css', ext: '.min.css' }
+                    { expand: true, cwd: 'dist/combined/css', src: ['*.css', '!*.min.css'], dest: 'dist/combined/css', ext: '.min.css' },
+                    { expand: true, cwd: 'dist/modular/dialog/css', src: ['*.css', '!*.min.css'], dest: 'dist/modular/dialog/css', ext: '.min.css' },
+                    { expand: true, cwd: 'dist/modular/grid/css', src: ['*.css', '!*.min.css'], dest: 'dist/modular/grid/css', ext: '.min.css' }
                 ]
             }
         },
@@ -209,7 +209,7 @@
     });
 
     // Default task(s).
-    grunt.registerTask('default', ['copy', 'extractExamples', 'concat', 'replace', 'uglify', 'cssmin', 'watch']);
+    grunt.registerTask('default', ['extractExamples', 'concat', 'replace', 'uglify', 'cssmin', 'watch']);
 
 };
 
@@ -252,7 +252,7 @@ var writer = {
         result += '  <meta charset="utf-8" />\r\n';
         result += '  <title>Example</title>\r\n';
         if (local) {
-            result += '  <script src="../../build/libraries/jquery/jquery.min.js"></script>\r\n';
+            result += '  <script src="../../dist/libraries/jquery/jquery.min.js"></script>\r\n';
         } else {
             result += '  <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>\r\n';
         }
@@ -263,8 +263,8 @@ var writer = {
                 switch (names[i].trim()) {
                     case 'bootstrap':
                         if (local) {
-                            result += '  <link href="../../build/libraries/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">\r\n';
-                            result += '  <link href="../../build/libraries/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet" type="text/css">\r\n';
+                            result += '  <link href="../../dist/libraries/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">\r\n';
+                            result += '  <link href="../../dist/libraries/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet" type="text/css">\r\n';
                         } else {
                             result += '  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" type="text/css">\r\n';
                             result += '  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" rel="stylesheet" type="text/css">\r\n';
@@ -275,26 +275,26 @@ var writer = {
                         break;
                     case 'jqueryui':
                         if (local) {
-                            result += '  <link href="../../build/libraries/jquery-ui/jquery.ui.core.css" rel="stylesheet" type="text/css">\r\n';
-                            result += '  <link href="../../build/libraries/jquery-ui/jquery.ui.theme.css" rel="stylesheet" type="text/css">\r\n';
+                            result += '  <link href="../../dist/libraries/jquery-ui/jquery.ui.core.css" rel="stylesheet" type="text/css">\r\n';
+                            result += '  <link href="../../dist/libraries/jquery-ui/jquery.ui.theme.css" rel="stylesheet" type="text/css">\r\n';
                         } else {
                             result += '  <link href="https://code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css" rel="stylesheet" type="text/css">\r\n';
                         }
                         break;
                     case 'dialog.base':
-                        result += '  <link href="../../build/modular/dialog/css/dialog.base.css" rel="stylesheet" type="text/css">\r\n';
+                        result += '  <link href="../../dist/modular/dialog/css/dialog.base.css" rel="stylesheet" type="text/css">\r\n';
                         break;
                     case 'grid.base':
-                        result += '  <link href="../../build/modular/grid/css/grid.base.css" rel="stylesheet" type="text/css">\r\n';
+                        result += '  <link href="../../dist/modular/grid/css/grid.base.css" rel="stylesheet" type="text/css">\r\n';
                         break;
                     case 'grid.responsiveDesign':
-                        result += '  <link href="../../build/modular/grid/css/grid.responsiveDesign.css" rel="stylesheet" type="text/css">\r\n';
+                        result += '  <link href="../../dist/modular/grid/css/grid.responsiveDesign.css" rel="stylesheet" type="text/css">\r\n';
                         break;
                     case 'grid.pagination':
-                        result += '  <link href="../../build/modular/grid/css/grid.pagination.css" rel="stylesheet" type="text/css">\r\n';
+                        result += '  <link href="../../dist/modular/grid/css/grid.pagination.css" rel="stylesheet" type="text/css">\r\n';
                         break;
                     case 'grid.resizableColumns':
-                        result += '  <link href="../../build/modular/grid/css/grid.resizableColumns.css" rel="stylesheet" type="text/css">\r\n';
+                        result += '  <link href="../../dist/modular/grid/css/grid.resizableColumns.css" rel="stylesheet" type="text/css">\r\n';
                         break;
                 }
             }
@@ -302,31 +302,31 @@ var writer = {
                 //include js files
                 switch (names[i].trim()) {
                     case 'dialog.base':
-                        result += '  <script src="../../build/modular/dialog/js/dialog.base.js"></script>\r\n';
+                        result += '  <script src="../../dist/modular/dialog/js/dialog.base.js"></script>\r\n';
                         break;
                     case 'draggable.base':
-                        result += '  <script src="../../build/modular/draggable/js/draggable.base.js"></script>\r\n';
+                        result += '  <script src="../../dist/modular/draggable/js/draggable.base.js"></script>\r\n';
                         break;
                     case 'grid.base':
-                        result += '  <script src="../../build/modular/grid/js/grid.base.js"></script>\r\n';
+                        result += '  <script src="../../dist/modular/grid/js/grid.base.js"></script>\r\n';
                         break;
                     case 'grid.expandCollapseRows':
-                        result += '  <script src="../../build/modular/grid/js/grid.expandCollapseRows.js"></script>\r\n';
+                        result += '  <script src="../../dist/modular/grid/js/grid.expandCollapseRows.js"></script>\r\n';
                         break;
                     case 'grid.inlineEditing':
-                        result += '  <script src="../../build/modular/grid/js/grid.inlineEditing.js"></script>\r\n';
+                        result += '  <script src="../../dist/modular/grid/js/grid.inlineEditing.js"></script>\r\n';
                         break;
                     case 'grid.pagination':
-                        result += '  <script src="../../build/modular/grid/js/grid.pagination.js"></script>\r\n';
+                        result += '  <script src="../../dist/modular/grid/js/grid.pagination.js"></script>\r\n';
                         break;
                     case 'grid.responsiveDesign':
-                        result += '  <script src="../../build/modular/grid/js/grid.responsiveDesign.js"></script>\r\n';
+                        result += '  <script src="../../dist/modular/grid/js/grid.responsiveDesign.js"></script>\r\n';
                         break;
                     case 'grid.toolbar':
-                        result += '  <script src="../../build/modular/grid/js/grid.toolbar.js"></script>\r\n';
+                        result += '  <script src="../../dist/modular/grid/js/grid.toolbar.js"></script>\r\n';
                         break;
                     case 'grid.resizableColumns':
-                        result += '  <script src="../../build/modular/grid/js/grid.resizableColumns.js"></script>\r\n';
+                        result += '  <script src="../../dist/modular/grid/js/grid.resizableColumns.js"></script>\r\n';
                         break;
                 }
             }

@@ -1,0 +1,28 @@
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Example</title>
+  <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" rel="stylesheet" type="text/css">
+  <link href="../../dist/modular/grid/css/grid.base.css" rel="stylesheet" type="text/css">
+  <link href="../../dist/modular/grid/css/grid.pagination.css" rel="stylesheet" type="text/css">
+  <script src="../../dist/modular/grid/js/grid.base.js"></script>
+  <script src="../../dist/modular/grid/js/grid.pagination.js"></script>
+</head>
+<body>
+ <table id="grid"></table>
+ <script>
+     $('#grid').grid({
+         dataSource: '/DataSources/GetPlayers',
+         uiLibrary: 'bootstrap',
+         columns: [
+             { field: 'ID' },
+             { field: 'Name' },
+             { field: 'PlaceOfBirth' }
+         ],
+         pager: { limit: 2, sizes: [2, 5, 10, 20] }
+     });
+ </script>
+</body>
+</html>

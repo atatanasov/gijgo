@@ -1,0 +1,23 @@
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Example</title>
+  <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+  <link href="../../dist/modular/grid/css/grid.base.css" rel="stylesheet" type="text/css">
+  <script src="../../dist/modular/grid/js/grid.base.js"></script>
+  <script src="../../dist/modular/grid/js/grid.toolbar.js"></script>
+</head>
+<body>
+ <button onclick="grid.title('New Title')">Set New Title</button>
+ <button onclick="alert(grid.title())">Get Title</button>
+ <br/><br/>
+ <table id="grid"></table>
+ <script>
+     var grid = $('#grid').grid({
+         dataSource: '/DataSources/GetPlayers',
+         title: 'Initial Grid Title',
+         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
+     });
+ </script>
+</body>
+</html>

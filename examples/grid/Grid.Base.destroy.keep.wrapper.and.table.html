@@ -1,0 +1,30 @@
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Example</title>
+  <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+  <link href="../../dist/modular/grid/css/grid.base.css" rel="stylesheet" type="text/css">
+  <script src="../../dist/modular/grid/js/grid.base.js"></script>
+</head>
+<body>
+ <button id="btnDestroy">Destroy</button>
+ <button id="btnCreate">Create</button>
+ <br/><br/>
+ <table id="grid"></table>
+ <script>
+     var createFunc = function() {
+         $('#grid').grid({
+             dataSource: '/DataSources/GetPlayers',
+             columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
+         });
+     };
+     createFunc();
+     $('#btnDestroy').on('click', function () {
+         $('#grid').grid('destroy', true, true);
+     });
+     $('#btnCreate').on('click', function () {
+         createFunc();
+     });
+ </script>
+</body>
+</html>

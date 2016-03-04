@@ -1,0 +1,34 @@
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Example</title>
+  <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+  <link href="../../dist/modular/grid/css/grid.base.css" rel="stylesheet" type="text/css">
+  <script src="../../dist/modular/grid/js/grid.base.js"></script>
+</head>
+<body>
+ <table id="grid"></table>
+ <script>
+     var grid;
+     function Delete(e) {
+         if (confirm('Are you sure?')) {
+             grid.removeRow(e.data.id);
+         }
+     }
+     grid = $('#grid').grid({
+         primaryKey: 'ID',
+         dataSource: [
+             { 'ID': 1, 'Name': 'Hristo Stoichkov', 'PlaceOfBirth': 'Plovdiv, Bulgaria' },
+             { 'ID': 2, 'Name': 'Ronaldo Luís Nazário de Lima', 'PlaceOfBirth': 'Rio de Janeiro, Brazil' },
+             { 'ID': 3, 'Name': 'David Platt', 'PlaceOfBirth': 'Chadderton, Lancashire, England' }
+         ],
+         columns: [
+             { field: 'ID' },
+             { field: 'Name' },
+             { field: 'PlaceOfBirth' },
+             { title: '', width: 60, align: 'center', tmpl: 'Delete', events: { 'click': Delete } }
+         ]
+     });
+ </script>
+</body>
+</html>

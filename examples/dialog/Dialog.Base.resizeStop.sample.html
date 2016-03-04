@@ -1,0 +1,31 @@
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Example</title>
+  <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+  <link href="../../dist/modular/dialog/css/dialog.base.css" rel="stylesheet" type="text/css">
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" rel="stylesheet" type="text/css">
+  <script src="../../dist/modular/draggable/js/draggable.base.js"></script>
+  <script src="../../dist/modular/dialog/js/dialog.base.js"></script>
+</head>
+<body>
+ <div id="dialog" style="display: none">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
+ <div id="logPanel" class="col-xs-12 well pre-scrollable" style="height: 200px"></div>
+ <script>
+     var log = $('#logPanel');
+     $("#dialog").dialog({
+         resizable: true,
+         resize: function (e) {
+             log.append('<div class="row">The resize event is fired.</div>');
+         },
+         resizeStart: function (e) {
+             log.append('<div class="row">The resizeStart event is fired.</div>');
+         },
+         resizeStop: function (e) {
+             log.append('<div class="row">The resizeStop event is fired.</div>');
+         }
+     });
+ </script>
+</body>
+</html>

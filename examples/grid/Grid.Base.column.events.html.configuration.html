@@ -1,0 +1,36 @@
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Example</title>
+  <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+  <link href="https://code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css" rel="stylesheet" type="text/css">
+  <link href="../../dist/modular/grid/css/grid.base.css" rel="stylesheet" type="text/css">
+  <script src="../../dist/modular/grid/js/grid.base.js"></script>
+</head>
+<body>
+ <table id="grid" data-source="/DataSources/GetPlayers" data-ui-library="jqueryui">
+     <thead>
+         <tr>
+             <th data-field="ID" width="24">ID</th>
+             <th data-events="mouseenter: onMouseEnter, mouseleave: onMouseLeave">Name</th>
+             <th data-field="PlaceOfBirth">Place Of Birth</th>
+             <th data-events="click: onClick" data-type="icon" data-icon="ui-icon-info" width="24"></th>
+         </tr>
+     </thead>
+ </table>
+ <script>
+     function onMouseEnter (e) {
+         e.stopPropagation();
+         $(e.currentTarget).css('background-color', 'red');
+     }
+     function onMouseLeave (e) {
+         e.stopPropagation();
+         $(e.currentTarget).css('background-color', '');
+     }
+     function onClick(e) {
+         alert('record with id=' + e.data.id + ' is clicked.');
+     }
+     $('#grid').grid();
+ </script>
+</body>
+</html>
