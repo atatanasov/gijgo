@@ -24,7 +24,7 @@ TABLE.gj-grid-table > tbody > tr > td {
     overflow: hidden;
 }
 
-TABLE.gj-grid-table DIV
+TABLE.gj-grid-table DIV[data-role="display"] 
 {
 	vertical-align: middle;
 	text-indent: 0;
@@ -369,4 +369,7 @@ span.gj-grid-base-column-resizer {
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
+}
+.gj-grid-base-bottom-border td {
+  border: 1px solid #ff0000;
 }
