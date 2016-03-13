@@ -45,17 +45,15 @@
                     'dist/modular/grid/js/grid.responsiveDesign.js': ['src/grid/js/grid.responsiveDesign.js'],
                     'dist/modular/grid/js/grid.toolbar.js': ['src/grid/js/grid.toolbar.js'],
                     'dist/modular/grid/js/grid.resizableColumns.js': ['src/grid/js/grid.resizableColumns.js'],
-                    'dist/modular/grid/js/grid.rowReorder.js': ['src/grid/js/grid.rowReorder.js'],
 
-                    'dist/combined/js/grid.js': ['dist/modular/grid/js/grid.base.js', 'dist/modular/grid/js/grid.expandCollapseRows.js', 'dist/modular/grid/js/grid.inlineEditing.js', 'dist/modular/grid/js/grid.pagination.js', 'dist/modular/grid/js/grid.responsiveDesign.js', 'dist/modular/grid/js/grid.toolbar.js', 'src/grid/js/grid.resizableColumns.js', 'src/grid/js/grid.rowReorder.js'],
+                    'dist/combined/js/grid.js': ['dist/modular/grid/js/grid.base.js', 'dist/modular/grid/js/grid.expandCollapseRows.js', 'dist/modular/grid/js/grid.inlineEditing.js', 'dist/modular/grid/js/grid.pagination.js', 'dist/modular/grid/js/grid.responsiveDesign.js', 'dist/modular/grid/js/grid.toolbar.js', 'src/grid/js/grid.resizableColumns.js'],
 
                     'dist/modular/grid/css/grid.base.css': ['src/grid/css/grid.base.css'],
                     'dist/modular/grid/css/grid.responsiveDesign.css': ['src/grid/css/grid.responsiveDesign.css'],
                     'dist/modular/grid/css/grid.pagination.css': ['src/grid/css/grid.pagination.css'],
                     'dist/modular/grid/css/grid.resizableColumns.css': ['src/grid/css/grid.resizableColumns.css'],
-                    'dist/modular/grid/css/grid.rowReorder.css': ['src/grid/css/grid.rowReorder.css'],
 
-                    'dist/combined/css/grid.css': ['dist/modular/grid/css/grid.base.css', 'dist/modular/grid/css/grid.responsiveDesign.css', 'src/grid/css/grid.pagination.css', 'src/grid/css/grid.resizableColumns.css', 'dist/modular/grid/css/grid.rowReorder.css']
+                    'dist/combined/css/grid.css': ['dist/modular/grid/css/grid.base.css', 'dist/modular/grid/css/grid.responsiveDesign.css', 'src/grid/css/grid.pagination.css', 'src/grid/css/grid.resizableColumns.css']
                 }
             }
         },
@@ -298,9 +296,6 @@ var writer = {
                     case 'grid.resizableColumns':
                         result += '  <link href="../../dist/modular/grid/css/grid.resizableColumns.css" rel="stylesheet" type="text/css">\r\n';
                         break;
-                    case 'grid.rowReorder':
-                        result += '  <link href="../../dist/modular/grid/css/grid.rowReorder.css" rel="stylesheet" type="text/css">\r\n';
-                        break;
                 }
             }
             for (i = 0; i < names.length; i++) {
@@ -332,9 +327,6 @@ var writer = {
                         break;
                     case 'grid.resizableColumns':
                         result += '  <script src="../../dist/modular/grid/js/grid.resizableColumns.js"></script>\r\n';
-                        break;
-                    case 'grid.rowReorder':
-                        result += '  <script src="../../dist/modular/grid/js/grid.rowReorder.js"></script>\r\n';
                         break;
                 }
             }
