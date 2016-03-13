@@ -21,7 +21,6 @@ build/
 bld/
 [Bb]in/
 [Oo]bj/
-Gijgo.GitHub.csproj
 Gijgo.GitHub.csproj.user
 Gijgo.GitHub.sln
 packages.config
