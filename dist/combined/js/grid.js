@@ -1,6 +1,6 @@
 /* global window alert jQuery gj */
 /*
- * Gijgo JavaScript Library v0.6.1
+ * Gijgo JavaScript Library v0.7.1
  * http://gijgo.com/
  *
  * Copyright 2014, 2016 gijgo.com
@@ -2344,6 +2344,7 @@ gj.grid.plugins.rowReorder = {
             /** If set to true, enable row reordering with drag and drop. */
             rowReorder: false,
 
+            /**  */
             rowReorderColumn: undefined,
 
             orderNumberField: undefined,

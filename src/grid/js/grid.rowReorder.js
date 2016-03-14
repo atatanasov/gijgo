@@ -1,6 +1,6 @@
 ﻿/** 
   * @widget Grid 
-  * @plugin rowReorder
+  * @plugin Row Reorder
   */
 if (typeof (gj.grid.plugins) === 'undefined') {
     gj.grid.plugins = {};
@@ -24,6 +24,10 @@ gj.grid.plugins.rowReorder = {
              */
             rowReorder: false,
 
+            /** 
+             * @type string
+             * @default undefined
+             */
             rowReorderColumn: undefined,
 
             orderNumberField: undefined,

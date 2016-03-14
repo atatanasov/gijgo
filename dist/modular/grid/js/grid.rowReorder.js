@@ -9,6 +9,7 @@ gj.grid.plugins.rowReorder = {
             /** If set to true, enable row reordering with drag and drop. */
             rowReorder: false,
 
+            /**  */
             rowReorderColumn: undefined,
 
             orderNumberField: undefined,
