@@ -114,7 +114,8 @@
                     'dist/modular/grid/js/grid.pagination.min.js': ['dist/modular/grid/js/grid.pagination.js'],
                     'dist/modular/grid/js/grid.responsiveDesign.min.js': ['dist/modular/grid/js/grid.responsiveDesign.js'],
                     'dist/modular/grid/js/grid.toolbar.min.js': ['dist/modular/grid/js/grid.toolbar.js'],
-                    'dist/modular/grid/js/grid.resizableColumns.min.js': ['dist/modular/grid/js/grid.resizableColumns.js']
+                    'dist/modular/grid/js/grid.resizableColumns.min.js': ['dist/modular/grid/js/grid.resizableColumns.js'],
+                    'dist/modular/grid/js/grid.rowReorder.min.js': ['dist/modular/grid/js/grid.rowReorder.js']
                 }
             }
         },
