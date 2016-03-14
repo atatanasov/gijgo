@@ -189,8 +189,8 @@ gj.grid.plugins.pagination = {
                 $cell = $('<th/>').addClass(data.style.pager.cell);
                 $row.append($cell);
 
-                $leftPanel = $('<div />').css({ 'float': 'left' });
-                $rightPanel = $('<div />').css({ 'float': 'right' });
+                $leftPanel = $('<div data-role="display" />').css({ 'float': 'left' });
+                $rightPanel = $('<div data-role="display" />').css({ 'float': 'right' });
                 if (/msie/.test(navigator.userAgent.toLowerCase())) {
                     $rightPanel.css({ 'padding-top': '3px' });
                 }

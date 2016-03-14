@@ -24,7 +24,8 @@ TABLE.gj-grid-table > tbody > tr > td {
     overflow: hidden;
 }
 
-TABLE.gj-grid-table DIV[data-role="display"] 
+TABLE.gj-grid-table DIV[data-role="display"],
+TABLE.gj-grid-table DIV[data-role="display"] DIV 
 {
 	vertical-align: middle;
 	text-indent: 0;
