@@ -3,17 +3,23 @@
   <meta charset="utf-8" />
   <title>Example</title>
   <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" rel="stylesheet" type="text/css">
   <link href="../../dist/modular/grid/css/grid.base.css" rel="stylesheet" type="text/css">
+  <link href="../../dist/modular/grid/css/grid.pagination.css" rel="stylesheet" type="text/css">
   <script src="../../dist/modular/grid/js/grid.base.js"></script>
   <script src="../../dist/modular/grid/js/grid.toolbar.js"></script>
+  <script src="../../dist/modular/grid/js/grid.pagination.js"></script>
 </head>
 <body>
  <table id="grid"></table>
  <script>
      var grid = $('#grid').grid({
          dataSource: '/DataSources/GetPlayers',
-         toolbarTemplate: '<span data-role="title">Grid Title</span> <span onclick="grid.reload()" style="float:right; cursor: pointer;">click here to refresh &nbsp;</span>',
-         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
+         uiLibrary: 'bootstrap',
+         toolbarTemplate: '<div class="row"><div class="col-md-8" style="line-height:34px"><span data-role="title">Grid Title</span></div><div class="col-md-4 text-right"><button onclick="grid.reload()" class="btn btn-default">click here to refresh</button></div></div>',
+         columns: [ { field: 'ID', width: 34 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
+         pager: { limit: 5 }
      });
  </script>
 </body>
