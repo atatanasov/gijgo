@@ -1,6 +1,6 @@
 ﻿/* global window alert jQuery */
 /*
- * Gijgo JavaScript Library v0.6.1
+ * Gijgo JavaScript Library v0.6.2
  * http://gijgo.com/
  *
  * Copyright 2014, 2016 gijgo.com

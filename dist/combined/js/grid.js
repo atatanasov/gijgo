@@ -1,6 +1,6 @@
 /* global window alert jQuery gj */
 /*
- * Gijgo JavaScript Library v0.6.1
+ * Gijgo JavaScript Library v0.6.2
  * http://gijgo.com/
  *
  * Copyright 2014, 2016 gijgo.com
@@ -493,8 +493,20 @@ gj.grid.methods = {
                 data = $grid.data();
                 cellData = $cell.data('cell');
                 cellData.direction = (cellData.direction === 'asc' ? 'desc' : 'asc');
-                params[data.defaultParams.sortBy] = cellData.field;
-                params[data.defaultParams.direction] = cellData.direction;
+                if ($.isArray(data.dataSource)) {
+                    if (cellData.direction === 'asc') {
+                        data.dataSource.sort(function compare(a, b) {
+                            return ((a[cellData.field] < b[cellData.field]) ? -1 : ((a[cellData.field] > b[cellData.field]) ? 1 : 0));
+                        });
+                    } else {
+                        data.dataSource.sort(function compare(a, b) {
+                            return ((a[cellData.field] > b[cellData.field]) ? -1 : ((a[cellData.field] < b[cellData.field]) ? 1 : 0));
+                        });
+                    }
+                } else {
+                    params[data.defaultParams.sortBy] = cellData.field;
+                    params[data.defaultParams.direction] = cellData.direction;
+                }
 
                 style = data.style.header;
                 $cell.siblings().find('span[data-role="sorticon"]').remove();
