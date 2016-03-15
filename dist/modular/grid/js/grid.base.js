@@ -535,7 +535,7 @@ gj.grid.methods = {
         $tbody = $grid.children('tbody');
         width = $tbody.outerWidth(false);
         height = $tbody.outerHeight(false);
-        top = $tbody.prev().outerHeight(false) + $grid.prevAll().outerHeight(false) + parseInt($grid.parent().css('padding-top').replace('px', ''), 10);
+        top = $tbody.prevAll().outerHeight(true) + $grid.prevAll().outerHeight(true) + parseInt($grid.parent().css('padding-top').replace('px', ''), 10);
         $cover = $('<div data-role="loading-cover" />').addClass(data.style.loadingCover).css({
             width: width,
             height: height,
