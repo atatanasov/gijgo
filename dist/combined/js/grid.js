@@ -2361,7 +2361,6 @@ gj.grid.plugins.rowReorder = {
             var i, $rows = $grid.find('tbody tr[data-role="row"]');
             for (i = 0; i < $rows.length; i++) {
                 $($rows[i]).on('mousedown', gj.grid.plugins.rowReorder.private.createRowMouseDownHandler($grid));
-                $($rows[i]).on('mousedown', gj.grid.plugins.rowReorder.private.createRowMouseUpHandler($grid));
                 $($rows[i]).on('mouseover', gj.grid.plugins.rowReorder.private.createRowMouseOverHandler($grid));
                 $($rows[i]).on('mouseout', gj.grid.plugins.rowReorder.private.createRowMouseOutHandler($grid));
             }
@@ -2375,8 +2374,10 @@ gj.grid.plugins.rowReorder = {
                 $dragEl.attr('data-role', 'draggable-clone');
                 $dragEl.children('thead').remove().children('tfoot').remove();
                 $dragEl.find('tbody tr:not([data-position="' + $tr.data('position') + '"])').remove();
-                $dragEl.draggable({ stop: function () { $(this).remove(); } });
-                $dragEl.css({ position: 'absolute', top: $tr.offset().top, left: $tr.offset().left, width: $tr.width() });
+                $dragEl.draggable({ stop: gj.grid.plugins.rowReorder.private.createDragStopHandler($grid, $tr) });
+                $dragEl.css({ 
+                    position: 'absolute', top: $tr.offset().top, left: $tr.offset().left, width: $tr.width()
+                });
                 $dragEl.trigger('mousedown');
                 $grid.attr('data-row-reorder-position', $tr.data('position'));
             };
@@ -2398,12 +2399,14 @@ gj.grid.plugins.rowReorder = {
             };
         },
 
-        createRowMouseUpHandler: function ($grid) {
+        createDragStopHandler: function ($grid, $trSource) {
             return function (e) {
-                var $tr = $(this);
-                if ($tr.attr('data-row-reorder-target')) {
-                    alert('move');
-                }
+                var $trTarget = $grid.find('tbody tr[data-row-reorder-target="true"]'),
+                    targetPosition = $trTarget.data('position'),
+                    sourcePosition = $trSource.data('position');
+                $trTarget.prepend($trSource);
+                $(this).remove();
+                
             };
         }
     },
@@ -2413,9 +2416,11 @@ gj.grid.plugins.rowReorder = {
 
     configure: function ($grid) {
         $.extend(true, $grid, gj.grid.plugins.rowReorder.public);
-        $grid.on('dataBound', function () {
-            gj.grid.plugins.rowReorder.private.init($grid);
-        });
+        if ($grid.data('rowReorder')) {
+            $grid.on('dataBound', function () {
+                gj.grid.plugins.rowReorder.private.init($grid);
+            });
+        }
     }
 };
 
