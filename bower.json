@@ -1,0 +1,45 @@
+{
+  "name": "gijgo",
+  "version": "0.7.0",
+  "description": "Gijgo is a set of free open source javascript controls distributed under MIT License. Bootstrap and jQuery UI support.",
+  "main": [
+    "./dist/combined/js/grid.js",
+    "./dist/combined/css/grid.css"
+  ],
+  "homepage": "http://gijgo.com",
+  "keywords": [
+    "jquery",
+    "grid",
+    "gijgo",
+    "javascript",
+    "plugin",
+    "datagrid",
+    "table",
+    "dialog",
+    "modal",
+    "draggable"
+  ],
+  "authors": [
+    "Atanas Atanasov <nascovt@gmail.com>"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "jquery": "~1.9.1"
+  },
+  "ignore": [    
+		"bin",
+		"obj",
+		"Properties",
+		"Gijgo.GitHub.csproj",
+		"Gijgo.GitHub-Development.csproj",
+		"src",
+		"JSLintNet.json",
+		"Gruntfile.js",
+		"package.json",
+		"bower.json",
+    "README.md",
+    "node_modules",
+    "bower_components",
+    "**/.*"
+  ]
+}

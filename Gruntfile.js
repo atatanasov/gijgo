@@ -123,8 +123,12 @@
             target: {
                 files: [
                     { expand: true, cwd: 'dist/combined/css', src: ['*.css', '!*.min.css'], dest: 'dist/combined/css', ext: '.min.css' },
-                    { expand: true, cwd: 'dist/modular/dialog/css', src: ['*.css', '!*.min.css'], dest: 'dist/modular/dialog/css', ext: '.min.css' },
-                    { expand: true, cwd: 'dist/modular/grid/css', src: ['*.css', '!*.min.css'], dest: 'dist/modular/grid/css', ext: '.min.css' }
+                    { expand: true, cwd: 'dist/modular/dialog/css', src: ['dialog.base.css'], dest: 'dist/modular/dialog/css', ext: '.base.min.css' },
+                    { expand: true, cwd: 'dist/modular/grid/css', src: ['grid.base.css'], dest: 'dist/modular/grid/css', ext: '.base.min.css' },
+                    { expand: true, cwd: 'dist/modular/grid/css', src: ['grid.pagination.css'], dest: 'dist/modular/grid/css', ext: '.pagination.min.css' },
+                    { expand: true, cwd: 'dist/modular/grid/css', src: ['grid.responsiveDesign.css'], dest: 'dist/modular/grid/css', ext: '.responsiveDesign.min.css' },
+                    { expand: true, cwd: 'dist/modular/grid/css', src: ['grid.resizableColumns.css'], dest: 'dist/modular/grid/css', ext: '.resizableColumns.min.css' },
+                    { expand: true, cwd: 'dist/modular/grid/css', src: ['grid.rowReorder.css'], dest: 'dist/modular/grid/css', ext: '.rowReorder.min.css' }
                 ]
             }
         },
