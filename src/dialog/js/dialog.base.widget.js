@@ -22,7 +22,7 @@ function Dialog($dialog, arguments) {
      */
     self.open = function () {
         return methods.open(this);
-    },
+    }
 
     /**
      * Close the dialog.
@@ -39,7 +39,7 @@ function Dialog($dialog, arguments) {
      */
     self.close = function () {
         return methods.close(this);
-    },
+    }
 
     /**
      * Check if the dialog is currently open.

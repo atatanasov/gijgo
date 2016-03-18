@@ -438,13 +438,13 @@ function Dialog($dialog, arguments) {
      * Opens the dialog. */
     self.open = function () {
         return methods.open(this);
-    },
+    }
 
     /**
      * Close the dialog. */
     self.close = function () {
         return methods.close(this);
-    },
+    }
 
     /**
      * Check if the dialog is currently open. */
