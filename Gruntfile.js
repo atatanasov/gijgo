@@ -17,6 +17,7 @@
                 files: [
                     { src: ['src/dialog/js/*.js'], dest: 'examples/dialog/' },
                     { src: ['src/draggable/js/*.js'], dest: 'examples/draggable/' },
+                    { src: ['src/droppable/js/*.js'], dest: 'examples/droppable/' },
                     { src: ['src/grid/js/*.js'], dest: 'examples/grid/' }
                 ]
             }
@@ -34,6 +35,12 @@
                 files: {
                     'dist/modular/draggable/js/draggable.base.js': ['src/draggable/js/draggable.base.js'],
                     'dist/combined/js/draggable.js': ['src/draggable/js/draggable.base.js']
+                }
+            },
+            droppable: {
+                files: {
+                    'dist/modular/droppable/js/droppable.base.js': ['src/droppable/js/droppable.base.js'],
+                    'dist/combined/js/droppable.js': ['src/draggable/js/droppable.base.js']
                 }
             },
             grid: {
@@ -97,6 +104,12 @@
                 files: {
                     'dist/combined/js/draggable.min.js': ['dist/combined/js/draggable.js'],
                     'dist/modular/draggable/js/draggable.base.min.js': ['dist/modular/draggable/js/draggable.base.js']
+                }
+            },
+            droppable: {
+                files: {
+                    'dist/combined/js/droppable.min.js': ['dist/combined/js/droppable.js'],
+                    'dist/modular/droppable/js/droppable.base.min.js': ['dist/modular/droppable/js/droppable.base.js']
                 }
             },
             dialog: {
@@ -316,6 +329,9 @@ var writer = {
                         break;
                     case 'draggable.base':
                         result += '  <script src="../../dist/modular/draggable/js/draggable.base.js"></script>\r\n';
+                        break;
+                    case 'droppable.base':
+                        result += '  <script src="../../dist/modular/droppable/js/droppable.base.js"></script>\r\n';
                         break;
                     case 'grid.base':
                         result += '  <script src="../../dist/modular/grid/js/grid.base.js"></script>\r\n';

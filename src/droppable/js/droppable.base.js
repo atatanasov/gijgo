@@ -23,16 +23,15 @@ gj.droppable.config = {
      * @default undefined
      * @example sample <!-- droppable.base, draggable.base -->
      * <style>
-     * .element { border: 1px solid #999; width: 300px; height: 200px; }
-     * .handle { background-color: #DDD; cursor: move; width: 200px; margin: 5px auto 0px auto; text-align: center; padding: 5px; }
+     * .draggable { border: 1px solid #999; width: 300px; height: 200px; position: relative; text-align: center; }
+     * .droppable { border: 1px solid #999; width: 300px; height: 200px; position: relative; text-align: center; }
+     * .hover { background-color: #FF0000; }
      * </style>
-     * <div id="element" class="element">
-     *   <div id="handle" class="handle">Handle for dragging</div>
-     * </div>
+     * <div id="droppable" class="droppable">Drop Here</div>
+     * <div id="draggable" class="draggable">Drag Me</div>
      * <script>
-     *     $('#element').droppable({
-     *         handle: $('#handle')
-     *     });
+     *     $('#draggable').draggable();
+     *     $('#droppable').droppable({ hoverClass: 'hover' });
      * </script>
      */
     hoverClass: undefined
@@ -40,12 +39,69 @@ gj.droppable.config = {
 
 gj.droppable.methods = {
     init: function (jsConfig) {
-        var $dropEl = this;
+        var option, $dropEl = this;
+        if (!jsConfig) {
+            jsConfig = {};
+        }
+        $dropEl.data(jsConfig);
+
+        //Initialize events configured as options
+        for (option in jsConfig) {
+            if (gj.droppable.events.hasOwnProperty(option)) {
+                $dropEl.on(option, jsConfig[option]);
+                delete jsConfig[option];
+            }
+        }
+
+        $(document).on('mousedown', function (e) {
+            $dropEl.isDropping = true;
+            $(document).on('mousemove', function (e) {
+                gj.droppable.methods.mouseMove($dropEl, e);
+            });
+        });
+
+        $dropEl.on('mouseup', function (e) {
+            if ($dropEl.isDropping) {
+                $dropEl.isDropping = false;
+                gj.droppable.events.drop($dropEl);
+                $(document).off('mousemove');
+            }
+        });
 
         return $dropEl;
     },
 
-    mouseMove: function ($dragEl, e) {
+    mouseMove: function ($dropEl, e) {
+        var x, y, position;
+        if ($dropEl.isDropping) {
+            x = gj.droppable.methods.mouseX(e);
+            y = gj.droppable.methods.mouseY(e);
+            position = $dropEl.position();
+            if (x > position.left && x < (position.left + $dropEl.width()) &&
+                y > position.top && y < (position.top + $dropEl.height())) {
+                $dropEl.addClass($dropEl.data('hoverClass'));
+            } else {
+                $dropEl.removeClass($dropEl.data('hoverClass'));
+            }
+        }
+    },
+
+    mouseX: function (e) {
+        if (e.pageX) {
+            return e.pageX;
+        } else if (e.clientX) {
+            return e.clientX + (document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft);
+        }
+        return null;
+    },
+
+    mouseY: function (e) {
+        if (e.pageY) {
+            return e.pageY;
+        } else if (e.clientY) {
+            return e.clientY + (document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop);
+        }
+        return null;
     }
 };
 
@@ -54,19 +110,17 @@ gj.droppable.events = {
      * @event drag
      * @param {object} e - event data
      * @param {object} offset - Current offset position as { top, left } object.
-     * @example sample <!-- droppable.base -->
+     * @example sample <!-- droppable.base, draggable.base -->
      * <style>
-     * .element { border: 1px solid #999; width: 300px; height: 200px; cursor: move; text-align: center; background-color: #DDD; }
+     * .draggable { border: 1px solid #999; width: 300px; height: 200px; position: relative; text-align: center; }
+     * .droppable { border: 1px solid #999; width: 300px; height: 200px; position: relative; text-align: center; }
+     * .drop { background-color: #FF0000; }
      * </style>
-     * <div id="element" class="element">
-     *   drag me
-     * </div>
+     * <div id="droppable" class="droppable">Drop Here</div>
+     * <div id="draggable" class="draggable">Drag Me</div>
      * <script>
-     *     $('#element').droppable({
-     *         drag: function (e, offset) {
-     *             $('body').append('<div>The drag event is fired. offset { top:' + offset.top + ', left: ' + offset.left + '}.</div>');
-     *         }
-     *     });
+     *     $('#draggable').draggable();
+     *     $('#droppable').droppable({ drop: function() { $(this).addClass('drop') } });
      * </script>
      */
     drop: function ($dropEl, offsetX, offsetY) {
@@ -123,13 +177,11 @@ gj.droppable.events = {
 };
 
 
-function Droppable($dragEl, arguments) {
+function Droppable($dropEl, arguments) {
     var self = this,
         methods = gj.droppable.methods;
 
-    self.isDragging = false;
-    self.prevX = undefined;
-    self.prevY = undefined;
+    self.isDropping = false;
 
     /** Removes the droppable functionality.
      * @method
@@ -147,10 +199,10 @@ function Droppable($dragEl, arguments) {
         return methods.destroy(this);
     }
 
-    $.extend($dragEl, self);
-    methods.init.apply($dragEl, arguments);
+    $.extend($dropEl, self);
+    methods.init.apply($dropEl, arguments);
 
-    return $dragEl;
+    return $dropEl;
 };
 
 (function ($) {

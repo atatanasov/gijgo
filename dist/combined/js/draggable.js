@@ -40,7 +40,6 @@ gj.draggable.methods = {
             }
         }
 
-        $dragEl.css('position', 'absolute');
         if ($dragEl.css('top')) {
             $dragEl.css('top', '0px');
         }
@@ -52,6 +51,9 @@ gj.draggable.methods = {
             $dragEl.isDragging = true;
             $dragEl.prevX = undefined;
             $dragEl.prevY = undefined;
+            if ($dragEl.css('position') !== 'aboslute') {
+                $dragEl.css('position', 'absolute');
+            }
             $(document).on('mousemove', function (e) {
                 gj.draggable.methods.mouseMove($dragEl, e);
             });
