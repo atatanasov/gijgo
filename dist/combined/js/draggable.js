@@ -40,13 +40,6 @@ gj.draggable.methods = {
             }
         }
 
-        if ($dragEl.css('top')) {
-            $dragEl.css('top', '0px');
-        }
-        if ($dragEl.css('left')) {
-            $dragEl.css('left', '0px');
-        }
-
         $clickEl.on('mousedown', function (e) {
             $dragEl.isDragging = true;
             $dragEl.prevX = undefined;
@@ -70,15 +63,14 @@ gj.draggable.methods = {
     },
 
     mouseMove: function ($dragEl, e) {
-        var t, x, y, offsetX, offsetY;
+        var x, y, offsetX, offsetY;
         if ($dragEl.isDragging) {
             x = gj.draggable.methods.mouseX(e);
             y = gj.draggable.methods.mouseY(e);
-            if ($dragEl.prevX && $dragEl.prevY) {
-                t = $dragEl.get(0);
+            if ($dragEl.prevX && $dragEl.prevY) {                
                 offsetX = x - $dragEl.prevX;
                 offsetY = y - $dragEl.prevY;
-                gj.draggable.methods.move(t, offsetX, offsetY);
+                gj.draggable.methods.move($dragEl, offsetX, offsetY);
                 gj.draggable.events.drag($dragEl, offsetX, offsetY);
             } else {
                 gj.draggable.events.start($dragEl);
@@ -88,9 +80,12 @@ gj.draggable.methods = {
         }
     },
 
-    move: function (t, offsetX, offsetY) {
-        t.style.left = (parseInt(t.style.left) + offsetX) + 'px';
-        t.style.top = (parseInt(t.style.top) + offsetY) + 'px';
+    move: function ($dragEl, offsetX, offsetY) {
+        var target = $dragEl.get(0),
+            top = target.style.top ? parseInt(target.style.top) : $dragEl.position().top,
+            left = target.style.left ? parseInt(target.style.left) : $dragEl.position().left;
+        target.style.top = (top + offsetY) + 'px';
+        target.style.left = (left + offsetX) + 'px';
     },
 
     mouseX: function (e) {
