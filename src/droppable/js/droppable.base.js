@@ -74,6 +74,7 @@ gj.droppable.methods = {
                 gj.droppable.events.drop($dropEl);
             }
         });
+        $dropEl.attr('data-initialized', true);
 
         return $dropEl;
     },
@@ -105,26 +106,33 @@ gj.droppable.methods = {
     },
 
     mouseX: function (e) {
-        if (e.pageX) {
-            return e.pageX;
-        } else if (e.clientX) {
-            return e.clientX + (document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft);
+        if (e) {
+            if (e.pageX) {
+                return e.pageX;
+            } else if (e.clientX) {
+                return e.clientX + (document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft);
+            }
         }
         return null;
     },
 
     mouseY: function (e) {
-        if (e.pageY) {
-            return e.pageY;
-        } else if (e.clientY) {
-            return e.clientY + (document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop);
+        if (e) {
+            if (e.pageY) {
+                return e.pageY;
+            } else if (e.clientY) {
+                return e.clientY + (document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop);
+            }
         }
         return null;
     },
 
     destroy: function ($dropEl) {
-        $dropEl.off();
+        $dropEl.off('mousedown.droppable');
+        $dropEl.off('mousemove.droppable');
+        $dropEl.off('mouseup.droppable');
         $dropEl.data({});
+        $dropEl.attr('data-initialized', false);
     }
 };
 
@@ -221,19 +229,25 @@ function Droppable($dropEl, arguments) {
     }
 
     $.extend($dropEl, self);
-    methods.init.apply($dropEl, arguments);
+    if (true !== $dropEl.data('initialized')) {
+        methods.init.apply($dropEl, arguments);
+    }
 
     return $dropEl;
 };
 
 (function ($) {
     $.fn.droppable = function (method) {
+        var $droppable;
         if (typeof method === 'object' || !method) {
             return new Droppable(this, arguments);
-        } else if (gj.droppable.methods[method]) {
-            return gj.droppable.methods[method].apply(this, Array.prototype.slice.call(arguments, 1));
         } else {
-            throw 'Method ' + method + ' does not exist.';
+            $droppable = new Droppable(this, null);
+            if ($droppable[method]) {
+                return $droppable[method].apply(this, Array.prototype.slice.call(arguments, 1));
+            } else {
+                throw 'Method ' + method + ' does not exist.';
+            }
         }
     };
 })(jQuery);

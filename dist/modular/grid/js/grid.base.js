@@ -1309,8 +1309,7 @@ function Grid($grid, arguments) {
     $.fn.grid = function (method) {
         var $grid;
         if (typeof method === 'object' || !method) {
-            $grid = new Grid(this, arguments);
-            return $grid;
+            return new Grid(this, arguments);
         } else {
             $grid = new Grid(this, null);
             if ($grid[method]) {

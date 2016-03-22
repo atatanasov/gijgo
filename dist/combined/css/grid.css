@@ -371,6 +371,9 @@ span.gj-grid-base-column-resizer {
     -ms-user-select: none;
     user-select: none;
 }
-.gj-grid-base-bottom-border td {
-  border: 1px solid #ff0000;
+.gj-grid-base-table tbody tr.gj-grid-base-top-border td {
+  border-top: 2px solid #777;
+}
+.gj-grid-base-table tbody tr.gj-grid-base-bottom-border td {
+  border-bottom: 2px solid #777;
 }

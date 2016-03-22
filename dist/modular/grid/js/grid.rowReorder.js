@@ -26,53 +26,70 @@ gj.grid.plugins.rowReorder = {
             var i, $rows = $grid.find('tbody tr[data-role="row"]');
             for (i = 0; i < $rows.length; i++) {
                 $($rows[i]).on('mousedown', gj.grid.plugins.rowReorder.private.createRowMouseDownHandler($grid));
-                $($rows[i]).on('mouseover', gj.grid.plugins.rowReorder.private.createRowMouseOverHandler($grid));
-                $($rows[i]).on('mouseout', gj.grid.plugins.rowReorder.private.createRowMouseOutHandler($grid));
             }
         },
 
         createRowMouseDownHandler: function ($grid) {
             return function (e) {
-                var $tr = $(this),
+                var $trSource = $(this),
                     $dragEl = $grid.clone();
                 $('body').append($dragEl);
                 $dragEl.attr('data-role', 'draggable-clone');
                 $dragEl.children('thead').remove().children('tfoot').remove();
-                $dragEl.find('tbody tr:not([data-position="' + $tr.data('position') + '"])').remove();
-                $dragEl.draggable({ stop: gj.grid.plugins.rowReorder.private.createDragStopHandler($grid, $tr) });
+                $dragEl.find('tbody tr:not([data-position="' + $trSource.data('position') + '"])').remove();
+                $dragEl.draggable({});
                 $dragEl.css({ 
-                    position: 'absolute', top: $tr.offset().top, left: $tr.offset().left, width: $tr.width()
+                    position: 'absolute', top: $trSource.offset().top, left: $trSource.offset().left, width: $trSource.width()
+                });
+                $trSource.siblings('tr[data-role="row"]').each(function() {
+                    $(this).droppable({
+                        over: gj.grid.plugins.rowReorder.private.createDroppableOverHandler($trSource),
+                        out: gj.grid.plugins.rowReorder.private.droppableOut,
+                        drop: gj.grid.plugins.rowReorder.private.createDropHandler($trSource)
+                    });
                 });
                 $dragEl.trigger('mousedown');
-                $grid.attr('data-row-reorder-position', $tr.data('position'));
             };
         },
 
-        createRowMouseOverHandler: function ($grid) {
+        createDropHandler: function ($trSource) {
             return function (e) {
-                var $tr = $(this);
-                $tr.addClass('gj-grid-base-bottom-border');
-                $tr.attr('data-row-reorder-target', true);
-            };
-        },
-
-        createRowMouseOutHandler: function ($grid) {
-            return function (e) {
-                var $tr = $(this);
-                $tr.removeClass('gj-grid-base-bottom-border');
-                $tr.attr('data-row-reorder-target', false);
-            };
-        },
-
-        createDragStopHandler: function ($grid, $trSource) {
-            return function (e) {
-                var $trTarget = $grid.find('tbody tr[data-row-reorder-target="true"]'),
+                var $trTarget = $(this),
                     targetPosition = $trTarget.data('position'),
                     sourcePosition = $trSource.data('position');
-                $trTarget.prepend($trSource);
-                $(this).remove();
-                
+                if (targetPosition < sourcePosition) {
+                    $trTarget.before($trSource);
+                } else {
+                    $trTarget.after($trSource);
+                }
+                $trSource.attr('data-position', targetPosition);
+                $trTarget.attr('data-position', targetPosition - 1);
+
+                $trTarget.removeClass('gj-grid-base-top-border');
+                $trTarget.removeClass('gj-grid-base-bottom-border');
+                $trSource.siblings('tr[data-role="row"]').each(function () {
+                    $(this).droppable('destroy');
+                });
+                $('table[data-role="draggable-clone"]').remove();
             };
+        },
+
+        createDroppableOverHandler: function ($trSource) {
+            return function (e) {
+                var $trTarget = $(this),
+                    targetPosition = $trTarget.data('position'),
+                    sourcePosition = $trSource.data('position');
+                if (targetPosition < sourcePosition) {
+                    $trTarget.addClass('gj-grid-base-top-border');
+                } else {
+                    $trTarget.addClass('gj-grid-base-bottom-border');
+                }
+            };
+        },
+
+        droppableOut: function () {
+            $(this).removeClass('gj-grid-base-top-border');
+            $(this).removeClass('gj-grid-base-bottom-border');
         }
     },
 
