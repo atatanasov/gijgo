@@ -23,6 +23,12 @@
             }
         },
         concat: {
+            widget: {
+                files: {
+                    'dist/modular/widget/js/widget.js': ['src/widget.js'],
+                    'dist/combined/js/widget.js': ['src/widget.js']
+                }
+            },
             dialog: {
                 files : {
                     'dist/modular/dialog/js/dialog.base.js': ['src/dialog/js/dialog.base.config.js', 'src/dialog/js/dialog.base.events.js', 'src/dialog/js/dialog.base.methods.js', 'src/dialog/js/dialog.base.widget.js'],
@@ -100,6 +106,12 @@
         },
         uglify: {
             options: {},
+            widget: {
+                files: {
+                    'dist/modular/widget/js/widget.min.js': ['dist/modular/widget/js/widget.js'],
+                    'dist/combined/js/widget.min.js': ['dist/combined/js/widget.js']
+                }
+            },
             draggable: {
                 files: {
                     'dist/combined/js/draggable.min.js': ['dist/combined/js/draggable.js'],
@@ -324,6 +336,9 @@ var writer = {
             for (i = 0; i < names.length; i++) {
                 //include js files
                 switch (names[i].trim()) {
+                    case 'widget':
+                        result += '  <script src="../../dist/modular/widget/js/widget.js"></script>\r\n';
+                        break;
                     case 'dialog.base':
                         result += '  <script src="../../dist/modular/dialog/js/dialog.base.js"></script>\r\n';
                         break;

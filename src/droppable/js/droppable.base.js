@@ -21,7 +21,7 @@ gj.droppable.config = {
     /** If specified, the class will be added to the droppable while draggable is being hovered over the droppable.
      * @type string
      * @default undefined
-     * @example sample <!-- droppable.base, draggable.base -->
+     * @example sample <!-- widget, droppable.base, draggable.base -->
      * <style>
      * .draggable { border: 1px solid #999; width: 300px; height: 200px; text-align: center; }
      * .droppable { border: 1px solid #999; width: 300px; height: 200px; text-align: center; }
@@ -43,6 +43,9 @@ gj.droppable.methods = {
         if (!jsConfig) {
             jsConfig = {};
         }
+        if (!jsConfig.guid) {
+            jsConfig.guid = gj.widget.generateGUID();
+        }
         $dropEl.data(jsConfig);
 
         //Initialize events configured as options
@@ -52,50 +55,52 @@ gj.droppable.methods = {
                 delete jsConfig[option];
             }
         }
+        
+        gj.documentManager.subscribeForEvent('mousedown', $dropEl.data('guid'), gj.droppable.methods.createMouseDownHandler($dropEl));
+        gj.documentManager.subscribeForEvent('mousemove', $dropEl.data('guid'), gj.droppable.methods.createMouseMoveHandler($dropEl));
+        gj.documentManager.subscribeForEvent('mouseup', $dropEl.data('guid'), gj.droppable.methods.createMouseUpHandler($dropEl));
 
-        $body = $dropEl.closest('body');
-        $body.on('mousedown', function () { $dropEl.trigger('mousedown.droppable'); });
-        $body.on('mousemove', function (e) { $dropEl.trigger('mousemove.droppable', [e]); });
-        $body.on('mouseup', function (e) { $dropEl.trigger('mouseup.droppable', [e]); });
-
-        $dropEl.on('mousedown.droppable', function (e) {
-            $dropEl.isDragging = true;
-        });
-
-        $dropEl.on('mousemove.droppable', function (e, mouseEvent) {
-            if ($dropEl.isDragging) {
-                gj.droppable.methods.mouseMove($dropEl, mouseEvent);
-            }
-        });
-
-        $dropEl.on('mouseup.droppable', function (e, mouseEvent) {
-            $dropEl.isDragging = false;
-            if (gj.droppable.methods.isOver($dropEl, mouseEvent)) {
-                gj.droppable.events.drop($dropEl);
-            }
-        });
         $dropEl.attr('data-initialized', true);
 
         return $dropEl;
     },
 
-    mouseMove: function ($dropEl, e) {
-        var hoverClass = $dropEl.data('hoverClass'),
-            newIsOver = gj.droppable.methods.isOver($dropEl, e);
-        if (newIsOver != $dropEl.isOver) {
-            if (newIsOver) {
-                if (hoverClass) {
-                    $dropEl.addClass(hoverClass);
+    createMouseDownHandler: function ($dropEl) {
+        return function (e) {
+            $dropEl.isDragging = true;
+        }
+    },
+
+    createMouseMoveHandler: function ($dropEl) {
+        return function (e) {
+            if ($dropEl.isDragging) {
+                var hoverClass = $dropEl.data('hoverClass'),
+                    newIsOver = gj.droppable.methods.isOver($dropEl, e);
+                if (newIsOver != $dropEl.isOver) {
+                    if (newIsOver) {
+                        if (hoverClass) {
+                            $dropEl.addClass(hoverClass);
+                        }
+                        gj.droppable.events.over($dropEl);
+                    } else {
+                        if (hoverClass) {
+                            $dropEl.removeClass(hoverClass);
+                        }
+                        gj.droppable.events.out($dropEl);
+                    }
                 }
-                gj.droppable.events.over($dropEl);
-            } else {
-                if (hoverClass) {
-                    $dropEl.removeClass(hoverClass);
-                }
-                gj.droppable.events.out($dropEl);
+                $dropEl.isOver = newIsOver;
             }
         }
-        $dropEl.isOver = newIsOver;
+    },
+
+    createMouseUpHandler: function ($dropEl) {
+        return function (e) {
+            $dropEl.isDragging = false;
+            if (gj.droppable.methods.isOver($dropEl, e)) {
+                gj.droppable.events.drop($dropEl);
+            }
+        }
     },
 
     isOver: function ($dropEl, e) {
@@ -128,11 +133,14 @@ gj.droppable.methods = {
     },
 
     destroy: function ($dropEl) {
-        $dropEl.off('mousedown.droppable');
-        $dropEl.off('mousemove.droppable');
-        $dropEl.off('mouseup.droppable');
-        $dropEl.data({});
-        $dropEl.attr('data-initialized', false);
+        if ($dropEl.attr('data-initialized')) {
+            gj.documentManager.unsubscribeForEvent('mousedown', $dropEl.data('guid'));
+            gj.documentManager.unsubscribeForEvent('mousemove', $dropEl.data('guid'));
+            gj.documentManager.unsubscribeForEvent('mouseup', $dropEl.data('guid'));
+            $dropEl.data({});
+            $dropEl.removeAttr('data-initialized');
+        }
+        return $dropEl;
     }
 };
 
@@ -140,7 +148,7 @@ gj.droppable.events = {
     /** Triggered when a draggable element is dropped.
      * @event drag
      * @param {object} e - event data
-     * @example sample <!-- droppable.base, draggable.base -->
+     * @example sample <!-- widget, droppable.base, draggable.base -->
      * <style>
      * .draggable { border: 1px solid #999; width: 300px; height: 200px; text-align: center; }
      * .droppable { border: 1px solid #999; width: 300px; height: 200px; text-align: center; }
@@ -160,7 +168,7 @@ gj.droppable.events = {
     /** Triggered when a draggable element is dragged over the droppable.
      * @event stop
      * @param {object} e - event data
-     * @example sample <!-- droppable.base, draggable.base -->
+     * @example sample <!-- widget, droppable.base, draggable.base -->
      * <style>
      * .draggable { border: 1px solid #999; width: 300px; height: 200px; text-align: center; }
      * .droppable { border: 1px solid #999; width: 300px; height: 200px; text-align: center; }
@@ -183,7 +191,7 @@ gj.droppable.events = {
     /** Triggered when a draggable element is dragged out of the droppable.
      * @event start
      * @param {object} e - event data
-     * @example sample <!-- droppable.base, draggable.base -->
+     * @example sample <!-- widget, droppable.base, draggable.base -->
      * <style>
      * .draggable { border: 1px solid #999; width: 300px; height: 200px; text-align: center; }
      * .droppable { border: 1px solid #999; width: 300px; height: 200px; text-align: center; }
@@ -215,7 +223,7 @@ function Droppable($dropEl, arguments) {
     /** Removes the droppable functionality.
      * @method
      * @return jquery element
-     * @example sample <!-- draggable.base, droppable.base -->
+     * @example sample <!-- widget, draggable.base, droppable.base -->
      * <div id="dropElement" style="display: none">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
      * <button onclick="dropEl.destroy()">Destroy</button>
      * <script>
@@ -226,6 +234,10 @@ function Droppable($dropEl, arguments) {
      */
     self.destroy = function () {
         return methods.destroy(this);
+    }
+
+    self.isOver = function (mouseEvent) {
+        return methods.isOver(this, mouseEvent);
     }
 
     $.extend($dropEl, self);

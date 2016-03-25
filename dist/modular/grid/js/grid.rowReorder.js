@@ -37,12 +37,14 @@ gj.grid.plugins.rowReorder = {
                 $dragEl.attr('data-role', 'draggable-clone');
                 $dragEl.children('thead').remove().children('tfoot').remove();
                 $dragEl.find('tbody tr:not([data-position="' + $trSource.data('position') + '"])').remove();
-                $dragEl.draggable({});
+                $dragEl.draggable({
+                    stop: gj.grid.plugins.rowReorder.private.createDragStopHandler($trSource)
+                });
                 $dragEl.css({ 
                     position: 'absolute', top: $trSource.offset().top, left: $trSource.offset().left, width: $trSource.width()
                 });
                 $trSource.siblings('tr[data-role="row"]').each(function() {
-                    $(this).droppable({
+                    $(this).droppable('destroy').droppable({
                         over: gj.grid.plugins.rowReorder.private.createDroppableOverHandler($trSource),
                         out: gj.grid.plugins.rowReorder.private.droppableOut,
                         drop: gj.grid.plugins.rowReorder.private.createDropHandler($trSource)
@@ -52,6 +54,12 @@ gj.grid.plugins.rowReorder = {
             };
         },
 
+        createDragStopHandler: function ($trSource) {
+            return function (e) {
+                $('table[data-role="draggable-clone"]').remove();
+            }
+        },
+
         createDropHandler: function ($trSource) {
             return function (e) {
                 var $trTarget = $(this),
@@ -59,18 +67,18 @@ gj.grid.plugins.rowReorder = {
                     sourcePosition = $trSource.data('position');
                 if (targetPosition < sourcePosition) {
                     $trTarget.before($trSource);
+                    targetPosition++;
                 } else {
                     $trTarget.after($trSource);
+                    targetPosition--;
                 }
-                $trSource.attr('data-position', targetPosition);
-                $trTarget.attr('data-position', targetPosition - 1);
-
-                $trTarget.removeClass('gj-grid-base-top-border');
-                $trTarget.removeClass('gj-grid-base-bottom-border');
+                $trSource.attr('data-position', sourcePosition);
+                $trTarget.attr('data-position', targetPosition);
                 $trSource.siblings('tr[data-role="row"]').each(function () {
-                    $(this).droppable('destroy');
+                    $(this).removeClass('gj-grid-base-top-border');
+                    $(this).removeClass('gj-grid-base-bottom-border');
                 });
-                $('table[data-role="draggable-clone"]').remove();
+
             };
         },
 

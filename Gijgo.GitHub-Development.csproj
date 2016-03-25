@@ -90,6 +90,7 @@
     <Content Include="src\tree\js\tree.base.events.js" />
     <Content Include="src\tree\js\tree.base.methods.js" />
     <Content Include="src\tree\js\tree.base.widget.js" />
+    <Content Include="src\widget.js" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />
