@@ -1,0 +1,26 @@
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Example</title>
+  <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+  <script src="../../dist/modular/widget/js/widget.js"></script>
+  <script src="../../dist/modular/droppable/js/droppable.base.js"></script>
+  <script src="../../dist/modular/draggable/js/draggable.base.js"></script>
+</head>
+<body>
+ <style>
+ .draggable { border: 1px solid #999; width: 300px; height: 200px; text-align: center; }
+ .droppable { border: 1px solid #999; width: 300px; height: 200px; text-align: center; }
+ .hover { background-color: #FF0000; }
+ </style>
+ <div id="droppable" class="droppable">Drop Here</div>
+ <div id="draggable" class="draggable">Drag Me</div>
+ <script>
+     $('#draggable').draggable();
+     $('#droppable').droppable({
+         over: function() { $(this).addClass('hover') },
+         out: function() { $(this).removeClass('hover') }
+     });
+ </script>
+</body>
+</html>

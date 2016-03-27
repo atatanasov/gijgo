@@ -1,4 +1,4 @@
-﻿var gj = {
+var gj = {
     widget: {
         generateGUID: function () {
             function s4() {

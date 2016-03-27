@@ -46,7 +46,6 @@ gj.droppable.methods = {
         if (!jsConfig.guid) {
             jsConfig.guid = gj.widget.generateGUID();
         }
-        $dropEl.data(jsConfig);
 
         //Initialize events configured as options
         for (option in jsConfig) {
@@ -55,6 +54,8 @@ gj.droppable.methods = {
                 delete jsConfig[option];
             }
         }
+
+        $dropEl.data(jsConfig);
         
         gj.documentManager.subscribeForEvent('mousedown', $dropEl.data('guid'), gj.droppable.methods.createMouseDownHandler($dropEl));
         gj.documentManager.subscribeForEvent('mousemove', $dropEl.data('guid'), gj.droppable.methods.createMouseMoveHandler($dropEl));
@@ -133,11 +134,11 @@ gj.droppable.methods = {
     },
 
     destroy: function ($dropEl) {
-        if ($dropEl.attr('data-initialized')) {
+        if ($dropEl.attr('data-initialized') === "true") {
             gj.documentManager.unsubscribeForEvent('mousedown', $dropEl.data('guid'));
             gj.documentManager.unsubscribeForEvent('mousemove', $dropEl.data('guid'));
             gj.documentManager.unsubscribeForEvent('mouseup', $dropEl.data('guid'));
-            $dropEl.data({});
+            $dropEl.removeData();
             $dropEl.removeAttr('data-initialized');
         }
         return $dropEl;
@@ -241,7 +242,7 @@ function Droppable($dropEl, arguments) {
     }
 
     $.extend($dropEl, self);
-    if (true !== $dropEl.data('initialized')) {
+    if ("true" !== $dropEl.attr('data-initialized')) {
         methods.init.apply($dropEl, arguments);
     }
 
