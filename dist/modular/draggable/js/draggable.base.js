@@ -39,6 +39,7 @@ gj.draggable.methods = {
         }
 
         $dragEl.data(jsConfig);
+        $dragEl.attr('data-guid', $dragEl.data('guid'));
 
         $clickEl = gj.draggable.methods.getClickElement($dragEl);
 
@@ -131,10 +132,11 @@ gj.draggable.methods = {
 
     destroy: function ($dragEl) {
         if ($dragEl.attr('data-draggable') === "true") {
-            gj.documentManager.unsubscribeForEvent('mousemove', $dragEl.data('guid'));
             gj.documentManager.unsubscribeForEvent('mouseup', $dragEl.data('guid'));
             $dragEl.removeData();
+            $dragEl.removeAttr('data-guid');
             $dragEl.removeAttr('data-draggable');
+            $dragEl.off('drag').off('start').off('stop');
             gj.draggable.methods.getClickElement($dragEl).off('mousedown');
         }
         return $dragEl;
@@ -188,12 +190,16 @@ function Draggable($dragEl, arguments) {
 
 (function ($) {
     $.fn.draggable = function (method) {
+        var $draggable;
         if (typeof method === 'object' || !method) {
             return new Draggable(this, arguments);
-        } else if (gj.draggable.methods[method]) {
-            return gj.draggable.methods[method].apply(this, Array.prototype.slice.call(arguments, 1));
         } else {
-            throw 'Method ' + method + ' does not exist.';
+            $draggable = new Draggable(this, null);
+            if ($draggable[method]) {
+                return $draggable[method].apply(this, Array.prototype.slice.call(arguments, 1));
+            } else {
+                throw 'Method ' + method + ' does not exist.';
+            }
         }
     };
 })(jQuery);

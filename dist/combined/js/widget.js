@@ -10,7 +10,7 @@ var gj = {
         }
     },
     documentManager: {
-        events: [],
+        events: {},
 
         subscribeForEvent: function (eventName, widgetId, callback) {
             if (!gj.documentManager.events[eventName] || gj.documentManager.events[eventName].length === 0) {
@@ -33,17 +33,22 @@ var gj = {
         },
 
         unsubscribeForEvent: function (eventName, widgetId) {
-            var events = gj.documentManager.events[eventName];
+            var success = false,
+                events = gj.documentManager.events[eventName];
             if (events) {
                 for (var i = 0; i < events.length; i++) {
                     if (events[i].widgetId === widgetId) {
                         events.splice(i, 1);
+                        success = true;
                         if (events.length === 0) {
                             $(document).off(eventName);
                             delete gj.documentManager.events[eventName];
                         }
                     }
                 }
+            }
+            if (!success) {
+                throw 'The "' + eventName + '" for widget with guid="' + widgetId + '" can\'t be removed.';
             }
         }
     }

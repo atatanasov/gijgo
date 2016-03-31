@@ -61,9 +61,12 @@ gj.grid.plugins.rowReorder = {
                 $dragEl.css({ 
                     position: 'absolute', top: $trSource.offset().top, left: $trSource.offset().left, width: $trSource.width()
                 });
+                if ($trSource.attr('data-droppable') === "true") {
+                    $trSource.droppable('destroy');
+                }
                 $trSource.siblings('tr[data-role="row"]').each(function () {
                     var $dropEl = $(this);
-                    if ($dropEl.attr('data-initialized') === "true") {
+                    if ($dropEl.attr('data-droppable') === "true") {
                         $dropEl.droppable('destroy');
                     }
                     $dropEl.droppable({
@@ -77,7 +80,7 @@ gj.grid.plugins.rowReorder = {
 
         createDragStopHandler: function ($grid, $trSource) {
             return function (e, mouseEvent) {
-                $('table[data-role="draggable-clone"]').remove();
+                $('table[data-role="draggable-clone"]').draggable('destroy').remove();
                 $trSource.siblings('tr[data-role="row"]').each(function () {
                     var $trTarget = $(this),
                         targetPosition = $trTarget.data('position'),

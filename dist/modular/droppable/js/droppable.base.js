@@ -38,12 +38,13 @@ gj.droppable.methods = {
         }
 
         $dropEl.data(jsConfig);
+        $dropEl.attr('data-guid', $dropEl.data('guid'));
         
         gj.documentManager.subscribeForEvent('mousedown', $dropEl.data('guid'), gj.droppable.methods.createMouseDownHandler($dropEl));
         gj.documentManager.subscribeForEvent('mousemove', $dropEl.data('guid'), gj.droppable.methods.createMouseMoveHandler($dropEl));
         gj.documentManager.subscribeForEvent('mouseup', $dropEl.data('guid'), gj.droppable.methods.createMouseUpHandler($dropEl));
 
-        $dropEl.attr('data-initialized', true);
+        $dropEl.attr('data-droppable', true);
 
         return $dropEl;
     },
@@ -116,12 +117,14 @@ gj.droppable.methods = {
     },
 
     destroy: function ($dropEl) {
-        if ($dropEl.attr('data-initialized') === "true") {
+        if ($dropEl.attr('data-droppable') === "true") {
             gj.documentManager.unsubscribeForEvent('mousedown', $dropEl.data('guid'));
             gj.documentManager.unsubscribeForEvent('mousemove', $dropEl.data('guid'));
             gj.documentManager.unsubscribeForEvent('mouseup', $dropEl.data('guid'));
             $dropEl.removeData();
-            $dropEl.removeAttr('data-initialized');
+            $dropEl.removeAttr('data-guid');
+            $dropEl.removeAttr('data-droppable');
+            $dropEl.off('drop').off('over').off('out');
         }
         return $dropEl;
     }
@@ -162,7 +165,7 @@ function Droppable($dropEl, arguments) {
     }
 
     $.extend($dropEl, self);
-    if ("true" !== $dropEl.attr('data-initialized')) {
+    if ("true" !== $dropEl.attr('data-droppable')) {
         methods.init.apply($dropEl, arguments);
     }
 
