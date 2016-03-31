@@ -24,9 +24,20 @@ gj.grid.plugins.rowReorder = {
              */
             rowReorder: false,
 
-            /** 
+            /** If set to true, enable row reordering only when you try to drag cell from the configured column.
+             * Accept only field names of columns.
              * @type string
              * @default undefined
+             * @example sample <!-- widget, grid.base, grid.rowReorder, draggable.base, droppable.base -->
+             * <table id="grid"></table>
+             * <script>
+             *     $('#grid').grid({
+             *         dataSource: '/DataSources/GetPlayers',
+             *         rowReorder: true,
+             *         rowReorderColumn: 'ID',
+             *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
+             *     });
+             * </script>
              */
             rowReorderColumn: undefined,
 
@@ -41,16 +52,24 @@ gj.grid.plugins.rowReorder = {
 
     private: {
         init: function ($grid) {
-            var i, $rows = $grid.find('tbody tr[data-role="row"]');
+            var i, columnPosition, $row,
+                $rows = $grid.find('tbody tr[data-role="row"]');
+            if ($grid.data('rowReorderColumn')) {
+                columnPosition = gj.grid.methods.getColumnPosition($grid.data('columns'), $grid.data('rowReorderColumn'));
+            }
             for (i = 0; i < $rows.length; i++) {
-                $($rows[i]).on('mousedown', gj.grid.plugins.rowReorder.private.createRowMouseDownHandler($grid));
+                $row = $($rows[i]);
+                if (typeof (columnPosition) !== "undefined") {
+                    $row.find('td:eq(' + columnPosition + ')').on('mousedown', gj.grid.plugins.rowReorder.private.createRowMouseDownHandler($grid, $row));
+                } else {
+                    $row.on('mousedown', gj.grid.plugins.rowReorder.private.createRowMouseDownHandler($grid, $row));
+                }
             }
         },
 
-        createRowMouseDownHandler: function ($grid) {
+        createRowMouseDownHandler: function ($grid, $trSource) {
             return function (e) {
-                var $trSource = $(this),
-                    $dragEl = $grid.clone();
+                var $dragEl = $grid.clone();
                 $('body').append($dragEl);
                 $dragEl.attr('data-role', 'draggable-clone');
                 $dragEl.children('thead').remove().children('tfoot').remove();
