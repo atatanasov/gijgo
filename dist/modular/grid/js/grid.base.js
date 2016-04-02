@@ -981,21 +981,26 @@ gj.grid.methods = {
         return result;
     },
 
-    getCell: function ($grid, id, index) {
-        var position, $row;
-        position = gj.grid.methods.getColumnPosition($grid, index);
-        $row = gj.grid.methods.getRowById($grid, id);
-        return $row.find('td:eq(' + position + ') div');
+    getCell: function ($grid, id, field) {
+        var position, $row, $result = null;
+        position = gj.grid.methods.getColumnPosition($grid.data('columns'), field);
+        if (position > -1) {
+            $row = gj.grid.methods.getRowById($grid, id);
+            $result = $row.find('td:eq(' + position + ') div');
+        }
+        return $result;
     },
 
-    setCellContent: function ($grid, id, index, value) {
-        var column, $cellWrapper = gj.grid.methods.getCell($grid, id, index);
-        $cellWrapper.empty();
-        if (typeof (value) === 'object') {
-            $cellWrapper.append(value);
-        } else {
-            column = gj.grid.methods.getColumnInfo($grid, index);
-            gj.grid.methods.setCellText($cellWrapper, column, value);
+    setCellContent: function ($grid, id, field, value) {
+        var column, $cellWrapper = gj.grid.methods.getCell($grid, id, field);
+        if ($cellWrapper) {
+            $cellWrapper.empty();
+            if (typeof (value) === 'object') {
+                $cellWrapper.append(value);
+            } else {
+                column = gj.grid.methods.getColumnInfo($grid, field);
+                gj.grid.methods.setCellText($cellWrapper, column, value);
+            }
         }
     },
 

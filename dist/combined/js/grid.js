@@ -981,21 +981,26 @@ gj.grid.methods = {
         return result;
     },
 
-    getCell: function ($grid, id, index) {
-        var position, $row;
-        position = gj.grid.methods.getColumnPosition($grid, index);
-        $row = gj.grid.methods.getRowById($grid, id);
-        return $row.find('td:eq(' + position + ') div');
+    getCell: function ($grid, id, field) {
+        var position, $row, $result = null;
+        position = gj.grid.methods.getColumnPosition($grid.data('columns'), field);
+        if (position > -1) {
+            $row = gj.grid.methods.getRowById($grid, id);
+            $result = $row.find('td:eq(' + position + ') div');
+        }
+        return $result;
     },
 
-    setCellContent: function ($grid, id, index, value) {
-        var column, $cellWrapper = gj.grid.methods.getCell($grid, id, index);
-        $cellWrapper.empty();
-        if (typeof (value) === 'object') {
-            $cellWrapper.append(value);
-        } else {
-            column = gj.grid.methods.getColumnInfo($grid, index);
-            gj.grid.methods.setCellText($cellWrapper, column, value);
+    setCellContent: function ($grid, id, field, value) {
+        var column, $cellWrapper = gj.grid.methods.getCell($grid, id, field);
+        if ($cellWrapper) {
+            $cellWrapper.empty();
+            if (typeof (value) === 'object') {
+                $cellWrapper.append(value);
+            } else {
+                column = gj.grid.methods.getColumnInfo($grid, field);
+                gj.grid.methods.setCellText($cellWrapper, column, value);
+            }
         }
     },
 
@@ -2356,10 +2361,11 @@ gj.grid.plugins.rowReorder = {
             /** If set to true, enable row reordering with drag and drop. */
             rowReorder: false,
 
-            /** If set to true, enable row reordering only when you try to drag cell from the configured column.
+            /** If set, enable row reordering only when you try to drag cell from the configured column.
              * Accept only field names of columns. */
             rowReorderColumn: undefined,
 
+            /** If set, update the value in the field for all records. Accept only field names of columns. */
             orderNumberField: undefined,
 
             style: {
@@ -2423,7 +2429,8 @@ gj.grid.plugins.rowReorder = {
                     var $trTarget = $(this),
                         targetPosition = $trTarget.data('position'),
                         sourcePosition = $trSource.data('position'),
-                        $rows, i;
+                        data = $grid.data(),
+                        $rows, $row, i, record, id;
                         
                     $trTarget.removeClass('gj-grid-base-top-border');
                     $trTarget.removeClass('gj-grid-base-bottom-border');
@@ -2433,10 +2440,21 @@ gj.grid.plugins.rowReorder = {
                         } else {
                             $trTarget.after($trSource);
                         }
-                        $grid.data('records').splice(targetPosition - 1, 0, $grid.data('records').splice(sourcePosition - 1, 1)[0]);
+                        data.records.splice(targetPosition - 1, 0, data.records.splice(sourcePosition - 1, 1)[0]);
                         $rows = $trTarget.parent().find('tr[data-role="row"]');
                         for (i = 0; i < $rows.length; i++) {
                             $($rows[i]).attr('data-position', i + 1);
+                        }
+                        if (data.orderNumberField) {
+                            for (i = 0; i < data.records.length; i++) {
+                                data.records[i][data.orderNumberField] = i + 1;
+                            }
+                            for (i = 0; i < $rows.length; i++) {
+                                $row = $($rows[i]);
+                                id = gj.grid.methods.getId($row, data.primaryKey, $row.attr('data-position'));
+                                record = gj.grid.methods.getByPosition($grid, $row.attr('data-position'));
+                                $grid.setCellContent(id, data.orderNumberField, record[data.orderNumberField]);
+                            }
                         }
                     }
                     $trTarget.droppable('destroy');

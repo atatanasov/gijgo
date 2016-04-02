@@ -24,7 +24,7 @@ gj.grid.plugins.rowReorder = {
              */
             rowReorder: false,
 
-            /** If set to true, enable row reordering only when you try to drag cell from the configured column.
+            /** If set, enable row reordering only when you try to drag cell from the configured column.
              * Accept only field names of columns.
              * @type string
              * @default undefined
@@ -41,6 +41,41 @@ gj.grid.plugins.rowReorder = {
              */
             rowReorderColumn: undefined,
 
+            /** If set, update the value in the field for all records. Accept only field names of columns.
+             * @type string
+             * @default undefined
+             * @example Visible.OrderNumber <!-- widget, grid.base, grid.rowReorder, draggable.base, droppable.base -->
+             * <table id="grid"></table>
+             * <script>
+             *     var data = [
+             *         { 'ID': 1, 'OrderNumber': 1, 'Name': 'Hristo Stoichkov', 'PlaceOfBirth': 'Plovdiv, Bulgaria' },
+             *         { 'ID': 2, 'OrderNumber': 2, 'Name': 'Ronaldo Luis Nazario de Lima', 'PlaceOfBirth': 'Rio de Janeiro, Brazil' },
+             *         { 'ID': 3, 'OrderNumber': 3, 'Name': 'David Platt', 'PlaceOfBirth': 'Chadderton, Lancashire, England' }
+             *     ];
+             *     $('#grid').grid({
+             *         dataSource: data,
+             *         rowReorder: true,
+             *         orderNumberField: 'OrderNumber',
+             *         columns: [ { field: 'ID', width: 34 }, { field: 'OrderNumber', width:120 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
+             *     });
+             * </script>
+             * @example Hidden.OrderNumber <!-- widget, grid.base, grid.rowReorder, draggable.base, droppable.base -->
+             * <button onclick="alert(grid.getAll())">Show Data</button>
+             * <table id="grid"></table>
+             * <script>
+             *     var data = [
+             *         { 'ID': 1, 'OrderNumber': 1, 'Name': 'Hristo Stoichkov', 'PlaceOfBirth': 'Plovdiv, Bulgaria' },
+             *         { 'ID': 2, 'OrderNumber': 2, 'Name': 'Ronaldo Luis Nazario de Lima', 'PlaceOfBirth': 'Rio de Janeiro, Brazil' },
+             *         { 'ID': 3, 'OrderNumber': 3, 'Name': 'David Platt', 'PlaceOfBirth': 'Chadderton, Lancashire, England' }
+             *     ],
+             *     grid = $('#grid').grid({
+             *         dataSource: data,
+             *         rowReorder: true,
+             *         orderNumberField: 'OrderNumber',
+             *         columns: [ { field: 'ID', width: 34 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
+             *     });
+             * </script>
+             */
             orderNumberField: undefined,
 
             style: {
@@ -104,7 +139,8 @@ gj.grid.plugins.rowReorder = {
                     var $trTarget = $(this),
                         targetPosition = $trTarget.data('position'),
                         sourcePosition = $trSource.data('position'),
-                        $rows, i;
+                        data = $grid.data(),
+                        $rows, $row, i, record, id;
                         
                     $trTarget.removeClass('gj-grid-base-top-border');
                     $trTarget.removeClass('gj-grid-base-bottom-border');
@@ -114,10 +150,21 @@ gj.grid.plugins.rowReorder = {
                         } else {
                             $trTarget.after($trSource);
                         }
-                        $grid.data('records').splice(targetPosition - 1, 0, $grid.data('records').splice(sourcePosition - 1, 1)[0]);
+                        data.records.splice(targetPosition - 1, 0, data.records.splice(sourcePosition - 1, 1)[0]);
                         $rows = $trTarget.parent().find('tr[data-role="row"]');
                         for (i = 0; i < $rows.length; i++) {
                             $($rows[i]).attr('data-position', i + 1);
+                        }
+                        if (data.orderNumberField) {
+                            for (i = 0; i < data.records.length; i++) {
+                                data.records[i][data.orderNumberField] = i + 1;
+                            }
+                            for (i = 0; i < $rows.length; i++) {
+                                $row = $($rows[i]);
+                                id = gj.grid.methods.getId($row, data.primaryKey, $row.attr('data-position'));
+                                record = gj.grid.methods.getByPosition($grid, $row.attr('data-position'));
+                                $grid.setCellContent(id, data.orderNumberField, record[data.orderNumberField]);
+                            }
                         }
                     }
                     $trTarget.droppable('destroy');
