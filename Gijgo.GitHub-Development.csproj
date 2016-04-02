@@ -69,11 +69,13 @@
     <Content Include="src\draggable\js\draggable.base.js" />
     <Content Include="src\droppable\js\droppable.base.js" />
     <Content Include="src\grid\css\grid.base.css" />
+    <Content Include="src\grid\css\grid.columnReorder.css" />
     <Content Include="src\grid\css\grid.pagination.css" />
     <Content Include="src\grid\css\grid.resizableColumns.css" />
     <Content Include="src\grid\css\grid.responsiveDesign.css" />
     <Content Include="src\grid\css\grid.rowReorder.css" />
     <Content Include="src\grid\js\grid.base.methods.js" />
+    <Content Include="src\grid\js\grid.columnReorder.js" />
     <Content Include="src\grid\js\grid.expandCollapseRows.js" />
     <Content Include="src\grid\js\grid.inlineEditing.js" />
     <Content Include="src\grid\js\grid.pagination.js" />

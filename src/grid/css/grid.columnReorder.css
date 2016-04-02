@@ -1,0 +1,6 @@
+﻿.gj-grid-base-table thead tr.gj-grid-base-left-border th {
+  border-left: 2px solid #777;
+}
+.gj-grid-base-table thead tr.gj-grid-base-right-border th {
+  border-right: 2px solid #777;
+}

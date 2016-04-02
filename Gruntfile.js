@@ -59,16 +59,18 @@
                     'dist/modular/grid/js/grid.toolbar.js': ['src/grid/js/grid.toolbar.js'],
                     'dist/modular/grid/js/grid.resizableColumns.js': ['src/grid/js/grid.resizableColumns.js'],
                     'dist/modular/grid/js/grid.rowReorder.js': ['src/grid/js/grid.rowReorder.js'],
+                    'dist/modular/grid/js/grid.columnReorder.js': ['src/grid/js/grid.columnReorder.js'],
 
-                    'dist/combined/js/grid.js': ['dist/modular/grid/js/grid.base.js', 'dist/modular/grid/js/grid.expandCollapseRows.js', 'dist/modular/grid/js/grid.inlineEditing.js', 'dist/modular/grid/js/grid.pagination.js', 'dist/modular/grid/js/grid.responsiveDesign.js', 'dist/modular/grid/js/grid.toolbar.js', 'src/grid/js/grid.resizableColumns.js', 'src/grid/js/grid.rowReorder.js'],
+                    'dist/combined/js/grid.js': ['dist/modular/grid/js/grid.base.js', 'dist/modular/grid/js/grid.expandCollapseRows.js', 'dist/modular/grid/js/grid.inlineEditing.js', 'dist/modular/grid/js/grid.pagination.js', 'dist/modular/grid/js/grid.responsiveDesign.js', 'dist/modular/grid/js/grid.toolbar.js', 'src/grid/js/grid.resizableColumns.js', 'src/grid/js/grid.rowReorder.js', 'src/grid/js/grid.columnReorder.js'],
 
                     'dist/modular/grid/css/grid.base.css': ['src/grid/css/grid.base.css'],
                     'dist/modular/grid/css/grid.responsiveDesign.css': ['src/grid/css/grid.responsiveDesign.css'],
                     'dist/modular/grid/css/grid.pagination.css': ['src/grid/css/grid.pagination.css'],
                     'dist/modular/grid/css/grid.resizableColumns.css': ['src/grid/css/grid.resizableColumns.css'],
                     'dist/modular/grid/css/grid.rowReorder.css': ['src/grid/css/grid.rowReorder.css'],
+                    'dist/modular/grid/css/grid.columnReorder.css': ['src/grid/css/grid.columnReorder.css'],
 
-                    'dist/combined/css/grid.css': ['dist/modular/grid/css/grid.base.css', 'dist/modular/grid/css/grid.responsiveDesign.css', 'src/grid/css/grid.pagination.css', 'src/grid/css/grid.resizableColumns.css', 'dist/modular/grid/css/grid.rowReorder.css']
+                    'dist/combined/css/grid.css': ['dist/modular/grid/css/grid.base.css', 'dist/modular/grid/css/grid.responsiveDesign.css', 'src/grid/css/grid.pagination.css', 'src/grid/css/grid.resizableColumns.css', 'dist/modular/grid/css/grid.rowReorder.css', 'dist/modular/grid/css/grid.columnReorder.css']
                 }
             }
         },
@@ -140,7 +142,8 @@
                     'dist/modular/grid/js/grid.responsiveDesign.min.js': ['dist/modular/grid/js/grid.responsiveDesign.js'],
                     'dist/modular/grid/js/grid.toolbar.min.js': ['dist/modular/grid/js/grid.toolbar.js'],
                     'dist/modular/grid/js/grid.resizableColumns.min.js': ['dist/modular/grid/js/grid.resizableColumns.js'],
-                    'dist/modular/grid/js/grid.rowReorder.min.js': ['dist/modular/grid/js/grid.rowReorder.js']
+                    'dist/modular/grid/js/grid.rowReorder.min.js': ['dist/modular/grid/js/grid.rowReorder.js'],
+                    'dist/modular/grid/js/grid.columnReorder.min.js': ['dist/modular/grid/js/grid.columnReorder.js']
                 }
             }
         },
@@ -153,7 +156,8 @@
                     { expand: true, cwd: 'dist/modular/grid/css', src: ['grid.pagination.css'], dest: 'dist/modular/grid/css', ext: '.pagination.min.css' },
                     { expand: true, cwd: 'dist/modular/grid/css', src: ['grid.responsiveDesign.css'], dest: 'dist/modular/grid/css', ext: '.responsiveDesign.min.css' },
                     { expand: true, cwd: 'dist/modular/grid/css', src: ['grid.resizableColumns.css'], dest: 'dist/modular/grid/css', ext: '.resizableColumns.min.css' },
-                    { expand: true, cwd: 'dist/modular/grid/css', src: ['grid.rowReorder.css'], dest: 'dist/modular/grid/css', ext: '.rowReorder.min.css' }
+                    { expand: true, cwd: 'dist/modular/grid/css', src: ['grid.rowReorder.css'], dest: 'dist/modular/grid/css', ext: '.rowReorder.min.css' },
+                    { expand: true, cwd: 'dist/modular/grid/css', src: ['grid.columnReorder.css'], dest: 'dist/modular/grid/css', ext: '.columnReorder.min.css' }
                 ]
             }
         },
@@ -331,6 +335,9 @@ var writer = {
                     case 'grid.rowReorder':
                         result += '  <link href="../../dist/modular/grid/css/grid.rowReorder.css" rel="stylesheet" type="text/css">\r\n';
                         break;
+                    case 'grid.columnReorder':
+                        result += '  <link href="../../dist/modular/grid/css/grid.columnReorder.css" rel="stylesheet" type="text/css">\r\n';
+                        break;
                 }
             }
             for (i = 0; i < names.length; i++) {
@@ -371,6 +378,9 @@ var writer = {
                         break;
                     case 'grid.rowReorder':
                         result += '  <script src="../../dist/modular/grid/js/grid.rowReorder.js"></script>\r\n';
+                        break;
+                    case 'grid.columnReorder':
+                        result += '  <script src="../../dist/modular/grid/js/grid.columnReorder.js"></script>\r\n';
                         break;
                 }
             }

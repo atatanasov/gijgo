@@ -446,7 +446,7 @@ gj.grid.methods = {
 
         $row = $('<tr/>');
         for (i = 0; i < columns.length; i += 1) {
-            $cell = $('<th/>');
+            $cell = $('<th data-field="' + columns[i].field + '" />');
             if (columns[i].width) {
                 $cell.attr('width', columns[i].width);
             }
