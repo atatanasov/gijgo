@@ -37,17 +37,17 @@ gj.grid.plugins.columnReorder = {
                 $cells = $grid.find('thead tr th');
             for (i = 0; i < $cells.length; i++) {
                 $cell = $($cells[i]);
-                $cell.on('mousedown', gj.grid.plugins.columnReorder.private.createMouseDownHandler($grid, $cell, i));
+                $cell.on('mousedown', gj.grid.plugins.columnReorder.private.createMouseDownHandler($grid, $cell));
             }
         },
 
-        createMouseDownHandler: function ($grid, $thSource, index) {
+        createMouseDownHandler: function ($grid, $thSource) {
             return function (e) {
                 var $dragEl = $grid.clone();
                 $('body').append($dragEl);
-                $dragEl.attr('data-role', 'draggable-clone');
+                $dragEl.attr('data-role', 'draggable-clone').css('cursor', 'move');
                 $dragEl.children('tbody').remove().children('tfoot').remove();
-                $dragEl.find('thead tr th:eq(' + index + ')').siblings().remove();
+                $dragEl.find('thead tr th:eq(' + $thSource.index() + ')').siblings().remove();
                 $dragEl.draggable({
                     stop: gj.grid.plugins.columnReorder.private.createDragStopHandler($grid, $thSource)
                 });
@@ -88,10 +88,23 @@ gj.grid.plugins.columnReorder = {
                         } else {
                             $thTarget.after($thSource);
                         }
-                        data.columns.splice(targetPosition - 1, 0, data.columns.splice(sourcePosition - 1, 1)[0]);
+                        gj.grid.plugins.columnReorder.private.moveRowCells($grid, sourcePosition, targetPosition);
+                        data.columns.splice(targetPosition, 0, data.columns.splice(sourcePosition, 1)[0]);
                     }
                     $thTarget.droppable('destroy');
                 });
+            }
+        },
+
+        moveRowCells: function ($grid, sourcePosition, targetPosition) {
+            var i, $row, $rows = $grid.find('tbody tr[data-role="row"]');
+            for (i = 0; i < $rows.length; i++) {
+                $row = $($rows[i]);
+                if (targetPosition < sourcePosition) {
+                    $row.find('td:eq(' + targetPosition + ')').before($row.find('td:eq(' + sourcePosition + ')'));
+                } else {
+                    $row.find('td:eq(' + targetPosition + ')').after($row.find('td:eq(' + sourcePosition + ')'));
+                }                
             }
         },
 
@@ -101,16 +114,16 @@ gj.grid.plugins.columnReorder = {
                     targetPosition = $thTarget.data('position'),
                     sourcePosition = $thTarget.data('position');
                 if (targetPosition < sourcePosition) {
-                    $thTarget.addClass('gj-grid-base-top-border');
+                    $thTarget.addClass('gj-grid-base-left-border');
                 } else {
-                    $thTarget.addClass('gj-grid-base-bottom-border');
+                    $thTarget.addClass('gj-grid-base-right-border');
                 }
             };
         },
 
         droppableOut: function () {
-            $(this).removeClass('gj-grid-base-top-border');
-            $(this).removeClass('gj-grid-base-bottom-border');
+            $(this).removeClass('gj-grid-base-left-border');
+            $(this).removeClass('gj-grid-base-right-border');
         }
     },
 

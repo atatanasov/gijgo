@@ -44,7 +44,7 @@ gj.grid.plugins.rowReorder = {
             return function (e) {
                 var $dragEl = $grid.clone();
                 $('body').append($dragEl);
-                $dragEl.attr('data-role', 'draggable-clone');
+                $dragEl.attr('data-role', 'draggable-clone').css('cursor', 'move');
                 $dragEl.children('thead').remove().children('tfoot').remove();
                 $dragEl.find('tbody tr:not([data-position="' + $trSource.data('position') + '"])').remove();
                 $dragEl.draggable({
@@ -80,8 +80,6 @@ gj.grid.plugins.rowReorder = {
                         data = $grid.data(),
                         $rows, $row, i, record, id;
                         
-                    $trTarget.removeClass('gj-grid-base-top-border');
-                    $trTarget.removeClass('gj-grid-base-bottom-border');
                     if ($trTarget.droppable('isOver', mouseEvent)) {
                         if (targetPosition < sourcePosition) {
                             $trTarget.before($trSource);
@@ -105,6 +103,8 @@ gj.grid.plugins.rowReorder = {
                             }
                         }
                     }
+                    $trTarget.removeClass('gj-grid-base-top-border');
+                    $trTarget.removeClass('gj-grid-base-bottom-border');
                     $trTarget.droppable('destroy');
                 });
             }
