@@ -2524,11 +2524,14 @@ gj.grid.plugins.columnReorder = {
 
         createMouseDownHandler: function ($grid, $thSource) {
             return function (e) {
-                var $dragEl = $grid.clone();
+                var $dragEl = $grid.clone(),
+                    srcIndex = $thSource.index();
                 $('body').append($dragEl);
                 $dragEl.attr('data-role', 'draggable-clone').css('cursor', 'move');
-                $dragEl.children('tbody').remove().children('tfoot').remove();
-                $dragEl.find('thead tr th:eq(' + $thSource.index() + ')').siblings().remove();
+                $dragEl.find('thead tr th:eq(' + srcIndex + ')').siblings().remove();
+                $dragEl.find('tbody tr[data-role != "row"]').remove();
+                $dragEl.find('tbody tr td:nth-child(' + (srcIndex + 1) + ')').siblings().remove();
+                $dragEl.find('tfoot').remove();
                 $dragEl.draggable({
                     stop: gj.grid.plugins.columnReorder.private.createDragStopHandler($grid, $thSource)
                 });
@@ -2544,7 +2547,7 @@ gj.grid.plugins.columnReorder = {
                         $dropEl.droppable('destroy');
                     }
                     $dropEl.droppable({
-                        over: gj.grid.plugins.columnReorder.private.createDroppableOverHandler($thSource),
+                        over: gj.grid.plugins.columnReorder.private.createDroppableOverHandler($grid, $thSource),
                         out: gj.grid.plugins.columnReorder.private.droppableOut
                     });
                 });
@@ -2561,8 +2564,8 @@ gj.grid.plugins.columnReorder = {
                         targetPosition = gj.grid.methods.getColumnPosition(data.columns, $thTarget.data('field')),
                         sourcePosition = gj.grid.methods.getColumnPosition(data.columns, $thSource.data('field'));
 
-                    $thTarget.removeClass('gj-grid-base-left-border');
-                    $thTarget.removeClass('gj-grid-base-right-border');
+                    $thTarget.removeClass('gj-grid-base-left-border').removeClass('gj-grid-base-right-border');
+                    $thTarget.closest('table').find('tbody tr[data-role="row"] td:nth-child(' + ($thTarget.index() + 1) + ')').removeClass('gj-grid-base-left-border').removeClass('gj-grid-base-right-border');
                     if ($thTarget.droppable('isOver', mouseEvent)) {
                         if (targetPosition < sourcePosition) {
                             $thTarget.before($thSource);
@@ -2589,22 +2592,25 @@ gj.grid.plugins.columnReorder = {
             }
         },
 
-        createDroppableOverHandler: function ($thTarget) {
+        createDroppableOverHandler: function ($grid, $thSource) {
             return function (e) {
                 var $thTarget = $(this),
                     targetPosition = $thTarget.data('position'),
-                    sourcePosition = $thTarget.data('position');
+                    sourcePosition = $thSource.data('position');
                 if (targetPosition < sourcePosition) {
                     $thTarget.addClass('gj-grid-base-left-border');
+                    $grid.find('tbody tr[data-role="row"] td:nth-child(' + ($thTarget.index() + 1) + ')').addClass('gj-grid-base-left-border');
                 } else {
                     $thTarget.addClass('gj-grid-base-right-border');
+                    $grid.find('tbody tr[data-role="row"] td:nth-child(' + ($thTarget.index() + 1) + ')').addClass('gj-grid-base-right-border');
                 }
             };
         },
 
         droppableOut: function () {
-            $(this).removeClass('gj-grid-base-left-border');
-            $(this).removeClass('gj-grid-base-right-border');
+            var $thTarget = $(this);
+            $thTarget.removeClass('gj-grid-base-left-border').removeClass('gj-grid-base-right-border');
+            $thTarget.closest('table').find('tbody tr[data-role="row"] td:nth-child(' + ($thTarget.index() + 1) + ')').removeClass('gj-grid-base-left-border').removeClass('gj-grid-base-right-border');
         }
     },
 
