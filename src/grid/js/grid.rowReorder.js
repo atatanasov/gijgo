@@ -12,12 +12,35 @@ gj.grid.plugins.rowReorder = {
             /** If set to true, enable row reordering with drag and drop.
              * @type boolean
              * @default false
-             * @example sample <!-- widget, grid.base, grid.rowReorder, draggable.base, droppable.base -->
+             * @example Base.Theme.Sample <!-- widget, grid.base, grid.rowReorder, draggable.base, droppable.base -->
+             * <p>Drag and Drop rows in order to reorder them.</p>
              * <table id="grid"></table>
              * <script>
              *     $('#grid').grid({
              *         dataSource: '/DataSources/GetPlayers',
              *         rowReorder: true,
+             *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
+             *     });
+             * </script>
+             * @example Bootstrap.Sample <!-- bootstrap, widget, grid.base, grid.rowReorder, draggable.base, droppable.base -->
+             * <p>Drag and Drop rows in order to reorder them.</p>
+             * <table id="grid"></table>
+             * <script>
+             *     $('#grid').grid({
+             *         dataSource: '/DataSources/GetPlayers',
+             *         rowReorder: true,
+             *         uiLibrary: 'bootstrap',
+             *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
+             *     });
+             * </script>
+             * @example JQueryUI.Sample <!-- jqueryui, widget, grid.base, grid.rowReorder, draggable.base, droppable.base -->
+             * <p>Drag and Drop rows in order to reorder them.</p>
+             * <table id="grid"></table>
+             * <script>
+             *     $('#grid').grid({
+             *         dataSource: '/DataSources/GetPlayers',
+             *         rowReorder: true,
+             *         uiLibrary: 'jqueryui',
              *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
              *     });
              * </script>

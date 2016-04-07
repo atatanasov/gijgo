@@ -3,22 +3,25 @@
   <meta charset="utf-8" />
   <title>Example</title>
   <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" rel="stylesheet" type="text/css">
   <link href="../../dist/modular/grid/css/grid.base.css" rel="stylesheet" type="text/css">
-  <link href="../../dist/modular/grid/css/grid.columnReorder.css" rel="stylesheet" type="text/css">
+  <link href="../../dist/modular/grid/css/grid.rowReorder.css" rel="stylesheet" type="text/css">
   <script src="../../dist/modular/widget/js/widget.js"></script>
   <script src="../../dist/modular/grid/js/grid.base.js"></script>
-  <script src="../../dist/modular/grid/js/grid.columnReorder.js"></script>
+  <script src="../../dist/modular/grid/js/grid.rowReorder.js"></script>
   <script src="../../dist/modular/draggable/js/draggable.base.js"></script>
   <script src="../../dist/modular/droppable/js/droppable.base.js"></script>
 </head>
 <body>
- <p>Drag and Drop column headers in order to reorder the columns.</p>
+ <p>Drag and Drop rows in order to reorder them.</p>
  <table id="grid"></table>
  <script>
      $('#grid').grid({
          dataSource: '/DataSources/GetPlayers',
-         columnReorder: true,
-         columns: [ { field: 'ID', width: 36 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
+         rowReorder: true,
+         uiLibrary: 'bootstrap',
+         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
      });
  </script>
 </body>

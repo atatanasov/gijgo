@@ -108,8 +108,8 @@ gj.droppable.methods = {
     isOver: function ($dropEl, e) {
         var x = gj.droppable.methods.mouseX(e),
             y = gj.droppable.methods.mouseY(e),
-            position = $dropEl.position();
-        return x > position.left && x < (position.left + $dropEl.width()) && y > position.top && y < (position.top + $dropEl.height());
+            offset = $dropEl.offset();
+        return x > offset.left && x < (offset.left + $dropEl.width()) && y > offset.top && y < (offset.top + $dropEl.height());
     },
 
     mouseX: function (e) {

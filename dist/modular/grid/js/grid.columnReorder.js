@@ -99,8 +99,9 @@ gj.grid.plugins.columnReorder = {
         createDroppableOverHandler: function ($grid, $thSource) {
             return function (e) {
                 var $thTarget = $(this),
-                    targetPosition = $thTarget.data('position'),
-                    sourcePosition = $thSource.data('position');
+                    data = $grid.data(),
+                    targetPosition = gj.grid.methods.getColumnPosition(data.columns, $thTarget.data('field')),
+                    sourcePosition = gj.grid.methods.getColumnPosition(data.columns, $thSource.data('field'));
                 if (targetPosition < sourcePosition) {
                     $thTarget.addClass('gj-grid-base-left-border');
                     $grid.find('tbody tr[data-role="row"] td:nth-child(' + ($thTarget.index() + 1) + ')').addClass('gj-grid-base-left-border');

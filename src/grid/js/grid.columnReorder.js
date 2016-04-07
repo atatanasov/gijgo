@@ -13,12 +13,13 @@ gj.grid.plugins.columnReorder = {
              * @type boolean
              * @default false
              * @example sample <!-- widget, grid.base, grid.columnReorder, draggable.base, droppable.base -->
+             * <p>Drag and Drop column headers in order to reorder the columns.</p>
              * <table id="grid"></table>
              * <script>
              *     $('#grid').grid({
              *         dataSource: '/DataSources/GetPlayers',
              *         columnReorder: true,
-             *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
+             *         columns: [ { field: 'ID', width: 36 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
              *     });
              * </script>
              */
@@ -114,8 +115,9 @@ gj.grid.plugins.columnReorder = {
         createDroppableOverHandler: function ($grid, $thSource) {
             return function (e) {
                 var $thTarget = $(this),
-                    targetPosition = $thTarget.data('position'),
-                    sourcePosition = $thSource.data('position');
+                    data = $grid.data(),
+                    targetPosition = gj.grid.methods.getColumnPosition(data.columns, $thTarget.data('field')),
+                    sourcePosition = gj.grid.methods.getColumnPosition(data.columns, $thSource.data('field'));
                 if (targetPosition < sourcePosition) {
                     $thTarget.addClass('gj-grid-base-left-border');
                     $grid.find('tbody tr[data-role="row"] td:nth-child(' + ($thTarget.index() + 1) + ')').addClass('gj-grid-base-left-border');
