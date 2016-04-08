@@ -20,6 +20,7 @@ TABLE.gj-grid-table THEAD TH #checkAllBoxes {
     margin: auto;
 }
 
+TABLE.gj-grid-table > thead > tr > th,
 TABLE.gj-grid-table > tbody > tr > td {
     overflow: hidden;
 }

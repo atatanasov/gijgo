@@ -894,5 +894,9 @@ gj.grid.methods = {
             $grid.reload();
         }
         return $grid;
+    },
+
+    count: function ($grid, includeAllRecords) {
+        return includeAllRecords ? $grid.data().totalRecords : gj.grid.methods.getRecordsForRendering($grid).length;
     }
 };

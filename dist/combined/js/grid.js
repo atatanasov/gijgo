@@ -1177,6 +1177,10 @@ gj.grid.methods = {
             $grid.reload();
         }
         return $grid;
+    },
+
+    count: function ($grid, includeAllRecords) {
+        return includeAllRecords ? $grid.data().totalRecords : gj.grid.methods.getRecordsForRendering($grid).length;
     }
 };
 
@@ -1200,10 +1204,9 @@ function Grid($grid, arguments) {
     };
 
     /**
-     * Return the number of records presented on the screen. */
-    self.count = function () {
-        //TODO: needs to be moved to methods
-        return $(this).find('tbody tr[data-role="row"]').length;
+     * Return the number of records in the grid. By default return only the records that are visible in the grid. */
+    self.count = function (includeAllRecords) {
+        return methods.count(this, includeAllRecords);
     };
 
     /**

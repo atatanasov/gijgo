@@ -57,26 +57,45 @@ function Grid($grid, arguments) {
     };
 
     /**
-     * Return the number of records presented on the screen.
+     * Return the number of records in the grid. By default return only the records that are visible in the grid.
      * @method
+     * @param {object} includeAllRecords - include records that are not visible.
      * @return int
-     * @example sample <!-- grid.base -->
-     * <button id="btnShowCount">Show Count</button>
+     * @example Local.DataSource <!-- bootstrap, grid.base, grid.pagination -->
+     * <button onclick="alert(grid.count())">Count Visible Records</button>
+     * <button onclick="alert(grid.count(true))">Count All Records</button>
+     * <br/><br/>
+     * <table id="grid"></table>
+     * <script>
+     *     var data, grid;
+     *     data = [
+     *         { 'ID': 1, 'Name': 'Hristo Stoichkov', 'PlaceOfBirth': 'Plovdiv, Bulgaria' },
+     *         { 'ID': 2, 'Name': 'Ronaldo Luis Nazario de Lima', 'PlaceOfBirth': 'Rio de Janeiro, Brazil' },
+     *         { 'ID': 3, 'Name': 'David Platt', 'PlaceOfBirth': 'Chadderton, Lancashire, England' }
+     *     ];
+     *     grid = $('#grid').grid({
+     *         dataSource: data,
+     *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
+     *         uiLibrary: 'bootstrap',
+     *         pager: { limit: 2, sizes: [2, 5, 10] }
+     *     });
+     * </script>
+     * @example Remote.DataSource <!-- bootstrap, grid.base, grid.pagination -->
+     * <button onclick="alert(grid.count())">Count Visible Records</button>
+     * <button onclick="alert(grid.count(true))">Count All Records</button>
      * <br/><br/>
      * <table id="grid"></table>
      * <script>
      *     var grid = $('#grid').grid({
      *         dataSource: '/DataSources/GetPlayers',
-     *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
-     *     });
-     *     $('#btnShowCount').on('click', function () {
-     *         alert(grid.count());
+     *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
+     *         uiLibrary: 'bootstrap',
+     *         pager: { limit: 2, sizes: [2, 5, 10] }
      *     });
      * </script>
      */
-    self.count = function () {
-        //TODO: needs to be moved to methods
-        return $(this).find('tbody tr[data-role="row"]').length;
+    self.count = function (includeAllRecords) {
+        return methods.count(this, includeAllRecords);
     };
 
     /**
