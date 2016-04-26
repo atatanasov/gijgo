@@ -134,7 +134,7 @@ gj.grid.config = {
             /** The width of the column. Numeric values are treated as pixels.
              * If the width is undefined the width of the column is not set and depends on the with of the table(grid).
              * @alias column.width
-             * @type int|string
+             * @type number|string
              * @default undefined
              * @example sample <!-- grid.base -->
              * <table id="grid"></table>
@@ -427,7 +427,7 @@ gj.grid.config = {
 
             /** Number of decimal digits after the decimal point.
              * @alias column.decimalDigits
-             * @type int
+             * @type number
              * @default undefined
              */
             decimalDigits: undefined,
@@ -665,7 +665,7 @@ gj.grid.config = {
         notFoundText: 'No records found.',
 
         /** Width of the grid.
-         * @type int
+         * @type number
          * @default undefined
          * @example sample <!-- grid.base -->
          * <table id="grid"></table>
@@ -680,7 +680,7 @@ gj.grid.config = {
         width: undefined,
 
         /** Minimum width of the grid.
-         * @type int
+         * @type number
          * @default undefined
          */
         minWidth: undefined,

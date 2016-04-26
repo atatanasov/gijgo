@@ -19,7 +19,7 @@ gj.grid.plugins.pagination = {
             pager: {
                 /** The maximum number of records that can be show by page.
                  * @alias pager.limit
-                 * @type int
+                 * @type number
                  * @default 10
                  * @example local.data <!-- grid.base, grid.pagination -->
                  * <table id="grid"></table>
@@ -392,7 +392,7 @@ gj.grid.plugins.pagination = {
          *
          * @event pageSizeChange
          * @property {object} e - event data
-         * @property {int} newSize - The new page size
+         * @property {number} newSize - The new page size
          * @example sample <!-- bootstrap, grid.base, grid.pagination -->
          * <table id="grid"></table>
          * <script>
@@ -416,7 +416,7 @@ gj.grid.plugins.pagination = {
          *
          * @event pageChanging
          * @property {object} e - event data
-         * @property {int} newPage - The new page
+         * @property {number} newPage - The new page
          * @example sample <!-- jqueryui, grid.base, grid.pagination -->
          * <table id="grid"></table>
          * <script>

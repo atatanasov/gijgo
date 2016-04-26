@@ -11,7 +11,7 @@ gj.grid.plugins.responsiveDesign = {
         base: {
             /** The interval in milliseconds for checking if the grid is resizing.
              * This setting is in use only if the resizeMonitoring setting is set to true.
-             * @type int
+             * @type number
              * @default 500
              * @example sample <!-- grid.base, grid.responsiveDesign -->
              * <table id="grid"></table>
@@ -78,7 +78,7 @@ gj.grid.plugins.responsiveDesign = {
                  * The columns are hiding based on the priorities.
                  * This setting is working only when the responsive setting is set to true.
                  * @alias column.priority
-                 * @type int
+                 * @type number
                  * @default undefined
                  * @example sample <!-- grid.base, grid.responsiveDesign -->
                  * <table id="grid"></table>
@@ -100,7 +100,7 @@ gj.grid.plugins.responsiveDesign = {
                  * The column is getting invisible when there is not enough space in the grid for this minimum width.
                  * This setting is working only when the responsive setting is set to true and the column priority setting is set.
                  * @alias column.minWidth
-                 * @type int
+                 * @type number
                  * @default 150
                  * @example sample <!-- grid.base, grid.responsiveDesign -->
                  * <table id="grid"></table>

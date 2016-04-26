@@ -13,7 +13,7 @@ function Grid($grid, arguments) {
      * @method
      * @param {object} params - An object that contains a list with parameters that are going to be send to the server.
      * @fires beforeEmptyRowInsert, dataBinding, dataBound, cellDataBound
-     * @return void
+     * @return grid
      * @example sample <!-- grid.base -->
      * <input type="text" id="txtSearch">
      * <button id="btnSearch">Search</button>
@@ -37,7 +37,7 @@ function Grid($grid, arguments) {
      * Clear the content in the grid.
      * @method
      * @param {boolean} showNotFoundText - Indicates if the "Not Found" text is going to show after the clearing of the grid.
-     * @return void
+     * @return grid
      * @example sample <!-- grid.base -->
      * <button id="btnClear">Clear</button>
      * <br/><br/>
@@ -60,7 +60,7 @@ function Grid($grid, arguments) {
      * Return the number of records in the grid. By default return only the records that are visible in the grid.
      * @method
      * @param {object} includeAllRecords - include records that are not visible.
-     * @return int
+     * @return number
      * @example Local.DataSource <!-- bootstrap, grid.base, grid.pagination -->
      * <button onclick="alert(grid.count())">Count Visible Records</button>
      * <button onclick="alert(grid.count(true))">Count All Records</button>
@@ -325,7 +325,7 @@ function Grid($grid, arguments) {
     /**
      * Return record from the grid based on position.
      * @method
-     * @param {int} position - The position of the row that needs to be return.
+     * @param {number} position - The position of the row that needs to be return.
      * @return object
      * @example sample <!-- grid.base -->
      * <button id="btnGetData">Get Data</button>
