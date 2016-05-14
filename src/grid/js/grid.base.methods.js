@@ -152,8 +152,6 @@ gj.grid.methods = {
         data = $grid.data();
         columns = data.columns;
         style = data.style.header;
-        sortBy = data.params[data.defaultParams.sortBy];
-        direction = data.params[data.defaultParams.direction];
 
         $thead = $grid.children('thead');
         if ($thead.length === 0) {
@@ -800,6 +798,7 @@ gj.grid.methods = {
             records = gj.grid.methods.setRecordsData($grid, response);
             gj.grid.methods.loadData($grid);
         }
+        return $grid;
     },
 
     destroy: function ($grid, keepTableTag, keepWrapperTag) {

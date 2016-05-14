@@ -182,8 +182,12 @@ gj.grid.plugins.pagination = {
             data = $grid.data();
 
             if (data.pager) {
-                data.params[data.defaultParams.page] = 1;
-                data.params[data.defaultParams.limit] = data.pager.limit;
+                if (!data.params[data.defaultParams.page]) {
+                    data.params[data.defaultParams.page] = 1;
+                }
+                if (!data.params[data.defaultParams.limit]) {
+                    data.params[data.defaultParams.limit] = data.pager.limit;
+                }
 
                 $row = $('<tr/>');
                 $cell = $('<th/>').addClass(data.style.pager.cell);
@@ -391,8 +395,8 @@ gj.grid.plugins.pagination = {
          * Triggered when the page size is changed.
          *
          * @event pageSizeChange
-         * @property {object} e - event data
-         * @property {number} newSize - The new page size
+         * @param {object} e - event data
+         * @param {number} newSize - The new page size
          * @example sample <!-- bootstrap, grid.base, grid.pagination -->
          * <table id="grid"></table>
          * <script>
@@ -415,8 +419,8 @@ gj.grid.plugins.pagination = {
          * Triggered before the change of the page.
          *
          * @event pageChanging
-         * @property {object} e - event data
-         * @property {number} newPage - The new page
+         * @param {object} e - event data
+         * @param {number} newPage - The new page
          * @example sample <!-- jqueryui, grid.base, grid.pagination -->
          * <table id="grid"></table>
          * <script>

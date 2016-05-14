@@ -103,7 +103,7 @@ function Grid($grid, arguments) {
      * @method
      * @param {object} response - An object that contains the data that needs to be loaded in the grid.
      * @fires beforeEmptyRowInsert, dataBinding, dataBound, cellDataBound
-     * @return void
+     * @return grid
      * @example sample <!-- grid.base -->
      * <table id="grid"></table>
      * <script>
@@ -127,8 +127,8 @@ function Grid($grid, arguments) {
      * @additionalinfo The grid table tag and wrapper tag are kept by default after the execution of destroy method,
      * but you can remove them if you pass false to the keepTableTag and keepWrapperTag parameters.
      * @method
-     * @param {bool} keepTableTag - If this flag is set to false, the table tag will be removed from the HTML dom tree.
-     * @param {bool} keepWrapperTag - If this flag is set to false, the table wrapper tag will be removed from the HTML dom tree.
+     * @param {boolean} keepTableTag - If this flag is set to false, the table tag will be removed from the HTML dom tree.
+     * @param {boolean} keepWrapperTag - If this flag is set to false, the table wrapper tag will be removed from the HTML dom tree.
      * @fires destroying
      * @return void
      * @example keep.wrapper.and.table <!-- grid.base -->
@@ -173,7 +173,7 @@ function Grid($grid, arguments) {
      * Select a row from the grid based on id parameter.
      * @method
      * @param {string} id - The id of the row that needs to be selected
-     * @return void
+     * @return grid
      * @example sample <!-- grid.base -->
      * <input type="text" id="txtNumber" value="1" />
      * <button id="btnSelect">Select</button>
@@ -248,7 +248,7 @@ function Grid($grid, arguments) {
     /**
      * Select all records from the grid.
      * @method
-     * @return void
+     * @return grid
      * @example sample <!-- grid.base -->
      * <button id="btnSelectAll">Select All</button>
      * <br/><br/>

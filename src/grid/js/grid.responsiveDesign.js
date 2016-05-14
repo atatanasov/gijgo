@@ -257,7 +257,9 @@ gj.grid.plugins.responsiveDesign = {
          * Event fires when the grid width is changed. The "responsive" configuration setting should be set to true in order this event to fire.
          *
          * @event resize
-         * @property {object} e - event data
+         * @param {object} e - event data
+         * @param {number} newWidth - The new width
+         * @param {number} oldWidth - The old width
          * @example sample <!-- grid.base, grid.responsiveDesign -->
          * <table id="grid"></table>
          * <script>
