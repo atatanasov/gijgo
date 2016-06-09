@@ -84,7 +84,10 @@ gj.grid.config = {
             tmpl: undefined,
 
             /** If set to true stop event propagation when event occur. */
-            stopPropagation: false
+            stopPropagation: false,
+
+            /** A renderer is an 'interceptor' function which can be used to transform data (value, appearance, etc.) before it is rendered. */
+            renderer: undefined
         },
 
         mapping: {
@@ -731,6 +734,11 @@ gj.grid.methods = {
                 text = text.replace($0, gj.grid.methods.formatText(record[$1], column));
             });
             $wrapper.html(text);
+        } else if (column.renderer && typeof (column.renderer) === 'function') {
+            text = column.renderer(record[column.field], record, $wrapper, $cell);
+            if (text) {
+                $wrapper.html(text);
+            }
         } else {
             gj.grid.methods.setCellText($wrapper, column, record[column.field]);
         }

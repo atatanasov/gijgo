@@ -214,3 +214,4 @@ GeneratedArtifacts/
 _Pvt_Extensions/
 ModelManifest.xml
 /dist/libraries
+/bower_components/jquery
