@@ -470,7 +470,33 @@ gj.grid.config = {
              *     });
              * </script>
              */
-            stopPropagation: false
+            stopPropagation: false,
+
+            /** A renderer is an 'interceptor' function which can be used to transform data (value, appearance, etc.) before it is rendered.
+             * @additionalinfo If the renderer function return a value, then this value is going to be automatically set as value of the cell.<br/>
+             * If the renderer function doesn't return a value, then you have to set the content of the cell automatically.
+             * @alias column.renderer
+             * @type function
+             * @default undefined
+             * @example sample <!-- grid.base -->
+             * <table id="grid" data-source="/DataSources/GetPlayers"></table>
+             * <script>
+             *     var nameRenderer = function (value, record, $wrapper, $cell) { 
+             *         $cell.css('font-style', 'italic'); 
+             *         $wrapper.css('background-color', '#EEE');
+             *         $wrapper.text(value);
+             *     };
+             *     $('#grid').grid({
+             *         uiLibrary: 'jqueryui',
+             *         columns: [
+             *             { field: 'ID', width: 30 },
+             *             { field: 'Name', renderer: nameRenderer },
+             *             { field: 'PlaceOfBirth', renderer: function (value, record) { return record.ID % 2 ? '<b>' + value + '</b>' : '<i>' + value + '</i>'; }  }
+             *         ]
+             *     });
+             * </script>
+             */
+            renderer: undefined
         },
 
         mapping: {

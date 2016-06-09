@@ -216,3 +216,4 @@ _Pvt_Extensions/
 ModelManifest.xml
 *.sln
 /dist/libraries
+/bower_components/jquery
