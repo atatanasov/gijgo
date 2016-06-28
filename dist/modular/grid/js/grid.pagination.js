@@ -119,8 +119,12 @@ gj.grid.plugins.pagination = {
             data = $grid.data();
 
             if (data.pager) {
-                data.params[data.defaultParams.page] = 1;
-                data.params[data.defaultParams.limit] = data.pager.limit;
+                if (!data.params[data.defaultParams.page]) {
+                    data.params[data.defaultParams.page] = 1;
+                }
+                if (!data.params[data.defaultParams.limit]) {
+                    data.params[data.defaultParams.limit] = data.pager.limit;
+                }
 
                 $row = $('<tr/>');
                 $cell = $('<th/>').addClass(data.style.pager.cell);
@@ -317,7 +321,15 @@ gj.grid.plugins.pagination = {
                 start = (page - 1) * limit;
             
             return data.records.slice(start, start + limit);
-        }
+        },
+
+        isLastRecordVisible: function ($grid) {
+            var data = $grid.data(),
+                limit = parseInt(data.params[data.defaultParams.limit], 10),
+                page = parseInt(data.params[data.defaultParams.page], 10),
+                count = $grid.count();
+            return ((page - 1) * limit) + count === data.totalRecords;
+        },
     },
 
     public: {
@@ -328,14 +340,14 @@ gj.grid.plugins.pagination = {
          * Triggered when the page size is changed.
          * */
         pageSizeChange: function ($grid, newSize) {
-            $grid.trigger('pageSizeChange', [newSize]);
+            $grid.triggerHandler('pageSizeChange', [newSize]);
         },
 
         /**
          * Triggered before the change of the page.
          * */
         pageChanging: function ($grid, newSize) {
-            $grid.trigger('pageChanging', [newSize]);
+            $grid.triggerHandler('pageChanging', [newSize]);
         }
     },
 
@@ -345,6 +357,7 @@ gj.grid.plugins.pagination = {
             if ($.isArray(data.dataSource)) {
                 gj.grid.methods.getRecordsForRendering = gj.grid.plugins.pagination.private.getRecordsForRendering;
             }
+            gj.grid.methods.isLastRecordVisible = gj.grid.plugins.pagination.private.isLastRecordVisible;
 
             $grid.on('initialized', function () {
                 gj.grid.plugins.pagination.private.init($grid);

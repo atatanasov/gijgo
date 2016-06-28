@@ -398,7 +398,7 @@ gj.grid.methods = {
             $row.removeClass(data.style.content.rowSelected).off('click');
         }
         id = gj.grid.methods.getId(record, data.primaryKey, (position + 1));
-        $row.attr('data-position', position + 1); //$row.data('row', { id: id, record: record });
+        $row.attr('data-position', position + 1);
         $row.on('click', gj.grid.methods.createRowClickHandler($grid, id));
         for (i = 0; i < data.columns.length; i++) {
             if (mode === 'update') {
@@ -660,6 +660,19 @@ gj.grid.methods = {
         return result;
     },
 
+    getRecVPosById: function ($grid, id) {
+        var result = id, i, primaryKey = $grid.data('primaryKey'), records = $grid.data('records');
+        if (primaryKey) {
+            for (i = 0; i < records.length; i++) {
+                if (records[i][primaryKey] === id) {
+                    result = i;
+                    break;
+                }
+            }
+        }
+        return result;
+    },
+
     getRowById: function ($grid, id) {
         var records = $grid.data('records'), primaryKey = $grid.data('primaryKey'), position, i;
         if (primaryKey) {
@@ -873,10 +886,19 @@ gj.grid.methods = {
         return $grid;
     },
 
+    isLastRecordVisible: function () {
+        return true;
+    },
+
     addRow: function ($grid, record) {
+        var totalRecords = $grid.data('totalRecords') + 1;
+        gj.grid.events.dataBinding($grid, [record]);
         $grid.data('records').push(record);
-        $grid.data('totalRecords', $grid.data('totalRecords') + 1);
-        $grid.reload();        
+        $grid.data('totalRecords', totalRecords);
+        if (gj.grid.methods.isLastRecordVisible($grid)) {
+            gj.grid.methods.renderRow($grid, null, record, $grid.count() - 1);
+        }
+        gj.grid.events.dataBound($grid, [record], totalRecords);
         return $grid;
     },
 
@@ -888,15 +910,16 @@ gj.grid.methods = {
     },
 
     removeRow: function ($grid, id) {
-        var position, records, $row = gj.grid.methods.getRowById($grid, id);
-        if ($row) {
-            position = $row.data('position');
-            gj.grid.events.rowRemoving($grid, $row, id, $grid.get(position));
-            records = $grid.data('records');
-            records.splice(position - 1, 1);
-            $grid.data('totalRecords', $grid.data('totalRecords') - 1);
-            $grid.reload();
-        }
+        var position,
+            records = $grid.data('records'),
+            totalRecords = $grid.data('totalRecords'),
+            $row = gj.grid.methods.getRowById($grid, id);
+
+        gj.grid.events.rowRemoving($grid, $row, id, $grid.getById(id));
+        position = gj.grid.methods.getRecVPosById($grid, id);
+        records.splice(position, 1);
+        $grid.data('totalRecords', totalRecords - 1);
+        $grid.reload();
         return $grid;
     },
 

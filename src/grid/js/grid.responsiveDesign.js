@@ -274,7 +274,7 @@ gj.grid.plugins.responsiveDesign = {
          * </script>
          */
         resize: function ($grid, newWidth, oldWidth) {
-            $grid.trigger('resize', [newWidth, oldWidth]);
+            $grid.triggerHandler('resize', [newWidth, oldWidth]);
         }
     },
 

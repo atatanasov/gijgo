@@ -125,7 +125,7 @@ gj.grid.plugins.inlineEditing = {
          * Event fires after inline edit of a cell in the grid.
          * */
         cellDataChanged: function ($grid, $cell, column, record, oldValue, newValue) {
-            $grid.trigger('cellDataChanged', [$cell, column, record, oldValue, newValue]);
+            $grid.triggerHandler('cellDataChanged', [$cell, column, record, oldValue, newValue]);
         }
     },
 

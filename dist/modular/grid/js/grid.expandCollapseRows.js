@@ -111,14 +111,14 @@ gj.grid.plugins.expandCollapseRows = {
          * Event fires when detail row is showing
          * */
         detailExpand: function ($grid, $detailWrapper, record) {
-            $grid.trigger('detailExpand', [$detailWrapper, record]);
+            $grid.triggerHandler('detailExpand', [$detailWrapper, record]);
         },
 
         /**
          * Event fires when detail row is hiding
          * */
         detailCollapse: function ($grid, $detailWrapper, record) {
-            $grid.trigger('detailCollapse', [$detailWrapper, record]);
+            $grid.triggerHandler('detailCollapse', [$detailWrapper, record]);
         }
     },
 

@@ -183,7 +183,7 @@ gj.grid.plugins.inlineEditing = {
          * </script>
          */
         cellDataChanged: function ($grid, $cell, column, record, oldValue, newValue) {
-            $grid.trigger('cellDataChanged', [$cell, column, record, oldValue, newValue]);
+            $grid.triggerHandler('cellDataChanged', [$cell, column, record, oldValue, newValue]);
         }
     },
 

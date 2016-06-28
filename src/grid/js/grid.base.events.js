@@ -24,7 +24,7 @@ gj.grid.events = {
      * </script>
      */
     beforeEmptyRowInsert: function ($grid, $row) {
-        $grid.trigger('beforeEmptyRowInsert', [$row]);
+        $grid.triggerHandler('beforeEmptyRowInsert', [$row]);
     },
 
     /**
@@ -46,7 +46,7 @@ gj.grid.events = {
      * </script>
      */
     dataBinding: function ($grid, records) {
-        $grid.trigger('dataBinding', [records]);
+        $grid.triggerHandler('dataBinding', [records]);
     },
 
     /**
@@ -69,7 +69,7 @@ gj.grid.events = {
      * </script>
      */
     dataBound: function ($grid, records, totalRecords) {
-        $grid.trigger('dataBound', [records, totalRecords]);
+        $grid.triggerHandler('dataBound', [records, totalRecords]);
     },
 
     /**
@@ -92,7 +92,7 @@ gj.grid.events = {
      * </script>
      */
     rowDataBound: function ($grid, $row, id, record) {
-        $grid.trigger('rowDataBound', [$row, id, record]);
+        $grid.triggerHandler('rowDataBound', [$row, id, record]);
     },
 
     /**
@@ -119,7 +119,7 @@ gj.grid.events = {
      * </script>
      */
     cellDataBound: function ($grid, $wrapper, id, column, record) {
-        $grid.trigger('cellDataBound', [$wrapper, id, column, record]);
+        $grid.triggerHandler('cellDataBound', [$wrapper, id, column, record]);
     },
 
     /**
@@ -144,7 +144,7 @@ gj.grid.events = {
      * </script>
      */
     rowSelect: function ($grid, $row, id, record) {
-        $grid.trigger('rowSelect', [$row, id, record]);
+        $grid.triggerHandler('rowSelect', [$row, id, record]);
     },
 
     /**
@@ -169,7 +169,7 @@ gj.grid.events = {
      * </script>
      */
     rowUnselect: function ($grid, $row, id, record) {
-        $grid.trigger('rowUnselect', [$row, id, record]);
+        $grid.triggerHandler('rowUnselect', [$row, id, record]);
 
     },
 
@@ -199,7 +199,7 @@ gj.grid.events = {
      * </script>
      */
     rowRemoving: function ($grid, $row, id, record) {
-        $grid.trigger('rowRemoving', [$row, id, record]);
+        $grid.triggerHandler('rowRemoving', [$row, id, record]);
     },
 
     /**
@@ -225,7 +225,7 @@ gj.grid.events = {
      * </script>
      */
     destroying: function ($grid) {
-        $grid.trigger('destroying');
+        $grid.triggerHandler('destroying');
     },
 
     /**
@@ -248,7 +248,7 @@ gj.grid.events = {
      * </script>
      */
     columnHide: function ($grid, column) {
-        $grid.trigger('columnHide', [column]);
+        $grid.triggerHandler('columnHide', [column]);
     },
 
     /**
@@ -271,7 +271,7 @@ gj.grid.events = {
      * </script>
      */
     columnShow: function ($grid, column) {
-        $grid.trigger('columnShow', [column]);
+        $grid.triggerHandler('columnShow', [column]);
     },
 
     /**
@@ -292,6 +292,6 @@ gj.grid.events = {
      * </script>
      */
     initialized: function ($grid) {
-        $grid.trigger('initialized');
+        $grid.triggerHandler('initialized');
     }
 };

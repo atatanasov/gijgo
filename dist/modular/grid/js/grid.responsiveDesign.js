@@ -151,7 +151,7 @@ gj.grid.plugins.responsiveDesign = {
          * Event fires when the grid width is changed. The "responsive" configuration setting should be set to true in order this event to fire.
          * */
         resize: function ($grid, newWidth, oldWidth) {
-            $grid.trigger('resize', [newWidth, oldWidth]);
+            $grid.triggerHandler('resize', [newWidth, oldWidth]);
         }
     },
 

@@ -153,7 +153,7 @@ gj.grid.plugins.expandCollapseRows = {
          * </script>
          */
         detailExpand: function ($grid, $detailWrapper, record) {
-            $grid.trigger('detailExpand', [$detailWrapper, record]);
+            $grid.triggerHandler('detailExpand', [$detailWrapper, record]);
         },
 
         /**
@@ -181,7 +181,7 @@ gj.grid.plugins.expandCollapseRows = {
          * </script>
          */
         detailCollapse: function ($grid, $detailWrapper, record) {
-            $grid.trigger('detailCollapse', [$detailWrapper, record]);
+            $grid.triggerHandler('detailCollapse', [$detailWrapper, record]);
         }
     },
 

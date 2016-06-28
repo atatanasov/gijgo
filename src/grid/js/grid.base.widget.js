@@ -441,7 +441,7 @@ function Grid($grid, arguments) {
      * @method
      * @param {object} record - Object with data for the new record.
      * @return grid
-     * @example sample <!-- grid.base -->
+     * @example without.pagination <!-- grid.base -->
      * <button id="btnAdd">Add Row</button>
      * <br/><br/>
      * <table id="grid"></table>
@@ -455,7 +455,25 @@ function Grid($grid, arguments) {
      *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
      *     });
      *     $('#btnAdd').on('click', function () {
-     *         grid.addRow({ 'ID': grid.count() + 1, 'Name': 'Test Player', 'PlaceOfBirth': 'Test City, Test Country' });
+     *         grid.addRow({ 'ID': grid.count(true) + 1, 'Name': 'Test Player', 'PlaceOfBirth': 'Test City, Test Country' });
+     *     });
+     * </script>
+     * @example with.pagination <!-- grid.base, grid.pagination -->
+     * <button id="btnAdd">Add Row</button>
+     * <br/><br/>
+     * <table id="grid"></table>
+     * <script>
+     *     var grid = $('#grid').grid({
+     *         dataSource: [
+     *             { 'ID': 1, 'Name': 'Hristo Stoichkov', 'PlaceOfBirth': 'Plovdiv, Bulgaria' },
+     *             { 'ID': 2, 'Name': 'Ronaldo Luis Nazario de Lima', 'PlaceOfBirth': 'Rio de Janeiro, Brazil' },
+     *             { 'ID': 3, 'Name': 'David Platt', 'PlaceOfBirth': 'Chadderton, Lancashire, England' }
+     *         ],
+     *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
+     *         pager: { limit: 2 }
+     *     });
+     *     $('#btnAdd').on('click', function () {
+     *         grid.addRow({ 'ID': grid.count(true) + 1, 'Name': 'Test Player', 'PlaceOfBirth': 'Test City, Test Country' });
      *     });
      * </script>
      */
@@ -506,7 +524,7 @@ function Grid($grid, arguments) {
      * @method
      * @param {string} id - Id of the record that needs to be removed.
      * @return grid
-     * @example sample <!-- grid.base -->
+     * @example without.pagination <!-- grid.base -->
      * <table id="grid"></table>
      * <script>
      *     var grid;
@@ -528,6 +546,31 @@ function Grid($grid, arguments) {
      *             { field: 'PlaceOfBirth' },
      *             { title: '', width: 60, align: 'center', tmpl: 'Delete', events: { 'click': Delete } }
      *         ]
+     *     });
+     * </script>
+     * @example with.pagination <!-- grid.base, grid.pagination -->
+     * <table id="grid"></table>
+     * <script>
+     *     var grid;
+     *     function Delete(e) {
+     *         if (confirm('Are you sure?')) {
+     *             grid.removeRow(e.data.id);
+     *         }
+     *     }
+     *     grid = $('#grid').grid({
+     *         primaryKey: 'ID',
+     *         dataSource: [
+     *             { 'ID': 1, 'Name': 'Hristo Stoichkov', 'PlaceOfBirth': 'Plovdiv, Bulgaria' },
+     *             { 'ID': 2, 'Name': 'Ronaldo Luís Nazário de Lima', 'PlaceOfBirth': 'Rio de Janeiro, Brazil' },
+     *             { 'ID': 3, 'Name': 'David Platt', 'PlaceOfBirth': 'Chadderton, Lancashire, England' }
+     *         ],
+     *         columns: [
+     *             { field: 'ID' },
+     *             { field: 'Name' },
+     *             { field: 'PlaceOfBirth' },
+     *             { title: '', width: 60, align: 'center', tmpl: 'Delete', events: { 'click': Delete } }
+     *         ],
+     *         pager: { limit: 2 }
      *     });
      * </script>
      */

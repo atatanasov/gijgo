@@ -84,7 +84,10 @@ gj.grid.config = {
             tmpl: undefined,
 
             /** If set to true stop event propagation when event occur. */
-            stopPropagation: false
+            stopPropagation: false,
+
+            /** A renderer is an 'interceptor' function which can be used to transform data (value, appearance, etc.) before it is rendered. */
+            renderer: undefined
         },
 
         mapping: {
@@ -201,83 +204,83 @@ gj.grid.events = {
     /**
      * Event fires before addition of an empty row to the grid. */
     beforeEmptyRowInsert: function ($grid, $row) {
-        $grid.trigger('beforeEmptyRowInsert', [$row]);
+        $grid.triggerHandler('beforeEmptyRowInsert', [$row]);
     },
 
     /**
      * Event fired before data binding takes place.
      * */
     dataBinding: function ($grid, records) {
-        $grid.trigger('dataBinding', [records]);
+        $grid.triggerHandler('dataBinding', [records]);
     },
 
     /**
      * Event fires after the loading of the data in the grid.
      * */
     dataBound: function ($grid, records, totalRecords) {
-        $grid.trigger('dataBound', [records, totalRecords]);
+        $grid.triggerHandler('dataBound', [records, totalRecords]);
     },
 
     /**
      * Event fires after insert of a row in the grid during the loading of the data. */
     rowDataBound: function ($grid, $row, id, record) {
-        $grid.trigger('rowDataBound', [$row, id, record]);
+        $grid.triggerHandler('rowDataBound', [$row, id, record]);
     },
 
     /**
      * Event fires after insert of a cell in the grid during the loading of the data
      * */
     cellDataBound: function ($grid, $wrapper, id, column, record) {
-        $grid.trigger('cellDataBound', [$wrapper, id, column, record]);
+        $grid.triggerHandler('cellDataBound', [$wrapper, id, column, record]);
     },
 
     /**
      * Event fires on selection of row
      * */
     rowSelect: function ($grid, $row, id, record) {
-        $grid.trigger('rowSelect', [$row, id, record]);
+        $grid.triggerHandler('rowSelect', [$row, id, record]);
     },
 
     /**
      * Event fires on un selection of row
      * */
     rowUnselect: function ($grid, $row, id, record) {
-        $grid.trigger('rowUnselect', [$row, id, record]);
+        $grid.triggerHandler('rowUnselect', [$row, id, record]);
 
     },
 
     /**
      * Event fires before deletion of row in the grid. */
     rowRemoving: function ($grid, $row, id, record) {
-        $grid.trigger('rowRemoving', [$row, id, record]);
+        $grid.triggerHandler('rowRemoving', [$row, id, record]);
     },
 
     /**
      * Event fires when the grid.destroy method is called.
      * */
     destroying: function ($grid) {
-        $grid.trigger('destroying');
+        $grid.triggerHandler('destroying');
     },
 
     /**
      * Event fires when column is hidding
      * */
     columnHide: function ($grid, column) {
-        $grid.trigger('columnHide', [column]);
+        $grid.triggerHandler('columnHide', [column]);
     },
 
     /**
      * Event fires when column is showing
      * */
     columnShow: function ($grid, column) {
-        $grid.trigger('columnShow', [column]);
+        $grid.triggerHandler('columnShow', [column]);
     },
 
     /**
      * Event fires when grid is initialized.
      * */
     initialized: function ($grid) {
-        $grid.trigger('initialized');
+        $grid.triggerHandler('initialized');
     }
 };
 
@@ -435,8 +438,6 @@ gj.grid.methods = {
         data = $grid.data();
         columns = data.columns;
         style = data.style.header;
-        sortBy = data.params[data.defaultParams.sortBy];
-        direction = data.params[data.defaultParams.direction];
 
         $thead = $grid.children('thead');
         if ($thead.length === 0) {
@@ -683,7 +684,7 @@ gj.grid.methods = {
             $row.removeClass(data.style.content.rowSelected).off('click');
         }
         id = gj.grid.methods.getId(record, data.primaryKey, (position + 1));
-        $row.attr('data-position', position + 1); //$row.data('row', { id: id, record: record });
+        $row.attr('data-position', position + 1);
         $row.on('click', gj.grid.methods.createRowClickHandler($grid, id));
         for (i = 0; i < data.columns.length; i++) {
             if (mode === 'update') {
@@ -732,6 +733,11 @@ gj.grid.methods = {
                 text = text.replace($0, gj.grid.methods.formatText(record[$1], column));
             });
             $wrapper.html(text);
+        } else if (column.renderer && typeof (column.renderer) === 'function') {
+            text = column.renderer(record[column.field], record, $wrapper, $cell);
+            if (text) {
+                $wrapper.html(text);
+            }
         } else {
             gj.grid.methods.setCellText($wrapper, column, record[column.field]);
         }
@@ -940,6 +946,19 @@ gj.grid.methods = {
         return result;
     },
 
+    getRecVPosById: function ($grid, id) {
+        var result = id, i, primaryKey = $grid.data('primaryKey'), records = $grid.data('records');
+        if (primaryKey) {
+            for (i = 0; i < records.length; i++) {
+                if (records[i][primaryKey] === id) {
+                    result = i;
+                    break;
+                }
+            }
+        }
+        return result;
+    },
+
     getRowById: function ($grid, id) {
         var records = $grid.data('records'), primaryKey = $grid.data('primaryKey'), position, i;
         if (primaryKey) {
@@ -1083,6 +1102,7 @@ gj.grid.methods = {
             records = gj.grid.methods.setRecordsData($grid, response);
             gj.grid.methods.loadData($grid);
         }
+        return $grid;
     },
 
     destroy: function ($grid, keepTableTag, keepWrapperTag) {
@@ -1152,10 +1172,19 @@ gj.grid.methods = {
         return $grid;
     },
 
+    isLastRecordVisible: function () {
+        return true;
+    },
+
     addRow: function ($grid, record) {
+        var totalRecords = $grid.data('totalRecords') + 1;
+        gj.grid.events.dataBinding($grid, [record]);
         $grid.data('records').push(record);
-        $grid.data('totalRecords', $grid.data('totalRecords') + 1);
-        $grid.reload();        
+        $grid.data('totalRecords', totalRecords);
+        if (gj.grid.methods.isLastRecordVisible($grid)) {
+            gj.grid.methods.renderRow($grid, null, record, $grid.count() - 1);
+        }
+        gj.grid.events.dataBound($grid, [record], totalRecords);
         return $grid;
     },
 
@@ -1167,15 +1196,16 @@ gj.grid.methods = {
     },
 
     removeRow: function ($grid, id) {
-        var position, records, $row = gj.grid.methods.getRowById($grid, id);
-        if ($row) {
-            position = $row.data('position');
-            gj.grid.events.rowRemoving($grid, $row, id, $grid.get(position));
-            records = $grid.data('records');
-            records.splice(position - 1, 1);
-            $grid.data('totalRecords', $grid.data('totalRecords') - 1);
-            $grid.reload();
-        }
+        var position,
+            records = $grid.data('records'),
+            totalRecords = $grid.data('totalRecords'),
+            $row = gj.grid.methods.getRowById($grid, id);
+
+        gj.grid.events.rowRemoving($grid, $row, id, $grid.getById(id));
+        position = gj.grid.methods.getRecVPosById($grid, id);
+        records.splice(position, 1);
+        $grid.data('totalRecords', totalRecords - 1);
+        $grid.reload();
         return $grid;
     },
 
@@ -1442,14 +1472,14 @@ gj.grid.plugins.expandCollapseRows = {
          * Event fires when detail row is showing
          * */
         detailExpand: function ($grid, $detailWrapper, record) {
-            $grid.trigger('detailExpand', [$detailWrapper, record]);
+            $grid.triggerHandler('detailExpand', [$detailWrapper, record]);
         },
 
         /**
          * Event fires when detail row is hiding
          * */
         detailCollapse: function ($grid, $detailWrapper, record) {
-            $grid.trigger('detailCollapse', [$detailWrapper, record]);
+            $grid.triggerHandler('detailCollapse', [$detailWrapper, record]);
         }
     },
 
@@ -1625,7 +1655,7 @@ gj.grid.plugins.inlineEditing = {
          * Event fires after inline edit of a cell in the grid.
          * */
         cellDataChanged: function ($grid, $cell, column, record, oldValue, newValue) {
-            $grid.trigger('cellDataChanged', [$cell, column, record, oldValue, newValue]);
+            $grid.triggerHandler('cellDataChanged', [$cell, column, record, oldValue, newValue]);
         }
     },
 
@@ -1762,8 +1792,12 @@ gj.grid.plugins.pagination = {
             data = $grid.data();
 
             if (data.pager) {
-                data.params[data.defaultParams.page] = 1;
-                data.params[data.defaultParams.limit] = data.pager.limit;
+                if (!data.params[data.defaultParams.page]) {
+                    data.params[data.defaultParams.page] = 1;
+                }
+                if (!data.params[data.defaultParams.limit]) {
+                    data.params[data.defaultParams.limit] = data.pager.limit;
+                }
 
                 $row = $('<tr/>');
                 $cell = $('<th/>').addClass(data.style.pager.cell);
@@ -1960,7 +1994,15 @@ gj.grid.plugins.pagination = {
                 start = (page - 1) * limit;
             
             return data.records.slice(start, start + limit);
-        }
+        },
+
+        isLastRecordVisible: function ($grid) {
+            var data = $grid.data(),
+                limit = parseInt(data.params[data.defaultParams.limit], 10),
+                page = parseInt(data.params[data.defaultParams.page], 10),
+                count = $grid.count();
+            return ((page - 1) * limit) + count === data.totalRecords;
+        },
     },
 
     public: {
@@ -1971,14 +2013,14 @@ gj.grid.plugins.pagination = {
          * Triggered when the page size is changed.
          * */
         pageSizeChange: function ($grid, newSize) {
-            $grid.trigger('pageSizeChange', [newSize]);
+            $grid.triggerHandler('pageSizeChange', [newSize]);
         },
 
         /**
          * Triggered before the change of the page.
          * */
         pageChanging: function ($grid, newSize) {
-            $grid.trigger('pageChanging', [newSize]);
+            $grid.triggerHandler('pageChanging', [newSize]);
         }
     },
 
@@ -1988,6 +2030,7 @@ gj.grid.plugins.pagination = {
             if ($.isArray(data.dataSource)) {
                 gj.grid.methods.getRecordsForRendering = gj.grid.plugins.pagination.private.getRecordsForRendering;
             }
+            gj.grid.methods.isLastRecordVisible = gj.grid.plugins.pagination.private.isLastRecordVisible;
 
             $grid.on('initialized', function () {
                 gj.grid.plugins.pagination.private.init($grid);
@@ -2158,7 +2201,7 @@ gj.grid.plugins.responsiveDesign = {
          * Event fires when the grid width is changed. The "responsive" configuration setting should be set to true in order this event to fire.
          * */
         resize: function ($grid, newWidth, oldWidth) {
-            $grid.trigger('resize', [newWidth, oldWidth]);
+            $grid.triggerHandler('resize', [newWidth, oldWidth]);
         }
     },
 
