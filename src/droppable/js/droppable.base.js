@@ -150,7 +150,7 @@ gj.droppable.methods = {
 
 gj.droppable.events = {
     /** Triggered when a draggable element is dropped.
-     * @event drag
+     * @event drop
      * @param {object} e - event data
      * @example sample <!-- widget, droppable.base, draggable.base -->
      * <style>
@@ -170,7 +170,7 @@ gj.droppable.events = {
     },
 
     /** Triggered when a draggable element is dragged over the droppable.
-     * @event stop
+     * @event over
      * @param {object} e - event data
      * @example sample <!-- widget, droppable.base, draggable.base -->
      * <style>
@@ -193,7 +193,7 @@ gj.droppable.events = {
     },
 
     /** Triggered when a draggable element is dragged out of the droppable.
-     * @event start
+     * @event out
      * @param {object} e - event data
      * @example sample <!-- widget, droppable.base, draggable.base -->
      * <style>
