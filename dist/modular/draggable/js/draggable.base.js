@@ -26,26 +26,6 @@ gj.draggable.methods = {
 
         gj.widget.prototype.init.call(this, jsConfig, 'draggable');
 
-        //if (!jsConfig) {
-        //    jsConfig = {};
-        //}
-        //if (!jsConfig.guid) {
-        //    jsConfig.guid = $dragEl.generateGUID();
-        //}
-
-        ////Initialize events configured as options
-        //for (option in jsConfig) {
-        //    if (gj.draggable.events.hasOwnProperty(option)) {
-        //        $dragEl.on(option, jsConfig[option]);
-        //        delete jsConfig[option];
-        //    }
-        //}
-
-        //$dragEl.data(jsConfig);
-
-
-        $dragEl.attr('data-guid', $dragEl.data('guid'));
-
         $clickEl = gj.draggable.methods.getClickElement($dragEl);
 
         $clickEl.on('mousedown', function (e) {
@@ -59,8 +39,6 @@ gj.draggable.methods = {
         });
 
         gj.documentManager.subscribeForEvent('mouseup', $dragEl.data('guid'), gj.draggable.methods.createMouseUpHandler($dragEl));
-
-        $dragEl.attr('data-draggable', true);
 
         return $dragEl;
     },
@@ -136,11 +114,11 @@ gj.draggable.methods = {
     },
 
     destroy: function ($dragEl) {
-        if ($dragEl.attr('data-draggable') === "true") {
+        if ($dragEl.attr('data-type') === 'draggable') {
             gj.documentManager.unsubscribeForEvent('mouseup', $dragEl.data('guid'));
             $dragEl.removeData();
             $dragEl.removeAttr('data-guid');
-            $dragEl.removeAttr('data-draggable');
+            $dragEl.removeAttr('data-type');
             $dragEl.off('drag').off('start').off('stop');
             gj.draggable.methods.getClickElement($dragEl).off('mousedown');
         }
@@ -172,7 +150,7 @@ gj.draggable.events = {
 };
 
 
-gj.draggable.widget = function ($dragEl, arguments) {
+gj.draggable.widget = function ($element, arguments) {
     var self = this,
         methods = gj.draggable.methods;
 
@@ -185,12 +163,12 @@ gj.draggable.widget = function ($dragEl, arguments) {
         return methods.destroy(this);
     }
 
-    $.extend($dragEl, self);
-    if ("true" !== $dragEl.attr('data-draggable')) {
-        methods.init.apply($dragEl, arguments);
+    $.extend($element, self);
+    if ('draggable' !== $element.attr('data-type')) {
+        methods.init.apply($element, arguments);
     }
 
-    return $dragEl;
+    return $element;
 };
 
 gj.draggable.widget.prototype = new gj.widget();

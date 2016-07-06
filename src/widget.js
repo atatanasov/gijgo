@@ -29,10 +29,14 @@ gj.widget.prototype.init = function (jsConfig, type) {
 
     clientConfig = $.extend(true, {}, this.getHTMLConfiguration() || {});
     $.extend(true, clientConfig, jsConfig || {});
+
     if (!clientConfig.guid) {
         clientConfig.guid = this.generateGUID();
     }
+    this.attr('data-guid', clientConfig.guid);
+
     clientConfig.type = type;
+    this.attr('data-type', type);
 
     //Initialize events configured as options
     for (option in clientConfig) {
@@ -52,7 +56,7 @@ gj.widget.prototype.init = function (jsConfig, type) {
 
     this.data(clientConfig);
     //gj.grid.methods.initialize(this);
-    this.attr('data-initialized', true);
+    //this.attr('data-initialized', true);
     return this;
 };
 
