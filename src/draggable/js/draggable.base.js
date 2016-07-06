@@ -22,7 +22,7 @@ gj.draggable.config = {
      * Only elements that descend from the draggable element are permitted.
      * @type jquery element
      * @default undefined
-     * @example sample <!-- draggable.base -->
+     * @example sample <!-- widget, draggable.base -->
      * <style>
      * .element { border: 1px solid #999; width: 300px; height: 200px; }
      * .handle { background-color: #DDD; cursor: move; width: 200px; margin: 5px auto 0px auto; text-align: center; padding: 5px; }
@@ -42,22 +42,27 @@ gj.draggable.config = {
 gj.draggable.methods = {
     init: function (jsConfig) {
         var $clickEl, $dragEl = this;
-        if (!jsConfig) {
-            jsConfig = {};
-        }
-        if (!jsConfig.guid) {
-            jsConfig.guid = gj.widget.generateGUID();
-        }
 
-        //Initialize events configured as options
-        for (option in jsConfig) {
-            if (gj.draggable.events.hasOwnProperty(option)) {
-                $dragEl.on(option, jsConfig[option]);
-                delete jsConfig[option];
-            }
-        }
+        gj.widget.prototype.init.call(this, jsConfig, 'draggable');
 
-        $dragEl.data(jsConfig);
+        //if (!jsConfig) {
+        //    jsConfig = {};
+        //}
+        //if (!jsConfig.guid) {
+        //    jsConfig.guid = $dragEl.generateGUID();
+        //}
+
+        ////Initialize events configured as options
+        //for (option in jsConfig) {
+        //    if (gj.draggable.events.hasOwnProperty(option)) {
+        //        $dragEl.on(option, jsConfig[option]);
+        //        delete jsConfig[option];
+        //    }
+        //}
+
+        //$dragEl.data(jsConfig);
+
+
         $dragEl.attr('data-guid', $dragEl.data('guid'));
 
         $clickEl = gj.draggable.methods.getClickElement($dragEl);
@@ -169,7 +174,7 @@ gj.draggable.events = {
      * @event drag
      * @param {object} e - event data
      * @param {object} offset - Current offset position as { top, left } object.
-     * @example sample <!-- draggable.base -->
+     * @example sample <!-- widget, draggable.base -->
      * <style>
      * .element { border: 1px solid #999; width: 300px; height: 200px; cursor: move; text-align: center; background-color: #DDD; }
      * </style>
@@ -191,7 +196,7 @@ gj.draggable.events = {
      *
      * @event start
      * @param {object} e - event data
-     * @example sample <!-- draggable.base -->
+     * @example sample <!-- widget, draggable.base -->
      * <style>
      * .element { border: 1px solid #999; width: 300px; height: 200px; cursor: move; text-align: center; background-color: #DDD; }
      * </style>
@@ -215,7 +220,7 @@ gj.draggable.events = {
      *
      * @event stop
      * @param {object} e - event data
-     * @example sample <!-- draggable.base -->
+     * @example sample <!-- widget, draggable.base -->
      * <style>
      * .element { border: 1px solid #999; width: 300px; height: 200px; cursor: move; text-align: center; background-color: #DDD; }
      * </style>
@@ -236,7 +241,7 @@ gj.draggable.events = {
 };
 
 
-function Draggable($dragEl, arguments) {
+gj.draggable.widget = function ($dragEl, arguments) {
     var self = this,
         methods = gj.draggable.methods;
 
@@ -269,13 +274,16 @@ function Draggable($dragEl, arguments) {
     return $dragEl;
 };
 
+gj.draggable.widget.prototype = new gj.widget();
+gj.draggable.widget.constructor = gj.draggable.widget;
+
 (function ($) {
     $.fn.draggable = function (method) {
         var $draggable;
         if (typeof method === 'object' || !method) {
-            return new Draggable(this, arguments);
+            return new gj.draggable.widget(this, arguments);
         } else {
-            $draggable = new Draggable(this, null);
+            $draggable = new gj.draggable.widget(this, null);
             if ($draggable[method]) {
                 return $draggable[method].apply(this, Array.prototype.slice.call(arguments, 1));
             } else {

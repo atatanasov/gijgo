@@ -474,7 +474,7 @@ gj.grid.config = {
 
             /** A renderer is an 'interceptor' function which can be used to transform data (value, appearance, etc.) before it is rendered.
              * @additionalinfo If the renderer function return a value, then this value is going to be automatically set as value of the cell.<br/>
-             * If the renderer function doesn't return a value, then you have to set the content of the cell automatically.
+             * If the renderer function doesn't return a value, then you have to set the content of the cell manually.
              * @alias column.renderer
              * @type function
              * @default undefined
