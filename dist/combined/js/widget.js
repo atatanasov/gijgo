@@ -56,7 +56,6 @@ gj.widget.prototype.init = function (jsConfig, type) {
 
     this.data(clientConfig);
     //gj.grid.methods.initialize(this);
-    //this.attr('data-initialized', true);
     return this;
 };
 

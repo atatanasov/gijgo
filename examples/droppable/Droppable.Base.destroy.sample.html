@@ -8,12 +8,25 @@
   <script src="../../dist/modular/droppable/js/droppable.base.js"></script>
 </head>
 <body>
- <div id="dropElement" style="display: none">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
+ <button onclick="create()">Create</button>
  <button onclick="dropEl.destroy()">Destroy</button>
+ <br/><br/>
+ <style>
+ .draggable { border: 1px solid #999; width: 300px; height: 200px; text-align: center; }
+ .droppable { border: 1px solid #999; width: 300px; height: 200px; text-align: center; }
+ .hover { background-color: #FF0000; }
+ </style>
+ <div id="droppable" class="droppable">Drop Here</div>
+ <div id="draggable" class="draggable">Drag Me</div>
  <script>
-     var dropEl = $('#dropElement').droppable({
-         hoverClass: 'hover'
-     });
+     var dropEl;
+     $('#draggable').draggable();
+     function create() {
+         dropEl = $('#droppable').droppable({
+             hoverClass: 'hover'
+         });
+     }
+     create();
  </script>
 </body>
 </html>

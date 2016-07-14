@@ -42,12 +42,12 @@ gj.grid.plugins.columnReorder = {
                 $dragEl.css({
                     position: 'absolute', top: $thSource.offset().top, left: $thSource.offset().left, width: $thSource.width()
                 });
-                if ($thSource.attr('data-droppable') === "true") {
+                if ($thSource.attr('data-type') === 'droppable') {
                     $thSource.droppable('destroy');
                 }
                 $thSource.siblings('th').each(function () {
                     var $dropEl = $(this);
-                    if ($dropEl.attr('data-droppable') === "true") {
+                    if ($dropEl.attr('data-type') === 'droppable') {
                         $dropEl.droppable('destroy');
                     }
                     $dropEl.droppable({

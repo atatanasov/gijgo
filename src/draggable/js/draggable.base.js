@@ -63,7 +63,7 @@ gj.draggable.methods = {
     },
 
     getClickElement: function ($dragEl) {
-        var $clickEl, $handle = $dragEl.data('handle')
+        var $clickEl, $handle = $dragEl.data('handle');
         if ($handle && $handle.length) {
             $clickEl = $handle;
         } else {

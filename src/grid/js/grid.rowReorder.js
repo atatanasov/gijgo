@@ -138,12 +138,12 @@ gj.grid.plugins.rowReorder = {
                 $dragEl.css({ 
                     position: 'absolute', top: $trSource.offset().top, left: $trSource.offset().left, width: $trSource.width()
                 });
-                if ($trSource.attr('data-droppable') === "true") {
+                if ($trSource.attr('data-type') === 'droppable') {
                     $trSource.droppable('destroy');
                 }
                 $trSource.siblings('tr[data-role="row"]').each(function () {
                     var $dropEl = $(this);
-                    if ($dropEl.attr('data-droppable') === "true") {
+                    if ($dropEl.attr('data-type') === 'droppable') {
                         $dropEl.droppable('destroy');
                     }
                     $dropEl.droppable({

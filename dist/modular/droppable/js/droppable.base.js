@@ -21,31 +21,14 @@ gj.droppable.config = {
 
 gj.droppable.methods = {
     init: function (jsConfig) {
-        var option, $body, $dropEl = this;
-        if (!jsConfig) {
-            jsConfig = {};
-        }
-        if (!jsConfig.guid) {
-            jsConfig.guid = gj.widget.generateGUID();
-        }
+        var $dropEl = this;
 
-        //Initialize events configured as options
-        for (option in jsConfig) {
-            if (gj.droppable.events.hasOwnProperty(option)) {
-                $dropEl.on(option, jsConfig[option]);
-                delete jsConfig[option];
-            }
-        }
-
-        $dropEl.data(jsConfig);
-        $dropEl.attr('data-guid', $dropEl.data('guid'));
+        gj.widget.prototype.init.call(this, jsConfig, 'droppable');
         
         gj.documentManager.subscribeForEvent('mousedown', $dropEl.data('guid'), gj.droppable.methods.createMouseDownHandler($dropEl));
         gj.documentManager.subscribeForEvent('mousemove', $dropEl.data('guid'), gj.droppable.methods.createMouseMoveHandler($dropEl));
         gj.documentManager.subscribeForEvent('mouseup', $dropEl.data('guid'), gj.droppable.methods.createMouseUpHandler($dropEl));
-
-        $dropEl.attr('data-droppable', true);
-
+        
         return $dropEl;
     },
 
@@ -117,13 +100,13 @@ gj.droppable.methods = {
     },
 
     destroy: function ($dropEl) {
-        if ($dropEl.attr('data-droppable') === "true") {
+        if ($dropEl.attr('data-type') === 'droppable') {
             gj.documentManager.unsubscribeForEvent('mousedown', $dropEl.data('guid'));
             gj.documentManager.unsubscribeForEvent('mousemove', $dropEl.data('guid'));
             gj.documentManager.unsubscribeForEvent('mouseup', $dropEl.data('guid'));
             $dropEl.removeData();
             $dropEl.removeAttr('data-guid');
-            $dropEl.removeAttr('data-droppable');
+            $dropEl.removeAttr('data-type');
             $dropEl.off('drop').off('over').off('out');
         }
         return $dropEl;
@@ -148,7 +131,7 @@ gj.droppable.events = {
 };
 
 
-function Droppable($dropEl, arguments) {
+gj.droppable.widget = function ($element, arguments) {
     var self = this,
         methods = gj.droppable.methods;
 
@@ -164,21 +147,24 @@ function Droppable($dropEl, arguments) {
         return methods.isOver(this, mouseEvent);
     }
 
-    $.extend($dropEl, self);
-    if ("true" !== $dropEl.attr('data-droppable')) {
-        methods.init.apply($dropEl, arguments);
+    $.extend($element, self);
+    if ('droppable' !== $element.attr('data-type')) {
+        methods.init.apply($element, arguments);
     }
 
-    return $dropEl;
+    return $element;
 };
+
+gj.droppable.widget.prototype = new gj.widget();
+gj.droppable.widget.constructor = gj.droppable.widget;
 
 (function ($) {
     $.fn.droppable = function (method) {
         var $droppable;
         if (typeof method === 'object' || !method) {
-            return new Droppable(this, arguments);
+            return new gj.droppable.widget(this, arguments);
         } else {
-            $droppable = new Droppable(this, null);
+            $droppable = new gj.droppable.widget(this, null);
             if ($droppable[method]) {
                 return $droppable[method].apply(this, Array.prototype.slice.call(arguments, 1));
             } else {
