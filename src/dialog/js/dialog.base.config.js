@@ -104,11 +104,12 @@ gj.dialog.config = {
          * @type number
          * @default undefined
          * @example sample <!-- draggable.base, dialog.base -->
-         * <div id="dialog">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
+         * <div id="dialog">The minimum height of this dialog is set to 200 px. Try to resize it for testing.</div>
          * <script>
          *     $("#dialog").dialog({
          *         resizable: true,
-         *         minHeight: 500
+         *         height: 300,
+         *         minHeight: 200
          *     });
          * </script>
          */
@@ -118,11 +119,12 @@ gj.dialog.config = {
          * @type number
          * @default undefined
          * @example sample <!-- draggable.base, dialog.base -->
-         * <div id="dialog">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
+         * <div id="dialog">The maximum height of this dialog is set to 300 px. Try to resize it for testing.</div>
          * <script>
          *     $("#dialog").dialog({
          *         resizable: true,
-         *         maxHeight: 500
+         *         height: 200,
+         *         maxHeight: 300
          *     });
          * </script>
          */
@@ -145,11 +147,11 @@ gj.dialog.config = {
          * @type number
          * @default undefined
          * @example sample <!-- draggable.base, dialog.base -->
-         * <div id="dialog">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
+         * <div id="dialog">The minimum width of this dialog is set to 200 px. Try to resize it for testing.</div>
          * <script>
          *     $("#dialog").dialog({
          *         resizable: true,
-         *         minWidth: 1000
+         *         minWidth: 200
          *     });
          * </script>
          */
@@ -159,11 +161,11 @@ gj.dialog.config = {
          * @type number
          * @default undefined
          * @example sample <!-- draggable.base, dialog.base -->
-         * <div id="dialog">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
+         * <div id="dialog">The maximum width of this dialog is set to 400 px. Try to resize it for testing.</div>
          * <script>
          *     $("#dialog").dialog({
          *         resizable: true,
-         *         maxWidth: 1000
+         *         maxWidth: 400
          *     });
          * </script>
          */

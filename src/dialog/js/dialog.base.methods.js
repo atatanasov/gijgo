@@ -3,40 +3,16 @@
     init: function (jsConfig) {
         gj.widget.prototype.init.call(this, jsConfig, 'dialog');
 
-        gj.dialog.methods.configure(this, jsConfig || {});
-
-
         gj.dialog.methods.initialize(this);
         gj.dialog.events.initialized(this);
         return this;
     },
 
-    configure: function ($dialog, jsConfig) {
-        var options = $.extend(true, {}, gj.dialog.config.base),
-            htmlConfig = gj.dialog.methods.getHTMLConfiguration($dialog);
-        if ((jsConfig.uiLibrary && jsConfig.uiLibrary === 'bootstrap') || (htmlConfig.uiLibrary && htmlConfig.uiLibrary === 'bootstrap')) {
-            $.extend(true, options, gj.dialog.config.bootstrap);
-        } else if ((jsConfig.uiLibrary && jsConfig.uiLibrary === 'jqueryui') || (htmlConfig.uiLibrary && htmlConfig.uiLibrary === 'jqueryui')) {
-            $.extend(true, options, gj.dialog.config.jqueryui);
-        } else if ((jsConfig.uiLibrary && jsConfig.uiLibrary === 'foundation') || (htmlConfig.uiLibrary && htmlConfig.uiLibrary === 'foundation')) {
-            $.extend(true, options, gj.dialog.config.foundation);
-        }
-        $.extend(true, options, htmlConfig);
-        $.extend(true, options, jsConfig);
-        $dialog.data(options);
-    },
-
-    getHTMLConfiguration: function ($dialog) {
-        var result = $dialog.data(),
-            attrs = $dialog[0].attributes;
+    getHTMLConfiguration: function () {
+        var result = gj.widget.prototype.getHTMLConfiguration.call(this),
+            attrs = this[0].attributes;
         if (attrs['title']) {
             result.title = attrs['title'].nodeValue;
-        }
-        if (attrs['width']) {
-            result.width = attrs['width'].nodeValue;
-        }
-        if (attrs['height']) {
-            result.height = attrs['height'].nodeValue;
         }
         return result;
     },

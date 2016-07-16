@@ -2,19 +2,6 @@ var gj = {
     widget: function () {
         var self = this;
 
-        self.getHTMLConfiguration = function () {
-            var result = this.data(),
-                width = this.attr('width');
-            if (width) {
-                result.width = width;
-            }
-            if (result && result.source) {
-                result.dataSource = result.source;
-                delete result.source;
-            }
-            return result;
-        };
-
         self.generateGUID = function () {
             function s4() {
                 return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
@@ -25,20 +12,41 @@ var gj = {
 };
 
 gj.widget.prototype.init = function (jsConfig, type) {
-    var clientConfig, plugin, option, data;
+    var config, clientConfig, uiLibrary, plugin, option, data;
+
+    config = $.extend(true, {}, gj[type].config.base);
 
     clientConfig = $.extend(true, {}, this.getHTMLConfiguration() || {});
     $.extend(true, clientConfig, jsConfig || {});
 
-    if (!clientConfig.guid) {
-        clientConfig.guid = this.generateGUID();
+    uiLibrary = clientConfig.uiLibrary || config.uiLibrary;
+    if (gj[type].config[uiLibrary]) {
+        $.extend(true, config, gj[type].config[uiLibrary]);
     }
-    this.attr('data-guid', clientConfig.guid);
 
-    clientConfig.type = type;
+    for (plugin in gj[type].plugins) {
+        if (gj[type].plugins.hasOwnProperty(plugin)) {
+            if (gj[type].plugins[plugin].config.base) {
+                $.extend(true, config, gj[type].plugins[plugin].config.base);
+            }
+            if (gj[type].plugins[plugin].config[uiLibrary]) {
+                $.extend(true, config, gj[type].plugins[plugin].config[uiLibrary]);
+            }
+        }
+    }
+
+    $.extend(true, config, clientConfig);
+
+    if (!config.guid) {
+        config.guid = this.generateGUID();
+    }
+    this.attr('data-guid', config.guid);
+
     this.attr('data-' + type, 'true');
 
-    //Initialize events configured as options
+    this.data(config);
+
+    // Initialize events configured as options
     for (option in clientConfig) {
         if (gj[type].events.hasOwnProperty(option)) {
             this.on(option, clientConfig[option]);
@@ -46,17 +54,31 @@ gj.widget.prototype.init = function (jsConfig, type) {
         }
     }
 
-    //gj.grid.methods.configure(this, clientConfig);
-    ////Initialize all plugins
-    //for (plugin in gj.grid.plugins) {
-    //    if (gj.grid.plugins.hasOwnProperty(plugin)) {
-    //        gj.grid.plugins[plugin].configure(this, clientConfig);
-    //    }
-    //}
+    // Initialize all plugins
+    for (plugin in gj[type].plugins) {
+        if (gj[type].plugins.hasOwnProperty(plugin)) {
+            gj[type].plugins[plugin].configure(this, config);
+        }
+    }
 
-    this.data(clientConfig);
-    //gj.grid.methods.initialize(this);
     return this;
+};
+
+
+gj.widget.prototype.getHTMLConfiguration = function () {
+    var result = this.data(),
+        attrs = this[0].attributes;
+    if (attrs['width']) {
+        result.width = attrs['width'].nodeValue;
+    }
+    if (attrs['height']) {
+        result.height = attrs['height'].nodeValue;
+    }
+    if (result && result.source) {
+        result.dataSource = result.source;
+        delete result.source;
+    }
+    return result;
 };
 
 gj.documentManager = {

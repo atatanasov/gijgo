@@ -69,6 +69,8 @@ gj.dialog.widget = function ($element, arguments) {
 gj.dialog.widget.prototype = new gj.widget();
 gj.dialog.widget.constructor = gj.dialog.widget;
 
+gj.dialog.widget.prototype.getHTMLConfiguration = gj.dialog.methods.getHTMLConfiguration;
+
 (function ($) {
     $.fn.dialog = function (method) {
         var $dialog;
