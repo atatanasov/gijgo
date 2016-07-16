@@ -2451,12 +2451,12 @@ gj.grid.plugins.rowReorder = {
                 $dragEl.css({ 
                     position: 'absolute', top: $trSource.offset().top, left: $trSource.offset().left, width: $trSource.width()
                 });
-                if ($trSource.attr('data-type') === 'droppable') {
+                if ($trSource.attr('data-droppable') === 'true') {
                     $trSource.droppable('destroy');
                 }
                 $trSource.siblings('tr[data-role="row"]').each(function () {
                     var $dropEl = $(this);
-                    if ($dropEl.attr('data-type') === 'droppable') {
+                    if ($dropEl.attr('data-droppable') === 'true') {
                         $dropEl.droppable('destroy');
                     }
                     $dropEl.droppable({
@@ -2584,12 +2584,12 @@ gj.grid.plugins.columnReorder = {
                 $dragEl.css({
                     position: 'absolute', top: $thSource.offset().top, left: $thSource.offset().left, width: $thSource.width()
                 });
-                if ($thSource.attr('data-type') === 'droppable') {
+                if ($thSource.attr('data-droppable') === 'true') {
                     $thSource.droppable('destroy');
                 }
                 $thSource.siblings('th').each(function () {
                     var $dropEl = $(this);
-                    if ($dropEl.attr('data-type') === 'droppable') {
+                    if ($dropEl.attr('data-droppable') === 'true') {
                         $dropEl.droppable('destroy');
                     }
                     $dropEl.droppable({

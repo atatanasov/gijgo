@@ -36,7 +36,7 @@ gj.widget.prototype.init = function (jsConfig, type) {
     this.attr('data-guid', clientConfig.guid);
 
     clientConfig.type = type;
-    this.attr('data-type', type);
+    this.attr('data-' + type, 'true');
 
     //Initialize events configured as options
     for (option in clientConfig) {

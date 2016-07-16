@@ -12,7 +12,7 @@ gj.grid.plugins.rowReorder = {
             /** If set to true, enable row reordering with drag and drop.
              * @type boolean
              * @default false
-             * @example Base.Theme.Sample <!-- widget, grid.base, grid.rowReorder, draggable.base, droppable.base -->
+             * @example Base.Theme.Sample <!-- grid.base, grid.rowReorder, draggable.base, droppable.base -->
              * <p>Drag and Drop rows in order to reorder them.</p>
              * <table id="grid"></table>
              * <script>
@@ -22,7 +22,7 @@ gj.grid.plugins.rowReorder = {
              *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
              *     });
              * </script>
-             * @example Bootstrap.Sample <!-- bootstrap, widget, grid.base, grid.rowReorder, draggable.base, droppable.base -->
+             * @example Bootstrap.Sample <!-- bootstrap, grid.base, grid.rowReorder, draggable.base, droppable.base -->
              * <p>Drag and Drop rows in order to reorder them.</p>
              * <table id="grid"></table>
              * <script>
@@ -33,7 +33,7 @@ gj.grid.plugins.rowReorder = {
              *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
              *     });
              * </script>
-             * @example JQueryUI.Sample <!-- jqueryui, widget, grid.base, grid.rowReorder, draggable.base, droppable.base -->
+             * @example JQueryUI.Sample <!-- jqueryui, grid.base, grid.rowReorder, draggable.base, droppable.base -->
              * <p>Drag and Drop rows in order to reorder them.</p>
              * <table id="grid"></table>
              * <script>
@@ -51,7 +51,7 @@ gj.grid.plugins.rowReorder = {
              * Accept only field names of columns.
              * @type string
              * @default undefined
-             * @example sample <!-- widget, grid.base, grid.rowReorder, draggable.base, droppable.base -->
+             * @example sample <!-- grid.base, grid.rowReorder, draggable.base, droppable.base -->
              * <table id="grid"></table>
              * <script>
              *     $('#grid').grid({
@@ -67,7 +67,7 @@ gj.grid.plugins.rowReorder = {
             /** If set, update the value in the field for all records. Accept only field names of columns.
              * @type string
              * @default undefined
-             * @example Visible.OrderNumber <!-- widget, grid.base, grid.rowReorder, draggable.base, droppable.base -->
+             * @example Visible.OrderNumber <!-- grid.base, grid.rowReorder, draggable.base, droppable.base -->
              * <table id="grid"></table>
              * <script>
              *     var data = [
@@ -82,7 +82,7 @@ gj.grid.plugins.rowReorder = {
              *         columns: [ { field: 'ID', width: 34 }, { field: 'OrderNumber', width:120 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
              *     });
              * </script>
-             * @example Hidden.OrderNumber <!-- widget, grid.base, grid.rowReorder, draggable.base, droppable.base -->
+             * @example Hidden.OrderNumber <!-- grid.base, grid.rowReorder, draggable.base, droppable.base -->
              * <button onclick="alert(grid.getAll())">Show Data</button>
              * <table id="grid"></table>
              * <script>
@@ -138,12 +138,12 @@ gj.grid.plugins.rowReorder = {
                 $dragEl.css({ 
                     position: 'absolute', top: $trSource.offset().top, left: $trSource.offset().left, width: $trSource.width()
                 });
-                if ($trSource.attr('data-type') === 'droppable') {
+                if ($trSource.attr('data-droppable') === 'true') {
                     $trSource.droppable('destroy');
                 }
                 $trSource.siblings('tr[data-role="row"]').each(function () {
                     var $dropEl = $(this);
-                    if ($dropEl.attr('data-type') === 'droppable') {
+                    if ($dropEl.attr('data-droppable') === 'true') {
                         $dropEl.droppable('destroy');
                     }
                     $dropEl.droppable({

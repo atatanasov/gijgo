@@ -1,24 +1,10 @@
 ﻿gj.dialog.methods = {
 
     init: function (jsConfig) {
-        var plugin, option, data;
+        gj.widget.prototype.init.call(this, jsConfig, 'dialog');
+
         gj.dialog.methods.configure(this, jsConfig || {});
 
-        //Apply plugins configuration
-        for (plugin in gj.dialog.plugins) {
-            if (gj.dialog.plugins.hasOwnProperty(plugin)) {
-                gj.dialog.plugins[plugin].configure(this);
-            }
-        }
-
-        //Initialize events configured as options
-        data = this.data();
-        for (option in data) {
-            if (gj.dialog.events.hasOwnProperty(option)) {
-                this.on(option, data[option]);
-                delete data[option];
-            }
-        }
 
         gj.dialog.methods.initialize(this);
         gj.dialog.events.initialized(this);

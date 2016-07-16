@@ -100,13 +100,13 @@ gj.droppable.methods = {
     },
 
     destroy: function ($dropEl) {
-        if ($dropEl.attr('data-type') === 'droppable') {
+        if ($dropEl.attr('data-droppable') === 'true') {
             gj.documentManager.unsubscribeForEvent('mousedown', $dropEl.data('guid'));
             gj.documentManager.unsubscribeForEvent('mousemove', $dropEl.data('guid'));
             gj.documentManager.unsubscribeForEvent('mouseup', $dropEl.data('guid'));
             $dropEl.removeData();
             $dropEl.removeAttr('data-guid');
-            $dropEl.removeAttr('data-type');
+            $dropEl.removeAttr('data-droppable');
             $dropEl.off('drop').off('over').off('out');
         }
         return $dropEl;
@@ -148,7 +148,7 @@ gj.droppable.widget = function ($element, arguments) {
     }
 
     $.extend($element, self);
-    if ('droppable' !== $element.attr('data-type')) {
+    if ('true' !== $element.attr('data-droppable')) {
         methods.init.apply($element, arguments);
     }
 

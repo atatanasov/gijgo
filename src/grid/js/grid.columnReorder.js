@@ -12,7 +12,7 @@ gj.grid.plugins.columnReorder = {
             /** If set to true, enable column reordering with drag and drop.
              * @type boolean
              * @default false
-             * @example sample <!-- widget, grid.base, grid.columnReorder, draggable.base, droppable.base -->
+             * @example sample <!-- grid.base, grid.columnReorder, draggable.base, droppable.base -->
              * <p>Drag and Drop column headers in order to reorder the columns.</p>
              * <table id="grid"></table>
              * <script>
@@ -58,12 +58,12 @@ gj.grid.plugins.columnReorder = {
                 $dragEl.css({
                     position: 'absolute', top: $thSource.offset().top, left: $thSource.offset().left, width: $thSource.width()
                 });
-                if ($thSource.attr('data-type') === 'droppable') {
+                if ($thSource.attr('data-droppable') === 'true') {
                     $thSource.droppable('destroy');
                 }
                 $thSource.siblings('th').each(function () {
                     var $dropEl = $(this);
-                    if ($dropEl.attr('data-type') === 'droppable') {
+                    if ($dropEl.attr('data-droppable') === 'true') {
                         $dropEl.droppable('destroy');
                     }
                     $dropEl.droppable({

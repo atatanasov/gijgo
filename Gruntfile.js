@@ -292,6 +292,7 @@ var writer = {
         } else {
             result += '  <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>\r\n';
         }
+        result += '  <script src="../../dist/modular/widget/js/widget.js"></script>\r\n';
         if (libs) {
             names = libs.replace('<!--', '').replace('-->', '').trim().split(',');
             for (i = 0; i < names.length; i++) {
@@ -343,9 +344,6 @@ var writer = {
             for (i = 0; i < names.length; i++) {
                 //include js files
                 switch (names[i].trim()) {
-                    case 'widget':
-                        result += '  <script src="../../dist/modular/widget/js/widget.js"></script>\r\n';
-                        break;
                     case 'dialog.base':
                         result += '  <script src="../../dist/modular/dialog/js/dialog.base.js"></script>\r\n';
                         break;

@@ -22,7 +22,7 @@ gj.draggable.config = {
      * Only elements that descend from the draggable element are permitted.
      * @type jquery element
      * @default undefined
-     * @example sample <!-- widget, draggable.base -->
+     * @example sample <!-- draggable.base -->
      * <style>
      * .element { border: 1px solid #999; width: 300px; height: 200px; }
      * .handle { background-color: #DDD; cursor: move; width: 200px; margin: 5px auto 0px auto; text-align: center; padding: 5px; }
@@ -133,11 +133,11 @@ gj.draggable.methods = {
     },
 
     destroy: function ($dragEl) {
-        if ($dragEl.attr('data-type') === 'draggable') {
+        if ($dragEl.attr('data-draggable') === 'true') {
             gj.documentManager.unsubscribeForEvent('mouseup', $dragEl.data('guid'));
             $dragEl.removeData();
             $dragEl.removeAttr('data-guid');
-            $dragEl.removeAttr('data-type');
+            $dragEl.removeAttr('data-draggable');
             $dragEl.off('drag').off('start').off('stop');
             gj.draggable.methods.getClickElement($dragEl).off('mousedown');
         }
@@ -152,7 +152,7 @@ gj.draggable.events = {
      * @event drag
      * @param {object} e - event data
      * @param {object} offset - Current offset position as { top, left } object.
-     * @example sample <!-- widget, draggable.base -->
+     * @example sample <!-- draggable.base -->
      * <style>
      * .element { border: 1px solid #999; width: 300px; height: 200px; cursor: move; text-align: center; background-color: #DDD; }
      * </style>
@@ -174,7 +174,7 @@ gj.draggable.events = {
      *
      * @event start
      * @param {object} e - event data
-     * @example sample <!-- widget, draggable.base -->
+     * @example sample <!-- draggable.base -->
      * <style>
      * .element { border: 1px solid #999; width: 300px; height: 200px; cursor: move; text-align: center; background-color: #DDD; }
      * </style>
@@ -198,7 +198,7 @@ gj.draggable.events = {
      *
      * @event stop
      * @param {object} e - event data
-     * @example sample <!-- widget, draggable.base -->
+     * @example sample <!-- draggable.base -->
      * <style>
      * .element { border: 1px solid #999; width: 300px; height: 200px; cursor: move; text-align: center; background-color: #DDD; }
      * </style>
@@ -230,7 +230,7 @@ gj.draggable.widget = function ($element, arguments) {
     /** Removes the draggable functionality.
      * @method
      * @return jquery element
-     * @example sample <!-- widget, draggable.base -->
+     * @example sample <!-- draggable.base -->
      * <style>
      * .element { border: 1px solid #999; width: 300px; height: 200px; cursor: move; text-align: center; background-color: #DDD; }
      * </style>
@@ -245,7 +245,7 @@ gj.draggable.widget = function ($element, arguments) {
     }
 
     $.extend($element, self);
-    if ('draggable' !== $element.attr('data-type')) {
+    if ('true' !== $element.attr('data-draggable')) {
         methods.init.apply($element, arguments);
     }
 

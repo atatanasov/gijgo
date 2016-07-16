@@ -21,7 +21,7 @@ gj.droppable.config = {
     /** If specified, the class will be added to the droppable while draggable is being hovered over the droppable.
      * @type string
      * @default undefined
-     * @example sample <!-- widget, droppable.base, draggable.base -->
+     * @example sample <!-- droppable.base, draggable.base -->
      * <style>
      * .draggable { border: 1px solid #999; width: 300px; height: 200px; text-align: center; }
      * .droppable { border: 1px solid #999; width: 300px; height: 200px; text-align: center; }
@@ -118,13 +118,13 @@ gj.droppable.methods = {
     },
 
     destroy: function ($dropEl) {
-        if ($dropEl.attr('data-type') === 'droppable') {
+        if ($dropEl.attr('data-droppable') === 'true') {
             gj.documentManager.unsubscribeForEvent('mousedown', $dropEl.data('guid'));
             gj.documentManager.unsubscribeForEvent('mousemove', $dropEl.data('guid'));
             gj.documentManager.unsubscribeForEvent('mouseup', $dropEl.data('guid'));
             $dropEl.removeData();
             $dropEl.removeAttr('data-guid');
-            $dropEl.removeAttr('data-type');
+            $dropEl.removeAttr('data-droppable');
             $dropEl.off('drop').off('over').off('out');
         }
         return $dropEl;
@@ -135,7 +135,7 @@ gj.droppable.events = {
     /** Triggered when a draggable element is dropped.
      * @event drop
      * @param {object} e - event data
-     * @example sample <!-- widget, droppable.base, draggable.base -->
+     * @example sample <!-- droppable.base, draggable.base -->
      * <style>
      * .draggable { border: 1px solid #999; width: 300px; height: 200px; text-align: center; }
      * .droppable { border: 1px solid #999; width: 300px; height: 200px; text-align: center; }
@@ -155,7 +155,7 @@ gj.droppable.events = {
     /** Triggered when a draggable element is dragged over the droppable.
      * @event over
      * @param {object} e - event data
-     * @example sample <!-- widget, droppable.base, draggable.base -->
+     * @example sample <!-- droppable.base, draggable.base -->
      * <style>
      * .draggable { border: 1px solid #999; width: 300px; height: 200px; text-align: center; }
      * .droppable { border: 1px solid #999; width: 300px; height: 200px; text-align: center; }
@@ -178,7 +178,7 @@ gj.droppable.events = {
     /** Triggered when a draggable element is dragged out of the droppable.
      * @event out
      * @param {object} e - event data
-     * @example sample <!-- widget, droppable.base, draggable.base -->
+     * @example sample <!-- droppable.base, draggable.base -->
      * <style>
      * .draggable { border: 1px solid #999; width: 300px; height: 200px; text-align: center; }
      * .droppable { border: 1px solid #999; width: 300px; height: 200px; text-align: center; }
@@ -210,7 +210,7 @@ gj.droppable.widget = function ($element, arguments) {
     /** Removes the droppable functionality.
      * @method
      * @return jquery element
-     * @example sample <!-- widget, draggable.base, droppable.base -->
+     * @example sample <!-- draggable.base, droppable.base -->
      * <button onclick="create()">Create</button>
      * <button onclick="dropEl.destroy()">Destroy</button>
      * <br/><br/>
@@ -241,7 +241,7 @@ gj.droppable.widget = function ($element, arguments) {
     }
 
     $.extend($element, self);
-    if ('droppable' !== $element.attr('data-type')) {
+    if ('true' !== $element.attr('data-droppable')) {
         methods.init.apply($element, arguments);
     }
 

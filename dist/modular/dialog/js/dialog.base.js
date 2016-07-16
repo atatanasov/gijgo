@@ -179,24 +179,10 @@ gj.dialog.events = {
 gj.dialog.methods = {
 
     init: function (jsConfig) {
-        var plugin, option, data;
+        gj.widget.prototype.init.call(this, jsConfig, 'dialog');
+
         gj.dialog.methods.configure(this, jsConfig || {});
 
-        //Apply plugins configuration
-        for (plugin in gj.dialog.plugins) {
-            if (gj.dialog.plugins.hasOwnProperty(plugin)) {
-                gj.dialog.plugins[plugin].configure(this);
-            }
-        }
-
-        //Initialize events configured as options
-        data = this.data();
-        for (option in data) {
-            if (gj.dialog.events.hasOwnProperty(option)) {
-                this.on(option, data[option]);
-                delete data[option];
-            }
-        }
 
         gj.dialog.methods.initialize(this);
         gj.dialog.events.initialized(this);
@@ -430,7 +416,7 @@ gj.dialog.methods = {
     }
 };
 /**  */
-function Dialog($dialog, arguments) {
+gj.dialog.widget = function ($element, arguments) {
     var self = this,
         methods = gj.dialog.methods;
 
@@ -452,20 +438,29 @@ function Dialog($dialog, arguments) {
         return methods.isOpen(this);
     }
 
-    $.extend($dialog, self);
-    methods.init.apply($dialog, arguments);
+    $.extend($element, self);
+    if ('true' !== $element.attr('data-dialog')) {
+        methods.init.apply($element, arguments);
+    }
 
-    return $dialog;
+    return $element;
 };
+
+gj.dialog.widget.prototype = new gj.widget();
+gj.dialog.widget.constructor = gj.dialog.widget;
 
 (function ($) {
     $.fn.dialog = function (method) {
+        var $dialog;
         if (typeof method === 'object' || !method) {
-            return new Dialog(this, arguments);
-        } else if (gj.dialog.methods[method]) {
-            return gj.dialog.methods[method].apply(this, [this].concat(Array.prototype.slice.call(arguments, 1)));
+            return new gj.dialog.widget(this, arguments);
         } else {
-            throw 'Method ' + method + ' does not exist.';
+            $dialog = new gj.dialog.widget(this, null);
+            if ($dialog[method]) {
+                return $dialog[method].apply(this, Array.prototype.slice.call(arguments, 1));
+            } else {
+                throw 'Method ' + method + ' does not exist.';
+            }
         }
     };
 })(jQuery);
