@@ -21,11 +21,9 @@
  </table>
  <script>
      function onMouseEnter (e) {
-         e.stopPropagation();
          $(e.currentTarget).css('background-color', 'red');
      }
      function onMouseLeave (e) {
-         e.stopPropagation();
          $(e.currentTarget).css('background-color', '');
      }
      function onClick(e) {

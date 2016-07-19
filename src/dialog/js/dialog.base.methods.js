@@ -8,8 +8,8 @@
         return this;
     },
 
-    getHTMLConfiguration: function () {
-        var result = gj.widget.prototype.getHTMLConfiguration.call(this),
+    getHTMLConfig: function () {
+        var result = gj.widget.prototype.getHTMLConfig.call(this),
             attrs = this[0].attributes;
         if (attrs['title']) {
             result.title = attrs['title'].nodeValue;

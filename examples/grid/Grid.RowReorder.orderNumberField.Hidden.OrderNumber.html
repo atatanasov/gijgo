@@ -12,7 +12,7 @@
   <script src="../../dist/modular/droppable/js/droppable.base.js"></script>
 </head>
 <body>
- <button onclick="alert(grid.getAll())">Show Data</button>
+ <button onclick="alert(JSON.stringify(grid.getAll()))">Show Data</button>
  <table id="grid"></table>
  <script>
      var data = [

@@ -288,54 +288,21 @@ gj.grid.events = {
 gj.grid.methods = {
 
     init: function (jsConfig) {
-        var clientConfig, plugin, option, data;
+        gj.widget.prototype.init.call(this, jsConfig, 'grid');
 
-        clientConfig = $.extend(true, {}, gj.grid.methods.getHTMLConfiguration(this) || {});
-        $.extend(true, clientConfig, jsConfig || {});
-
-        gj.grid.methods.configure(this, clientConfig);
-        //Initialize all plugins
-        for (plugin in gj.grid.plugins) {
-            if (gj.grid.plugins.hasOwnProperty(plugin)) {
-                gj.grid.plugins[plugin].configure(this, clientConfig);
-            }
-        }
-        data = this.data();
-        //Initialize events configured as options
-        for (option in data) {
-            if (gj.grid.events.hasOwnProperty(option)) {
-                this.on(option, data[option]);
-                delete data[option];
-            }
-        }
         gj.grid.methods.initialize(this);
         this.attr('data-initialized', true);
 
-        if (data.autoLoad) {
+        if (this.data('autoLoad')) {
             this.reload();
         }
         return this;
     },
 
-    configure: function ($grid, clientConfig) {
-        var options = $.extend(true, {}, gj.grid.config.base),
-            uiLibrary = clientConfig.uiLibrary || options.uiLibrary;
-        if (gj.grid.config[uiLibrary]) {
-            $.extend(true, options, gj.grid.config[uiLibrary]);
-        }
-        for (plugin in gj.grid.plugins) {
-            if (gj.grid.plugins.hasOwnProperty(plugin)) {
-                if (gj.grid.plugins[plugin].config.base) {
-                    $.extend(true, options, gj.grid.plugins[plugin].config.base);
-                }
-                if (gj.grid.plugins[plugin].config[uiLibrary]) {
-                    $.extend(true, options, gj.grid.plugins[plugin].config[uiLibrary]);
-                }
-            }
-        }
-        $.extend(true, options, clientConfig);
-        gj.grid.methods.setDefaultColumnConfig(options.columns, options.defaultColumnSettings);
-        $grid.data(options);
+    getConfig: function (jsConfig, type) {
+        var config = gj.widget.prototype.getConfig.call(this, jsConfig, type);
+        gj.grid.methods.setDefaultColumnConfig(config.columns, config.defaultColumnSettings);
+        return config;
     },
 
     setDefaultColumnConfig: function (columns, defaultColumnSettings) {
@@ -349,17 +316,13 @@ gj.grid.methods = {
         }
     },
 
-    getHTMLConfiguration: function ($grid) {
-        var result = gj.grid.methods.getAttributes($grid);
-        if (result && result.source) {
-            result.dataSource = result.source;
-            delete result.source;
-        }
+    getHTMLConfig: function () {
+        var result = gj.widget.prototype.getHTMLConfig.call(this);
         result.columns = [];
-        $grid.find('thead > tr > th').each(function () {
+        this.find('thead > tr > th').each(function () {
             var $el = $(this),
                 title = $el.text(),
-                config = gj.grid.methods.getAttributes($el);
+                config = gj.widget.prototype.getHTMLConfig.call($el); //gj.grid.methods.getAttributes($el);
             config.title = title;
             if (!config.field) {
                 config.field = title;
@@ -369,15 +332,6 @@ gj.grid.methods = {
             }
             result.columns.push(config);
         });
-        return result;
-    },
-
-    getAttributes: function ($el) {
-        var result = $el.data(),
-            width = $el.attr('width');
-        if (width) {
-            result.width = width;
-        }
         return result;
     },
 
@@ -752,12 +706,7 @@ gj.grid.methods = {
         if (column.events) {
             for (key in column.events) {
                 if (column.events.hasOwnProperty(key)) {
-                    $cell.on(key, { id: id, field: column.field, record: record }, function (e) {
-                        if (column.stopPropagation) {
-                            e.stopPropagation();
-                        }
-                        column.events[key].call(this, e);
-                    });
+                    $cell.on(key, { id: id, field: column.field, record: record }, gj.grid.methods.createCellEventHandler(column, column.events[key]));
                 }
             }
         }
@@ -768,6 +717,15 @@ gj.grid.methods = {
         gj.grid.events.cellDataBound($grid, $wrapper, id, column, record);
 
         return $cell;
+    },
+
+    createCellEventHandler: function (column, func) {
+        return function (e) {
+            if (column.stopPropagation) {
+                e.stopPropagation();
+            }
+            func.call(this, e);
+        };
     },
 
     setCellText: function ($wrapper, column, value) {
@@ -1215,7 +1173,7 @@ gj.grid.methods = {
 };
 
 /** */
-function Grid($grid, arguments) {
+gj.grid.widget = function ($grid, arguments) {
     var self = this,
         methods = gj.grid.methods;
 
@@ -1343,13 +1301,19 @@ function Grid($grid, arguments) {
     return $grid;
 }
 
+gj.grid.widget.prototype = new gj.widget();
+gj.grid.widget.constructor = gj.grid.widget;
+
+gj.grid.widget.prototype.getConfig = gj.grid.methods.getConfig;
+gj.grid.widget.prototype.getHTMLConfig = gj.grid.methods.getHTMLConfig;
+
 (function ($) {
     $.fn.grid = function (method) {
         var $grid;
         if (typeof method === 'object' || !method) {
-            return new Grid(this, arguments);
+            return new gj.grid.widget(this, arguments);
         } else {
-            $grid = new Grid(this, null);
+            $grid = new gj.grid.widget(this, null);
             if ($grid[method]) {
                 return $grid[method].apply(this, Array.prototype.slice.call(arguments, 1));
             } else {

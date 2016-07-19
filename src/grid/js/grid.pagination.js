@@ -54,7 +54,9 @@ gj.grid.plugins.pagination = {
                  * @type array
                  * @default undefined
                  * @example bootstrap <!-- bootstrap, grid.base, grid.pagination  -->
-                 * <table id="grid"></table>
+                 * <div class="container">
+                 *     <table id="grid"></table>
+                 * </div>
                  * <script>
                  *     var grid = $('#grid').grid({
                  *         dataSource: '/DataSources/GetPlayers',

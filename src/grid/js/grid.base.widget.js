@@ -2,7 +2,7 @@
   * @widget Grid
   * @plugin Base
   */
-function Grid($grid, arguments) {
+gj.grid.widget = function ($grid, arguments) {
     var self = this,
         methods = gj.grid.methods;
 
@@ -367,24 +367,6 @@ function Grid($grid, arguments) {
      *         alert(names);
      *     });
      * </script>
-     * @example local.data <!-- grid.base -->
-     * <button id="btnAdd">Add New Row</button>
-     * <br/><br/>
-     * <table id="grid"></table>
-     * <script>
-     *     var grid = $('#grid').grid({
-     *         dataSource:  [
-     *             { 'ID': 1, 'Name': 'Hristo Stoichkov', 'PlaceOfBirth': 'Plovdiv, Bulgaria' },
-     *             { 'ID': 2, 'Name': 'Ronaldo Luis Nazario de Lima', 'PlaceOfBirth': 'Rio de Janeiro, Brazil' },
-     *             { 'ID': 3, 'Name': 'David Platt', 'PlaceOfBirth': 'Chadderton, Lancashire, England' }
-     *         ],
-     *         autoGenerateColumns: true
-     *     });
-     *     $('#btnAdd').on('click', function () {
-     *         grid.getAll().push({ 'ID': grid.count() + 1, 'Name': 'Test Player', 'PlaceOfBirth': 'Test City, Test Country' });
-     *         grid.reload();
-     *     });
-     * </script>
      */
     self.getAll = function () {
         return methods.getAll(this);
@@ -586,13 +568,19 @@ function Grid($grid, arguments) {
     return $grid;
 }
 
+gj.grid.widget.prototype = new gj.widget();
+gj.grid.widget.constructor = gj.grid.widget;
+
+gj.grid.widget.prototype.getConfig = gj.grid.methods.getConfig;
+gj.grid.widget.prototype.getHTMLConfig = gj.grid.methods.getHTMLConfig;
+
 (function ($) {
     $.fn.grid = function (method) {
         var $grid;
         if (typeof method === 'object' || !method) {
-            return new Grid(this, arguments);
+            return new gj.grid.widget(this, arguments);
         } else {
-            $grid = new Grid(this, null);
+            $grid = new gj.grid.widget(this, null);
             if ($grid[method]) {
                 return $grid[method].apply(this, Array.prototype.slice.call(arguments, 1));
             } else {

@@ -388,11 +388,9 @@ gj.grid.config = {
              * </table>
              * <script>
              *     function onMouseEnter (e) {
-             *         e.stopPropagation();
              *         $(e.currentTarget).css('background-color', 'red');
              *     }
              *     function onMouseLeave (e) {
-             *         e.stopPropagation();
              *         $(e.currentTarget).css('background-color', '');
              *     }
              *     function onClick(e) {
@@ -732,7 +730,7 @@ gj.grid.config = {
          * If the primaryKey is undefined, we autogenerate id for each record in the table by starting from 1.
          * @type string
          * @default undefined
-         * @example sample <!-- grid.base -->
+         * @example defined <!-- grid.base -->
          * <table id="grid"></table>
          * <script>
          *     var data = [
@@ -743,6 +741,24 @@ gj.grid.config = {
          *     $('#grid').grid({
          *         dataSource: data,
          *         primaryKey: 'ID',
+         *         columns: [ 
+         *             { field: 'ID', width: 32 },
+         *             { field: 'Name' },
+         *             { field: 'PlaceOfBirth' } ,
+         *             { tmpl: '<a href="#">click me</a>', events: { click: function(e) { alert('Your id is ' + e.data.id); } }, width: 60, stopPropagation: true } 
+         *         ]
+         *     });
+         * </script>
+         * @example undefined <!-- grid.base -->
+         * <table id="grid"></table>
+         * <script>
+         *     var data = [
+         *         { 'ID': 101, 'Name': 'Hristo Stoichkov', 'PlaceOfBirth': 'Plovdiv, Bulgaria' },
+         *         { 'ID': 102, 'Name': 'Ronaldo Luis Nazario de Lima', 'PlaceOfBirth': 'Rio de Janeiro, Brazil' },
+         *         { 'ID': 103, 'Name': 'David Platt', 'PlaceOfBirth': 'Chadderton, Lancashire, England' }
+         *     ];
+         *     $('#grid').grid({
+         *         dataSource: data,
          *         columns: [ 
          *             { field: 'ID', width: 32 },
          *             { field: 'Name' },

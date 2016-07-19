@@ -186,8 +186,8 @@ gj.dialog.methods = {
         return this;
     },
 
-    getHTMLConfiguration: function () {
-        var result = gj.widget.prototype.getHTMLConfiguration.call(this),
+    getHTMLConfig: function () {
+        var result = gj.widget.prototype.getHTMLConfig.call(this),
             attrs = this[0].attributes;
         if (attrs['title']) {
             result.title = attrs['title'].nodeValue;
@@ -425,7 +425,7 @@ gj.dialog.widget = function ($element, arguments) {
 gj.dialog.widget.prototype = new gj.widget();
 gj.dialog.widget.constructor = gj.dialog.widget;
 
-gj.dialog.widget.prototype.getHTMLConfiguration = gj.dialog.methods.getHTMLConfiguration;
+gj.dialog.widget.prototype.getHTMLConfig = gj.dialog.methods.getHTMLConfig;
 
 (function ($) {
     $.fn.dialog = function (method) {

@@ -12,11 +12,38 @@
 };
 
 gj.widget.prototype.init = function (jsConfig, type) {
-    var config, clientConfig, uiLibrary, plugin, option, data;
+    var option, config = this.getConfig(jsConfig, type);
+
+    this.attr('data-guid', config.guid);
+
+    this.attr('data-' + type, 'true');
+
+    this.data(config);
+
+    // Initialize events configured as options
+    for (option in config) {
+        if (gj[type].events.hasOwnProperty(option)) {
+            this.on(option, config[option]);
+            delete config[option];
+        }
+    }
+
+    // Initialize all plugins
+    for (plugin in gj[type].plugins) {
+        if (gj[type].plugins.hasOwnProperty(plugin)) {
+            gj[type].plugins[plugin].configure(this, config);
+        }
+    }
+
+    return this;
+};
+
+gj.widget.prototype.getConfig = function (jsConfig, type) {
+    var config, clientConfig, uiLibrary, plugin;
 
     config = $.extend(true, {}, gj[type].config.base);
 
-    clientConfig = $.extend(true, {}, this.getHTMLConfiguration() || {});
+    clientConfig = $.extend(true, {}, this.getHTMLConfig() || {});
     $.extend(true, clientConfig, jsConfig || {});
 
     uiLibrary = clientConfig.uiLibrary || config.uiLibrary;
@@ -40,32 +67,12 @@ gj.widget.prototype.init = function (jsConfig, type) {
     if (!config.guid) {
         config.guid = this.generateGUID();
     }
-    this.attr('data-guid', config.guid);
 
-    this.attr('data-' + type, 'true');
-
-    this.data(config);
-
-    // Initialize events configured as options
-    for (option in clientConfig) {
-        if (gj[type].events.hasOwnProperty(option)) {
-            this.on(option, clientConfig[option]);
-            delete clientConfig[option];
-        }
-    }
-
-    // Initialize all plugins
-    for (plugin in gj[type].plugins) {
-        if (gj[type].plugins.hasOwnProperty(plugin)) {
-            gj[type].plugins[plugin].configure(this, config);
-        }
-    }
-
-    return this;
-};
+    return config;
+}
 
 
-gj.widget.prototype.getHTMLConfiguration = function () {
+gj.widget.prototype.getHTMLConfig = function () {
     var result = this.data(),
         attrs = this[0].attributes;
     if (attrs['width']) {
