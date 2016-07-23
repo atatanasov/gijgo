@@ -1,6 +1,6 @@
 /* global window alert jQuery */
 /*
- * Gijgo JavaScript Library v0.7.0
+ * Gijgo JavaScript Library v1.0.0
  * http://gijgo.com/
  *
  * Copyright 2014, 2016 gijgo.com
@@ -306,7 +306,7 @@ gj.dialog.methods = {
         };
         $dialog.append($('<div class="gj-resizable-handle gj-resizable-n"></div>').draggable($.extend(true, {}, config)));
         $dialog.append($('<div class="gj-resizable-handle gj-resizable-e"></div>').draggable($.extend(true, {}, config)));
-        $dialog.append($('<div class="gj-resizable-handle gj-resizable-s"></div>').draggable($.extend(true, {}, config)));
+        $dialog.append($('<div class="gj-resizable-handle gj-resizable-s"></div>').draggable($.extend(true, { horizontal: false }, config)));
         $dialog.append($('<div class="gj-resizable-handle gj-resizable-w"></div>').draggable($.extend(true, {}, config)));
         $dialog.append($('<div class="gj-resizable-handle gj-resizable-ne"></div>').draggable($.extend(true, {}, config)));
         $dialog.append($('<div class="gj-resizable-handle gj-resizable-nw"></div>').draggable($.extend(true, {}, config)));
@@ -315,7 +315,7 @@ gj.dialog.methods = {
     },
 
     resize: function (e, offset) {
-        var $el, $dialog, data, height, width, top, left;
+        var $el, $dialog, data, height, width, top, left, result = false;
 
         $el = $(this);
         $dialog = $el.parent();
@@ -355,6 +355,7 @@ gj.dialog.methods = {
             if (top) {
                 $dialog.css('top', top);
             }
+            result = true;
         }
 
         if (width && (!data.minWidth || width >= data.minWidth) && (!data.maxWidth || width <= data.maxWidth)) {
@@ -362,9 +363,14 @@ gj.dialog.methods = {
             if (left) {
                 $dialog.css('left', left);
             }
+            result = true;
         }
 
-        gj.dialog.events.resize($dialog);
+        if (result) {
+            gj.dialog.events.resize($dialog);
+        }
+        
+        return result;
     },
 
     open: function ($dialog) {
