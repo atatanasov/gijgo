@@ -20,7 +20,10 @@ gj.draggable.config = {
          * Only elements that descend from the draggable element are permitted. */
         handle: undefined,
 
+        /** If set to false, restricts dragging on vertical direction. */
         vertical: true,
+
+        /** If set to false, restricts dragging on horizontal direction. */
         horizontal: true
     }
 };

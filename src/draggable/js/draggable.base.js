@@ -39,7 +39,42 @@ gj.draggable.config = {
          */
         handle: undefined,
 
+        /** If set to false, restricts dragging on vertical direction.
+         * @type Boolean
+         * @default true
+         * @example sample <!-- draggable.base -->
+         * <style>
+         * .element { border: 1px solid #999; width: 300px; height: 200px; cursor: move; text-align: center; background-color: #DDD; }
+         * </style>
+         * <div id="element" class="element">
+         *     drag me<br/>
+         *     <i>(dragging on vertical direction is disabled)</i>
+         * </div>
+         * <script>
+         *     $('#element').draggable({
+         *         vertical: false
+         *     });
+         * </script>
+         */
         vertical: true,
+
+        /** If set to false, restricts dragging on horizontal direction.
+         * @type Boolean
+         * @default true
+         * @example sample <!-- draggable.base -->
+         * <style>
+         * .element { border: 1px solid #999; width: 300px; height: 200px; cursor: move; text-align: center; background-color: #DDD; }
+         * </style>
+         * <div id="element" class="element">
+         *     drag me<br/>
+         *     <i>(dragging on horizontal direction is disabled)</i>
+         * </div>
+         * <script>
+         *     $('#element').draggable({
+         *         horizontal: false
+         *     });
+         * </script>
+         */
         horizontal: true
     }
 };
