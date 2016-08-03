@@ -635,7 +635,7 @@ gj.grid.methods = {
             $row.on('mouseleave', gj.grid.methods.createRemoveRowHoverHandler($row, data.style.content.rowHover));
         } else {
             mode = 'update';
-            $row.removeClass(data.style.content.rowSelected).off('click');
+            $row.removeClass(data.style.content.rowSelected).removeAttr('data-selected').off('click');
         }
         id = gj.grid.methods.getId(record, data.primaryKey, (position + 1));
         $row.attr('data-position', position + 1);
@@ -799,23 +799,22 @@ gj.grid.methods = {
 
     selectRow: function ($grid, data, $row, id) {
         $row.addClass(data.style.content.rowSelected);
-
-        gj.grid.events.rowSelect($grid, $row, id, $grid.getById(id));
-
+        $row.attr('data-selected', 'true');
         if ('checkbox' === data.selectionMethod) {
             $row.find('td:nth-child(1) input[type="checkbox"]').prop('checked', true);
         }
+        gj.grid.events.rowSelect($grid, $row, id, $grid.getById(id));
     },
 
     unselectRow: function ($grid, data, $row, id) {
-        if ($row.hasClass(data.style.content.rowSelected)) {
+        if ($row.attr('data-selected') === 'true') {
             $row.removeClass(data.style.content.rowSelected);
-
-            gj.grid.events.rowUnselect($grid, $row, id, $grid.getById(id));
-
             if ('checkbox' === data.selectionMethod) {
                 $row.find('td:nth-child(1) input[type="checkbox"]').prop('checked', false);
+                $grid.find('thead input#checkAllBoxes').prop('checked', false);
             }
+            $row.removeAttr('data-selected');
+            gj.grid.events.rowUnselect($grid, $row, id, $grid.getById(id));
         }
     },
 
@@ -825,7 +824,7 @@ gj.grid.methods = {
             $row = gj.grid.methods.getRowById($grid, id);
         }
         if ($row) {
-            if ($row.hasClass(data.style.content.rowSelected)) {
+            if ($row.attr('data-selected') === 'true') {
                 gj.grid.methods.unselectRow($grid, data, $row, id);
             } else {
                 if ('single' === data.selectionType) {
@@ -863,7 +862,7 @@ gj.grid.methods = {
 
     getSelected: function ($grid) {
         var result = null, selections, record, position;
-        selections = $grid.find('tbody > tr.' + $grid.data().style.content.rowSelected);
+        selections = $grid.find('tbody > tr[data-selected = "true"]');
         if (selections.length > 0) {
             position = $(selections[0]).data('position');
             record = $grid.get(position);
@@ -874,7 +873,7 @@ gj.grid.methods = {
 
     getSelectedRows: function ($grid) {
         var data = $grid.data();
-        return $grid.find('tbody > tr.' + data.style.content.rowSelected);
+        return $grid.find('tbody > tr[data-selected = "true"]');
     },
 
     getSelections: function ($grid) {
