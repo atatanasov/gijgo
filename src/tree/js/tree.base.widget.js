@@ -2,12 +2,12 @@
   * @widget Tree
   * @plugin Base
   */
-function Grid($grid, arguments) {
+gj.tree.widget = function ($tree, arguments) {
     var self = this,
         methods = gj.tree.methods;
 
     self.xhr = null;
-    
+
     self.reload = function (params) { };
 
     self.append = function (data, $node) { };
@@ -26,8 +26,6 @@ function Grid($grid, arguments) {
 
     self.getByText = function (text) { };
 
-    //Removes a node from a TreeView, but keeps its jQuery.data() objects.
-    self.detach = function ($node) { };
     self.remove = function ($node) { };
 
     self.destroy = function () { };
@@ -38,4 +36,23 @@ function Grid($grid, arguments) {
     self.unselectAll = function (id) { };
 
     self.getSelection = function () { };
-}
+};
+
+gj.tree.widget.prototype = new gj.widget();
+gj.tree.widget.constructor = gj.tree.widget;
+
+(function ($) {
+    $.fn.tree = function (method) {
+        var $widget;
+        if (typeof method === 'object' || !method) {
+            return new gj.tree.widget(this, arguments);
+        } else {
+            $widget = new gj.tree.widget(this, null);
+            if ($widget[method]) {
+                return $widget[method].apply(this, Array.prototype.slice.call(arguments, 1));
+            } else {
+                throw 'Method ' + method + ' does not exist.';
+            }
+        }
+    };
+})(jQuery);

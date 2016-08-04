@@ -291,7 +291,6 @@ gj.grid.methods = {
         gj.widget.prototype.init.call(this, jsConfig, 'grid');
 
         gj.grid.methods.initialize(this);
-        this.attr('data-initialized', true);
 
         if (this.data('autoLoad')) {
             this.reload();
@@ -322,7 +321,7 @@ gj.grid.methods = {
         this.find('thead > tr > th').each(function () {
             var $el = $(this),
                 title = $el.text(),
-                config = gj.widget.prototype.getHTMLConfig.call($el); //gj.grid.methods.getAttributes($el);
+                config = gj.widget.prototype.getHTMLConfig.call($el);
             config.title = title;
             if (!config.field) {
                 config.field = title;
@@ -383,6 +382,7 @@ gj.grid.methods = {
 
         gj.grid.methods.renderHeader($grid);
         gj.grid.methods.appendEmptyRow($grid, '&nbsp;');
+        $grid.attr('data-initialized', true);
         gj.grid.events.initialized($grid);
     },
 
@@ -1308,13 +1308,13 @@ gj.grid.widget.prototype.getHTMLConfig = gj.grid.methods.getHTMLConfig;
 
 (function ($) {
     $.fn.grid = function (method) {
-        var $grid;
+        var $widget;
         if (typeof method === 'object' || !method) {
             return new gj.grid.widget(this, arguments);
         } else {
-            $grid = new gj.grid.widget(this, null);
-            if ($grid[method]) {
-                return $grid[method].apply(this, Array.prototype.slice.call(arguments, 1));
+            $widget = new gj.grid.widget(this, null);
+            if ($widget[method]) {
+                return $widget[method].apply(this, Array.prototype.slice.call(arguments, 1));
             } else {
                 throw 'Method ' + method + ' does not exist.';
             }

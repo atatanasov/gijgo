@@ -435,13 +435,13 @@ gj.dialog.widget.prototype.getHTMLConfig = gj.dialog.methods.getHTMLConfig;
 
 (function ($) {
     $.fn.dialog = function (method) {
-        var $dialog;
+        var $widget;
         if (typeof method === 'object' || !method) {
             return new gj.dialog.widget(this, arguments);
         } else {
-            $dialog = new gj.dialog.widget(this, null);
-            if ($dialog[method]) {
-                return $dialog[method].apply(this, Array.prototype.slice.call(arguments, 1));
+            $widget = new gj.dialog.widget(this, null);
+            if ($widget[method]) {
+                return $widget[method].apply(this, Array.prototype.slice.call(arguments, 1));
             } else {
                 throw 'Method ' + method + ' does not exist.';
             }

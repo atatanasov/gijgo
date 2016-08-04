@@ -160,13 +160,13 @@ gj.droppable.widget.constructor = gj.droppable.widget;
 
 (function ($) {
     $.fn.droppable = function (method) {
-        var $droppable;
+        var $widget;
         if (typeof method === 'object' || !method) {
             return new gj.droppable.widget(this, arguments);
         } else {
-            $droppable = new gj.droppable.widget(this, null);
-            if ($droppable[method]) {
-                return $droppable[method].apply(this, Array.prototype.slice.call(arguments, 1));
+            $widget = new gj.droppable.widget(this, null);
+            if ($widget[method]) {
+                return $widget[method].apply(this, Array.prototype.slice.call(arguments, 1));
             } else {
                 throw 'Method ' + method + ' does not exist.';
             }

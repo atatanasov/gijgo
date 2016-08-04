@@ -291,13 +291,13 @@ gj.draggable.widget.constructor = gj.draggable.widget;
 
 (function ($) {
     $.fn.draggable = function (method) {
-        var $draggable;
+        var $widget;
         if (typeof method === 'object' || !method) {
             return new gj.draggable.widget(this, arguments);
         } else {
-            $draggable = new gj.draggable.widget(this, null);
-            if ($draggable[method]) {
-                return $draggable[method].apply(this, Array.prototype.slice.call(arguments, 1));
+            $widget = new gj.draggable.widget(this, null);
+            if ($widget[method]) {
+                return $widget[method].apply(this, Array.prototype.slice.call(arguments, 1));
             } else {
                 throw 'Method ' + method + ' does not exist.';
             }

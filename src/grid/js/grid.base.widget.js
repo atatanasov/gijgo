@@ -576,13 +576,13 @@ gj.grid.widget.prototype.getHTMLConfig = gj.grid.methods.getHTMLConfig;
 
 (function ($) {
     $.fn.grid = function (method) {
-        var $grid;
+        var $widget;
         if (typeof method === 'object' || !method) {
             return new gj.grid.widget(this, arguments);
         } else {
-            $grid = new gj.grid.widget(this, null);
-            if ($grid[method]) {
-                return $grid[method].apply(this, Array.prototype.slice.call(arguments, 1));
+            $widget = new gj.grid.widget(this, null);
+            if ($widget[method]) {
+                return $widget[method].apply(this, Array.prototype.slice.call(arguments, 1));
             } else {
                 throw 'Method ' + method + ' does not exist.';
             }
