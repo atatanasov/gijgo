@@ -46,7 +46,7 @@
             droppable: {
                 files: {
                     'dist/modular/droppable/js/droppable.base.js': ['src/droppable/js/droppable.base.js'],
-                    'dist/combined/js/droppable.js': ['src/draggable/js/droppable.base.js']
+                    'dist/combined/js/droppable.js': ['src/droppable/js/droppable.base.js']
                 }
             },
             grid: {
