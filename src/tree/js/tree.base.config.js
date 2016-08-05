@@ -21,6 +21,28 @@ if (typeof(gj.tree) === 'undefined') {
 
 gj.tree.config = {
     base: {
+
+        /** When this setting is enabled the content of the tree will be loaded automatically after the creation of the tree.
+         * @type boolean
+         * @default true
+         * @example disabled <!-- tree.base -->
+         * <div id="tree" />
+         * <script>
+         *     var tree = $('#tree').tree({
+         *         dataSource: [ { text: "foo", items: [ { text: "bar" } ] } ],
+         *         autoLoad: false
+         *     });
+         *     tree.reload(); //call .reload() explicitly in order to load the data in the tree
+         * </script>
+         * @example enabled <!-- tree.base -->
+         * <div id="tree" />
+         * <script>
+         *     $('#tree').tree({
+         *         dataSource: [ { text: "foo", items: [ { text: "bar" } ] } ],
+         *         autoLoad: true
+         *     });
+         * </script>
+         */
         autoLoad: true,
         selectionType: 'single',
         selectionMethod: 'basic',

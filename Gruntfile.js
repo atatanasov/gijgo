@@ -18,7 +18,8 @@
                     { src: ['src/dialog/js/*.js'], dest: 'examples/dialog/' },
                     { src: ['src/draggable/js/*.js'], dest: 'examples/draggable/' },
                     { src: ['src/droppable/js/*.js'], dest: 'examples/droppable/' },
-                    { src: ['src/grid/js/*.js'], dest: 'examples/grid/' }
+                    { src: ['src/grid/js/*.js'], dest: 'examples/grid/' },
+                    { src: ['src/tree/js/*.js'], dest: 'examples/tree/' }
                 ]
             }
         },
@@ -71,6 +72,14 @@
                     'dist/modular/grid/css/grid.columnReorder.css': ['src/grid/css/grid.columnReorder.css'],
 
                     'dist/combined/css/grid.css': ['dist/modular/grid/css/grid.base.css', 'dist/modular/grid/css/grid.responsiveDesign.css', 'src/grid/css/grid.pagination.css', 'src/grid/css/grid.resizableColumns.css', 'dist/modular/grid/css/grid.rowReorder.css', 'dist/modular/grid/css/grid.columnReorder.css']
+                }
+            },
+            tree: {
+                files: {
+                    'dist/modular/tree/js/tree.base.js': ['src/tree/js/tree.base.config.js', 'src/tree/js/tree.base.events.js', 'src/tree/js/tree.base.methods.js', 'src/tree/js/tree.base.widget.js'],
+                    'dist/combined/js/tree.js': ['dist/modular/tree/js/tree.base.js'],
+                    'dist/modular/tree/css/tree.base.css': ['src/tree/css/tree.base.css'],
+                    'dist/combined/css/tree.css': ['dist/modular/tree/css/tree.base.css'],
                 }
             }
         },
@@ -145,6 +154,12 @@
                     'dist/modular/grid/js/grid.rowReorder.min.js': ['dist/modular/grid/js/grid.rowReorder.js'],
                     'dist/modular/grid/js/grid.columnReorder.min.js': ['dist/modular/grid/js/grid.columnReorder.js']
                 }
+            },
+            tree: {
+                files: {
+                    'dist/combined/js/tree.min.js': ['dist/combined/js/tree.js'],
+                    'dist/modular/tree/js/tree.base.min.js': ['dist/modular/tree/js/tree.base.js']
+                }
             }
         },
         cssmin: {
@@ -152,6 +167,7 @@
                 files: [
                     { expand: true, cwd: 'dist/combined/css', src: ['*.css', '!*.min.css'], dest: 'dist/combined/css', ext: '.min.css' },
                     { expand: true, cwd: 'dist/modular/dialog/css', src: ['dialog.base.css'], dest: 'dist/modular/dialog/css', ext: '.base.min.css' },
+                    { expand: true, cwd: 'dist/modular/tree/css', src: ['tree.base.css'], dest: 'dist/modular/tree/css', ext: '.base.min.css' },
                     { expand: true, cwd: 'dist/modular/grid/css', src: ['grid.base.css'], dest: 'dist/modular/grid/css', ext: '.base.min.css' },
                     { expand: true, cwd: 'dist/modular/grid/css', src: ['grid.pagination.css'], dest: 'dist/modular/grid/css', ext: '.pagination.min.css' },
                     { expand: true, cwd: 'dist/modular/grid/css', src: ['grid.responsiveDesign.css'], dest: 'dist/modular/grid/css', ext: '.responsiveDesign.min.css' },
@@ -339,6 +355,9 @@ var writer = {
                     case 'grid.columnReorder':
                         result += '  <link href="../../dist/modular/grid/css/grid.columnReorder.css" rel="stylesheet" type="text/css">\r\n';
                         break;
+                    case 'tree.base':
+                        result += '  <link href="../../dist/modular/tree/css/tree.base.css" rel="stylesheet" type="text/css">\r\n';
+                        break;
                 }
             }
             for (i = 0; i < names.length; i++) {
@@ -379,6 +398,9 @@ var writer = {
                         break;
                     case 'grid.columnReorder':
                         result += '  <script src="../../dist/modular/grid/js/grid.columnReorder.js"></script>\r\n';
+                        break;
+                    case 'tree.base':
+                        result += '  <script src="../../dist/modular/tree/js/tree.base.js"></script>\r\n';
                         break;
                 }
             }
