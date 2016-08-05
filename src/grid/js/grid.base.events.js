@@ -100,7 +100,7 @@ gj.grid.events = {
      *
      * @event cellDataBound
      * @param {object} e - event data
-     * @param {object} $wrapper - the cell wrapper presented as jquery object
+     * @param {object} $displayEl - inner div element for display of the cell value presented as jquery object
      * @param {string} id - the id of the record
      * @param {object} column - the column configuration data
      * @param {object} record - the data of the row record
@@ -111,15 +111,15 @@ gj.grid.events = {
      *         dataSource: '/DataSources/GetPlayers',
      *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' }, { field: 'Bulgarian', title: 'Is Bulgarian?' } ]
      *     });
-     *     grid.on('cellDataBound', function (e, $wrapper, id, column, record) {
+     *     grid.on('cellDataBound', function (e, $displayEl, id, column, record) {
      *         if ('Bulgarian' === column.field) {
-     *             $wrapper.text(record.PlaceOfBirth.indexOf('Bulgaria') > -1 ? 'Yes' : 'No');
+     *             $displayEl.text(record.PlaceOfBirth.indexOf('Bulgaria') > -1 ? 'Yes' : 'No');
      *         }
      *     });
      * </script>
      */
-    cellDataBound: function ($grid, $wrapper, id, column, record) {
-        $grid.triggerHandler('cellDataBound', [$wrapper, id, column, record]);
+    cellDataBound: function ($grid, $displayEl, id, column, record) {
+        $grid.triggerHandler('cellDataBound', [$displayEl, id, column, record]);
     },
 
     /**

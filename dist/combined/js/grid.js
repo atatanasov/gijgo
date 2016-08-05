@@ -230,8 +230,8 @@ gj.grid.events = {
     /**
      * Event fires after insert of a cell in the grid during the loading of the data
      * */
-    cellDataBound: function ($grid, $wrapper, id, column, record) {
-        $grid.triggerHandler('cellDataBound', [$wrapper, id, column, record]);
+    cellDataBound: function ($grid, $displayEl, id, column, record) {
+        $grid.triggerHandler('cellDataBound', [$displayEl, id, column, record]);
     },
 
     /**
@@ -412,7 +412,7 @@ gj.grid.methods = {
             $cell.css('text-align', columns[i].align || 'left');
             if (columns[i].sortable) {
                 $cell.addClass(style.sortable);
-                $cell.on('click', gj.grid.methods.createSortHandler($grid, $cell));
+                $cell.on('click', gj.grid.methods.createSortHandler($grid, $cell, columns[i]));
             }
             if ('checkbox' === data.selectionMethod && 'multiple' === data.selectionType && 'checkbox' === columns[i].type) {
                 $checkAllBoxes = $cell.find('input[id="checkAllBoxes"]'); //TODO: use data-role instead of id. this is going to cause some other bugs.
@@ -441,27 +441,18 @@ gj.grid.methods = {
         $thead.empty().append($row);
     },
 
-    createSortHandler: function ($grid, $cell) {
+    createSortHandler: function ($grid, $cell, column) {
         return function () {
-            var $sortIcon, data, cellData, style, params = {};
+            var $sortIcon, data, style, params = {};
             if ($grid.count() > 0) {
                 data = $grid.data();
-                cellData = $cell.data('cell');
-                cellData.direction = (cellData.direction === 'asc' ? 'desc' : 'asc');
+                column.direction = (column.direction === 'asc' ? 'desc' : 'asc');
 
                 if ($.isArray(data.dataSource)) {
-                    if (cellData.direction === 'asc') {
-                        data.dataSource.sort(function compare(a, b) {
-                            return ((a[cellData.field] < b[cellData.field]) ? -1 : ((a[cellData.field] > b[cellData.field]) ? 1 : 0));
-                        });
-                    } else {
-                        data.dataSource.sort(function compare(a, b) {
-                            return ((a[cellData.field] > b[cellData.field]) ? -1 : ((a[cellData.field] < b[cellData.field]) ? 1 : 0));
-                        });
-                    }
+                    data.dataSource.sort(column.sortable.sorter ? column.sortable.sorter(column.direction, column) : gj.grid.methods.createDefaultSorter(column.direction, column));
                 } else {
-                    params[data.defaultParams.sortBy] = cellData.field;
-                    params[data.defaultParams.direction] = cellData.direction;
+                    params[data.defaultParams.sortBy] = column.field;
+                    params[data.defaultParams.direction] = column.direction;
                 }
 
                 style = data.style.header;
@@ -472,7 +463,7 @@ gj.grid.methods = {
                     $cell.append($sortIcon);
                 }
 
-                if ('asc' === cellData.direction) {
+                if ('asc' === column.direction) {
                     $sortIcon.empty().removeClass(style.sortDescIcon);
                     if (style.sortAscIcon) {
                         $sortIcon.addClass(style.sortAscIcon);
@@ -490,6 +481,14 @@ gj.grid.methods = {
 
                 $grid.reload(params);
             }
+        };
+    },
+
+    createDefaultSorter: function (direction, column) {
+        return function (recordA, recordB) {
+            var a = recordA[column.field],
+                b = recordB[column.field];
+            return (direction === 'asc') ? a.localeCompare(b) : b.localeCompare(a);
         };
     },
 
@@ -688,7 +687,7 @@ gj.grid.methods = {
             });
             $wrapper.html(text);
         } else if (column.renderer && typeof (column.renderer) === 'function') {
-            text = column.renderer(record[column.field], record, $wrapper, $cell);
+            text = column.renderer(record[column.field], record, $cell, $wrapper);
             if (text) {
                 $wrapper.html(text);
             }
@@ -1624,10 +1623,10 @@ gj.grid.plugins.inlineEditing = {
 
     configure: function ($grid) {
         $.extend(true, $grid, gj.grid.plugins.inlineEditing.public);
-        $grid.on('cellDataBound', function (e, $wrapper, id, column, record) {
+        $grid.on('cellDataBound', function (e, $displayEl, id, column, record) {
             if (column.editor) {
-                $wrapper.parent().on('click', function () {
-                    gj.grid.plugins.inlineEditing.private.OnCellEdit($grid, $wrapper.parent(), column, record);
+                $displayEl.parent().on('click', function () {
+                    gj.grid.plugins.inlineEditing.private.OnCellEdit($grid, $displayEl.parent(), column, record);
                 });
             }
         });

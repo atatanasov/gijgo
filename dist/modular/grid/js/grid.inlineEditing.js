@@ -131,10 +131,10 @@ gj.grid.plugins.inlineEditing = {
 
     configure: function ($grid) {
         $.extend(true, $grid, gj.grid.plugins.inlineEditing.public);
-        $grid.on('cellDataBound', function (e, $wrapper, id, column, record) {
+        $grid.on('cellDataBound', function (e, $displayEl, id, column, record) {
             if (column.editor) {
-                $wrapper.parent().on('click', function () {
-                    gj.grid.plugins.inlineEditing.private.OnCellEdit($grid, $wrapper.parent(), column, record);
+                $displayEl.parent().on('click', function () {
+                    gj.grid.plugins.inlineEditing.private.OnCellEdit($grid, $displayEl.parent(), column, record);
                 });
             }
         });

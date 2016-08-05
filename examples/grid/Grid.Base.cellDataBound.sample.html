@@ -14,9 +14,9 @@
          dataSource: '/DataSources/GetPlayers',
          columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' }, { field: 'Bulgarian', title: 'Is Bulgarian?' } ]
      });
-     grid.on('cellDataBound', function (e, $wrapper, id, column, record) {
+     grid.on('cellDataBound', function (e, $displayEl, id, column, record) {
          if ('Bulgarian' === column.field) {
-             $wrapper.text(record.PlaceOfBirth.indexOf('Bulgaria') > -1 ? 'Yes' : 'No');
+             $displayEl.text(record.PlaceOfBirth.indexOf('Bulgaria') > -1 ? 'Yes' : 'No');
          }
      });
  </script>

@@ -154,9 +154,9 @@ gj.grid.config = {
             /** Indicates if the column is sortable.
              * If set to true the user can click the column header and sort the grid by the column source field.
              * @alias column.sortable
-             * @type boolean
+             * @type boolean|object
              * @default false
-             * @example sample <!-- grid.base -->
+             * @example Remote.DataSource <!-- grid.base -->
              * <table id="grid"></table>
              * <script>
              *     $('#grid').grid({
@@ -166,6 +166,47 @@ gj.grid.config = {
              *             { field: 'Name', sortable: true },
              *             { field: 'PlaceOfBirth', sortable: false },
              *             { field: 'DateOfBirth', type: 'date', title: 'Birth Date' }
+             *         ]
+             *     });
+             * </script>
+             * @example Local.DataSource <!-- grid.base -->
+             * <table id="grid"></table>
+             * <script>
+             *     var data = [
+             *         { 'ID': 1, 'Name': 'Hristo Stoichkov', 'PlaceOfBirth': 'Plovdiv, Bulgaria' },
+             *         { 'ID': 2, 'Name': 'Ronaldo Luis Nazario de Lima', 'PlaceOfBirth': 'Rio de Janeiro, Brazil' },
+             *         { 'ID': 3, 'Name': 'David Platt', 'PlaceOfBirth': 'Chadderton, Lancashire, England' }
+             *     ];
+             *     $('#grid').grid({
+             *         dataSource: data,
+             *         columns: [
+             *             { field: 'ID' },
+             *             { field: 'Name', sortable: true },
+             *             { field: 'PlaceOfBirth', sortable: true }
+             *         ]
+             *     });
+             * </script>
+             * @example Local.CustomSorting <!-- grid.base -->
+             * <table id="grid"></table>
+             * <script>
+             *     var data = [
+             *         { 'ID': 1, 'Value1': 'Foo', 'Value2': 'Foo' },
+             *         { 'ID': 2, 'Value1': 'bar', 'Value2': 'bar' },
+             *         { 'ID': 3, 'Value1': 'moo', 'Value2': 'moo' }
+             *     ];
+             *     var caseInsensitiveSort = function (direction, column) { 
+             *         return function (recordA, recordB) {
+             *             var a = recordA[column.field].toLowerCase(),
+             *                 b = recordB[column.field].toLowerCase();
+             *             return (direction === 'asc') ? a.localeCompare(b) : b.localeCompare(a);
+             *         };
+             *     };
+             *     $('#grid').grid({
+             *         dataSource: data,
+             *         columns: [
+             *             { field: 'ID' },
+             *             { field: 'Value1', sortable: true },
+             *             { field: 'Value2', sortable: { sorter: caseInsensitiveSort } }
              *         ]
              *     });
              * </script>
@@ -476,13 +517,17 @@ gj.grid.config = {
              * @alias column.renderer
              * @type function
              * @default undefined
+             * @param {string} value - the record field value
+             * @param {object} record - the data of the row record
+             * @param {object} $cell - the current table cell presented as jquery object
+             * @param {object} $displayEl - inner div element for display of the cell value presented as jquery object
              * @example sample <!-- grid.base -->
              * <table id="grid" data-source="/DataSources/GetPlayers"></table>
              * <script>
-             *     var nameRenderer = function (value, record, $wrapper, $cell) { 
+             *     var nameRenderer = function (value, record, $cell, $displayEl) { 
              *         $cell.css('font-style', 'italic'); 
-             *         $wrapper.css('background-color', '#EEE');
-             *         $wrapper.text(value);
+             *         $displayEl.css('background-color', '#EEE');
+             *         $displayEl.text(value);
              *     };
              *     $('#grid').grid({
              *         uiLibrary: 'jqueryui',
