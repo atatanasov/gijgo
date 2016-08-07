@@ -224,6 +224,9 @@ gj.grid.plugins.expandCollapseRows = {
             $grid.on('rowRemoving', function (e, $row, id, record) {
                 gj.grid.plugins.expandCollapseRows.private.detailCollapse($grid, $row.children('td').first());
             });
+            $grid.on('dataBinding', function () {
+                $grid.collapseAll();
+            });
             $grid.on('pageChanging', function () {
                 $grid.collapseAll();
             });

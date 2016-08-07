@@ -308,7 +308,7 @@ gj.grid.methods = {
                 $checkAllBoxes.show();
             }
         }
-        $tbody.find('tr[data-role="empty"]').remove();
+        $tbody.find('tr[data-role!="row"]').remove();
         if (0 === recLen) {
             $tbody.empty();
             gj.grid.methods.appendEmptyRow($grid);

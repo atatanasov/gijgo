@@ -594,7 +594,7 @@ gj.grid.methods = {
                 $checkAllBoxes.show();
             }
         }
-        $tbody.find('tr[data-role="empty"]').remove();
+        $tbody.find('tr[data-role!="row"]').remove();
         if (0 === recLen) {
             $tbody.empty();
             gj.grid.methods.appendEmptyRow($grid);
@@ -1483,6 +1483,9 @@ gj.grid.plugins.expandCollapseRows = {
             });
             $grid.on('rowRemoving', function (e, $row, id, record) {
                 gj.grid.plugins.expandCollapseRows.private.detailCollapse($grid, $row.children('td').first());
+            });
+            $grid.on('dataBinding', function () {
+                $grid.collapseAll();
             });
             $grid.on('pageChanging', function () {
                 $grid.collapseAll();
