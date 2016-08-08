@@ -8,10 +8,10 @@
   <script src="../../dist/modular/tree/js/tree.base.js"></script>
 </head>
 <body>
- <div id="tree" />
+ <div id="tree"></div>
  <script>
      $('#tree').tree({
-         dataSource: [ { text: "foo", items: [ { text: "bar" } ] } ],
+         dataSource: [ { text: "foo", children: [ { text: "bar" } ] } ],
          autoLoad: true
      });
  </script>

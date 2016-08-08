@@ -2,17 +2,19 @@
   * @widget Tree
   * @plugin Base
   */
-gj.tree.widget = function ($tree, arguments) {
+gj.tree.widget = function ($element, arguments) {
     var self = this,
         methods = gj.tree.methods;
 
     self.xhr = null;
 
-    self.reload = function (params) { };
+    self.reload = function (params) {
+        methods.reload.call(this, params);
+    };
 
-    self.append = function (data, $node) { };
+    self.appendNode = function (data, $node) { };
 
-    self.prepend = function (data, $node) { };
+    self.prependNode = function (data, $node) { };
 
     self.expand = function ($node) { };
 
@@ -36,6 +38,13 @@ gj.tree.widget = function ($tree, arguments) {
     self.unselectAll = function (id) { };
 
     self.getSelection = function () { };
+
+    $.extend($element, self);
+    if ('true' !== $element.attr('data-tree')) {
+        methods.init.apply($element, arguments);
+    }
+
+    return $element;
 };
 
 gj.tree.widget.prototype = new gj.widget();

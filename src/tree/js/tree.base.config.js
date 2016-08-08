@@ -26,19 +26,19 @@ gj.tree.config = {
          * @type boolean
          * @default true
          * @example disabled <!-- tree.base -->
-         * <div id="tree" />
+         * <div id="tree"></div>
          * <script>
          *     var tree = $('#tree').tree({
-         *         dataSource: [ { text: "foo", items: [ { text: "bar" } ] } ],
+         *         dataSource: [ { text: "foo", children: [ { text: "bar" } ] } ],
          *         autoLoad: false
          *     });
          *     tree.reload(); //call .reload() explicitly in order to load the data in the tree
          * </script>
          * @example enabled <!-- tree.base -->
-         * <div id="tree" />
+         * <div id="tree"></div>
          * <script>
          *     $('#tree').tree({
-         *         dataSource: [ { text: "foo", items: [ { text: "bar" } ] } ],
+         *         dataSource: [ { text: "foo", children: [ { text: "bar" } ] } ],
          *         autoLoad: true
          *     });
          * </script>
