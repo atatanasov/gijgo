@@ -9,7 +9,7 @@ gj.tree.widget = function ($element, arguments) {
     self.xhr = null;
 
     self.reload = function (params) {
-        methods.reload.call(this, params);
+        return methods.reload.call(this, params);
     };
 
     self.appendNode = function (data, $node) { };
@@ -34,8 +34,10 @@ gj.tree.widget = function ($element, arguments) {
 
     self.select = function (id) { };
     self.unselect = function (id) { };
-    self.selectAll = function (id) { };
-    self.unselectAll = function (id) { };
+    self.selectAll = function () { };
+    self.unselectAll = function () {
+
+    };
 
     self.getSelection = function () { };
 

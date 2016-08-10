@@ -88,10 +88,12 @@
     <Content Include="index.html" />
     <Content Include="src\grid\js\grid.base.events.js" />
     <Content Include="src\grid\js\grid.base.widget.js" />
+    <Content Include="src\tree\css\tree.base.css" />
     <Content Include="src\tree\js\tree.base.config.js" />
     <Content Include="src\tree\js\tree.base.events.js" />
     <Content Include="src\tree\js\tree.base.methods.js" />
     <Content Include="src\tree\js\tree.base.widget.js" />
+    <Content Include="src\tree\js\tree.checkboxes.js" />
     <Content Include="src\widget.js" />
   </ItemGroup>
   <ItemGroup>

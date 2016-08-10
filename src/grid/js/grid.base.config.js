@@ -662,7 +662,7 @@ gj.grid.config = {
          * If the type is set to multiple the user will be able to select more then one row from the grid.
          * @type (single|multiple)
          * @default "single"
-         * @example sample <!-- grid.base -->
+         * @example Multiple.Selection <!-- grid.base -->
          * <table id="grid"></table>
          * <script>
          *     $('#grid').grid({

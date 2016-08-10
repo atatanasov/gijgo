@@ -1,0 +1,20 @@
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Example</title>
+  <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+  <script src="../../dist/modular/widget/js/widget.js"></script>
+  <link href="../../dist/modular/tree/css/tree.base.css" rel="stylesheet" type="text/css">
+  <script src="../../dist/modular/tree/js/tree.base.js"></script>
+</head>
+<body>
+ <div id="tree"></div>
+ <script>
+     var tree = $('#tree').tree({
+         dataSource: [ { text: "foo", children: [ { text: "bar" } ] } ],
+         selectionType: 'single'
+     });
+     tree.reload(); //call .reload() explicitly in order to load the data in the tree
+ </script>
+</body>
+</html>
