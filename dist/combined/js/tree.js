@@ -22,7 +22,6 @@ gj.tree.config = {
         /** When this setting is enabled the content of the tree will be loaded automatically after the creation of the tree. */
         autoLoad: true,
 
-
         /** When this setting is enabled the content of the tree will be loaded automatically after the creation of the tree. */
         selectionType: 'single',
 
@@ -32,8 +31,11 @@ gj.tree.config = {
         textField: 'text',
         valueField: undefined,
         childrenField: 'children',
-        lazyLoading: false,
-        tmpl: undefined,
+
+        /** The name of the UI library that is going to be in use. */
+        uiLibrary: 'base',
+
+        /* tmpl: undefined, */
         style: {
             active: 'gj-tree-base-active'
         }
@@ -121,7 +123,7 @@ gj.tree.methods = {
 
     initialize: function ($element) {
         this.empty();
-        this.append('<ul class="gj-tree-list"/>');
+        this.append('<ul class="gj-tree-list gj-tree-unselectable"/>');
         gj.tree.events.initialized(this);
     },
 
@@ -139,6 +141,7 @@ gj.tree.methods = {
         var i, node, config = $tree.data(),
             $root = $tree.children('ul');
 
+        $root.off().empty();
         for (i = 0; i < config.dataSource.length; i++) {
             gj.tree.methods.appendNode($tree, $root, config.dataSource[i], config);
         }
@@ -147,15 +150,17 @@ gj.tree.methods = {
     appendNode: function ($tree, $parent, nodeData, config) {
         var i, $node, $newParent,
             $node = $('<li/>'),
-            $expander = $('<span data-role="expander" data-mode="close">+</span>'),
+            $expander = $('<span data-role="expander" data-mode="close">&nbsp;</span>'),
             $display = $('<span data-role="display">' + nodeData[config.textField] + '</span>');
 
         $expander.on('click', gj.tree.methods.expanderClickHandler($tree));
-        $display.on('click', gj.tree.methods.displayClickHandler($tree))
         $node.append($expander);
+
+        $display.on('click', gj.tree.methods.displayClickHandler($tree));
         $node.append($display);
 
         if (nodeData[config.childrenField] && nodeData[config.childrenField].length) {
+            $expander.text('+');
             $newParent = $('<ul class="gj-tree-list hidden"/>');
             $node.append($newParent);
             
@@ -189,35 +194,56 @@ gj.tree.methods = {
     displayClickHandler: function ($tree) {
         return function (e) {
             var $display = $(this),
-                $node = $display.parent('li'),
-                events = gj.tree.events;
+                $node = $display.parent('li');
             if ($display.attr('data-selected') === 'true') {
-                $display.removeClass($tree.data().style.active).removeAttr('data-selected');
-                events.unselect($tree, $node);
+                gj.tree.methods.unselect($tree, $node);
             } else {
-                $display.addClass($tree.data().style.active).attr('data-selected', 'true');
-                events.select($tree, $node);
+                if ($tree.data('selectionType') === 'single') {
+                    gj.tree.methods.unselectAll($tree);
+                }
+                gj.tree.methods.select($tree, $node);
             }
         }
     },
 
-    selectAll: function () {
-
+    selectAll: function ($tree) {
+        var i, $nodes = $tree.find('ul li');
+        for (i = 0; i < $nodes.length; i++) {
+            gj.tree.methods.select($tree, $($nodes[i]), true);
+        }
+        return $tree;
     },
 
-    select: function ($tree, $node) {
-
+    select: function ($tree, $node, cascade) {
+        var $display = $node.children('span[data-role="display"]');
+        $display.addClass($tree.data().style.active).attr('data-selected', 'true');
+        if (cascade) {
+            $children = $node.find('ul li');
+            for (i = 0; i < $children.length; i++) {
+                gj.tree.methods.select($tree, $($children[i]), cascade);
+            }
+        }
+        gj.tree.events.select($tree, $node);
     },
     
     unselectAll: function ($tree) {
-        var i, $nodes = this.find('ul li');
+        var i, $nodes = $tree.find('ul li');
         for (i = 0; i < $nodes.length; i++) {
-
+            gj.tree.methods.unselect($tree, $($nodes[i]), true);
         }
+        return $tree;
     },
 
-    unselect: function ($tree, $node) {
-
+    unselect: function ($tree, $node, cascade) {
+        var i, $children, $display = $node.children('span[data-role="display"]');
+        $display.removeClass($tree.data().style.active).removeAttr('data-selected');
+        if (cascade) {
+            $children = $node.find('ul li');
+            for (i = 0; i < $children.length; i++) {
+                gj.tree.methods.unselect($tree, $($children[i]), cascade);
+            }
+        }
+        gj.tree.events.unselect($tree, $node);
     }
 }
 /** */
@@ -253,9 +279,13 @@ gj.tree.widget = function ($element, arguments) {
 
     self.select = function (id) { };
     self.unselect = function (id) { };
-    self.selectAll = function () { };
-    self.unselectAll = function () {
 
+    self.selectAll = function () {
+        return methods.selectAll(this);
+    };
+
+    self.unselectAll = function () {
+        return methods.unselectAll(this);
     };
 
     self.getSelection = function () { };

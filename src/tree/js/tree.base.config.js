@@ -29,7 +29,7 @@ gj.tree.config = {
          * <div id="tree"></div>
          * <script>
          *     var tree = $('#tree').tree({
-         *         dataSource: [ { text: "foo", children: [ { text: "bar" } ] } ],
+         *         dataSource: [ { text: 'foo', children: [ { text: 'bar' } ] } ],
          *         autoLoad: false
          *     });
          *     tree.reload(); //call .reload() explicitly in order to load the data in the tree
@@ -38,13 +38,12 @@ gj.tree.config = {
          * <div id="tree"></div>
          * <script>
          *     $('#tree').tree({
-         *         dataSource: [ { text: "foo", children: [ { text: "bar" } ] } ],
+         *         dataSource: [ { text: 'foo', children: [ { text: 'bar' } ] } ],
          *         autoLoad: true
          *     });
          * </script>
          */
         autoLoad: true,
-
 
         /** When this setting is enabled the content of the tree will be loaded automatically after the creation of the tree.
          * @type (single|multiple)
@@ -53,16 +52,19 @@ gj.tree.config = {
          * <div id="tree"></div>
          * <script>
          *     var tree = $('#tree').tree({
-         *         dataSource: [ { text: "foo", children: [ { text: "bar" } ] } ],
+         *         dataSource: [
+         *             { text: 'North America', children: [ { text: 'Canada' },  { text: 'USA', children: [ { text: 'California' }, { text: 'Miami' } ] },  { text: 'Mexico' } ] },
+         *             { text: 'Europe', children: [ { text: 'France' },  { text: 'Spain' },  { text: 'Italy' } ] },
+         *             { text: 'South America', children: [ { text: 'Brazil' },  { text: 'Argentina' },  { text: 'Columbia' } ] }
+         *         ],
          *         selectionType: 'single'
          *     });
-         *     tree.reload(); //call .reload() explicitly in order to load the data in the tree
          * </script>
          * @example Multiple.Selection <!-- tree.base -->
          * <div id="tree"></div>
          * <script>
          *     $('#tree').tree({
-         *         dataSource: [ { text: "foo", children: [ { text: "bar" } ] } ],
+         *         dataSource: [ { text: 'foo', children: [ { text: 'bar' } ] } ],
          *         selectionType: 'multiple'
          *     });
          * </script>
@@ -75,8 +77,27 @@ gj.tree.config = {
         textField: 'text',
         valueField: undefined,
         childrenField: 'children',
-        lazyLoading: false,
-        tmpl: undefined,
+
+        /** The name of the UI library that is going to be in use.
+         * @additionalinfo The css files for Bootstrap should be manually included if you use bootstrap as UI Library.
+         * @type (base|bootstrap)
+         * @default single
+         * @example Bootstrap <!-- bootstrap, tree.base -->
+         * <div id="tree"></div>
+         * <script>
+         *     var tree = $('#tree').tree({
+         *         dataSource: [
+         *             { text: 'North America', children: [ { text: 'Canada' },  { text: 'USA', children: [ { text: 'California' }, { text: 'Miami' } ] },  { text: 'Mexico' } ] },
+         *             { text: 'Europe', children: [ { text: 'France' },  { text: 'Spain' },  { text: 'Italy' } ] },
+         *             { text: 'South America', children: [ { text: 'Brazil' },  { text: 'Argentina' },  { text: 'Columbia' } ] }
+         *         ],
+         *         uiLibrary: 'bootstrap'
+         *     });
+         * </script>
+         */
+        uiLibrary: 'base',
+
+        /* tmpl: undefined, */
         style: {
             active: 'gj-tree-base-active'
         }

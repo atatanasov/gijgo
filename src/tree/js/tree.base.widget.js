@@ -34,9 +34,13 @@ gj.tree.widget = function ($element, arguments) {
 
     self.select = function (id) { };
     self.unselect = function (id) { };
-    self.selectAll = function () { };
-    self.unselectAll = function () {
 
+    self.selectAll = function () {
+        return methods.selectAll(this);
+    };
+
+    self.unselectAll = function () {
+        return methods.unselectAll(this);
     };
 
     self.getSelection = function () { };
