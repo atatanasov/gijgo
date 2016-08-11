@@ -4,7 +4,7 @@ ul.gj-tree-list {
     margin: 0px;
 }
 
-ul.gj-tree-list li {
+ul.gj-tree-list li.gj-tree-item {
     padding: 2px 0px 2px 16px;
 }
 
@@ -20,12 +20,12 @@ ul.gj-tree-list li span[data-role="display"] {
     padding: 1px 3px;
 }
 
-ul.hidden {
+ul.gj-hidden {
     display: none;
 }
 
 .gj-tree-base-active {
-    background-color: #f5f5f5;
+    background-color: #ddd;
 }
 
 .gj-tree-unselectable {

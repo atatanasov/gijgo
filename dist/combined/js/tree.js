@@ -37,11 +37,21 @@ gj.tree.config = {
 
         /* tmpl: undefined, */
         style: {
+            wrapper: 'gj-tree-unselectable',
+            list: 'gj-tree-list',
+            item: 'gj-tree-item',
             active: 'gj-tree-base-active'
         }
     },
 
-    bootstrap: {},
+    bootstrap: {
+        style: {
+            wrapper: 'gj-tree-unselectable',
+            list: 'list-group',
+            item: 'list-group-item',
+            active: ''
+        }
+    },
 
     jqueryui: {}
 };
@@ -121,9 +131,10 @@ gj.tree.methods = {
         return this;
     },
 
-    initialize: function ($element) {
-        this.empty();
-        this.append('<ul class="gj-tree-list gj-tree-unselectable"/>');
+    initialize: function () {
+        var style = this.data('style'),
+            $root = $('<ul class="' + style.list + '"/>');
+        this.empty().addClass(style.wrapper).append($root);
         gj.tree.events.initialized(this);
     },
 
@@ -149,7 +160,8 @@ gj.tree.methods = {
 
     appendNode: function ($tree, $parent, nodeData, config) {
         var i, $node, $newParent,
-            $node = $('<li/>'),
+            style = $tree.data().style,
+            $node = $('<li/>').addClass(style.item),
             $expander = $('<span data-role="expander" data-mode="close">&nbsp;</span>'),
             $display = $('<span data-role="display">' + nodeData[config.textField] + '</span>');
 
@@ -161,7 +173,7 @@ gj.tree.methods = {
 
         if (nodeData[config.childrenField] && nodeData[config.childrenField].length) {
             $expander.text('+');
-            $newParent = $('<ul class="gj-tree-list hidden"/>');
+            $newParent = $('<ul />').addClass(style.list).addClass('gj-hidden');
             $node.append($newParent);
             
             for (i = 0; i < nodeData[config.childrenField].length; i++) {

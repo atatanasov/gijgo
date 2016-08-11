@@ -99,11 +99,21 @@ gj.tree.config = {
 
         /* tmpl: undefined, */
         style: {
+            wrapper: 'gj-tree-unselectable',
+            list: 'gj-tree-list',
+            item: 'gj-tree-item',
             active: 'gj-tree-base-active'
         }
     },
 
-    bootstrap: {},
+    bootstrap: {
+        style: {
+            wrapper: 'gj-tree-unselectable',
+            list: 'list-group',
+            item: 'list-group-item',
+            active: ''
+        }
+    },
 
     jqueryui: {}
 };
