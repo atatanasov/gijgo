@@ -102,16 +102,24 @@ gj.tree.config = {
             wrapper: 'gj-tree-unselectable',
             list: 'gj-tree-list',
             item: 'gj-tree-item',
-            active: 'gj-tree-base-active'
+            active: 'gj-tree-base-active',
+            expander: 'gj-tree-expander',
+            expandIcon: undefined,
+            collapseIcon: undefined,
+            leafIcon: undefined
         }
     },
 
     bootstrap: {
         style: {
             wrapper: 'gj-tree-unselectable',
-            list: 'list-group',
+            list: 'gj-tree-list list-group',
             item: 'list-group-item',
-            active: ''
+            active: '',
+            expander: 'glyphicon',
+            expandIcon: 'glyphicon-plus',
+            collapseIcon: 'glyphicon-minus',
+            leafIcon: 'glyphicon-leaf'
         }
     },
 

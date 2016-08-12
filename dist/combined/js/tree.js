@@ -40,16 +40,24 @@ gj.tree.config = {
             wrapper: 'gj-tree-unselectable',
             list: 'gj-tree-list',
             item: 'gj-tree-item',
-            active: 'gj-tree-base-active'
+            active: 'gj-tree-base-active',
+            expander: 'gj-tree-expander',
+            expandIcon: undefined,
+            collapseIcon: undefined,
+            leafIcon: undefined
         }
     },
 
     bootstrap: {
         style: {
             wrapper: 'gj-tree-unselectable',
-            list: 'list-group',
+            list: 'gj-tree-list list-group',
             item: 'list-group-item',
-            active: ''
+            active: '',
+            expander: 'glyphicon',
+            expandIcon: 'glyphicon-plus',
+            collapseIcon: 'glyphicon-minus',
+            leafIcon: 'glyphicon-leaf'
         }
     },
 
@@ -149,36 +157,38 @@ gj.tree.methods = {
     },
 
     loadData: function ($tree) {
-        var i, node, config = $tree.data(),
+        var i, node, data = $tree.data(),
             $root = $tree.children('ul');
 
         $root.off().empty();
-        for (i = 0; i < config.dataSource.length; i++) {
-            gj.tree.methods.appendNode($tree, $root, config.dataSource[i], config);
+        for (i = 0; i < data.dataSource.length; i++) {
+            gj.tree.methods.appendNode($tree, $root, data.dataSource[i], data);
         }
     },
 
-    appendNode: function ($tree, $parent, nodeData, config) {
+    appendNode: function ($tree, $parent, nodeData) {
         var i, $node, $newParent,
-            style = $tree.data().style,
-            $node = $('<li/>').addClass(style.item),
-            $expander = $('<span data-role="expander" data-mode="close">&nbsp;</span>'),
-            $display = $('<span data-role="display">' + nodeData[config.textField] + '</span>');
+            data = $tree.data(),
+            $node = $('<li/>').addClass(data.style.item),
+            $expander = $('<span data-role="expander" data-mode="close"></span>'),
+            $display = $('<span data-role="display">' + nodeData[data.textField] + '</span>');
 
-        $expander.on('click', gj.tree.methods.expanderClickHandler($tree));
+        $expander.addClass(data.style.expander).on('click', gj.tree.methods.expanderClickHandler($tree));
         $node.append($expander);
 
         $display.on('click', gj.tree.methods.displayClickHandler($tree));
         $node.append($display);
 
-        if (nodeData[config.childrenField] && nodeData[config.childrenField].length) {
-            $expander.text('+');
-            $newParent = $('<ul />').addClass(style.list).addClass('gj-hidden');
+        if (nodeData[data.childrenField] && nodeData[data.childrenField].length) {
+            data.style.expandIcon ? $expander.addClass(data.style.expandIcon) : $expander.text('+');
+            $newParent = $('<ul />').addClass(data.style.list).addClass('gj-hidden');
             $node.append($newParent);
             
-            for (i = 0; i < nodeData[config.childrenField].length; i++) {
-                gj.tree.methods.appendNode($tree, $newParent, nodeData[config.childrenField][i], config);
+            for (i = 0; i < nodeData[data.childrenField].length; i++) {
+                gj.tree.methods.appendNode($tree, $newParent, nodeData[data.childrenField][i]);
             }  
+        } else {
+            data.style.leafIcon ? $expander.addClass(data.style.leafIcon) : $expander.text('&nbsp;');
         }
 
         $parent.append($node);
@@ -188,16 +198,19 @@ gj.tree.methods = {
         return function (e) {
             var $expander = $(this),
                 $children = $expander.siblings('ul'),
+                data = $tree.data(),
                 events = gj.tree.events;
             if ($expander.attr('data-mode') === 'close') {
                 events.expanding($tree);
                 $children.show();
-                $expander.attr('data-mode', 'open').text('-');
+                $expander.attr('data-mode', 'open');
+                data.style.collapseIcon ? $expander.removeClass(data.style.expandIcon).addClass(data.style.collapseIcon) : $expander.text('-');
                 events.expanded($tree);
             } else {
                 events.collapsing($tree);
                 $children.hide();
-                $expander.attr('data-mode', 'close').text('+');
+                $expander.attr('data-mode', 'close');
+                data.style.expandIcon ? $expander.removeClass(data.style.collapseIcon).addClass(data.style.expandIcon) : $expander.text('+');
                 events.collapsed($tree);
             }
         }

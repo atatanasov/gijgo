@@ -4,11 +4,11 @@ ul.gj-tree-list {
     margin: 0px;
 }
 
-ul.gj-tree-list li.gj-tree-item {
+li.gj-tree-item {
     padding: 2px 0px 2px 16px;
 }
 
-ul.gj-tree-list li span[data-role="expander"] {
+li span.gj-tree-expander {
     padding-right: 5px;
     cursor: pointer;
     width: 10px;
