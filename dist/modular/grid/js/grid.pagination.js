@@ -13,6 +13,17 @@ gj.grid.plugins.pagination = {
                     activeButton: 'gj-grid-base-active'
                 }
             },
+
+            defaultParams: {
+                /** The name of the parameter that is going to send the number of the page.
+                 * The pager should be enabled in order this parameter to be in use. */
+                page: 'page',
+
+                /** The name of the parameter that is going to send the maximum number of records per page.
+                 * The pager should be enabled in order this parameter to be in use. */
+                limit: 'limit'
+            },
+
             pager: {
                 /** The maximum number of records that can be show by page. */
                 limit: 10,
@@ -313,26 +324,32 @@ gj.grid.plugins.pagination = {
                 $cell.attr('colspan', gj.grid.methods.countVisibleColumns($grid));
             }
         },
-
-        getRecordsForRendering: function ($grid) {
-            var data = $grid.data(),
-                limit = parseInt(data.params[data.defaultParams.limit], 10),
-                page = data.params[data.defaultParams.page],
-                start = (page - 1) * limit;
-            
-            return data.records.slice(start, start + limit);
-        },
-
+        
         isLastRecordVisible: function ($grid) {
-            var data = $grid.data(),
+            var result = true,
+                data = $grid.data(),
                 limit = parseInt(data.params[data.defaultParams.limit], 10),
                 page = parseInt(data.params[data.defaultParams.page], 10),
                 count = $grid.count();
-            return ((page - 1) * limit) + count === data.totalRecords;
+            if (limit && page) {
+                result = ((page - 1) * limit) + count === data.totalRecords;
+            }
+            return result;
         },
     },
 
     public: {
+        getAll: function (includeAllRecords) {
+            var limit, page, start, data = this.data();
+            if (!includeAllRecords && $.isArray(data.dataSource) && data.params[data.defaultParams.limit] && data.params[data.defaultParams.page]) {
+                limit = parseInt(data.params[data.defaultParams.limit], 10);
+                page = parseInt(data.params[data.defaultParams.page], 10);
+                start = (page - 1) * limit;
+                return data.records.slice(start, start + limit);
+            } else {
+                return data.records;
+            }
+        }
     },
 
     events: {
@@ -352,11 +369,9 @@ gj.grid.plugins.pagination = {
     },
 
     configure: function ($grid, clientConfig) {
+        $.extend(true, $grid, gj.grid.plugins.pagination.public);
         var data = $grid.data();
         if (clientConfig.pager) {
-            if ($.isArray(data.dataSource)) {
-                gj.grid.methods.getRecordsForRendering = gj.grid.plugins.pagination.private.getRecordsForRendering;
-            }
             gj.grid.methods.isLastRecordVisible = gj.grid.plugins.pagination.private.isLastRecordVisible;
 
             $grid.on('initialized', function () {

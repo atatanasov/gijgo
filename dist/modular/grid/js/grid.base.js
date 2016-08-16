@@ -108,15 +108,7 @@ gj.grid.config = {
 
             /** The name of the parameter that is going to send the direction for sorting.
              * The "sortable" setting for at least one column should be enabled in order this parameter to be in use. */
-            direction: 'direction',
-
-            /** The name of the parameter that is going to send the number of the page.
-             * The pager should be enabled in order this parameter to be in use. */
-            page: 'page',
-
-            /** The name of the parameter that is going to send the maximum number of records per page.
-             * The pager should be enabled in order this parameter to be in use. */
-            limit: 'limit'
+            direction: 'direction'
         },
 
         /** The name of the UI library that is going to be in use. Currently we support only jQuery UI and bootstrap. */
@@ -575,7 +567,7 @@ gj.grid.methods = {
         var data, records, i, recLen, rowCount, $tbody, $rows, $row, $checkAllBoxes;
 
         data = $grid.data();
-        records = gj.grid.methods.getRecordsForRendering($grid);
+        records = $grid.getAll();
         gj.grid.events.dataBinding($grid, records);
         recLen = records.length;
         gj.grid.methods.stopLoading($grid);
@@ -765,10 +757,6 @@ gj.grid.methods = {
             text = parseFloat(text).toFixed(column.decimalDigits);
         }
         return text;
-    },
-
-    getRecordsForRendering: function ($grid) {
-        return $grid.data('records');
     },
 
     setRecordsData: function ($grid, response) {
@@ -1166,7 +1154,7 @@ gj.grid.methods = {
     },
 
     count: function ($grid, includeAllRecords) {
-        return includeAllRecords ? $grid.data().totalRecords : gj.grid.methods.getRecordsForRendering($grid).length;
+        return includeAllRecords ? $grid.data().totalRecords : $grid.getAll().length;
     }
 };
 
@@ -1252,8 +1240,8 @@ gj.grid.widget = function ($grid, arguments) {
 
     /**
      * Return an array with all records presented in the grid. */
-    self.getAll = function () {
-        return methods.getAll(this);
+    self.getAll = function (includeAllRecords) {
+        return methods.getAll(this, includeAllRecords);
     };
 
     /**

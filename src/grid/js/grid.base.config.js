@@ -576,23 +576,7 @@ gj.grid.config = {
              * @type string
              * @default "direction"
              */
-            direction: 'direction',
-
-            /** The name of the parameter that is going to send the number of the page.
-             * The pager should be enabled in order this parameter to be in use.
-             * @alias defaultParams.page
-             * @type string
-             * @default "page"
-             */
-            page: 'page',
-
-            /** The name of the parameter that is going to send the maximum number of records per page.
-             * The pager should be enabled in order this parameter to be in use.
-             * @alias defaultParams.limit
-             * @type string
-             * @default "limit"
-             */
-            limit: 'limit'
+            direction: 'direction'
         },
 
         /** The name of the UI library that is going to be in use. Currently we support only jQuery UI and bootstrap.

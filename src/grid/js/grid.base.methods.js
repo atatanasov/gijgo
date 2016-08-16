@@ -289,7 +289,7 @@ gj.grid.methods = {
         var data, records, i, recLen, rowCount, $tbody, $rows, $row, $checkAllBoxes;
 
         data = $grid.data();
-        records = gj.grid.methods.getRecordsForRendering($grid);
+        records = $grid.getAll();
         gj.grid.events.dataBinding($grid, records);
         recLen = records.length;
         gj.grid.methods.stopLoading($grid);
@@ -479,10 +479,6 @@ gj.grid.methods = {
             text = parseFloat(text).toFixed(column.decimalDigits);
         }
         return text;
-    },
-
-    getRecordsForRendering: function ($grid) {
-        return $grid.data('records');
     },
 
     setRecordsData: function ($grid, response) {
@@ -880,6 +876,6 @@ gj.grid.methods = {
     },
 
     count: function ($grid, includeAllRecords) {
-        return includeAllRecords ? $grid.data().totalRecords : gj.grid.methods.getRecordsForRendering($grid).length;
+        return includeAllRecords ? $grid.data().totalRecords : $grid.getAll().length;
     }
 };

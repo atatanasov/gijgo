@@ -59,7 +59,7 @@ gj.grid.widget = function ($grid, arguments) {
     /**
      * Return the number of records in the grid. By default return only the records that are visible in the grid.
      * @method
-     * @param {object} includeAllRecords - include records that are not visible.
+     * @param {boolean} includeAllRecords - include records that are not visible when you are using local dataSource.
      * @return number
      * @example Local.DataSource <!-- bootstrap, grid.base, grid.pagination -->
      * <button onclick="alert(grid.count())">Count Visible Records</button>
@@ -349,27 +349,43 @@ gj.grid.widget = function ($grid, arguments) {
     /**
      * Return an array with all records presented in the grid.
      * @method
-     * @return array
-     * @example remote.data <!-- grid.base -->
-     * <button id="btnGetAllName">Get All Names</button>
+     * @param {boolean} includeAllRecords - include records that are not visible when you are using local dataSource.
+     * @return number
+     * @example Local.DataSource <!-- bootstrap, grid.base, grid.pagination -->
+     * <button onclick="alert(JSON.stringify(grid.getAll()))">Get All Visible Records</button>
+     * <button onclick="alert(JSON.stringify(grid.getAll(true)))">Get All Records</button>
+     * <br/><br/>
+     * <table id="grid"></table>
+     * <script>
+     *     var data, grid;
+     *     data = [
+     *         { 'ID': 1, 'Name': 'Hristo Stoichkov', 'PlaceOfBirth': 'Plovdiv, Bulgaria' },
+     *         { 'ID': 2, 'Name': 'Ronaldo Luis Nazario de Lima', 'PlaceOfBirth': 'Rio de Janeiro, Brazil' },
+     *         { 'ID': 3, 'Name': 'David Platt', 'PlaceOfBirth': 'Chadderton, Lancashire, England' }
+     *     ];
+     *     grid = $('#grid').grid({
+     *         dataSource: data,
+     *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
+     *         uiLibrary: 'bootstrap',
+     *         pager: { limit: 2, sizes: [2, 5, 10] }
+     *     });
+     * </script>
+     * @example Remote.DataSource <!-- bootstrap, grid.base, grid.pagination -->
+     * <button onclick="alert(JSON.stringify(grid.getAll()))">Get All Visible Records</button>
+     * <button onclick="alert(JSON.stringify(grid.getAll(true)))">Get All Records</button>
      * <br/><br/>
      * <table id="grid"></table>
      * <script>
      *     var grid = $('#grid').grid({
      *         dataSource: '/DataSources/GetPlayers',
-     *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
-     *     });
-     *     $('#btnGetAllName').on('click', function () {
-     *         var records = grid.getAll(), names = '';
-     *         $.each(records, function () {
-     *             names += this.Name + '(id=' + this.ID + '),';
-     *         });
-     *         alert(names);
+     *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
+     *         uiLibrary: 'bootstrap',
+     *         pager: { limit: 2, sizes: [2, 5, 10] }
      *     });
      * </script>
      */
-    self.getAll = function () {
-        return methods.getAll(this);
+    self.getAll = function (includeAllRecords) {
+        return methods.getAll(this, includeAllRecords);
     };
 
     /**
