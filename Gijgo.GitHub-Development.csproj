@@ -78,6 +78,7 @@
     <Content Include="src\grid\js\grid.columnReorder.js" />
     <Content Include="src\grid\js\grid.expandCollapseRows.js" />
     <Content Include="src\grid\js\grid.inlineEditing.js" />
+    <Content Include="src\grid\js\grid.optimisticPersistence.js" />
     <Content Include="src\grid\js\grid.pagination.js" />
     <Content Include="src\grid\js\grid.resizableColumns.js" />
     <Content Include="src\grid\js\grid.responsiveDesign.js" />

@@ -55,6 +55,7 @@
                     'dist/modular/grid/js/grid.base.js': ['src/grid/js/grid.base.config.js', 'src/grid/js/grid.base.events.js', 'src/grid/js/grid.base.methods.js', 'src/grid/js/grid.base.widget.js'],
                     'dist/modular/grid/js/grid.expandCollapseRows.js': ['src/grid/js/grid.expandCollapseRows.js'],
                     'dist/modular/grid/js/grid.inlineEditing.js': ['src/grid/js/grid.inlineEditing.js'],
+                    'dist/modular/grid/js/grid.optimisticPersistence.js': ['src/grid/js/grid.optimisticPersistence.js'],
                     'dist/modular/grid/js/grid.pagination.js': ['src/grid/js/grid.pagination.js'],
                     'dist/modular/grid/js/grid.responsiveDesign.js': ['src/grid/js/grid.responsiveDesign.js'],
                     'dist/modular/grid/js/grid.toolbar.js': ['src/grid/js/grid.toolbar.js'],
@@ -62,7 +63,7 @@
                     'dist/modular/grid/js/grid.rowReorder.js': ['src/grid/js/grid.rowReorder.js'],
                     'dist/modular/grid/js/grid.columnReorder.js': ['src/grid/js/grid.columnReorder.js'],
 
-                    'dist/combined/js/grid.js': ['dist/modular/grid/js/grid.base.js', 'dist/modular/grid/js/grid.expandCollapseRows.js', 'dist/modular/grid/js/grid.inlineEditing.js', 'dist/modular/grid/js/grid.pagination.js', 'dist/modular/grid/js/grid.responsiveDesign.js', 'dist/modular/grid/js/grid.toolbar.js', 'src/grid/js/grid.resizableColumns.js', 'src/grid/js/grid.rowReorder.js', 'src/grid/js/grid.columnReorder.js'],
+                    'dist/combined/js/grid.js': ['dist/modular/grid/js/grid.base.js', 'dist/modular/grid/js/grid.expandCollapseRows.js', 'dist/modular/grid/js/grid.inlineEditing.js', 'dist/modular/grid/js/grid.optimisticPersistence.js', 'dist/modular/grid/js/grid.pagination.js', 'dist/modular/grid/js/grid.responsiveDesign.js', 'dist/modular/grid/js/grid.toolbar.js', 'src/grid/js/grid.resizableColumns.js', 'src/grid/js/grid.rowReorder.js', 'src/grid/js/grid.columnReorder.js'],
 
                     'dist/modular/grid/css/grid.base.css': ['src/grid/css/grid.base.css'],
                     'dist/modular/grid/css/grid.responsiveDesign.css': ['src/grid/css/grid.responsiveDesign.css'],
@@ -147,6 +148,7 @@
                     'dist/modular/grid/js/grid.base.min.js': ['dist/modular/grid/js/grid.base.js'],
                     'dist/modular/grid/js/grid.expandCollapseRows.min.js': ['dist/modular/grid/js/grid.expandCollapseRows.js'],
                     'dist/modular/grid/js/grid.inlineEditing.min.js': ['dist/modular/grid/js/grid.inlineEditing.js'],
+                    'dist/modular/grid/js/grid.optimisticPersistence.min.js': ['dist/modular/grid/js/grid.optimisticPersistence.js'],
                     'dist/modular/grid/js/grid.pagination.min.js': ['dist/modular/grid/js/grid.pagination.js'],
                     'dist/modular/grid/js/grid.responsiveDesign.min.js': ['dist/modular/grid/js/grid.responsiveDesign.js'],
                     'dist/modular/grid/js/grid.toolbar.min.js': ['dist/modular/grid/js/grid.toolbar.js'],
@@ -380,6 +382,9 @@ var writer = {
                         break;
                     case 'grid.inlineEditing':
                         result += '  <script src="../../dist/modular/grid/js/grid.inlineEditing.js"></script>\r\n';
+                        break;
+                    case 'grid.optimisticPersistence':
+                        result += '  <script src="../../dist/modular/grid/js/grid.optimisticPersistence.js"></script>\r\n';
                         break;
                     case 'grid.pagination':
                         result += '  <script src="../../dist/modular/grid/js/grid.pagination.js"></script>\r\n';
