@@ -8,16 +8,16 @@ li.gj-tree-item {
     padding: 2px 0px 2px 16px;
 }
 
-li span.gj-tree-expander {
-    padding-right: 5px;
+.gj-tree-expander {
+    padding-right: 4px;
     cursor: pointer;
     width: 10px;
     float: left;
 }
 
-ul.gj-tree-list li span[data-role="display"] {
+.gj-tree-display {
     cursor: pointer;
-    padding: 1px 3px;
+    padding: 2px 4px;
 }
 
 ul.gj-hidden {
@@ -35,4 +35,17 @@ ul.gj-hidden {
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
+}
+
+/* Bootstrap Theme */
+li ul.gj-tree-bootstrap-list-group {
+    margin: 5px 0px 0px 0px;
+}
+
+.gj-tree-bootstrap-expander {
+    padding-right: 5px;
+    cursor: pointer;
+}
+.gj-tree-bootstrap-display {
+    cursor: pointer;
 }

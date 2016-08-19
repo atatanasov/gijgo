@@ -13,9 +13,12 @@ gj.tree.methods = {
     },
 
     initialize: function () {
-        var style = this.data('style'),
-            $root = $('<ul class="' + style.list + '"/>');
-        this.empty().addClass(style.wrapper).append($root);
+        var data = this.data(),
+            $root = $('<ul class="' + data.style.list + '"/>');
+        this.empty().addClass(data.style.wrapper).append($root);
+        if (data.width) {
+            this.width(data.width);
+        }
         gj.tree.events.initialized(this);
     },
 
@@ -49,7 +52,7 @@ gj.tree.methods = {
         $expander.addClass(data.style.expander).on('click', gj.tree.methods.expanderClickHandler($tree));
         $node.append($expander);
 
-        $display.on('click', gj.tree.methods.displayClickHandler($tree));
+        $display.addClass(data.style.display).on('click', gj.tree.methods.displayClickHandler($tree));
         $node.append($display);
 
         if (nodeData[data.childrenField] && nodeData[data.childrenField].length) {
@@ -61,7 +64,7 @@ gj.tree.methods = {
                 gj.tree.methods.appendNode($tree, $newParent, nodeData[data.childrenField][i]);
             }  
         } else {
-            data.style.leafIcon ? $expander.addClass(data.style.leafIcon) : $expander.text('&nbsp;');
+            data.style.leafIcon ? $expander.addClass(data.style.leafIcon) : $expander.html('&nbsp;');
         }
 
         $parent.append($node);

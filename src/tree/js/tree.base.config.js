@@ -77,6 +77,7 @@ gj.tree.config = {
         textField: 'text',
         valueField: undefined,
         childrenField: 'children',
+        width: undefined,
 
         /** The name of the UI library that is going to be in use.
          * @additionalinfo The css files for Bootstrap should be manually included if you use bootstrap as UI Library.
@@ -91,19 +92,20 @@ gj.tree.config = {
          *             { text: 'Europe', children: [ { text: 'France' },  { text: 'Spain' },  { text: 'Italy' } ] },
          *             { text: 'South America', children: [ { text: 'Brazil' },  { text: 'Argentina' },  { text: 'Columbia' } ] }
          *         ],
+         *         width: 500,
          *         uiLibrary: 'bootstrap'
          *     });
          * </script>
          */
         uiLibrary: 'base',
 
-        /* tmpl: undefined, */
         style: {
             wrapper: 'gj-tree-unselectable',
             list: 'gj-tree-list',
             item: 'gj-tree-item',
             active: 'gj-tree-base-active',
             expander: 'gj-tree-expander',
+            display: 'gj-tree-display',
             expandIcon: undefined,
             collapseIcon: undefined,
             leafIcon: undefined
@@ -113,13 +115,14 @@ gj.tree.config = {
     bootstrap: {
         style: {
             wrapper: 'gj-tree-unselectable',
-            list: 'gj-tree-list list-group',
+            list: 'gj-tree-bootstrap-list-group list-group',
             item: 'list-group-item',
-            active: '',
-            expander: 'glyphicon',
+            active: 'active',
+            expander: 'gj-tree-bootstrap-expander glyphicon',
+            display: 'gj-tree-bootstrap-display',
             expandIcon: 'glyphicon-plus',
             collapseIcon: 'glyphicon-minus',
-            leafIcon: 'glyphicon-leaf'
+            leafIcon: undefined
         }
     },
 

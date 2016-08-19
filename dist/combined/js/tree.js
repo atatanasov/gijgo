@@ -31,17 +31,18 @@ gj.tree.config = {
         textField: 'text',
         valueField: undefined,
         childrenField: 'children',
+        width: undefined,
 
         /** The name of the UI library that is going to be in use. */
         uiLibrary: 'base',
 
-        /* tmpl: undefined, */
         style: {
             wrapper: 'gj-tree-unselectable',
             list: 'gj-tree-list',
             item: 'gj-tree-item',
             active: 'gj-tree-base-active',
             expander: 'gj-tree-expander',
+            display: 'gj-tree-display',
             expandIcon: undefined,
             collapseIcon: undefined,
             leafIcon: undefined
@@ -51,13 +52,14 @@ gj.tree.config = {
     bootstrap: {
         style: {
             wrapper: 'gj-tree-unselectable',
-            list: 'gj-tree-list list-group',
+            list: 'gj-tree-bootstrap-list-group list-group',
             item: 'list-group-item',
-            active: '',
-            expander: 'glyphicon',
+            active: 'active',
+            expander: 'gj-tree-bootstrap-expander glyphicon',
+            display: 'gj-tree-bootstrap-display',
             expandIcon: 'glyphicon-plus',
             collapseIcon: 'glyphicon-minus',
-            leafIcon: 'glyphicon-leaf'
+            leafIcon: undefined
         }
     },
 
@@ -140,9 +142,12 @@ gj.tree.methods = {
     },
 
     initialize: function () {
-        var style = this.data('style'),
-            $root = $('<ul class="' + style.list + '"/>');
-        this.empty().addClass(style.wrapper).append($root);
+        var data = this.data(),
+            $root = $('<ul class="' + data.style.list + '"/>');
+        this.empty().addClass(data.style.wrapper).append($root);
+        if (data.width) {
+            this.width(data.width);
+        }
         gj.tree.events.initialized(this);
     },
 
@@ -176,7 +181,7 @@ gj.tree.methods = {
         $expander.addClass(data.style.expander).on('click', gj.tree.methods.expanderClickHandler($tree));
         $node.append($expander);
 
-        $display.on('click', gj.tree.methods.displayClickHandler($tree));
+        $display.addClass(data.style.display).on('click', gj.tree.methods.displayClickHandler($tree));
         $node.append($display);
 
         if (nodeData[data.childrenField] && nodeData[data.childrenField].length) {
@@ -188,7 +193,7 @@ gj.tree.methods = {
                 gj.tree.methods.appendNode($tree, $newParent, nodeData[data.childrenField][i]);
             }  
         } else {
-            data.style.leafIcon ? $expander.addClass(data.style.leafIcon) : $expander.text('&nbsp;');
+            data.style.leafIcon ? $expander.addClass(data.style.leafIcon) : $expander.html('&nbsp;');
         }
 
         $parent.append($node);
