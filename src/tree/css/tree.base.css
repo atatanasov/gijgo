@@ -38,8 +38,36 @@ ul.gj-hidden {
 }
 
 /* Bootstrap Theme */
-li ul.gj-tree-bootstrap-list-group {
+/*li ul.gj-tree-bootstrap-list-group {
     margin: 5px 0px 0px 0px;
+}*/
+ul.gj-bootstrap-tree-list {
+    padding-left: 0px;
+    margin-bottom: 0px;
+}
+
+li ul.gj-bootstrap-tree-list {
+    padding-left: 0px;
+}
+
+li.gj-bootstrap-tree-item {
+    padding: 10px 0px 10px 0px;
+}
+
+ul li.gj-bootstrap-tree-item ul li.gj-bootstrap-tree-item {
+    border-left: 0px;
+    border-right: 0px;
+}
+
+ul li.gj-bootstrap-tree-item ul li.gj-bootstrap-tree-item:first-child {
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+}
+
+ul li.gj-bootstrap-tree-item ul li.gj-bootstrap-tree-item:last-child {
+    border-bottom: 0px;
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
 }
 
 .gj-tree-bootstrap-expander {

@@ -115,8 +115,8 @@ gj.tree.config = {
     bootstrap: {
         style: {
             wrapper: 'gj-tree-unselectable',
-            list: 'gj-tree-bootstrap-list-group list-group',
-            item: 'list-group-item',
+            list: 'gj-bootstrap-tree-list list-group',
+            item: 'gj-bootstrap-tree-item list-group-item',
             active: 'active',
             expander: 'gj-tree-bootstrap-expander glyphicon',
             display: 'gj-tree-bootstrap-display',
