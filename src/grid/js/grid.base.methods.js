@@ -61,13 +61,7 @@ gj.grid.methods = {
         }
         return result;
     },
-
-    defaultSuccessHandler: function ($grid) {
-        return function (response) {
-            $grid.render(response);
-        };
-    },
-
+    
     initialize: function ($grid) {
         var data = $grid.data(),
             $wrapper = $grid.parent('div[data-role="wrapper"]');
@@ -713,40 +707,6 @@ gj.grid.methods = {
         return count;
     },
 
-    reload: function ($grid, params) {
-        var data, ajaxOptions;
-        data = $grid.data();
-        $.extend(data.params, params);
-        gj.grid.methods.startLoading($grid);
-        if ($.isArray(data.dataSource)) {
-            gj.grid.methods.setRecordsData($grid, data.dataSource);
-            gj.grid.methods.loadData($grid);
-        } else if (typeof(data.dataSource) === 'string') {
-            ajaxOptions = { url: data.dataSource, data: data.params, success: gj.grid.methods.defaultSuccessHandler($grid) };
-            if ($grid.xhr) {
-                $grid.xhr.abort();
-            }
-            $grid.xhr = $.ajax(ajaxOptions);
-        } else if (typeof (data.dataSource) === 'object') {
-            if (!data.dataSource.data) {
-                data.dataSource.data = {};
-            }
-            $.extend(data.dataSource.data, data.params);
-            ajaxOptions = $.extend(true, {}, data.dataSource); //clone dataSource object
-            if (ajaxOptions.dataType === 'json' && typeof(ajaxOptions.data) === 'object') {
-                ajaxOptions.data = JSON.stringify(ajaxOptions.data);
-            }
-            if (!ajaxOptions.success) {
-                ajaxOptions.success = gj.grid.methods.defaultSuccessHandler($grid);
-            }
-            if ($grid.xhr) {
-                $grid.xhr.abort();
-            }
-            $grid.xhr = $.ajax(ajaxOptions);
-        }
-        return $grid;
-    },
-
     clear: function ($grid, showNotFoundText) {
         var data = $grid.data();
         $grid.xhr && $grid.xhr.abort();
@@ -765,7 +725,7 @@ gj.grid.methods = {
             if (typeof(response) === 'string' && JSON) {
                 response = JSON.parse(response);
             }
-            records = gj.grid.methods.setRecordsData($grid, response);
+            gj.grid.methods.setRecordsData($grid, response);
             gj.grid.methods.loadData($grid);
         }
         return $grid;

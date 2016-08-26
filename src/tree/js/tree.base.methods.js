@@ -22,32 +22,29 @@ gj.tree.methods = {
         gj.tree.events.initialized(this);
     },
 
-    reload: function (params) {
-        var data = this.data();
-        if ($.isArray(data.dataSource)) {
-            gj.tree.methods.loadData(this);
-        } else {
-
-        }
-        return this;
-    },
-
-    loadData: function ($tree) {
-        var i, node, data = $tree.data(),
-            $root = $tree.children('ul');
+    render: function ($tree, response) {
+        var i, $root = $tree.children('ul');
 
         $root.off().empty();
-        for (i = 0; i < data.dataSource.length; i++) {
-            gj.tree.methods.appendNode($tree, $root, data.dataSource[i], data);
+        for (i = 0; i < response.length; i++) {
+            gj.tree.methods.appendNode($tree, $root, response[i], 1);
         }
+
+        return $tree;
     },
 
-    appendNode: function ($tree, $parent, nodeData) {
+    appendNode: function ($tree, $parent, nodeData, level) {
         var i, $node, $newParent,
             data = $tree.data(),
             $node = $('<li/>').addClass(data.style.item),
             $expander = $('<span data-role="expander" data-mode="close"></span>'),
             $display = $('<span data-role="display">' + nodeData[data.textField] + '</span>');
+
+        if (data.style.leftSpacer) {
+            for (i = 1; i < level; i++) {
+                $node.append('<span data-role="spacer" class="' + data.style.leftSpacer + '"></span>');
+            }
+        }
 
         $expander.addClass(data.style.expander).on('click', gj.tree.methods.expanderClickHandler($tree));
         $node.append($expander);
@@ -61,7 +58,7 @@ gj.tree.methods = {
             $node.append($newParent);
             
             for (i = 0; i < nodeData[data.childrenField].length; i++) {
-                gj.tree.methods.appendNode($tree, $newParent, nodeData[data.childrenField][i]);
+                gj.tree.methods.appendNode($tree, $newParent, nodeData[data.childrenField][i], level + 1);
             }  
         } else {
             data.style.leafIcon ? $expander.addClass(data.style.leafIcon) : $expander.html('&nbsp;');
@@ -95,14 +92,15 @@ gj.tree.methods = {
     displayClickHandler: function ($tree) {
         return function (e) {
             var $display = $(this),
-                $node = $display.parent('li');
-            if ($display.attr('data-selected') === 'true') {
-                gj.tree.methods.unselect($tree, $node);
+                $node = $display.parent('li'),
+                cascade = $tree.data().cascadeSelection;
+            if ($node.attr('data-selected') === 'true') {
+                gj.tree.methods.unselect($tree, $node, cascade);
             } else {
                 if ($tree.data('selectionType') === 'single') {
                     gj.tree.methods.unselectAll($tree);
                 }
-                gj.tree.methods.select($tree, $node);
+                gj.tree.methods.select($tree, $node, cascade);
             }
         }
     },
@@ -116,8 +114,8 @@ gj.tree.methods = {
     },
 
     select: function ($tree, $node, cascade) {
-        var $display = $node.children('span[data-role="display"]');
-        $display.addClass($tree.data().style.active).attr('data-selected', 'true');
+        var i, $children, data = $tree.data();
+        $node.addClass(data.style.active).attr('data-selected', 'true');
         if (cascade) {
             $children = $node.find('ul li');
             for (i = 0; i < $children.length; i++) {
@@ -136,8 +134,8 @@ gj.tree.methods = {
     },
 
     unselect: function ($tree, $node, cascade) {
-        var i, $children, $display = $node.children('span[data-role="display"]');
-        $display.removeClass($tree.data().style.active).removeAttr('data-selected');
+        var i, $children, data = $tree.data();
+        $node.removeClass($tree.data().style.active).removeAttr('data-selected');
         if (cascade) {
             $children = $node.find('ul li');
             for (i = 0; i < $children.length; i++) {

@@ -21,7 +21,7 @@ if (typeof(gj.grid) === 'undefined') {
 
 gj.grid.config = {
     base: {
-        /** The data source of the widget which is used table rows.
+        /** The data source for the grid.
          * @additionalinfo If set to string, then the grid is going to use this string as a url for ajax requests to the server.<br />
          * If set to object, then the grid is going to use this object as settings for the <a href="http://api.jquery.com/jquery.ajax/" target="_new">jquery ajax</a> function.<br />
          * If set to array, then the grid is going to use the array as data for rows.

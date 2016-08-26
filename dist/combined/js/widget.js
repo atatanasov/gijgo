@@ -2,6 +2,8 @@ var gj = {
     widget: function () {
         var self = this;
 
+        self.xhr = null;
+
         self.generateGUID = function () {
             function s4() {
                 return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
@@ -71,7 +73,6 @@ gj.widget.prototype.getConfig = function (jsConfig, type) {
     return config;
 }
 
-
 gj.widget.prototype.getHTMLConfig = function () {
     var result = this.data(),
         attrs = this[0].attributes;
@@ -87,6 +88,48 @@ gj.widget.prototype.getHTMLConfig = function () {
     }
     return result;
 };
+
+gj.widget.prototype.render = function (response) {
+
+};
+
+gj.widget.prototype.createDoneHandler = function () {
+    var $widget = this;
+    return function (response) {
+        $widget.render(response);
+    };
+};
+
+gj.widget.prototype.reload = function (params) {
+    var ajaxOptions, data = this.data();
+    $.extend(data.params, params);
+    if ($.isArray(data.dataSource)) {
+        this.render(data.dataSource);
+    } else if (typeof(data.dataSource) === 'string') {
+        ajaxOptions = { url: data.dataSource, data: data.params, success: this.createDoneHandler() };
+        if (this.xhr) {
+            this.xhr.abort();
+        }
+        this.xhr = $.ajax(ajaxOptions);
+    } else if (typeof (data.dataSource) === 'object') {
+        if (!data.dataSource.data) {
+            data.dataSource.data = {};
+        }
+        $.extend(data.dataSource.data, data.params);
+        ajaxOptions = $.extend(true, {}, data.dataSource); //clone dataSource object
+        if (ajaxOptions.dataType === 'json' && typeof(ajaxOptions.data) === 'object') {
+            ajaxOptions.data = JSON.stringify(ajaxOptions.data);
+        }
+        if (!ajaxOptions.success) {
+            ajaxOptions.success = this.createDoneHandler();
+        }
+        if (this.xhr) {
+            this.xhr.abort();
+        }
+        this.xhr = $.ajax(ajaxOptions);
+    }
+    return this;
+}
 
 gj.documentManager = {
     events: {},

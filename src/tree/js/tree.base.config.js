@@ -45,7 +45,8 @@ gj.tree.config = {
          */
         autoLoad: true,
 
-        /** When this setting is enabled the content of the tree will be loaded automatically after the creation of the tree.
+        /** The type of the node selection.<br/>
+         * If the type is set to multiple the user will be able to select more then one node in the tree.
          * @type (single|multiple)
          * @default single
          * @example Single.Selection <!-- tree.base -->
@@ -53,7 +54,7 @@ gj.tree.config = {
          * <script>
          *     var tree = $('#tree').tree({
          *         dataSource: [
-         *             { text: 'North America', children: [ { text: 'Canada' },  { text: 'USA', children: [ { text: 'California' }, { text: 'Miami' } ] },  { text: 'Mexico' } ] },
+         *             { text: 'North America', children: [ { text: 'USA', children: [ { text: 'California' }, { text: 'Miami' } ] }, { text: 'Canada' },  { text: 'Mexico' } ] },
          *             { text: 'Europe', children: [ { text: 'France' },  { text: 'Spain' },  { text: 'Italy' } ] },
          *             { text: 'South America', children: [ { text: 'Brazil' },  { text: 'Argentina' },  { text: 'Columbia' } ] }
          *         ],
@@ -64,15 +65,58 @@ gj.tree.config = {
          * <div id="tree"></div>
          * <script>
          *     $('#tree').tree({
-         *         dataSource: [ { text: 'foo', children: [ { text: 'bar' } ] } ],
+         *         dataSource: [
+         *             { text: 'North America', children: [ { text: 'USA', children: [ { text: 'California' }, { text: 'Miami' } ] }, { text: 'Canada' },  { text: 'Mexico' } ] },
+         *             { text: 'Europe', children: [ { text: 'France' },  { text: 'Spain' },  { text: 'Italy' } ] },
+         *             { text: 'South America', children: [ { text: 'Brazil' },  { text: 'Argentina' },  { text: 'Columbia' } ] }
+         *         ],
          *         selectionType: 'multiple'
          *     });
          * </script>
          */
         selectionType: 'single',
 
-        checkChildren: false,
+        /** This setting enable cascade selection and unselection of children
+         * @type boolean
+         * @default false
+         * @example Sample <!-- tree.base -->
+         * <div id="tree"></div>
+         * <script>
+         *     $('#tree').tree({
+         *         dataSource: [
+         *             { text: 'North America', children: [ { text: 'USA', children: [ { text: 'California' }, { text: 'Miami' } ] }, { text: 'Canada' },  { text: 'Mexico' } ] },
+         *             { text: 'Europe', children: [ { text: 'France' },  { text: 'Spain' },  { text: 'Italy' } ] },
+         *             { text: 'South America', children: [ { text: 'Brazil' },  { text: 'Argentina' },  { text: 'Columbia' } ] }
+         *         ],
+         *         cascadeSelection: true
+         *     });
+         * </script>
+         */
+        cascadeSelection: false,
+
+        /** The data source of tree.
+         * @additionalinfo If set to string, then the tree is going to use this string as a url for ajax requests to the server.<br />
+         * If set to object, then the tree is going to use this object as settings for the <a href="http://api.jquery.com/jquery.ajax/" target="_new">jquery ajax</a> function.<br />
+         * If set to array, then the tree is going to use the array as data for tree nodes.
+         * @type (string|object|array)
+         * @default undefined
+         * @example Local.DataSource <!-- tree.base -->
+         * <div id="tree"></div>
+         * <script>
+         *     $('#tree').tree({
+         *         dataSource: [ { text: 'foo', children: [ { text: 'bar' } ] } ]
+         *     });
+         * </script>
+         * @example Remote.DataSource <!-- tree.base -->
+         * <div id="tree"></div>
+         * <script>
+         *     $('#tree').tree({
+         *         dataSource: '/DataSources/GetCountries'
+         *     });
+         * </script>
+         */
         dataSource: undefined,
+
         primaryKey: undefined,
         textField: 'text',
         valueField: undefined,
@@ -88,7 +132,7 @@ gj.tree.config = {
          * <script>
          *     var tree = $('#tree').tree({
          *         dataSource: [
-         *             { text: 'North America', children: [ { text: 'Canada' },  { text: 'USA', children: [ { text: 'California' }, { text: 'Miami' } ] },  { text: 'Mexico' } ] },
+         *             { text: 'North America', children: [ { text: 'USA', children: [ { text: 'California' }, { text: 'Miami' } ] }, { text: 'Canada' },  { text: 'Mexico' } ] },
          *             { text: 'Europe', children: [ { text: 'France' },  { text: 'Spain' },  { text: 'Italy' } ] },
          *             { text: 'South America', children: [ { text: 'Brazil' },  { text: 'Argentina' },  { text: 'Columbia' } ] }
          *         ],
@@ -104,6 +148,7 @@ gj.tree.config = {
             list: 'gj-tree-list',
             item: 'gj-tree-item',
             active: 'gj-tree-base-active',
+            leftSpacer: undefined,
             expander: 'gj-tree-expander',
             display: 'gj-tree-display',
             expandIcon: undefined,
@@ -118,6 +163,7 @@ gj.tree.config = {
             list: 'gj-bootstrap-tree-list list-group',
             item: 'gj-bootstrap-tree-item list-group-item',
             active: 'active',
+            leftSpacer: 'gj-tree-bootstrap-left-spacer',
             expander: 'gj-tree-bootstrap-expander glyphicon',
             display: 'gj-tree-bootstrap-display',
             expandIcon: 'glyphicon-plus',

@@ -24,7 +24,7 @@ ul.gj-hidden {
     display: none;
 }
 
-.gj-tree-base-active {
+.gj-tree-base-active > span[data-role="display"] {
     background-color: #ddd;
 }
 
@@ -51,7 +51,7 @@ li ul.gj-bootstrap-tree-list {
 }
 
 li.gj-bootstrap-tree-item {
-    padding: 10px 0px 10px 0px;
+    padding: 0px;
 }
 
 ul li.gj-bootstrap-tree-item ul li.gj-bootstrap-tree-item {
@@ -70,10 +70,21 @@ ul li.gj-bootstrap-tree-item ul li.gj-bootstrap-tree-item:last-child {
     border-bottom-right-radius: 0px;
 }
 
+.gj-tree-bootstrap-left-spacer {
+    display: inline-block;
+    width: 30px;
+}
+
 .gj-tree-bootstrap-expander {
-    padding-right: 5px;
+    padding: 10px 15px;
     cursor: pointer;
 }
 .gj-tree-bootstrap-display {
     cursor: pointer;
+    display: inline-block;
+    padding: 10px 0px 10px 0px;
+}
+.list-group-item.active ul li, .list-group-item.active:focus ul li, .list-group-item.active:hover ul li {
+    text-shadow: none;
+    color:initial;
 }

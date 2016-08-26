@@ -6,10 +6,12 @@ gj.tree.widget = function ($element, arguments) {
     var self = this,
         methods = gj.tree.methods;
 
-    self.xhr = null;
-
     self.reload = function (params) {
-        return methods.reload.call(this, params);
+        return gj.widget.prototype.reload.call(this, params);
+    };
+
+    self.render = function (response) {
+        return methods.render(this, response);
     };
 
     self.appendNode = function (data, $node) { };

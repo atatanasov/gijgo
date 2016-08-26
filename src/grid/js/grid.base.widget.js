@@ -6,8 +6,6 @@ gj.grid.widget = function ($grid, arguments) {
     var self = this,
         methods = gj.grid.methods;
 
-    self.xhr = null;
-
     /**
      * Reload the data in the grid from a data source.
      * @method
@@ -30,7 +28,8 @@ gj.grid.widget = function ($grid, arguments) {
      * </script>
      */
     self.reload = function (params) {
-        return methods.reload(this, params);
+        methods.startLoading(this);
+        return gj.widget.prototype.reload.call(this, params);
     };
 
     /**

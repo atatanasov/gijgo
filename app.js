@@ -56,4 +56,23 @@ server.get('/DataSources/GetPlayers', function (req, res) {
 });
 
 
+server.get('/DataSources/GetCountries', function (req, res) {
+    var params, data;
+
+    params = url.parse(req.url, true).query;
+    data = [
+        { text: 'Asia', children: [{ text: 'China' }, { text: 'Japan' }, { text: 'Mongolia' }] },
+        {
+            text: 'North America', children: [
+            { text: 'USA', children: [{ text: 'California' }, { text: 'Miami' }] }, { text: 'Canada' }, { text: 'Mexico' }]
+        },
+        { text: 'South America', children: [{ text: 'Brazil' }, { text: 'Argentina' }, { text: 'Columbia' }] },
+        { text: 'Europe', children: [ { text: 'France' },  { text: 'Spain' },  { text: 'Italy' } ] }
+    ];
+
+    res.setHeader('Content-Type', 'application/json');
+    res.send(data);
+});
+
+
 server.listen(4000);
