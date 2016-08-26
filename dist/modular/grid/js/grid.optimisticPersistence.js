@@ -1,5 +1,4 @@
-/**  */
-
+/**   */
 if (typeof (gj.grid.plugins) === 'undefined') {
     gj.grid.plugins = {};
 }
@@ -9,11 +8,9 @@ gj.grid.plugins.optimisticPersistence = {
     config: {
         base: {
             optimisticPersistence: {
-                /** Array that contains a list with param names that needs to be saved in the localStorage. You need to specify guid on the initialization of the grid in order enable this feature. */
-                localStorage: undefined,
+                /** Array that contains a list with param names that needs to be saved in the localStorage. You need to specify guid on the initialization of the grid in order enable this feature.                 */                localStorage: undefined,
 
-                /** Array that contains a list with param names that needs to be saved in the sessionStorage. You need to specify guid on the initialization of the grid in order enable this feature. */
-                sessionStorage: undefined
+                /** Array that contains a list with param names that needs to be saved in the sessionStorage. You need to specify guid on the initialization of the grid in order enable this feature.                 */                sessionStorage: undefined
             }
         }
     },

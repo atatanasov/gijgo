@@ -1,13 +1,11 @@
-/**  */
-if (typeof (gj.grid.plugins) === 'undefined') {
+/**   */if (typeof (gj.grid.plugins) === 'undefined') {
     gj.grid.plugins = {};
 }
 
 gj.grid.plugins.columnReorder = {
     config: {
         base: {
-            /** If set to true, enable column reordering with drag and drop. */
-            columnReorder: false,
+            /** If set to true, enable column reordering with drag and drop.             */            columnReorder: false,
 
             style: {
                 targetRowIndicatorTop: 'gj-grid-row-reorder-indicator-top',

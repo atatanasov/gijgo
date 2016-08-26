@@ -32,7 +32,7 @@ gj.grid.events = {
      *
      * @event dataBinding
      * @param {object} e - event data
-     * @param {array} records - the list of records received from the server
+     * @param {array} records - the list of records
      * @example sample <!-- grid.base -->
      * <table id="grid"></table>
      * <script>
@@ -54,7 +54,7 @@ gj.grid.events = {
      *
      * @event dataBound
      * @param {object} e - event data
-     * @param {array} records - the list of records received from the server
+     * @param {array} records - the list of records
      * @param {number} totalRecords - the number of the all records that can be presented in the grid
      * @example sample <!-- grid.base -->
      * <table id="grid"></table>

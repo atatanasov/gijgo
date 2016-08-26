@@ -1,5 +1,4 @@
-/**  */
-if (typeof (gj.grid.plugins) === 'undefined') {
+/**   */if (typeof (gj.grid.plugins) === 'undefined') {
     gj.grid.plugins = {};
 }
 
@@ -7,8 +6,7 @@ gj.grid.plugins.expandCollapseRows = {
     config: {
         base: {
             /** Template for the content in the detail section of the row.
-             * Automatically add expand collapse column as a first column in the grid during initialization. */
-            detailTemplate: undefined,
+             * Automatically add expand collapse column as a first column in the grid during initialization.             */            detailTemplate: undefined,
 
             style: {
                 expandIcon: '',
@@ -109,15 +107,13 @@ gj.grid.plugins.expandCollapseRows = {
     'events': {
         /**
          * Event fires when detail row is showing
-         * */
-        detailExpand: function ($grid, $detailWrapper, record) {
+         *         */        detailExpand: function ($grid, $detailWrapper, record) {
             $grid.triggerHandler('detailExpand', [$detailWrapper, record]);
         },
 
         /**
          * Event fires when detail row is hiding
-         * */
-        detailCollapse: function ($grid, $detailWrapper, record) {
+         *         */        detailCollapse: function ($grid, $detailWrapper, record) {
             $grid.triggerHandler('detailCollapse', [$detailWrapper, record]);
         }
     },

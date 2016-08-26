@@ -6,8 +6,7 @@
  * Copyright 2014, 2016 gijgo.com
  * Released under the MIT license
  */
-/** */
-if (typeof(gj) === 'undefined') {
+/**  */if (typeof(gj) === 'undefined') {
     gj = {};
 }
 if (typeof(gj.grid) === 'undefined') {
@@ -18,84 +17,61 @@ if (typeof(gj.grid) === 'undefined') {
 
 gj.grid.config = {
     base: {
-        /** The data source for the grid. */
-        dataSource: undefined,
+        /** The data source for the grid.         */        dataSource: undefined,
 
-        /** An array that holds the configurations of each column from the grid. */
-        columns: [],
+        /** An array that holds the configurations of each column from the grid.         */        columns: [],
 
-        /** Auto generate column for each field in the datasource when set to true. */
-        autoGenerateColumns: false,
+        /** Auto generate column for each field in the datasource when set to true.         */        autoGenerateColumns: false,
 
-        /** An object that holds the default configuration settings of each column from the grid. */
-        defaultColumnSettings: {
+        /** An object that holds the default configuration settings of each column from the grid.         */        defaultColumnSettings: {
 
-            /** If set to true the column will not be displayed in the grid. By default all columns are displayed. */
-            hidden: false,
+            /** If set to true the column will not be displayed in the grid. By default all columns are displayed.             */            hidden: false,
 
             /** The width of the column. Numeric values are treated as pixels.
-             * If the width is undefined the width of the column is not set and depends on the with of the table(grid). */
-            width: undefined,
+             * If the width is undefined the width of the column is not set and depends on the with of the table(grid).             */            width: undefined,
 
             /** Indicates if the column is sortable.
-             * If set to true the user can click the column header and sort the grid by the column source field. */
-            sortable: false,
+             * If set to true the user can click the column header and sort the grid by the column source field.             */            sortable: false,
 
-            /** Indicates the type of the column. */
-            type: undefined,
+            /** Indicates the type of the column.             */            type: undefined,
 
-            /** The caption that is going to be displayed in the header of the grid. */
-            title: undefined,
+            /** The caption that is going to be displayed in the header of the grid.             */            title: undefined,
 
             /** The field name to which the column is bound.
-             * If the column.title is not defined this value is used as column.title. */
-            field: undefined,
+             * If the column.title is not defined this value is used as column.title.             */            field: undefined,
 
-            /** This setting control the alignment of the text in the cell. */
-            align: 'left',
+            /** This setting control the alignment of the text in the cell.             */            align: 'left',
 
-            /** The name(s) of css class(es) that are going to be applied to all cells inside that column, except the header cell. */
-            cssClass: undefined,
+            /** The name(s) of css class(es) that are going to be applied to all cells inside that column, except the header cell.             */            cssClass: undefined,
 
-            /** The name(s) of css class(es) that are going to be applied to the header cell of that column. */
-            headerCssClass: undefined,
+            /** The name(s) of css class(es) that are going to be applied to the header cell of that column.             */            headerCssClass: undefined,
 
-            /** The text for the cell tooltip. */
-            tooltip: undefined,
+            /** The text for the cell tooltip.             */            tooltip: undefined,
 
             /** Css class for icon that is going to be in use for the cell.
-             * This setting can be in use only with combination of type icon. */
-            icon: undefined,
+             * This setting can be in use only with combination of type icon.             */            icon: undefined,
 
             /** Configuration object with event names as keys and functions as values that are going to be bind to each cell from the column.
-             * Each function is going to receive event information as a parameter with info in the "data" field for id, field name and record data. */
-            events: undefined,
+             * Each function is going to receive event information as a parameter with info in the "data" field for id, field name and record data.             */            events: undefined,
 
             /** Format the date when the type of the column is date.
              * This configuration setting is going to work only if you have implementation of format method for the Date object.
-             * You can use external libraries like http://blog.stevenlevithan.com/archives/date-time-format for that. */
-            format: undefined,
+             * You can use external libraries like http://blog.stevenlevithan.com/archives/date-time-format for that.             */            format: undefined,
 
-            /** Number of decimal digits after the decimal point. */
-            decimalDigits: undefined,
+            /** Number of decimal digits after the decimal point.             */            decimalDigits: undefined,
 
             /** Template for the content in the column.
-             * Use curly brackets "{}" to wrap the names of data source columns from server response. */
-            tmpl: undefined,
+             * Use curly brackets "{}" to wrap the names of data source columns from server response.             */            tmpl: undefined,
 
-            /** If set to true stop event propagation when event occur. */
-            stopPropagation: false,
+            /** If set to true stop event propagation when event occur.             */            stopPropagation: false,
 
-            /** A renderer is an 'interceptor' function which can be used to transform data (value, appearance, etc.) before it is rendered. */
-            renderer: undefined
+            /** A renderer is an 'interceptor' function which can be used to transform data (value, appearance, etc.) before it is rendered.             */            renderer: undefined
         },
 
         mapping: {
-            /** The name of the object in the server response, that contains array with records, that needs to be display in the grid. */
-            dataField: 'records',
+            /** The name of the object in the server response, that contains array with records, that needs to be display in the grid.             */            dataField: 'records',
 
-            /** The name of the object in the server response, that contains the number of all records on the server. */
-            totalRecordsField: 'total'
+            /** The name of the object in the server response, that contains the number of all records on the server.             */            totalRecordsField: 'total'
         },
 
         params: {},
@@ -103,16 +79,13 @@ gj.grid.config = {
         defaultParams: {
 
             /** The name of the parameter that is going to send the name of the column for sorting.
-             * The "sortable" setting for at least one column should be enabled in order this parameter to be in use. */
-            sortBy: 'sortBy',
+             * The "sortable" setting for at least one column should be enabled in order this parameter to be in use.             */            sortBy: 'sortBy',
 
             /** The name of the parameter that is going to send the direction for sorting.
-             * The "sortable" setting for at least one column should be enabled in order this parameter to be in use. */
-            direction: 'direction'
+             * The "sortable" setting for at least one column should be enabled in order this parameter to be in use.             */            direction: 'direction'
         },
 
-        /** The name of the UI library that is going to be in use. Currently we support only jQuery UI and bootstrap. */
-        uiLibrary: 'base',
+        /** The name of the UI library that is going to be in use. Currently we support only jQuery UI and bootstrap.         */        uiLibrary: 'base',
 
         style: {
             wrapper: 'gj-grid-wrapper',
@@ -132,29 +105,21 @@ gj.grid.config = {
         },
 
         /** The type of the row selection.<br/>
-         * If the type is set to multiple the user will be able to select more then one row from the grid. */
-        selectionType: 'single',
+         * If the type is set to multiple the user will be able to select more then one row from the grid.         */        selectionType: 'single',
 
-        /** The type of the row selection mechanism. */
-        selectionMethod: 'basic',
+        /** The type of the row selection mechanism.         */        selectionMethod: 'basic',
 
-        /** When this setting is enabled the content of the grid will be loaded automatically after the creation of the grid. */
-        autoLoad: true,
+        /** When this setting is enabled the content of the grid will be loaded automatically after the creation of the grid.         */        autoLoad: true,
 
-        /** The text that is going to be displayed if the grid is empty. */
-        notFoundText: 'No records found.',
+        /** The text that is going to be displayed if the grid is empty.         */        notFoundText: 'No records found.',
 
-        /** Width of the grid. */
-        width: undefined,
+        /** Width of the grid.         */        width: undefined,
 
-        /** Minimum width of the grid. */
-        minWidth: undefined,
+        /** Minimum width of the grid.         */        minWidth: undefined,
 
-        /** The size of the font in the grid. */
-        fontSize: undefined,
+        /** The size of the font in the grid.         */        fontSize: undefined,
 
-        /** Name of column that contains the record id.  */
-        primaryKey: undefined
+        /** Name of column that contains the record id.          */        primaryKey: undefined
     },
 
     jqueryui: {
@@ -191,87 +156,74 @@ gj.grid.config = {
     }
 };
 
-/** */
-gj.grid.events = {
+/**  */gj.grid.events = {
     /**
-     * Event fires before addition of an empty row to the grid. */
-    beforeEmptyRowInsert: function ($grid, $row) {
+     * Event fires before addition of an empty row to the grid.     */    beforeEmptyRowInsert: function ($grid, $row) {
         $grid.triggerHandler('beforeEmptyRowInsert', [$row]);
     },
 
     /**
      * Event fired before data binding takes place.
-     * */
-    dataBinding: function ($grid, records) {
+     *     */    dataBinding: function ($grid, records) {
         $grid.triggerHandler('dataBinding', [records]);
     },
 
     /**
      * Event fires after the loading of the data in the grid.
-     * */
-    dataBound: function ($grid, records, totalRecords) {
+     *     */    dataBound: function ($grid, records, totalRecords) {
         $grid.triggerHandler('dataBound', [records, totalRecords]);
     },
 
     /**
-     * Event fires after insert of a row in the grid during the loading of the data. */
-    rowDataBound: function ($grid, $row, id, record) {
+     * Event fires after insert of a row in the grid during the loading of the data.     */    rowDataBound: function ($grid, $row, id, record) {
         $grid.triggerHandler('rowDataBound', [$row, id, record]);
     },
 
     /**
      * Event fires after insert of a cell in the grid during the loading of the data
-     * */
-    cellDataBound: function ($grid, $displayEl, id, column, record) {
+     *     */    cellDataBound: function ($grid, $displayEl, id, column, record) {
         $grid.triggerHandler('cellDataBound', [$displayEl, id, column, record]);
     },
 
     /**
      * Event fires on selection of row
-     * */
-    rowSelect: function ($grid, $row, id, record) {
+     *     */    rowSelect: function ($grid, $row, id, record) {
         $grid.triggerHandler('rowSelect', [$row, id, record]);
     },
 
     /**
      * Event fires on un selection of row
-     * */
-    rowUnselect: function ($grid, $row, id, record) {
+     *     */    rowUnselect: function ($grid, $row, id, record) {
         $grid.triggerHandler('rowUnselect', [$row, id, record]);
 
     },
 
     /**
-     * Event fires before deletion of row in the grid. */
-    rowRemoving: function ($grid, $row, id, record) {
+     * Event fires before deletion of row in the grid.     */    rowRemoving: function ($grid, $row, id, record) {
         $grid.triggerHandler('rowRemoving', [$row, id, record]);
     },
 
     /**
      * Event fires when the grid.destroy method is called.
-     * */
-    destroying: function ($grid) {
+     *     */    destroying: function ($grid) {
         $grid.triggerHandler('destroying');
     },
 
     /**
      * Event fires when column is hidding
-     * */
-    columnHide: function ($grid, column) {
+     *     */    columnHide: function ($grid, column) {
         $grid.triggerHandler('columnHide', [column]);
     },
 
     /**
      * Event fires when column is showing
-     * */
-    columnShow: function ($grid, column) {
+     *     */    columnShow: function ($grid, column) {
         $grid.triggerHandler('columnShow', [column]);
     },
 
     /**
      * Event fires when grid is initialized.
-     * */
-    initialized: function ($grid) {
+     *     */    initialized: function ($grid) {
         $grid.triggerHandler('initialized');
     }
 };
@@ -1118,112 +1070,94 @@ gj.grid.methods = {
     }
 };
 
-/** */
-gj.grid.widget = function ($grid, arguments) {
+/**  */gj.grid.widget = function ($grid, arguments) {
     var self = this,
         methods = gj.grid.methods;
 
     /**
-     * Reload the data in the grid from a data source. */
-    self.reload = function (params) {
+     * Reload the data in the grid from a data source.     */    self.reload = function (params) {
         methods.startLoading(this);
         return gj.widget.prototype.reload.call(this, params);
     };
 
     /**
-     * Clear the content in the grid. */
-    self.clear = function (showNotFoundText) {
+     * Clear the content in the grid.     */    self.clear = function (showNotFoundText) {
         return methods.clear(this, showNotFoundText);
     };
 
     /**
-     * Return the number of records in the grid. By default return only the records that are visible in the grid. */
-    self.count = function (includeAllRecords) {
+     * Return the number of records in the grid. By default return only the records that are visible in the grid.     */    self.count = function (includeAllRecords) {
         return methods.count(this, includeAllRecords);
     };
 
     /**
-     * Render data in the grid */
-    self.render = function (response) {
+     * Render data in the grid     */    self.render = function (response) {
         return methods.render($grid, response);
     };
 
     /**
-     * Destroy the grid. This method remove all data from the grid and all events attached to the grid. */
-    self.destroy = function (keepTableTag, keepWrapperTag) {
+     * Destroy the grid. This method remove all data from the grid and all events attached to the grid.     */    self.destroy = function (keepTableTag, keepWrapperTag) {
         return methods.destroy(this, keepTableTag, keepWrapperTag);
     };
 
     /**
-     * Select a row from the grid based on id parameter. */
-    self.setSelected = function (id) {
+     * Select a row from the grid based on id parameter.     */    self.setSelected = function (id) {
         return methods.setSelected(this, id);
     };
 
     /**
      * Return the id of the selected record.
-     * If the multiple selection method is one this method is going to return only the id of the first selected record. */
-    self.getSelected = function () {
+     * If the multiple selection method is one this method is going to return only the id of the first selected record.     */    self.getSelected = function () {
         return methods.getSelected(this);
     };
 
     /**
-     * Return an array with the ids of the selected record. */
-    self.getSelections = function () {
+     * Return an array with the ids of the selected record.     */    self.getSelections = function () {
         return methods.getSelections(this);
     };
 
     /**
-     * Select all records from the grid. */
-    self.selectAll = function () {
+     * Select all records from the grid.     */    self.selectAll = function () {
         return methods.selectAll(this);
     };
 
     /**
-     * Unselect all records from the grid. */
-    self.unSelectAll = function () {
+     * Unselect all records from the grid.     */    self.unSelectAll = function () {
         return methods.unSelectAll(this);
     };
 
     /**
-     * Return record by id of the record. */
-    self.getById = function (id) {
+     * Return record by id of the record.     */    self.getById = function (id) {
         return methods.getById(this, id);
     };
 
     /**
-     * Return record from the grid based on position. */
-    self.get = function (position) {
+     * Return record from the grid based on position.     */    self.get = function (position) {
         return methods.getByPosition(this, position);
     };
 
     /**
-     * Return an array with all records presented in the grid. */
-    self.getAll = function (includeAllRecords) {
+     * Return an array with all records presented in the grid.     */    self.getAll = function (includeAllRecords) {
         return methods.getAll(this, includeAllRecords);
     };
 
     /**
-     * Show hidden column. */
-    self.showColumn = function (field) {
+     * Show hidden column.     */    self.showColumn = function (field) {
         return methods.showColumn(this, field);
     };
 
     /**
-     * Hide column from the grid. */
-    self.hideColumn = function (field) {
+     * Hide column from the grid.     */    self.hideColumn = function (field) {
         return methods.hideColumn(this, field);
     };
 
     /**
-     * Add new row to the grid. */
-    self.addRow = function (record) {
+     * Add new row to the grid.     */    self.addRow = function (record) {
         return methods.addRow(this, record);
     };
 
     /**
-     * Update row data. */
-    self.updateRow = function (id, record) {
+     * Update row data.     */    self.updateRow = function (id, record) {
         return methods.updateRow(this, id, record);
     };
 
@@ -1233,8 +1167,7 @@ gj.grid.widget = function ($grid, arguments) {
     };
 
     /**
-     * Remove row from the grid */
-    self.removeRow = function (id) {
+     * Remove row from the grid     */    self.removeRow = function (id) {
         return methods.removeRow(this, id);
     };
 

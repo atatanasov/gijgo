@@ -1,5 +1,4 @@
-/** */
-if (typeof(gj.grid.plugins) === 'undefined') {
+/** */if (typeof(gj.grid.plugins) === 'undefined') {
     gj.grid.plugins = {};
 }
 
@@ -16,24 +15,19 @@ gj.grid.plugins.pagination = {
 
             defaultParams: {
                 /** The name of the parameter that is going to send the number of the page.
-                 * The pager should be enabled in order this parameter to be in use. */
-                page: 'page',
+                 * The pager should be enabled in order this parameter to be in use.                 */                page: 'page',
 
                 /** The name of the parameter that is going to send the maximum number of records per page.
-                 * The pager should be enabled in order this parameter to be in use. */
-                limit: 'limit'
+                 * The pager should be enabled in order this parameter to be in use.                 */                limit: 'limit'
             },
 
             pager: {
-                /** The maximum number of records that can be show by page. */
-                limit: 10,
+                /** The maximum number of records that can be show by page.                 */                limit: 10,
 
                 /** Array that contains the possible page sizes of the grid.
-                 * When this setting is set, then a drop down with the options for each page size is visualized in the pager. */
-                sizes: undefined,
+                 * When this setting is set, then a drop down with the options for each page size is visualized in the pager.                 */                sizes: undefined,
 
-                /** Array that contains a list with jquery objects that are going to be used on the left side of the pager. */
-                leftControls: [
+                /** Array that contains a list with jquery objects that are going to be used on the left side of the pager.                 */                leftControls: [
                     $('<button title="Previous" data-role="page-previous" class="gj-cursor-pointer"><span>«</span></button>'),
                     $('<button data-role="page-button-one" class="gj-cursor-pointer">1</button>'),
                     $('<button data-role="page-button-two" class="gj-cursor-pointer">2</button>'),
@@ -41,8 +35,7 @@ gj.grid.plugins.pagination = {
                     $('<button title="Next" data-role="page-next" class="gj-cursor-pointer"><span>»</span></button> &nbsp;')
                 ],
 
-                /** Array that contains a list with jquery objects that are going to be used on the right side of the pager. */
-                rightControls: [
+                /** Array that contains a list with jquery objects that are going to be used on the right side of the pager.                 */                rightControls: [
                     $('<div>Displaying records&nbsp;</div>'),
                     $('<div data-role="record-first">0</div>'),
                     $('<div>&nbsp;-&nbsp;</div>'),
@@ -355,15 +348,13 @@ gj.grid.plugins.pagination = {
     events: {
         /**
          * Triggered when the page size is changed.
-         * */
-        pageSizeChange: function ($grid, newSize) {
+         *         */        pageSizeChange: function ($grid, newSize) {
             $grid.triggerHandler('pageSizeChange', [newSize]);
         },
 
         /**
          * Triggered before the change of the page.
-         * */
-        pageChanging: function ($grid, newSize) {
+         *         */        pageChanging: function ($grid, newSize) {
             $grid.triggerHandler('pageChanging', [newSize]);
         }
     },

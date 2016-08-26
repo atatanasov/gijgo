@@ -108,7 +108,7 @@
                             if (isCommentMode && /\*\//g.test(lines[i])) {
                                 isCommentMode = false;
                                 isExtraCommentMode = false;
-                                result = result.replace(/\n$/, "") + ' */\n';
+                                result = result.replace(/\n$/, "") + lines[i];
                             }
                         }
                         return result;

@@ -25,10 +25,12 @@ gj.tree.methods = {
     render: function ($tree, response) {
         var i, $root = $tree.children('ul');
 
+        gj.tree.events.dataBinding($tree);
         $root.off().empty();
         for (i = 0; i < response.length; i++) {
             gj.tree.methods.appendNode($tree, $root, response[i], 1);
         }
+        gj.tree.events.dataBound($tree);
 
         return $tree;
     },

@@ -1,16 +1,13 @@
-/**  */
-if (typeof (gj.grid.plugins) === 'undefined') {
+/**   */if (typeof (gj.grid.plugins) === 'undefined') {
     gj.grid.plugins = {};
 }
 
 gj.grid.plugins.toolbar = {
     config: {
         base: {
-            /** Template for the content in the toolbar. Appears in a separate row on top of the grid. */
-            toolbarTemplate: undefined,
+            /** Template for the content in the toolbar. Appears in a separate row on top of the grid.              */            toolbarTemplate: undefined,
 
-            /** The title of the grid. Appears in a separate row on top of the grid. */
-            title: undefined,
+            /** The title of the grid. Appears in a separate row on top of the grid.              */            title: undefined,
 
             style: {
                 toolbar: 'gj-grid-base-toolbar'
@@ -64,8 +61,7 @@ gj.grid.plugins.toolbar = {
 
     public: {        
         /**
-         * Get or set grid title. */
-        title: function (text) {
+         * Get or set grid title.         */        title: function (text) {
             var $titleEl = this.parent().find('div[data-role="toolbar"] [data-role="title"]');
             if (typeof (text) !== 'undefined') {
                 $titleEl.text(text);

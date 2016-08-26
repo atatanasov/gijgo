@@ -6,8 +6,7 @@
  * Copyright 2014, 2016 gijgo.com
  * Released under the MIT license
  */
-/** */
-if (typeof(gj) === 'undefined') {
+/**  */if (typeof(gj) === 'undefined') {
     gj = {};
 }
 if (typeof(gj.tree) === 'undefined') {
@@ -19,27 +18,23 @@ if (typeof(gj.tree) === 'undefined') {
 gj.tree.config = {
     base: {
 
-        /** When this setting is enabled the content of the tree will be loaded automatically after the creation of the tree. */
-        autoLoad: true,
+        /** When this setting is enabled the content of the tree will be loaded automatically after the creation of the tree.         */        autoLoad: true,
 
         /** The type of the node selection.<br/>
-         * If the type is set to multiple the user will be able to select more then one node in the tree. */
-        selectionType: 'single',
+         * If the type is set to multiple the user will be able to select more then one node in the tree.         */        selectionType: 'single',
 
-        /** This setting enable cascade selection and unselection of children */
-        cascadeSelection: false,
+        /** This setting enable cascade selection and unselection of children         */        cascadeSelection: false,
 
-        /** The data source of tree. */
-        dataSource: undefined,
+        /** The data source of tree.         */        dataSource: undefined,
 
         primaryKey: undefined,
         textField: 'text',
         valueField: undefined,
         childrenField: 'children',
-        width: undefined,
 
-        /** The name of the UI library that is going to be in use. */
-        uiLibrary: 'base',
+        /** Width of the tree.         */        width: undefined,
+
+        /** The name of the UI library that is going to be in use.         */        uiLibrary: 'base',
 
         style: {
             wrapper: 'gj-tree-unselectable',
@@ -72,65 +67,54 @@ gj.tree.config = {
 
     jqueryui: {}
 };
-/** */
-gj.tree.events = {
+/**  */gj.tree.events = {
     /**
-     * Event fires  */
-    dataBinding: function ($tree) {
-        $tree.trigger('dataBinding', []);
-    },
-
-    /**
-     * Event fires  */
-    dataBound: function ($tree) {
-        $tree.trigger('dataBound', []);
-    },
-
-    /**
-     * Event fires  */
-    destroying: function ($tree) {
-        $tree.trigger('destroying', []);
-    },
-
-    /**
-     * Event fires  */
-    initialized: function ($tree) {
+     * Event fires when the tree is initialized     */    initialized: function ($tree) {
         $tree.trigger('initialized', []);
     },
 
     /**
-     * Event fires  */
-    select: function ($tree) {
+     * Event fired before data binding takes place.     */    dataBinding: function ($tree) {
+        $tree.trigger('dataBinding', []);
+    },
+
+    /**
+     * Event fires after the loading of the data in the grid.     */    dataBound: function ($tree) {
+        $tree.trigger('dataBound', []);
+    },
+
+    /**
+     * Event fires      */    destroying: function ($tree) {
+        $tree.trigger('destroying', []);
+    },
+
+    /**
+     * Event fires      */    select: function ($tree) {
         $tree.trigger('select', []);
     },
 
     /**
-     * Event fires  */
-    unselect: function ($tree) {
+     * Event fires      */    unselect: function ($tree) {
         $tree.trigger('unselect', []);
     },
 
     /**
-     * Event fires  */
-    collapsing: function ($tree) {
+     * Event fires      */    collapsing: function ($tree) {
         $tree.trigger('collapsing', []);
     },
 
     /**
-     * Event fires  */
-    collapsed: function ($tree) {
+     * Event fires      */    collapsed: function ($tree) {
         $tree.trigger('collapsed', []);
     },
 
     /**
-     * Event fires  */
-    expanding: function ($tree) {
+     * Event fires      */    expanding: function ($tree) {
         $tree.trigger('expanding', []);
     },
 
     /**
-     * Event fires  */
-    expanded: function ($tree) {
+     * Event fires      */    expanded: function ($tree) {
         $tree.trigger('expanded', []);
     }
 }
@@ -161,10 +145,12 @@ gj.tree.methods = {
     render: function ($tree, response) {
         var i, $root = $tree.children('ul');
 
+        gj.tree.events.dataBinding($tree);
         $root.off().empty();
         for (i = 0; i < response.length; i++) {
             gj.tree.methods.appendNode($tree, $root, response[i], 1);
         }
+        gj.tree.events.dataBound($tree);
 
         return $tree;
     },
@@ -281,8 +267,7 @@ gj.tree.methods = {
         gj.tree.events.unselect($tree, $node);
     }
 }
-/** */
-gj.tree.widget = function ($element, arguments) {
+/**  */gj.tree.widget = function ($element, arguments) {
     var self = this,
         methods = gj.tree.methods;
 

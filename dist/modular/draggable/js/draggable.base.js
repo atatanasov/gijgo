@@ -6,8 +6,7 @@
  * Copyright 2014, 2016 gijgo.com
  * Released under the MIT license
  */
-/**  */
-if (typeof (gj) === 'undefined') {
+/**   */if (typeof (gj) === 'undefined') {
     gj = {};
 }
 if (typeof (gj.draggable) === 'undefined') {
@@ -17,14 +16,11 @@ if (typeof (gj.draggable) === 'undefined') {
 gj.draggable.config = {
     base: {
         /** If specified, restricts dragging from starting unless the mousedown occurs on the specified element.
-         * Only elements that descend from the draggable element are permitted. */
-        handle: undefined,
+         * Only elements that descend from the draggable element are permitted.         */        handle: undefined,
 
-        /** If set to false, restricts dragging on vertical direction. */
-        vertical: true,
+        /** If set to false, restricts dragging on vertical direction.         */        vertical: true,
 
-        /** If set to false, restricts dragging on horizontal direction. */
-        horizontal: true
+        /** If set to false, restricts dragging on horizontal direction.         */        horizontal: true
     }
 };
 
@@ -135,22 +131,19 @@ gj.draggable.methods = {
 gj.draggable.events = {
     /**
      * Triggered while the mouse is moved during the dragging, immediately before the current move happens.
-     * */
-    drag: function ($dragEl, offsetX, offsetY) {
+     *     */    drag: function ($dragEl, offsetX, offsetY) {
         return $dragEl.triggerHandler('drag', [{ top: offsetY, left: offsetX }]);
     },
 
     /**
      * Triggered when dragging starts.
-     * */
-    start: function ($dragEl) {
+     *     */    start: function ($dragEl) {
         $dragEl.triggerHandler('start');
     },
 
     /**
      * Triggered when dragging stops.
-     * */
-    stop: function ($dragEl) {
+     *     */    stop: function ($dragEl) {
         $dragEl.triggerHandler('stop');
     }
 };
@@ -160,8 +153,7 @@ gj.draggable.widget = function ($element, arguments) {
     var self = this,
         methods = gj.draggable.methods;
 
-    /** Remove draggable functionality from the element. */
-    self.destroy = function () {
+    /** Remove draggable functionality from the element.     */    self.destroy = function () {
         return methods.destroy(this);
     };
 

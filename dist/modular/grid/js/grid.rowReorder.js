@@ -1,20 +1,16 @@
-/**  */
-if (typeof (gj.grid.plugins) === 'undefined') {
+/**   */if (typeof (gj.grid.plugins) === 'undefined') {
     gj.grid.plugins = {};
 }
 
 gj.grid.plugins.rowReorder = {
     config: {
         base: {
-            /** If set to true, enable row reordering with drag and drop. */
-            rowReorder: false,
+            /** If set to true, enable row reordering with drag and drop.             */            rowReorder: false,
 
             /** If set, enable row reordering only when you try to drag cell from the configured column.
-             * Accept only field names of columns. */
-            rowReorderColumn: undefined,
+             * Accept only field names of columns.             */            rowReorderColumn: undefined,
 
-            /** If set, update the value in the field for all records. Accept only field names of columns. */
-            orderNumberField: undefined,
+            /** If set, update the value in the field for all records. Accept only field names of columns.             */            orderNumberField: undefined,
 
             style: {
                 targetRowIndicatorTop: 'gj-grid-row-reorder-indicator-top',

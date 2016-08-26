@@ -121,6 +121,25 @@ gj.tree.config = {
         textField: 'text',
         valueField: undefined,
         childrenField: 'children',
+
+        /** Width of the tree.
+         * @type number
+         * @default undefined
+         * @example JS.Config <!-- bootstrap, tree.base -->
+         * <div id="tree"></div>
+         * <script>
+         *     var tree = $('#tree').tree({
+         *         dataSource: '/DataSources/GetCountries',
+         *         width: 500,
+         *         uiLibrary: 'bootstrap'
+         *     });
+         * </script>
+         * @example HTML.Config <!-- bootstrap, tree.base -->
+         * <div id="tree" width="500" data-source="/DataSources/GetCountries" data-ui-library="bootstrap"></div>
+         * <script>
+         *     $('#tree').tree();
+         * </script>
+         */
         width: undefined,
 
         /** The name of the UI library that is going to be in use.

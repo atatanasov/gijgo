@@ -1,13 +1,11 @@
-/**  */
-if (typeof (gj.grid.plugins) === 'undefined') {
+/**   */if (typeof (gj.grid.plugins) === 'undefined') {
     gj.grid.plugins = {};
 }
 
 gj.grid.plugins.resizableColumns = {
     config: {
         base: {
-            /** If set to true, users can resize columns by dragging the edges (resize handles) of their header cells. */
-            resizableColumns: false
+            /** If set to true, users can resize columns by dragging the edges (resize handles) of their header cells.             */            resizableColumns: false
         }
     },
 

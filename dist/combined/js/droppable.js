@@ -6,8 +6,7 @@
  * Copyright 2014, 2016 gijgo.com
  * Released under the MIT license
  */
-/**  */
-if (typeof (gj) === 'undefined') {
+/**   */if (typeof (gj) === 'undefined') {
     gj = {};
 }
 if (typeof (gj.droppable) === 'undefined') {
@@ -15,8 +14,7 @@ if (typeof (gj.droppable) === 'undefined') {
 }
 
 gj.droppable.config = {
-    /** If specified, the class will be added to the droppable while draggable is being hovered over the droppable. */
-    hoverClass: undefined
+    /** If specified, the class will be added to the droppable while draggable is being hovered over the droppable.     */    hoverClass: undefined
 };
 
 gj.droppable.methods = {
@@ -114,18 +112,15 @@ gj.droppable.methods = {
 };
 
 gj.droppable.events = {
-    /** Triggered when a draggable element is dropped. */
-    drop: function ($dropEl, offsetX, offsetY) {
+    /** Triggered when a draggable element is dropped.     */    drop: function ($dropEl, offsetX, offsetY) {
         $dropEl.trigger('drop', [{ top: offsetY, left: offsetX }]);
     },
 
-    /** Triggered when a draggable element is dragged over the droppable. */
-    over: function ($dropEl) {
+    /** Triggered when a draggable element is dragged over the droppable.     */    over: function ($dropEl) {
         $dropEl.trigger('over');
     },
 
-    /** Triggered when a draggable element is dragged out of the droppable. */
-    out: function ($dropEl) {
+    /** Triggered when a draggable element is dragged out of the droppable.     */    out: function ($dropEl) {
         $dropEl.trigger('out');
     }
 };
@@ -138,8 +133,7 @@ gj.droppable.widget = function ($element, arguments) {
     self.isOver = false;
     self.isDragging = false;
 
-    /** Removes the droppable functionality. */
-    self.destroy = function () {
+    /** Removes the droppable functionality.     */    self.destroy = function () {
         return methods.destroy(this);
     }
 

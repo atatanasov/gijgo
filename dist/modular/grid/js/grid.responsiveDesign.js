@@ -1,5 +1,4 @@
-/**  */
-if (typeof (gj.grid.plugins) === 'undefined') {
+/**   */if (typeof (gj.grid.plugins) === 'undefined') {
     gj.grid.plugins = {};
 }
 
@@ -7,28 +6,23 @@ gj.grid.plugins.responsiveDesign = {
     config: {
         base: {
             /** The interval in milliseconds for checking if the grid is resizing.
-             * This setting is in use only if the resizeMonitoring setting is set to true. */
-            resizeCheckInterval: 500,
+             * This setting is in use only if the resizeMonitoring setting is set to true.             */            resizeCheckInterval: 500,
 
             /** This setting enables responsive behaviour of the grid where some column are invisible when there is not enough space on the screen for them.
              * The visibility of the columns in this mode is driven by the column minWidth and priority settings.
-             * The columns without priority setting are always visible and can't hide in small screen resolutions. */
-            responsive: false,
+             * The columns without priority setting are always visible and can't hide in small screen resolutions.             */            responsive: false,
 
             /** Automatically adds hidden columns to the details section of the row.
-             * This setting works only if the responsive setting is set to true and the detailTemplate is set. */
-            showHiddenColumnsAsDetails: false,
+             * This setting works only if the responsive setting is set to true and the detailTemplate is set.             */            showHiddenColumnsAsDetails: false,
 
             defaultColumn: {
                 /** The priority of the column compared to other columns in the grid.
                  * The columns are hiding based on the priorities.
-                 * This setting is working only when the responsive setting is set to true. */
-                priority: undefined,
+                 * This setting is working only when the responsive setting is set to true.                 */                priority: undefined,
 
                 /** The minimum width of the column.
                  * The column is getting invisible when there is not enough space in the grid for this minimum width.
-                 * This setting is working only when the responsive setting is set to true and the column priority setting is set. */
-                minWidth: 150
+                 * This setting is working only when the responsive setting is set to true and the column priority setting is set.                 */                minWidth: 150
             },
             style: {
                 rowDetailItem: ''
@@ -113,8 +107,7 @@ gj.grid.plugins.responsiveDesign = {
 
         /**
          * Make the grid responsive based on the available space.
-         * Show column if the space for the grid is expanding and hide columns when the space for the grid is decreasing. */
-        makeResponsive: function () {
+         * Show column if the space for the grid is expanding and hide columns when the space for the grid is decreasing.         */        makeResponsive: function () {
             var i, $column,
                 extraWidth = 0,
                 config = this.data(),
@@ -149,8 +142,7 @@ gj.grid.plugins.responsiveDesign = {
     'events': {
         /**
          * Event fires when the grid width is changed. The "responsive" configuration setting should be set to true in order this event to fire.
-         * */
-        resize: function ($grid, newWidth, oldWidth) {
+         *         */        resize: function ($grid, newWidth, oldWidth) {
             $grid.triggerHandler('resize', [newWidth, oldWidth]);
         }
     },

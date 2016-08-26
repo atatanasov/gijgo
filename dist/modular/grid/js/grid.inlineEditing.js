@@ -1,13 +1,11 @@
-/**  */
-if (typeof (gj.grid.plugins) === 'undefined') {
+/**   */if (typeof (gj.grid.plugins) === 'undefined') {
     gj.grid.plugins = {};
 }
 
 gj.grid.plugins.inlineEditing = {
     config: {
         defaultColumnSettings: {
-            /** Provides a way to specify a custom editing UI for the column. */
-            editor: undefined
+            /** Provides a way to specify a custom editing UI for the column.             */            editor: undefined
         }
     },
 
@@ -114,8 +112,7 @@ gj.grid.plugins.inlineEditing = {
 
     public: {
         /**
-         * Return array with all changes */
-        getChanges: function () {
+         * Return array with all changes         */        getChanges: function () {
             return JSON.parse(sessionStorage.getItem('gj.grid.' + this.data().guid));
         }
     },
@@ -123,8 +120,7 @@ gj.grid.plugins.inlineEditing = {
     events: {
         /**
          * Event fires after inline edit of a cell in the grid.
-         * */
-        cellDataChanged: function ($grid, $cell, column, record, oldValue, newValue) {
+         *         */        cellDataChanged: function ($grid, $cell, column, record, oldValue, newValue) {
             $grid.triggerHandler('cellDataChanged', [$cell, column, record, oldValue, newValue]);
         }
     },
