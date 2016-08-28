@@ -170,7 +170,6 @@ gj.grid.events = {
      */
     rowUnselect: function ($grid, $row, id, record) {
         $grid.triggerHandler('rowUnselect', [$row, id, record]);
-
     },
 
     /**

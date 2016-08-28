@@ -73,20 +73,17 @@ gj.tree.methods = {
         return function (e) {
             var $expander = $(this),
                 $children = $expander.siblings('ul'),
+                $node = $expander.parent('li'),
                 data = $tree.data(),
                 events = gj.tree.events;
-            if ($expander.attr('data-mode') === 'close') {
-                events.expanding($tree);
+            if ($expander.attr('data-mode') === 'close' && events.expand($tree, $node) !== false) {
                 $children.show();
                 $expander.attr('data-mode', 'open');
                 data.style.collapseIcon ? $expander.removeClass(data.style.expandIcon).addClass(data.style.collapseIcon) : $expander.text('-');
-                events.expanded($tree);
-            } else {
-                events.collapsing($tree);
+            } else if (events.collapse($tree, $node) !== false) {
                 $children.hide();
                 $expander.attr('data-mode', 'close');
                 data.style.expandIcon ? $expander.removeClass(data.style.collapseIcon).addClass(data.style.expandIcon) : $expander.text('+');
-                events.collapsed($tree);
             }
         }
     },
@@ -117,14 +114,15 @@ gj.tree.methods = {
 
     select: function ($tree, $node, cascade) {
         var i, $children, data = $tree.data();
-        $node.addClass(data.style.active).attr('data-selected', 'true');
-        if (cascade) {
-            $children = $node.find('ul li');
-            for (i = 0; i < $children.length; i++) {
-                gj.tree.methods.select($tree, $($children[i]), cascade);
+        if ($node.attr('data-selected') !== 'true' && gj.tree.events.select($tree, $node) !== false) {
+            $node.addClass(data.style.active).attr('data-selected', 'true');
+            if (cascade) {
+                $children = $node.find('ul li');
+                for (i = 0; i < $children.length; i++) {
+                    gj.tree.methods.select($tree, $($children[i]), cascade);
+                }
             }
         }
-        gj.tree.events.select($tree, $node);
     },
     
     unselectAll: function ($tree) {
@@ -137,13 +135,14 @@ gj.tree.methods = {
 
     unselect: function ($tree, $node, cascade) {
         var i, $children, data = $tree.data();
-        $node.removeClass($tree.data().style.active).removeAttr('data-selected');
-        if (cascade) {
-            $children = $node.find('ul li');
-            for (i = 0; i < $children.length; i++) {
-                gj.tree.methods.unselect($tree, $($children[i]), cascade);
+        if ($node.attr('data-selected') === 'true' && gj.tree.events.unselect($tree, $node) !== false) {
+            $node.removeClass($tree.data().style.active).removeAttr('data-selected');
+            if (cascade) {
+                $children = $node.find('ul li');
+                for (i = 0; i < $children.length; i++) {
+                    gj.tree.methods.unselect($tree, $($children[i]), cascade);
+                }
             }
         }
-        gj.tree.events.unselect($tree, $node);
     }
 }

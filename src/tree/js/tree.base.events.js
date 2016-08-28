@@ -23,7 +23,7 @@ gj.tree.events = {
      * </script>
      */
     initialized: function ($tree) {
-        $tree.trigger('initialized', []);
+        $tree.triggerHandler('initialized');
     },
 
     /**
@@ -42,7 +42,7 @@ gj.tree.events = {
      * </script>
      */
     dataBinding: function ($tree) {
-        $tree.trigger('dataBinding', []);
+        $tree.triggerHandler('dataBinding');
     },
 
     /**
@@ -61,7 +61,87 @@ gj.tree.events = {
      * </script>
      */
     dataBound: function ($tree) {
-        $tree.trigger('dataBound', []);
+        $tree.triggerHandler('dataBound');
+    },
+
+    /**
+     * Event fires after selection of tree node.
+     * @event select
+     * @param {object} e - event data
+     * @param {object} node - the node as jquery object
+     * @param {string} id - the id of the record
+     * @param {object} record - the data of the node
+     * @example sample <!-- tree.base -->
+     * <div id="tree" data-source="/DataSources/GetCountries"></div>
+     * <script>
+     *     var tree = $('#tree').tree();
+     *     tree.on('select', function (e, node, id, record) {
+     *         alert('select is fired.');
+     *     });
+     * </script>
+     */
+    select: function ($tree, $node, id, record) {
+        return $tree.triggerHandler('select', [$node, id, record]);
+    },
+
+    /**
+     * Event fires on un selection of tree node
+     * @event unselect
+     * @param {object} e - event data
+     * @param {object} node - the node as jquery object
+     * @param {string} id - the id of the record
+     * @param {object} record - the data of the node
+     * @example sample <!-- tree.base -->
+     * <div id="tree" data-source="/DataSources/GetCountries"></div>
+     * <script>
+     *     var tree = $('#tree').tree();
+     *     tree.on('unselect', function (e, node, id, record) {
+     *         alert('unselect is fired.');
+     *     });
+     * </script>
+     */
+    unselect: function ($tree, $node, id, record) {
+        return $tree.triggerHandler('unselect', [$node, id, record]);
+    },
+
+    /**
+     * Event fires before node collapse.
+     * @event collapse
+     * @param {object} e - event data
+     * @param {object} node - the node as jquery object
+     * @param {string} id - the id of the record
+     * @param {object} record - the data of the node
+     * @example sample <!-- tree.base -->
+     * <div id="tree" data-source="/DataSources/GetCountries"></div>
+     * <script>
+     *     var tree = $('#tree').tree();
+     *     tree.on('collapse', function (e, node, id, record) {
+     *         alert('collapse is fired.');
+     *     });
+     * </script>
+     */
+    collapse: function ($tree, $node, id, record) {
+        return $tree.triggerHandler('collapse', [$node, id, record]);
+    },
+
+    /**
+     * Event fires before node expand.
+     * @event expand
+     * @param {object} e - event data
+     * @param {object} node - the node as jquery object
+     * @param {string} id - the id of the record
+     * @param {object} record - the data of the node
+     * @example sample <!-- tree.base -->
+     * <div id="tree" data-source="/DataSources/GetCountries"></div>
+     * <script>
+     *     var tree = $('#tree').tree();
+     *     tree.on('expand', function (e, node, id, record) {
+     *         alert('expand is fired.');
+     *     });
+     * </script>
+     */
+    expand: function ($tree, $node, id, record) {
+        return $tree.triggerHandler('expand', [$node, id, record]);
     },
 
     /**
@@ -69,54 +149,6 @@ gj.tree.events = {
      * @event destroying
      */
     destroying: function ($tree) {
-        $tree.trigger('destroying', []);
-    },
-
-    /**
-     * Event fires 
-     * @event select
-     */
-    select: function ($tree) {
-        $tree.trigger('select', []);
-    },
-
-    /**
-     * Event fires 
-     * @event unselect
-     */
-    unselect: function ($tree) {
-        $tree.trigger('unselect', []);
-    },
-
-    /**
-     * Event fires 
-     * @event collapsing
-     */
-    collapsing: function ($tree) {
-        $tree.trigger('collapsing', []);
-    },
-
-    /**
-     * Event fires 
-     * @event collapsed
-     */
-    collapsed: function ($tree) {
-        $tree.trigger('collapsed', []);
-    },
-
-    /**
-     * Event fires 
-     * @event expanding
-     */
-    expanding: function ($tree) {
-        $tree.trigger('expanding', []);
-    },
-
-    /**
-     * Event fires 
-     * @event expanded
-     */
-    expanded: function ($tree) {
-        $tree.trigger('expanded', []);
+        return $tree.triggerHandler('destroying');
     }
 }

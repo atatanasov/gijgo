@@ -70,52 +70,42 @@ gj.tree.config = {
 /**  */gj.tree.events = {
     /**
      * Event fires when the tree is initialized     */    initialized: function ($tree) {
-        $tree.trigger('initialized', []);
+        $tree.triggerHandler('initialized');
     },
 
     /**
      * Event fired before data binding takes place.     */    dataBinding: function ($tree) {
-        $tree.trigger('dataBinding', []);
+        $tree.triggerHandler('dataBinding');
     },
 
     /**
      * Event fires after the loading of the data in the grid.     */    dataBound: function ($tree) {
-        $tree.trigger('dataBound', []);
+        $tree.triggerHandler('dataBound');
+    },
+
+    /**
+     * Event fires after selection of tree node.     */    select: function ($tree, $node, id, record) {
+        return $tree.triggerHandler('select', [$node, id, record]);
+    },
+
+    /**
+     * Event fires on un selection of tree node     */    unselect: function ($tree, $node, id, record) {
+        return $tree.triggerHandler('unselect', [$node, id, record]);
+    },
+
+    /**
+     * Event fires before node collapse.     */    collapse: function ($tree, $node, id, record) {
+        return $tree.triggerHandler('collapse', [$node, id, record]);
+    },
+
+    /**
+     * Event fires before node expand.     */    expand: function ($tree, $node, id, record) {
+        return $tree.triggerHandler('expand', [$node, id, record]);
     },
 
     /**
      * Event fires      */    destroying: function ($tree) {
-        $tree.trigger('destroying', []);
-    },
-
-    /**
-     * Event fires      */    select: function ($tree) {
-        $tree.trigger('select', []);
-    },
-
-    /**
-     * Event fires      */    unselect: function ($tree) {
-        $tree.trigger('unselect', []);
-    },
-
-    /**
-     * Event fires      */    collapsing: function ($tree) {
-        $tree.trigger('collapsing', []);
-    },
-
-    /**
-     * Event fires      */    collapsed: function ($tree) {
-        $tree.trigger('collapsed', []);
-    },
-
-    /**
-     * Event fires      */    expanding: function ($tree) {
-        $tree.trigger('expanding', []);
-    },
-
-    /**
-     * Event fires      */    expanded: function ($tree) {
-        $tree.trigger('expanded', []);
+        return $tree.triggerHandler('destroying');
     }
 }
 /*global gj $*/
@@ -193,20 +183,17 @@ gj.tree.methods = {
         return function (e) {
             var $expander = $(this),
                 $children = $expander.siblings('ul'),
+                $node = $expander.parent('li'),
                 data = $tree.data(),
                 events = gj.tree.events;
-            if ($expander.attr('data-mode') === 'close') {
-                events.expanding($tree);
+            if ($expander.attr('data-mode') === 'close' && events.expand($tree, $node) !== false) {
                 $children.show();
                 $expander.attr('data-mode', 'open');
                 data.style.collapseIcon ? $expander.removeClass(data.style.expandIcon).addClass(data.style.collapseIcon) : $expander.text('-');
-                events.expanded($tree);
-            } else {
-                events.collapsing($tree);
+            } else if (events.collapse($tree, $node) !== false) {
                 $children.hide();
                 $expander.attr('data-mode', 'close');
                 data.style.expandIcon ? $expander.removeClass(data.style.collapseIcon).addClass(data.style.expandIcon) : $expander.text('+');
-                events.collapsed($tree);
             }
         }
     },
@@ -237,14 +224,15 @@ gj.tree.methods = {
 
     select: function ($tree, $node, cascade) {
         var i, $children, data = $tree.data();
-        $node.addClass(data.style.active).attr('data-selected', 'true');
-        if (cascade) {
-            $children = $node.find('ul li');
-            for (i = 0; i < $children.length; i++) {
-                gj.tree.methods.select($tree, $($children[i]), cascade);
+        if ($node.attr('data-selected') !== 'true' && gj.tree.events.select($tree, $node) !== false) {
+            $node.addClass(data.style.active).attr('data-selected', 'true');
+            if (cascade) {
+                $children = $node.find('ul li');
+                for (i = 0; i < $children.length; i++) {
+                    gj.tree.methods.select($tree, $($children[i]), cascade);
+                }
             }
         }
-        gj.tree.events.select($tree, $node);
     },
     
     unselectAll: function ($tree) {
@@ -257,14 +245,15 @@ gj.tree.methods = {
 
     unselect: function ($tree, $node, cascade) {
         var i, $children, data = $tree.data();
-        $node.removeClass($tree.data().style.active).removeAttr('data-selected');
-        if (cascade) {
-            $children = $node.find('ul li');
-            for (i = 0; i < $children.length; i++) {
-                gj.tree.methods.unselect($tree, $($children[i]), cascade);
+        if ($node.attr('data-selected') === 'true' && gj.tree.events.unselect($tree, $node) !== false) {
+            $node.removeClass($tree.data().style.active).removeAttr('data-selected');
+            if (cascade) {
+                $children = $node.find('ul li');
+                for (i = 0; i < $children.length; i++) {
+                    gj.tree.methods.unselect($tree, $($children[i]), cascade);
+                }
             }
         }
-        gj.tree.events.unselect($tree, $node);
     }
 }
 /**  */gj.tree.widget = function ($element, arguments) {

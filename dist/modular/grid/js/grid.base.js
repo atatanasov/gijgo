@@ -195,7 +195,6 @@ gj.grid.config = {
      * Event fires on un selection of row
      *     */    rowUnselect: function ($grid, $row, id, record) {
         $grid.triggerHandler('rowUnselect', [$row, id, record]);
-
     },
 
     /**
