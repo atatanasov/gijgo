@@ -26,9 +26,52 @@ gj.tree.widget = function ($element, arguments) {
 
     self.collapseAll = function () { };
 
-    self.getById = function (id) { };
+    /**
+     * Return node data by id of the record.
+     * @method
+     * @param {string|number} id - The id of the record that needs to be returned
+     * @return object
+     * @example sample <!-- tree.base -->
+     * <button id="btnGetData">Get Data</button>
+     * <br/><br/>
+     * <div id="tree"></div>
+     * <script>
+     *     var tree = $('#tree').tree({
+     *         dataSource: '/DataSources/GetCountries',
+     *         primaryKey: 'id' //define the name of the column that you want to use as ID here.
+     *     });
+     *     $('#btnGetData').on('click', function () {
+     *         var data = tree.getById(9);
+     *         alert('The population of ' + data.text + ' is ' + data.population);
+     *     });
+     * </script>
+     */
+    self.getById = function (id) {
+        return methods.getById(this, id, this.data('records'));
+    };
 
-    self.getByText = function (text) { };
+    /**
+     * Return node data by text.
+     * @method
+     * @param {string} text - The text of the record that needs to be returned
+     * @return object
+     * @example sample <!-- tree.base -->
+     * <button id="btnGetData">Get Data</button>
+     * <br/><br/>
+     * <div id="tree"></div>
+     * <script>
+     *     var tree = $('#tree').tree({
+     *         dataSource: '/DataSources/GetCountries',
+     *     });
+     *     $('#btnGetData').on('click', function () {
+     *         var data = tree.getByText('California');
+     *         alert('The population of California is ' + data.population);
+     *     });
+     * </script>
+     */
+    self.getByText = function (text) {
+        return methods.getByText(this, text, this.data('records'));
+    };
 
     self.remove = function ($node) { };
 

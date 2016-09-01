@@ -1,0 +1,24 @@
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Example</title>
+  <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+  <script src="../../dist/modular/widget/js/widget.js"></script>
+  <link href="../../dist/modular/tree/css/tree.base.css" rel="stylesheet" type="text/css">
+  <script src="../../dist/modular/tree/js/tree.base.js"></script>
+</head>
+<body>
+ <button id="btnGetData">Get Data</button>
+ <br/><br/>
+ <div id="tree"></div>
+ <script>
+     var tree = $('#tree').tree({
+         dataSource: '/DataSources/GetCountries',
+     });
+     $('#btnGetData').on('click', function () {
+         var data = tree.getByText('California');
+         alert('The population of California is ' + data.population);
+     });
+ </script>
+</body>
+</html>

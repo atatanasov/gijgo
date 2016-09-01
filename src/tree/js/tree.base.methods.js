@@ -23,22 +23,34 @@ gj.tree.methods = {
     },
 
     render: function ($tree, response) {
-        var i, $root = $tree.children('ul');
-
-        gj.tree.events.dataBinding($tree);
-        $root.off().empty();
-        for (i = 0; i < response.length; i++) {
-            gj.tree.methods.appendNode($tree, $root, response[i], 1);
+        if (response) {
+            if (typeof (response) === 'string' && JSON) {
+                response = JSON.parse(response);
+            }
+            $tree.data('records', response);
+            gj.tree.methods.loadData($tree);
         }
-        gj.tree.events.dataBound($tree);
-
         return $tree;
     },
 
-    appendNode: function ($tree, $parent, nodeData, level) {
+    loadData: function ($tree) {
+        var i,
+            records = $tree.data('records');
+            $root = $tree.children('ul');
+
+        gj.tree.events.dataBinding($tree);
+        $root.off().empty();
+        for (i = 0; i < records.length; i++) {
+            gj.tree.methods.appendNode($tree, $root, records[i], 1, 1);
+        }
+        gj.tree.events.dataBound($tree);
+    },
+
+    appendNode: function ($tree, $parent, nodeData, level, autoGenId) {
         var i, $node, $newParent,
             data = $tree.data(),
-            $node = $('<li/>').addClass(data.style.item),
+            id = data.primaryKey ? nodeData[data.primaryKey] : autoGenId++,
+            $node = $('<li data-id="' + id + '"/>').addClass(data.style.item),
             $expander = $('<span data-role="expander" data-mode="close"></span>'),
             $display = $('<span data-role="display">' + nodeData[data.textField] + '</span>');
 
@@ -144,5 +156,43 @@ gj.tree.methods = {
                 }
             }
         }
+    },
+
+    getById: function ($tree, id, records) {
+        var i, id,
+            result = undefined,
+            data = $tree.data();
+        if (data.primaryKey) {
+            for (i = 0; i < records.length; i++) {
+                if (id === records[i][data.primaryKey]) {
+                    result = records[i];
+                    break;
+                } else if (records[i][data.childrenField] && records[i][data.childrenField].length) {
+                    result = gj.tree.methods.getById($tree, id, records[i][data.childrenField]);
+                    if (result) {
+                        break;
+                    }
+                }
+            }
+        }
+        return result;
+    },
+
+    getByText: function ($tree, text, records) {
+        var i, id,
+            result = undefined,
+            data = $tree.data();
+        for (i = 0; i < records.length; i++) {
+            if (text === records[i][data.textField]) {
+                result = records[i];
+                break;
+            } else if (records[i][data.childrenField] && records[i][data.childrenField].length) {
+                result = gj.tree.methods.getByText($tree, text, records[i][data.childrenField]);
+                if (result) {
+                    break;
+                }
+            }
+        }
+        return result;
     }
 }

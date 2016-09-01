@@ -119,7 +119,6 @@ gj.tree.config = {
 
         primaryKey: undefined,
         textField: 'text',
-        valueField: undefined,
         childrenField: 'children',
 
         /** Width of the tree.

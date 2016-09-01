@@ -61,13 +61,39 @@ server.get('/DataSources/GetCountries', function (req, res) {
 
     params = url.parse(req.url, true).query;
     data = [
-        { text: 'Asia', children: [{ text: 'China' }, { text: 'Japan' }, { text: 'Mongolia' }] },
         {
-            text: 'North America', children: [
-            { text: 'USA', children: [{ text: 'California' }, { text: 'Miami' }] }, { text: 'Canada' }, { text: 'Mexico' }]
+            id: 1, text: 'Asia', children: [
+                { id: 5, text: 'China' },
+                { id: 6, text: 'Japan' },
+                { id: 7, text: 'Mongolia' }
+            ]
         },
-        { text: 'South America', children: [{ text: 'Brazil' }, { text: 'Argentina' }, { text: 'Columbia' }] },
-        { text: 'Europe', children: [ { text: 'France' },  { text: 'Spain' },  { text: 'Italy' } ] }
+        {
+            id: 2, text: 'North America', children: [
+                {
+                    id: 8, text: 'USA', children: [
+                        { id: 9, text: 'California', population: 39144818 },
+                        { id: 10, text: 'Florida', population: 20271272 }
+                    ]
+                },
+                { id: 11, text: 'Canada' },
+                { id: 12, text: 'Mexico' }
+            ]
+        },
+        {
+            id: 3, text: 'South America', children: [
+                { id: 13, text: 'Brazil' },
+                { id: 14, text: 'Argentina' },
+                { id: 15, text: 'Columbia' }
+            ]
+        },
+        {
+            id: 4, text: 'Europe', children: [
+                { id: 16, text: 'France' },
+                { id: 17, text: 'Spain' },
+                { id: 18, text: 'Italy' }
+            ]
+        }
     ];
 
     res.setHeader('Content-Type', 'application/json');
