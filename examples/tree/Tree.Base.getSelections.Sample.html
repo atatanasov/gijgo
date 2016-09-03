@@ -8,11 +8,16 @@
   <script src="../../dist/modular/tree/js/tree.base.js"></script>
 </head>
 <body>
+ <button id="btnShowSelection">Show Selections</button>
+ <br/><br/>
  <div id="tree" data-source="/DataSources/GetCountries"></div>
  <script>
-     var tree = $('#tree').tree();
-     tree.on('collapse', function (e, node, id, record) {
-         alert('collapse is fired.');
+     var tree = $('#tree').tree({
+         selectionType: 'multiple'
+     });
+     $('#btnShowSelection').on('click', function () {
+         var selections = tree.getSelections();
+         selections && selections.length && alert(selections.join());
      });
  </script>
 </body>

@@ -105,43 +105,41 @@ gj.tree.events = {
     },
 
     /**
-     * Event fires before node collapse.
-     * @event collapse
-     * @param {object} e - event data
-     * @param {object} node - the node as jquery object
-     * @param {string} id - the id of the record
-     * @param {object} record - the data of the node
-     * @example sample <!-- tree.base -->
-     * <div id="tree" data-source="/DataSources/GetCountries"></div>
-     * <script>
-     *     var tree = $('#tree').tree();
-     *     tree.on('collapse', function (e, node, id, record) {
-     *         alert('collapse is fired.');
-     *     });
-     * </script>
-     */
-    collapse: function ($tree, $node, id, record) {
-        return $tree.triggerHandler('collapse', [$node, id, record]);
-    },
-
-    /**
      * Event fires before node expand.
      * @event expand
      * @param {object} e - event data
      * @param {object} node - the node as jquery object
      * @param {string} id - the id of the record
-     * @param {object} record - the data of the node
-     * @example sample <!-- tree.base -->
+     * @example Event.Sample <!-- tree.base -->
      * <div id="tree" data-source="/DataSources/GetCountries"></div>
      * <script>
      *     var tree = $('#tree').tree();
-     *     tree.on('expand', function (e, node, id, record) {
+     *     tree.on('expand', function (e, node, id) {
      *         alert('expand is fired.');
      *     });
      * </script>
      */
     expand: function ($tree, $node, id, record) {
         return $tree.triggerHandler('expand', [$node, id, record]);
+    },
+
+    /**
+     * Event fires before node collapse.
+     * @event collapse
+     * @param {object} e - event data
+     * @param {object} node - the node as jquery object
+     * @param {string} id - the id of the record
+     * @example Event.Sample <!-- tree.base -->
+     * <div id="tree" data-source="/DataSources/GetCountries"></div>
+     * <script>
+     *     var tree = $('#tree').tree();
+     *     tree.on('collapse', function (e, node, id) {
+     *         alert('collapse is fired.');
+     *     });
+     * </script>
+     */
+    collapse: function ($tree, $node, id, record) {
+        return $tree.triggerHandler('collapse', [$node, id, record]);
     },
 
     /**

@@ -8,18 +8,17 @@
   <script src="../../dist/modular/tree/js/tree.base.js"></script>
 </head>
 <body>
- <button id="btnGetData">Get Data</button>
+ <button onclick="expand()">Expand North America</button>
  <br/><br/>
  <div id="tree"></div>
  <script>
      var tree = $('#tree').tree({
-         dataSource: '/DataSources/GetCountries',
-         primaryKey: 'id' //define the name of the column that you want to use as ID here.
+         dataSource: '/DataSources/GetCountries'
      });
-     $('#btnGetData').on('click', function () {
-         var data = tree.getById(9);
-         alert('The population of ' + data.text + ' is ' + data.population);
-     });
+     function expand() {
+         var node = tree.getNodeByText('North America');
+         tree.expand(node, true);
+     }
  </script>
 </body>
 </html>

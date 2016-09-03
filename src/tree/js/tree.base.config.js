@@ -161,6 +161,8 @@ gj.tree.config = {
          */
         uiLibrary: 'base',
 
+        autoGenId: 1,
+
         style: {
             wrapper: 'gj-tree-unselectable',
             list: 'gj-tree-list',

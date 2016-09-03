@@ -1,0 +1,25 @@
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Example</title>
+  <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+  <script src="../../dist/modular/widget/js/widget.js"></script>
+  <link href="../../dist/modular/tree/css/tree.base.css" rel="stylesheet" type="text/css">
+  <script src="../../dist/modular/tree/js/tree.base.js"></script>
+</head>
+<body>
+ <button onclick="append()">Append Node</button>
+ <br/><br/>
+ <div id="tree" data-source="/DataSources/GetCountries"></div>
+ <script>
+     var parent, tree = $('#tree').tree();
+     tree.on('dataBound', function () {
+         parent = tree.getNodeByText('Asia').children('ul');
+         tree.off('dataBound');
+     });
+     function append() {
+         tree.appendNode({ text: 'New Node' }, parent);
+     }
+ </script>
+</body>
+</html>
