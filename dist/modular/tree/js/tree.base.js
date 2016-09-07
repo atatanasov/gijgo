@@ -27,9 +27,11 @@ gj.tree.config = {
 
         /** The data source of tree.         */        dataSource: undefined,
 
-        primaryKey: undefined,
-        textField: 'text',
-        childrenField: 'children',
+        /** Primary key field name.         */        primaryKey: undefined,
+
+        /** Text field name.         */        textField: 'text',
+
+        /** Children field name.         */        childrenField: 'children',
 
         /** Width of the tree.         */        width: undefined,
 
@@ -69,6 +71,7 @@ gj.tree.config = {
     jqueryui: {}
 };
 /**  */gj.tree.events = {
+
     /**
      * Event fires when the tree is initialized     */    initialized: function ($tree) {
         $tree.triggerHandler('initialized');
@@ -105,7 +108,7 @@ gj.tree.config = {
     },
 
     /**
-     * Event fires      */    destroying: function ($tree) {
+     * Event fires before tree destroy     */    destroying: function ($tree) {
         return $tree.triggerHandler('destroying');
     }
 }
@@ -144,14 +147,14 @@ gj.tree.methods = {
         return $tree;
     },
 
-    getRecords: function ($tree, response, parentId) {
+    getRecords: function ($tree, response) {
         var i, id, nodeData, result = [],
             data = $tree.data();
         for (i = 0; i < response.length; i++) {
             id = data.primaryKey ? response[i][data.primaryKey] : data.autoGenId++;
             nodeData = { id: id, data: response[i] };
             if (response[i][data.childrenField] && response[i][data.childrenField].length) {
-                nodeData.children = gj.tree.methods.getRecords($tree, response[i][data.childrenField], id);
+                nodeData.children = gj.tree.methods.getRecords($tree, response[i][data.childrenField]);
                 delete response[i][data.childrenField];
             }
             result.push(nodeData);
@@ -445,11 +448,13 @@ gj.tree.methods = {
         return $result;
     },
 
-    append: function ($tree, data, $parent, position) {
+    addNode: function ($tree, data, $parent, position) {
+        var nodeData = gj.tree.methods.getRecords($tree, [data]);
         if (!$parent || !$parent.length) {
             $parent = $tree.children('ul');
         }
-        gj.tree.methods.appendNode($tree, $parent, data, undefined, position);
+        
+        gj.tree.methods.appendNode($tree, $parent, nodeData[0], undefined, position);
 
         return $tree;
     },
@@ -471,23 +476,37 @@ gj.tree.methods = {
             }
         }
     },
+
+    destroy: function ($tree) {
+        var data = $tree.data();
+        if (data) {
+            gj.tree.events.destroying($tree);
+            $tree.xhr && $tree.xhr.abort();
+            $tree.off();
+            $tree.removeData();
+            $tree.attr('data-tree', false);
+            $tree.removeClass().empty();
+        }
+        return $tree;
+    }
 }
 /**  */gj.tree.widget = function ($element, arguments) {
     var self = this,
         methods = gj.tree.methods;
 
-    self.reload = function (params) {
+    /**
+     * Reload the tree.     */    self.reload = function (params) {
         return gj.widget.prototype.reload.call(this, params);
     };
 
-    self.render = function (response) {
+    /**
+     * Render data in the tree     */    self.render = function (response) {
         return methods.render(this, response);
     };
 
-
     /**
-     * Append node to the tree.     */    self.addNode = function (data, $parentNode, position) {
-        return methods.append(this, data, $parentNode, position);
+     * Add node to the tree.     */    self.addNode = function (data, $parentNode, position) {
+        return methods.addNode(this, data, $parentNode, position);
     };
 
     /**
@@ -495,7 +514,10 @@ gj.tree.methods = {
         return methods.remove(this, $node);
     };
 
-    self.destroy = function () { };
+    /**
+     * Destroy the tree.     */    self.destroy = function () {
+        return methods.destroy(this);
+    };
 
     /**
      * Expand node from the tree.     */    self.expand = function ($node, cascade) {
@@ -536,8 +558,6 @@ gj.tree.methods = {
      * Return node by text.     */    self.getNodeByText = function (text) {
         return methods.getNodeByText(this.children('ul'), text);
     };
-
-    self.findNode = function (id) { };
 
     /**
      * Select all tree nodes     */    self.selectAll = function () {

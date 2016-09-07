@@ -3,6 +3,7 @@
   * @plugin Base
   */
 gj.tree.events = {
+
     /**
      * Event fires when the tree is initialized
      * @event initialized
@@ -143,8 +144,19 @@ gj.tree.events = {
     },
 
     /**
-     * Event fires 
+     * Event fires before tree destroy
      * @event destroying
+     * @param {object} e - event data
+     * @example Event.Sample <!-- tree.base -->
+     * <button onclick="tree.destroy()">Destroy</button>
+     * <br/><br/>
+     * <div id="tree" data-source="/DataSources/GetCountries"></div>
+     * <script>
+     *     var tree = $('#tree').tree();
+     *     tree.on('destroying', function (e) {
+     *         alert('destroying is fired.');
+     *     });
+     * </script>
      */
     destroying: function ($tree) {
         return $tree.triggerHandler('destroying');

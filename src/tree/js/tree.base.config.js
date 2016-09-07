@@ -117,8 +117,47 @@ gj.tree.config = {
          */
         dataSource: undefined,
 
+        /** Primary key field name.
+         * @type string
+         * @default undefined
+         * @example sample <!-- tree.base -->
+         * <div id="tree"></div>
+         * <script>
+         *     var tree = $('#tree').tree({
+         *         primaryKey: 'id',
+         *         dataSource: [ { id: 101, text: 'foo', children: [ { id: 202, text: 'bar' } ] } ]
+         *     });
+         *     alert(tree.getDataById(101).text);
+         * </script>
+         */
         primaryKey: undefined,
+
+        /** Text field name.
+         * @type string
+         * @default 'text'
+         * @example sample <!-- tree.base -->
+         * <div id="tree"></div>
+         * <script>
+         *     var tree = $('#tree').tree({
+         *         textField: 'newTextName',
+         *         dataSource: [ { newTextName: 'foo', children: [ { newTextName: 'bar' } ] } ]
+         *     });
+         * </script>
+         */
         textField: 'text',
+
+        /** Children field name.
+         * @type string
+         * @default 'children'
+         * @example sample <!-- tree.base -->
+         * <div id="tree"></div>
+         * <script>
+         *     var tree = $('#tree').tree({
+         *         childrenField: 'myChildrenNode',
+         *         dataSource: [ { text: 'foo', myChildrenNode: [ { text: 'bar' } ] } ]
+         *     });
+         * </script>
+         */
         childrenField: 'children',
 
         /** Width of the tree.

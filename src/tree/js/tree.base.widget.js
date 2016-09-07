@@ -6,18 +6,55 @@ gj.tree.widget = function ($element, arguments) {
     var self = this,
         methods = gj.tree.methods;
 
+    /**
+     * Reload the tree.
+     * @method
+     * @param {object} params - Params that needs to be send to the server. Only in use for remote data sources.
+     * @return jQuery object
+     * @example Method.Sample <!-- tree.base -->
+     * <button onclick="tree.reload()">Reload</button>
+     * <br/><br/>
+     * <div id="tree"></div>
+     * <script>
+     *     var tree = $('#tree').tree({
+     *         dataSource: '/DataSources/GetCountries',
+     *         autoLoad: false
+     *     });
+     * </script>
+     */
     self.reload = function (params) {
         return gj.widget.prototype.reload.call(this, params);
     };
 
+    /**
+     * Render data in the tree
+     * @method
+     * @param {object} response - An object that contains the data that needs to be loaded in the tree.
+     * @fires dataBinding, dataBound
+     * @return tree
+     * @example sample <!-- tree.base -->
+     * <div id="tree"></div>
+     * <script>
+     *     var tree, onSuccessFunc;
+     *     onSuccessFunc = function (response) {
+     *         //you can modify the response here if needed
+     *         tree.render(response);
+     *     };
+     *     tree = $('#tree').tree({
+     *         dataSource: { url: '/DataSources/GetCountries', success: onSuccessFunc }
+     *     });
+     * </script>
+     */
     self.render = function (response) {
         return methods.render(this, response);
     };
 
-
     /**
-     * Append node to the tree.
+     * Add node to the tree.
      * @method
+     * @param {object} data - The node data.
+     * @param {object} parentNode - Parent node as jquery object.
+     * @param {Number} position - Position where the new node need to be added. 
      * @return jQuery object
      * @example Append.ToRoot <!-- tree.base -->
      * <button onclick="append()">Append Node</button>
@@ -26,7 +63,7 @@ gj.tree.widget = function ($element, arguments) {
      * <script>
      *     var tree = $('#tree').tree();
      *     function append() {
-     *         tree.appendNode({ text: 'New Node' });
+     *         tree.addNode({ text: 'New Node' });
      *     }
      * </script>
      * @example Append.Parent <!-- tree.base -->
@@ -40,7 +77,7 @@ gj.tree.widget = function ($element, arguments) {
      *         tree.off('dataBound');
      *     });
      *     function append() {
-     *         tree.appendNode({ text: 'New Node' }, parent);
+     *         tree.addNode({ text: 'New Node' }, parent);
      *     }
      * </script>
      * @example Bootstrap <!-- tree.base, bootstrap -->
@@ -54,7 +91,7 @@ gj.tree.widget = function ($element, arguments) {
      *         tree.off('dataBound');
      *     });
      *     function append() {
-     *         tree.appendNode({ text: 'New Node' }, parent);
+     *         tree.addNode({ text: 'New Node' }, parent);
      *     }
      * </script>
      * @example Prepend <!-- tree.base -->
@@ -68,7 +105,7 @@ gj.tree.widget = function ($element, arguments) {
      *         tree.off('dataBound');
      *     });
      *     function append() {
-     *         tree.appendNode({ text: 'New Node' }, parent, 1);
+     *         tree.addNode({ text: 'New Node' }, parent, 1);
      *     }
      * </script>
      * @example Position <!-- tree.base -->
@@ -82,12 +119,12 @@ gj.tree.widget = function ($element, arguments) {
      *         tree.off('dataBound');
      *     });
      *     function append() {
-     *         tree.appendNode({ text: 'New Node' }, parent, 2);
+     *         tree.addNode({ text: 'New Node' }, parent, 2);
      *     }
      * </script>
      */
     self.addNode = function (data, $parentNode, position) {
-        return methods.append(this, data, $parentNode, position);
+        return methods.addNode(this, data, $parentNode, position);
     };
 
     /**
@@ -113,7 +150,23 @@ gj.tree.widget = function ($element, arguments) {
         return methods.remove(this, $node);
     };
 
-    self.destroy = function () { };
+    /**
+     * Destroy the tree.
+     * @method
+     * @return jQuery object
+     * @example Method.Sample <!-- tree.base -->
+     * <button onclick="tree.destroy()">Destroy</button>
+     * <br/><br/>
+     * <div id="tree"></div>
+     * <script>
+     *     var tree = $('#tree').tree({
+     *         dataSource: '/DataSources/GetCountries'
+     *     });
+     * </script>
+     */
+    self.destroy = function () {
+        return methods.destroy(this);
+    };
 
     /**
      * Expand node from the tree.
@@ -318,8 +371,6 @@ gj.tree.widget = function ($element, arguments) {
     self.getNodeByText = function (text) {
         return methods.getNodeByText(this.children('ul'), text);
     };
-
-    self.findNode = function (id) { };
 
     /**
      * Select all tree nodes

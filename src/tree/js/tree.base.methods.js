@@ -33,14 +33,14 @@ gj.tree.methods = {
         return $tree;
     },
 
-    getRecords: function ($tree, response, parentId) {
+    getRecords: function ($tree, response) {
         var i, id, nodeData, result = [],
             data = $tree.data();
         for (i = 0; i < response.length; i++) {
             id = data.primaryKey ? response[i][data.primaryKey] : data.autoGenId++;
             nodeData = { id: id, data: response[i] };
             if (response[i][data.childrenField] && response[i][data.childrenField].length) {
-                nodeData.children = gj.tree.methods.getRecords($tree, response[i][data.childrenField], id);
+                nodeData.children = gj.tree.methods.getRecords($tree, response[i][data.childrenField]);
                 delete response[i][data.childrenField];
             }
             result.push(nodeData);
@@ -334,11 +334,13 @@ gj.tree.methods = {
         return $result;
     },
 
-    append: function ($tree, data, $parent, position) {
+    addNode: function ($tree, data, $parent, position) {
+        var nodeData = gj.tree.methods.getRecords($tree, [data]);
         if (!$parent || !$parent.length) {
             $parent = $tree.children('ul');
         }
-        gj.tree.methods.appendNode($tree, $parent, data, undefined, position);
+        
+        gj.tree.methods.appendNode($tree, $parent, nodeData[0], undefined, position);
 
         return $tree;
     },
@@ -360,4 +362,17 @@ gj.tree.methods = {
             }
         }
     },
+
+    destroy: function ($tree) {
+        var data = $tree.data();
+        if (data) {
+            gj.tree.events.destroying($tree);
+            $tree.xhr && $tree.xhr.abort();
+            $tree.off();
+            $tree.removeData();
+            $tree.attr('data-tree', false);
+            $tree.removeClass().empty();
+        }
+        return $tree;
+    }
 }

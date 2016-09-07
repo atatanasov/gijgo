@@ -8,18 +8,13 @@
   <script src="../../dist/modular/tree/js/tree.base.js"></script>
 </head>
 <body>
- <button onclick="append()">Append Node</button>
- <br/><br/>
- <div id="tree" data-source="/DataSources/GetCountries"></div>
+ <div id="tree"></div>
  <script>
-     var parent, tree = $('#tree').tree();
-     tree.on('dataBound', function () {
-         parent = tree.getNodeByText('Asia').children('ul');
-         tree.off('dataBound');
+     var tree = $('#tree').tree({
+         primaryKey: 'id',
+         dataSource: [ { id: 101, text: 'foo', children: [ { id: 202, text: 'bar' } ] } ]
      });
-     function append() {
-         tree.addNode({ text: 'New Node' }, parent);
-     }
+     alert(tree.getDataById(101).text);
  </script>
 </body>
 </html>

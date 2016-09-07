@@ -8,18 +8,14 @@
   <script src="../../dist/modular/tree/js/tree.base.js"></script>
 </head>
 <body>
- <button onclick="append()">Append Node</button>
+ <button onclick="tree.destroy()">Destroy</button>
  <br/><br/>
  <div id="tree" data-source="/DataSources/GetCountries"></div>
  <script>
-     var parent, tree = $('#tree').tree();
-     tree.on('dataBound', function () {
-         parent = tree.getNodeByText('Asia').children('ul');
-         tree.off('dataBound');
+     var tree = $('#tree').tree();
+     tree.on('destroying', function (e) {
+         alert('destroying is fired.');
      });
-     function append() {
-         tree.addNode({ text: 'New Node' }, parent);
-     }
  </script>
 </body>
 </html>
