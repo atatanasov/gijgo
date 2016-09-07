@@ -90,8 +90,27 @@ gj.tree.widget = function ($element, arguments) {
         return methods.append(this, data, $parentNode, position);
     };
 
+    /**
+     * Remove node from the tree.
+     * @method
+     * @param {object} node - The node as jQuery object
+     * @return jQuery object
+     * @example Method.Sample <!-- tree.base -->
+     * <button onclick="remove()">Remove USA</button>
+     * <br/><br/>
+     * <div id="tree"></div>
+     * <script>
+     *     var tree = $('#tree').tree({
+     *         dataSource: '/DataSources/GetCountries'
+     *     });
+     *     function remove() {
+     *         var node = tree.getNodeByText('USA');
+     *         tree.removeNode(node);
+     *     }
+     * </script>
+     */
     self.removeNode = function ($node) {
-        return methods.removeNode(this, $node);
+        return methods.remove(this, $node);
     };
 
     self.destroy = function () { };

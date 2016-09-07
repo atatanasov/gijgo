@@ -138,10 +138,25 @@ gj.tree.methods = {
             if (typeof (response) === 'string' && JSON) {
                 response = JSON.parse(response);
             }
-            $tree.data('records', response);
+            $tree.data('records', gj.tree.methods.getRecords($tree, response));
             gj.tree.methods.loadData($tree);
         }
         return $tree;
+    },
+
+    getRecords: function ($tree, response, parentId) {
+        var i, id, nodeData, result = [],
+            data = $tree.data();
+        for (i = 0; i < response.length; i++) {
+            id = data.primaryKey ? response[i][data.primaryKey] : data.autoGenId++;
+            nodeData = { id: id, data: response[i] };
+            if (response[i][data.childrenField] && response[i][data.childrenField].length) {
+                nodeData.children = gj.tree.methods.getRecords($tree, response[i][data.childrenField], id);
+                delete response[i][data.childrenField];
+            }
+            result.push(nodeData);
+        }
+        return result;
     },
 
     loadData: function ($tree) {
@@ -160,10 +175,9 @@ gj.tree.methods = {
     appendNode: function ($tree, $parent, nodeData, level, position) {
         var i, $node, $newParent,
             data = $tree.data(),
-            id = data.primaryKey ? nodeData[data.primaryKey] : data.autoGenId++,
-            $node = $('<li data-id="' + id + '"/>').addClass(data.style.item),
+            $node = $('<li data-id="' + nodeData.id + '"/>').addClass(data.style.item),
             $expander = $('<span data-role="expander" data-mode="close"></span>'),
-            $display = $('<span data-role="display">' + nodeData[data.textField] + '</span>');
+            $display = $('<span data-role="display">' + nodeData.data[data.textField] + '</span>');
 
         if (data.style.leftSpacer) {
             if (!level) {
@@ -180,14 +194,14 @@ gj.tree.methods = {
         $display.addClass(data.style.display).on('click', gj.tree.methods.displayClickHandler($tree));
         $node.append($display);
 
-        if (nodeData[data.childrenField] && nodeData[data.childrenField].length) {
+        if (nodeData.children && nodeData.children.length) {
             data.style.expandIcon ? $expander.addClass(data.style.expandIcon) : $expander.text('+');
             $newParent = $('<ul />').addClass(data.style.list).addClass('gj-hidden');
             $node.append($newParent);
-            
-            for (i = 0; i < nodeData[data.childrenField].length; i++) {
-                gj.tree.methods.appendNode($tree, $newParent, nodeData[data.childrenField][i], level + 1);
-            }  
+
+            for (i = 0; i < nodeData.children.length; i++) {
+                gj.tree.methods.appendNode($tree, $newParent, nodeData.children[i], level + 1);
+            }
         } else {
             data.style.leafIcon ? $expander.addClass(data.style.leafIcon) : $expander.html('&nbsp;');
         }
@@ -350,24 +364,25 @@ gj.tree.methods = {
         return result;
     },
 
-    getDataById: function ($tree, id, records) {
-        var i,
-            result = undefined,
-            data = $tree.data();
-        if (data.primaryKey) {
-            for (i = 0; i < records.length; i++) {
-                if (id === records[i][data.primaryKey]) {
-                    result = records[i];
+    getById: function ($tree, id, records) {
+        var i, result = undefined;
+        for (i = 0; i < records.length; i++) {
+            if (id == records[i].id) {
+                result = records[i];
+                break;
+            } else if (records[i].children && records[i].children.length) {
+                result = gj.tree.methods.getById($tree, id, records[i].children);
+                if (result) {
                     break;
-                } else if (records[i][data.childrenField] && records[i][data.childrenField].length) {
-                    result = gj.tree.methods.getDataById($tree, id, records[i][data.childrenField]);
-                    if (result) {
-                        break;
-                    }
                 }
             }
         }
         return result;
+    },
+
+    getDataById: function ($tree, id, records) {
+        var result = gj.tree.methods.getById($tree, id, records);
+        return result ? result.data : result;
     },
 
     getDataByText: function ($tree, text, records) {
@@ -375,11 +390,11 @@ gj.tree.methods = {
             result = undefined,
             data = $tree.data();
         for (i = 0; i < records.length; i++) {
-            if (text === records[i][data.textField]) {
-                result = records[i];
+            if (text === records[i].data[data.textField]) {
+                result = records[i].data;
                 break;
-            } else if (records[i][data.childrenField] && records[i][data.childrenField].length) {
-                result = gj.tree.methods.getDataByText($tree, text, records[i][data.childrenField]);
+            } else if (records[i].children && records[i].children.length) {
+                result = gj.tree.methods.getDataByText($tree, text, records[i].children);
                 if (result) {
                     break;
                 }
@@ -437,7 +452,25 @@ gj.tree.methods = {
         gj.tree.methods.appendNode($tree, $parent, data, undefined, position);
 
         return $tree;
-    }
+    },
+
+    remove: function ($tree, $node) {
+        gj.tree.methods.removeDataById($tree, $node.attr('data-id'), $tree.data('records'));
+        $node.remove();    
+        return $tree;
+    },
+
+    removeDataById: function ($tree, id, records) {
+        var i;
+        for (i = 0; i < records.length; i++) {
+            if (id == records[i].id) {
+                records.splice(i, 1);
+                break;
+            } else if (records[i].children && records[i].children.length) {
+                gj.tree.methods.removeDataById($tree, id, records[i].children);
+            }
+        }
+    },
 }
 /**  */gj.tree.widget = function ($element, arguments) {
     var self = this,
@@ -457,8 +490,9 @@ gj.tree.methods = {
         return methods.append(this, data, $parentNode, position);
     };
 
-    self.removeNode = function ($node) {
-        return methods.removeNode(this, $node);
+    /**
+     * Remove node from the tree.     */    self.removeNode = function ($node) {
+        return methods.remove(this, $node);
     };
 
     self.destroy = function () { };
