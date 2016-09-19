@@ -1634,15 +1634,15 @@ gj.grid.plugins.pagination = {
             },
             pager: {
                 leftControls: [
-                    $('<div title="First" data-role="page-first" class="ui-icon ui-icon-seek-first ui-grid-icon"></div>'),
-                    $('<div title="Previous" data-role="page-previous" class="ui-icon ui-icon-seek-prev ui-grid-icon"></div>'),
+                    $('<div title="First" data-role="page-first" class="ui-icon ui-icon-seek-first gj-grid-icon"></div>'),
+                    $('<div title="Previous" data-role="page-previous" class="ui-icon ui-icon-seek-prev gj-grid-icon"></div>'),
                     $('<div>Page</div>'),
                     $('<div></div>').append($('<input type="text" data-role="page-number" class="ui-grid-pager" value="0">')),
                     $('<div>of&nbsp;</div>'),
                     $('<div data-role="page-label-last">0</div>'),
-                    $('<div title="Next" data-role="page-next" class="ui-icon ui-icon-seek-next ui-grid-icon"></div>'),
-                    $('<div title="Last" data-role="page-last" class="ui-icon ui-icon-seek-end ui-grid-icon"></div>'),
-                    $('<div title="Reload" data-role="page-refresh" class="ui-icon ui-icon-refresh ui-grid-icon"></div>'),
+                    $('<div title="Next" data-role="page-next" class="ui-icon ui-icon-seek-next gj-grid-icon"></div>'),
+                    $('<div title="Last" data-role="page-last" class="ui-icon ui-icon-seek-end gj-grid-icon"></div>'),
+                    $('<div title="Reload" data-role="page-refresh" class="ui-icon ui-icon-refresh gj-grid-icon"></div>'),
                     $('<div></div>').append($('<select data-role="page-size" class="ui-grid-page-sizer"></select>'))
                 ],
 

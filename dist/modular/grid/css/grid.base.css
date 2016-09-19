@@ -62,6 +62,13 @@ DIV.gj-grid-wrapper DIV.gj-grid-loading-text
     vertical-align: top;
 }
 
+TABLE.gj-grid-table .gj-grid-icon
+{
+    margin: 0 2px;
+    cursor: pointer;
+    overflow: visible;   
+}
+
 /* Base Theme */
 .gj-grid-base-table {
     border: 1px solid #ddd;

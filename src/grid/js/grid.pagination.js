@@ -101,6 +101,39 @@ gj.grid.plugins.pagination = {
                  * @alias pager.leftControls
                  * @type array
                  * @default array
+                 * @example Font.Awesome <!-- grid.base, grid.pagination  -->
+                 * <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+                 * <table id="grid"></table>
+                 * <script>
+                 *     var grid = $('#grid').grid({
+                 *         dataSource: '/DataSources/GetPlayers',
+                 *         columns: [ { field: 'ID', width: 24 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
+                 *         pager: { 
+                 *             limit: 2, 
+                 *             sizes: [2, 5, 10, 20],
+                 *             leftControls: [
+                 *                 $('<div title="First" data-role="page-first" class="gj-grid-icon fa fa-fast-backward"></div>'),
+                 *                 $('<div title="Previous" data-role="page-previous" class="gj-grid-icon fa fa-backward"></div>'),
+                 *                 $('<div>Page</div>'),
+                 *                 $('<div></div>').append($('<input type="text" data-role="page-number" style="margin: 0 5px;" value="0">')),
+                 *                 $('<div>of&nbsp;</div>'),
+                 *                 $('<div data-role="page-label-last">0</div>'),
+                 *                 $('<div title="Next" data-role="page-next" class="gj-grid-icon fa fa-forward"></div>'),
+                 *                 $('<div title="Last" data-role="page-last" class="gj-grid-icon fa fa-fast-forward"></div>'),
+                 *                 $('<div title="Reload" data-role="page-refresh" class="gj-grid-icon fa fa-refresh"></div>'),
+                 *                 $('<div></div>').append($('<select data-role="page-size" style="margin: 0 5px; width: 50px;"></select>'))
+                 *             ],
+                 *             rightControls: [
+                 *                 $('<div>Displaying records&nbsp;</div>'),
+                 *                 $('<div data-role="record-first">0</div>'),
+                 *                 $('<div>&nbsp;-&nbsp;</div>'),
+                 *                 $('<div data-role="record-last">0</div>'),
+                 *                 $('<div>&nbsp;of&nbsp;</div>'),
+                 *                 $('<div data-role="record-total">0</div>').css({ "margin-right": "5px" })
+                 *             ]
+                 *         }
+                 *     });
+                 * </script>
                  */
                 leftControls: [
                     $('<button title="Previous" data-role="page-previous" class="gj-cursor-pointer"><span>«</span></button>'),
@@ -134,15 +167,15 @@ gj.grid.plugins.pagination = {
             },
             pager: {
                 leftControls: [
-                    $('<div title="First" data-role="page-first" class="ui-icon ui-icon-seek-first ui-grid-icon"></div>'),
-                    $('<div title="Previous" data-role="page-previous" class="ui-icon ui-icon-seek-prev ui-grid-icon"></div>'),
+                    $('<div title="First" data-role="page-first" class="ui-icon ui-icon-seek-first gj-grid-icon"></div>'),
+                    $('<div title="Previous" data-role="page-previous" class="ui-icon ui-icon-seek-prev gj-grid-icon"></div>'),
                     $('<div>Page</div>'),
                     $('<div></div>').append($('<input type="text" data-role="page-number" class="ui-grid-pager" value="0">')),
                     $('<div>of&nbsp;</div>'),
                     $('<div data-role="page-label-last">0</div>'),
-                    $('<div title="Next" data-role="page-next" class="ui-icon ui-icon-seek-next ui-grid-icon"></div>'),
-                    $('<div title="Last" data-role="page-last" class="ui-icon ui-icon-seek-end ui-grid-icon"></div>'),
-                    $('<div title="Reload" data-role="page-refresh" class="ui-icon ui-icon-refresh ui-grid-icon"></div>'),
+                    $('<div title="Next" data-role="page-next" class="ui-icon ui-icon-seek-next gj-grid-icon"></div>'),
+                    $('<div title="Last" data-role="page-last" class="ui-icon ui-icon-seek-end gj-grid-icon"></div>'),
+                    $('<div title="Reload" data-role="page-refresh" class="ui-icon ui-icon-refresh gj-grid-icon"></div>'),
                     $('<div></div>').append($('<select data-role="page-size" class="ui-grid-page-sizer"></select>'))
                 ],
 

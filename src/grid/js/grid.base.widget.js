@@ -518,10 +518,11 @@ gj.grid.widget = function ($grid, arguments) {
 
     /**
      * Remove row from the grid
+     * @additionalinfo This method is design to work only with local datasources. If you use remote datasource, you need to send a request to the server to remove the row and then reload the data in the grid.
      * @method
      * @param {string} id - Id of the record that needs to be removed.
      * @return grid
-     * @example without.pagination <!-- grid.base -->
+     * @example Without.Pagination <!-- grid.base -->
      * <table id="grid"></table>
      * <script>
      *     var grid;
@@ -545,7 +546,7 @@ gj.grid.widget = function ($grid, arguments) {
      *         ]
      *     });
      * </script>
-     * @example with.pagination <!-- grid.base, grid.pagination -->
+     * @example With.Pagination <!-- grid.base, grid.pagination -->
      * <table id="grid"></table>
      * <script>
      *     var grid;

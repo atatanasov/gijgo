@@ -41,13 +41,6 @@ TABLE.gj-grid-table TFOOT TH.ui-grid-pager-cell
     user-select: none;
 }
 
-TABLE.gj-grid-table TFOOT DIV.ui-grid-icon
-{
-    margin: 0 2px;
-    cursor: pointer;
-    overflow: visible;   
-}
-
 TABLE.gj-grid-table TFOOT DIV.ui-grid-pager
 {
     overflow: hidden;
