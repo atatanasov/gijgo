@@ -1,3 +1,10 @@
+/*
+ * Gijgo Dialog v1.0.0
+ * http://gijgo.com/dialog
+ *
+ * Copyright 2014, 2016 gijgo.com
+ * Released under the MIT license
+ */
 if (typeof (gj) === 'undefined') {
     gj = {};
 }
@@ -177,13 +184,6 @@ gj.documentManager = {
     }
 };
 /* global window alert jQuery */
-/*
- * Gijgo JavaScript Library v1.0.0
- * http://gijgo.com/
- *
- * Copyright 2014, 2016 gijgo.com
- * Released under the MIT license
- */
 /** 
  * @widget Dialog 
  * @plugin Base

@@ -1,11 +1,4 @@
 ﻿/* global window alert jQuery gj */
-/*
- * Gijgo JavaScript Library v1.0.0
- * http://gijgo.com/
- *
- * Copyright 2014, 2016 gijgo.com
- * Released under the MIT license
- */
 /**
   * @widget Grid
   * @plugin Base

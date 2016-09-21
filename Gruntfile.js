@@ -59,13 +59,13 @@
             },
             final: {
                 files: {
-                    'dist/modular/dialog/js/dialog.js': ['src/widget.js', 'dist/modular/dialog/js/dialog.code.js'],
-                    'dist/modular/draggable/js/draggable.js': ['src/widget.js', 'dist/modular/draggable/js/draggable.code.js'],
-                    'dist/modular/droppable/js/droppable.js': ['src/widget.js', 'dist/modular/droppable/js/droppable.code.js'],
-                    'dist/modular/grid/js/grid.js': ['src/widget.js', 'dist/modular/grid/js/grid.code.js'],
-                    'dist/modular/tree/js/tree.js': ['src/widget.js', 'dist/modular/tree/js/tree.code.js'],
+                    'dist/modular/dialog/js/dialog.js': ['src/dialog/js/header.txt', 'src/widget.js', 'dist/modular/dialog/js/dialog.code.js'],
+                    'dist/modular/draggable/js/draggable.js': ['src/draggable/js/header.txt', 'src/widget.js', 'dist/modular/draggable/js/draggable.code.js'],
+                    'dist/modular/droppable/js/droppable.js': ['src/droppable/js/header.txt', 'src/widget.js', 'dist/modular/droppable/js/droppable.code.js'],
+                    'dist/modular/grid/js/grid.js': ['src/grid/js/header.txt', 'src/widget.js', 'dist/modular/grid/js/grid.code.js'],
+                    'dist/modular/tree/js/tree.js': ['src/tree/js/header.txt', 'src/widget.js', 'dist/modular/tree/js/tree.code.js'],
 
-                    'dist/combined/js/gijgo.js': ['src/widget.js', 'dist/modular/dialog/js/dialog.code.js', 'dist/modular/draggable/js/draggable.code.js', 'dist/modular/droppable/js/droppable.code.js', 'dist/modular/grid/js/grid.code.js', 'dist/modular/tree/js/tree.code.js'],
+                    'dist/combined/js/gijgo.js': ['src/header.txt', 'src/widget.js', 'dist/modular/dialog/js/dialog.code.js', 'dist/modular/draggable/js/draggable.code.js', 'dist/modular/droppable/js/droppable.code.js', 'dist/modular/grid/js/grid.code.js', 'dist/modular/tree/js/tree.code.js'],
                     'dist/combined/css/gijgo.css': ['dist/modular/dialog/css/dialog.css', 'dist/modular/grid/css/grid.css', 'dist/modular/tree/css/tree.css']
                 }
             }

@@ -1,3 +1,10 @@
+/*
+ * Gijgo JavaScript Library v1.0.0
+ * http://gijgo.com/
+ *
+ * Copyright 2014, 2016 gijgo.com
+ * Released under the MIT license
+ */
 if (typeof (gj) === 'undefined') {
     gj = {};
 }
@@ -177,13 +184,6 @@ gj.documentManager = {
     }
 };
 /* global window alert jQuery */
-/*
- * Gijgo JavaScript Library v1.0.0
- * http://gijgo.com/
- *
- * Copyright 2014, 2016 gijgo.com
- * Released under the MIT license
- */
 /** 
  * @widget Dialog 
  * @plugin Base
@@ -1076,13 +1076,6 @@ gj.dialog.widget.prototype.getHTMLConfig = gj.dialog.methods.getHTMLConfig;
     };
 })(jQuery);
 /* global window alert jQuery */
-/*
- * Gijgo JavaScript Library v1.0.0
- * http://gijgo.com/
- *
- * Copyright 2014, 2016 gijgo.com
- * Released under the MIT license
- */
 /** 
  * @widget Draggable 
  * @plugin Base
@@ -1379,13 +1372,6 @@ gj.draggable.widget.constructor = gj.draggable.widget;
     };
 })(jQuery);
 /* global window alert jQuery */
-/*
- * Gijgo JavaScript Library v1.0.0
- * http://gijgo.com/
- *
- * Copyright 2014, 2016 gijgo.com
- * Released under the MIT license
- */
 /** 
  * @widget Droppable 
  * @plugin Base
@@ -1644,13 +1630,6 @@ gj.droppable.widget.constructor = gj.droppable.widget;
     };
 })(jQuery);
 /* global window alert jQuery gj */
-/*
- * Gijgo JavaScript Library v1.0.0
- * http://gijgo.com/
- *
- * Copyright 2014, 2016 gijgo.com
- * Released under the MIT license
- */
 /**
   * @widget Grid
   * @plugin Base
@@ -6203,13 +6182,6 @@ gj.grid.plugins.columnReorder = {
 };
 
 /* global window alert jQuery gj */
-/*
- * Gijgo JavaScript Library v1.0.0
- * http://gijgo.com/
- *
- * Copyright 2014, 2016 gijgo.com
- * Released under the MIT license
- */
 /**
   * @widget Tree
   * @plugin Base
