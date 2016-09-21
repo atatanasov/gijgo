@@ -1,11 +1,7 @@
 ﻿/** 
-  * @widget Grid 
-  * @plugin Inline Editing
-  */
-if (typeof (gj.grid.plugins) === 'undefined') {
-    gj.grid.plugins = {};
-}
-
+ * @widget Grid 
+ * @plugin Inline Editing
+ */
 gj.grid.plugins.inlineEditing = {
     config: {
         defaultColumnSettings: {

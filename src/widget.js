@@ -1,16 +1,18 @@
-﻿var gj = {
-    widget: function () {
-        var self = this;
+﻿if (typeof (gj) === 'undefined') {
+    gj = {};
+}
 
-        self.xhr = null;
+gj.widget = function () {
+    var self = this;
 
-        self.generateGUID = function () {
-            function s4() {
-                return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
-            }
-            return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
-        };
-    }
+    self.xhr = null;
+
+    self.generateGUID = function () {
+        function s4() {
+            return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
+        }
+        return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
+    };
 };
 
 gj.widget.prototype.init = function (jsConfig, type) {

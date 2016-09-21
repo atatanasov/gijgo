@@ -24,69 +24,56 @@
             }
         },
         concat: {
-            widget: {
-                files: {
-                    'dist/modular/widget/js/widget.js': ['src/widget.js'],
-                    'dist/combined/js/widget.js': ['src/widget.js']
-                }
-            },
             dialog: {
                 files : {
-                    'dist/modular/dialog/js/dialog.base.js': ['src/dialog/js/dialog.base.config.js', 'src/dialog/js/dialog.base.events.js', 'src/dialog/js/dialog.base.methods.js', 'src/dialog/js/dialog.base.widget.js'],
-                    'dist/combined/js/dialog.js': ['dist/modular/dialog/js/dialog.base.js'],
-                    'dist/modular/dialog/css/dialog.base.css': ['src/dialog/css/dialog.base.css'],
-                    'dist/combined/css/dialog.css': ['dist/modular/dialog/css/dialog.base.css'],
+                    'dist/modular/dialog/js/dialog.code.js': ['src/dialog/js/dialog.base.config.js', 'src/dialog/js/dialog.base.events.js', 'src/dialog/js/dialog.base.methods.js', 'src/dialog/js/dialog.base.widget.js'],
+                    'dist/modular/dialog/css/dialog.css': ['src/dialog/css/dialog.base.css']
                 }
             },
             draggable: {
                 files: {
-                    'dist/modular/draggable/js/draggable.base.js': ['src/draggable/js/draggable.base.js'],
-                    'dist/combined/js/draggable.js': ['src/draggable/js/draggable.base.js']
+                    'dist/modular/draggable/js/draggable.code.js': ['src/draggable/js/draggable.base.js']
                 }
             },
             droppable: {
                 files: {
-                    'dist/modular/droppable/js/droppable.base.js': ['src/droppable/js/droppable.base.js'],
-                    'dist/combined/js/droppable.js': ['src/droppable/js/droppable.base.js']
+                    'dist/modular/droppable/js/droppable.code.js': ['src/droppable/js/droppable.base.js']
                 }
             },
             grid: {
                 files: {
-                    'dist/modular/grid/js/grid.base.js': ['src/grid/js/grid.base.config.js', 'src/grid/js/grid.base.events.js', 'src/grid/js/grid.base.methods.js', 'src/grid/js/grid.base.widget.js'],
-                    'dist/modular/grid/js/grid.expandCollapseRows.js': ['src/grid/js/grid.expandCollapseRows.js'],
-                    'dist/modular/grid/js/grid.inlineEditing.js': ['src/grid/js/grid.inlineEditing.js'],
-                    'dist/modular/grid/js/grid.optimisticPersistence.js': ['src/grid/js/grid.optimisticPersistence.js'],
-                    'dist/modular/grid/js/grid.pagination.js': ['src/grid/js/grid.pagination.js'],
-                    'dist/modular/grid/js/grid.responsiveDesign.js': ['src/grid/js/grid.responsiveDesign.js'],
-                    'dist/modular/grid/js/grid.toolbar.js': ['src/grid/js/grid.toolbar.js'],
-                    'dist/modular/grid/js/grid.resizableColumns.js': ['src/grid/js/grid.resizableColumns.js'],
-                    'dist/modular/grid/js/grid.rowReorder.js': ['src/grid/js/grid.rowReorder.js'],
-                    'dist/modular/grid/js/grid.columnReorder.js': ['src/grid/js/grid.columnReorder.js'],
+                    'dist/modular/grid/js/grid.code.js': ['src/grid/js/grid.base.config.js', 'src/grid/js/grid.base.events.js', 'src/grid/js/grid.base.methods.js', 'src/grid/js/grid.base.widget.js',
+                        'src/grid/js/grid.expandCollapseRows.js', 'src/grid/js/grid.inlineEditing.js', 'src/grid/js/grid.optimisticPersistence.js', 'src/grid/js/grid.pagination.js',
+                        'src/grid/js/grid.responsiveDesign.js', 'src/grid/js/grid.toolbar.js', 'src/grid/js/grid.resizableColumns.js', 'src/grid/js/grid.rowReorder.js',
+                        'src/grid/js/grid.columnReorder.js'],
 
-                    'dist/combined/js/grid.js': ['dist/modular/grid/js/grid.base.js', 'dist/modular/grid/js/grid.expandCollapseRows.js', 'dist/modular/grid/js/grid.inlineEditing.js', 'dist/modular/grid/js/grid.optimisticPersistence.js', 'dist/modular/grid/js/grid.pagination.js', 'dist/modular/grid/js/grid.responsiveDesign.js', 'dist/modular/grid/js/grid.toolbar.js', 'src/grid/js/grid.resizableColumns.js', 'src/grid/js/grid.rowReorder.js', 'src/grid/js/grid.columnReorder.js'],
-
-                    'dist/modular/grid/css/grid.base.css': ['src/grid/css/grid.base.css'],
-                    'dist/modular/grid/css/grid.responsiveDesign.css': ['src/grid/css/grid.responsiveDesign.css'],
-                    'dist/modular/grid/css/grid.pagination.css': ['src/grid/css/grid.pagination.css'],
-                    'dist/modular/grid/css/grid.resizableColumns.css': ['src/grid/css/grid.resizableColumns.css'],
-                    'dist/modular/grid/css/grid.rowReorder.css': ['src/grid/css/grid.rowReorder.css'],
-                    'dist/modular/grid/css/grid.columnReorder.css': ['src/grid/css/grid.columnReorder.css'],
-
-                    'dist/combined/css/grid.css': ['dist/modular/grid/css/grid.base.css', 'dist/modular/grid/css/grid.responsiveDesign.css', 'src/grid/css/grid.pagination.css', 'src/grid/css/grid.resizableColumns.css', 'dist/modular/grid/css/grid.rowReorder.css', 'dist/modular/grid/css/grid.columnReorder.css']
+                    'dist/modular/grid/css/grid.css': ['src/grid/css/grid.base.css', 'src/grid/css/grid.responsiveDesign.css', 'src/grid/css/grid.pagination.css',
+                        'src/grid/css/grid.resizableColumns.css', 'src/grid/css/grid.rowReorder.css', 'src/grid/css/grid.columnReorder.css']
                 }
             },
             tree: {
                 files: {
-                    'dist/modular/tree/js/tree.base.js': ['src/tree/js/tree.base.config.js', 'src/tree/js/tree.base.events.js', 'src/tree/js/tree.base.methods.js', 'src/tree/js/tree.base.widget.js'],
-                    'dist/combined/js/tree.js': ['dist/modular/tree/js/tree.base.js'],
-                    'dist/modular/tree/css/tree.base.css': ['src/tree/css/tree.base.css'],
-                    'dist/combined/css/tree.css': ['dist/modular/tree/css/tree.base.css'],
+                    'dist/modular/tree/js/tree.code.js': ['src/tree/js/tree.base.config.js', 'src/tree/js/tree.base.events.js', 'src/tree/js/tree.base.methods.js', 'src/tree/js/tree.base.widget.js'],
+                    'dist/modular/tree/css/tree.css': ['src/tree/css/tree.base.css']
+                }
+            },
+            final: {
+                files: {
+                    'dist/modular/dialog/js/dialog.js': ['src/widget.js', 'dist/modular/dialog/js/dialog.code.js'],
+                    'dist/modular/draggable/js/draggable.js': ['src/widget.js', 'dist/modular/draggable/js/draggable.code.js'],
+                    'dist/modular/droppable/js/droppable.js': ['src/widget.js', 'dist/modular/droppable/js/droppable.code.js'],
+                    'dist/modular/grid/js/grid.js': ['src/widget.js', 'dist/modular/grid/js/grid.code.js'],
+                    'dist/modular/tree/js/tree.js': ['src/widget.js', 'dist/modular/tree/js/tree.code.js'],
+
+                    'dist/combined/js/gijgo.js': ['src/widget.js', 'dist/modular/dialog/js/dialog.code.js', 'dist/modular/draggable/js/draggable.code.js', 'dist/modular/droppable/js/droppable.code.js', 'dist/modular/grid/js/grid.code.js', 'dist/modular/tree/js/tree.code.js'],
+                    'dist/combined/css/gijgo.css': ['dist/modular/dialog/css/dialog.css', 'dist/modular/grid/css/grid.css', 'dist/modular/tree/css/tree.css']
                 }
             }
         },
+        clean: ['dist/modular/dialog/js/dialog.code.js', 'dist/modular/draggable/js/draggable.code.js', 'dist/modular/droppable/js/droppable.code.js', 'dist/modular/grid/js/grid.code.js', 'dist/modular/tree/js/tree.code.js'],
         replace: {
             minifyComments: {
-                src: ['dist/modular/*/js/*.js', 'dist/combined/js/*.js'], // source files array (supports minimatch)
+                src: ['dist/modular/*/*.js', 'dist/combined/*.js'], // source files array (supports minimatch)
                 overwrite: true, // overwrite matched source files 
                 replacements: [{
                     from: /(.|\n|\r)+/g,
@@ -118,49 +105,18 @@
         },
         uglify: {
             options: {},
-            widget: {
+            combined: {
                 files: {
-                    'dist/modular/widget/js/widget.min.js': ['dist/modular/widget/js/widget.js'],
-                    'dist/combined/js/widget.min.js': ['dist/combined/js/widget.js']
+                    'dist/combined/js/gijgo.min.js': ['dist/combined/js/gijgo.js']
                 }
             },
-            draggable: {
+            modular: {
                 files: {
-                    'dist/combined/js/draggable.min.js': ['dist/combined/js/draggable.js'],
-                    'dist/modular/draggable/js/draggable.base.min.js': ['dist/modular/draggable/js/draggable.base.js']
-                }
-            },
-            droppable: {
-                files: {
-                    'dist/combined/js/droppable.min.js': ['dist/combined/js/droppable.js'],
-                    'dist/modular/droppable/js/droppable.base.min.js': ['dist/modular/droppable/js/droppable.base.js']
-                }
-            },
-            dialog: {
-                files: {
-                    'dist/combined/js/dialog.min.js': ['dist/combined/js/dialog.js'],
-                    'dist/modular/dialog/js/dialog.base.min.js': ['dist/modular/dialog/js/dialog.base.js']
-                }
-            },
-            grid: {
-                files: {
-                    'dist/combined/js/grid.min.js': ['dist/combined/js/grid.js'],
-                    'dist/modular/grid/js/grid.base.min.js': ['dist/modular/grid/js/grid.base.js'],
-                    'dist/modular/grid/js/grid.expandCollapseRows.min.js': ['dist/modular/grid/js/grid.expandCollapseRows.js'],
-                    'dist/modular/grid/js/grid.inlineEditing.min.js': ['dist/modular/grid/js/grid.inlineEditing.js'],
-                    'dist/modular/grid/js/grid.optimisticPersistence.min.js': ['dist/modular/grid/js/grid.optimisticPersistence.js'],
-                    'dist/modular/grid/js/grid.pagination.min.js': ['dist/modular/grid/js/grid.pagination.js'],
-                    'dist/modular/grid/js/grid.responsiveDesign.min.js': ['dist/modular/grid/js/grid.responsiveDesign.js'],
-                    'dist/modular/grid/js/grid.toolbar.min.js': ['dist/modular/grid/js/grid.toolbar.js'],
-                    'dist/modular/grid/js/grid.resizableColumns.min.js': ['dist/modular/grid/js/grid.resizableColumns.js'],
-                    'dist/modular/grid/js/grid.rowReorder.min.js': ['dist/modular/grid/js/grid.rowReorder.js'],
-                    'dist/modular/grid/js/grid.columnReorder.min.js': ['dist/modular/grid/js/grid.columnReorder.js']
-                }
-            },
-            tree: {
-                files: {
-                    'dist/combined/js/tree.min.js': ['dist/combined/js/tree.js'],
-                    'dist/modular/tree/js/tree.base.min.js': ['dist/modular/tree/js/tree.base.js']
+                    'dist/modular/draggable/js/draggable.min.js': ['dist/modular/draggable/js/draggable.js'],
+                    'dist/modular/droppable/js/droppable.min.js': ['dist/modular/droppable/js/droppable.js'],
+                    'dist/modular/dialog/js/dialog.min.js': ['dist/modular/dialog/js/dialog.js'],
+                    'dist/modular/grid/js/grid.min.js': ['dist/modular/grid/js/grid.js'],
+                    'dist/modular/tree/js/tree.min.js': ['dist/modular/tree/js/tree.js']
                 }
             }
         },
@@ -168,25 +124,21 @@
             target: {
                 files: [
                     { expand: true, cwd: 'dist/combined/css', src: ['*.css', '!*.min.css'], dest: 'dist/combined/css', ext: '.min.css' },
-                    { expand: true, cwd: 'dist/modular/dialog/css', src: ['dialog.base.css'], dest: 'dist/modular/dialog/css', ext: '.base.min.css' },
-                    { expand: true, cwd: 'dist/modular/tree/css', src: ['tree.base.css'], dest: 'dist/modular/tree/css', ext: '.base.min.css' },
-                    { expand: true, cwd: 'dist/modular/grid/css', src: ['grid.base.css'], dest: 'dist/modular/grid/css', ext: '.base.min.css' },
-                    { expand: true, cwd: 'dist/modular/grid/css', src: ['grid.pagination.css'], dest: 'dist/modular/grid/css', ext: '.pagination.min.css' },
-                    { expand: true, cwd: 'dist/modular/grid/css', src: ['grid.responsiveDesign.css'], dest: 'dist/modular/grid/css', ext: '.responsiveDesign.min.css' },
-                    { expand: true, cwd: 'dist/modular/grid/css', src: ['grid.resizableColumns.css'], dest: 'dist/modular/grid/css', ext: '.resizableColumns.min.css' },
-                    { expand: true, cwd: 'dist/modular/grid/css', src: ['grid.rowReorder.css'], dest: 'dist/modular/grid/css', ext: '.rowReorder.min.css' },
-                    { expand: true, cwd: 'dist/modular/grid/css', src: ['grid.columnReorder.css'], dest: 'dist/modular/grid/css', ext: '.columnReorder.min.css' }
+                    { expand: true, cwd: 'dist/modular/dialog/css', src: ['dialog.css'], dest: 'dist/modular/dialog/css', ext: '.min.css' },
+                    { expand: true, cwd: 'dist/modular/tree/css', src: ['tree.css'], dest: 'dist/modular/tree/css', ext: '.min.css' },
+                    { expand: true, cwd: 'dist/modular/grid/css', src: ['grid.css'], dest: 'dist/modular/grid/css', ext: '.min.css' }
                 ]
             }
         },
         watch: {
             files: ['src/**/*.js', 'src/**/*.css'],
-            tasks: ['copy', 'extractExamples', 'concat', 'replace', 'uglify', 'cssmin']
+            tasks: ['copy', 'extractExamples', 'concat', 'clean', 'replace', 'uglify', 'cssmin']
         }
     });
 
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-concat');
+    grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-text-replace');
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-cssmin');
@@ -310,7 +262,6 @@ var writer = {
         } else {
             result += '  <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>\r\n';
         }
-        result += '  <script src="../../dist/modular/widget/js/widget.js"></script>\r\n';
         if (libs) {
             names = libs.replace('<!--', '').replace('-->', '').trim().split(',');
             for (i = 0; i < names.length; i++) {
@@ -337,28 +288,13 @@ var writer = {
                         }
                         break;
                     case 'dialog.base':
-                        result += '  <link href="../../dist/modular/dialog/css/dialog.base.css" rel="stylesheet" type="text/css">\r\n';
+                        result += '  <link href="../../dist/modular/dialog/css/dialog.css" rel="stylesheet" type="text/css">\r\n';
                         break;
                     case 'grid.base':
-                        result += '  <link href="../../dist/modular/grid/css/grid.base.css" rel="stylesheet" type="text/css">\r\n';
-                        break;
-                    case 'grid.responsiveDesign':
-                        result += '  <link href="../../dist/modular/grid/css/grid.responsiveDesign.css" rel="stylesheet" type="text/css">\r\n';
-                        break;
-                    case 'grid.pagination':
-                        result += '  <link href="../../dist/modular/grid/css/grid.pagination.css" rel="stylesheet" type="text/css">\r\n';
-                        break;
-                    case 'grid.resizableColumns':
-                        result += '  <link href="../../dist/modular/grid/css/grid.resizableColumns.css" rel="stylesheet" type="text/css">\r\n';
-                        break;
-                    case 'grid.rowReorder':
-                        result += '  <link href="../../dist/modular/grid/css/grid.rowReorder.css" rel="stylesheet" type="text/css">\r\n';
-                        break;
-                    case 'grid.columnReorder':
-                        result += '  <link href="../../dist/modular/grid/css/grid.columnReorder.css" rel="stylesheet" type="text/css">\r\n';
+                        result += '  <link href="../../dist/modular/grid/css/grid.css" rel="stylesheet" type="text/css">\r\n';
                         break;
                     case 'tree.base':
-                        result += '  <link href="../../dist/modular/tree/css/tree.base.css" rel="stylesheet" type="text/css">\r\n';
+                        result += '  <link href="../../dist/modular/tree/css/tree.css" rel="stylesheet" type="text/css">\r\n';
                         break;
                 }
             }
@@ -366,46 +302,19 @@ var writer = {
                 //include js files
                 switch (names[i].trim()) {
                     case 'dialog.base':
-                        result += '  <script src="../../dist/modular/dialog/js/dialog.base.js"></script>\r\n';
+                        result += '  <script src="../../dist/modular/dialog/js/dialog.js"></script>\r\n';
                         break;
                     case 'draggable.base':
-                        result += '  <script src="../../dist/modular/draggable/js/draggable.base.js"></script>\r\n';
+                        result += '  <script src="../../dist/modular/draggable/js/draggable.js"></script>\r\n';
                         break;
                     case 'droppable.base':
-                        result += '  <script src="../../dist/modular/droppable/js/droppable.base.js"></script>\r\n';
+                        result += '  <script src="../../dist/modular/droppable/js/droppable.js"></script>\r\n';
                         break;
                     case 'grid.base':
-                        result += '  <script src="../../dist/modular/grid/js/grid.base.js"></script>\r\n';
-                        break;
-                    case 'grid.expandCollapseRows':
-                        result += '  <script src="../../dist/modular/grid/js/grid.expandCollapseRows.js"></script>\r\n';
-                        break;
-                    case 'grid.inlineEditing':
-                        result += '  <script src="../../dist/modular/grid/js/grid.inlineEditing.js"></script>\r\n';
-                        break;
-                    case 'grid.optimisticPersistence':
-                        result += '  <script src="../../dist/modular/grid/js/grid.optimisticPersistence.js"></script>\r\n';
-                        break;
-                    case 'grid.pagination':
-                        result += '  <script src="../../dist/modular/grid/js/grid.pagination.js"></script>\r\n';
-                        break;
-                    case 'grid.responsiveDesign':
-                        result += '  <script src="../../dist/modular/grid/js/grid.responsiveDesign.js"></script>\r\n';
-                        break;
-                    case 'grid.toolbar':
-                        result += '  <script src="../../dist/modular/grid/js/grid.toolbar.js"></script>\r\n';
-                        break;
-                    case 'grid.resizableColumns':
-                        result += '  <script src="../../dist/modular/grid/js/grid.resizableColumns.js"></script>\r\n';
-                        break;
-                    case 'grid.rowReorder':
-                        result += '  <script src="../../dist/modular/grid/js/grid.rowReorder.js"></script>\r\n';
-                        break;
-                    case 'grid.columnReorder':
-                        result += '  <script src="../../dist/modular/grid/js/grid.columnReorder.js"></script>\r\n';
+                        result += '  <script src="../../dist/modular/grid/js/grid.js"></script>\r\n';
                         break;
                     case 'tree.base':
-                        result += '  <script src="../../dist/modular/tree/js/tree.base.js"></script>\r\n';
+                        result += '  <script src="../../dist/modular/tree/js/tree.js"></script>\r\n';
                         break;
                 }
             }

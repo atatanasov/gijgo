@@ -10,9 +10,6 @@
   * @widget Tree
   * @plugin Base
   */
-if (typeof(gj) === 'undefined') {
-    gj = {};
-}
 if (typeof(gj.tree) === 'undefined') {
     gj.tree = {
         plugins: {}

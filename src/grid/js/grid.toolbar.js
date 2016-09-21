@@ -1,11 +1,7 @@
 ﻿/** 
-  * @widget Grid 
-  * @plugin Toolbar
-  */
-if (typeof (gj.grid.plugins) === 'undefined') {
-    gj.grid.plugins = {};
-}
-
+ * @widget Grid 
+ * @plugin Toolbar
+ */
 gj.grid.plugins.toolbar = {
     config: {
         base: {

@@ -1,11 +1,7 @@
 ﻿/** 
-  * @widget Grid 
-  * @plugin Row Reorder
-  */
-if (typeof (gj.grid.plugins) === 'undefined') {
-    gj.grid.plugins = {};
-}
-
+ * @widget Grid 
+ * @plugin Row Reorder
+ */
 gj.grid.plugins.rowReorder = {
     config: {
         base: {

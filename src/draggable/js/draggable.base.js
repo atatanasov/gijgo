@@ -7,12 +7,9 @@
  * Released under the MIT license
  */
 /** 
-  * @widget Draggable 
-  * @plugin Base
-  */
-if (typeof (gj) === 'undefined') {
-    gj = {};
-}
+ * @widget Draggable 
+ * @plugin Base
+ */
 if (typeof (gj.draggable) === 'undefined') {
     gj.draggable = {};
 }

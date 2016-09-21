@@ -1,11 +1,7 @@
 ﻿/** 
-  * @widget Grid 
-  * @plugin Resizable Columns
-  */
-if (typeof (gj.grid.plugins) === 'undefined') {
-    gj.grid.plugins = {};
-}
-
+ * @widget Grid 
+ * @plugin Resizable Columns
+ */
 gj.grid.plugins.resizableColumns = {
     config: {
         base: {

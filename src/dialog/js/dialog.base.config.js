@@ -10,9 +10,6 @@
  * @widget Dialog 
  * @plugin Base
  */
-if (typeof (gj) === 'undefined') {
-    gj = {};
-}
 if (typeof (gj.dialog) === 'undefined') {
     gj.dialog = {
         plugins: {}

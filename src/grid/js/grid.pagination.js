@@ -2,10 +2,6 @@
  * @widget Grid
  * @plugin Pagination
  */
-if (typeof(gj.grid.plugins) === 'undefined') {
-    gj.grid.plugins = {};
-}
-
 gj.grid.plugins.pagination = {
     config: {
         base: {

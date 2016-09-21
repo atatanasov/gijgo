@@ -7,12 +7,9 @@
  * Released under the MIT license
  */
 /** 
-  * @widget Droppable 
-  * @plugin Base
-  */
-if (typeof (gj) === 'undefined') {
-    gj = {};
-}
+ * @widget Droppable 
+ * @plugin Base
+ */
 if (typeof (gj.droppable) === 'undefined') {
     gj.droppable = {};
 }

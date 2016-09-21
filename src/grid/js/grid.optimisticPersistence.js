@@ -1,12 +1,7 @@
 ﻿/** 
-  * @widget Grid 
-  * @plugin Optimistic Persistence
-  */
-
-if (typeof (gj.grid.plugins) === 'undefined') {
-    gj.grid.plugins = {};
-}
-
+ * @widget Grid 
+ * @plugin Optimistic Persistence
+ */
 gj.grid.plugins.optimisticPersistence = {
 
     config: {

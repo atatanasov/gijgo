@@ -10,9 +10,6 @@
   * @widget Grid
   * @plugin Base
   */
-if (typeof(gj) === 'undefined') {
-    gj = {};
-}
 if (typeof(gj.grid) === 'undefined') {
     gj.grid = {
         plugins: {}

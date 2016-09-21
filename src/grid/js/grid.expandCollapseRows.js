@@ -1,11 +1,7 @@
 ﻿/** 
-  * @widget Grid 
-  * @plugin Expand Collapse Rows
-  */
-if (typeof (gj.grid.plugins) === 'undefined') {
-    gj.grid.plugins = {};
-}
-
+ * @widget Grid 
+ * @plugin Expand Collapse Rows
+ */
 gj.grid.plugins.expandCollapseRows = {
     config: {
         base: {
