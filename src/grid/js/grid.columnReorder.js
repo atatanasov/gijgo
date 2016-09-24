@@ -134,9 +134,9 @@ gj.grid.plugins.columnReorder = {
     public: {
     },
 
-    configure: function ($grid) {
+    configure: function ($grid, fullConfig, clientConfig) {
         $.extend(true, $grid, gj.grid.plugins.columnReorder.public);
-        if ($grid.data('columnReorder')) {
+        if (fullConfig.columnReorder) {
             $grid.on('initialized', function () {
                 gj.grid.plugins.columnReorder.private.init($grid);
             });

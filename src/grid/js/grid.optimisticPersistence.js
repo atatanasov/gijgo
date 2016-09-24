@@ -40,11 +40,11 @@ gj.grid.plugins.optimisticPersistence = {
                  * <table id="grid"></table>
                  * <script>
                  *     var grid = $('#grid').grid({
-                 *         guid: '58d47231-ac7b-e6d2-ddba-5e0195b31f2e',
+                 *         guid: '58d47231-ac7b-e6d2-ddba-5e0195b31f2f',
                  *         uiLibrary: 'bootstrap',
                  *         dataSource: '/DataSources/GetPlayers',
                  *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
-                 *         sessionStorage: { localStorage: ["page", "limit"] },
+                 *         optimisticPersistence: { sessionStorage: ["page", "limit"] },
                  *         pager: { limit: 2, sizes: [2, 5, 10, 20] }
                  *     });
                  * </script>
@@ -95,12 +95,8 @@ gj.grid.plugins.optimisticPersistence = {
         }
     },
 
-    configure: function ($grid) {
-        var data = $grid.data();
-        if (data.optimisticPersistence && (data.optimisticPersistence.localStorage || data.optimisticPersistence.sessionStorage)) {
-            if (!data.guid) {
-                throw "You need to set guid in order to be able to use the optimisticPersistence plugin."; //TODO: docu guid
-            }
+    configure: function ($grid, fullConfig, clientConfig) {
+        if (fullConfig.optimisticPersistence.localStorage || fullConfig.optimisticPersistence.sessionStorage) {
             gj.grid.plugins.optimisticPersistence.private.applyParams($grid);
             $grid.on('dataBound', function (e) {
                 gj.grid.plugins.optimisticPersistence.private.saveParams($grid);

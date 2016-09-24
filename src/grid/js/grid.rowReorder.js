@@ -113,7 +113,7 @@ gj.grid.plugins.rowReorder = {
             }
             for (i = 0; i < $rows.length; i++) {
                 $row = $($rows[i]);
-                if (typeof (columnPosition) !== "undefined") {
+                if (typeof (columnPosition) !== 'undefined') {
                     $row.find('td:eq(' + columnPosition + ')').on('mousedown', gj.grid.plugins.rowReorder.private.createRowMouseDownHandler($grid, $row));
                 } else {
                     $row.on('mousedown', gj.grid.plugins.rowReorder.private.createRowMouseDownHandler($grid, $row));
@@ -213,9 +213,9 @@ gj.grid.plugins.rowReorder = {
     public: {
     },
 
-    configure: function ($grid) {
+    configure: function ($grid, fullConfig, clientConfig) {
         $.extend(true, $grid, gj.grid.plugins.rowReorder.public);
-        if ($grid.data('rowReorder')) {
+        if (fullConfig.rowReorder) {
             $grid.on('dataBound', function () {
                 gj.grid.plugins.rowReorder.private.init($grid);
             });

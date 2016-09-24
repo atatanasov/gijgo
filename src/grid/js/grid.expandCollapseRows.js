@@ -182,7 +182,7 @@ gj.grid.plugins.expandCollapseRows = {
     },
 
     'configure': function ($grid) {
-        var data = $grid.data(), column;
+        var column, data = $grid.data();
 
         $.extend(true, $grid, gj.grid.plugins.expandCollapseRows.public);
 

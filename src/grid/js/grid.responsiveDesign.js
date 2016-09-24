@@ -274,10 +274,9 @@ gj.grid.plugins.responsiveDesign = {
         }
     },
 
-    'configure': function ($grid) {
+    'configure': function ($grid, fullConfig, clientConfig) {
         $.extend(true, $grid, gj.grid.plugins.responsiveDesign.public);
-        var data = $grid.data();
-        if (data.responsive) {
+        if (fullConfig.responsive) {
             $grid.on('initialized', function () {
                 $grid.makeResponsive();
                 $grid.oldWidth = $grid.width();
@@ -287,7 +286,7 @@ gj.grid.plugins.responsiveDesign = {
                         gj.grid.plugins.responsiveDesign.events.resize($grid, newWidth, $grid.oldWidth);
                     }
                     $grid.oldWidth = newWidth;
-                }, data.resizeCheckInterval);
+                }, fullConfig.resizeCheckInterval);
             });
             $grid.on('destroy', function () {
                 if ($grid.resizeCheckIntervalId) {
@@ -298,7 +297,7 @@ gj.grid.plugins.responsiveDesign = {
                 $grid.makeResponsive();
             });
         }
-        if (data.showHiddenColumnsAsDetails && gj.grid.plugins.expandCollapseRows) {
+        if (fullConfig.showHiddenColumnsAsDetails && gj.grid.plugins.expandCollapseRows) {
             $grid.on('dataBound', function () {
                 gj.grid.plugins.responsiveDesign.private.updateDetails($grid);
             });

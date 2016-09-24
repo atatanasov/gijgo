@@ -23,39 +23,40 @@ gj.widget = function () {
 };
 
 gj.widget.prototype.init = function (jsConfig, type) {
-    var option, config = this.getConfig(jsConfig, type);
+    var option, clientConfig, fullConfig;
 
-    this.attr('data-guid', config.guid);
+    clientConfig = $.extend(true, {}, this.getHTMLConfig() || {});
+    $.extend(true, clientConfig, jsConfig || {});
+    fullConfig = this.getConfig(clientConfig, type);
+
+    this.attr('data-guid', fullConfig.guid);
 
     this.attr('data-' + type, 'true');
 
-    this.data(config);
+    this.data(fullConfig);
 
     // Initialize events configured as options
-    for (option in config) {
+    for (option in fullConfig) {
         if (gj[type].events.hasOwnProperty(option)) {
-            this.on(option, config[option]);
-            delete config[option];
+            this.on(option, fullConfig[option]);
+            delete fullConfig[option];
         }
     }
 
     // Initialize all plugins
     for (plugin in gj[type].plugins) {
         if (gj[type].plugins.hasOwnProperty(plugin)) {
-            gj[type].plugins[plugin].configure(this, config);
+            gj[type].plugins[plugin].configure(this, fullConfig, clientConfig);
         }
     }
 
     return this;
 };
 
-gj.widget.prototype.getConfig = function (jsConfig, type) {
-    var config, clientConfig, uiLibrary, plugin;
+gj.widget.prototype.getConfig = function (clientConfig, type) {
+    var config, uiLibrary, plugin;
 
     config = $.extend(true, {}, gj[type].config.base);
-
-    clientConfig = $.extend(true, {}, this.getHTMLConfig() || {});
-    $.extend(true, clientConfig, jsConfig || {});
 
     uiLibrary = clientConfig.uiLibrary || config.uiLibrary;
     if (gj[type].config[uiLibrary]) {
@@ -283,11 +284,11 @@ gj.draggable.methods = {
     },
 
     createMouseUpHandler: function ($dragEl) {
-        return function () {
+        return function (e) {
             if ($dragEl.attr('data-draggable-dragging') === 'true') {
                 $dragEl.attr('data-draggable-dragging', false);
                 gj.documentManager.unsubscribeForEvent('mousemove', $dragEl.data('guid'));
-                gj.draggable.events.stop($dragEl);
+                gj.draggable.events.stop($dragEl, e);
             }
         };
     },
@@ -352,7 +353,7 @@ gj.draggable.methods = {
             $dragEl.removeAttr('data-guid');
             $dragEl.removeAttr('data-draggable');
             $dragEl.off('drag').off('start').off('stop');
-            gj.draggable.methods.getClickElement($dragEl).off('mousedown');
+            gj.draggable.methods.getHandleElement($dragEl).off('mousedown');
         }
         return $dragEl;
     }
@@ -426,8 +427,8 @@ gj.draggable.events = {
      *     });
      * </script>
      */
-    stop: function ($dragEl) {
-        $dragEl.triggerHandler('stop');
+    stop: function ($dragEl, mouseEvent) { // TODO: change mouseEvent to mousePosition and add it to the docs.
+        $dragEl.triggerHandler('stop', [mouseEvent]); //mouseEvent is in use by columnReorder
     }
 };
 

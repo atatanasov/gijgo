@@ -70,7 +70,7 @@
                 }
             }
         },
-        clean: ['dist/modular/dialog/js/dialog.code.js', 'dist/modular/draggable/js/draggable.code.js', 'dist/modular/droppable/js/droppable.code.js', 'dist/modular/grid/js/grid.code.js', 'dist/modular/tree/js/tree.code.js'],
+        clean: ['dist/modular/**/js/*.code.js'],
         replace: {
             minifyComments: {
                 src: ['dist/modular/*/*.js', 'dist/combined/*.js'], // source files array (supports minimatch)
@@ -215,8 +215,7 @@
     });
 
     // Default task(s).
-    grunt.registerTask('default', ['extractExamples', 'concat', 'replace', 'uglify', 'cssmin', 'watch']);
-
+    grunt.registerTask('default', ['copy', 'extractExamples', 'concat', 'clean', 'replace', 'uglify', 'cssmin', 'watch']);
 };
 
 

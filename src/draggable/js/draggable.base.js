@@ -98,11 +98,11 @@ gj.draggable.methods = {
     },
 
     createMouseUpHandler: function ($dragEl) {
-        return function () {
+        return function (e) {
             if ($dragEl.attr('data-draggable-dragging') === 'true') {
                 $dragEl.attr('data-draggable-dragging', false);
                 gj.documentManager.unsubscribeForEvent('mousemove', $dragEl.data('guid'));
-                gj.draggable.events.stop($dragEl);
+                gj.draggable.events.stop($dragEl, e);
             }
         };
     },
@@ -167,7 +167,7 @@ gj.draggable.methods = {
             $dragEl.removeAttr('data-guid');
             $dragEl.removeAttr('data-draggable');
             $dragEl.off('drag').off('start').off('stop');
-            gj.draggable.methods.getClickElement($dragEl).off('mousedown');
+            gj.draggable.methods.getHandleElement($dragEl).off('mousedown');
         }
         return $dragEl;
     }
@@ -241,8 +241,8 @@ gj.draggable.events = {
      *     });
      * </script>
      */
-    stop: function ($dragEl) {
-        $dragEl.triggerHandler('stop');
+    stop: function ($dragEl, mouseEvent) { // TODO: change mouseEvent to mousePosition and add it to the docs.
+        $dragEl.triggerHandler('stop', [mouseEvent]); //mouseEvent is in use by columnReorder
     }
 };
 

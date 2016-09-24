@@ -23,39 +23,40 @@ gj.widget = function () {
 };
 
 gj.widget.prototype.init = function (jsConfig, type) {
-    var option, config = this.getConfig(jsConfig, type);
+    var option, clientConfig, fullConfig;
 
-    this.attr('data-guid', config.guid);
+    clientConfig = $.extend(true, {}, this.getHTMLConfig() || {});
+    $.extend(true, clientConfig, jsConfig || {});
+    fullConfig = this.getConfig(clientConfig, type);
+
+    this.attr('data-guid', fullConfig.guid);
 
     this.attr('data-' + type, 'true');
 
-    this.data(config);
+    this.data(fullConfig);
 
     // Initialize events configured as options
-    for (option in config) {
+    for (option in fullConfig) {
         if (gj[type].events.hasOwnProperty(option)) {
-            this.on(option, config[option]);
-            delete config[option];
+            this.on(option, fullConfig[option]);
+            delete fullConfig[option];
         }
     }
 
     // Initialize all plugins
     for (plugin in gj[type].plugins) {
         if (gj[type].plugins.hasOwnProperty(plugin)) {
-            gj[type].plugins[plugin].configure(this, config);
+            gj[type].plugins[plugin].configure(this, fullConfig, clientConfig);
         }
     }
 
     return this;
 };
 
-gj.widget.prototype.getConfig = function (jsConfig, type) {
-    var config, clientConfig, uiLibrary, plugin;
+gj.widget.prototype.getConfig = function (clientConfig, type) {
+    var config, uiLibrary, plugin;
 
     config = $.extend(true, {}, gj[type].config.base);
-
-    clientConfig = $.extend(true, {}, this.getHTMLConfig() || {});
-    $.extend(true, clientConfig, jsConfig || {});
 
     uiLibrary = clientConfig.uiLibrary || config.uiLibrary;
     if (gj[type].config[uiLibrary]) {
@@ -2940,7 +2941,7 @@ gj.grid.plugins.expandCollapseRows = {
     },
 
     'configure': function ($grid) {
-        var data = $grid.data(), column;
+        var column, data = $grid.data();
 
         $.extend(true, $grid, gj.grid.plugins.expandCollapseRows.public);
 
@@ -3226,11 +3227,11 @@ gj.grid.plugins.optimisticPersistence = {
                  * <table id="grid"></table>
                  * <script>
                  *     var grid = $('#grid').grid({
-                 *         guid: '58d47231-ac7b-e6d2-ddba-5e0195b31f2e',
+                 *         guid: '58d47231-ac7b-e6d2-ddba-5e0195b31f2f',
                  *         uiLibrary: 'bootstrap',
                  *         dataSource: '/DataSources/GetPlayers',
                  *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
-                 *         sessionStorage: { localStorage: ["page", "limit"] },
+                 *         optimisticPersistence: { sessionStorage: ["page", "limit"] },
                  *         pager: { limit: 2, sizes: [2, 5, 10, 20] }
                  *     });
                  * </script>
@@ -3281,12 +3282,8 @@ gj.grid.plugins.optimisticPersistence = {
         }
     },
 
-    configure: function ($grid) {
-        var data = $grid.data();
-        if (data.optimisticPersistence && (data.optimisticPersistence.localStorage || data.optimisticPersistence.sessionStorage)) {
-            if (!data.guid) {
-                throw "You need to set guid in order to be able to use the optimisticPersistence plugin."; //TODO: docu guid
-            }
+    configure: function ($grid, fullConfig, clientConfig) {
+        if (fullConfig.optimisticPersistence.localStorage || fullConfig.optimisticPersistence.sessionStorage) {
             gj.grid.plugins.optimisticPersistence.private.applyParams($grid);
             $grid.on('dataBound', function (e) {
                 gj.grid.plugins.optimisticPersistence.private.saveParams($grid);
@@ -3808,7 +3805,7 @@ gj.grid.plugins.pagination = {
         }
     },
 
-    configure: function ($grid, clientConfig) {
+    configure: function ($grid, fullConfig, clientConfig) {
         $.extend(true, $grid, gj.grid.plugins.pagination.public);
         var data = $grid.data();
         if (clientConfig.pager) {
@@ -4106,10 +4103,9 @@ gj.grid.plugins.responsiveDesign = {
         }
     },
 
-    'configure': function ($grid) {
+    'configure': function ($grid, fullConfig, clientConfig) {
         $.extend(true, $grid, gj.grid.plugins.responsiveDesign.public);
-        var data = $grid.data();
-        if (data.responsive) {
+        if (fullConfig.responsive) {
             $grid.on('initialized', function () {
                 $grid.makeResponsive();
                 $grid.oldWidth = $grid.width();
@@ -4119,7 +4115,7 @@ gj.grid.plugins.responsiveDesign = {
                         gj.grid.plugins.responsiveDesign.events.resize($grid, newWidth, $grid.oldWidth);
                     }
                     $grid.oldWidth = newWidth;
-                }, data.resizeCheckInterval);
+                }, fullConfig.resizeCheckInterval);
             });
             $grid.on('destroy', function () {
                 if ($grid.resizeCheckIntervalId) {
@@ -4130,7 +4126,7 @@ gj.grid.plugins.responsiveDesign = {
                 $grid.makeResponsive();
             });
         }
-        if (data.showHiddenColumnsAsDetails && gj.grid.plugins.expandCollapseRows) {
+        if (fullConfig.showHiddenColumnsAsDetails && gj.grid.plugins.expandCollapseRows) {
             $grid.on('dataBound', function () {
                 gj.grid.plugins.responsiveDesign.private.updateDetails($grid);
             });
@@ -4314,32 +4310,28 @@ gj.grid.plugins.resizableColumns = {
     },
 
     private: {
-        init: function ($grid) {
-            var data = $grid.data(),
-                resizableColumns = $grid.data().resizableColumns,
-                $columns, $column, i, $wrapper, $resizer;
-            if (resizableColumns) {
-                $columns = $grid.find('thead tr th');
-                if ($columns.length) {
-                    for (i = 0; i < $columns.length - 1; i++) {
-                        $column = $($columns[i]);
-                        $wrapper = $('<div class="gj-grid-base-column-resizer-wrapper" />');
-                        $resizer = $('<span class="gj-grid-base-column-resizer" />');
-                        if ($.fn.draggable) {
-                            $resizer.draggable({
-                                start: function () {
-                                    $grid.addClass('gj-grid-unselectable');
-                                    $grid.addClass('gj-grid-resize-cursor');
-                                },
-                                stop: function () {
-                                    $grid.removeClass('gj-grid-unselectable');
-                                    $grid.removeClass('gj-grid-resize-cursor');
-                                },
-                                drag: gj.grid.plugins.resizableColumns.private.createResizeHandle($grid, $column, data.columns[i])
-                            });
-                        }
-                        $column.append($wrapper.append($resizer));
+        init: function ($grid, config) {
+            var $columns, $column, i, $wrapper, $resizer;
+            $columns = $grid.find('thead tr th');
+            if ($columns.length) {
+                for (i = 0; i < $columns.length - 1; i++) {
+                    $column = $($columns[i]);
+                    $wrapper = $('<div class="gj-grid-base-column-resizer-wrapper" />');
+                    $resizer = $('<span class="gj-grid-base-column-resizer" />');
+                    if ($.fn.draggable) {
+                        $resizer.draggable({
+                            start: function () {
+                                $grid.addClass('gj-grid-unselectable');
+                                $grid.addClass('gj-grid-resize-cursor');
+                            },
+                            stop: function () {
+                                $grid.removeClass('gj-grid-unselectable');
+                                $grid.removeClass('gj-grid-resize-cursor');
+                            },
+                            drag: gj.grid.plugins.resizableColumns.private.createResizeHandle($grid, $column, config.columns[i])
+                        });
                     }
+                    $column.append($wrapper.append($resizer));
                 }
             }
         },
@@ -4356,11 +4348,13 @@ gj.grid.plugins.resizableColumns = {
     public: {
     },
 
-    configure: function ($grid) {
+    configure: function ($grid, fullConfig, clientConfig) {
         $.extend(true, $grid, gj.grid.plugins.resizableColumns.public);
-        $grid.on('initialized', function () {
-            gj.grid.plugins.resizableColumns.private.init($grid);
-        });
+        if (fullConfig.resizableColumns) {
+            $grid.on('initialized', function () {
+                gj.grid.plugins.resizableColumns.private.init($grid, fullConfig);
+            });
+        }
     }
 };
 
@@ -4479,7 +4473,7 @@ gj.grid.plugins.rowReorder = {
             }
             for (i = 0; i < $rows.length; i++) {
                 $row = $($rows[i]);
-                if (typeof (columnPosition) !== "undefined") {
+                if (typeof (columnPosition) !== 'undefined') {
                     $row.find('td:eq(' + columnPosition + ')').on('mousedown', gj.grid.plugins.rowReorder.private.createRowMouseDownHandler($grid, $row));
                 } else {
                     $row.on('mousedown', gj.grid.plugins.rowReorder.private.createRowMouseDownHandler($grid, $row));
@@ -4579,9 +4573,9 @@ gj.grid.plugins.rowReorder = {
     public: {
     },
 
-    configure: function ($grid) {
+    configure: function ($grid, fullConfig, clientConfig) {
         $.extend(true, $grid, gj.grid.plugins.rowReorder.public);
-        if ($grid.data('rowReorder')) {
+        if (fullConfig.rowReorder) {
             $grid.on('dataBound', function () {
                 gj.grid.plugins.rowReorder.private.init($grid);
             });
@@ -4725,9 +4719,9 @@ gj.grid.plugins.columnReorder = {
     public: {
     },
 
-    configure: function ($grid) {
+    configure: function ($grid, fullConfig, clientConfig) {
         $.extend(true, $grid, gj.grid.plugins.columnReorder.public);
-        if ($grid.data('columnReorder')) {
+        if (fullConfig.columnReorder) {
             $grid.on('initialized', function () {
                 gj.grid.plugins.columnReorder.private.init($grid);
             });

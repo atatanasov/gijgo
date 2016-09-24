@@ -512,7 +512,7 @@ gj.grid.plugins.pagination = {
         }
     },
 
-    configure: function ($grid, clientConfig) {
+    configure: function ($grid, fullConfig, clientConfig) {
         $.extend(true, $grid, gj.grid.plugins.pagination.public);
         var data = $grid.data();
         if (clientConfig.pager) {

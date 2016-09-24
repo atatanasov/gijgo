@@ -23,32 +23,28 @@ gj.grid.plugins.resizableColumns = {
     },
 
     private: {
-        init: function ($grid) {
-            var data = $grid.data(),
-                resizableColumns = $grid.data().resizableColumns,
-                $columns, $column, i, $wrapper, $resizer;
-            if (resizableColumns) {
-                $columns = $grid.find('thead tr th');
-                if ($columns.length) {
-                    for (i = 0; i < $columns.length - 1; i++) {
-                        $column = $($columns[i]);
-                        $wrapper = $('<div class="gj-grid-base-column-resizer-wrapper" />');
-                        $resizer = $('<span class="gj-grid-base-column-resizer" />');
-                        if ($.fn.draggable) {
-                            $resizer.draggable({
-                                start: function () {
-                                    $grid.addClass('gj-grid-unselectable');
-                                    $grid.addClass('gj-grid-resize-cursor');
-                                },
-                                stop: function () {
-                                    $grid.removeClass('gj-grid-unselectable');
-                                    $grid.removeClass('gj-grid-resize-cursor');
-                                },
-                                drag: gj.grid.plugins.resizableColumns.private.createResizeHandle($grid, $column, data.columns[i])
-                            });
-                        }
-                        $column.append($wrapper.append($resizer));
+        init: function ($grid, config) {
+            var $columns, $column, i, $wrapper, $resizer;
+            $columns = $grid.find('thead tr th');
+            if ($columns.length) {
+                for (i = 0; i < $columns.length - 1; i++) {
+                    $column = $($columns[i]);
+                    $wrapper = $('<div class="gj-grid-base-column-resizer-wrapper" />');
+                    $resizer = $('<span class="gj-grid-base-column-resizer" />');
+                    if ($.fn.draggable) {
+                        $resizer.draggable({
+                            start: function () {
+                                $grid.addClass('gj-grid-unselectable');
+                                $grid.addClass('gj-grid-resize-cursor');
+                            },
+                            stop: function () {
+                                $grid.removeClass('gj-grid-unselectable');
+                                $grid.removeClass('gj-grid-resize-cursor');
+                            },
+                            drag: gj.grid.plugins.resizableColumns.private.createResizeHandle($grid, $column, config.columns[i])
+                        });
                     }
+                    $column.append($wrapper.append($resizer));
                 }
             }
         },
@@ -65,10 +61,12 @@ gj.grid.plugins.resizableColumns = {
     public: {
     },
 
-    configure: function ($grid) {
+    configure: function ($grid, fullConfig, clientConfig) {
         $.extend(true, $grid, gj.grid.plugins.resizableColumns.public);
-        $grid.on('initialized', function () {
-            gj.grid.plugins.resizableColumns.private.init($grid);
-        });
+        if (fullConfig.resizableColumns) {
+            $grid.on('initialized', function () {
+                gj.grid.plugins.resizableColumns.private.init($grid, fullConfig);
+            });
+        }
     }
 };
