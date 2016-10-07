@@ -1445,7 +1445,7 @@ gj.grid.methods = {
                     }
                 });
             } else {
-                $cell.append($('<div style="float: left"/>').text(typeof (columns[i].title) === 'undefined' ? columns[i].field : columns[i].title));
+                $cell.append($('<div style="float: left"/>').html(typeof (columns[i].title) === 'undefined' ? columns[i].field : columns[i].title));
             }
             if (columns[i].hidden) {
                 $cell.hide();
@@ -1746,7 +1746,7 @@ gj.grid.methods = {
 
     setCellText: function ($wrapper, column, value) {
         var text = gj.grid.methods.formatText(value, column);
-        if (!column.tooltip) {
+        if (!column.tooltip && text) {
             $wrapper.attr('title', text);
         }
         $wrapper.text(text);
