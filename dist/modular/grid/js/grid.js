@@ -2823,7 +2823,8 @@ gj.grid.plugins.expandCollapseRows = {
             } else {
                 $cell.find('div[data-role="display"]').text('-');
             }
-            $cell.off('click').on('click', function () {
+            $cell.off('click').on('click', function (e) {
+                e.stopPropagation();
                 gj.grid.plugins.expandCollapseRows.private.detailCollapse($grid, $(this));
             });
             $grid.updateDetails($contentRow);
@@ -2840,7 +2841,8 @@ gj.grid.plugins.expandCollapseRows = {
             } else {
                 $cell.find('div[data-role="display"]').text('+');
             }
-            $cell.off('click').on('click', function () {
+            $cell.off('click').on('click', function (e) {
+                e.stopPropagation();
                 gj.grid.plugins.expandCollapseRows.private.detailExpand($grid, $(this));
             });
             gj.grid.plugins.expandCollapseRows.events.detailCollapse($grid, $detailsRow.find('td>div'), $grid.get($contentRow.data('position')));
