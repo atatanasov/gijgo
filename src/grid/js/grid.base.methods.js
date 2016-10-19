@@ -128,10 +128,16 @@ gj.grid.methods = {
 
         if (data.width) {
             $grid.parent().css('width', data.width);
-        }
-        if (data.minWidth) {
+        } else if (data.minWidth) {
             $grid.css('min-width', data.minWidth);
+        } else {
+            $grid.css('min-width',
+                data.columns.map(function (column) {
+                    return parseInt(column.width || column.minWidth || 0);
+                }).reduce(function (a, b) { return a + b; }, 0)
+            );
         }
+        
         if (data.fontSize) {
             $grid.css('font-size', data.fontSize);
         }
