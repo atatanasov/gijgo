@@ -66,7 +66,7 @@
                     'dist/modular/tree/js/tree.js': ['src/tree/js/header.txt', 'src/widget.js', 'dist/modular/tree/js/tree.code.js'],
 
                     'dist/combined/js/gijgo.js': ['src/header.txt', 'src/widget.js', 'dist/modular/dialog/js/dialog.code.js', 'dist/modular/draggable/js/draggable.code.js', 'dist/modular/droppable/js/droppable.code.js', 'dist/modular/grid/js/grid.code.js', 'dist/modular/tree/js/tree.code.js'],
-                    'dist/combined/css/gijgo.css': ['dist/modular/dialog/css/dialog.css', 'dist/modular/grid/css/grid.css', 'dist/modular/tree/css/tree.css']
+                    'dist/combined/css/gijgo.css': ['src/widget.css', 'dist/modular/dialog/css/dialog.css', 'dist/modular/grid/css/grid.css', 'dist/modular/tree/css/tree.css']
                 }
             }
         },

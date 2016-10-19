@@ -102,6 +102,7 @@
     <Content Include="src\tree\js\tree.base.widget.js" />
     <Content Include="src\tree\js\tree.checkboxes.js" />
     <Content Include="src\tree\js\tree.lazyLoading.js" />
+    <Content Include="src\widget.css" />
     <Content Include="src\widget.js" />
   </ItemGroup>
   <ItemGroup>

@@ -50,7 +50,6 @@ TABLE.gj-grid-table TFOOT INPUT.ui-grid-pager
 {    
     padding: 1px;
     width: 26px;
-    height: 17px;
     font: bold 11px Verdana;
     margin: 0 5px;
     text-align: right;
@@ -59,7 +58,6 @@ TABLE.gj-grid-table TFOOT INPUT.ui-grid-pager
 TABLE.gj-grid-table TFOOT SELECT.ui-grid-page-sizer
 {    
     padding: 0px;
-    height: 17px;
     font: bold 11px Verdana;
     margin: 0 5px;
     text-align: right;
