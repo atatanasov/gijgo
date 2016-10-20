@@ -1154,9 +1154,30 @@ gj.grid.events = {
      *         alert('Row with id=' + id + ' is selected.');
      *     });
      * </script>
+     * @example Custom.Select <!-- grid.base -->
+     * <table id="grid"></table>
+     * <script>
+     *     var grid, enableCustomSelect;
+     *     grid = $('#grid').grid({
+     *         dataSource: '/DataSources/GetPlayers',
+     *         columns: [ 
+     *             { field: 'ID', width: 28 },
+     *             { field: 'Name' },
+     *             { field: 'PlaceOfBirth' } 
+     *         ]
+     *     });
+     *     grid.on('rowSelect', function (e, $row, id, record) {
+     *         if (record.PlaceOfBirth.indexOf('Bulgaria') > -1) {
+     *             alert('You can\'t select player born in Bulgaria.');
+     *             return false;
+     *         } else {
+     *             return true;
+     *         }
+     *     });
+     * </script>
      */
     rowSelect: function ($grid, $row, id, record) {
-        $grid.triggerHandler('rowSelect', [$row, id, record]);
+        return $grid.triggerHandler('rowSelect', [$row, id, record]);
     },
 
     /**
@@ -1181,7 +1202,7 @@ gj.grid.events = {
      * </script>
      */
     rowUnselect: function ($grid, $row, id, record) {
-        $grid.triggerHandler('rowUnselect', [$row, id, record]);
+        return $grid.triggerHandler('rowUnselect', [$row, id, record]);
     },
 
     /**
@@ -1815,23 +1836,25 @@ gj.grid.methods = {
     },
 
     selectRow: function ($grid, data, $row, id) {
-        $row.addClass(data.style.content.rowSelected);
-        $row.attr('data-selected', 'true');
-        if ('checkbox' === data.selectionMethod) {
-            $row.find('td:nth-child(1) input[type="checkbox"]').prop('checked', true);
+        var record = $grid.getById(id);
+        if ($row.attr('data-selected') !== 'true' && gj.grid.events.rowSelect($grid, $row, id, record) !== false) {
+            $row.addClass(data.style.content.rowSelected);
+            $row.attr('data-selected', 'true');
+            if ('checkbox' === data.selectionMethod) {
+                $row.find('td:nth-child(1) input[type="checkbox"]').prop('checked', true);
+            }
         }
-        gj.grid.events.rowSelect($grid, $row, id, $grid.getById(id));
     },
 
     unselectRow: function ($grid, data, $row, id) {
-        if ($row.attr('data-selected') === 'true') {
+        var record = $grid.getById(id);
+        if ($row.attr('data-selected') === 'true' && gj.grid.events.rowUnselect($grid, $row, id, record) !== false) {
             $row.removeClass(data.style.content.rowSelected);
             if ('checkbox' === data.selectionMethod) {
                 $row.find('td:nth-child(1) input[type="checkbox"]').prop('checked', false);
                 $grid.find('thead input#checkAllBoxes').prop('checked', false);
             }
             $row.removeAttr('data-selected');
-            gj.grid.events.rowUnselect($grid, $row, id, $grid.getById(id));
         }
     },
 

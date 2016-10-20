@@ -142,9 +142,30 @@ gj.grid.events = {
      *         alert('Row with id=' + id + ' is selected.');
      *     });
      * </script>
+     * @example Custom.Select <!-- grid.base -->
+     * <table id="grid"></table>
+     * <script>
+     *     var grid, enableCustomSelect;
+     *     grid = $('#grid').grid({
+     *         dataSource: '/DataSources/GetPlayers',
+     *         columns: [ 
+     *             { field: 'ID', width: 28 },
+     *             { field: 'Name' },
+     *             { field: 'PlaceOfBirth' } 
+     *         ]
+     *     });
+     *     grid.on('rowSelect', function (e, $row, id, record) {
+     *         if (record.PlaceOfBirth.indexOf('Bulgaria') > -1) {
+     *             alert('You can\'t select player born in Bulgaria.');
+     *             return false;
+     *         } else {
+     *             return true;
+     *         }
+     *     });
+     * </script>
      */
     rowSelect: function ($grid, $row, id, record) {
-        $grid.triggerHandler('rowSelect', [$row, id, record]);
+        return $grid.triggerHandler('rowSelect', [$row, id, record]);
     },
 
     /**
@@ -169,7 +190,7 @@ gj.grid.events = {
      * </script>
      */
     rowUnselect: function ($grid, $row, id, record) {
-        $grid.triggerHandler('rowUnselect', [$row, id, record]);
+        return $grid.triggerHandler('rowUnselect', [$row, id, record]);
     },
 
     /**
