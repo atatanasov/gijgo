@@ -1,0 +1,25 @@
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Example</title>
+  <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" rel="stylesheet" type="text/css">
+  <link href="../../dist/modular/grid/css/grid.css" rel="stylesheet" type="text/css">
+  <script src="../../dist/modular/grid/js/grid.js"></script>
+</head>
+<body>
+ <p>Change the page and/or page size and then refresh the grid.</p>
+ <table id="grid"></table>
+ <script>
+     var grid = $('#grid').grid({
+         guid: '58d47231-ac7b-e6d2-ddba-5e0195b31f2e',
+         uiLibrary: 'bootstrap',
+         dataSource: '/DataSources/GetPlayers',
+         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
+         optimisticPersistence: { localStorage: ["page", "limit"] },
+         pager: { limit: 2, sizes: [2, 5, 10, 20] }
+     });
+ </script>
+</body>
+</html>

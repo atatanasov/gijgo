@@ -2,7 +2,7 @@
   * @widget Dialog 
   * @plugin Base
   */
-function Dialog($dialog, arguments) {
+gj.dialog.widget = function ($element, arguments) {
     var self = this,
         methods = gj.dialog.methods;
 
@@ -22,7 +22,7 @@ function Dialog($dialog, arguments) {
      */
     self.open = function () {
         return methods.open(this);
-    },
+    }
 
     /**
      * Close the dialog.
@@ -39,7 +39,7 @@ function Dialog($dialog, arguments) {
      */
     self.close = function () {
         return methods.close(this);
-    },
+    }
 
     /**
      * Check if the dialog is currently open.
@@ -58,20 +58,31 @@ function Dialog($dialog, arguments) {
         return methods.isOpen(this);
     }
 
-    $.extend($dialog, self);
-    methods.init.apply($dialog, arguments);
+    $.extend($element, self);
+    if ('true' !== $element.attr('data-dialog')) {
+        methods.init.apply($element, arguments);
+    }
 
-    return $dialog;
+    return $element;
 };
+
+gj.dialog.widget.prototype = new gj.widget();
+gj.dialog.widget.constructor = gj.dialog.widget;
+
+gj.dialog.widget.prototype.getHTMLConfig = gj.dialog.methods.getHTMLConfig;
 
 (function ($) {
     $.fn.dialog = function (method) {
+        var $widget;
         if (typeof method === 'object' || !method) {
-            return new Dialog(this, arguments);
-        } else if (gj.dialog.methods[method]) {
-            return gj.dialog.methods[method].apply(this, [this].concat(Array.prototype.slice.call(arguments, 1)));
+            return new gj.dialog.widget(this, arguments);
         } else {
-            throw 'Method ' + method + ' does not exist.';
+            $widget = new gj.dialog.widget(this, null);
+            if ($widget[method]) {
+                return $widget[method].apply(this, Array.prototype.slice.call(arguments, 1));
+            } else {
+                throw 'Method ' + method + ' does not exist.';
+            }
         }
     };
 })(jQuery);

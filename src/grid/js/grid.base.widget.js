@@ -2,18 +2,16 @@
   * @widget Grid
   * @plugin Base
   */
-function Grid($grid, arguments) {
+gj.grid.widget = function ($grid, arguments) {
     var self = this,
         methods = gj.grid.methods;
-
-    self.xhr = null;
 
     /**
      * Reload the data in the grid from a data source.
      * @method
      * @param {object} params - An object that contains a list with parameters that are going to be send to the server.
      * @fires beforeEmptyRowInsert, dataBinding, dataBound, cellDataBound
-     * @return void
+     * @return grid
      * @example sample <!-- grid.base -->
      * <input type="text" id="txtSearch">
      * <button id="btnSearch">Search</button>
@@ -30,14 +28,15 @@ function Grid($grid, arguments) {
      * </script>
      */
     self.reload = function (params) {
-        return methods.reload(this, params);
+        methods.startLoading(this);
+        return gj.widget.prototype.reload.call(this, params);
     };
 
     /**
      * Clear the content in the grid.
      * @method
      * @param {boolean} showNotFoundText - Indicates if the "Not Found" text is going to show after the clearing of the grid.
-     * @return void
+     * @return grid
      * @example sample <!-- grid.base -->
      * <button id="btnClear">Clear</button>
      * <br/><br/>
@@ -57,26 +56,45 @@ function Grid($grid, arguments) {
     };
 
     /**
-     * Return the number of records presented on the screen.
+     * Return the number of records in the grid. By default return only the records that are visible in the grid.
      * @method
-     * @return int
-     * @example sample <!-- grid.base -->
-     * <button id="btnShowCount">Show Count</button>
+     * @param {boolean} includeAllRecords - include records that are not visible when you are using local dataSource.
+     * @return number
+     * @example Local.DataSource <!-- bootstrap, grid.base, grid.pagination -->
+     * <button onclick="alert(grid.count())">Count Visible Records</button>
+     * <button onclick="alert(grid.count(true))">Count All Records</button>
+     * <br/><br/>
+     * <table id="grid"></table>
+     * <script>
+     *     var data, grid;
+     *     data = [
+     *         { 'ID': 1, 'Name': 'Hristo Stoichkov', 'PlaceOfBirth': 'Plovdiv, Bulgaria' },
+     *         { 'ID': 2, 'Name': 'Ronaldo Luis Nazario de Lima', 'PlaceOfBirth': 'Rio de Janeiro, Brazil' },
+     *         { 'ID': 3, 'Name': 'David Platt', 'PlaceOfBirth': 'Chadderton, Lancashire, England' }
+     *     ];
+     *     grid = $('#grid').grid({
+     *         dataSource: data,
+     *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
+     *         uiLibrary: 'bootstrap',
+     *         pager: { limit: 2, sizes: [2, 5, 10] }
+     *     });
+     * </script>
+     * @example Remote.DataSource <!-- bootstrap, grid.base, grid.pagination -->
+     * <button onclick="alert(grid.count())">Count Visible Records</button>
+     * <button onclick="alert(grid.count(true))">Count All Records</button>
      * <br/><br/>
      * <table id="grid"></table>
      * <script>
      *     var grid = $('#grid').grid({
      *         dataSource: '/DataSources/GetPlayers',
-     *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
-     *     });
-     *     $('#btnShowCount').on('click', function () {
-     *         alert(grid.count());
+     *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
+     *         uiLibrary: 'bootstrap',
+     *         pager: { limit: 2, sizes: [2, 5, 10] }
      *     });
      * </script>
      */
-    self.count = function () {
-        //TODO: needs to be moved to methods
-        return $(this).find('tbody tr[data-role="row"]').length;
+    self.count = function (includeAllRecords) {
+        return methods.count(this, includeAllRecords);
     };
 
     /**
@@ -84,7 +102,7 @@ function Grid($grid, arguments) {
      * @method
      * @param {object} response - An object that contains the data that needs to be loaded in the grid.
      * @fires beforeEmptyRowInsert, dataBinding, dataBound, cellDataBound
-     * @return void
+     * @return grid
      * @example sample <!-- grid.base -->
      * <table id="grid"></table>
      * <script>
@@ -108,8 +126,8 @@ function Grid($grid, arguments) {
      * @additionalinfo The grid table tag and wrapper tag are kept by default after the execution of destroy method,
      * but you can remove them if you pass false to the keepTableTag and keepWrapperTag parameters.
      * @method
-     * @param {bool} keepTableTag - If this flag is set to false, the table tag will be removed from the HTML dom tree.
-     * @param {bool} keepWrapperTag - If this flag is set to false, the table wrapper tag will be removed from the HTML dom tree.
+     * @param {boolean} keepTableTag - If this flag is set to false, the table tag will be removed from the HTML dom tree.
+     * @param {boolean} keepWrapperTag - If this flag is set to false, the table wrapper tag will be removed from the HTML dom tree.
      * @fires destroying
      * @return void
      * @example keep.wrapper.and.table <!-- grid.base -->
@@ -154,7 +172,7 @@ function Grid($grid, arguments) {
      * Select a row from the grid based on id parameter.
      * @method
      * @param {string} id - The id of the row that needs to be selected
-     * @return void
+     * @return grid
      * @example sample <!-- grid.base -->
      * <input type="text" id="txtNumber" value="1" />
      * <button id="btnSelect">Select</button>
@@ -229,7 +247,7 @@ function Grid($grid, arguments) {
     /**
      * Select all records from the grid.
      * @method
-     * @return void
+     * @return grid
      * @example sample <!-- grid.base -->
      * <button id="btnSelectAll">Select All</button>
      * <br/><br/>
@@ -306,7 +324,7 @@ function Grid($grid, arguments) {
     /**
      * Return record from the grid based on position.
      * @method
-     * @param {int} position - The position of the row that needs to be return.
+     * @param {number} position - The position of the row that needs to be return.
      * @return object
      * @example sample <!-- grid.base -->
      * <button id="btnGetData">Get Data</button>
@@ -330,45 +348,43 @@ function Grid($grid, arguments) {
     /**
      * Return an array with all records presented in the grid.
      * @method
-     * @return array
-     * @example remote.data <!-- grid.base -->
-     * <button id="btnGetAllName">Get All Names</button>
+     * @param {boolean} includeAllRecords - include records that are not visible when you are using local dataSource.
+     * @return number
+     * @example Local.DataSource <!-- bootstrap, grid.base, grid.pagination -->
+     * <button onclick="alert(JSON.stringify(grid.getAll()))">Get All Visible Records</button>
+     * <button onclick="alert(JSON.stringify(grid.getAll(true)))">Get All Records</button>
+     * <br/><br/>
+     * <table id="grid"></table>
+     * <script>
+     *     var data, grid;
+     *     data = [
+     *         { 'ID': 1, 'Name': 'Hristo Stoichkov', 'PlaceOfBirth': 'Plovdiv, Bulgaria' },
+     *         { 'ID': 2, 'Name': 'Ronaldo Luis Nazario de Lima', 'PlaceOfBirth': 'Rio de Janeiro, Brazil' },
+     *         { 'ID': 3, 'Name': 'David Platt', 'PlaceOfBirth': 'Chadderton, Lancashire, England' }
+     *     ];
+     *     grid = $('#grid').grid({
+     *         dataSource: data,
+     *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
+     *         uiLibrary: 'bootstrap',
+     *         pager: { limit: 2, sizes: [2, 5, 10] }
+     *     });
+     * </script>
+     * @example Remote.DataSource <!-- bootstrap, grid.base, grid.pagination -->
+     * <button onclick="alert(JSON.stringify(grid.getAll()))">Get All Visible Records</button>
+     * <button onclick="alert(JSON.stringify(grid.getAll(true)))">Get All Records</button>
      * <br/><br/>
      * <table id="grid"></table>
      * <script>
      *     var grid = $('#grid').grid({
      *         dataSource: '/DataSources/GetPlayers',
-     *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
-     *     });
-     *     $('#btnGetAllName').on('click', function () {
-     *         var records = grid.getAll(), names = '';
-     *         $.each(records, function () {
-     *             names += this.Name + '(id=' + this.ID + '),';
-     *         });
-     *         alert(names);
-     *     });
-     * </script>
-     * @example local.data <!-- grid.base -->
-     * <button id="btnAdd">Add New Row</button>
-     * <br/><br/>
-     * <table id="grid"></table>
-     * <script>
-     *     var grid = $('#grid').grid({
-     *         dataSource:  [
-     *             { 'ID': 1, 'Name': 'Hristo Stoichkov', 'PlaceOfBirth': 'Plovdiv, Bulgaria' },
-     *             { 'ID': 2, 'Name': 'Ronaldo Luis Nazario de Lima', 'PlaceOfBirth': 'Rio de Janeiro, Brazil' },
-     *             { 'ID': 3, 'Name': 'David Platt', 'PlaceOfBirth': 'Chadderton, Lancashire, England' }
-     *         ],
-     *         autoGenerateColumns: true
-     *     });
-     *     $('#btnAdd').on('click', function () {
-     *         grid.getAll().push({ 'ID': grid.count() + 1, 'Name': 'Test Player', 'PlaceOfBirth': 'Test City, Test Country' });
-     *         grid.reload();
+     *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
+     *         uiLibrary: 'bootstrap',
+     *         pager: { limit: 2, sizes: [2, 5, 10] }
      *     });
      * </script>
      */
-    self.getAll = function () {
-        return methods.getAll(this);
+    self.getAll = function (includeAllRecords) {
+        return methods.getAll(this, includeAllRecords);
     };
 
     /**
@@ -422,7 +438,7 @@ function Grid($grid, arguments) {
      * @method
      * @param {object} record - Object with data for the new record.
      * @return grid
-     * @example sample <!-- grid.base -->
+     * @example without.pagination <!-- grid.base -->
      * <button id="btnAdd">Add Row</button>
      * <br/><br/>
      * <table id="grid"></table>
@@ -436,7 +452,25 @@ function Grid($grid, arguments) {
      *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
      *     });
      *     $('#btnAdd').on('click', function () {
-     *         grid.addRow({ 'ID': grid.count() + 1, 'Name': 'Test Player', 'PlaceOfBirth': 'Test City, Test Country' });
+     *         grid.addRow({ 'ID': grid.count(true) + 1, 'Name': 'Test Player', 'PlaceOfBirth': 'Test City, Test Country' });
+     *     });
+     * </script>
+     * @example with.pagination <!-- grid.base, grid.pagination -->
+     * <button id="btnAdd">Add Row</button>
+     * <br/><br/>
+     * <table id="grid"></table>
+     * <script>
+     *     var grid = $('#grid').grid({
+     *         dataSource: [
+     *             { 'ID': 1, 'Name': 'Hristo Stoichkov', 'PlaceOfBirth': 'Plovdiv, Bulgaria' },
+     *             { 'ID': 2, 'Name': 'Ronaldo Luis Nazario de Lima', 'PlaceOfBirth': 'Rio de Janeiro, Brazil' },
+     *             { 'ID': 3, 'Name': 'David Platt', 'PlaceOfBirth': 'Chadderton, Lancashire, England' }
+     *         ],
+     *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
+     *         pager: { limit: 2 }
+     *     });
+     *     $('#btnAdd').on('click', function () {
+     *         grid.addRow({ 'ID': grid.count(true) + 1, 'Name': 'Test Player', 'PlaceOfBirth': 'Test City, Test Country' });
      *     });
      * </script>
      */
@@ -484,10 +518,11 @@ function Grid($grid, arguments) {
 
     /**
      * Remove row from the grid
+     * @additionalinfo This method is design to work only with local datasources. If you use remote datasource, you need to send a request to the server to remove the row and then reload the data in the grid.
      * @method
      * @param {string} id - Id of the record that needs to be removed.
      * @return grid
-     * @example sample <!-- grid.base -->
+     * @example Without.Pagination <!-- grid.base -->
      * <table id="grid"></table>
      * <script>
      *     var grid;
@@ -511,6 +546,31 @@ function Grid($grid, arguments) {
      *         ]
      *     });
      * </script>
+     * @example With.Pagination <!-- grid.base, grid.pagination -->
+     * <table id="grid"></table>
+     * <script>
+     *     var grid;
+     *     function Delete(e) {
+     *         if (confirm('Are you sure?')) {
+     *             grid.removeRow(e.data.id);
+     *         }
+     *     }
+     *     grid = $('#grid').grid({
+     *         primaryKey: 'ID',
+     *         dataSource: [
+     *             { 'ID': 1, 'Name': 'Hristo Stoichkov', 'PlaceOfBirth': 'Plovdiv, Bulgaria' },
+     *             { 'ID': 2, 'Name': 'Ronaldo Luís Nazário de Lima', 'PlaceOfBirth': 'Rio de Janeiro, Brazil' },
+     *             { 'ID': 3, 'Name': 'David Platt', 'PlaceOfBirth': 'Chadderton, Lancashire, England' }
+     *         ],
+     *         columns: [
+     *             { field: 'ID' },
+     *             { field: 'Name' },
+     *             { field: 'PlaceOfBirth' },
+     *             { title: '', width: 60, align: 'center', tmpl: 'Delete', events: { 'click': Delete } }
+     *         ],
+     *         pager: { limit: 2 }
+     *     });
+     * </script>
      */
     self.removeRow = function (id) {
         return methods.removeRow(this, id);
@@ -524,16 +584,21 @@ function Grid($grid, arguments) {
     return $grid;
 }
 
+gj.grid.widget.prototype = new gj.widget();
+gj.grid.widget.constructor = gj.grid.widget;
+
+gj.grid.widget.prototype.getConfig = gj.grid.methods.getConfig;
+gj.grid.widget.prototype.getHTMLConfig = gj.grid.methods.getHTMLConfig;
+
 (function ($) {
     $.fn.grid = function (method) {
-        var $grid;
+        var $widget;
         if (typeof method === 'object' || !method) {
-            $grid = new Grid(this, arguments);
-            return $grid;
+            return new gj.grid.widget(this, arguments);
         } else {
-            $grid = new Grid(this, null);
-            if ($grid[method]) {
-                return $grid[method].apply(this, Array.prototype.slice.call(arguments, 1));
+            $widget = new gj.grid.widget(this, null);
+            if ($widget[method]) {
+                return $widget[method].apply(this, Array.prototype.slice.call(arguments, 1));
             } else {
                 throw 'Method ' + method + ' does not exist.';
             }

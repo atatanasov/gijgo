@@ -2,54 +2,20 @@
 gj.grid.methods = {
 
     init: function (jsConfig) {
-        var clientConfig, plugin, option, data;
+        gj.widget.prototype.init.call(this, jsConfig, 'grid');
 
-        clientConfig = $.extend(true, {}, gj.grid.methods.getHTMLConfiguration(this) || {});
-        $.extend(true, clientConfig, jsConfig || {});
-
-        gj.grid.methods.configure(this, clientConfig);
-        //Initialize all plugins
-        for (plugin in gj.grid.plugins) {
-            if (gj.grid.plugins.hasOwnProperty(plugin)) {
-                gj.grid.plugins[plugin].configure(this, clientConfig);
-            }
-        }
-        data = this.data();
-        //Initialize events configured as options
-        for (option in data) {
-            if (gj.grid.events.hasOwnProperty(option)) {
-                this.on(option, data[option]);
-                delete data[option];
-            }
-        }
         gj.grid.methods.initialize(this);
-        this.attr('data-initialized', true);
 
-        if (data.autoLoad) {
+        if (this.data('autoLoad')) {
             this.reload();
         }
         return this;
     },
 
-    configure: function ($grid, clientConfig) {
-        var options = $.extend(true, {}, gj.grid.config.base),
-            uiLibrary = clientConfig.uiLibrary || options.uiLibrary;
-        if (gj.grid.config[uiLibrary]) {
-            $.extend(true, options, gj.grid.config[uiLibrary]);
-        }
-        for (plugin in gj.grid.plugins) {
-            if (gj.grid.plugins.hasOwnProperty(plugin)) {
-                if (gj.grid.plugins[plugin].config.base) {
-                    $.extend(true, options, gj.grid.plugins[plugin].config.base);
-                }
-                if (gj.grid.plugins[plugin].config[uiLibrary]) {
-                    $.extend(true, options, gj.grid.plugins[plugin].config[uiLibrary]);
-                }
-            }
-        }
-        $.extend(true, options, clientConfig);
-        gj.grid.methods.setDefaultColumnConfig(options.columns, options.defaultColumnSettings);
-        $grid.data(options);
+    getConfig: function (jsConfig, type) {
+        var config = gj.widget.prototype.getConfig.call(this, jsConfig, type);
+        gj.grid.methods.setDefaultColumnConfig(config.columns, config.defaultColumnSettings);
+        return config;
     },
 
     setDefaultColumnConfig: function (columns, defaultColumnSettings) {
@@ -63,17 +29,13 @@ gj.grid.methods = {
         }
     },
 
-    getHTMLConfiguration: function ($grid) {
-        var result = gj.grid.methods.getAttributes($grid);
-        if (result && result.source) {
-            result.dataSource = result.source;
-            delete result.source;
-        }
+    getHTMLConfig: function () {
+        var result = gj.widget.prototype.getHTMLConfig.call(this);
         result.columns = [];
-        $grid.find('thead > tr > th').each(function () {
+        this.find('thead > tr > th').each(function () {
             var $el = $(this),
                 title = $el.text(),
-                config = gj.grid.methods.getAttributes($el);
+                config = gj.widget.prototype.getHTMLConfig.call($el);
             config.title = title;
             if (!config.field) {
                 config.field = title;
@@ -83,15 +45,6 @@ gj.grid.methods = {
             }
             result.columns.push(config);
         });
-        return result;
-    },
-
-    getAttributes: function ($el) {
-        var result = $el.data(),
-            width = $el.attr('width');
-        if (width) {
-            result.width = width;
-        }
         return result;
     },
 
@@ -108,13 +61,7 @@ gj.grid.methods = {
         }
         return result;
     },
-
-    defaultSuccessHandler: function ($grid) {
-        return function (response) {
-            $grid.render(response);
-        };
-    },
-
+    
     initialize: function ($grid) {
         var data = $grid.data(),
             $wrapper = $grid.parent('div[data-role="wrapper"]');
@@ -128,16 +75,10 @@ gj.grid.methods = {
 
         if (data.width) {
             $grid.parent().css('width', data.width);
-        } else if (data.minWidth) {
-            $grid.css('min-width', data.minWidth);
-        } else {
-            $grid.css('min-width',
-                data.columns.map(function (column) {
-                    return parseInt(column.width || column.minWidth || 0);
-                }).reduce(function (a, b) { return a + b; }, 0)
-            );
         }
-        
+        if (data.minWidth) {
+            $grid.css('min-width', data.minWidth);
+        }
         if (data.fontSize) {
             $grid.css('font-size', data.fontSize);
         }
@@ -149,6 +90,7 @@ gj.grid.methods = {
 
         gj.grid.methods.renderHeader($grid);
         gj.grid.methods.appendEmptyRow($grid, '&nbsp;');
+        $grid.attr('data-initialized', true);
         gj.grid.events.initialized($grid);
     },
 
@@ -158,8 +100,6 @@ gj.grid.methods = {
         data = $grid.data();
         columns = data.columns;
         style = data.style.header;
-        sortBy = data.params[data.defaultParams.sortBy];
-        direction = data.params[data.defaultParams.direction];
 
         $thead = $grid.children('thead');
         if ($thead.length === 0) {
@@ -169,7 +109,7 @@ gj.grid.methods = {
 
         $row = $('<tr/>');
         for (i = 0; i < columns.length; i += 1) {
-            $cell = $('<th/>');
+            $cell = $('<th data-field="' + columns[i].field + '" />');
             if (columns[i].width) {
                 $cell.attr('width', columns[i].width);
             }
@@ -180,7 +120,7 @@ gj.grid.methods = {
             $cell.css('text-align', columns[i].align || 'left');
             if (columns[i].sortable) {
                 $cell.addClass(style.sortable);
-                $cell.on('click', gj.grid.methods.createSortHandler($grid, $cell));
+                $cell.on('click', gj.grid.methods.createSortHandler($grid, $cell, columns[i]));
             }
             if ('checkbox' === data.selectionMethod && 'multiple' === data.selectionType && 'checkbox' === columns[i].type) {
                 $checkAllBoxes = $cell.find('input[id="checkAllBoxes"]'); //TODO: use data-role instead of id. this is going to cause some other bugs.
@@ -196,7 +136,7 @@ gj.grid.methods = {
                     }
                 });
             } else {
-                $cell.append($('<div style="float: left"/>').text(typeof (columns[i].title) === 'undefined' ? columns[i].field : columns[i].title));
+                $cell.append($('<div style="float: left"/>').html(typeof (columns[i].title) === 'undefined' ? columns[i].field : columns[i].title));
             }
             if (columns[i].hidden) {
                 $cell.hide();
@@ -209,26 +149,18 @@ gj.grid.methods = {
         $thead.empty().append($row);
     },
 
-    createSortHandler: function ($grid, $cell) {
+    createSortHandler: function ($grid, $cell, column) {
         return function () {
-            var $sortIcon, data, cellData, style, params = {};
+            var $sortIcon, data, style, params = {};
             if ($grid.count() > 0) {
                 data = $grid.data();
-                cellData = $cell.data('cell');
-                cellData.direction = (cellData.direction === 'asc' ? 'desc' : 'asc');
+                column.direction = (column.direction === 'asc' ? 'desc' : 'asc');
+
                 if ($.isArray(data.dataSource)) {
-                    if (cellData.direction === 'asc') {
-                        data.dataSource.sort(function compare(a, b) {
-                            return ((a[cellData.field] < b[cellData.field]) ? -1 : ((a[cellData.field] > b[cellData.field]) ? 1 : 0));
-                        });
-                    } else {
-                        data.dataSource.sort(function compare(a, b) {
-                            return ((a[cellData.field] > b[cellData.field]) ? -1 : ((a[cellData.field] < b[cellData.field]) ? 1 : 0));
-                        });
-                    }
+                    data.dataSource.sort(column.sortable.sorter ? column.sortable.sorter(column.direction, column) : gj.grid.methods.createDefaultSorter(column.direction, column));
                 } else {
-                    params[data.defaultParams.sortBy] = cellData.field;
-                    params[data.defaultParams.direction] = cellData.direction;
+                    params[data.defaultParams.sortBy] = column.field;
+                    params[data.defaultParams.direction] = column.direction;
                 }
 
                 style = data.style.header;
@@ -239,7 +171,7 @@ gj.grid.methods = {
                     $cell.append($sortIcon);
                 }
 
-                if ('asc' === cellData.direction) {
+                if ('asc' === column.direction) {
                     $sortIcon.empty().removeClass(style.sortDescIcon);
                     if (style.sortAscIcon) {
                         $sortIcon.addClass(style.sortAscIcon);
@@ -260,6 +192,14 @@ gj.grid.methods = {
         };
     },
 
+    createDefaultSorter: function (direction, column) {
+        return function (recordA, recordB) {
+            var a = recordA[column.field],
+                b = recordB[column.field];
+            return (direction === 'asc') ? a.localeCompare(b) : b.localeCompare(a);
+        };
+    },
+
     startLoading: function ($grid) {
         var $tbody, $cover, $loading, width, height, top, data;
         gj.grid.methods.stopLoading($grid);
@@ -270,7 +210,7 @@ gj.grid.methods = {
         $tbody = $grid.children('tbody');
         width = $tbody.outerWidth(false);
         height = $tbody.outerHeight(false);
-        top = $tbody.prevAll().outerHeight(true) + $grid.prevAll().outerHeight(true) + parseInt($grid.parent().css('padding-top').replace('px', ''), 10);
+        top = Math.abs($grid.parent().offset().top - $tbody.offset().top);
         $cover = $('<div data-role="loading-cover" />').addClass(data.style.loadingCover).css({
             width: width,
             height: height,
@@ -343,7 +283,7 @@ gj.grid.methods = {
         var data, records, i, recLen, rowCount, $tbody, $rows, $row, $checkAllBoxes;
 
         data = $grid.data();
-        records = gj.grid.methods.getRecordsForRendering($grid);
+        records = $grid.getAll();
         gj.grid.events.dataBinding($grid, records);
         recLen = records.length;
         gj.grid.methods.stopLoading($grid);
@@ -362,7 +302,7 @@ gj.grid.methods = {
                 $checkAllBoxes.show();
             }
         }
-        $tbody.find('tr[data-role="empty"]').remove();
+        $tbody.find('tr[data-role!="row"]').remove();
         if (0 === recLen) {
             $tbody.empty();
             gj.grid.methods.appendEmptyRow($grid);
@@ -402,10 +342,10 @@ gj.grid.methods = {
             $row.on('mouseleave', gj.grid.methods.createRemoveRowHoverHandler($row, data.style.content.rowHover));
         } else {
             mode = 'update';
-            $row.removeClass(data.style.content.rowSelected).off('click');
+            $row.removeClass(data.style.content.rowSelected).removeAttr('data-selected').off('click');
         }
         id = gj.grid.methods.getId(record, data.primaryKey, (position + 1));
-        $row.attr('data-position', position + 1); //$row.data('row', { id: id, record: record });
+        $row.attr('data-position', position + 1);
         $row.on('click', gj.grid.methods.createRowClickHandler($grid, id));
         for (i = 0; i < data.columns.length; i++) {
             if (mode === 'update') {
@@ -455,7 +395,7 @@ gj.grid.methods = {
             });
             $wrapper.html(text);
         } else if (column.renderer && typeof (column.renderer) === 'function') {
-            text = column.renderer(record[column.field], record, $wrapper, $cell);
+            text = column.renderer(record[column.field], record, $cell, $wrapper);
             if (text) {
                 $wrapper.html(text);
             }
@@ -473,12 +413,7 @@ gj.grid.methods = {
         if (column.events) {
             for (key in column.events) {
                 if (column.events.hasOwnProperty(key)) {
-                    $cell.on(key, { id: id, field: column.field, record: record }, function (e) {
-                        if (column.stopPropagation) {
-                            e.stopPropagation();
-                        }
-                        column.events[key].call(this, e);
-                    });
+                    $cell.on(key, { id: id, field: column.field, record: record }, gj.grid.methods.createCellEventHandler(column, column.events[key]));
                 }
             }
         }
@@ -491,9 +426,18 @@ gj.grid.methods = {
         return $cell;
     },
 
+    createCellEventHandler: function (column, func) {
+        return function (e) {
+            if (column.stopPropagation) {
+                e.stopPropagation();
+            }
+            func.call(this, e);
+        };
+    },
+
     setCellText: function ($wrapper, column, value) {
         var text = gj.grid.methods.formatText(value, column);
-        if (!column.tooltip) {
+        if (!column.tooltip && text) {
             $wrapper.attr('title', text);
         }
         $wrapper.text(text);
@@ -531,10 +475,6 @@ gj.grid.methods = {
         return text;
     },
 
-    getRecordsForRendering: function ($grid) {
-        return $grid.data('records');
-    },
-
     setRecordsData: function ($grid, response) {
         var records = [],
             totalRecords = 0,
@@ -562,23 +502,22 @@ gj.grid.methods = {
 
     selectRow: function ($grid, data, $row, id) {
         $row.addClass(data.style.content.rowSelected);
-
-        gj.grid.events.rowSelect($grid, $row, id, $grid.getById(id));
-
+        $row.attr('data-selected', 'true');
         if ('checkbox' === data.selectionMethod) {
             $row.find('td:nth-child(1) input[type="checkbox"]').prop('checked', true);
         }
+        gj.grid.events.rowSelect($grid, $row, id, $grid.getById(id));
     },
 
     unselectRow: function ($grid, data, $row, id) {
-        if ($row.hasClass(data.style.content.rowSelected)) {
+        if ($row.attr('data-selected') === 'true') {
             $row.removeClass(data.style.content.rowSelected);
-
-            gj.grid.events.rowUnselect($grid, $row, id, $grid.getById(id));
-
             if ('checkbox' === data.selectionMethod) {
                 $row.find('td:nth-child(1) input[type="checkbox"]').prop('checked', false);
+                $grid.find('thead input#checkAllBoxes').prop('checked', false);
             }
+            $row.removeAttr('data-selected');
+            gj.grid.events.rowUnselect($grid, $row, id, $grid.getById(id));
         }
     },
 
@@ -588,7 +527,7 @@ gj.grid.methods = {
             $row = gj.grid.methods.getRowById($grid, id);
         }
         if ($row) {
-            if ($row.hasClass(data.style.content.rowSelected)) {
+            if ($row.attr('data-selected') === 'true') {
                 gj.grid.methods.unselectRow($grid, data, $row, id);
             } else {
                 if ('single' === data.selectionType) {
@@ -626,7 +565,7 @@ gj.grid.methods = {
 
     getSelected: function ($grid) {
         var result = null, selections, record, position;
-        selections = $grid.find('tbody > tr.' + $grid.data().style.content.rowSelected);
+        selections = $grid.find('tbody > tr[data-selected = "true"]');
         if (selections.length > 0) {
             position = $(selections[0]).data('position');
             record = $grid.get(position);
@@ -637,7 +576,7 @@ gj.grid.methods = {
 
     getSelectedRows: function ($grid) {
         var data = $grid.data();
-        return $grid.find('tbody > tr.' + data.style.content.rowSelected);
+        return $grid.find('tbody > tr[data-selected = "true"]');
     },
 
     getSelections: function ($grid) {
@@ -663,6 +602,19 @@ gj.grid.methods = {
             }
         } else {
             result = $grid.get(id);
+        }
+        return result;
+    },
+
+    getRecVPosById: function ($grid, id) {
+        var result = id, i, primaryKey = $grid.data('primaryKey'), records = $grid.data('records');
+        if (primaryKey) {
+            for (i = 0; i < records.length; i++) {
+                if (records[i][primaryKey] === id) {
+                    result = i;
+                    break;
+                }
+            }
         }
         return result;
     },
@@ -708,21 +660,26 @@ gj.grid.methods = {
         return result;
     },
 
-    getCell: function ($grid, id, index) {
-        var position, $row;
-        position = gj.grid.methods.getColumnPosition($grid, index);
-        $row = gj.grid.methods.getRowById($grid, id);
-        return $row.find('td:eq(' + position + ') div');
+    getCell: function ($grid, id, field) {
+        var position, $row, $result = null;
+        position = gj.grid.methods.getColumnPosition($grid.data('columns'), field);
+        if (position > -1) {
+            $row = gj.grid.methods.getRowById($grid, id);
+            $result = $row.find('td:eq(' + position + ') div');
+        }
+        return $result;
     },
 
-    setCellContent: function ($grid, id, index, value) {
-        var column, $cellWrapper = gj.grid.methods.getCell($grid, id, index);
-        $cellWrapper.empty();
-        if (typeof (value) === 'object') {
-            $cellWrapper.append(value);
-        } else {
-            column = gj.grid.methods.getColumnInfo($grid, index);
-            gj.grid.methods.setCellText($cellWrapper, column, value);
+    setCellContent: function ($grid, id, field, value) {
+        var column, $cellWrapper = gj.grid.methods.getCell($grid, id, field);
+        if ($cellWrapper) {
+            $cellWrapper.empty();
+            if (typeof (value) === 'object') {
+                $cellWrapper.append(value);
+            } else {
+                column = gj.grid.methods.getColumnInfo($grid, field);
+                gj.grid.methods.setCellText($cellWrapper, column, value);
+            }
         }
     },
 
@@ -750,40 +707,6 @@ gj.grid.methods = {
         return count;
     },
 
-    reload: function ($grid, params) {
-        var data, ajaxOptions;
-        data = $grid.data();
-        $.extend(data.params, params);
-        gj.grid.methods.startLoading($grid);
-        if ($.isArray(data.dataSource)) {
-            gj.grid.methods.setRecordsData($grid, data.dataSource);
-            gj.grid.methods.loadData($grid);
-        } else if (typeof(data.dataSource) === 'string') {
-            ajaxOptions = { url: data.dataSource, data: data.params, success: gj.grid.methods.defaultSuccessHandler($grid) };
-            if ($grid.xhr) {
-                $grid.xhr.abort();
-            }
-            $grid.xhr = $.ajax(ajaxOptions);
-        } else if (typeof (data.dataSource) === 'object') {
-            if (!data.dataSource.data) {
-                data.dataSource.data = {};
-            }
-            $.extend(data.dataSource.data, data.params);
-            ajaxOptions = $.extend(true, {}, data.dataSource); //clone dataSource object
-            if (ajaxOptions.dataType === 'json' && typeof(ajaxOptions.data) === 'object') {
-                ajaxOptions.data = JSON.stringify(ajaxOptions.data);
-            }
-            if (!ajaxOptions.success) {
-                ajaxOptions.success = gj.grid.methods.defaultSuccessHandler($grid);
-            }
-            if ($grid.xhr) {
-                $grid.xhr.abort();
-            }
-            $grid.xhr = $.ajax(ajaxOptions);
-        }
-        return $grid;
-    },
-
     clear: function ($grid, showNotFoundText) {
         var data = $grid.data();
         $grid.xhr && $grid.xhr.abort();
@@ -802,9 +725,10 @@ gj.grid.methods = {
             if (typeof(response) === 'string' && JSON) {
                 response = JSON.parse(response);
             }
-            records = gj.grid.methods.setRecordsData($grid, response);
+            gj.grid.methods.setRecordsData($grid, response);
             gj.grid.methods.loadData($grid);
         }
+        return $grid;
     },
 
     destroy: function ($grid, keepTableTag, keepWrapperTag) {
@@ -874,10 +798,19 @@ gj.grid.methods = {
         return $grid;
     },
 
+    isLastRecordVisible: function () {
+        return true;
+    },
+
     addRow: function ($grid, record) {
+        var totalRecords = $grid.data('totalRecords') + 1;
+        gj.grid.events.dataBinding($grid, [record]);
         $grid.data('records').push(record);
-        $grid.data('totalRecords', $grid.data('totalRecords') + 1);
-        $grid.reload();        
+        $grid.data('totalRecords', totalRecords);
+        if (gj.grid.methods.isLastRecordVisible($grid)) {
+            gj.grid.methods.renderRow($grid, null, record, $grid.count() - 1);
+        }
+        gj.grid.events.dataBound($grid, [record], totalRecords);
         return $grid;
     },
 
@@ -889,15 +822,20 @@ gj.grid.methods = {
     },
 
     removeRow: function ($grid, id) {
-        var position, records, $row = gj.grid.methods.getRowById($grid, id);
-        if ($row) {
-            position = $row.data('position');
-            gj.grid.events.rowRemoving($grid, $row, id, $grid.get(position));
-            records = $grid.data('records');
-            records.splice(position - 1, 1);
-            $grid.data('totalRecords', $grid.data('totalRecords') - 1);
-            $grid.reload();
-        }
+        var position,
+            records = $grid.data('records'),
+            totalRecords = $grid.data('totalRecords'),
+            $row = gj.grid.methods.getRowById($grid, id);
+
+        gj.grid.events.rowRemoving($grid, $row, id, $grid.getById(id));
+        position = gj.grid.methods.getRecVPosById($grid, id);
+        records.splice(position, 1);
+        $grid.data('totalRecords', totalRecords - 1);
+        $grid.reload();
         return $grid;
+    },
+
+    count: function ($grid, includeAllRecords) {
+        return includeAllRecords ? $grid.data().totalRecords : $grid.getAll().length;
     }
 };

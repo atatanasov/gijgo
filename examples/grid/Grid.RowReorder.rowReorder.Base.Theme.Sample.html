@@ -1,0 +1,22 @@
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Example</title>
+  <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+  <link href="../../dist/modular/grid/css/grid.css" rel="stylesheet" type="text/css">
+  <script src="../../dist/modular/grid/js/grid.js"></script>
+  <script src="../../dist/modular/draggable/js/draggable.js"></script>
+  <script src="../../dist/modular/droppable/js/droppable.js"></script>
+</head>
+<body>
+ <p>Drag and Drop rows in order to reorder them.</p>
+ <table id="grid"></table>
+ <script>
+     $('#grid').grid({
+         dataSource: '/DataSources/GetPlayers',
+         rowReorder: true,
+         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
+     });
+ </script>
+</body>
+</html>

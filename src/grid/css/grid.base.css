@@ -20,6 +20,7 @@ TABLE.gj-grid-table THEAD TH #checkAllBoxes {
     margin: auto;
 }
 
+TABLE.gj-grid-table > thead > tr > th,
 TABLE.gj-grid-table > tbody > tr > td {
     overflow: hidden;
 }
@@ -59,6 +60,15 @@ DIV.gj-grid-wrapper DIV.gj-grid-loading-text
     padding: 0;
     overflow: hidden;
     vertical-align: top;
+}
+
+TABLE.gj-grid-table .gj-grid-icon
+{
+    margin: 0 2px;
+    cursor: pointer;
+    overflow: visible;
+    width: 16px;
+    height: 16px;
 }
 
 /* Base Theme */

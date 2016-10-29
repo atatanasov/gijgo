@@ -3,15 +3,13 @@
   <meta charset="utf-8" />
   <title>Example</title>
   <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
-  <script src="../../dist/modular/draggable/js/draggable.base.js"></script>
+  <script src="../../dist/modular/draggable/js/draggable.js"></script>
 </head>
 <body>
  <style>
  .element { border: 1px solid #999; width: 300px; height: 200px; cursor: move; text-align: center; background-color: #DDD; }
  </style>
- <div id="element" class="element">
-   drag me
- </div>
+ <div id="element" class="element">drag me</div>
  <script>
      $('#element').draggable({
          drag: function (e, offset) {

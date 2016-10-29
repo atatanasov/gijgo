@@ -1,137 +1,181 @@
 ﻿/* global window alert jQuery */
-/*
- * Gijgo JavaScript Library v0.6.2
- * http://gijgo.com/
- *
- * Copyright 2014, 2016 gijgo.com
- * Released under the MIT license
- */
 /** 
-  * @widget Draggable 
-  * @plugin Base
-  */
-if (typeof (gj) === 'undefined') {
-    gj = {};
-}
+ * @widget Draggable 
+ * @plugin Base
+ */
 if (typeof (gj.draggable) === 'undefined') {
     gj.draggable = {};
 }
 
 gj.draggable.config = {
-    /** If specified, restricts dragging from starting unless the mousedown occurs on the specified element.
-     * Only elements that descend from the draggable element are permitted.
-     * @type jquery element
-     * @default undefined
-     * @example sample <!-- draggable.base -->
-     * <style>
-     * .element { border: 1px solid #999; width: 300px; height: 200px; }
-     * .handle { background-color: #DDD; cursor: move; width: 200px; margin: 5px auto 0px auto; text-align: center; padding: 5px; }
-     * </style>
-     * <div id="element" class="element">
-     *   <div id="handle" class="handle">Handle for dragging</div>
-     * </div>
-     * <script>
-     *     $('#element').draggable({
-     *         handle: $('#handle')
-     *     });
-     * </script>
-     */
-    handle: undefined
+    base: {
+        /** If specified, restricts dragging from starting unless the mousedown occurs on the specified element.
+         * Only elements that descend from the draggable element are permitted.
+         * @type jquery element
+         * @default undefined
+         * @example sample <!-- draggable.base -->
+         * <style>
+         * .element { border: 1px solid #999; width: 300px; height: 200px; }
+         * .handle { background-color: #DDD; cursor: move; width: 200px; margin: 5px auto 0px auto; text-align: center; padding: 5px; }
+         * </style>
+         * <div id="element" class="element">
+         *   <div id="handle" class="handle">Handle for dragging</div>
+         * </div>
+         * <script>
+         *     $('#element').draggable({
+         *         handle: $('#handle')
+         *     });
+         * </script>
+         */
+        handle: undefined,
+
+        /** If set to false, restricts dragging on vertical direction.
+         * @type Boolean
+         * @default true
+         * @example sample <!-- draggable.base -->
+         * <style>
+         * .element { border: 1px solid #999; width: 300px; height: 200px; cursor: move; text-align: center; background-color: #DDD; }
+         * </style>
+         * <div id="element" class="element">
+         *     drag me<br/>
+         *     <i>(dragging on vertical direction is disabled)</i>
+         * </div>
+         * <script>
+         *     $('#element').draggable({
+         *         vertical: false
+         *     });
+         * </script>
+         */
+        vertical: true,
+
+        /** If set to false, restricts dragging on horizontal direction.
+         * @type Boolean
+         * @default true
+         * @example sample <!-- draggable.base -->
+         * <style>
+         * .element { border: 1px solid #999; width: 300px; height: 200px; cursor: move; text-align: center; background-color: #DDD; }
+         * </style>
+         * <div id="element" class="element">
+         *     drag me<br/>
+         *     <i>(dragging on horizontal direction is disabled)</i>
+         * </div>
+         * <script>
+         *     $('#element').draggable({
+         *         horizontal: false
+         *     });
+         * </script>
+         */
+        horizontal: true
+    }
 };
 
 gj.draggable.methods = {
     init: function (jsConfig) {
-        var $clickEl, $dragEl = this;
-        if (!jsConfig) {
-            jsConfig = {};
-        }
-        if (jsConfig.handle && jsConfig.handle.length) {
-            $clickEl = jsConfig.handle;
-        } else {
-            $clickEl = $dragEl;
-        }
+        var $handleEl, $dragEl = this;
 
-        //Initialize events configured as options
-        for (option in jsConfig) {
-            if (gj.draggable.events.hasOwnProperty(option)) {
-                $dragEl.on(option, jsConfig[option]);
-                delete jsConfig[option];
+        gj.widget.prototype.init.call(this, jsConfig, 'draggable');
+
+        $handleEl = gj.draggable.methods.getHandleElement($dragEl);
+
+        $handleEl.on('mousedown', function (e) {
+            $dragEl.attr('data-draggable-dragging', true);
+            $dragEl.removeAttr('data-draggable-x');
+            $dragEl.removeAttr('data-draggable-y');
+            if ($dragEl.css('position') !== 'aboslute') {
+                $dragEl.css('position', 'absolute');
             }
-        }
-
-        $dragEl.css('position', 'absolute');
-        if ($dragEl.css('top')) {
-            $dragEl.css('top', '0px');
-        }
-        if ($dragEl.css('left')) {
-            $dragEl.css('left', '0px');
-        }
-
-        $clickEl.on('mousedown', function (e) {
-            $dragEl.isDragging = true;
-            $dragEl.prevX = undefined;
-            $dragEl.prevY = undefined;
-            $(document).on('mousemove', function (e) {
-                gj.draggable.methods.mouseMove($dragEl, e);
-            });
+            gj.documentManager.subscribeForEvent('mousemove', $dragEl.data('guid'), gj.draggable.methods.createMouseMoveHandler($dragEl));
         });
-        $(document).on('mouseup', function (e) {
-            if ($dragEl.isDragging) {
-                $dragEl.isDragging = false;
-                gj.draggable.events.stop($dragEl);
-                $(document).off('mousemove');
-            }
-        });
+
+        gj.documentManager.subscribeForEvent('mouseup', $dragEl.data('guid'), gj.draggable.methods.createMouseUpHandler($dragEl));
 
         return $dragEl;
     },
 
-    mouseMove: function ($dragEl, e) {
-        var t, x, y, offsetX, offsetY;
-        if ($dragEl.isDragging) {
-            x = gj.draggable.methods.mouseX(e);
-            y = gj.draggable.methods.mouseY(e);
-            if ($dragEl.prevX && $dragEl.prevY) {
-                t = $dragEl.get(0);
-                offsetX = x - $dragEl.prevX;
-                offsetY = y - $dragEl.prevY;
-                gj.draggable.methods.move(t, offsetX, offsetY);
-                gj.draggable.events.drag($dragEl, offsetX, offsetY);
-            } else {
-                gj.draggable.events.start($dragEl);
+    getHandleElement: function ($dragEl) {
+        var $handle = $dragEl.data('handle');
+        return ($handle && $handle.length) ? $handle : $dragEl;
+    },
+
+    createMouseUpHandler: function ($dragEl) {
+        return function (e) {
+            if ($dragEl.attr('data-draggable-dragging') === 'true') {
+                $dragEl.attr('data-draggable-dragging', false);
+                gj.documentManager.unsubscribeForEvent('mousemove', $dragEl.data('guid'));
+                gj.draggable.events.stop($dragEl, e);
             }
-            $dragEl.prevX = x;
-            $dragEl.prevY = y;
+        };
+    },
+
+    createMouseMoveHandler: function ($dragEl) {
+        return function (e) {
+            var x, y, offsetX, offsetY, prevX, prevY;
+            if ($dragEl.attr('data-draggable-dragging') === 'true') {
+                x = gj.draggable.methods.mouseX(e);
+                y = gj.draggable.methods.mouseY(e);
+                prevX = $dragEl.attr('data-draggable-x');
+                prevY = $dragEl.attr('data-draggable-y');
+                if (prevX && prevY) {                
+                    offsetX = $dragEl.data('horizontal') ? x - parseInt(prevX, 10) : 0;
+                    offsetY = $dragEl.data('vertical') ? y - parseInt(prevY, 10) : 0;
+                    if (false !== gj.draggable.events.drag($dragEl, offsetX, offsetY)) {
+                        gj.draggable.methods.move($dragEl, offsetX, offsetY);
+                    }
+                } else {
+                    gj.draggable.events.start($dragEl);
+                }
+                $dragEl.attr('data-draggable-x', x);
+                $dragEl.attr('data-draggable-y', y);
+            }
         }
     },
 
-    move: function (t, offsetX, offsetY) {
-        t.style.left = (parseInt(t.style.left) + offsetX) + 'px';
-        t.style.top = (parseInt(t.style.top) + offsetY) + 'px';
+    move: function ($dragEl, offsetX, offsetY) {
+        var target = $dragEl.get(0),
+            top = target.style.top ? parseInt(target.style.top) : $dragEl.position().top,
+            left = target.style.left ? parseInt(target.style.left) : $dragEl.position().left;
+        target.style.top = (top + offsetY) + 'px';
+        target.style.left = (left + offsetX) + 'px';
     },
 
     mouseX: function (e) {
-        if (e.pageX) {
-            return e.pageX;
-        } else if (e.clientX) {
-            return e.clientX + (document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft);
+        if (e) {
+            if (e.pageX) {
+                return e.pageX;
+            } else if (e.clientX) {
+                return e.clientX + (document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft);
+            }
         }
         return null;
     },
 
     mouseY: function (e) {
-        if (e.pageY) {
-            return e.pageY;
-        } else if (e.clientY) {
-            return e.clientY + (document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop);
+        if (e) {
+            if (e.pageY) {
+                return e.pageY;
+            } else if (e.clientY) {
+                return e.clientY + (document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop);
+            }
         }
         return null;
+    },
+
+    destroy: function ($dragEl) {
+        if ($dragEl.attr('data-draggable') === 'true') {
+            gj.documentManager.unsubscribeForEvent('mouseup', $dragEl.data('guid'));
+            $dragEl.removeData();
+            $dragEl.removeAttr('data-guid');
+            $dragEl.removeAttr('data-draggable');
+            $dragEl.off('drag').off('start').off('stop');
+            gj.draggable.methods.getHandleElement($dragEl).off('mousedown');
+        }
+        return $dragEl;
     }
 };
 
 gj.draggable.events = {
     /**
-     * Triggered while the mouse is moved during the dragging.
+     * Triggered while the mouse is moved during the dragging, immediately before the current move happens.
      *
      * @event drag
      * @param {object} e - event data
@@ -140,9 +184,7 @@ gj.draggable.events = {
      * <style>
      * .element { border: 1px solid #999; width: 300px; height: 200px; cursor: move; text-align: center; background-color: #DDD; }
      * </style>
-     * <div id="element" class="element">
-     *   drag me
-     * </div>
+     * <div id="element" class="element">drag me</div>
      * <script>
      *     $('#element').draggable({
      *         drag: function (e, offset) {
@@ -152,7 +194,7 @@ gj.draggable.events = {
      * </script>
      */
     drag: function ($dragEl, offsetX, offsetY) {
-        $dragEl.trigger('drag', [{ top: offsetY, left: offsetX }]);
+        return $dragEl.triggerHandler('drag', [{ top: offsetY, left: offsetX }]);
     },
 
     /**
@@ -176,7 +218,7 @@ gj.draggable.events = {
      * </script>
      */
     start: function ($dragEl) {
-        $dragEl.trigger('start');
+        $dragEl.triggerHandler('start');
     },
 
     /**
@@ -199,34 +241,56 @@ gj.draggable.events = {
      *     });
      * </script>
      */
-    stop: function ($dragEl) {
-        $dragEl.trigger('stop');
+    stop: function ($dragEl, mouseEvent) { // TODO: change mouseEvent to mousePosition and add it to the docs.
+        $dragEl.triggerHandler('stop', [mouseEvent]); //mouseEvent is in use by columnReorder
     }
 };
 
 
-function Draggable($dragEl, arguments) {
+gj.draggable.widget = function ($element, arguments) {
     var self = this,
         methods = gj.draggable.methods;
 
-    self.isDragging = false;
-    self.prevX = undefined;
-    self.prevY = undefined;
+    /** Remove draggable functionality from the element.
+     * @method
+     * @return jquery element
+     * @example sample <!-- draggable.base -->
+     * <style>
+     * .element { border: 1px solid #999; width: 300px; height: 200px; cursor: move; text-align: center; background-color: #DDD; }
+     * </style>
+     * <button onclick="dragEl.destroy()">Destroy</button>
+     * <div id="element" class="element">Drag Me</div>
+     * <script>
+     *     var dragEl = $('#element').draggable();
+     * </script>
+     */
+    self.destroy = function () {
+        return methods.destroy(this);
+    };
 
-    $.extend($dragEl, self);
-    methods.init.apply($dragEl, arguments);
+    $.extend($element, self);
+    if ('true' !== $element.attr('data-draggable')) {
+        methods.init.apply($element, arguments);
+    }
 
-    return $dragEl;
+    return $element;
 };
+
+gj.draggable.widget.prototype = new gj.widget();
+gj.draggable.widget.constructor = gj.draggable.widget;
 
 (function ($) {
     $.fn.draggable = function (method) {
+        var $widget;
         if (typeof method === 'object' || !method) {
-            return new Draggable(this, arguments);
-        } else if (gj.draggable.methods[method]) {
-            return gj.draggable.methods[method].apply(this, Array.prototype.slice.call(arguments, 1));
+            return new gj.draggable.widget(this, arguments);
         } else {
-            throw 'Method ' + method + ' does not exist.';
+            $widget = new gj.draggable.widget(this, null);
+            if ($widget[method]) {
+                return $widget[method].apply(this, Array.prototype.slice.call(arguments, 1));
+            } else {
+                throw 'Method ' + method + ' does not exist.';
+            }
         }
     };
 })(jQuery);

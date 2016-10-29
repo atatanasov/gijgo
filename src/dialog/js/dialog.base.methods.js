@@ -1,56 +1,18 @@
 ﻿gj.dialog.methods = {
 
     init: function (jsConfig) {
-        var plugin, option, data;
-        gj.dialog.methods.configure(this, jsConfig || {});
-
-        //Apply plugins configuration
-        for (plugin in gj.dialog.plugins) {
-            if (gj.dialog.plugins.hasOwnProperty(plugin)) {
-                gj.dialog.plugins[plugin].configure(this);
-            }
-        }
-
-        //Initialize events configured as options
-        data = this.data();
-        for (option in data) {
-            if (gj.dialog.events.hasOwnProperty(option)) {
-                this.on(option, data[option]);
-                delete data[option];
-            }
-        }
+        gj.widget.prototype.init.call(this, jsConfig, 'dialog');
 
         gj.dialog.methods.initialize(this);
         gj.dialog.events.initialized(this);
         return this;
     },
 
-    configure: function ($dialog, jsConfig) {
-        var options = $.extend(true, {}, gj.dialog.config.base),
-            htmlConfig = gj.dialog.methods.getHTMLConfiguration($dialog);
-        if ((jsConfig.uiLibrary && jsConfig.uiLibrary === 'bootstrap') || (htmlConfig.uiLibrary && htmlConfig.uiLibrary === 'bootstrap')) {
-            $.extend(true, options, gj.dialog.config.bootstrap);
-        } else if ((jsConfig.uiLibrary && jsConfig.uiLibrary === 'jqueryui') || (htmlConfig.uiLibrary && htmlConfig.uiLibrary === 'jqueryui')) {
-            $.extend(true, options, gj.dialog.config.jqueryui);
-        } else if ((jsConfig.uiLibrary && jsConfig.uiLibrary === 'foundation') || (htmlConfig.uiLibrary && htmlConfig.uiLibrary === 'foundation')) {
-            $.extend(true, options, gj.dialog.config.foundation);
-        }
-        $.extend(true, options, htmlConfig);
-        $.extend(true, options, jsConfig);
-        $dialog.data(options);
-    },
-
-    getHTMLConfiguration: function ($dialog) {
-        var result = $dialog.data(),
-            attrs = $dialog[0].attributes;
+    getHTMLConfig: function () {
+        var result = gj.widget.prototype.getHTMLConfig.call(this),
+            attrs = this[0].attributes;
         if (attrs['title']) {
             result.title = attrs['title'].nodeValue;
-        }
-        if (attrs['width']) {
-            result.width = attrs['width'].nodeValue;
-        }
-        if (attrs['height']) {
-            result.height = attrs['height'].nodeValue;
         }
         return result;
     },
@@ -164,10 +126,10 @@
                 gj.dialog.events.resizeStop($dialog);
             }
         };
-        $dialog.append($('<div class="gj-resizable-handle gj-resizable-n"></div>').draggable($.extend(true, {}, config)));
-        $dialog.append($('<div class="gj-resizable-handle gj-resizable-e"></div>').draggable($.extend(true, {}, config)));
-        $dialog.append($('<div class="gj-resizable-handle gj-resizable-s"></div>').draggable($.extend(true, {}, config)));
-        $dialog.append($('<div class="gj-resizable-handle gj-resizable-w"></div>').draggable($.extend(true, {}, config)));
+        $dialog.append($('<div class="gj-resizable-handle gj-resizable-n"></div>').draggable($.extend(true, { horizontal: false }, config)));
+        $dialog.append($('<div class="gj-resizable-handle gj-resizable-e"></div>').draggable($.extend(true, { vertical: false }, config)));
+        $dialog.append($('<div class="gj-resizable-handle gj-resizable-s"></div>').draggable($.extend(true, { horizontal: false }, config)));
+        $dialog.append($('<div class="gj-resizable-handle gj-resizable-w"></div>').draggable($.extend(true, { vertical: false }, config)));
         $dialog.append($('<div class="gj-resizable-handle gj-resizable-ne"></div>').draggable($.extend(true, {}, config)));
         $dialog.append($('<div class="gj-resizable-handle gj-resizable-nw"></div>').draggable($.extend(true, {}, config)));
         $dialog.append($('<div class="gj-resizable-handle gj-resizable-sw"></div>').draggable($.extend(true, {}, config)));
@@ -175,7 +137,7 @@
     },
 
     resize: function (e, offset) {
-        var $el, $dialog, data, height, width, top, left;
+        var $el, $dialog, data, height, width, top, left, result = false;
 
         $el = $(this);
         $dialog = $el.parent();
@@ -215,6 +177,7 @@
             if (top) {
                 $dialog.css('top', top);
             }
+            result = true;
         }
 
         if (width && (!data.minWidth || width >= data.minWidth) && (!data.maxWidth || width <= data.maxWidth)) {
@@ -222,9 +185,14 @@
             if (left) {
                 $dialog.css('left', left);
             }
+            result = true;
         }
 
-        gj.dialog.events.resize($dialog);
+        if (result) {
+            gj.dialog.events.resize($dialog);
+        }
+        
+        return result;
     },
 
     open: function ($dialog) {

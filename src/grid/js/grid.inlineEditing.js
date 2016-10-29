@@ -1,11 +1,7 @@
 ﻿/** 
-  * @widget Grid 
-  * @plugin Inline Editing
-  */
-if (typeof (gj.grid.plugins) === 'undefined') {
-    gj.grid.plugins = {};
-}
-
+ * @widget Grid 
+ * @plugin Inline Editing
+ */
 gj.grid.plugins.inlineEditing = {
     config: {
         defaultColumnSettings: {
@@ -183,16 +179,16 @@ gj.grid.plugins.inlineEditing = {
          * </script>
          */
         cellDataChanged: function ($grid, $cell, column, record, oldValue, newValue) {
-            $grid.trigger('cellDataChanged', [$cell, column, record, oldValue, newValue]);
+            $grid.triggerHandler('cellDataChanged', [$cell, column, record, oldValue, newValue]);
         }
     },
 
     configure: function ($grid) {
         $.extend(true, $grid, gj.grid.plugins.inlineEditing.public);
-        $grid.on('cellDataBound', function (e, $wrapper, id, column, record) {
+        $grid.on('cellDataBound', function (e, $displayEl, id, column, record) {
             if (column.editor) {
-                $wrapper.parent().on('click', function () {
-                    gj.grid.plugins.inlineEditing.private.OnCellEdit($grid, $wrapper.parent(), column, record);
+                $displayEl.parent().on('click', function () {
+                    gj.grid.plugins.inlineEditing.private.OnCellEdit($grid, $displayEl.parent(), column, record);
                 });
             }
         });

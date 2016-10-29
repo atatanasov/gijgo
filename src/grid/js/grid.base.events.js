@@ -24,7 +24,7 @@ gj.grid.events = {
      * </script>
      */
     beforeEmptyRowInsert: function ($grid, $row) {
-        $grid.trigger('beforeEmptyRowInsert', [$row]);
+        $grid.triggerHandler('beforeEmptyRowInsert', [$row]);
     },
 
     /**
@@ -32,7 +32,7 @@ gj.grid.events = {
      *
      * @event dataBinding
      * @param {object} e - event data
-     * @param {array} records - the list of records received from the server
+     * @param {array} records - the list of records
      * @example sample <!-- grid.base -->
      * <table id="grid"></table>
      * <script>
@@ -46,7 +46,7 @@ gj.grid.events = {
      * </script>
      */
     dataBinding: function ($grid, records) {
-        $grid.trigger('dataBinding', [records]);
+        $grid.triggerHandler('dataBinding', [records]);
     },
 
     /**
@@ -54,8 +54,8 @@ gj.grid.events = {
      *
      * @event dataBound
      * @param {object} e - event data
-     * @param {array} records - the list of records received from the server
-     * @param {int} totalRecords - the number of the all records that can be presented in the grid
+     * @param {array} records - the list of records
+     * @param {number} totalRecords - the number of the all records that can be presented in the grid
      * @example sample <!-- grid.base -->
      * <table id="grid"></table>
      * <script>
@@ -69,7 +69,7 @@ gj.grid.events = {
      * </script>
      */
     dataBound: function ($grid, records, totalRecords) {
-        $grid.trigger('dataBound', [records, totalRecords]);
+        $grid.triggerHandler('dataBound', [records, totalRecords]);
     },
 
     /**
@@ -92,7 +92,7 @@ gj.grid.events = {
      * </script>
      */
     rowDataBound: function ($grid, $row, id, record) {
-        $grid.trigger('rowDataBound', [$row, id, record]);
+        $grid.triggerHandler('rowDataBound', [$row, id, record]);
     },
 
     /**
@@ -100,7 +100,7 @@ gj.grid.events = {
      *
      * @event cellDataBound
      * @param {object} e - event data
-     * @param {object} $wrapper - the cell wrapper presented as jquery object
+     * @param {object} $displayEl - inner div element for display of the cell value presented as jquery object
      * @param {string} id - the id of the record
      * @param {object} column - the column configuration data
      * @param {object} record - the data of the row record
@@ -111,15 +111,15 @@ gj.grid.events = {
      *         dataSource: '/DataSources/GetPlayers',
      *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' }, { field: 'Bulgarian', title: 'Is Bulgarian?' } ]
      *     });
-     *     grid.on('cellDataBound', function (e, $wrapper, id, column, record) {
+     *     grid.on('cellDataBound', function (e, $displayEl, id, column, record) {
      *         if ('Bulgarian' === column.field) {
-     *             $wrapper.text(record.PlaceOfBirth.indexOf('Bulgaria') > -1 ? 'Yes' : 'No');
+     *             $displayEl.text(record.PlaceOfBirth.indexOf('Bulgaria') > -1 ? 'Yes' : 'No');
      *         }
      *     });
      * </script>
      */
-    cellDataBound: function ($grid, $wrapper, id, column, record) {
-        $grid.trigger('cellDataBound', [$wrapper, id, column, record]);
+    cellDataBound: function ($grid, $displayEl, id, column, record) {
+        $grid.triggerHandler('cellDataBound', [$displayEl, id, column, record]);
     },
 
     /**
@@ -144,7 +144,7 @@ gj.grid.events = {
      * </script>
      */
     rowSelect: function ($grid, $row, id, record) {
-        $grid.trigger('rowSelect', [$row, id, record]);
+        $grid.triggerHandler('rowSelect', [$row, id, record]);
     },
 
     /**
@@ -169,8 +169,7 @@ gj.grid.events = {
      * </script>
      */
     rowUnselect: function ($grid, $row, id, record) {
-        $grid.trigger('rowUnselect', [$row, id, record]);
-
+        $grid.triggerHandler('rowUnselect', [$row, id, record]);
     },
 
     /**
@@ -199,7 +198,7 @@ gj.grid.events = {
      * </script>
      */
     rowRemoving: function ($grid, $row, id, record) {
-        $grid.trigger('rowRemoving', [$row, id, record]);
+        $grid.triggerHandler('rowRemoving', [$row, id, record]);
     },
 
     /**
@@ -225,7 +224,7 @@ gj.grid.events = {
      * </script>
      */
     destroying: function ($grid) {
-        $grid.trigger('destroying');
+        $grid.triggerHandler('destroying');
     },
 
     /**
@@ -248,7 +247,7 @@ gj.grid.events = {
      * </script>
      */
     columnHide: function ($grid, column) {
-        $grid.trigger('columnHide', [column]);
+        $grid.triggerHandler('columnHide', [column]);
     },
 
     /**
@@ -271,7 +270,7 @@ gj.grid.events = {
      * </script>
      */
     columnShow: function ($grid, column) {
-        $grid.trigger('columnShow', [column]);
+        $grid.triggerHandler('columnShow', [column]);
     },
 
     /**
@@ -292,6 +291,6 @@ gj.grid.events = {
      * </script>
      */
     initialized: function ($grid) {
-        $grid.trigger('initialized');
+        $grid.triggerHandler('initialized');
     }
 };

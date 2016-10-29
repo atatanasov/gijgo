@@ -1,6 +1,6 @@
 {
   "name": "gijgo",
-  "version": "0.6.2",
+  "version": "1.0.0",
   "description": "Gijgo is a set of free open source javascript controls distributed under MIT License. Bootstrap and jQuery UI support.",
   "main": [
     "./dist/combined/js/grid.js",
@@ -9,15 +9,16 @@
   "homepage": "http://gijgo.com",
   "keywords": [
     "jquery",
-    "grid",
     "gijgo",
     "javascript",
     "plugin",
+    "grid",
     "datagrid",
     "table",
     "dialog",
     "modal",
-    "draggable"
+    "draggable",
+    "droppable"
   ],
   "authors": [
     "Atanas Atanasov <nascovt@gmail.com>"

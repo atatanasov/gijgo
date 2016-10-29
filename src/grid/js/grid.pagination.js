@@ -2,10 +2,6 @@
  * @widget Grid
  * @plugin Pagination
  */
-if (typeof(gj.grid.plugins) === 'undefined') {
-    gj.grid.plugins = {};
-}
-
 gj.grid.plugins.pagination = {
     config: {
         base: {
@@ -16,10 +12,29 @@ gj.grid.plugins.pagination = {
                     activeButton: 'gj-grid-base-active'
                 }
             },
+
+            defaultParams: {
+                /** The name of the parameter that is going to send the number of the page.
+                 * The pager should be enabled in order this parameter to be in use.
+                 * @alias defaultParams.page
+                 * @type string
+                 * @default "page"
+                 */
+                page: 'page',
+
+                /** The name of the parameter that is going to send the maximum number of records per page.
+                 * The pager should be enabled in order this parameter to be in use.
+                 * @alias defaultParams.limit
+                 * @type string
+                 * @default "limit"
+                 */
+                limit: 'limit'
+            },
+
             pager: {
                 /** The maximum number of records that can be show by page.
                  * @alias pager.limit
-                 * @type int
+                 * @type number
                  * @default 10
                  * @example local.data <!-- grid.base, grid.pagination -->
                  * <table id="grid"></table>
@@ -54,7 +69,9 @@ gj.grid.plugins.pagination = {
                  * @type array
                  * @default undefined
                  * @example bootstrap <!-- bootstrap, grid.base, grid.pagination  -->
-                 * <table id="grid"></table>
+                 * <div class="container">
+                 *     <table id="grid"></table>
+                 * </div>
                  * <script>
                  *     var grid = $('#grid').grid({
                  *         dataSource: '/DataSources/GetPlayers',
@@ -80,6 +97,47 @@ gj.grid.plugins.pagination = {
                  * @alias pager.leftControls
                  * @type array
                  * @default array
+                 * @example Font.Awesome <!-- grid.base, grid.pagination  -->
+                 * <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+                 * <style>
+                 * .icon-disabled { color: #ccc; }
+                 * </style>
+                 * <table id="grid"></table>
+                 * <script>
+                 *     var grid = $('#grid').grid({
+                 *         dataSource: '/DataSources/GetPlayers',
+                 *         columns: [ { field: 'ID', width: 24 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
+                 *         style: {
+                 *             pager: {
+                 *                 stateDisabled: 'icon-disabled'
+                 *             }
+                 *         },
+                 *         pager: { 
+                 *             limit: 2, 
+                 *             sizes: [2, 5, 10, 20],
+                 *             leftControls: [
+                 *                 $('<div title="First" data-role="page-first" class="gj-grid-icon fa fa-fast-backward" aria-hidden="true"></div>'),
+                 *                 $('<div title="Previous" data-role="page-previous" class="gj-grid-icon fa fa-backward" aria-hidden="true"></div>'),
+                 *                 $('<div> Page </div>'),
+                 *                 $('<div></div>').append($('<input type="text" data-role="page-number" style="margin: 0 5px;" value="0">')),
+                 *                 $('<div>of&nbsp;</div>'),
+                 *                 $('<div data-role="page-label-last" style="margin-right: 5px;">0</div>'),
+                 *                 $('<div title="Next" data-role="page-next" class="gj-grid-icon fa fa-forward" aria-hidden="true"></div>'),
+                 *                 $('<div title="Last" data-role="page-last" class="gj-grid-icon fa fa-fast-forward" aria-hidden="true"></div>'),
+                 *                 $('<div title="Reload" data-role="page-refresh" class="gj-grid-icon fa fa-refresh" aria-hidden="true"></div>'),
+                 *                 $('<div></div>').append($('<select data-role="page-size" style="margin: 0 5px; width: 50px;"></select>'))
+                 *             ],
+                 *             rightControls: [
+                 *                 $('<div>Displaying records&nbsp;</div>'),
+                 *                 $('<div data-role="record-first">0</div>'),
+                 *                 $('<div>&nbsp;-&nbsp;</div>'),
+                 *                 $('<div data-role="record-last">0</div>'),
+                 *                 $('<div>&nbsp;of&nbsp;</div>'),
+                 *                 $('<div data-role="record-total">0</div>').css({ "margin-right": "5px" })
+                 *             ]
+                 *         }
+                 *     });
+                 * </script>
                  */
                 leftControls: [
                     $('<button title="Previous" data-role="page-previous" class="gj-cursor-pointer"><span>«</span></button>'),
@@ -113,15 +171,15 @@ gj.grid.plugins.pagination = {
             },
             pager: {
                 leftControls: [
-                    $('<div title="First" data-role="page-first" class="ui-icon ui-icon-seek-first ui-grid-icon"></div>'),
-                    $('<div title="Previous" data-role="page-previous" class="ui-icon ui-icon-seek-prev ui-grid-icon"></div>'),
+                    $('<div title="First" data-role="page-first" class="ui-icon ui-icon-seek-first gj-grid-icon"></div>'),
+                    $('<div title="Previous" data-role="page-previous" class="ui-icon ui-icon-seek-prev gj-grid-icon"></div>'),
                     $('<div>Page</div>'),
                     $('<div></div>').append($('<input type="text" data-role="page-number" class="ui-grid-pager" value="0">')),
                     $('<div>of&nbsp;</div>'),
                     $('<div data-role="page-label-last">0</div>'),
-                    $('<div title="Next" data-role="page-next" class="ui-icon ui-icon-seek-next ui-grid-icon"></div>'),
-                    $('<div title="Last" data-role="page-last" class="ui-icon ui-icon-seek-end ui-grid-icon"></div>'),
-                    $('<div title="Reload" data-role="page-refresh" class="ui-icon ui-icon-refresh ui-grid-icon"></div>'),
+                    $('<div title="Next" data-role="page-next" class="ui-icon ui-icon-seek-next gj-grid-icon"></div>'),
+                    $('<div title="Last" data-role="page-last" class="ui-icon ui-icon-seek-end gj-grid-icon"></div>'),
+                    $('<div title="Reload" data-role="page-refresh" class="ui-icon ui-icon-refresh gj-grid-icon"></div>'),
                     $('<div></div>').append($('<select data-role="page-size" class="ui-grid-page-sizer"></select>'))
                 ],
 
@@ -182,8 +240,12 @@ gj.grid.plugins.pagination = {
             data = $grid.data();
 
             if (data.pager) {
-                data.params[data.defaultParams.page] = 1;
-                data.params[data.defaultParams.limit] = data.pager.limit;
+                if (!data.params[data.defaultParams.page]) {
+                    data.params[data.defaultParams.page] = 1;
+                }
+                if (!data.params[data.defaultParams.limit]) {
+                    data.params[data.defaultParams.limit] = data.pager.limit;
+                }
 
                 $row = $('<tr/>');
                 $cell = $('<th/>').addClass(data.style.pager.cell);
@@ -372,18 +434,32 @@ gj.grid.plugins.pagination = {
                 $cell.attr('colspan', gj.grid.methods.countVisibleColumns($grid));
             }
         },
-
-        getRecordsForRendering: function ($grid) {
-            var data = $grid.data(),
+        
+        isLastRecordVisible: function ($grid) {
+            var result = true,
+                data = $grid.data(),
                 limit = parseInt(data.params[data.defaultParams.limit], 10),
-                page = data.params[data.defaultParams.page],
-                start = (page - 1) * limit;
-            
-            return data.records.slice(start, start + limit);
-        }
+                page = parseInt(data.params[data.defaultParams.page], 10),
+                count = $grid.count();
+            if (limit && page) {
+                result = ((page - 1) * limit) + count === data.totalRecords;
+            }
+            return result;
+        },
     },
 
     public: {
+        getAll: function (includeAllRecords) {
+            var limit, page, start, data = this.data();
+            if (!includeAllRecords && $.isArray(data.dataSource) && data.params[data.defaultParams.limit] && data.params[data.defaultParams.page]) {
+                limit = parseInt(data.params[data.defaultParams.limit], 10);
+                page = parseInt(data.params[data.defaultParams.page], 10);
+                start = (page - 1) * limit;
+                return data.records.slice(start, start + limit);
+            } else {
+                return data.records;
+            }
+        }
     },
 
     events: {
@@ -391,8 +467,8 @@ gj.grid.plugins.pagination = {
          * Triggered when the page size is changed.
          *
          * @event pageSizeChange
-         * @property {object} e - event data
-         * @property {int} newSize - The new page size
+         * @param {object} e - event data
+         * @param {number} newSize - The new page size
          * @example sample <!-- bootstrap, grid.base, grid.pagination -->
          * <table id="grid"></table>
          * <script>
@@ -408,15 +484,15 @@ gj.grid.plugins.pagination = {
          * </script>
          */
         pageSizeChange: function ($grid, newSize) {
-            $grid.trigger('pageSizeChange', [newSize]);
+            $grid.triggerHandler('pageSizeChange', [newSize]);
         },
 
         /**
          * Triggered before the change of the page.
          *
          * @event pageChanging
-         * @property {object} e - event data
-         * @property {int} newPage - The new page
+         * @param {object} e - event data
+         * @param {number} newPage - The new page
          * @example sample <!-- jqueryui, grid.base, grid.pagination -->
          * <table id="grid"></table>
          * <script>
@@ -432,16 +508,15 @@ gj.grid.plugins.pagination = {
          * </script>
          */
         pageChanging: function ($grid, newSize) {
-            $grid.trigger('pageChanging', [newSize]);
+            $grid.triggerHandler('pageChanging', [newSize]);
         }
     },
 
-    configure: function ($grid, clientConfig) {
+    configure: function ($grid, fullConfig, clientConfig) {
+        $.extend(true, $grid, gj.grid.plugins.pagination.public);
         var data = $grid.data();
         if (clientConfig.pager) {
-            if ($.isArray(data.dataSource)) {
-                gj.grid.methods.getRecordsForRendering = gj.grid.plugins.pagination.private.getRecordsForRendering;
-            }
+            gj.grid.methods.isLastRecordVisible = gj.grid.plugins.pagination.private.isLastRecordVisible;
 
             $grid.on('initialized', function () {
                 gj.grid.plugins.pagination.private.init($grid);

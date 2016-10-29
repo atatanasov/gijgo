@@ -1,24 +1,22 @@
 ﻿/** 
-  * @widget Grid 
-  * @plugin Toolbar
-  */
-if (typeof (gj.grid.plugins) === 'undefined') {
-    gj.grid.plugins = {};
-}
-
+ * @widget Grid 
+ * @plugin Toolbar
+ */
 gj.grid.plugins.toolbar = {
     config: {
         base: {
             /** Template for the content in the toolbar. Appears in a separate row on top of the grid.
               * @type string
               * @default undefined
-              * @example sample <!-- grid.base, grid.toolbar -->
+              * @example sample <!-- bootstrap, grid.base, grid.toolbar, grid.pagination -->
               * <table id="grid"></table>
               * <script>
               *     var grid = $('#grid').grid({
               *         dataSource: '/DataSources/GetPlayers',
-              *         toolbarTemplate: '<span data-role="title">Grid Title</span> <span onclick="grid.reload()" style="float:right; cursor: pointer;">click here to refresh &nbsp;</span>',
-              *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
+              *         uiLibrary: 'bootstrap',
+              *         toolbarTemplate: '<div class="row"><div class="col-md-8" style="line-height:34px"><span data-role="title">Grid Title</span></div><div class="col-md-4 text-right"><button onclick="grid.reload()" class="btn btn-default">click here to refresh</button></div></div>',
+              *         columns: [ { field: 'ID', width: 34 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
+              *         pager: { limit: 5 }
               *     });
               * </script>
               */
@@ -33,7 +31,7 @@ gj.grid.plugins.toolbar = {
               *     $('#grid').grid({
               *         dataSource: '/DataSources/GetPlayers',
               *         title: 'Players',
-              *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
+              *         columns: [ { field: 'ID', width: 34 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
               *     });
               * </script>
               */

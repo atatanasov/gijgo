@@ -1,17 +1,13 @@
 ﻿/** 
-  * @widget Grid 
-  * @plugin Responsive Design
-  */
-if (typeof (gj.grid.plugins) === 'undefined') {
-    gj.grid.plugins = {};
-}
-
+ * @widget Grid 
+ * @plugin Responsive Design
+ */
 gj.grid.plugins.responsiveDesign = {
     config: {
         base: {
             /** The interval in milliseconds for checking if the grid is resizing.
              * This setting is in use only if the resizeMonitoring setting is set to true.
-             * @type int
+             * @type number
              * @default 500
              * @example sample <!-- grid.base, grid.responsiveDesign -->
              * <table id="grid"></table>
@@ -78,7 +74,7 @@ gj.grid.plugins.responsiveDesign = {
                  * The columns are hiding based on the priorities.
                  * This setting is working only when the responsive setting is set to true.
                  * @alias column.priority
-                 * @type int
+                 * @type number
                  * @default undefined
                  * @example sample <!-- grid.base, grid.responsiveDesign -->
                  * <table id="grid"></table>
@@ -100,7 +96,7 @@ gj.grid.plugins.responsiveDesign = {
                  * The column is getting invisible when there is not enough space in the grid for this minimum width.
                  * This setting is working only when the responsive setting is set to true and the column priority setting is set.
                  * @alias column.minWidth
-                 * @type int
+                 * @type number
                  * @default 150
                  * @example sample <!-- grid.base, grid.responsiveDesign -->
                  * <table id="grid"></table>
@@ -257,7 +253,9 @@ gj.grid.plugins.responsiveDesign = {
          * Event fires when the grid width is changed. The "responsive" configuration setting should be set to true in order this event to fire.
          *
          * @event resize
-         * @property {object} e - event data
+         * @param {object} e - event data
+         * @param {number} newWidth - The new width
+         * @param {number} oldWidth - The old width
          * @example sample <!-- grid.base, grid.responsiveDesign -->
          * <table id="grid"></table>
          * <script>
@@ -272,14 +270,13 @@ gj.grid.plugins.responsiveDesign = {
          * </script>
          */
         resize: function ($grid, newWidth, oldWidth) {
-            $grid.trigger('resize', [newWidth, oldWidth]);
+            $grid.triggerHandler('resize', [newWidth, oldWidth]);
         }
     },
 
-    'configure': function ($grid) {
+    'configure': function ($grid, fullConfig, clientConfig) {
         $.extend(true, $grid, gj.grid.plugins.responsiveDesign.public);
-        var data = $grid.data();
-        if (data.responsive) {
+        if (fullConfig.responsive) {
             $grid.on('initialized', function () {
                 $grid.makeResponsive();
                 $grid.oldWidth = $grid.width();
@@ -289,7 +286,7 @@ gj.grid.plugins.responsiveDesign = {
                         gj.grid.plugins.responsiveDesign.events.resize($grid, newWidth, $grid.oldWidth);
                     }
                     $grid.oldWidth = newWidth;
-                }, data.resizeCheckInterval);
+                }, fullConfig.resizeCheckInterval);
             });
             $grid.on('destroy', function () {
                 if ($grid.resizeCheckIntervalId) {
@@ -300,7 +297,7 @@ gj.grid.plugins.responsiveDesign = {
                 $grid.makeResponsive();
             });
         }
-        if (data.showHiddenColumnsAsDetails && gj.grid.plugins.expandCollapseRows) {
+        if (fullConfig.showHiddenColumnsAsDetails && gj.grid.plugins.expandCollapseRows) {
             $grid.on('dataBound', function () {
                 gj.grid.plugins.responsiveDesign.private.updateDetails($grid);
             });

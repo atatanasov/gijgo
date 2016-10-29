@@ -1,18 +1,8 @@
 ﻿/* global window alert jQuery gj */
-/*
- * Gijgo JavaScript Library v0.6.2
- * http://gijgo.com/
- *
- * Copyright 2014, 2016 gijgo.com
- * Released under the MIT license
- */
 /**
   * @widget Grid
   * @plugin Base
   */
-if (typeof(gj) === 'undefined') {
-    gj = {};
-}
 if (typeof(gj.grid) === 'undefined') {
     gj.grid = {
         plugins: {}
@@ -21,7 +11,7 @@ if (typeof(gj.grid) === 'undefined') {
 
 gj.grid.config = {
     base: {
-        /** The data source of the widget which is used table rows.
+        /** The data source for the grid.
          * @additionalinfo If set to string, then the grid is going to use this string as a url for ajax requests to the server.<br />
          * If set to object, then the grid is going to use this object as settings for the <a href="http://api.jquery.com/jquery.ajax/" target="_new">jquery ajax</a> function.<br />
          * If set to array, then the grid is going to use the array as data for rows.
@@ -134,7 +124,7 @@ gj.grid.config = {
             /** The width of the column. Numeric values are treated as pixels.
              * If the width is undefined the width of the column is not set and depends on the with of the table(grid).
              * @alias column.width
-             * @type int|string
+             * @type number|string
              * @default undefined
              * @example sample <!-- grid.base -->
              * <table id="grid"></table>
@@ -154,9 +144,9 @@ gj.grid.config = {
             /** Indicates if the column is sortable.
              * If set to true the user can click the column header and sort the grid by the column source field.
              * @alias column.sortable
-             * @type boolean
+             * @type boolean|object
              * @default false
-             * @example sample <!-- grid.base -->
+             * @example Remote.DataSource <!-- grid.base -->
              * <table id="grid"></table>
              * <script>
              *     $('#grid').grid({
@@ -166,6 +156,47 @@ gj.grid.config = {
              *             { field: 'Name', sortable: true },
              *             { field: 'PlaceOfBirth', sortable: false },
              *             { field: 'DateOfBirth', type: 'date', title: 'Birth Date' }
+             *         ]
+             *     });
+             * </script>
+             * @example Local.DataSource <!-- grid.base -->
+             * <table id="grid"></table>
+             * <script>
+             *     var data = [
+             *         { 'ID': 1, 'Name': 'Hristo Stoichkov', 'PlaceOfBirth': 'Plovdiv, Bulgaria' },
+             *         { 'ID': 2, 'Name': 'Ronaldo Luis Nazario de Lima', 'PlaceOfBirth': 'Rio de Janeiro, Brazil' },
+             *         { 'ID': 3, 'Name': 'David Platt', 'PlaceOfBirth': 'Chadderton, Lancashire, England' }
+             *     ];
+             *     $('#grid').grid({
+             *         dataSource: data,
+             *         columns: [
+             *             { field: 'ID' },
+             *             { field: 'Name', sortable: true },
+             *             { field: 'PlaceOfBirth', sortable: true }
+             *         ]
+             *     });
+             * </script>
+             * @example Local.CustomSorting <!-- grid.base -->
+             * <table id="grid"></table>
+             * <script>
+             *     var data = [
+             *         { 'ID': 1, 'Value1': 'Foo', 'Value2': 'Foo' },
+             *         { 'ID': 2, 'Value1': 'bar', 'Value2': 'bar' },
+             *         { 'ID': 3, 'Value1': 'moo', 'Value2': 'moo' }
+             *     ];
+             *     var caseInsensitiveSort = function (direction, column) { 
+             *         return function (recordA, recordB) {
+             *             var a = recordA[column.field].toLowerCase(),
+             *                 b = recordB[column.field].toLowerCase();
+             *             return (direction === 'asc') ? a.localeCompare(b) : b.localeCompare(a);
+             *         };
+             *     };
+             *     $('#grid').grid({
+             *         dataSource: data,
+             *         columns: [
+             *             { field: 'ID' },
+             *             { field: 'Value1', sortable: true },
+             *             { field: 'Value2', sortable: { sorter: caseInsensitiveSort } }
              *         ]
              *     });
              * </script>
@@ -388,11 +419,9 @@ gj.grid.config = {
              * </table>
              * <script>
              *     function onMouseEnter (e) {
-             *         e.stopPropagation();
              *         $(e.currentTarget).css('background-color', 'red');
              *     }
              *     function onMouseLeave (e) {
-             *         e.stopPropagation();
              *         $(e.currentTarget).css('background-color', '');
              *     }
              *     function onClick(e) {
@@ -427,7 +456,7 @@ gj.grid.config = {
 
             /** Number of decimal digits after the decimal point.
              * @alias column.decimalDigits
-             * @type int
+             * @type number
              * @default undefined
              */
             decimalDigits: undefined,
@@ -474,17 +503,21 @@ gj.grid.config = {
 
             /** A renderer is an 'interceptor' function which can be used to transform data (value, appearance, etc.) before it is rendered.
              * @additionalinfo If the renderer function return a value, then this value is going to be automatically set as value of the cell.<br/>
-             * If the renderer function doesn't return a value, then you have to set the content of the cell automatically.
+             * If the renderer function doesn't return a value, then you have to set the content of the cell manually.
              * @alias column.renderer
              * @type function
              * @default undefined
+             * @param {string} value - the record field value
+             * @param {object} record - the data of the row record
+             * @param {object} $cell - the current table cell presented as jquery object
+             * @param {object} $displayEl - inner div element for display of the cell value presented as jquery object
              * @example sample <!-- grid.base -->
              * <table id="grid" data-source="/DataSources/GetPlayers"></table>
              * <script>
-             *     var nameRenderer = function (value, record, $wrapper, $cell) { 
+             *     var nameRenderer = function (value, record, $cell, $displayEl) { 
              *         $cell.css('font-style', 'italic'); 
-             *         $wrapper.css('background-color', '#EEE');
-             *         $wrapper.text(value);
+             *         $displayEl.css('background-color', '#EEE');
+             *         $displayEl.text(value);
              *     };
              *     $('#grid').grid({
              *         uiLibrary: 'jqueryui',
@@ -533,23 +566,7 @@ gj.grid.config = {
              * @type string
              * @default "direction"
              */
-            direction: 'direction',
-
-            /** The name of the parameter that is going to send the number of the page.
-             * The pager should be enabled in order this parameter to be in use.
-             * @alias defaultParams.page
-             * @type string
-             * @default "page"
-             */
-            page: 'page',
-
-            /** The name of the parameter that is going to send the maximum number of records per page.
-             * The pager should be enabled in order this parameter to be in use.
-             * @alias defaultParams.limit
-             * @type string
-             * @default "limit"
-             */
-            limit: 'limit'
+            direction: 'direction'
         },
 
         /** The name of the UI library that is going to be in use. Currently we support only jQuery UI and bootstrap.
@@ -619,7 +636,7 @@ gj.grid.config = {
          * If the type is set to multiple the user will be able to select more then one row from the grid.
          * @type (single|multiple)
          * @default "single"
-         * @example sample <!-- grid.base -->
+         * @example Multiple.Selection <!-- grid.base -->
          * <table id="grid"></table>
          * <script>
          *     $('#grid').grid({
@@ -691,7 +708,7 @@ gj.grid.config = {
         notFoundText: 'No records found.',
 
         /** Width of the grid.
-         * @type int
+         * @type number
          * @default undefined
          * @example sample <!-- grid.base -->
          * <table id="grid"></table>
@@ -706,7 +723,7 @@ gj.grid.config = {
         width: undefined,
 
         /** Minimum width of the grid.
-         * @type int
+         * @type number
          * @default undefined
          */
         minWidth: undefined,
@@ -732,7 +749,7 @@ gj.grid.config = {
          * If the primaryKey is undefined, we autogenerate id for each record in the table by starting from 1.
          * @type string
          * @default undefined
-         * @example sample <!-- grid.base -->
+         * @example defined <!-- grid.base -->
          * <table id="grid"></table>
          * <script>
          *     var data = [
@@ -743,6 +760,24 @@ gj.grid.config = {
          *     $('#grid').grid({
          *         dataSource: data,
          *         primaryKey: 'ID',
+         *         columns: [ 
+         *             { field: 'ID', width: 32 },
+         *             { field: 'Name' },
+         *             { field: 'PlaceOfBirth' } ,
+         *             { tmpl: '<a href="#">click me</a>', events: { click: function(e) { alert('Your id is ' + e.data.id); } }, width: 60, stopPropagation: true } 
+         *         ]
+         *     });
+         * </script>
+         * @example undefined <!-- grid.base -->
+         * <table id="grid"></table>
+         * <script>
+         *     var data = [
+         *         { 'ID': 101, 'Name': 'Hristo Stoichkov', 'PlaceOfBirth': 'Plovdiv, Bulgaria' },
+         *         { 'ID': 102, 'Name': 'Ronaldo Luis Nazario de Lima', 'PlaceOfBirth': 'Rio de Janeiro, Brazil' },
+         *         { 'ID': 103, 'Name': 'David Platt', 'PlaceOfBirth': 'Chadderton, Lancashire, England' }
+         *     ];
+         *     $('#grid').grid({
+         *         dataSource: data,
          *         columns: [ 
          *             { field: 'ID', width: 32 },
          *             { field: 'Name' },

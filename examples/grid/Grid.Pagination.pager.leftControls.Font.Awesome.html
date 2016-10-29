@@ -1,0 +1,51 @@
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Example</title>
+  <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+  <link href="../../dist/modular/grid/css/grid.css" rel="stylesheet" type="text/css">
+  <script src="../../dist/modular/grid/js/grid.js"></script>
+</head>
+<body>
+ <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+ <style>
+ .icon-disabled { color: #ccc; }
+ </style>
+ <table id="grid"></table>
+ <script>
+     var grid = $('#grid').grid({
+         dataSource: '/DataSources/GetPlayers',
+         columns: [ { field: 'ID', width: 24 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
+         style: {
+             pager: {
+                 stateDisabled: 'icon-disabled'
+             }
+         },
+         pager: {
+             limit: 2,
+             sizes: [2, 5, 10, 20],
+             leftControls: [
+                 $('<div title="First" data-role="page-first" class="gj-grid-icon fa fa-fast-backward" aria-hidden="true"></div>'),
+                 $('<div title="Previous" data-role="page-previous" class="gj-grid-icon fa fa-backward" aria-hidden="true"></div>'),
+                 $('<div> Page </div>'),
+                 $('<div></div>').append($('<input type="text" data-role="page-number" style="margin: 0 5px;" value="0">')),
+                 $('<div>of&nbsp;</div>'),
+                 $('<div data-role="page-label-last" style="margin-right: 5px;">0</div>'),
+                 $('<div title="Next" data-role="page-next" class="gj-grid-icon fa fa-forward" aria-hidden="true"></div>'),
+                 $('<div title="Last" data-role="page-last" class="gj-grid-icon fa fa-fast-forward" aria-hidden="true"></div>'),
+                 $('<div title="Reload" data-role="page-refresh" class="gj-grid-icon fa fa-refresh" aria-hidden="true"></div>'),
+                 $('<div></div>').append($('<select data-role="page-size" style="margin: 0 5px; width: 50px;"></select>'))
+             ],
+             rightControls: [
+                 $('<div>Displaying records&nbsp;</div>'),
+                 $('<div data-role="record-first">0</div>'),
+                 $('<div>&nbsp;-&nbsp;</div>'),
+                 $('<div data-role="record-last">0</div>'),
+                 $('<div>&nbsp;of&nbsp;</div>'),
+                 $('<div data-role="record-total">0</div>').css({ "margin-right": "5px" })
+             ]
+         }
+     });
+ </script>
+</body>
+</html>

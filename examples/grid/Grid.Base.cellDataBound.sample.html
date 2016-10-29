@@ -3,8 +3,8 @@
   <meta charset="utf-8" />
   <title>Example</title>
   <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
-  <link href="../../dist/modular/grid/css/grid.base.css" rel="stylesheet" type="text/css">
-  <script src="../../dist/modular/grid/js/grid.base.js"></script>
+  <link href="../../dist/modular/grid/css/grid.css" rel="stylesheet" type="text/css">
+  <script src="../../dist/modular/grid/js/grid.js"></script>
 </head>
 <body>
  <table id="grid"></table>
@@ -13,9 +13,9 @@
          dataSource: '/DataSources/GetPlayers',
          columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' }, { field: 'Bulgarian', title: 'Is Bulgarian?' } ]
      });
-     grid.on('cellDataBound', function (e, $wrapper, id, column, record) {
+     grid.on('cellDataBound', function (e, $displayEl, id, column, record) {
          if ('Bulgarian' === column.field) {
-             $wrapper.text(record.PlaceOfBirth.indexOf('Bulgaria') > -1 ? 'Yes' : 'No');
+             $displayEl.text(record.PlaceOfBirth.indexOf('Bulgaria') > -1 ? 'Yes' : 'No');
          }
      });
  </script>

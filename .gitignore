@@ -21,6 +21,7 @@ build/
 bld/
 [Bb]in/
 [Oo]bj/
+Gijgo.GitHub.csproj
 Gijgo.GitHub.csproj.user
 Gijgo.GitHub.sln
 packages.config
@@ -213,5 +214,6 @@ FakesAssemblies/
 GeneratedArtifacts/
 _Pvt_Extensions/
 ModelManifest.xml
+*.sln
 /dist/libraries
 /bower_components/jquery

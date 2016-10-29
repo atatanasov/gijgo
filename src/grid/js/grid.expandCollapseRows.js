@@ -1,11 +1,7 @@
 ﻿/** 
-  * @widget Grid 
-  * @plugin Expand Collapse Rows
-  */
-if (typeof (gj.grid.plugins) === 'undefined') {
-    gj.grid.plugins = {};
-}
-
+ * @widget Grid 
+ * @plugin Expand Collapse Rows
+ */
 gj.grid.plugins.expandCollapseRows = {
     config: {
         base: {
@@ -68,7 +64,8 @@ gj.grid.plugins.expandCollapseRows = {
             } else {
                 $cell.find('div[data-role="display"]').text('-');
             }
-            $cell.off('click').on('click', function () {
+            $cell.off('click').on('click', function (e) {
+                e.stopPropagation();
                 gj.grid.plugins.expandCollapseRows.private.detailCollapse($grid, $(this));
             });
             $grid.updateDetails($contentRow);
@@ -85,7 +82,8 @@ gj.grid.plugins.expandCollapseRows = {
             } else {
                 $cell.find('div[data-role="display"]').text('+');
             }
-            $cell.off('click').on('click', function () {
+            $cell.off('click').on('click', function (e) {
+                e.stopPropagation();
                 gj.grid.plugins.expandCollapseRows.private.detailExpand($grid, $(this));
             });
             gj.grid.plugins.expandCollapseRows.events.detailCollapse($grid, $detailsRow.find('td>div'), $grid.get($contentRow.data('position')));
@@ -153,7 +151,7 @@ gj.grid.plugins.expandCollapseRows = {
          * </script>
          */
         detailExpand: function ($grid, $detailWrapper, record) {
-            $grid.trigger('detailExpand', [$detailWrapper, record]);
+            $grid.triggerHandler('detailExpand', [$detailWrapper, record]);
         },
 
         /**
@@ -181,12 +179,12 @@ gj.grid.plugins.expandCollapseRows = {
          * </script>
          */
         detailCollapse: function ($grid, $detailWrapper, record) {
-            $grid.trigger('detailCollapse', [$detailWrapper, record]);
+            $grid.triggerHandler('detailCollapse', [$detailWrapper, record]);
         }
     },
 
     'configure': function ($grid) {
-        var data = $grid.data(), column;
+        var column, data = $grid.data();
 
         $.extend(true, $grid, gj.grid.plugins.expandCollapseRows.public);
 
@@ -223,6 +221,9 @@ gj.grid.plugins.expandCollapseRows = {
             });
             $grid.on('rowRemoving', function (e, $row, id, record) {
                 gj.grid.plugins.expandCollapseRows.private.detailCollapse($grid, $row.children('td').first());
+            });
+            $grid.on('dataBinding', function () {
+                $grid.collapseAll();
             });
             $grid.on('pageChanging', function () {
                 $grid.collapseAll();
