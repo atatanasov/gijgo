@@ -313,11 +313,20 @@ gj.dialog.config = {
         /** The width of the dialog.
          * @type number
          * @default 300
-         * @example sample <!-- draggable.base, dialog.base -->
+         * @example Fixed.Width <!-- draggable.base, dialog.base -->
          * <div id="dialog">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
          * <script>
          *     $("#dialog").dialog({
          *         width: 400
+         *     });
+         * </script>
+         * @example Auto.Width <!-- draggable.base, dialog.base -->
+         * <div id="dialog" title="Wikipedia">
+         *   <img src="https://upload.wikimedia.org/wikipedia/en/thumb/8/80/Wikipedia-logo-v2.svg/1122px-Wikipedia-logo-v2.svg.png" width="420"/>
+         * </div>
+         * <script>
+         *     $("#dialog").dialog({
+         *         width: 'auto'
          *     });
          * </script>
          */
