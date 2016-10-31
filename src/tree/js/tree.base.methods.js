@@ -2,6 +2,7 @@
 gj.tree.methods = {
 
     init: function (jsConfig) {
+        this.attr('data-type', 'tree');
         gj.widget.prototype.init.call(this, jsConfig, 'tree');
 
         gj.tree.methods.initialize.call(this);
@@ -370,7 +371,7 @@ gj.tree.methods = {
             $tree.xhr && $tree.xhr.abort();
             $tree.off();
             $tree.removeData();
-            $tree.attr('data-tree', false);
+            $tree.removeAttr('data-type');
             $tree.removeClass().empty();
         }
         return $tree;

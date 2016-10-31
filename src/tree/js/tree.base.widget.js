@@ -437,7 +437,7 @@ gj.tree.widget = function ($element, arguments) {
     };
 
     $.extend($element, self);
-    if ('true' !== $element.attr('data-tree')) {
+    if ('tree' !== $element.attr('data-type')) {
         methods.init.apply($element, arguments);
     }
 

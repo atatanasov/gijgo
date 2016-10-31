@@ -1,6 +1,7 @@
 ﻿gj.dialog.methods = {
 
     init: function (jsConfig) {
+        this.attr('data-type', 'dialog');
         gj.widget.prototype.init.call(this, jsConfig, 'dialog');
 
         gj.dialog.methods.initialize(this);

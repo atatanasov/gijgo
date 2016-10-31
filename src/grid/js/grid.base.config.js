@@ -38,6 +38,19 @@ gj.grid.config = {
          * <script>
          *     $('#grid').grid();
          * </script>
+         * @example Local.DataSource <!-- grid.base -->
+         * <table id="grid"></table>
+         * <script>
+         *     var data = [
+         *         { 'ID': 1, 'Name': 'Hristo Stoichkov', 'PlaceOfBirth': 'Plovdiv, Bulgaria' },
+         *         { 'ID': 2, 'Name': 'Ronaldo Luis Nazario de Lima', 'PlaceOfBirth': 'Rio de Janeiro, Brazil' },
+         *         { 'ID': 3, 'Name': 'David Platt', 'PlaceOfBirth': 'Chadderton, Lancashire, England' }
+         *     ];
+         *     $('#grid').grid({
+         *         dataSource: data,
+         *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
+         *     });
+         * </script>
          * @example Remote.Custom.Render <!-- grid.base -->
          * <table id="grid"></table>
          * <script>
@@ -50,17 +63,15 @@ gj.grid.config = {
          *         columns: [ { field: 'Name' }, { field: 'PlaceOfBirth' } ]
          *     });
          * </script>
-         * @example Local.DataSource <!-- grid.base -->
+         * @example Remote.Custom.Error <!-- grid.base -->
          * <table id="grid"></table>
          * <script>
-         *     var data = [
-         *         { 'ID': 1, 'Name': 'Hristo Stoichkov', 'PlaceOfBirth': 'Plovdiv, Bulgaria' },
-         *         { 'ID': 2, 'Name': 'Ronaldo Luis Nazario de Lima', 'PlaceOfBirth': 'Rio de Janeiro, Brazil' },
-         *         { 'ID': 3, 'Name': 'David Platt', 'PlaceOfBirth': 'Chadderton, Lancashire, England' }
-         *     ];
-         *     $('#grid').grid({
-         *         dataSource: data,
-         *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
+         *     var grid, onErrorFunc = function (response) {
+         *         alert('Server error.');
+         *     };
+         *     grid = $('#grid').grid({
+         *         dataSource: { url: '/DataSources/InvalidUrl', error: onErrorFunc },
+         *         columns: [ { field: 'Name' }, { field: 'PlaceOfBirth' } ]
          *     });
          * </script>
          */

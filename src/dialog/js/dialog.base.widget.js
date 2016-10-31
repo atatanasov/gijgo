@@ -59,7 +59,7 @@ gj.dialog.widget = function ($element, arguments) {
     }
 
     $.extend($element, self);
-    if ('true' !== $element.attr('data-dialog')) {
+    if ('dialog' !== $element.attr('data-type')) {
         methods.init.apply($element, arguments);
     }
 

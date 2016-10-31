@@ -2,6 +2,7 @@
 gj.grid.methods = {
 
     init: function (jsConfig) {
+        this.attr('data-type', 'grid');
         gj.widget.prototype.init.call(this, jsConfig, 'grid');
 
         gj.grid.methods.initialize(this);
@@ -90,7 +91,6 @@ gj.grid.methods = {
 
         gj.grid.methods.renderHeader($grid);
         gj.grid.methods.appendEmptyRow($grid, '&nbsp;');
-        $grid.attr('data-initialized', true);
         gj.grid.events.initialized($grid);
     },
 
@@ -745,9 +745,9 @@ gj.grid.methods = {
             if (keepTableTag === false) {
                 $grid.remove();
             } else {
-                $grid.attr('data-initialized', false);
                 $grid.removeClass().empty();
             }
+            $grid.removeAttr('data-type');
         }
         return $grid;
     },

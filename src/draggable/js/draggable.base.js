@@ -74,6 +74,7 @@ gj.draggable.methods = {
         var $handleEl, $dragEl = this;
 
         gj.widget.prototype.init.call(this, jsConfig, 'draggable');
+        $dragEl.attr('data-draggable', 'true');
 
         $handleEl = gj.draggable.methods.getHandleElement($dragEl);
 

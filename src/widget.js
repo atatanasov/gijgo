@@ -24,8 +24,6 @@ gj.widget.prototype.init = function (jsConfig, type) {
 
     this.attr('data-guid', fullConfig.guid);
 
-    this.attr('data-' + type, 'true');
-
     this.data(fullConfig);
 
     // Initialize events configured as options
@@ -92,14 +90,17 @@ gj.widget.prototype.getHTMLConfig = function () {
     return result;
 };
 
-gj.widget.prototype.render = function (response) {
-
-};
-
 gj.widget.prototype.createDoneHandler = function () {
     var $widget = this;
     return function (response) {
-        $widget.render(response);
+        gj[$widget.data('type')].methods.render($widget, response);
+    };
+};
+
+gj.widget.prototype.createErrorHandler = function () {
+    var $widget = this;
+    return function (response) {
+        alert(response);
     };
 };
 
@@ -107,13 +108,13 @@ gj.widget.prototype.reload = function (params) {
     var ajaxOptions, data = this.data();
     $.extend(data.params, params);
     if ($.isArray(data.dataSource)) {
-        this.render(data.dataSource);
+        gj[this.data('type')].methods.render(this, data.dataSource);
     } else if (typeof(data.dataSource) === 'string') {
-        ajaxOptions = { url: data.dataSource, data: data.params, success: this.createDoneHandler() };
+        ajaxOptions = { url: data.dataSource, data: data.params };
         if (this.xhr) {
             this.xhr.abort();
         }
-        this.xhr = $.ajax(ajaxOptions);
+        this.xhr = $.ajax(ajaxOptions).done(this.createDoneHandler()).fail(this.createErrorHandler());
     } else if (typeof (data.dataSource) === 'object') {
         if (!data.dataSource.data) {
             data.dataSource.data = {};
@@ -125,6 +126,9 @@ gj.widget.prototype.reload = function (params) {
         }
         if (!ajaxOptions.success) {
             ajaxOptions.success = this.createDoneHandler();
+        }
+        if (!ajaxOptions.error) {
+            ajaxOptions.error = this.createErrorHandler();
         }
         if (this.xhr) {
             this.xhr.abort();

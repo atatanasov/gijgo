@@ -31,8 +31,6 @@ gj.widget.prototype.init = function (jsConfig, type) {
 
     this.attr('data-guid', fullConfig.guid);
 
-    this.attr('data-' + type, 'true');
-
     this.data(fullConfig);
 
     // Initialize events configured as options
@@ -99,14 +97,17 @@ gj.widget.prototype.getHTMLConfig = function () {
     return result;
 };
 
-gj.widget.prototype.render = function (response) {
-
-};
-
 gj.widget.prototype.createDoneHandler = function () {
     var $widget = this;
     return function (response) {
-        $widget.render(response);
+        gj[$widget.data('type')].methods.render($widget, response);
+    };
+};
+
+gj.widget.prototype.createErrorHandler = function () {
+    var $widget = this;
+    return function (response) {
+        alert(response);
     };
 };
 
@@ -114,13 +115,13 @@ gj.widget.prototype.reload = function (params) {
     var ajaxOptions, data = this.data();
     $.extend(data.params, params);
     if ($.isArray(data.dataSource)) {
-        this.render(data.dataSource);
+        gj[this.data('type')].methods.render(this, data.dataSource);
     } else if (typeof(data.dataSource) === 'string') {
-        ajaxOptions = { url: data.dataSource, data: data.params, success: this.createDoneHandler() };
+        ajaxOptions = { url: data.dataSource, data: data.params };
         if (this.xhr) {
             this.xhr.abort();
         }
-        this.xhr = $.ajax(ajaxOptions);
+        this.xhr = $.ajax(ajaxOptions).done(this.createDoneHandler()).fail(this.createErrorHandler());
     } else if (typeof (data.dataSource) === 'object') {
         if (!data.dataSource.data) {
             data.dataSource.data = {};
@@ -132,6 +133,9 @@ gj.widget.prototype.reload = function (params) {
         }
         if (!ajaxOptions.success) {
             ajaxOptions.success = this.createDoneHandler();
+        }
+        if (!ajaxOptions.error) {
+            ajaxOptions.error = this.createErrorHandler();
         }
         if (this.xhr) {
             this.xhr.abort();
@@ -224,6 +228,19 @@ gj.grid.config = {
          * <script>
          *     $('#grid').grid();
          * </script>
+         * @example Local.DataSource <!-- grid.base -->
+         * <table id="grid"></table>
+         * <script>
+         *     var data = [
+         *         { 'ID': 1, 'Name': 'Hristo Stoichkov', 'PlaceOfBirth': 'Plovdiv, Bulgaria' },
+         *         { 'ID': 2, 'Name': 'Ronaldo Luis Nazario de Lima', 'PlaceOfBirth': 'Rio de Janeiro, Brazil' },
+         *         { 'ID': 3, 'Name': 'David Platt', 'PlaceOfBirth': 'Chadderton, Lancashire, England' }
+         *     ];
+         *     $('#grid').grid({
+         *         dataSource: data,
+         *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
+         *     });
+         * </script>
          * @example Remote.Custom.Render <!-- grid.base -->
          * <table id="grid"></table>
          * <script>
@@ -236,17 +253,15 @@ gj.grid.config = {
          *         columns: [ { field: 'Name' }, { field: 'PlaceOfBirth' } ]
          *     });
          * </script>
-         * @example Local.DataSource <!-- grid.base -->
+         * @example Remote.Custom.Error <!-- grid.base -->
          * <table id="grid"></table>
          * <script>
-         *     var data = [
-         *         { 'ID': 1, 'Name': 'Hristo Stoichkov', 'PlaceOfBirth': 'Plovdiv, Bulgaria' },
-         *         { 'ID': 2, 'Name': 'Ronaldo Luis Nazario de Lima', 'PlaceOfBirth': 'Rio de Janeiro, Brazil' },
-         *         { 'ID': 3, 'Name': 'David Platt', 'PlaceOfBirth': 'Chadderton, Lancashire, England' }
-         *     ];
-         *     $('#grid').grid({
-         *         dataSource: data,
-         *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
+         *     var grid, onErrorFunc = function (response) {
+         *         alert('Server error.');
+         *     };
+         *     grid = $('#grid').grid({
+         *         dataSource: { url: '/DataSources/InvalidUrl', error: onErrorFunc },
+         *         columns: [ { field: 'Name' }, { field: 'PlaceOfBirth' } ]
          *     });
          * </script>
          */
@@ -1311,6 +1326,7 @@ gj.grid.events = {
 gj.grid.methods = {
 
     init: function (jsConfig) {
+        this.attr('data-type', 'grid');
         gj.widget.prototype.init.call(this, jsConfig, 'grid');
 
         gj.grid.methods.initialize(this);
@@ -1399,7 +1415,6 @@ gj.grid.methods = {
 
         gj.grid.methods.renderHeader($grid);
         gj.grid.methods.appendEmptyRow($grid, '&nbsp;');
-        $grid.attr('data-initialized', true);
         gj.grid.events.initialized($grid);
     },
 
@@ -2054,9 +2069,9 @@ gj.grid.methods = {
             if (keepTableTag === false) {
                 $grid.remove();
             } else {
-                $grid.attr('data-initialized', false);
                 $grid.removeClass().empty();
             }
+            $grid.removeAttr('data-type');
         }
         return $grid;
     },
@@ -2728,7 +2743,7 @@ gj.grid.widget = function ($grid, arguments) {
     };
 
     $.extend($grid, self);
-    if (true !== $grid.data('initialized')) {
+    if ('grid' !== $grid.attr('data-type')) {
         methods.init.apply($grid, arguments);
     }
 

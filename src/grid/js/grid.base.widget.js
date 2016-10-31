@@ -577,7 +577,7 @@ gj.grid.widget = function ($grid, arguments) {
     };
 
     $.extend($grid, self);
-    if (true !== $grid.data('initialized')) {
+    if ('grid' !== $grid.attr('data-type')) {
         methods.init.apply($grid, arguments);
     }
 
