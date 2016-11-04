@@ -11,9 +11,9 @@
  <script>
      $('#grid').grid({
          dataSource: '/DataSources/GetPlayers',
-         selectionType: 'multiple',
+         selectionType: 'single',
          selectionMethod: 'checkbox',
-         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
+         columns: [ { field: 'ID', width: 24 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
      });
  </script>
 </body>

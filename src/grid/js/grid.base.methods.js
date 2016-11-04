@@ -85,7 +85,19 @@ gj.grid.methods = {
         }
         $grid.addClass(data.style.table);
         if ('checkbox' === data.selectionMethod) {
-            data.columns = [{ title: '', field: data.primaryKey, width: (data.uiLibrary === 'jqueryui' ? 24 : 30), align: 'center', type: 'checkbox' }].concat(data.columns);
+            data.columns = [{
+                title: '',
+                field: data.primaryKey,
+                width: (data.uiLibrary === 'jqueryui' ? 24 : 30),
+                align: 'center',
+                type: 'checkbox',
+                role: 'selectRow',
+                events: {
+                    click: function (e) {
+                        gj.grid.methods.setSelected($grid, e.data.id, $(this).closest('tr'));
+                    }
+                }
+            }].concat(data.columns);
         }
         $grid.append($('<tbody/>'));
 
@@ -123,12 +135,12 @@ gj.grid.methods = {
                 $cell.on('click', gj.grid.methods.createSortHandler($grid, $cell, columns[i]));
             }
             if ('checkbox' === data.selectionMethod && 'multiple' === data.selectionType && 'checkbox' === columns[i].type) {
-                $checkAllBoxes = $cell.find('input[id="checkAllBoxes"]'); //TODO: use data-role instead of id. this is going to cause some other bugs.
+                $checkAllBoxes = $cell.find('input[data-role="selectAll"]');
                 if ($checkAllBoxes.length === 0) {
-                    $checkAllBoxes = $('<input type="checkbox" id="checkAllBoxes" />');
+                    $checkAllBoxes = $('<input type="checkbox" data-role="selectAll" />');
                     $cell.append($checkAllBoxes);
                 }
-                $checkAllBoxes.hide().off('click').on('click', function () {
+                $checkAllBoxes.off('click').on('click', function () {
                     if (this.checked) {
                         $grid.selectAll();
                     } else {
@@ -280,7 +292,7 @@ gj.grid.methods = {
     },
 
     loadData: function ($grid) {
-        var data, records, i, recLen, rowCount, $tbody, $rows, $row, $checkAllBoxes;
+        var data, records, i, recLen, rowCount, $tbody, $rows, $row;
 
         data = $grid.data();
         records = $grid.getAll();
@@ -294,13 +306,7 @@ gj.grid.methods = {
 
         $tbody = $grid.find('tbody');
         if ('checkbox' === data.selectionMethod && 'multiple' === data.selectionType) {
-            $checkAllBoxes = $grid.find('input#checkAllBoxes');
-            $checkAllBoxes.prop('checked', false);
-            if (0 === recLen) {
-                $checkAllBoxes.hide();
-            } else {
-                $checkAllBoxes.show();
-            }
+            $grid.find('thead input[data-role="selectAll"]').prop('checked', false);
         }
         $tbody.find('tr[data-role!="row"]').remove();
         if (0 === recLen) {
@@ -346,7 +352,9 @@ gj.grid.methods = {
         }
         id = gj.grid.methods.getId(record, data.primaryKey, (position + 1));
         $row.attr('data-position', position + 1);
-        $row.on('click', gj.grid.methods.createRowClickHandler($grid, id));
+        if (data.selectionMethod !== 'checkbox') {
+            $row.on('click', gj.grid.methods.createRowClickHandler($grid, id));
+        }
         for (i = 0; i < data.columns.length; i++) {
             if (mode === 'update') {
                 $cell = $row.find('td:eq(' + i + ')');
@@ -360,7 +368,7 @@ gj.grid.methods = {
     },
 
     renderCell: function ($grid, $cell, column, record, id, mode) {
-        var text, $wrapper, key;
+        var text, $wrapper, key, $checkbox;
 
         if (!$cell || $cell.length === 0) {
             $cell = $('<td/>').css('text-align', column.align || 'left');
@@ -377,7 +385,9 @@ gj.grid.methods = {
 
         if ('checkbox' === column.type) {
             if ('create' === mode) {
-                $wrapper.append($('<input />').attr('type', 'checkbox').val(id));
+                $checkbox = $('<input />').attr('type', 'checkbox').val(id);
+                column.role && $checkbox.attr('data-role', column.role);
+                $wrapper.append($checkbox);
             } else {
                 $wrapper.find('input[type="checkbox"]').val(id).prop('checked', false);
             }
@@ -501,20 +511,29 @@ gj.grid.methods = {
     },
 
     selectRow: function ($grid, data, $row, id) {
+        var $checkbox;
         $row.addClass(data.style.content.rowSelected);
         $row.attr('data-selected', 'true');
         if ('checkbox' === data.selectionMethod) {
-            $row.find('td:nth-child(1) input[type="checkbox"]').prop('checked', true);
+            $checkbox = $row.find('input[type="checkbox"][data-role="selectRow"]');
+            $checkbox.length && !$checkbox.prop('checked') && $checkbox.prop('checked', true);
+            if ('multiple' === data.selectionType && $grid.getSelections().length === $grid.count(false)) {
+                $grid.find('thead input[data-role="selectAll"]').prop('checked', true);
+            }
         }
         gj.grid.events.rowSelect($grid, $row, id, $grid.getById(id));
     },
 
     unselectRow: function ($grid, data, $row, id) {
+        var $checkbox;
         if ($row.attr('data-selected') === 'true') {
             $row.removeClass(data.style.content.rowSelected);
             if ('checkbox' === data.selectionMethod) {
-                $row.find('td:nth-child(1) input[type="checkbox"]').prop('checked', false);
-                $grid.find('thead input#checkAllBoxes').prop('checked', false);
+                $checkbox = $row.find('td input[type="checkbox"][data-role="selectRow"]');
+                $checkbox.length && $checkbox.prop('checked') && $checkbox.prop('checked', false);
+                if ('multiple' === data.selectionType) {
+                    $grid.find('thead input[data-role="selectAll"]').prop('checked', false);
+                }
             }
             $row.removeAttr('data-selected');
             gj.grid.events.rowUnselect($grid, $row, id, $grid.getById(id));
@@ -531,7 +550,7 @@ gj.grid.methods = {
                 gj.grid.methods.unselectRow($grid, data, $row, id);
             } else {
                 if ('single' === data.selectionType) {
-                    $row.siblings().each(function () {
+                    $row.siblings('[data-selected="true"]').each(function () {
                         var $row = $(this),
                             id = gj.grid.methods.getId($row, data.primaryKey, $row.data('position'));
                         gj.grid.methods.unselectRow($grid, data, $row, id);
@@ -545,27 +564,28 @@ gj.grid.methods = {
 
     selectAll: function ($grid) {
         var data = $grid.data();
-        $grid.find('thead input#checkAllBoxes').prop('checked', true);
-        $grid.find('tbody tr').each(function () {
+        $grid.find('tbody tr[data-role="row"]').each(function () {
             var $row = $(this);
             gj.grid.methods.selectRow($grid, data, $row, $grid.get($row.data('position')));
         });
+        $grid.find('thead input[data-role="selectAll"]').prop('checked', true);
         return $grid;
     },
 
     unSelectAll: function ($grid) {
         var data = $grid.data();
-        $grid.find('thead input#checkAllBoxes').prop('checked', false);
         $grid.find('tbody tr').each(function () {
             var $row = $(this);
             gj.grid.methods.unselectRow($grid, data, $row, $grid.get($row.data('position')));
+            $row.find('input[type="checkbox"][data-role="selectRow"]').prop('checked', false);
         });
+        $grid.find('thead input[data-role="selectAll"]').prop('checked', false);
         return $grid;
     },
 
     getSelected: function ($grid) {
         var result = null, selections, record, position;
-        selections = $grid.find('tbody > tr[data-selected = "true"]');
+        selections = $grid.find('tbody>tr[data-selected="true"]');
         if (selections.length > 0) {
             position = $(selections[0]).data('position');
             record = $grid.get(position);
@@ -576,7 +596,7 @@ gj.grid.methods = {
 
     getSelectedRows: function ($grid) {
         var data = $grid.data();
-        return $grid.find('tbody > tr[data-selected = "true"]');
+        return $grid.find('tbody>tr[data-selected="true"]');
     },
 
     getSelections: function ($grid) {
@@ -710,9 +730,6 @@ gj.grid.methods = {
     clear: function ($grid, showNotFoundText) {
         var data = $grid.data();
         $grid.xhr && $grid.xhr.abort();
-        if ('checkbox' === data.selectionMethod) {
-            $grid.find('input#checkAllBoxes').hide();
-        }
         $grid.children('tbody').empty();
         gj.grid.methods.stopLoading($grid);
         gj.grid.methods.appendEmptyRow($grid, showNotFoundText ? data.notFoundText : '&nbsp;');

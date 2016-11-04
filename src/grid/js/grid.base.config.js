@@ -647,14 +647,24 @@ gj.grid.config = {
          * If the type is set to multiple the user will be able to select more then one row from the grid.
          * @type (single|multiple)
          * @default "single"
-         * @example Multiple.Selection <!-- grid.base -->
+         * @example Multiple.Checkbox <!-- grid.base -->
          * <table id="grid"></table>
          * <script>
          *     $('#grid').grid({
          *         dataSource: '/DataSources/GetPlayers',
          *         selectionType: 'multiple',
          *         selectionMethod: 'checkbox',
-         *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
+         *         columns: [ { field: 'ID', width: 24 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
+         *     });
+         * </script>
+         * @example Single.Checkbox <!-- grid.base -->
+         * <table id="grid"></table>
+         * <script>
+         *     $('#grid').grid({
+         *         dataSource: '/DataSources/GetPlayers',
+         *         selectionType: 'single',
+         *         selectionMethod: 'checkbox',
+         *         columns: [ { field: 'ID', width: 24 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
          *     });
          * </script>
          */
