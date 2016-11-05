@@ -90,6 +90,9 @@ gj.widget.prototype.getHTMLConfig = function () {
     if (attrs['height']) {
         result.height = attrs['height'].nodeValue;
     }
+    if (attrs['align']) {
+        result.align = attrs['align'].nodeValue;
+    }
     if (result && result.source) {
         result.dataSource = result.source;
         delete result.source;
@@ -113,6 +116,9 @@ gj.widget.prototype.createErrorHandler = function () {
 
 gj.widget.prototype.reload = function (params) {
     var ajaxOptions, data = this.data();
+    if (data.dataSource === undefined) {
+        gj[this.data('type')].methods.useHtmlDataSource(this, data);
+    }
     $.extend(data.params, params);
     if ($.isArray(data.dataSource)) {
         gj[this.data('type')].methods.render(this, data.dataSource);

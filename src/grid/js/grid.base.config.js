@@ -29,7 +29,7 @@ gj.grid.config = {
          * <table id="grid" data-source="/DataSources/GetPlayers">
          *     <thead>
          *         <tr>
-         *             <th width="20" data-field="ID">#</th>
+         *             <th width="24" data-field="ID">#</th>
          *             <th>Name</th>
          *             <th>PlaceOfBirth</th>
          *         </tr>
@@ -50,6 +50,36 @@ gj.grid.config = {
          *         dataSource: data,
          *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
          *     });
+         * </script>
+         * @example Html.DataSource <!-- grid.base -->
+         * <table id="grid">
+         *     <thead>
+         *         <tr>
+         *             <th width="24" data-field="ID">#</th>
+         *             <th data-sortable="true">Name</th>
+         *             <th data-field="PlaceOfBirth" data-sortable="true">Place Of Birth</th>
+         *         </tr>
+         *     </thead>
+         *     <tbody>
+         *         <tr>
+         *             <td>1</td>
+         *             <td>Hristo Stoichkov</td>
+         *             <td>Plovdiv, Bulgaria</td>
+         *         </tr>
+         *         <tr>
+         *             <td>2</td>
+         *             <td>Ronaldo Luis Nazario de Lima</td>
+         *             <td>Rio de Janeiro, Brazil</td>
+         *         </tr>
+         *         <tr>
+         *             <td>3</td>
+         *             <td>David Platt</td>
+         *             <td>Chadderton, Lancashire, England</td>
+         *         </tr>
+         *     </tbody>
+         * </table>
+         * <script>
+         *     $('#grid').grid({ pager: { limit: 2 }});
          * </script>
          * @example Remote.Custom.Render <!-- grid.base -->
          * <table id="grid"></table>

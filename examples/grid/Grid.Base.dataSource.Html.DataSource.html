@@ -1,0 +1,40 @@
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Example</title>
+  <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+  <link href="../../dist/modular/grid/css/grid.css" rel="stylesheet" type="text/css">
+  <script src="../../dist/modular/grid/js/grid.js"></script>
+</head>
+<body>
+ <table id="grid">
+     <thead>
+         <tr>
+             <th width="24" data-field="ID">#</th>
+             <th data-sortable="true">Name</th>
+             <th data-field="PlaceOfBirth" data-sortable="true">Place Of Birth</th>
+         </tr>
+     </thead>
+     <tbody>
+         <tr>
+             <td>1</td>
+             <td>Hristo Stoichkov</td>
+             <td>Plovdiv, Bulgaria</td>
+         </tr>
+         <tr>
+             <td>2</td>
+             <td>Ronaldo Luis Nazario de Lima</td>
+             <td>Rio de Janeiro, Brazil</td>
+         </tr>
+         <tr>
+             <td>3</td>
+             <td>David Platt</td>
+             <td>Chadderton, Lancashire, England</td>
+         </tr>
+     </tbody>
+ </table>
+ <script>
+     $('#grid').grid({ pager: { limit: 2 }});
+ </script>
+</body>
+</html>

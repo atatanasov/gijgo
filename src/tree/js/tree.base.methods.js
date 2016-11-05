@@ -23,6 +23,10 @@ gj.tree.methods = {
         gj.tree.events.initialized(this);
     },
 
+    useHtmlDataSource: function ($tree, data) {
+        data.dataSource = [];
+    },
+
     render: function ($tree, response) {
         if (response) {
             if (typeof (response) === 'string' && JSON) {

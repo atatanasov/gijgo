@@ -212,6 +212,20 @@ gj.grid.methods = {
         };
     },
 
+    useHtmlDataSource: function ($grid, data) {
+        var dataSource = [], i, j, $cells, record,
+            $rows = $grid.find('tbody tr[data-role != "empty"]');
+        for (i = 0; i < $rows.length; i++) {
+            $cells = $($rows[i]).find('td');
+            record = {};
+            for (j = 0; j < $cells.length; j++) {
+                record[data.columns[j].field] = $($cells[j]).html();
+            }
+            dataSource.push(record);
+        }
+        data.dataSource = dataSource;
+    },
+
     startLoading: function ($grid) {
         var $tbody, $cover, $loading, width, height, top, data;
         gj.grid.methods.stopLoading($grid);
