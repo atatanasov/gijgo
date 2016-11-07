@@ -1,5 +1,5 @@
 /*
- * Gijgo Dialog v1.0.0
+ * Gijgo Dialog v1.1.0
  * http://gijgo.com/dialog
  *
  * Copyright 2014, 2016 gijgo.com

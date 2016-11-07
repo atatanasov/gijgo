@@ -445,7 +445,7 @@ gj.grid.plugins.pagination = {
                 result = ((page - 1) * limit) + count === data.totalRecords;
             }
             return result;
-        },
+        }
     },
 
     public: {
