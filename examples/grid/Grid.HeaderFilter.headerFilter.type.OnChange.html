@@ -12,7 +12,7 @@
      $('#grid').grid({
          dataSource: '/DataSources/GetPlayers',
          headerFilter: {
-             reload: 'onchange'
+             type: 'onchange'
          },
          columns: [ { field: 'ID', width: 36 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
      });

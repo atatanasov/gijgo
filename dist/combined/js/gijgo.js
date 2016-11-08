@@ -6304,34 +6304,34 @@ gj.grid.plugins.headerFilter = {
              * </script>
              */
             headerFilter: {
-                /** If set to true, add filters for each column
-                 * @alias headerFilter.reload
+                /** Type of the header filter
+                 * @alias headerFilter.type
                  * @type (onenterkeypress|onchange)
                  * @default 'onenterkeypress'
-                 * @example Reload.OnEnterKeyPress <!-- grid.base -->
+                 * @example OnEnterKeyPress <!-- grid.base -->
                  * <table id="grid"></table>
                  * <script>
                  *     $('#grid').grid({
                  *         dataSource: '/DataSources/GetPlayers',
                  *         headerFilter: {
-                 *             reload: 'onenterkeypress'
+                 *             type: 'onenterkeypress'
                  *         },
                  *         columns: [ { field: 'ID', width: 36 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
                  *     });
                  * </script>
-                 * @example Reload.OnChange <!-- grid.base -->
+                 * @example OnChange <!-- grid.base -->
                  * <table id="grid"></table>
                  * <script>
                  *     $('#grid').grid({
                  *         dataSource: '/DataSources/GetPlayers',
                  *         headerFilter: {
-                 *             reload: 'onchange'
+                 *             type: 'onchange'
                  *         },
                  *         columns: [ { field: 'ID', width: 36 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
                  *     });
                  * </script>
                  */
-                reload: 'onenterkeypress'
+                type: 'onenterkeypress'
             }
         }
     },
@@ -6344,7 +6344,7 @@ gj.grid.plugins.headerFilter = {
             for (i = 0; i < data.columns.length; i++) {
                 $th = $('<td/>');
                 $ctrl = $('<input data-field="' + data.columns[i].field + '" class="gj-width-100" />');
-                if ('onchange' === data.headerFilter.reload) {
+                if ('onchange' === data.headerFilter.type) {
                     $ctrl.on('input propertychange', function (e) {
                         gj.grid.plugins.headerFilter.private.reload($grid, $(this));
                     });
