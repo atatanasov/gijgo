@@ -6,7 +6,7 @@
 server.use(express.static(__dirname));
 
 server.get('/DataSources/GetPlayers', function (req, res) {
-    var params, data, result, startInd, page, limit;
+    var params, data, result, name, placeOfBirth, startInd, page, limit;
 
     params = url.parse(req.url, true).query;
     data = [
@@ -20,6 +20,28 @@ server.get('/DataSources/GetPlayers', function (req, res) {
     ];
     result = [];
 
+    name = params.name || params.Name;
+    if (name) {
+        result = [];
+        for (var i = 0; i < data.length; i++) {
+            if (data[i].Name.indexOf(name) > -1) {
+                result.push(data[i]);
+            }
+        }
+        data = result;
+    }
+
+    placeOfBirth = params.placeOfBirth || params.PlaceOfBirth;
+    if (placeOfBirth) {
+        result = [];
+        for (var i = 0; i < data.length; i++) {
+            if (data[i].PlaceOfBirth.indexOf(placeOfBirth) > -1) {
+                result.push(data[i]);
+            }
+        }
+        data = result;
+    }
+
     if (params.sortBy && params.direction) {
         if (params.direction === 'asc') {
             data.sort(function compare(a, b) {
@@ -30,16 +52,6 @@ server.get('/DataSources/GetPlayers', function (req, res) {
                 return ((a[params.sortBy] > b[params.sortBy]) ? -1 : ((a[params.sortBy] < b[params.sortBy]) ? 1 : 0));
             });
         }
-    }
-
-    if (params.searchString) {
-        result = [];
-        for (var i = 0; i < data.length; i++) {
-            if (data[i].Name.indexOf(params.searchString) > -1) {
-                result.push(data[i]);
-            }
-        }
-        data = result;
     }
 
     if (params.page && params.limit) {

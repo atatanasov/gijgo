@@ -946,7 +946,7 @@ gj.grid.config = {
          * <table id="grid"></table>
          * <script>
          *     $('#grid').grid({
-         *         dataSource: { url: '/DataSources/GetPlayers', data: { searchString: 'sadasd' } },
+         *         dataSource: { url: '/DataSources/GetPlayers', data: { name: 'not existing name' } },
          *         notFoundText: 'No records found custom message',
          *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
          *     });
@@ -1087,7 +1087,7 @@ gj.grid.events = {
      *     var grid = $('#grid').grid({
      *         dataSource: {
      *             url: '/DataSources/GetPlayers',
-     *             data: { searchString: 'not existing data' } //search for not existing data in order to fire the event
+     *             data: { name: 'not existing data' } //search for not existing data in order to fire the event
      *         },
      *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
      *     });
@@ -2263,10 +2263,10 @@ gj.grid.widget = function ($grid, arguments) {
      * <script>
      *     var grid = $('#grid').grid({
      *         dataSource: '/DataSources/GetPlayers',
-     *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
+     *         columns: [ { field: 'ID', width: 24 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
      *     });
      *     $('#btnSearch').on('click', function () {
-     *         grid.reload({ searchString: $('#txtSearch').val() });
+     *         grid.reload({ name: $('#txtSearch').val() });
      *     });
      * </script>
      */
@@ -4871,14 +4871,8 @@ gj.grid.plugins.headerFilter = {
                  *     });
                  * </script>
                  */
-                reload: 'onenterkeypress',
-
-                delay: 300
+                reload: 'onenterkeypress'
             }
-        },
-        jqueryui: {
-        },
-        bootstrap: {
         }
     },
 
@@ -4889,9 +4883,9 @@ gj.grid.plugins.headerFilter = {
 
             for (i = 0; i < data.columns.length; i++) {
                 $th = $('<td/>');
-                $ctrl = $('<input data-field="'+ data.columns[i].field +'" style="width: 100%" />');
+                $ctrl = $('<input data-field="' + data.columns[i].field + '" class="gj-width-100" />');
                 if ('onchange' === data.headerFilter.reload) {
-                    $crtl.on('change', function (e) {
+                    $ctrl.on('input propertychange', function (e) {
                         gj.grid.plugins.headerFilter.private.reload($grid, $(this));
                     });
                 } else {

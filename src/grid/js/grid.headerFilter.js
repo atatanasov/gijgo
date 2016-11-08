@@ -46,14 +46,8 @@ gj.grid.plugins.headerFilter = {
                  *     });
                  * </script>
                  */
-                reload: 'onenterkeypress',
-
-                delay: 300
+                reload: 'onenterkeypress'
             }
-        },
-        jqueryui: {
-        },
-        bootstrap: {
         }
     },
 
@@ -64,9 +58,9 @@ gj.grid.plugins.headerFilter = {
 
             for (i = 0; i < data.columns.length; i++) {
                 $th = $('<td/>');
-                $ctrl = $('<input data-field="'+ data.columns[i].field +'" style="width: 100%" />');
+                $ctrl = $('<input data-field="' + data.columns[i].field + '" class="gj-width-100" />');
                 if ('onchange' === data.headerFilter.reload) {
-                    $crtl.on('change', function (e) {
+                    $ctrl.on('input propertychange', function (e) {
                         gj.grid.plugins.headerFilter.private.reload($grid, $(this));
                     });
                 } else {

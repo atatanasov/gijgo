@@ -176,9 +176,12 @@ h4.gj-dialog-ui-title {
 div.gj-dialog-ui-body {
     padding: 10px;
 }
-.gj-cursor-pointer
-{
+.gj-cursor-pointer {
     cursor: pointer;
+}
+
+.gj-width-100 {
+    width: 100%;
 }
 
 DIV.gj-grid-wrapper {

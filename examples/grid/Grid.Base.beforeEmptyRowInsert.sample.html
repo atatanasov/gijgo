@@ -12,7 +12,7 @@
      var grid = $('#grid').grid({
          dataSource: {
              url: '/DataSources/GetPlayers',
-             data: { searchString: 'not existing data' } //search for not existing data in order to fire the event
+             data: { name: 'not existing data' } //search for not existing data in order to fire the event
          },
          columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
      });

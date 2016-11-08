@@ -750,7 +750,7 @@ gj.grid.config = {
          * <table id="grid"></table>
          * <script>
          *     $('#grid').grid({
-         *         dataSource: { url: '/DataSources/GetPlayers', data: { searchString: 'sadasd' } },
+         *         dataSource: { url: '/DataSources/GetPlayers', data: { name: 'not existing name' } },
          *         notFoundText: 'No records found custom message',
          *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
          *     });

@@ -20,10 +20,10 @@ gj.grid.widget = function ($grid, arguments) {
      * <script>
      *     var grid = $('#grid').grid({
      *         dataSource: '/DataSources/GetPlayers',
-     *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
+     *         columns: [ { field: 'ID', width: 24 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
      *     });
      *     $('#btnSearch').on('click', function () {
-     *         grid.reload({ searchString: $('#txtSearch').val() });
+     *         grid.reload({ name: $('#txtSearch').val() });
      *     });
      * </script>
      */
