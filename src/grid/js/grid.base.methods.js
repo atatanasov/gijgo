@@ -153,8 +153,6 @@ gj.grid.methods = {
             if (columns[i].hidden) {
                 $cell.hide();
             }
-
-            $cell.data('cell', columns[i]);
             $row.append($cell);
         }
 
@@ -163,53 +161,48 @@ gj.grid.methods = {
 
     createSortHandler: function ($grid, $cell, column) {
         return function () {
-            var $sortIcon, data, style, params = {};
+            var data, params = {};
             if ($grid.count() > 0) {
                 data = $grid.data();
+                params[data.defaultParams.sortBy] = column.field;
                 column.direction = (column.direction === 'asc' ? 'desc' : 'asc');
-
-                if ($.isArray(data.dataSource)) {
-                    data.dataSource.sort(column.sortable.sorter ? column.sortable.sorter(column.direction, column) : gj.grid.methods.createDefaultSorter(column.direction, column));
-                } else {
-                    params[data.defaultParams.sortBy] = column.field;
-                    params[data.defaultParams.direction] = column.direction;
-                }
-
-                style = data.style.header;
-                $cell.siblings().find('span[data-role="sorticon"]').remove();
-                $sortIcon = $cell.children('span[data-role="sorticon"]');
-                if ($sortIcon.length === 0) {
-                    $sortIcon = $('<span data-role="sorticon" style="float: left; margin-left:5px;"/>');
-                    $cell.append($sortIcon);
-                }
-
-                if ('asc' === column.direction) {
-                    $sortIcon.empty().removeClass(style.sortDescIcon);
-                    if (style.sortAscIcon) {
-                        $sortIcon.addClass(style.sortAscIcon);
-                    } else {
-                        $sortIcon.text('▲');
-                    }
-                } else {
-                    $sortIcon.empty().removeClass(style.sortAscIcon);
-                    if (style.sortDescIcon) {
-                        $sortIcon.addClass(style.sortDescIcon);
-                    } else {
-                        $sortIcon.text('▼');
-                    }
-                }
-
+                params[data.defaultParams.direction] = column.direction;
                 $grid.reload(params);
             }
         };
     },
 
-    createDefaultSorter: function (direction, column) {
-        return function (recordA, recordB) {
-            var a = recordA[column.field],
-                b = recordB[column.field];
-            return (direction === 'asc') ? a.localeCompare(b) : b.localeCompare(a);
-        };
+    updateHeader: function ($grid) {
+        var $sortIcon,
+            data = $grid.data(),
+            style = data.style.header,
+            sortBy = data.params[data.defaultParams.sortBy],
+            direction = data.params[data.defaultParams.direction];
+        
+        $grid.find('thead tr th span[data-role="sorticon"]').remove();
+        
+        if (sortBy) {
+            position = gj.grid.methods.getColumnPosition($grid.data('columns'), sortBy);
+            $cell = $grid.find('thead tr th:eq(' + position + ')');
+            $sortIcon = $('<span data-role="sorticon" style="margin-left:5px"/>');
+            $cell.append($sortIcon);
+
+            if ('asc' === direction) {
+                $sortIcon.empty().removeClass(style.sortDescIcon);
+                if (style.sortAscIcon) {
+                    $sortIcon.addClass(style.sortAscIcon);
+                } else {
+                    $sortIcon.text('▲');
+                }
+            } else {
+                $sortIcon.empty().removeClass(style.sortAscIcon);
+                if (style.sortDescIcon) {
+                    $sortIcon.addClass(style.sortDescIcon);
+                } else {
+                    $sortIcon.text('▼');
+                }
+            }
+        }
     },
 
     useHtmlDataSource: function ($grid, data) {
@@ -753,13 +746,40 @@ gj.grid.methods = {
 
     render: function ($grid, response) {
         if (response) {
-            if (typeof(response) === 'string' && JSON) {
-                response = JSON.parse(response);
-            }
             gj.grid.methods.setRecordsData($grid, response);
+            gj.grid.methods.updateHeader($grid);
             gj.grid.methods.loadData($grid);
         }
         return $grid;
+    },
+
+    filter: function ($grid) {
+        var field, column,
+            data = $grid.data(),
+            result = data.dataSource.slice();
+
+        if (data.params[data.defaultParams.sortBy]) {
+            column = gj.grid.methods.getColumnInfo($grid, data.params[data.defaultParams.sortBy]);
+            result.sort(column.sortable.sorter ? column.sortable.sorter(column.direction, column) : gj.grid.methods.createDefaultSorter(column.direction, column));
+        }
+        for (field in data.params) {
+            if (data.params[field] &&
+                field !== data.defaultParams.sortBy && field !== data.defaultParams.direction &&
+                field !== data.defaultParams.page && field !== data.defaultParams.limit) {
+                result = $.grep(result, function (e) {
+                    return e[field].indexOf(data.params[field]) > -1;
+                });
+            }
+        }        
+        return result;
+    },
+
+    createDefaultSorter: function (direction, column) {
+        return function (recordA, recordB) {
+            var a = recordA[column.field],
+                b = recordB[column.field];
+            return (direction === 'asc') ? a.localeCompare(b) : b.localeCompare(a);
+        };
     },
 
     destroy: function ($grid, keepTableTag, keepWrapperTag) {

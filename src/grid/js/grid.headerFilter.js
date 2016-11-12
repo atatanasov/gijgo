@@ -8,13 +8,36 @@ gj.grid.plugins.headerFilter = {
             /** If set to true, add filters for each column
              * @type boolean
              * @default object
-             * @example sample <!-- grid.base -->
+             * @example Remote.DataSource <!-- grid.base -->
              * <table id="grid"></table>
              * <script>
              *     $('#grid').grid({
              *         dataSource: '/DataSources/GetPlayers',
              *         headerFilter: true,
              *         columns: [ { field: 'ID', width: 36 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
+             *     });
+             * </script>
+             * @example Local.DataSource <!-- grid.base -->
+             * <table id="grid"></table>
+             * <script>
+             *     
+             *     var data = [
+             *         { 'ID': 1, 'Name': 'Hristo Stoichkov', 'PlaceOfBirth': 'Plovdiv, Bulgaria' },
+             *         { 'ID': 2, 'Name': 'Ronaldo Luís Nazário de Lima', 'PlaceOfBirth': 'Rio de Janeiro, Brazil' },
+             *         { 'ID': 3, 'Name': 'David Platt', 'PlaceOfBirth': 'Chadderton, Lancashire, England' },
+             *         { 'ID': 4, 'Name': 'Manuel Neuer', 'PlaceOfBirth': 'Gelsenkirchen, West Germany' },
+             *         { 'ID': 5, 'Name': 'James Rodríguez', 'PlaceOfBirth': 'Cúcuta, Colombia' },
+             *         { 'ID': 6, 'Name': 'Dimitar Berbatov', 'PlaceOfBirth': 'Blagoevgrad, Bulgaria' }
+             *     ];
+             *     $('#grid').grid({
+             *         dataSource: data,
+             *         headerFilter: true,
+             *         columns: [ 
+             *             { field: 'ID', width: 36 }, 
+             *             { field: 'Name', sortable: true }, 
+             *             { field: 'PlaceOfBirth', sortable: true } 
+             *         ],
+             *         pager: { limit: 5 }
              *     });
              * </script>
              */

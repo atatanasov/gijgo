@@ -275,8 +275,12 @@ var writer = {
                             result += '  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" rel="stylesheet" type="text/css">\r\n';
                         }
                         break;
-                    case 'foundation': 
+                    case 'foundation':
                         result += '  <link href="http://cdn.foundation5.zurb.com/foundation.css" rel="stylesheet" type="text/css">\r\n';
+                        break;
+                    case 'materialdesign':
+                        result += '  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">\r\n';
+                        result += '  <link href="https://code.getmdl.io/1.2.1/material.indigo-pink.min.css" rel="stylesheet" type="text/css">\r\n';
                         break;
                     case 'jqueryui':
                         if (local) {

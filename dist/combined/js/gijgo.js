@@ -103,6 +103,9 @@ gj.widget.prototype.getHTMLConfig = function () {
 gj.widget.prototype.createDoneHandler = function () {
     var $widget = this;
     return function (response) {
+        if (typeof (response) === 'string' && JSON) {
+            response = JSON.parse(response);
+        }
         gj[$widget.data('type')].methods.render($widget, response);
     };
 };
@@ -115,13 +118,14 @@ gj.widget.prototype.createErrorHandler = function () {
 };
 
 gj.widget.prototype.reload = function (params) {
-    var ajaxOptions, data = this.data();
+    var ajaxOptions, result, data = this.data();
     if (data.dataSource === undefined) {
         gj[this.data('type')].methods.useHtmlDataSource(this, data);
     }
     $.extend(data.params, params);
     if ($.isArray(data.dataSource)) {
-        gj[this.data('type')].methods.render(this, data.dataSource);
+        result = gj[this.data('type')].methods.filter(this);
+        gj[this.data('type')].methods.render(this, result);
     } else if (typeof(data.dataSource) === 'string') {
         ajaxOptions = { url: data.dataSource, data: data.params };
         if (this.xhr) {
@@ -1860,23 +1864,6 @@ gj.grid.config = {
              * <table id="grid"></table>
              * <script>
              *     var data = [
-             *         { 'ID': 1, 'Name': 'Hristo Stoichkov', 'PlaceOfBirth': 'Plovdiv, Bulgaria' },
-             *         { 'ID': 2, 'Name': 'Ronaldo Luis Nazario de Lima', 'PlaceOfBirth': 'Rio de Janeiro, Brazil' },
-             *         { 'ID': 3, 'Name': 'David Platt', 'PlaceOfBirth': 'Chadderton, Lancashire, England' }
-             *     ];
-             *     $('#grid').grid({
-             *         dataSource: data,
-             *         columns: [
-             *             { field: 'ID' },
-             *             { field: 'Name', sortable: true },
-             *             { field: 'PlaceOfBirth', sortable: true }
-             *         ]
-             *     });
-             * </script>
-             * @example Local.CustomSorting <!-- grid.base -->
-             * <table id="grid"></table>
-             * <script>
-             *     var data = [
              *         { 'ID': 1, 'Value1': 'Foo', 'Value2': 'Foo' },
              *         { 'ID': 2, 'Value1': 'bar', 'Value2': 'bar' },
              *         { 'ID': 3, 'Value1': 'moo', 'Value2': 'moo' }
@@ -2266,9 +2253,9 @@ gj.grid.config = {
             direction: 'direction'
         },
 
-        /** The name of the UI library that is going to be in use. Currently we support only jQuery UI and bootstrap.
-         * @additionalinfo The css files for jQuery UI or Bootstrap should be manually included to the page where the grid is in use.
-         * @type (base|jqueryui|bootstrap)
+        /** The name of the UI library that is going to be in use. Currently we support jQuery UI, Bootstrap and Material Design.
+         * @additionalinfo The css files for jQuery UI, Bootstrap or Material Design should be manually included to the page where the grid is in use.
+         * @type (base|jqueryui|bootstrap|materialdesign)
          * @default "base"
          * @example base.theme <!-- grid.base -->
          * <table id="grid"></table>
@@ -2277,7 +2264,7 @@ gj.grid.config = {
          *         dataSource: '/DataSources/GetPlayers',
          *         columns: [
          *             { field: 'ID', width: 24 },
-         *             { field: 'Name' },
+         *             { field: 'Name', sortable: true },
          *             { field: 'PlaceOfBirth' }
          *         ]
          *     });
@@ -2290,17 +2277,31 @@ gj.grid.config = {
          *         uiLibrary: 'jqueryui',
          *         columns: [
          *             { field: 'ID' },
-         *             { field: 'Name' },
+         *             { field: 'Name', sortable: true },
          *             { field: 'PlaceOfBirth' }
          *         ]
          *     });
          * </script>
-         * @example bootstrap <!-- bootstrap, grid.base, grid.pagination -->
+         * @example bootstrap <!-- bootstrap, grid.base -->
          * <table id="grid"></table>
          * <script>
          *     $('#grid').grid({
          *         dataSource: '/DataSources/GetPlayers',
          *         uiLibrary: 'bootstrap',
+         *         columns: [
+         *             { field: 'ID' },
+         *             { field: 'Name', sortable: true },
+         *             { field: 'PlaceOfBirth' }
+         *         ],
+         *         pager: { limit: 2, sizes: [2, 5, 10, 20] }
+         *     });
+         * </script>
+         * @example materialdesign <!-- materialdesign, grid.base -->
+         * <table id="grid"></table>
+         * <script>
+         *     $('#grid').grid({
+         *         dataSource: '/DataSources/GetPlayers',
+         *         uiLibrary: 'materialdesign',
          *         columns: [
          *             { field: 'ID' },
          *             { field: 'Name' },
@@ -2526,6 +2527,23 @@ gj.grid.config = {
             content: {
                 rowHover: '',
                 rowSelected: 'active'
+            }
+        }
+    },
+
+    materialdesign: {
+        style: {
+            wrapper: 'gj-grid-wrapper',
+            table: 'gj-grid-table mdl-data-table mdl-js-data-table mdl-shadow--2dp', // mdl-data-table--selectable 
+            header: {
+                cell: '',
+                sortable: 'gj-cursor-pointer',
+                sortAscIcon: '',
+                sortDescIcon: ''
+            },
+            content: {
+                rowHover: '',
+                rowSelected: ''
             }
         }
     }
@@ -2983,8 +3001,6 @@ gj.grid.methods = {
             if (columns[i].hidden) {
                 $cell.hide();
             }
-
-            $cell.data('cell', columns[i]);
             $row.append($cell);
         }
 
@@ -2993,53 +3009,48 @@ gj.grid.methods = {
 
     createSortHandler: function ($grid, $cell, column) {
         return function () {
-            var $sortIcon, data, style, params = {};
+            var data, params = {};
             if ($grid.count() > 0) {
                 data = $grid.data();
+                params[data.defaultParams.sortBy] = column.field;
                 column.direction = (column.direction === 'asc' ? 'desc' : 'asc');
-
-                if ($.isArray(data.dataSource)) {
-                    data.dataSource.sort(column.sortable.sorter ? column.sortable.sorter(column.direction, column) : gj.grid.methods.createDefaultSorter(column.direction, column));
-                } else {
-                    params[data.defaultParams.sortBy] = column.field;
-                    params[data.defaultParams.direction] = column.direction;
-                }
-
-                style = data.style.header;
-                $cell.siblings().find('span[data-role="sorticon"]').remove();
-                $sortIcon = $cell.children('span[data-role="sorticon"]');
-                if ($sortIcon.length === 0) {
-                    $sortIcon = $('<span data-role="sorticon" style="float: left; margin-left:5px;"/>');
-                    $cell.append($sortIcon);
-                }
-
-                if ('asc' === column.direction) {
-                    $sortIcon.empty().removeClass(style.sortDescIcon);
-                    if (style.sortAscIcon) {
-                        $sortIcon.addClass(style.sortAscIcon);
-                    } else {
-                        $sortIcon.text('▲');
-                    }
-                } else {
-                    $sortIcon.empty().removeClass(style.sortAscIcon);
-                    if (style.sortDescIcon) {
-                        $sortIcon.addClass(style.sortDescIcon);
-                    } else {
-                        $sortIcon.text('▼');
-                    }
-                }
-
+                params[data.defaultParams.direction] = column.direction;
                 $grid.reload(params);
             }
         };
     },
 
-    createDefaultSorter: function (direction, column) {
-        return function (recordA, recordB) {
-            var a = recordA[column.field],
-                b = recordB[column.field];
-            return (direction === 'asc') ? a.localeCompare(b) : b.localeCompare(a);
-        };
+    updateHeader: function ($grid) {
+        var $sortIcon,
+            data = $grid.data(),
+            style = data.style.header,
+            sortBy = data.params[data.defaultParams.sortBy],
+            direction = data.params[data.defaultParams.direction];
+        
+        $grid.find('thead tr th span[data-role="sorticon"]').remove();
+        
+        if (sortBy) {
+            position = gj.grid.methods.getColumnPosition($grid.data('columns'), sortBy);
+            $cell = $grid.find('thead tr th:eq(' + position + ')');
+            $sortIcon = $('<span data-role="sorticon" style="margin-left:5px"/>');
+            $cell.append($sortIcon);
+
+            if ('asc' === direction) {
+                $sortIcon.empty().removeClass(style.sortDescIcon);
+                if (style.sortAscIcon) {
+                    $sortIcon.addClass(style.sortAscIcon);
+                } else {
+                    $sortIcon.text('▲');
+                }
+            } else {
+                $sortIcon.empty().removeClass(style.sortAscIcon);
+                if (style.sortDescIcon) {
+                    $sortIcon.addClass(style.sortDescIcon);
+                } else {
+                    $sortIcon.text('▼');
+                }
+            }
+        }
     },
 
     useHtmlDataSource: function ($grid, data) {
@@ -3583,13 +3594,41 @@ gj.grid.methods = {
 
     render: function ($grid, response) {
         if (response) {
-            if (typeof(response) === 'string' && JSON) {
-                response = JSON.parse(response);
-            }
             gj.grid.methods.setRecordsData($grid, response);
+            gj.grid.methods.updateHeader($grid);
             gj.grid.methods.loadData($grid);
         }
         return $grid;
+    },
+
+    filter: function ($grid) {
+        var field, column,
+            data = $grid.data(),
+            result = data.dataSource.slice();
+
+        if (data.params[data.defaultParams.sortBy]) {
+            column = gj.grid.methods.getColumnInfo($grid, data.params[data.defaultParams.sortBy]);
+            result.sort(column.sortable.sorter ? column.sortable.sorter(column.direction, column) : gj.grid.methods.createDefaultSorter(column.direction, column));
+        }
+        for (field in data.params) {
+            if (field !== data.defaultParams.sortBy &&
+                field !== data.defaultParams.direction &&
+                field !== data.defaultParams.page &&
+                field !== data.defaultParams.limit) {
+                result = $.grep(result, function (e) {
+                    return e[field].indexOf(data.params[field]) > -1;
+                });
+            }
+        }        
+        return result;
+    },
+
+    createDefaultSorter: function (direction, column) {
+        return function (recordA, recordB) {
+            var a = recordA[column.field],
+                b = recordB[column.field];
+            return (direction === 'asc') ? a.localeCompare(b) : b.localeCompare(a);
+        };
     },
 
     destroy: function ($grid, keepTableTag, keepWrapperTag) {
@@ -6293,13 +6332,36 @@ gj.grid.plugins.headerFilter = {
             /** If set to true, add filters for each column
              * @type boolean
              * @default object
-             * @example sample <!-- grid.base -->
+             * @example Remote.DataSource <!-- grid.base -->
              * <table id="grid"></table>
              * <script>
              *     $('#grid').grid({
              *         dataSource: '/DataSources/GetPlayers',
              *         headerFilter: true,
              *         columns: [ { field: 'ID', width: 36 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
+             *     });
+             * </script>
+             * @example Local.DataSource <!-- grid.base -->
+             * <table id="grid"></table>
+             * <script>
+             *     
+             *     var data = [
+             *         { 'ID': 1, 'Name': 'Hristo Stoichkov', 'PlaceOfBirth': 'Plovdiv, Bulgaria' },
+             *         { 'ID': 2, 'Name': 'Ronaldo Luís Nazário de Lima', 'PlaceOfBirth': 'Rio de Janeiro, Brazil' },
+             *         { 'ID': 3, 'Name': 'David Platt', 'PlaceOfBirth': 'Chadderton, Lancashire, England' },
+             *         { 'ID': 4, 'Name': 'Manuel Neuer', 'PlaceOfBirth': 'Gelsenkirchen, West Germany' },
+             *         { 'ID': 5, 'Name': 'James Rodríguez', 'PlaceOfBirth': 'Cúcuta, Colombia' },
+             *         { 'ID': 6, 'Name': 'Dimitar Berbatov', 'PlaceOfBirth': 'Blagoevgrad, Bulgaria' }
+             *     ];
+             *     $('#grid').grid({
+             *         dataSource: data,
+             *         headerFilter: true,
+             *         columns: [ 
+             *             { field: 'ID', width: 36 }, 
+             *             { field: 'Name', sortable: true }, 
+             *             { field: 'PlaceOfBirth', sortable: true } 
+             *         ],
+             *         pager: { limit: 5 }
              *     });
              * </script>
              */
@@ -6816,6 +6878,10 @@ gj.tree.methods = {
             gj.tree.methods.loadData($tree);
         }
         return $tree;
+    },
+
+    filter: function () {
+
     },
 
     getRecords: function ($tree, response) {

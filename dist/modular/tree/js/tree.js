@@ -103,6 +103,9 @@ gj.widget.prototype.getHTMLConfig = function () {
 gj.widget.prototype.createDoneHandler = function () {
     var $widget = this;
     return function (response) {
+        if (typeof (response) === 'string' && JSON) {
+            response = JSON.parse(response);
+        }
         gj[$widget.data('type')].methods.render($widget, response);
     };
 };
@@ -115,13 +118,14 @@ gj.widget.prototype.createErrorHandler = function () {
 };
 
 gj.widget.prototype.reload = function (params) {
-    var ajaxOptions, data = this.data();
+    var ajaxOptions, result, data = this.data();
     if (data.dataSource === undefined) {
         gj[this.data('type')].methods.useHtmlDataSource(this, data);
     }
     $.extend(data.params, params);
     if ($.isArray(data.dataSource)) {
-        gj[this.data('type')].methods.render(this, data.dataSource);
+        result = gj[this.data('type')].methods.filter(this);
+        gj[this.data('type')].methods.render(this, result);
     } else if (typeof(data.dataSource) === 'string') {
         ajaxOptions = { url: data.dataSource, data: data.params };
         if (this.xhr) {
@@ -621,6 +625,10 @@ gj.tree.methods = {
             gj.tree.methods.loadData($tree);
         }
         return $tree;
+    },
+
+    filter: function () {
+
     },
 
     getRecords: function ($tree, response) {

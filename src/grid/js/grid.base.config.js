@@ -204,23 +204,6 @@ gj.grid.config = {
              * <table id="grid"></table>
              * <script>
              *     var data = [
-             *         { 'ID': 1, 'Name': 'Hristo Stoichkov', 'PlaceOfBirth': 'Plovdiv, Bulgaria' },
-             *         { 'ID': 2, 'Name': 'Ronaldo Luis Nazario de Lima', 'PlaceOfBirth': 'Rio de Janeiro, Brazil' },
-             *         { 'ID': 3, 'Name': 'David Platt', 'PlaceOfBirth': 'Chadderton, Lancashire, England' }
-             *     ];
-             *     $('#grid').grid({
-             *         dataSource: data,
-             *         columns: [
-             *             { field: 'ID' },
-             *             { field: 'Name', sortable: true },
-             *             { field: 'PlaceOfBirth', sortable: true }
-             *         ]
-             *     });
-             * </script>
-             * @example Local.CustomSorting <!-- grid.base -->
-             * <table id="grid"></table>
-             * <script>
-             *     var data = [
              *         { 'ID': 1, 'Value1': 'Foo', 'Value2': 'Foo' },
              *         { 'ID': 2, 'Value1': 'bar', 'Value2': 'bar' },
              *         { 'ID': 3, 'Value1': 'moo', 'Value2': 'moo' }
@@ -610,9 +593,9 @@ gj.grid.config = {
             direction: 'direction'
         },
 
-        /** The name of the UI library that is going to be in use. Currently we support only jQuery UI and bootstrap.
-         * @additionalinfo The css files for jQuery UI or Bootstrap should be manually included to the page where the grid is in use.
-         * @type (base|jqueryui|bootstrap)
+        /** The name of the UI library that is going to be in use. Currently we support jQuery UI, Bootstrap and Material Design.
+         * @additionalinfo The css files for jQuery UI, Bootstrap or Material Design should be manually included to the page where the grid is in use.
+         * @type (base|jqueryui|bootstrap|materialdesign)
          * @default "base"
          * @example base.theme <!-- grid.base -->
          * <table id="grid"></table>
@@ -621,7 +604,7 @@ gj.grid.config = {
          *         dataSource: '/DataSources/GetPlayers',
          *         columns: [
          *             { field: 'ID', width: 24 },
-         *             { field: 'Name' },
+         *             { field: 'Name', sortable: true },
          *             { field: 'PlaceOfBirth' }
          *         ]
          *     });
@@ -634,17 +617,31 @@ gj.grid.config = {
          *         uiLibrary: 'jqueryui',
          *         columns: [
          *             { field: 'ID' },
-         *             { field: 'Name' },
+         *             { field: 'Name', sortable: true },
          *             { field: 'PlaceOfBirth' }
          *         ]
          *     });
          * </script>
-         * @example bootstrap <!-- bootstrap, grid.base, grid.pagination -->
+         * @example bootstrap <!-- bootstrap, grid.base -->
          * <table id="grid"></table>
          * <script>
          *     $('#grid').grid({
          *         dataSource: '/DataSources/GetPlayers',
          *         uiLibrary: 'bootstrap',
+         *         columns: [
+         *             { field: 'ID' },
+         *             { field: 'Name', sortable: true },
+         *             { field: 'PlaceOfBirth' }
+         *         ],
+         *         pager: { limit: 2, sizes: [2, 5, 10, 20] }
+         *     });
+         * </script>
+         * @example materialdesign <!-- materialdesign, grid.base -->
+         * <table id="grid"></table>
+         * <script>
+         *     $('#grid').grid({
+         *         dataSource: '/DataSources/GetPlayers',
+         *         uiLibrary: 'materialdesign',
          *         columns: [
          *             { field: 'ID' },
          *             { field: 'Name' },
@@ -870,6 +867,23 @@ gj.grid.config = {
             content: {
                 rowHover: '',
                 rowSelected: 'active'
+            }
+        }
+    },
+
+    materialdesign: {
+        style: {
+            wrapper: 'gj-grid-wrapper',
+            table: 'gj-grid-table mdl-data-table mdl-js-data-table mdl-shadow--2dp', // mdl-data-table--selectable 
+            header: {
+                cell: '',
+                sortable: 'gj-cursor-pointer',
+                sortAscIcon: '',
+                sortDescIcon: ''
+            },
+            content: {
+                rowHover: '',
+                rowSelected: ''
             }
         }
     }

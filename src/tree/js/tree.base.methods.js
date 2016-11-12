@@ -38,6 +38,10 @@ gj.tree.methods = {
         return $tree;
     },
 
+    filter: function ($grid) {
+
+    },
+
     getRecords: function ($tree, response) {
         var i, id, nodeData, result = [],
             data = $tree.data();
