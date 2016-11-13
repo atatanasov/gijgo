@@ -845,7 +845,7 @@ gj.grid.config = {
          *         uiLibrary: 'materialdesign',
          *         columns: [
          *             { field: 'ID' },
-         *             { field: 'Name' },
+         *             { field: 'Name', sortable: true },
          *             { field: 'PlaceOfBirth' }
          *         ],
          *         pager: { limit: 2, sizes: [2, 5, 10, 20] }
@@ -1079,8 +1079,8 @@ gj.grid.config = {
             header: {
                 cell: '',
                 sortable: 'gj-cursor-pointer',
-                sortAscIcon: '',
-                sortDescIcon: ''
+                sortAscIcon: 'material-icons gj-grid-mdl-thead-th-sort-icon-asc',
+                sortDescIcon: 'material-icons gj-grid-mdl-thead-th-sort-icon-desc'
             },
             content: {
                 rowHover: '',
@@ -2036,7 +2036,11 @@ gj.grid.methods = {
     },
 
     getRowById: function ($grid, id) {
-        var records = $grid.data('records'), primaryKey = $grid.data('primaryKey'), position, i;
+        var records = $grid.data('records'),
+            primaryKey = $grid.data('primaryKey'),
+            $result = undefined,
+            position,
+            i;
         if (primaryKey) {
             for (i = 0; i < records.length; i++) {
                 if (records[i][primaryKey] === id) {
@@ -2047,7 +2051,10 @@ gj.grid.methods = {
         } else {
             position = id;
         }
-        return $grid.find('tbody > tr[data-position="' + position + '"]');
+        if (position) {
+            $result = $grid.find('tbody > tr[data-position="' + position + '"]');
+        }
+        return $result;
     },
 
     getByPosition: function ($grid, position) {
@@ -3654,6 +3661,36 @@ gj.grid.plugins.pagination = {
                     $('<div data-role="record-last">0</div>'),
                     $('<div>&nbsp;of&nbsp;</div>'),
                     $('<div data-role="record-total">0</div>').css({ "margin-right": "5px" })
+                ]
+            }
+        },
+        materialdesign: {
+            style: {
+                pager: {
+                    cell: '',
+                    stateDisabled: ''
+                }
+            },
+            pager: {
+                leftControls: [
+                    $('<button data-role="page-first" title="First Page" class="mdl-button mdl-js-button mdl-button--icon"><i class="material-icons">first_page</i></button>'),
+                    $('<button data-role="page-previous" title="Previous Page" class="mdl-button mdl-js-button mdl-button--icon"><i class="material-icons">chevron_left</i></button>'),
+                    $('<span class="gj-grid-hr-padding-5">Page</span>'),
+                    $('<input data-role="page-number" class="mdl-textfield__input gj-font-size-12 gj-grid-mdl-page" type="text" value="0">'),
+                    $('<span class="gj-grid-hr-padding-5">of</span>'),
+                    $('<span data-role="page-label-last" class="gj-grid-hr-padding-5">0</span>'),
+                    $('<button data-role="page-next" title="Next Page" class="mdl-button mdl-js-button mdl-button--icon"><i class="material-icons">chevron_right</i>'),
+                    $('<button data-role="page-last" title="Last Page" class="mdl-button mdl-js-button mdl-button--icon"><i class="material-icons">last_page</i>'),
+                    $('<button data-role="page-refresh" title="Reload" class="mdl-button mdl-js-button mdl-button--icon"><i class="material-icons">refresh</i>'),
+                    $('<select data-role="page-size" class="mdl-textfield__input gj-grid-mdl-limit-select gj-font-size-12"></select></div>')
+                ],
+                rightControls: [
+                    $('<span>Displaying records&nbsp;</span>'),
+                    $('<span data-role="record-first">0</span>'),
+                    $('<span>&nbsp;-&nbsp;</span>'),
+                    $('<span data-role="record-last">0</span>'),
+                    $('<span>&nbsp;of&nbsp;</span>'),
+                    $('<span data-role="record-total">0</span>').css({ "margin-right": "5px" })
                 ]
             }
         }

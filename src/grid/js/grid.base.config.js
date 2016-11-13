@@ -645,7 +645,7 @@ gj.grid.config = {
          *         uiLibrary: 'materialdesign',
          *         columns: [
          *             { field: 'ID' },
-         *             { field: 'Name' },
+         *             { field: 'Name', sortable: true },
          *             { field: 'PlaceOfBirth' }
          *         ],
          *         pager: { limit: 2, sizes: [2, 5, 10, 20] }
@@ -879,8 +879,8 @@ gj.grid.config = {
             header: {
                 cell: '',
                 sortable: 'gj-cursor-pointer',
-                sortAscIcon: '',
-                sortDescIcon: ''
+                sortAscIcon: 'material-icons gj-grid-mdl-thead-th-sort-icon-asc',
+                sortDescIcon: 'material-icons gj-grid-mdl-thead-th-sort-icon-desc'
             },
             content: {
                 rowHover: '',

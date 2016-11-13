@@ -230,6 +230,36 @@ gj.grid.plugins.pagination = {
                     $('<div data-role="record-total">0</div>').css({ "margin-right": "5px" })
                 ]
             }
+        },
+        materialdesign: {
+            style: {
+                pager: {
+                    cell: '',
+                    stateDisabled: ''
+                }
+            },
+            pager: {
+                leftControls: [
+                    $('<button data-role="page-first" title="First Page" class="mdl-button mdl-js-button mdl-button--icon"><i class="material-icons">first_page</i></button>'),
+                    $('<button data-role="page-previous" title="Previous Page" class="mdl-button mdl-js-button mdl-button--icon"><i class="material-icons">chevron_left</i></button>'),
+                    $('<span class="gj-grid-hr-padding-5">Page</span>'),
+                    $('<input data-role="page-number" class="mdl-textfield__input gj-font-size-12 gj-grid-mdl-page" type="text" value="0">'),
+                    $('<span class="gj-grid-hr-padding-5">of</span>'),
+                    $('<span data-role="page-label-last" class="gj-grid-hr-padding-5">0</span>'),
+                    $('<button data-role="page-next" title="Next Page" class="mdl-button mdl-js-button mdl-button--icon"><i class="material-icons">chevron_right</i>'),
+                    $('<button data-role="page-last" title="Last Page" class="mdl-button mdl-js-button mdl-button--icon"><i class="material-icons">last_page</i>'),
+                    $('<button data-role="page-refresh" title="Reload" class="mdl-button mdl-js-button mdl-button--icon"><i class="material-icons">refresh</i>'),
+                    $('<select data-role="page-size" class="mdl-textfield__input gj-grid-mdl-limit-select gj-font-size-12"></select></div>')
+                ],
+                rightControls: [
+                    $('<span>Displaying records&nbsp;</span>'),
+                    $('<span data-role="record-first">0</span>'),
+                    $('<span>&nbsp;-&nbsp;</span>'),
+                    $('<span data-role="record-last">0</span>'),
+                    $('<span>&nbsp;of&nbsp;</span>'),
+                    $('<span data-role="record-total">0</span>').css({ "margin-right": "5px" })
+                ]
+            }
         }
     },
 

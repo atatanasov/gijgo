@@ -647,7 +647,11 @@ gj.grid.methods = {
     },
 
     getRowById: function ($grid, id) {
-        var records = $grid.data('records'), primaryKey = $grid.data('primaryKey'), position, i;
+        var records = $grid.data('records'),
+            primaryKey = $grid.data('primaryKey'),
+            $result = undefined,
+            position,
+            i;
         if (primaryKey) {
             for (i = 0; i < records.length; i++) {
                 if (records[i][primaryKey] === id) {
@@ -658,7 +662,10 @@ gj.grid.methods = {
         } else {
             position = id;
         }
-        return $grid.find('tbody > tr[data-position="' + position + '"]');
+        if (position) {
+            $result = $grid.find('tbody > tr[data-position="' + position + '"]');
+        }
+        return $result;
     },
 
     getByPosition: function ($grid, position) {

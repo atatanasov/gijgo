@@ -211,6 +211,33 @@ TABLE.gj-grid-table > tbody > tr > td > div
     padding: 2px;
     overflow: hidden;
 }
+
+
+/* Material Design Theme */
+.gj-grid-mdl-thead-th-sort-icon-asc::after {
+    content: "\2191";
+}
+.gj-grid-mdl-thead-th-sort-icon-desc::after {
+    content: "\2193";
+}
+.gj-grid-mdl-limit-select {
+    text-align: right;
+    display: inline-block;
+    width: 50px;
+    padding: 0px 5px;
+    margin-left: 10px;
+}
+
+.gj-grid-mdl-page {
+    text-align: right; display: inline-block; width: 32px; padding: 0px
+}
+
+.gj-font-size-12 {
+    font-size: 12px;
+}
+.gj-grid-hr-padding-5 {
+    padding: 0px 5px;
+}
 /* Hide all prioritized columns by default */
 @media only all {
 	th.display-1120,
