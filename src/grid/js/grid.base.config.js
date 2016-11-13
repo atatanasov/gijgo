@@ -206,13 +206,14 @@ gj.grid.config = {
              *     var data = [
              *         { 'ID': 1, 'Value1': 'Foo', 'Value2': 'Foo' },
              *         { 'ID': 2, 'Value1': 'bar', 'Value2': 'bar' },
-             *         { 'ID': 3, 'Value1': 'moo', 'Value2': 'moo' }
+             *         { 'ID': 3, 'Value1': 'moo', 'Value2': 'moo' },
+             *         { 'ID': 4, 'Value1': null, 'Value2': undefined }
              *     ];
-             *     var caseInsensitiveSort = function (direction, column) { 
+             *     var caseSensitiveSort = function (direction, column) { 
              *         return function (recordA, recordB) {
-             *             var a = recordA[column.field].toLowerCase(),
-             *                 b = recordB[column.field].toLowerCase();
-             *             return (direction === 'asc') ? a.localeCompare(b) : b.localeCompare(a);
+             *             var a = recordA[column.field] || '',
+             *                 b = recordB[column.field] || '';
+             *             return (direction === 'asc') ? a < b : b < a;
              *         };
              *     };
              *     $('#grid').grid({
@@ -220,7 +221,7 @@ gj.grid.config = {
              *         columns: [
              *             { field: 'ID' },
              *             { field: 'Value1', sortable: true },
-             *             { field: 'Value2', sortable: { sorter: caseInsensitiveSort } }
+             *             { field: 'Value2', sortable: { sorter: caseSensitiveSort } }
              *         ]
              *     });
              * </script>

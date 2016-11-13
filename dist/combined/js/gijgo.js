@@ -1866,13 +1866,14 @@ gj.grid.config = {
              *     var data = [
              *         { 'ID': 1, 'Value1': 'Foo', 'Value2': 'Foo' },
              *         { 'ID': 2, 'Value1': 'bar', 'Value2': 'bar' },
-             *         { 'ID': 3, 'Value1': 'moo', 'Value2': 'moo' }
+             *         { 'ID': 3, 'Value1': 'moo', 'Value2': 'moo' },
+             *         { 'ID': 4, 'Value1': null, 'Value2': undefined }
              *     ];
-             *     var caseInsensitiveSort = function (direction, column) { 
+             *     var caseSensitiveSort = function (direction, column) { 
              *         return function (recordA, recordB) {
-             *             var a = recordA[column.field].toLowerCase(),
-             *                 b = recordB[column.field].toLowerCase();
-             *             return (direction === 'asc') ? a.localeCompare(b) : b.localeCompare(a);
+             *             var a = recordA[column.field] || '',
+             *                 b = recordB[column.field] || '';
+             *             return (direction === 'asc') ? a < b : b < a;
              *         };
              *     };
              *     $('#grid').grid({
@@ -1880,7 +1881,7 @@ gj.grid.config = {
              *         columns: [
              *             { field: 'ID' },
              *             { field: 'Value1', sortable: true },
-             *             { field: 'Value2', sortable: { sorter: caseInsensitiveSort } }
+             *             { field: 'Value2', sortable: { sorter: caseSensitiveSort } }
              *         ]
              *     });
              * </script>
@@ -3611,10 +3612,9 @@ gj.grid.methods = {
             result.sort(column.sortable.sorter ? column.sortable.sorter(column.direction, column) : gj.grid.methods.createDefaultSorter(column.direction, column));
         }
         for (field in data.params) {
-            if (field !== data.defaultParams.sortBy &&
-                field !== data.defaultParams.direction &&
-                field !== data.defaultParams.page &&
-                field !== data.defaultParams.limit) {
+            if (data.params[field] &&
+                field !== data.defaultParams.sortBy && field !== data.defaultParams.direction &&
+                field !== data.defaultParams.page && field !== data.defaultParams.limit) {
                 result = $.grep(result, function (e) {
                     return e[field].indexOf(data.params[field]) > -1;
                 });
@@ -3625,8 +3625,8 @@ gj.grid.methods = {
 
     createDefaultSorter: function (direction, column) {
         return function (recordA, recordB) {
-            var a = recordA[column.field],
-                b = recordB[column.field];
+            var a = recordA[column.field] || '',
+                b = recordB[column.field] || '';
             return (direction === 'asc') ? a.localeCompare(b) : b.localeCompare(a);
         };
     },
@@ -6880,7 +6880,7 @@ gj.tree.methods = {
         return $tree;
     },
 
-    filter: function () {
+    filter: function ($grid) {
 
     },
 

@@ -627,7 +627,7 @@ gj.tree.methods = {
         return $tree;
     },
 
-    filter: function () {
+    filter: function ($grid) {
 
     },
 
