@@ -87,8 +87,8 @@ gj.grid.methods = {
         if ('checkbox' === data.selectionMethod) {
             data.columns = [{
                 title: '',
-                field: data.primaryKey,
-                width: (data.uiLibrary === 'jqueryui' ? 24 : 30),
+                field: data.primaryKey || '',
+                width: data.defaultCheckboxColumnWidth,
                 align: 'center',
                 type: 'checkbox',
                 role: 'selectRow',
@@ -121,9 +121,11 @@ gj.grid.methods = {
 
         $row = $('<tr/>');
         for (i = 0; i < columns.length; i += 1) {
-            $cell = $('<th data-field="' + columns[i].field + '" />');
+            $cell = $('<th data-field="' + (columns[i].field || '') + '" />');
             if (columns[i].width) {
                 $cell.attr('width', columns[i].width);
+            } else if (columns[i].type === 'checkbox') {
+                $cell.attr('width', data.defaultCheckboxColumnWidth);
             }
             $cell.addClass(style.cell);
             if (columns[i].headerCssClass) {

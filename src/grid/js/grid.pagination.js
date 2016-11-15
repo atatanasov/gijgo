@@ -242,22 +242,22 @@ gj.grid.plugins.pagination = {
                 leftControls: [
                     $('<button data-role="page-first" title="First Page" class="mdl-button mdl-js-button mdl-button--icon"><i class="material-icons">first_page</i></button>'),
                     $('<button data-role="page-previous" title="Previous Page" class="mdl-button mdl-js-button mdl-button--icon"><i class="material-icons">chevron_left</i></button>'),
-                    $('<span class="gj-grid-hr-padding-5">Page</span>'),
-                    $('<input data-role="page-number" class="mdl-textfield__input gj-font-size-12 gj-grid-mdl-page" type="text" value="0">'),
-                    $('<span class="gj-grid-hr-padding-5">of</span>'),
-                    $('<span data-role="page-label-last" class="gj-grid-hr-padding-5">0</span>'),
+                    $('<span class="gj-grid-mdl-pager-label">Page</span>'),
+                    $('<input data-role="page-number" class="mdl-textfield__input gj-grid-mdl-page" type="text" value="0">'),
+                    $('<span class="gj-grid-mdl-pager-label">of</span>'),
+                    $('<span data-role="page-label-last" class="gj-grid-mdl-pager-label">0</span>'),
                     $('<button data-role="page-next" title="Next Page" class="mdl-button mdl-js-button mdl-button--icon"><i class="material-icons">chevron_right</i>'),
                     $('<button data-role="page-last" title="Last Page" class="mdl-button mdl-js-button mdl-button--icon"><i class="material-icons">last_page</i>'),
                     $('<button data-role="page-refresh" title="Reload" class="mdl-button mdl-js-button mdl-button--icon"><i class="material-icons">refresh</i>'),
-                    $('<select data-role="page-size" class="mdl-textfield__input gj-grid-mdl-limit-select gj-font-size-12"></select></div>')
+                    $('<select data-role="page-size" class="mdl-textfield__input gj-grid-mdl-limit-select"></select></div>')
                 ],
                 rightControls: [
-                    $('<span>Displaying records&nbsp;</span>'),
-                    $('<span data-role="record-first">0</span>'),
-                    $('<span>&nbsp;-&nbsp;</span>'),
-                    $('<span data-role="record-last">0</span>'),
-                    $('<span>&nbsp;of&nbsp;</span>'),
-                    $('<span data-role="record-total">0</span>').css({ "margin-right": "5px" })
+                    $('<span class="gj-grid-mdl-pager-label">Displaying records</span>'),
+                    $('<span data-role="record-first" class="gj-grid-mdl-pager-label">0</span>'),
+                    $('<span class="gj-grid-mdl-pager-label">-</span>'),
+                    $('<span data-role="record-last" class="gj-grid-mdl-pager-label">0</span>'),
+                    $('<span class="gj-grid-mdl-pager-label">of</span>'),
+                    $('<span data-role="record-total" class="gj-grid-mdl-pager-label">0</span>')
                 ]
             }
         }
@@ -313,13 +313,6 @@ gj.grid.plugins.pagination = {
         initPagerControl: function ($control, $grid) {
             var data = $grid.data();
             switch ($control.data('role')) {
-                case 'page-number':
-                    $control.on('keypress', function (e) {
-                        if (e.keyCode === 13) {
-                            $(this).trigger('change');
-                        }
-                    });
-                    break;
                 case 'page-size':
                     if (data.pager.sizes && 0 < data.pager.sizes.length) {
                         $control.show();

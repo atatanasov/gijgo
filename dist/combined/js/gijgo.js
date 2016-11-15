@@ -113,7 +113,9 @@ gj.widget.prototype.createDoneHandler = function () {
 gj.widget.prototype.createErrorHandler = function () {
     var $widget = this;
     return function (response) {
-        alert(response);
+        if (response && response.statusText && response.statusText !== 'abort') {
+            alert(response);
+        }
     };
 };
 
@@ -2304,7 +2306,7 @@ gj.grid.config = {
          *         dataSource: '/DataSources/GetPlayers',
          *         uiLibrary: 'materialdesign',
          *         columns: [
-         *             { field: 'ID' },
+         *             { field: 'ID', width: 40 },
          *             { field: 'Name', sortable: true },
          *             { field: 'PlaceOfBirth' }
          *         ],
@@ -2496,10 +2498,13 @@ gj.grid.config = {
          *     });
          * </script>
          */
-        primaryKey: undefined
+        primaryKey: undefined,
+
+        defaultCheckboxColumnWidth: 30
     },
 
     jqueryui: {
+        defaultCheckboxColumnWidth: 24,
         style: {
             table: 'gj-grid-table ui-widget-content gj-grid-ui-table',
             header: {
@@ -2533,9 +2538,10 @@ gj.grid.config = {
     },
 
     materialdesign: {
+        defaultCheckboxColumnWidth: 70,
         style: {
             wrapper: 'gj-grid-wrapper',
-            table: 'gj-grid-table mdl-data-table mdl-js-data-table mdl-shadow--2dp', // mdl-data-table--selectable 
+            table: 'gj-grid-table mdl-data-table mdl-js-data-table mdl-shadow--2dp', 
             header: {
                 cell: '',
                 sortable: 'gj-cursor-pointer',
@@ -2544,7 +2550,7 @@ gj.grid.config = {
             },
             content: {
                 rowHover: '',
-                rowSelected: ''
+                rowSelected: 'is-selected'
             }
         }
     }
@@ -2936,8 +2942,8 @@ gj.grid.methods = {
         if ('checkbox' === data.selectionMethod) {
             data.columns = [{
                 title: '',
-                field: data.primaryKey,
-                width: (data.uiLibrary === 'jqueryui' ? 24 : 30),
+                field: data.primaryKey || '',
+                width: data.defaultCheckboxColumnWidth,
                 align: 'center',
                 type: 'checkbox',
                 role: 'selectRow',
@@ -2970,9 +2976,11 @@ gj.grid.methods = {
 
         $row = $('<tr/>');
         for (i = 0; i < columns.length; i += 1) {
-            $cell = $('<th data-field="' + columns[i].field + '" />');
+            $cell = $('<th data-field="' + (columns[i].field || '') + '" />');
             if (columns[i].width) {
                 $cell.attr('width', columns[i].width);
+            } else if (columns[i].type === 'checkbox') {
+                $cell.attr('width', data.defaultCheckboxColumnWidth);
             }
             $cell.addClass(style.cell);
             if (columns[i].headerCssClass) {
@@ -5135,22 +5143,22 @@ gj.grid.plugins.pagination = {
                 leftControls: [
                     $('<button data-role="page-first" title="First Page" class="mdl-button mdl-js-button mdl-button--icon"><i class="material-icons">first_page</i></button>'),
                     $('<button data-role="page-previous" title="Previous Page" class="mdl-button mdl-js-button mdl-button--icon"><i class="material-icons">chevron_left</i></button>'),
-                    $('<span class="gj-grid-hr-padding-5">Page</span>'),
-                    $('<input data-role="page-number" class="mdl-textfield__input gj-font-size-12 gj-grid-mdl-page" type="text" value="0">'),
-                    $('<span class="gj-grid-hr-padding-5">of</span>'),
-                    $('<span data-role="page-label-last" class="gj-grid-hr-padding-5">0</span>'),
+                    $('<span class="gj-grid-mdl-pager-label">Page</span>'),
+                    $('<input data-role="page-number" class="mdl-textfield__input gj-grid-mdl-page" type="text" value="0">'),
+                    $('<span class="gj-grid-mdl-pager-label">of</span>'),
+                    $('<span data-role="page-label-last" class="gj-grid-mdl-pager-label">0</span>'),
                     $('<button data-role="page-next" title="Next Page" class="mdl-button mdl-js-button mdl-button--icon"><i class="material-icons">chevron_right</i>'),
                     $('<button data-role="page-last" title="Last Page" class="mdl-button mdl-js-button mdl-button--icon"><i class="material-icons">last_page</i>'),
                     $('<button data-role="page-refresh" title="Reload" class="mdl-button mdl-js-button mdl-button--icon"><i class="material-icons">refresh</i>'),
-                    $('<select data-role="page-size" class="mdl-textfield__input gj-grid-mdl-limit-select gj-font-size-12"></select></div>')
+                    $('<select data-role="page-size" class="mdl-textfield__input gj-grid-mdl-limit-select"></select></div>')
                 ],
                 rightControls: [
-                    $('<span>Displaying records&nbsp;</span>'),
-                    $('<span data-role="record-first">0</span>'),
-                    $('<span>&nbsp;-&nbsp;</span>'),
-                    $('<span data-role="record-last">0</span>'),
-                    $('<span>&nbsp;of&nbsp;</span>'),
-                    $('<span data-role="record-total">0</span>').css({ "margin-right": "5px" })
+                    $('<span class="gj-grid-mdl-pager-label">Displaying records</span>'),
+                    $('<span data-role="record-first" class="gj-grid-mdl-pager-label">0</span>'),
+                    $('<span class="gj-grid-mdl-pager-label">-</span>'),
+                    $('<span data-role="record-last" class="gj-grid-mdl-pager-label">0</span>'),
+                    $('<span class="gj-grid-mdl-pager-label">of</span>'),
+                    $('<span data-role="record-total" class="gj-grid-mdl-pager-label">0</span>')
                 ]
             }
         }
@@ -5206,13 +5214,6 @@ gj.grid.plugins.pagination = {
         initPagerControl: function ($control, $grid) {
             var data = $grid.data();
             switch ($control.data('role')) {
-                case 'page-number':
-                    $control.on('keypress', function (e) {
-                        if (e.keyCode === 13) {
-                            $(this).trigger('change');
-                        }
-                    });
-                    break;
                 case 'page-size':
                     if (data.pager.sizes && 0 < data.pager.sizes.length) {
                         $control.show();

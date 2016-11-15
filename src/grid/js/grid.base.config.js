@@ -644,7 +644,7 @@ gj.grid.config = {
          *         dataSource: '/DataSources/GetPlayers',
          *         uiLibrary: 'materialdesign',
          *         columns: [
-         *             { field: 'ID' },
+         *             { field: 'ID', width: 40 },
          *             { field: 'Name', sortable: true },
          *             { field: 'PlaceOfBirth' }
          *         ],
@@ -836,10 +836,13 @@ gj.grid.config = {
          *     });
          * </script>
          */
-        primaryKey: undefined
+        primaryKey: undefined,
+
+        defaultCheckboxColumnWidth: 30
     },
 
     jqueryui: {
+        defaultCheckboxColumnWidth: 24,
         style: {
             table: 'gj-grid-table ui-widget-content gj-grid-ui-table',
             header: {
@@ -873,9 +876,10 @@ gj.grid.config = {
     },
 
     materialdesign: {
+        defaultCheckboxColumnWidth: 70,
         style: {
             wrapper: 'gj-grid-wrapper',
-            table: 'gj-grid-table mdl-data-table mdl-js-data-table mdl-shadow--2dp', // mdl-data-table--selectable 
+            table: 'gj-grid-table mdl-data-table mdl-js-data-table mdl-shadow--2dp', 
             header: {
                 cell: '',
                 sortable: 'gj-cursor-pointer',
@@ -884,7 +888,7 @@ gj.grid.config = {
             },
             content: {
                 rowHover: '',
-                rowSelected: ''
+                rowSelected: 'is-selected'
             }
         }
     }

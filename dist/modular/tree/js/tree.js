@@ -113,7 +113,9 @@ gj.widget.prototype.createDoneHandler = function () {
 gj.widget.prototype.createErrorHandler = function () {
     var $widget = this;
     return function (response) {
-        alert(response);
+        if (response && response.statusText && response.statusText !== 'abort') {
+            alert(response);
+        }
     };
 };
 
