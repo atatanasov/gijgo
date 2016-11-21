@@ -11,13 +11,20 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
+    "jquery-plugin",
     "jquery",
-    "grid",
     "gijgo",
     "javascript",
     "plugin",
+    "grid",
     "datagrid",
-    "table"
+    "table",
+    "dialog",
+    "modal",
+    "draggable",
+    "droppable",
+    "tree",
+    "treeview"
   ],
   "author": "Atanas Atanasov",
   "license": "MIT",
