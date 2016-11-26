@@ -3169,21 +3169,22 @@ gj.grid.plugins.inlineEditing = {
 
     private: {
         OnCellEdit: function ($grid, $cell, column, record) {
-            var $editorContainer, $editorField;
+            var $displayContainer, $editorContainer, $editorField, value;
             if ($cell.attr('data-mode') !== 'edit' && column.editor) {
-                $cell.find('div[data-role="display"]').hide();
+                $displayContainer = $cell.find('div[data-role="display"]').hide();
                 $editorContainer = $cell.find('div[data-role="edit"]');
+                value = record[column.field] || $displayContainer.html();
                 if ($editorContainer && $editorContainer.length) {
                     $editorContainer.show();
                     $editorField = $editorContainer.find('input, select').first();
-                    $editorField.val(record[column.field]);
+                    $editorField.val(value);
                 } else {
                     $editorContainer = $('<div data-role="edit" />');
                     $cell.append($editorContainer);
                     if (typeof (column.editor) === 'function') {
-                        column.editor($editorContainer, record[column.field]);
+                        column.editor($editorContainer, value);
                     } else if (typeof (column.editor) === 'boolean') {
-                        $editorContainer.append('<input type="text" value="' + record[column.field] + '"/>');
+                        $editorContainer.append('<input type="text" value="' + value + '"/>');
                     }
                     $editorField = $editorContainer.find('input, select').first();
                     $editorField.on('blur', function (e) {
@@ -3201,7 +3202,7 @@ gj.grid.plugins.inlineEditing = {
         },
 
         OnCellDisplay: function ($grid, $cell, column) {
-            var newValue, oldValue, record, style = '';
+            var $editorContainer, $displayContainer, newValue, oldValue, record, style = '';
             if ($cell.attr('data-mode') === 'edit') {
                 $editorContainer = $cell.find('div[data-role="edit"]');
                 newValue = $editorContainer.find('input, select').first().val();
