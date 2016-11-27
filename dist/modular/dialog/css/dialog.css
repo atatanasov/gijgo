@@ -176,3 +176,19 @@ h4.gj-dialog-ui-title {
 div.gj-dialog-ui-body {
     padding: 10px;
 }
+
+/** Material Design **/
+.gj-dialog-mdl-close {
+    -webkit-appearance: none;
+    padding: 0;
+    cursor: pointer;
+    background: 0 0;
+    border: 0;
+    float: right;
+    font-size: 2.5em;
+    margin: 24px 24px 0;
+}
+
+.gj-dialog-mdl-content {
+    background-color: #FFF;
+}

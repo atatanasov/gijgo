@@ -464,6 +464,13 @@ gj.dialog.config = {
          *         uiLibrary: 'bootstrap'
          *     });
          * </script>
+         * @example Material.Design <!-- draggable.base, dialog.base, materialdesign -->
+         * <div id="dialog">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
+         * <script>
+         *     $("#dialog").dialog({
+         *         uiLibrary: 'materialdesign'
+         *     });
+         * </script>
          */
         uiLibrary: undefined,
 
@@ -511,6 +518,18 @@ gj.dialog.config = {
             headerCloseButton: 'close-reveal-modal right gj-dialog-fd-close',
             body: 'gj-dialog-fd-body',
             footer: 'gj-dialog-footer gj-dialog-fd-footer'
+        }
+    },
+
+    materialdesign: {
+        style: {
+            modal: 'gj-modal',
+            content: 'mdl-dialog gj-dialog-mdl-content',
+            header: '',
+            headerTitle: 'mdl-dialog__title gj-dialog-unselectable',
+            headerCloseButton: 'gj-dialog-mdl-close',
+            body: 'mdl-dialog__content',
+            footer: 'mdl-dialog__actions'
         }
     }
 };

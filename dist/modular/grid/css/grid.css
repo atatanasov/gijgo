@@ -214,15 +214,15 @@ TABLE.gj-grid-table > tbody > tr > td > div
 
 
 /* Material Design Theme */
-.gj-grid-mdl-thead-th-sort-icon-asc::after {
+.gj-grid-table .gj-grid-mdl-thead-th-sort-icon-asc::after {
     content: "\2191";
     font-size: 16px;
 }
-.gj-grid-mdl-thead-th-sort-icon-desc::after {
+.gj-grid-table .gj-grid-mdl-thead-th-sort-icon-desc::after {
     content: "\2193";
     font-size: 16px;
 }
-.gj-grid-mdl-limit-select {
+.gj-grid-table .gj-grid-mdl-limit-select {
     text-align: right;
     display: inline-block;
     width: 50px;
@@ -231,7 +231,7 @@ TABLE.gj-grid-table > tbody > tr > td > div
     font-size: 13px;
 }
 
-.gj-grid-mdl-page {
+.gj-grid-table .gj-grid-mdl-page {
     text-align: right;
     display: inline-block;
     width: 32px;
@@ -239,7 +239,7 @@ TABLE.gj-grid-table > tbody > tr > td > div
     font-size: 13px;
 }
 
-.gj-grid-mdl-pager-label {
+.gj-grid-table .gj-grid-mdl-pager-label {
     padding: 0px 5px;
     font-size: 13px;
 }
