@@ -27,7 +27,7 @@
             dialog: {
                 files : {
                     'dist/modular/dialog/js/dialog.code.js': ['src/dialog/js/dialog.base.config.js', 'src/dialog/js/dialog.base.events.js', 'src/dialog/js/dialog.base.methods.js', 'src/dialog/js/dialog.base.widget.js'],
-                    'dist/modular/dialog/css/dialog.css': ['src/dialog/css/dialog.base.css']
+                    'dist/modular/dialog/css/dialog.code.css': ['src/dialog/css/dialog.base.css']
                 }
             },
             draggable: {
@@ -47,30 +47,33 @@
                         'src/grid/js/grid.responsiveDesign.js', 'src/grid/js/grid.toolbar.js', 'src/grid/js/grid.resizableColumns.js', 'src/grid/js/grid.rowReorder.js',
                         'src/grid/js/grid.columnReorder.js', 'src/grid/js/grid.headerFilter.js'],
 
-                    'dist/modular/grid/css/grid.css': ['src/grid/css/grid.base.css', 'src/grid/css/grid.responsiveDesign.css', 'src/grid/css/grid.pagination.css',
+                    'dist/modular/grid/css/grid.code.css': ['src/grid/css/grid.base.css', 'src/grid/css/grid.responsiveDesign.css', 'src/grid/css/grid.pagination.css',
                         'src/grid/css/grid.resizableColumns.css', 'src/grid/css/grid.rowReorder.css', 'src/grid/css/grid.columnReorder.css']
                 }
             },
             tree: {
                 files: {
                     'dist/modular/tree/js/tree.code.js': ['src/tree/js/tree.base.config.js', 'src/tree/js/tree.base.events.js', 'src/tree/js/tree.base.methods.js', 'src/tree/js/tree.base.widget.js'],
-                    'dist/modular/tree/css/tree.css': ['src/tree/css/tree.base.css']
+                    'dist/modular/tree/css/tree.code.css': ['src/tree/css/tree.base.css']
                 }
             },
             final: {
                 files: {
-                    'dist/modular/dialog/js/dialog.js': ['src/dialog/js/header.txt', 'src/widget.js', 'dist/modular/dialog/js/dialog.code.js'],
                     'dist/modular/draggable/js/draggable.js': ['src/draggable/js/header.txt', 'src/widget.js', 'dist/modular/draggable/js/draggable.code.js'],
                     'dist/modular/droppable/js/droppable.js': ['src/droppable/js/header.txt', 'src/widget.js', 'dist/modular/droppable/js/droppable.code.js'],
+                    'dist/modular/dialog/js/dialog.js': ['src/dialog/js/header.txt', 'src/widget.js', 'dist/modular/dialog/js/dialog.code.js'],
+                    'dist/modular/dialog/css/dialog.css': ['src/widget.css', 'dist/modular/dialog/css/dialog.code.css'],
                     'dist/modular/grid/js/grid.js': ['src/grid/js/header.txt', 'src/widget.js', 'dist/modular/grid/js/grid.code.js'],
+                    'dist/modular/grid/css/grid.css': ['src/widget.css', 'dist/modular/grid/css/grid.code.css'],
                     'dist/modular/tree/js/tree.js': ['src/tree/js/header.txt', 'src/widget.js', 'dist/modular/tree/js/tree.code.js'],
+                    'dist/modular/tree/css/tree.css': ['src/widget.css', 'dist/modular/tree/css/tree.code.css'],
 
                     'dist/combined/js/gijgo.js': ['src/header.txt', 'src/widget.js', 'dist/modular/dialog/js/dialog.code.js', 'dist/modular/draggable/js/draggable.code.js', 'dist/modular/droppable/js/droppable.code.js', 'dist/modular/grid/js/grid.code.js', 'dist/modular/tree/js/tree.code.js'],
-                    'dist/combined/css/gijgo.css': ['dist/modular/dialog/css/dialog.css', 'dist/modular/grid/css/grid.css', 'dist/modular/tree/css/tree.css']
+                    'dist/combined/css/gijgo.css': ['src/widget.css', 'dist/modular/dialog/css/dialog.code.css', 'dist/modular/grid/css/grid.code.css', 'dist/modular/tree/css/tree.code.css']
                 }
             }
         },
-        clean: ['dist/modular/**/js/*.code.js'],
+        clean: ['dist/modular/**/js/*.code.js', 'dist/modular/**/css/*.code.css'],
         replace: {
             minifyComments: {
                 src: ['dist/modular/*/*.js', 'dist/combined/*.js'], // source files array (supports minimatch)

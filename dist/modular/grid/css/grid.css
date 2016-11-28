@@ -1,3 +1,11 @@
+.gj-button {
+    background-color: #f5f5f5;
+    border: 1px solid #ddd;
+    color: #000;
+    border-radius: 3px;
+    padding: 6px 10px;
+    cursor: pointer;
+}
 .gj-cursor-pointer {
     cursor: pointer;
 }

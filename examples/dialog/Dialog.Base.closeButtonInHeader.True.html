@@ -8,11 +8,18 @@
   <script src="../../dist/modular/draggable/js/draggable.js"></script>
 </head>
 <body>
- <div id="dialog" style="display: none">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
- <button onclick="dialog.open()">Open Dialog</button>
+ <div id="dialog">
+     <div data-role="header"><h4 data-role="title">Dialog</h4></div>
+     <div data-role="body">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
+     <div data-role="footer">
+         <button onclick="dialog.close()" class="gj-button">Ok</button>
+         <button onclick="dialog.close()" class="gj-button">Cancel</button>
+     </div>
+ </div>
  <script>
      var dialog = $("#dialog").dialog({
-         closeOnEscape: false
+         closeButtonInHeader: true,
+         height: 200
      });
  </script>
 </body>

@@ -246,7 +246,7 @@ gj.dialog.config = {
          *         closeOnEscape: true
          *     });
          * </script>
-         * @example False <!-- draggable.base, dialog.base, bootstrap -->
+         * @example False <!-- dialog.base, draggable.base -->
          * <div id="dialog" style="display: none">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
          * <button onclick="dialog.open()">Open Dialog</button>
          * <script>
@@ -256,6 +256,42 @@ gj.dialog.config = {
          * </script>
          */
         closeOnEscape: true,
+
+        /** Specifies whether the dialog should have a close button in right part of dialog header.
+         * @type boolean
+         * @default true
+         * @example True <!-- dialog.base, draggable.base -->
+         * <div id="dialog">
+         *     <div data-role="header"><h4 data-role="title">Dialog</h4></div>
+         *     <div data-role="body">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
+         *     <div data-role="footer">
+         *         <button onclick="dialog.close()" class="gj-button">Ok</button>
+         *         <button onclick="dialog.close()" class="gj-button">Cancel</button>
+         *     </div>
+         * </div>
+         * <script>
+         *     var dialog = $("#dialog").dialog({
+         *         closeButtonInHeader: true,
+         *         height: 200
+         *     });
+         * </script>
+         * @example False <!-- dialog.base, draggable.base, materialdesign -->
+         * <div id="dialog">
+         *     <div data-role="header"><h4 data-role="title">Dialog</h4></div>
+         *     <div data-role="body">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
+         *     <div data-role="footer">
+         *         <button onclick="dialog.close()" class="mdl-button">Ok</button>
+         *         <button onclick="dialog.close()" class="mdl-button">Cancel</button>
+         *     </div>
+         * </div>
+         * <script>
+         *     var dialog = $("#dialog").dialog({
+         *         closeButtonInHeader: false,
+         *         uiLibrary: 'materialdesign'
+         *     });
+         * </script>
+         */
+        closeButtonInHeader: true,
 
         /** If set to true, the dialog will be draggable by the title bar.
          * @type boolean
@@ -481,7 +517,7 @@ gj.dialog.config = {
             headerTitle: 'gj-title',
             headerCloseButton: 'gj-close',
             body: 'gj-body',
-            footer: 'gj-dialog-footer'
+            footer: 'gj-dialog-footer gj-footer'
         }
     },
 
@@ -855,12 +891,7 @@ gj.dialog.methods = {
             $body.addClass(data.style.body);
         }
 
-        $header = $dialog.children('div[data-role="header"]');
-        if ($header.length === 0) {
-            $header = $('<div data-role="header" />');
-            gj.dialog.methods.createHeader($dialog, $header);
-        }
-        $header.addClass(data.style.header);
+        $header = gj.dialog.methods.renderHeader($dialog);
 
         $dialog.children('div[data-role="footer"]').addClass(data.style.footer);
 
@@ -897,13 +928,32 @@ gj.dialog.methods = {
         }
     },
 
-    createHeader: function ($dialog, $header) {
-        var data = $dialog.data(),
+    renderHeader: function ($dialog) {
+        var $header, $title, $closeButton, data = $dialog.data();
+        $header = $dialog.children('div[data-role="header"]');
+        if ($header.length === 0) {
+            $header = $('<div data-role="header" />');
+            $dialog.prepend($header);
+        }
+        $header.addClass(data.style.header);
+
+        $title = $header.find('[data-role="title"]');
+        if ($title.length === 0) {
+            $title = $('<h4 data-role="title">' + data.title + '</h4>');
+            $header.append($title);
+        }
+        $title.addClass(data.style.headerTitle);
+
+        $closeButton = $header.find('[data-role="close"]');
+        if ($closeButton.length === 0 && data.closeButtonInHeader) {
             $closeButton = $('<button type="button" data-role="close"><span>×</span></button>');
-        $closeButton.addClass(data.style.headerCloseButton);
-        $header.append($closeButton);
-        $header.append('<h4 data-role="title" class="' + data.style.headerTitle + '">' + data.title + '</h4>');
-        $dialog.prepend($header);
+            $closeButton.addClass(data.style.headerCloseButton);
+            $header.prepend($closeButton);
+        } else if ($closeButton.length > 0 && data.closeButtonInHeader === false) {
+            $closeButton.hide();
+        }
+
+        return $header;
     },
 
     setPosition: function ($dialog) {

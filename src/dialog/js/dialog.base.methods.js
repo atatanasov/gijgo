@@ -42,12 +42,7 @@
             $body.addClass(data.style.body);
         }
 
-        $header = $dialog.children('div[data-role="header"]');
-        if ($header.length === 0) {
-            $header = $('<div data-role="header" />');
-            gj.dialog.methods.createHeader($dialog, $header);
-        }
-        $header.addClass(data.style.header);
+        $header = gj.dialog.methods.renderHeader($dialog);
 
         $dialog.children('div[data-role="footer"]').addClass(data.style.footer);
 
@@ -84,13 +79,32 @@
         }
     },
 
-    createHeader: function ($dialog, $header) {
-        var data = $dialog.data(),
+    renderHeader: function ($dialog) {
+        var $header, $title, $closeButton, data = $dialog.data();
+        $header = $dialog.children('div[data-role="header"]');
+        if ($header.length === 0) {
+            $header = $('<div data-role="header" />');
+            $dialog.prepend($header);
+        }
+        $header.addClass(data.style.header);
+
+        $title = $header.find('[data-role="title"]');
+        if ($title.length === 0) {
+            $title = $('<h4 data-role="title">' + data.title + '</h4>');
+            $header.append($title);
+        }
+        $title.addClass(data.style.headerTitle);
+
+        $closeButton = $header.find('[data-role="close"]');
+        if ($closeButton.length === 0 && data.closeButtonInHeader) {
             $closeButton = $('<button type="button" data-role="close"><span>×</span></button>');
-        $closeButton.addClass(data.style.headerCloseButton);
-        $header.append($closeButton);
-        $header.append('<h4 data-role="title" class="' + data.style.headerTitle + '">' + data.title + '</h4>');
-        $dialog.prepend($header);
+            $closeButton.addClass(data.style.headerCloseButton);
+            $header.prepend($closeButton);
+        } else if ($closeButton.length > 0 && data.closeButtonInHeader === false) {
+            $closeButton.hide();
+        }
+
+        return $header;
     },
 
     setPosition: function ($dialog) {

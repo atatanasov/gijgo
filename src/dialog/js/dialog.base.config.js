@@ -44,7 +44,7 @@ gj.dialog.config = {
          *         closeOnEscape: true
          *     });
          * </script>
-         * @example False <!-- draggable.base, dialog.base, bootstrap -->
+         * @example False <!-- dialog.base, draggable.base -->
          * <div id="dialog" style="display: none">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
          * <button onclick="dialog.open()">Open Dialog</button>
          * <script>
@@ -54,6 +54,42 @@ gj.dialog.config = {
          * </script>
          */
         closeOnEscape: true,
+
+        /** Specifies whether the dialog should have a close button in right part of dialog header.
+         * @type boolean
+         * @default true
+         * @example True <!-- dialog.base, draggable.base -->
+         * <div id="dialog">
+         *     <div data-role="header"><h4 data-role="title">Dialog</h4></div>
+         *     <div data-role="body">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
+         *     <div data-role="footer">
+         *         <button onclick="dialog.close()" class="gj-button">Ok</button>
+         *         <button onclick="dialog.close()" class="gj-button">Cancel</button>
+         *     </div>
+         * </div>
+         * <script>
+         *     var dialog = $("#dialog").dialog({
+         *         closeButtonInHeader: true,
+         *         height: 200
+         *     });
+         * </script>
+         * @example False <!-- dialog.base, draggable.base, materialdesign -->
+         * <div id="dialog">
+         *     <div data-role="header"><h4 data-role="title">Dialog</h4></div>
+         *     <div data-role="body">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
+         *     <div data-role="footer">
+         *         <button onclick="dialog.close()" class="mdl-button">Ok</button>
+         *         <button onclick="dialog.close()" class="mdl-button">Cancel</button>
+         *     </div>
+         * </div>
+         * <script>
+         *     var dialog = $("#dialog").dialog({
+         *         closeButtonInHeader: false,
+         *         uiLibrary: 'materialdesign'
+         *     });
+         * </script>
+         */
+        closeButtonInHeader: true,
 
         /** If set to true, the dialog will be draggable by the title bar.
          * @type boolean
@@ -279,7 +315,7 @@ gj.dialog.config = {
             headerTitle: 'gj-title',
             headerCloseButton: 'gj-close',
             body: 'gj-body',
-            footer: 'gj-dialog-footer'
+            footer: 'gj-dialog-footer gj-footer'
         }
     },
 
