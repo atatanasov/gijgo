@@ -12,10 +12,9 @@
      $('#grid').grid({
          dataSource: '/DataSources/GetPlayers',
          columns: [
-             { field: 'ID' },
+             { field: 'ID', width: 24 },
              { field: 'Name', title: 'Player' },
-             { field: 'PlaceOfBirth', title: 'Place of Birth' },
-             { field: 'DateOfBirth', type: 'date', title: 'Birth Date' }
+             { field: 'PlaceOfBirth', title: 'Place of Birth' }
          ]
      });
  </script>

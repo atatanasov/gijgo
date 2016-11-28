@@ -397,8 +397,7 @@ gj.grid.config = {
              *         columns: [
              *             { field: 'ID' },
              *             { field: 'Name', sortable: true },
-             *             { field: 'PlaceOfBirth', sortable: false },
-             *             { field: 'DateOfBirth', type: 'date', title: 'Birth Date' }
+             *             { field: 'PlaceOfBirth', sortable: false }
              *         ]
              *     });
              * </script>
@@ -432,18 +431,25 @@ gj.grid.config = {
 
             /** Indicates the type of the column.
              * @alias column.type
-             * @type checkbox|icon|date
+             * @type checkbox|icon
              * @default undefined
-             * @example sample <!-- grid.base -->
+             * @example sample <!-- grid.base, bootstrap -->
              * <table id="grid"></table>
              * <script>
              *     $('#grid').grid({
              *         dataSource: '/DataSources/GetPlayers',
+             *         uiLibrary: 'bootstrap',
              *         columns: [
-             *             { field: 'ID', width: 24 },
+             *             { field: 'ID', width: 34 },
              *             { field: 'Name', title: 'Player' },
              *             { field: 'PlaceOfBirth', title: 'Place of Birth' },
-             *             { field: 'DateOfBirth', type: 'date', title: 'Birth Date' }
+             *             {
+             *               title: '', field: 'Info', width: 34, type: 'icon', icon: 'glyphicon-info-sign',
+             *               events: {
+             *                 'click': function (e) {
+             *                     alert('record with id=' + e.data.id + ' is clicked.'); }
+             *                 }
+             *             }
              *         ]
              *     });
              * </script>
@@ -460,10 +466,9 @@ gj.grid.config = {
              *     $('#grid').grid({
              *         dataSource: '/DataSources/GetPlayers',
              *         columns: [
-             *             { field: 'ID' },
+             *             { field: 'ID', width: 24 },
              *             { field: 'Name', title: 'Player' },
-             *             { field: 'PlaceOfBirth', title: 'Place of Birth' },
-             *             { field: 'DateOfBirth', type: 'date', title: 'Birth Date' }
+             *             { field: 'PlaceOfBirth', title: 'Place of Birth' }
              *         ]
              *     });
              * </script>
@@ -481,10 +486,9 @@ gj.grid.config = {
              *     $('#grid').grid({
              *         dataSource: '/DataSources/GetPlayers',
              *         columns: [
-             *             { field: 'ID' },
+             *             { field: 'ID', width: 24 },
              *             { field: 'Name' },
-             *             { field: 'PlaceOfBirth', title: 'Place of Birth' },
-             *             { field: 'DateOfBirth', type: 'date' }
+             *             { field: 'PlaceOfBirth', title: 'Place of Birth' }
              *         ]
              *     });
              * </script>
@@ -668,13 +672,19 @@ gj.grid.config = {
              * @example sample <!-- grid.base -->
              * <table id="grid"></table>
              * <script src="http://stevenlevithan.com/assets/misc/date.format.js"></script>
+             * <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.0/moment.min.js"></script>
              * <script>
              *     $('#grid').grid({
              *         dataSource: '/DataSources/GetPlayers',
              *         columns: [
-             *             { field: 'ID' },
+             *             { field: 'ID', width: 24 },
              *             { field: 'Name' },
-             *             { field: 'DateOfBirth', type: 'date', format: 'HH:MM:ss mm/dd/yyyy' }
+             *             { field: 'DateOfBirth', title: 'Date 1', type: 'date', format: 'HH:MM:ss mm/dd/yyyy' },
+             *             { field: 'DateOfBirth', title: 'Date 2', 
+             *               renderer: function (value) { 
+             *                   return moment(value).format('MM-DD-YYYY');
+             *               }
+             *             }
              *         ]
              *     });
              * </script>
