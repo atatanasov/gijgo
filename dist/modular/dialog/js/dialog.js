@@ -63,9 +63,7 @@ gj.widget.prototype.getConfig = function (clientConfig, type) {
 
     for (plugin in gj[type].plugins) {
         if (gj[type].plugins.hasOwnProperty(plugin)) {
-            if (gj[type].plugins[plugin].config.base) {
-                $.extend(true, config, gj[type].plugins[plugin].config.base);
-            }
+            $.extend(true, config, gj[type].plugins[plugin].config.base);
             if (gj[type].plugins[plugin].config[uiLibrary]) {
                 $.extend(true, config, gj[type].plugins[plugin].config[uiLibrary]);
             }

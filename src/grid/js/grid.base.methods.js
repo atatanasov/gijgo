@@ -414,7 +414,7 @@ gj.grid.methods = {
             });
             $wrapper.html(text);
         } else if (column.renderer && typeof (column.renderer) === 'function') {
-            text = column.renderer(record[column.field], record, $cell, $wrapper);
+            text = column.renderer(record[column.field], record, $cell, $wrapper, $grid);
             if (text) {
                 $wrapper.html(text);
             }

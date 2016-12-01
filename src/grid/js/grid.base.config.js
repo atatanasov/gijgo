@@ -245,8 +245,9 @@ gj.grid.config = {
              *               title: '', field: 'Info', width: 34, type: 'icon', icon: 'glyphicon-info-sign',
              *               events: {
              *                 'click': function (e) {
-             *                     alert('record with id=' + e.data.id + ' is clicked.'); }
+             *                     alert('record with id=' + e.data.id + ' is clicked.');
              *                 }
+             *               }
              *             }
              *         ]
              *     });

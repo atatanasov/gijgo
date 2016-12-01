@@ -1,0 +1,24 @@
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Example</title>
+  <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+  <link href="../../dist/modular/grid/css/grid.css" rel="stylesheet" type="text/css">
+  <script src="../../dist/modular/grid/js/grid.js"></script>
+</head>
+<body>
+ <table id="grid"></table>
+ <script>
+     var grid = $('#grid').grid({
+         dataSource: '/DataSources/GetPlayers',
+         inlineEditing: { mode: 'command' },
+         columns: [
+             { field: 'ID', width: 34 },
+             { field: 'Name', editor: true },
+             { field: 'PlaceOfBirth', editor: true },
+             { width: 100, align: 'center', renderer: gj.grid.plugins.inlineEditing.renderers.base.editManager }
+         ]
+     });
+ </script>
+</body>
+</html>
