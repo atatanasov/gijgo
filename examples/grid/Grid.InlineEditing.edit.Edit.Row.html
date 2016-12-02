@@ -1,0 +1,42 @@
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Example</title>
+  <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+  <link href="../../dist/modular/grid/css/grid.css" rel="stylesheet" type="text/css">
+  <script src="../../dist/modular/grid/js/grid.js"></script>
+</head>
+<body>
+ <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+ <table id="grid"></table>
+ <script>
+     var grid, renderer;
+     renderer = function (value, record, $cell, $displayEl, id) {
+         var $editBtn = $('<i class="fa fa-pencil gj-cursor-pointer" data-key="' + id + '"></i>'),
+             $updateBtn = $('<i class="fa fa-save gj-cursor-pointer" data-key="' + id + '"></i>').hide();
+         $editBtn.on('click', function (e) {
+             grid.edit($(this).data('key'));
+             $editBtn.hide();
+             $updateBtn.show();
+         });
+         $updateBtn.on('click', function (e) {
+             grid.update($(this).data('key'));
+             $editBtn.show();
+             $updateBtn.hide();
+         });
+         $displayEl.append($editBtn).append($updateBtn);
+     }
+     grid = $('#grid').grid({
+         primaryKey: 'ID',
+         dataSource: '/DataSources/GetPlayers',
+         inlineEditing: { mode: 'command' },
+         columns: [
+             { field: 'ID', width: 24 },
+             { field: 'Name', editor: true },
+             { field: 'PlaceOfBirth', editor: true },
+             { width: 32, align: 'center', renderer: renderer }
+         ]
+     });
+ </script>
+</body>
+</html>

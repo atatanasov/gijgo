@@ -20,7 +20,6 @@ gj.grid.plugins.headerFilter = {
              * @example Local.DataSource <!-- grid.base -->
              * <table id="grid"></table>
              * <script>
-             *     
              *     var data = [
              *         { 'ID': 1, 'Name': 'Hristo Stoichkov', 'PlaceOfBirth': 'Plovdiv, Bulgaria' },
              *         { 'ID': 2, 'Name': 'Ronaldo Luís Nazário de Lima', 'PlaceOfBirth': 'Rio de Janeiro, Brazil' },

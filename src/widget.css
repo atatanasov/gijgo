@@ -6,3 +6,11 @@
     padding: 6px 10px;
     cursor: pointer;
 }
+
+.gj-margin-left-5 {
+    margin-left: 5px;
+}
+
+.gj-width-full {
+    width: 100%;
+}

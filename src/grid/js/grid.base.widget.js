@@ -542,7 +542,7 @@ gj.grid.widget = function ($grid, arguments) {
      *             { field: 'ID' },
      *             { field: 'Name' },
      *             { field: 'PlaceOfBirth' },
-     *             { title: '', width: 60, align: 'center', tmpl: 'Delete', events: { 'click': Delete } }
+     *             { width: 60, align: 'center', tmpl: '<u class="gj-cursor-pointer">Delete</u>', events: { 'click': Delete } }
      *         ]
      *     });
      * </script>
@@ -566,7 +566,7 @@ gj.grid.widget = function ($grid, arguments) {
      *             { field: 'ID' },
      *             { field: 'Name' },
      *             { field: 'PlaceOfBirth' },
-     *             { title: '', width: 60, align: 'center', tmpl: 'Delete', events: { 'click': Delete } }
+     *             { width: 60, align: 'center', tmpl: '<u class="gj-cursor-pointer">Delete</u>', events: { 'click': Delete } }
      *         ],
      *         pager: { limit: 2 }
      *     });

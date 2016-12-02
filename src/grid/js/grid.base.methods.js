@@ -414,7 +414,7 @@ gj.grid.methods = {
             });
             $wrapper.html(text);
         } else if (column.renderer && typeof (column.renderer) === 'function') {
-            text = column.renderer(record[column.field], record, $cell, $wrapper, $grid);
+            text = column.renderer(record[column.field], record, $cell, $wrapper, id, $grid);
             if (text) {
                 $wrapper.html(text);
             }
@@ -624,7 +624,7 @@ gj.grid.methods = {
         var result = null, i, primaryKey = $grid.data('primaryKey'), records = $grid.data('records');
         if (primaryKey) {
             for (i = 0; i < records.length; i++) {
-                if (records[i][primaryKey] === id) {
+                if (records[i][primaryKey] == id) {
                     result = records[i];
                     break;
                 }
@@ -636,10 +636,10 @@ gj.grid.methods = {
     },
 
     getRecVPosById: function ($grid, id) {
-        var result = id, i, primaryKey = $grid.data('primaryKey'), records = $grid.data('records');
-        if (primaryKey) {
-            for (i = 0; i < records.length; i++) {
-                if (records[i][primaryKey] === id) {
+        var result = id, i, data = $grid.data();
+        if (data.primaryKey) {
+            for (i = 0; i < data.dataSource.length; i++) {
+                if (data.dataSource[i][data.primaryKey] == id) {
                     result = i;
                     break;
                 }
@@ -656,7 +656,7 @@ gj.grid.methods = {
             i;
         if (primaryKey) {
             for (i = 0; i < records.length; i++) {
-                if (records[i][primaryKey] === id) {
+                if (records[i][primaryKey] == id) {
                     position = i + 1;
                     break;
                 }
@@ -883,14 +883,14 @@ gj.grid.methods = {
 
     removeRow: function ($grid, id) {
         var position,
-            records = $grid.data('records'),
-            totalRecords = $grid.data('totalRecords'),
+            data = $grid.data(),
             $row = gj.grid.methods.getRowById($grid, id);
 
         gj.grid.events.rowRemoving($grid, $row, id, $grid.getById(id));
-        position = gj.grid.methods.getRecVPosById($grid, id);
-        records.splice(position, 1);
-        $grid.data('totalRecords', totalRecords - 1);
+        if ($.isArray(data.dataSource)) {
+            position = gj.grid.methods.getRecVPosById($grid, id);
+            data.dataSource.splice(position, 1);
+        }
         $grid.reload();
         return $grid;
     },

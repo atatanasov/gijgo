@@ -10,14 +10,12 @@
  <table id="grid"></table>
  <script>
      var grid = $('#grid').grid({
-         primaryKey: 'ID',
          dataSource: '/DataSources/GetPlayers',
-         inlineEditing: { mode: 'command' },
+         inlineEditing: { mode: 'dblclick' },
          columns: [
-             { field: 'ID', width: 24 },
+             { field: 'ID', width: 34 },
              { field: 'Name', editor: true },
-             { field: 'PlaceOfBirth', editor: true },
-             { tmpl: '<u class="gj-cursor-pointer">edit</u>', width: 60, events: { 'click': function (e) { grid.edit(e.data.id); } } }
+             { field: 'PlaceOfBirth', editor: true }
          ]
      });
  </script>
