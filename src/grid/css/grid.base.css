@@ -1,12 +1,4 @@
-﻿.gj-cursor-pointer {
-    cursor: pointer;
-}
-
-.gj-width-100 {
-    width: 100%;
-}
-
-DIV.gj-grid-wrapper {
+﻿DIV.gj-grid-wrapper {
     margin: auto;
     position: relative;
     clear:both;

@@ -2054,7 +2054,7 @@ gj.grid.methods = {
     },
 
     getRowById: function ($grid, id) {
-        var records = $grid.data('records'),
+        var records = $grid.getAll(false),
             primaryKey = $grid.data('primaryKey'),
             $result = undefined,
             position,
@@ -2076,7 +2076,7 @@ gj.grid.methods = {
     },
 
     getByPosition: function ($grid, position) {
-        return $grid.data('records')[position - 1];
+        return $grid.getAll(false)[position - 1];
     },
 
     getColumnPosition: function (columns, field) {
@@ -3195,12 +3195,13 @@ gj.grid.plugins.inlineEditing = {
                  *     ];
                  *     grid = $('#grid').grid({
                  *         dataSource: data,
+                 *         primaryKey: 'ID',
                  *         inlineEditing: { mode: 'command' },
                  *         columns: [
                  *             { field: 'ID', width: 34 },
                  *             { field: 'Name', editor: true },
                  *             { field: 'PlaceOfBirth', editor: true }, 
-                 *             { width: 100, align: 'center', renderer: gj.grid.plugins.inlineEditing.renderers.base.editManager }
+                 *             { width: 100, align: 'center', renderer: gj.grid.plugins.inlineEditing.renderers.editManager }
                  *         ],
                  *         pager: { limit: 3 }
                  *     });
@@ -3210,12 +3211,88 @@ gj.grid.plugins.inlineEditing = {
                  * <script>
                  *     var grid = $('#grid').grid({
                  *         dataSource: '/DataSources/GetPlayers',
+                 *         primaryKey: 'ID',
                  *         inlineEditing: { mode: 'dblclick' },
                  *         columns: [
                  *             { field: 'ID', width: 34 },
                  *             { field: 'Name', editor: true },
                  *             { field: 'PlaceOfBirth', editor: true }
                  *         ]
+                 *     });
+                 * </script>
+                 * @example Bootstrap <!-- grid.base, bootstrap -->
+                 * <table id="grid"></table>
+                 * <script>
+                 *     var grid, data = [
+                 *         { 'ID': 1, 'Name': 'Hristo Stoichkov', 'PlaceOfBirth': 'Plovdiv, Bulgaria' },
+                 *         { 'ID': 2, 'Name': 'Ronaldo Luís Nazário de Lima', 'PlaceOfBirth': 'Rio de Janeiro, Brazil' },
+                 *         { 'ID': 3, 'Name': 'David Platt', 'PlaceOfBirth': 'Chadderton, Lancashire, England' },
+                 *         { 'ID': 4, 'Name': 'Manuel Neuer', 'PlaceOfBirth': 'Gelsenkirchen, West Germany' },
+                 *         { 'ID': 5, 'Name': 'James Rodríguez', 'PlaceOfBirth': 'Cúcuta, Colombia' },
+                 *         { 'ID': 6, 'Name': 'Dimitar Berbatov', 'PlaceOfBirth': 'Blagoevgrad, Bulgaria' }
+                 *     ];
+                 *     grid = $('#grid').grid({
+                 *         dataSource: data,
+                 *         primaryKey: 'ID',
+                 *         inlineEditing: { mode: 'command' },
+                 *         uiLibrary: 'bootstrap',
+                 *         columns: [
+                 *             { field: 'ID', width: 34 },
+                 *             { field: 'Name', editor: true },
+                 *             { field: 'PlaceOfBirth', editor: true }, 
+                 *             { width: 190, align: 'center', renderer: gj.grid.plugins.inlineEditing.renderers.editManager }
+                 *         ],
+                 *         pager: { limit: 3 }
+                 *     });
+                 * </script>
+                 * @example jQueryUI <!-- grid.base, jqueryui -->
+                 * <table id="grid"></table>
+                 * <script>
+                 *     var grid, data = [
+                 *         { 'ID': 1, 'Name': 'Hristo Stoichkov', 'PlaceOfBirth': 'Plovdiv, Bulgaria' },
+                 *         { 'ID': 2, 'Name': 'Ronaldo Luís Nazário de Lima', 'PlaceOfBirth': 'Rio de Janeiro, Brazil' },
+                 *         { 'ID': 3, 'Name': 'David Platt', 'PlaceOfBirth': 'Chadderton, Lancashire, England' },
+                 *         { 'ID': 4, 'Name': 'Manuel Neuer', 'PlaceOfBirth': 'Gelsenkirchen, West Germany' },
+                 *         { 'ID': 5, 'Name': 'James Rodríguez', 'PlaceOfBirth': 'Cúcuta, Colombia' },
+                 *         { 'ID': 6, 'Name': 'Dimitar Berbatov', 'PlaceOfBirth': 'Blagoevgrad, Bulgaria' }
+                 *     ];
+                 *     grid = $('#grid').grid({
+                 *         dataSource: data,
+                 *         primaryKey: 'ID',
+                 *         inlineEditing: { mode: 'command' },
+                 *         uiLibrary: 'jqueryui',
+                 *         columns: [
+                 *             { field: 'ID', width: 34 },
+                 *             { field: 'Name', editor: true },
+                 *             { field: 'PlaceOfBirth', editor: true }, 
+                 *             { width: 200, align: 'center', renderer: gj.grid.plugins.inlineEditing.renderers.editManager }
+                 *         ],
+                 *         pager: { limit: 3 }
+                 *     });
+                 * </script>
+                 * @example Material.Design <!-- materialdesign, grid.base -->
+                 * <table id="grid"></table>
+                 * <script>
+                 *     var grid, data = [
+                 *         { 'ID': 1, 'Name': 'Hristo Stoichkov', 'PlaceOfBirth': 'Plovdiv, Bulgaria' },
+                 *         { 'ID': 2, 'Name': 'Ronaldo Luís Nazário de Lima', 'PlaceOfBirth': 'Rio de Janeiro, Brazil' },
+                 *         { 'ID': 3, 'Name': 'David Platt', 'PlaceOfBirth': 'Chadderton, Lancashire, England' },
+                 *         { 'ID': 4, 'Name': 'Manuel Neuer', 'PlaceOfBirth': 'Gelsenkirchen, West Germany' },
+                 *         { 'ID': 5, 'Name': 'James Rodríguez', 'PlaceOfBirth': 'Cúcuta, Colombia' },
+                 *         { 'ID': 6, 'Name': 'Dimitar Berbatov', 'PlaceOfBirth': 'Blagoevgrad, Bulgaria' }
+                 *     ];
+                 *     grid = $('#grid').grid({
+                 *         dataSource: data,
+                 *         primaryKey: 'ID',
+                 *         inlineEditing: { mode: 'command' },
+                 *         uiLibrary: 'materialdesign',
+                 *         columns: [
+                 *             { field: 'ID', width: 34 },
+                 *             { field: 'Name', editor: true },
+                 *             { field: 'PlaceOfBirth', editor: true }, 
+                 *             { width: 300, align: 'center', renderer: gj.grid.plugins.inlineEditing.renderers.editManager }
+                 *         ],
+                 *         pager: { limit: 3 }
                  *     });
                  * </script>
                  */
@@ -3226,43 +3303,68 @@ gj.grid.plugins.inlineEditing = {
                 updateButton: '<u class="gj-cursor-pointer">update</u>',
                 cancelButton: '<u class="gj-cursor-pointer gj-margin-left-5">cancel</u>'
             }
+        },
+
+        bootstrap: {
+            inlineEditing: {
+                editButton: '<button type="button" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Edit</button>',
+                deleteButton: '<button type="button" class="btn btn-default btn-sm gj-margin-left-10"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Delete</button>',
+                updateButton: '<button type="button" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Update</button>',
+                cancelButton: '<button type="button" class="btn btn-default btn-sm gj-margin-left-10"><span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span> Cancel</button>'
+            }
+        },
+
+        jqueryui: {
+            inlineEditing: {
+                editButton: '<button type="button" class="ui-button ui-widget ui-corner-all"><span class="ui-icon ui-icon-pencil" aria-hidden="true"></span> Edit</button>',
+                deleteButton: '<button type="button" class="ui-button ui-widget ui-corner-all gj-margin-left-10"><span class="ui-icon ui-icon-close" aria-hidden="true"></span> Delete</button>',
+                updateButton: '<button type="button" class="ui-button ui-widget ui-corner-all"><span class="ui-icon ui-icon-check" aria-hidden="true"></span> Update</button>',
+                cancelButton: '<button type="button" class="ui-button ui-widget ui-corner-all gj-margin-left-10"><span class="ui-icon ui-icon-cancel" aria-hidden="true"></span> Cancel</button>'
+            }
+        },
+
+        materialdesign: {
+            inlineEditing: {
+                editButton: '<button class="mdl-button mdl-js-button"><i class="material-icons">mode_edit</i> EDIT</button>',
+                deleteButton: '<button class="mdl-button mdl-js-button"><i class="material-icons">delete</i> DELETE</button>',
+                updateButton: '<button class="mdl-button mdl-js-button"><i class="material-icons">check_circle</i> UPDATE</button>',
+                cancelButton: '<button class="mdl-button mdl-js-button"><i class="material-icons">cancel</i> CANCEL</button>'
+            }
         }
     },
 
     renderers: {
-        base: {
-            editManager: function (value, record, $cell, $displayEl, id, $grid) {
-                var data = $grid.data(),
-                    $edit = $(data.inlineEditing.editButton).attr('data-key', id),
-                    $delete = $(data.inlineEditing.deleteButton).attr('data-key', id),
-                    $update = $(data.inlineEditing.updateButton).attr('data-key', id).hide(),
-                    $cancel = $(data.inlineEditing.cancelButton).attr('data-key', id).hide();
-                $edit.on('click', function (e) {
-                    $grid.edit($(this).data('key'));
-                    $edit.hide();
-                    $delete.hide();
-                    $update.show();
-                    $cancel.show();
-                });
-                $delete.on('click', function (e) {
-                    $grid.removeRow($(this).data('key'));
-                });
-                $update.on('click', function (e) {
-                    $grid.update($(this).data('key'));
-                    $edit.show();
-                    $delete.show();
-                    $update.hide();
-                    $cancel.hide();
-                });
-                $cancel.on('click', function (e) {
-                    $grid.cancel($(this).data('key'));
-                    $edit.show();
-                    $delete.show();
-                    $update.hide();
-                    $cancel.hide();
-                });
-                $displayEl.empty().append($edit).append($delete).append($update).append($cancel);
-            }
+        editManager: function (value, record, $cell, $displayEl, id, $grid) {
+            var data = $grid.data(),
+                $edit = $(data.inlineEditing.editButton).attr('data-key', id),
+                $delete = $(data.inlineEditing.deleteButton).attr('data-key', id),
+                $update = $(data.inlineEditing.updateButton).attr('data-key', id).hide(),
+                $cancel = $(data.inlineEditing.cancelButton).attr('data-key', id).hide();
+            $edit.on('click', function (e) {
+                $grid.edit($(this).data('key'));
+                $edit.hide();
+                $delete.hide();
+                $update.show();
+                $cancel.show();
+            });
+            $delete.on('click', function (e) {
+                $grid.removeRow($(this).data('key'));
+            });
+            $update.on('click', function (e) {
+                $grid.update($(this).data('key'));
+                $edit.show();
+                $delete.show();
+                $update.hide();
+                $cancel.hide();
+            });
+            $cancel.on('click', function (e) {
+                $grid.cancel($(this).data('key'));
+                $edit.show();
+                $delete.show();
+                $update.hide();
+                $cancel.hide();
+            });
+            $displayEl.empty().append($edit).append($delete).append($update).append($cancel);
         }
     },
 
@@ -3297,8 +3399,24 @@ gj.grid.plugins.inlineEditing = {
                         });
                     }
                 }
-                $editorField.focus().select();
+                gj.grid.plugins.inlineEditing.private.setCaretAtEnd($editorField[0]);
                 $cell.attr('data-mode', 'edit');
+            }
+        },
+
+        setCaretAtEnd: function (elem) {
+            var elemLen = elem.value.length;            
+            if (document.selection) { // For IE Only
+                elem.focus();
+                var oSel = document.selection.createRange();
+                oSel.moveStart('character', -elemLen);
+                oSel.moveStart('character', elemLen);
+                oSel.moveEnd('character', 0);
+                oSel.select();
+            } else if (elem.selectionStart || elem.selectionStart == '0') { // Firefox/Chrome                
+                elem.selectionStart = elemLen;
+                elem.selectionEnd = elemLen;
+                elem.focus();
             }
         },
 
@@ -3574,13 +3692,18 @@ gj.grid.plugins.inlineEditing = {
         }
     },
 
-    configure: function ($grid) {
+    configure: function ($grid, fullConfig, clientConfig) {
         var data = $grid.data();
         $.extend(true, $grid, gj.grid.plugins.inlineEditing.public);
+        if (clientConfig.inlineEditing) {
+            $grid.on('dataBound', function () {
+                $grid.find('span.gj-dirty').remove();
+            });
+        }
         if (data.inlineEditing.mode !== 'command') {
             $grid.on('cellDataBound', function (e, $displayEl, id, column, record) {
                 if (column.editor) {
-                    $displayEl.parent().on(data.inlineEditing.mode === 'dblclick' ? 'dblclick' : 'click', function () {
+                    $displayEl.parent('td').on(data.inlineEditing.mode === 'dblclick' ? 'dblclick' : 'click', function () {
                         gj.grid.plugins.inlineEditing.private.editMode($grid, $displayEl.parent(), column, record);
                     });
                 }
@@ -5238,7 +5361,7 @@ gj.grid.plugins.headerFilter = {
 
             for (i = 0; i < data.columns.length; i++) {
                 $th = $('<td/>');
-                $ctrl = $('<input data-field="' + data.columns[i].field + '" class="gj-width-100" />');
+                $ctrl = $('<input data-field="' + data.columns[i].field + '" class="gj-width-full" />');
                 if ('onchange' === data.headerFilter.type) {
                     $ctrl.on('input propertychange', function (e) {
                         gj.grid.plugins.headerFilter.private.reload($grid, $(this));

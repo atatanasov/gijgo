@@ -649,7 +649,7 @@ gj.grid.methods = {
     },
 
     getRowById: function ($grid, id) {
-        var records = $grid.data('records'),
+        var records = $grid.getAll(false),
             primaryKey = $grid.data('primaryKey'),
             $result = undefined,
             position,
@@ -671,7 +671,7 @@ gj.grid.methods = {
     },
 
     getByPosition: function ($grid, position) {
-        return $grid.data('records')[position - 1];
+        return $grid.getAll(false)[position - 1];
     },
 
     getColumnPosition: function (columns, field) {

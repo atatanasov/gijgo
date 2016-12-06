@@ -288,10 +288,10 @@ var writer = {
                         break;
                     case 'jqueryui':
                         if (local) {
-                            result += '  <link href="../../dist/libraries/jquery-ui/jquery.ui.core.css" rel="stylesheet" type="text/css">\r\n';
-                            result += '  <link href="../../dist/libraries/jquery-ui/jquery.ui.theme.css" rel="stylesheet" type="text/css">\r\n';
+                            result += '  <link href="../../dist/libraries/jquery-ui/jquery-ui.min.css" rel="stylesheet" type="text/css">\r\n';
+                            result += '  <link href="../../dist/libraries/jquery-ui/jquery-ui.theme.min.css" rel="stylesheet" type="text/css">\r\n';
                         } else {
-                            result += '  <link href="https://code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css" rel="stylesheet" type="text/css">\r\n';
+                            result += '  <link href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css" rel="stylesheet" type="text/css">\r\n';
                         }
                         break;
                     case 'dialog.base':

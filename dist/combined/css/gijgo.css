@@ -11,8 +11,16 @@
     margin-left: 5px;
 }
 
+.gj-margin-left-10 {
+    margin-left: 10px;
+}
+
 .gj-width-full {
     width: 100%;
+}
+
+.gj-cursor-pointer {
+    cursor: pointer;
 }
 .gj-draggable {
     cursor: move;
@@ -217,14 +225,6 @@ div.gj-dialog-ui-body {
 .gj-dialog-mdl-content {
     background-color: #FFF;
 }
-.gj-cursor-pointer {
-    cursor: pointer;
-}
-
-.gj-width-100 {
-    width: 100%;
-}
-
 DIV.gj-grid-wrapper {
     margin: auto;
     position: relative;

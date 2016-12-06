@@ -80,7 +80,7 @@ gj.grid.plugins.headerFilter = {
 
             for (i = 0; i < data.columns.length; i++) {
                 $th = $('<td/>');
-                $ctrl = $('<input data-field="' + data.columns[i].field + '" class="gj-width-100" />');
+                $ctrl = $('<input data-field="' + data.columns[i].field + '" class="gj-width-full" />');
                 if ('onchange' === data.headerFilter.type) {
                     $ctrl.on('input propertychange', function (e) {
                         gj.grid.plugins.headerFilter.private.reload($grid, $(this));

@@ -11,17 +11,17 @@
     margin-left: 5px;
 }
 
+.gj-margin-left-10 {
+    margin-left: 10px;
+}
+
 .gj-width-full {
     width: 100%;
 }
+
 .gj-cursor-pointer {
     cursor: pointer;
 }
-
-.gj-width-100 {
-    width: 100%;
-}
-
 DIV.gj-grid-wrapper {
     margin: auto;
     position: relative;
