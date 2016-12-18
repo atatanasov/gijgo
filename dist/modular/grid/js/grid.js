@@ -3182,6 +3182,20 @@ gj.grid.plugins.inlineEditing = {
                  * @alias inlineEditing.mode
                  * @type click|dblclick|command
                  * @default 'click'
+                 * @example Double.Click <!-- grid.base -->
+                 * <table id="grid"></table>
+                 * <script>
+                 *     var grid = $('#grid').grid({
+                 *         dataSource: '/DataSources/GetPlayers',
+                 *         primaryKey: 'ID',
+                 *         inlineEditing: { mode: 'dblclick' },
+                 *         columns: [
+                 *             { field: 'ID', width: 34 },
+                 *             { field: 'Name', editor: true },
+                 *             { field: 'PlaceOfBirth', editor: true }
+                 *         ]
+                 *     });
+                 * </script>
                  * @example Command <!-- grid.base -->
                  * <table id="grid"></table>
                  * <script>
@@ -3206,20 +3220,13 @@ gj.grid.plugins.inlineEditing = {
                  *         pager: { limit: 3 }
                  *     });
                  * </script>
-                 * @example Double.Click <!-- grid.base -->
-                 * <table id="grid"></table>
-                 * <script>
-                 *     var grid = $('#grid').grid({
-                 *         dataSource: '/DataSources/GetPlayers',
-                 *         primaryKey: 'ID',
-                 *         inlineEditing: { mode: 'dblclick' },
-                 *         columns: [
-                 *             { field: 'ID', width: 34 },
-                 *             { field: 'Name', editor: true },
-                 *             { field: 'PlaceOfBirth', editor: true }
-                 *         ]
-                 *     });
-                 * </script>
+                 */
+                mode: 'click',
+                
+                /** If set to true, add column with buttons for edit, delete, update and cancel at the end of the grid.
+                 * @alias inlineEditing.buttons
+                 * @type Boolean
+                 * @default false
                  * @example Bootstrap <!-- grid.base, bootstrap -->
                  * <table id="grid"></table>
                  * <script>
@@ -3295,8 +3302,8 @@ gj.grid.plugins.inlineEditing = {
                  *         pager: { limit: 3 }
                  *     });
                  * </script>
-                 */
-                mode: 'click',
+                */
+                buttons: false,
 
                 editButton: '<u class="gj-cursor-pointer">edit</u>',
                 deleteButton: '<u class="gj-cursor-pointer gj-margin-left-5">delete</u>',
