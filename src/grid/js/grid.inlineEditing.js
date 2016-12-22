@@ -1,4 +1,4 @@
-﻿/** 
+/** 
  * @widget Grid 
  * @plugin Inline Editing
  */
@@ -288,8 +288,21 @@ gj.grid.plugins.inlineEditing = {
                 record = $grid.get($cell.parent().data('position'));
                 oldValue = record[column.field];
                 if (cancel !== true && newValue !== oldValue) {
-                    gj.grid.methods.setCellText($displayContainer, column, newValue);
                     record[column.field] = newValue;
+                    if (column.tmpl) {
+                        text = column.tmpl;
+                        column.tmpl.replace(/\{(.+?)\}/g, function ($0, $1) {
+                            text = text.replace($0, gj.grid.methods.formatText(record[$1], column));
+                        });
+                        $displayContainer.html(text);
+                    } else if (column.renderer && typeof (column.renderer) === 'function') {
+                        text = column.renderer(record[column.field], record, $cell, $displayContainer);
+                        if (text) {
+                            $displayContainer.html(text);
+                        }
+                    } else {
+                        gj.grid.methods.setCellText($displayContainer, column, record[column.field]);
+                    }
                     if ($cell.find('span.gj-dirty').length === 0) {
                         if ($cell.css('padding-top') !== '0px') {
                             style += 'margin-top: -' + $cell.css('padding-top') + ';';
