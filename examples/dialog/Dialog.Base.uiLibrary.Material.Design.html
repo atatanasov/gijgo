@@ -3,17 +3,29 @@
   <meta charset="utf-8" />
   <title>Example</title>
   <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
-  <link href="../../dist/modular/dialog/css/dialog.css" rel="stylesheet" type="text/css">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">
   <link href="https://code.getmdl.io/1.2.1/material.indigo-pink.min.css" rel="stylesheet" type="text/css">
+  <link href="../../dist/modular/dialog/css/dialog.css" rel="stylesheet" type="text/css">
   <script src="../../dist/modular/draggable/js/draggable.js"></script>
   <script src="../../dist/modular/dialog/js/dialog.js"></script>
 </head>
 <body>
- <div id="dialog">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
+ <div id="dialog">
+   <div data-role="body">
+     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+     Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+   </div>
+   <div data-role="footer">
+     <div class="mdl-dialog__actions">
+       <button class="mdl-button" onclick="dialog.close()">OK</button>
+       <button class="mdl-button" data-role="close">Cancel</button>
+     </div>
+   </div>
+ </div>
  <script>
-     $("#dialog").dialog({
-         uiLibrary: 'materialdesign'
+     var dialog = $("#dialog").dialog({
+         uiLibrary: 'materialdesign',
+         resizable: true
      });
  </script>
 </body>

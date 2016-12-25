@@ -22,6 +22,10 @@
 .gj-cursor-pointer {
     cursor: pointer;
 }
+
+.gj-font-size-16 {
+    font-size: 16px;
+}
 ul.gj-tree-list {
     list-style: none;
     padding: 0px;
@@ -65,30 +69,30 @@ ul.gj-hidden {
 /*li ul.gj-tree-bootstrap-list-group {
     margin: 5px 0px 0px 0px;
 }*/
-ul.gj-bootstrap-tree-list {
+ul.gj-tree-bootstrap-list {
     padding-left: 0px;
     margin-bottom: 0px;
 }
 
-li ul.gj-bootstrap-tree-list {
+li ul.gj-tree-bootstrap-list {
     padding-left: 0px;
 }
 
-li.gj-bootstrap-tree-item {
+li.gj-tree-bootstrap-item {
     padding: 0px;
 }
 
-ul li.gj-bootstrap-tree-item ul li.gj-bootstrap-tree-item {
+ul li.gj-tree-bootstrap-item ul li.gj-tree-bootstrap-item {
     border-left: 0px;
     border-right: 0px;
 }
 
-ul li.gj-bootstrap-tree-item ul li.gj-bootstrap-tree-item:first-child {
+ul li.gj-tree-bootstrap-item ul li.gj-tree-bootstrap-item:first-child {
     border-top-left-radius: 0px;
     border-top-right-radius: 0px;
 }
 
-ul li.gj-bootstrap-tree-item ul li.gj-bootstrap-tree-item:last-child {
+ul li.gj-tree-bootstrap-item ul li.gj-tree-bootstrap-item:last-child {
     border-bottom: 0px;
     border-bottom-left-radius: 0px;
     border-bottom-right-radius: 0px;
@@ -111,4 +115,27 @@ ul li.gj-bootstrap-tree-item ul li.gj-bootstrap-tree-item:last-child {
 .list-group-item.active ul li, .list-group-item.active:focus ul li, .list-group-item.active:hover ul li {
     text-shadow: none;
     color:initial;
+}
+
+/* Material Design Theme */
+.gj-tree-mdl-item {
+    display: list-item;
+    padding: 4px 4px 4px 18px;
+    min-height: unset;
+}
+
+.gj-tree-mdl-item .gj-tree-mdl-display {
+    display: inline;
+    padding-left: 4px;
+}
+
+.gj-tree-mdl-icon-plus::after {
+    content: "\E145";
+}
+.gj-tree-mdl-icon-minus::after {
+    content: "\E15B";
+}
+
+.gj-tree-mdl-active {
+    background: #b3d4fc;
 }

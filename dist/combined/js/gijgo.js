@@ -498,11 +498,23 @@ gj.dialog.config = {
          *         uiLibrary: 'bootstrap'
          *     });
          * </script>
-         * @example Material.Design <!-- draggable.base, dialog.base, materialdesign -->
-         * <div id="dialog">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
+         * @example Material.Design <!-- materialdesign, draggable.base, dialog.base  -->
+         * <div id="dialog">
+         *   <div data-role="body">
+         *     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+         *     Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+         *   </div>
+         *   <div data-role="footer">
+         *     <div class="mdl-dialog__actions">
+         *       <button class="mdl-button" onclick="dialog.close()">OK</button>
+         *       <button class="mdl-button" data-role="close">Cancel</button>
+         *     </div>
+         *   </div>
+         * </div>
          * <script>
-         *     $("#dialog").dialog({
-         *         uiLibrary: 'materialdesign'
+         *     var dialog = $("#dialog").dialog({
+         *         uiLibrary: 'materialdesign',
+         *         resizable: true
          *     });
          * </script>
          */
@@ -563,7 +575,7 @@ gj.dialog.config = {
             headerTitle: 'mdl-dialog__title gj-dialog-unselectable',
             headerCloseButton: 'gj-dialog-mdl-close',
             body: 'mdl-dialog__content',
-            footer: 'mdl-dialog__actions'
+            footer: 'gj-dialog-footer'
         }
     }
 };
@@ -867,7 +879,7 @@ gj.dialog.methods = {
 
     initialize: function ($dialog) {
         var data = $dialog.data(),
-            $body, $header;
+            $header, $body;
 
         $dialog.addClass(data.style.content);
 
@@ -1060,10 +1072,15 @@ gj.dialog.methods = {
     },
 
     open: function ($dialog) {
+        var $footer;
         if (!$dialog.is(':visible')) {
             gj.dialog.events.opening($dialog);
             $dialog.css('display', 'block');
             $dialog.closest('div[data-role="modal"]').css('display', 'block');
+            $footer = $dialog.children('div[data-role="footer"]');
+            if ($footer.length && $footer.outerHeight()) {
+                $dialog.children('div[data-role="body"]').css('margin-bottom', $footer.outerHeight());
+            }
             gj.dialog.events.opened($dialog);
         }
         return $dialog;
@@ -2277,7 +2294,7 @@ gj.grid.config = {
              * @param {object} $cell - the current table cell presented as jquery object
              * @param {object} $displayEl - inner div element for display of the cell value presented as jquery object
              * @param {object} id - the id of the record
-             * @example sample <!-- grid.base -->
+             * @example sample <!-- grid.base, jqueryui -->
              * <table id="grid" data-source="/DataSources/GetPlayers"></table>
              * <script>
              *     var nameRenderer = function (value, record, $cell, $displayEl) { 
@@ -2624,8 +2641,8 @@ gj.grid.config = {
             header: {
                 cell: '',
                 sortable: 'gj-cursor-pointer',
-                sortAscIcon: 'material-icons gj-grid-mdl-thead-th-sort-icon-asc',
-                sortDescIcon: 'material-icons gj-grid-mdl-thead-th-sort-icon-desc'
+                sortAscIcon: 'material-icons gj-grid-mdl-sort-icon-asc',
+                sortDescIcon: 'material-icons gj-grid-mdl-sort-icon-desc'
             },
             content: {
                 rowHover: '',
@@ -7117,7 +7134,7 @@ gj.tree.config = {
 
         /** The name of the UI library that is going to be in use.
          * @additionalinfo The css files for Bootstrap should be manually included if you use bootstrap as UI Library.
-         * @type (base|bootstrap)
+         * @type (base|bootstrap|materialdesign)
          * @default single
          * @example Bootstrap <!-- bootstrap, tree.base -->
          * <div id="tree"></div>
@@ -7130,6 +7147,19 @@ gj.tree.config = {
          *         ],
          *         width: 500,
          *         uiLibrary: 'bootstrap'
+         *     });
+         * </script>
+         * @example MaterialDesign <!-- materialdesign, tree.base -->
+         * <div id="tree"></div>
+         * <script>
+         *     var tree = $('#tree').tree({
+         *         dataSource: [
+         *             { text: 'North America', children: [ { text: 'USA', children: [ { text: 'California' }, { text: 'Miami' } ] }, { text: 'Canada' },  { text: 'Mexico' } ] },
+         *             { text: 'Europe', children: [ { text: 'France' },  { text: 'Spain' },  { text: 'Italy' } ] },
+         *             { text: 'South America', children: [ { text: 'Brazil' },  { text: 'Argentina' },  { text: 'Columbia' } ] }
+         *         ],
+         *         width: 500,
+         *         uiLibrary: 'materialdesign'
          *     });
          * </script>
          */
@@ -7154,8 +7184,8 @@ gj.tree.config = {
     bootstrap: {
         style: {
             wrapper: 'gj-tree-unselectable',
-            list: 'gj-bootstrap-tree-list list-group',
-            item: 'gj-bootstrap-tree-item list-group-item',
+            list: 'gj-tree-bootstrap-list list-group',
+            item: 'gj-tree-bootstrap-item list-group-item',
             active: 'active',
             leftSpacer: 'gj-tree-bootstrap-left-spacer',
             expander: 'gj-tree-bootstrap-expander glyphicon',
@@ -7166,7 +7196,22 @@ gj.tree.config = {
         }
     },
 
-    jqueryui: {}
+    jqueryui: {},
+
+    materialdesign: {
+        style: {
+            wrapper: 'gj-tree-unselectable',
+            list: 'mdl-list',
+            item: 'gj-tree-mdl-item mdl-list__item',
+            active: 'gj-tree-mdl-active',
+            leftSpacer: '',
+            expander: 'material-icons gj-font-size-16 gj-cursor-pointer',
+            display: 'gj-tree-mdl-display mdl-list__item-primary-content',
+            expandIcon: 'gj-tree-mdl-icon-plus',
+            collapseIcon: 'gj-tree-mdl-icon-minus',
+            leafIcon: undefined
+        }
+    }
 };
 /**
   * @widget Tree

@@ -206,11 +206,11 @@ TABLE.gj-grid-table > tbody > tr > td > div
 
 
 /* Material Design Theme */
-.gj-grid-table .gj-grid-mdl-thead-th-sort-icon-asc::after {
+.gj-grid-table .gj-grid-mdl-sort-icon-asc::after {
     content: "\2191";
     font-size: 16px;
 }
-.gj-grid-table .gj-grid-mdl-thead-th-sort-icon-desc::after {
+.gj-grid-table .gj-grid-mdl-sort-icon-desc::after {
     content: "\2193";
     font-size: 16px;
 }

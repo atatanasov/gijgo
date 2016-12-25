@@ -372,7 +372,7 @@ gj.tree.config = {
 
         /** The name of the UI library that is going to be in use.
          * @additionalinfo The css files for Bootstrap should be manually included if you use bootstrap as UI Library.
-         * @type (base|bootstrap)
+         * @type (base|bootstrap|materialdesign)
          * @default single
          * @example Bootstrap <!-- bootstrap, tree.base -->
          * <div id="tree"></div>
@@ -385,6 +385,19 @@ gj.tree.config = {
          *         ],
          *         width: 500,
          *         uiLibrary: 'bootstrap'
+         *     });
+         * </script>
+         * @example MaterialDesign <!-- materialdesign, tree.base -->
+         * <div id="tree"></div>
+         * <script>
+         *     var tree = $('#tree').tree({
+         *         dataSource: [
+         *             { text: 'North America', children: [ { text: 'USA', children: [ { text: 'California' }, { text: 'Miami' } ] }, { text: 'Canada' },  { text: 'Mexico' } ] },
+         *             { text: 'Europe', children: [ { text: 'France' },  { text: 'Spain' },  { text: 'Italy' } ] },
+         *             { text: 'South America', children: [ { text: 'Brazil' },  { text: 'Argentina' },  { text: 'Columbia' } ] }
+         *         ],
+         *         width: 500,
+         *         uiLibrary: 'materialdesign'
          *     });
          * </script>
          */
@@ -409,8 +422,8 @@ gj.tree.config = {
     bootstrap: {
         style: {
             wrapper: 'gj-tree-unselectable',
-            list: 'gj-bootstrap-tree-list list-group',
-            item: 'gj-bootstrap-tree-item list-group-item',
+            list: 'gj-tree-bootstrap-list list-group',
+            item: 'gj-tree-bootstrap-item list-group-item',
             active: 'active',
             leftSpacer: 'gj-tree-bootstrap-left-spacer',
             expander: 'gj-tree-bootstrap-expander glyphicon',
@@ -421,7 +434,22 @@ gj.tree.config = {
         }
     },
 
-    jqueryui: {}
+    jqueryui: {},
+
+    materialdesign: {
+        style: {
+            wrapper: 'gj-tree-unselectable',
+            list: 'mdl-list',
+            item: 'gj-tree-mdl-item mdl-list__item',
+            active: 'gj-tree-mdl-active',
+            leftSpacer: '',
+            expander: 'material-icons gj-font-size-16 gj-cursor-pointer',
+            display: 'gj-tree-mdl-display mdl-list__item-primary-content',
+            expandIcon: 'gj-tree-mdl-icon-plus',
+            collapseIcon: 'gj-tree-mdl-icon-minus',
+            leafIcon: undefined
+        }
+    }
 };
 /**
   * @widget Tree

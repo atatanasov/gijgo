@@ -1,0 +1,25 @@
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Example</title>
+  <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">
+  <link href="https://code.getmdl.io/1.2.1/material.indigo-pink.min.css" rel="stylesheet" type="text/css">
+  <link href="../../dist/modular/tree/css/tree.css" rel="stylesheet" type="text/css">
+  <script src="../../dist/modular/tree/js/tree.js"></script>
+</head>
+<body>
+ <div id="tree"></div>
+ <script>
+     var tree = $('#tree').tree({
+         dataSource: [
+             { text: 'North America', children: [ { text: 'USA', children: [ { text: 'California' }, { text: 'Miami' } ] }, { text: 'Canada' },  { text: 'Mexico' } ] },
+             { text: 'Europe', children: [ { text: 'France' },  { text: 'Spain' },  { text: 'Italy' } ] },
+             { text: 'South America', children: [ { text: 'Brazil' },  { text: 'Argentina' },  { text: 'Columbia' } ] }
+         ],
+         width: 500,
+         uiLibrary: 'materialdesign'
+     });
+ </script>
+</body>
+</html>
