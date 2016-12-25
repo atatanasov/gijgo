@@ -3,6 +3,8 @@
   <meta charset="utf-8" />
   <title>Example</title>
   <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" rel="stylesheet" type="text/css">
   <link href="../../dist/modular/grid/css/grid.css" rel="stylesheet" type="text/css">
   <script src="../../dist/modular/grid/js/grid.js"></script>
 </head>
@@ -21,6 +23,7 @@
          dataSource: data,
          primaryKey: 'ID',
          inlineEditing: { mode: 'command' },
+         uiLibrary: 'bootstrap',
          columns: [
              { field: 'ID', width: 34 },
              { field: 'Name', editor: true },

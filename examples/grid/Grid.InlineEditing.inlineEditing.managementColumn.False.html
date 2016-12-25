@@ -4,8 +4,6 @@
   <title>Example</title>
   <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
   <link href="../../dist/modular/grid/css/grid.css" rel="stylesheet" type="text/css">
-  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" type="text/css">
-  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" rel="stylesheet" type="text/css">
   <script src="../../dist/modular/grid/js/grid.js"></script>
 </head>
 <body>
@@ -22,15 +20,13 @@
      grid = $('#grid').grid({
          dataSource: data,
          primaryKey: 'ID',
-         inlineEditing: { mode: 'command' },
-         uiLibrary: 'bootstrap',
+         inlineEditing: { mode: 'command', managementColumn: false },
          columns: [
              { field: 'ID', width: 34 },
              { field: 'Name', editor: true },
              { field: 'PlaceOfBirth', editor: true },
-             { width: 190, align: 'center', renderer: gj.grid.plugins.inlineEditing.renderers.editManager }
-         ],
-         pager: { limit: 3 }
+             { width: 100, align: 'center', renderer: gj.grid.plugins.inlineEditing.renderers.editManager }
+         ]
      });
  </script>
 </body>

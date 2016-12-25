@@ -377,57 +377,27 @@ gj.grid.methods = {
     },
 
     renderCell: function ($grid, $cell, column, record, id, mode) {
-        var text, $wrapper, key, $checkbox;
+        var $displayEl, key;
 
         if (!$cell || $cell.length === 0) {
             $cell = $('<td/>').css('text-align', column.align || 'left');
-            $wrapper = $('<div data-role="display" />');
+            $displayEl = $('<div data-role="display" />');
             if (column.cssClass) {
                 $cell.addClass(column.cssClass);
             }
-            $cell.append($wrapper);
+            $cell.append($displayEl);
             mode = 'create';
         } else {
-            $wrapper = $cell.find('div[data-role="display"]');
+            $displayEl = $cell.find('div[data-role="display"]');
             mode = 'update';
         }
 
-        if ('checkbox' === column.type) {
-            if ('create' === mode) {
-                $checkbox = $('<input />').attr('type', 'checkbox').val(id);
-                column.role && $checkbox.attr('data-role', column.role);
-                $wrapper.append($checkbox);
-            } else {
-                $wrapper.find('input[type="checkbox"]').val(id).prop('checked', false);
-            }
-        } else if ('icon' === column.type) {
-            if ('create' === mode) {
-                $wrapper.append($('<span/>')
-                    .addClass($grid.data().uiLibrary === 'bootstrap' ? 'glyphicon' : 'ui-icon')
-                    .addClass(column.icon).css({ cursor: 'pointer' }));
-                column.stopPropagation = true;
-            }
-        } else if (column.tmpl) {
-            text = column.tmpl;
-            column.tmpl.replace(/\{(.+?)\}/g, function ($0, $1) {
-                text = text.replace($0, gj.grid.methods.formatText(record[$1], column));
-            });
-            $wrapper.html(text);
-        } else if (column.renderer && typeof (column.renderer) === 'function') {
-            text = column.renderer(record[column.field], record, $cell, $wrapper, id, $grid);
-            if (text) {
-                $wrapper.html(text);
-            }
-        } else {
-            gj.grid.methods.setCellText($wrapper, column, record[column.field]);
-        }
-        if (column.tooltip && 'create' === mode) {
-            $wrapper.attr('title', column.tooltip);
-        }
+        gj.grid.methods.renderDisplayElement($grid, $displayEl, column, record, id, mode);
+
         //remove all event handlers
         if ('update' === mode) {
             $cell.off();
-            $wrapper.off();
+            $displayEl.off();
         }
         if (column.events) {
             for (key in column.events) {
@@ -440,7 +410,7 @@ gj.grid.methods = {
             $cell.hide();
         }
 
-        gj.grid.events.cellDataBound($grid, $wrapper, id, column, record);
+        gj.grid.events.cellDataBound($grid, $displayEl, id, column, record);
 
         return $cell;
     },
@@ -454,12 +424,45 @@ gj.grid.methods = {
         };
     },
 
-    setCellText: function ($wrapper, column, value) {
-        var text = gj.grid.methods.formatText(value, column);
-        if (!column.tooltip && text) {
-            $wrapper.attr('title', text);
+    renderDisplayElement: function ($grid, $displayEl, column, record, id, mode) {
+        var text, $checkbox;
+
+        if ('checkbox' === column.type) {
+            if ('create' === mode) {
+                $checkbox = $('<input />').attr('type', 'checkbox').val(id);
+                column.role && $checkbox.attr('data-role', column.role);
+                $displayEl.append($checkbox);
+            } else {
+                $displayEl.find('input[type="checkbox"]').val(id).prop('checked', false);
+            }
+        } else if ('icon' === column.type) {
+            if ('create' === mode) {
+                $displayEl.append($('<span/>')
+                    .addClass($grid.data().uiLibrary === 'bootstrap' ? 'glyphicon' : 'ui-icon')
+                    .addClass(column.icon).css({ cursor: 'pointer' }));
+                column.stopPropagation = true;
+            }
+        } else if (column.tmpl) {
+            text = column.tmpl;
+            column.tmpl.replace(/\{(.+?)\}/g, function ($0, $1) {
+                text = text.replace($0, gj.grid.methods.formatText(record[$1], column));
+            });
+            $displayEl.html(text);
+        } else if (column.renderer && typeof (column.renderer) === 'function') {
+            text = column.renderer(record[column.field], record, $displayEl.parent(), $displayEl, id, $grid);
+            if (text) {
+                $displayEl.html(text);
+            }
+        } else {
+            text = gj.grid.methods.formatText(record[column.field], column);
+            if (!column.tooltip && text) {
+                $displayEl.attr('title', text);
+            }
+            $displayEl.text(text);
         }
-        $wrapper.text(text);
+        if (column.tooltip && 'create' === mode) {
+            $displayEl.attr('title', column.tooltip);
+        }
     },
 
     formatText: function (text, column) {
@@ -701,20 +704,20 @@ gj.grid.methods = {
         position = gj.grid.methods.getColumnPosition($grid.data('columns'), field);
         if (position > -1) {
             $row = gj.grid.methods.getRowById($grid, id);
-            $result = $row.find('td:eq(' + position + ') div');
+            $result = $row.find('td:eq(' + position + ') div[data-role="display"]');
         }
         return $result;
     },
 
     setCellContent: function ($grid, id, field, value) {
-        var column, $cellWrapper = gj.grid.methods.getCell($grid, id, field);
-        if ($cellWrapper) {
-            $cellWrapper.empty();
+        var column, $displayEl = gj.grid.methods.getCell($grid, id, field);
+        if ($displayEl) {
+            $displayEl.empty();
             if (typeof (value) === 'object') {
-                $cellWrapper.append(value);
+                $displayEl.append(value);
             } else {
                 column = gj.grid.methods.getColumnInfo($grid, field);
-                gj.grid.methods.setCellText($cellWrapper, column, value);
+                gj.grid.methods.renderDisplayElement($grid, $displayEl, column, $grid.getById(id), id, 'update');
             }
         }
     },
