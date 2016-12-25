@@ -741,9 +741,13 @@ ul li.gj-tree-bootstrap-item ul li.gj-tree-bootstrap-item:last-child {
 }
 
 /* Material Design Theme */
+.gj-tree-mdl-list {
+    padding: 0px;
+}
+
 .gj-tree-mdl-item {
     display: list-item;
-    padding: 4px 4px 4px 18px;
+    padding: 4px 4px 4px 16px;
     min-height: unset;
 }
 

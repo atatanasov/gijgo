@@ -3736,8 +3736,8 @@ gj.grid.methods = {
 
     createDefaultSorter: function (direction, column) {
         return function (recordA, recordB) {
-            var a = recordA[column.field] || '',
-                b = recordB[column.field] || '';
+            var a = (recordA[column.field] || '').toString(),
+                b = (recordB[column.field] || '').toString();
             return (direction === 'asc') ? a.localeCompare(b) : b.localeCompare(a);
         };
     },
@@ -7201,7 +7201,7 @@ gj.tree.config = {
     materialdesign: {
         style: {
             wrapper: 'gj-tree-unselectable',
-            list: 'mdl-list',
+            list: 'gj-tree-mdl-list mdl-list',
             item: 'gj-tree-mdl-item mdl-list__item',
             active: 'gj-tree-mdl-active',
             leftSpacer: '',

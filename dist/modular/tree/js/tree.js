@@ -439,7 +439,7 @@ gj.tree.config = {
     materialdesign: {
         style: {
             wrapper: 'gj-tree-unselectable',
-            list: 'mdl-list',
+            list: 'gj-tree-mdl-list mdl-list',
             item: 'gj-tree-mdl-item mdl-list__item',
             active: 'gj-tree-mdl-active',
             leftSpacer: '',

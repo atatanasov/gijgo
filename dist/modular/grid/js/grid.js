@@ -2190,8 +2190,8 @@ gj.grid.methods = {
 
     createDefaultSorter: function (direction, column) {
         return function (recordA, recordB) {
-            var a = recordA[column.field] || '',
-                b = recordB[column.field] || '';
+            var a = (recordA[column.field] || '').toString(),
+                b = (recordB[column.field] || '').toString();
             return (direction === 'asc') ? a.localeCompare(b) : b.localeCompare(a);
         };
     },
