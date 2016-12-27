@@ -9,7 +9,7 @@
 <body>
  <table id="grid"></table>
  <script>
-     function edit($container, currentValue) {
+     function edit($container, currentValue, record) {
          $container.append('<input type="text" value="' + currentValue + '"/>');
      }
      $('#grid').grid({

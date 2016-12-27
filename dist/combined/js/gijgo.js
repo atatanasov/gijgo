@@ -4743,10 +4743,10 @@ gj.grid.plugins.inlineEditing.config = {
              * @alias column.editor
              * @type function|boolean
              * @default undefined
-             * @example sample <!-- grid.base, grid.inlineEditing -->
+             * @example sample <!-- grid.base -->
              * <table id="grid"></table>
              * <script>
-             *     function edit($container, currentValue) {
+             *     function edit($container, currentValue, record) {
              *         $container.append('<input type="text" value="' + currentValue + '"/>');
              *     }
              *     $('#grid').grid({
@@ -4972,25 +4972,31 @@ gj.grid.plugins.inlineEditing.config = {
 
 gj.grid.plugins.inlineEditing.private = {
     editMode: function ($grid, $cell, column, record) {
-        var $displayContainer, $editorContainer, $editorField, value;
+        var $displayContainer, $editorContainer, $editorField, value, data = $grid.data();
         if ($cell.attr('data-mode') !== 'edit' && column.editor) {
+            if (data.inlineEditing.mode !== 'command') {
+                $('div[data-role="edit"]:visible').parent('td').each(function () {
+                    $(this).find('input, select').triggerHandler('blur');
+                });
+            }
             $displayContainer = $cell.find('div[data-role="display"]').hide();
-            $editorContainer = $cell.find('div[data-role="edit"]');
-            value = record[column.field] || $displayContainer.html();
-            if ($editorContainer && $editorContainer.length) {
-                $editorContainer.show();
-                $editorField = $editorContainer.find('input, select').first();
-                $editorField.val(value);
-            } else {
+            $editorContainer = $cell.find('div[data-role="edit"]').show();
+            if ($editorContainer.length === 0) {
                 $editorContainer = $('<div data-role="edit" />');
                 $cell.append($editorContainer);
+            }
+            value = record[column.field] || $displayContainer.html();
+            $editorField = $editorContainer.find('input, select').first();
+            if ($editorField.length) {
+                $editorField.val(value);
+            } else {
                 if (typeof (column.editor) === 'function') {
-                    column.editor($editorContainer, value);
+                    column.editor($editorContainer, value, record);
                 } else if (typeof (column.editor) === 'boolean') {
                     $editorContainer.append('<input type="text" value="' + value + '" class="gj-width-full"/>');
                 }
                 $editorField = $editorContainer.find('input, select').first();
-                if ($grid.data().inlineEditing.mode !== 'command') {
+                if (data.inlineEditing.mode !== 'command') {
                     $editorField.on('blur', function (e) {
                         gj.grid.plugins.inlineEditing.private.displayMode($grid, $cell, column);
                     });
@@ -5007,18 +5013,21 @@ gj.grid.plugins.inlineEditing.private = {
     },
 
     setCaretAtEnd: function (elem) {
-        var elemLen = elem.value.length;            
-        if (document.selection) { // For IE Only
-            elem.focus();
-            var oSel = document.selection.createRange();
-            oSel.moveStart('character', -elemLen);
-            oSel.moveStart('character', elemLen);
-            oSel.moveEnd('character', 0);
-            oSel.select();
-        } else if (elem.selectionStart || elem.selectionStart == '0') { // Firefox/Chrome                
-            elem.selectionStart = elemLen;
-            elem.selectionEnd = elemLen;
-            elem.focus();
+        var elemLen;
+        if (elem) {
+            elemLen = elem.value.length;
+            if (document.selection) { // For IE Only
+                elem.focus();
+                var oSel = document.selection.createRange();
+                oSel.moveStart('character', -elemLen);
+                oSel.moveStart('character', elemLen);
+                oSel.moveEnd('character', 0);
+                oSel.select();
+            } else if (elem.selectionStart || elem.selectionStart == '0') { // Firefox/Chrome                
+                elem.selectionStart = elemLen;
+                elem.selectionEnd = elemLen;
+                elem.focus();
+            }
         }
     },
 
