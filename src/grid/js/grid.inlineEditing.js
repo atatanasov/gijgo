@@ -455,7 +455,7 @@ gj.grid.plugins.inlineEditing.public = {
      *     grid = $('#grid').grid({
      *         primaryKey: 'ID',
      *         dataSource: '/DataSources/GetPlayers',
-     *         inlineEditing: { mode: 'command' },
+     *         inlineEditing: { mode: 'command', managementColumn: false },
      *         columns: [ 
      *             { field: 'ID', width: 24 },
      *             { field: 'Name', editor: true }, 
@@ -505,7 +505,7 @@ gj.grid.plugins.inlineEditing.public = {
      *     grid = $('#grid').grid({
      *         primaryKey: 'ID',
      *         dataSource: '/DataSources/GetPlayers',
-     *         inlineEditing: { mode: 'command' },
+     *         inlineEditing: { mode: 'command', managementColumn: false },
      *         columns: [ 
      *             { field: 'ID', width: 24 },
      *             { field: 'Name', editor: true }, 
@@ -555,7 +555,7 @@ gj.grid.plugins.inlineEditing.public = {
      *     grid = $('#grid').grid({
      *         primaryKey: 'ID',
      *         dataSource: '/DataSources/GetPlayers',
-     *         inlineEditing: { mode: 'command' },
+     *         inlineEditing: { mode: 'command', managementColumn: false },
      *         columns: [ 
      *             { field: 'ID', width: 24 },
      *             { field: 'Name', editor: true }, 

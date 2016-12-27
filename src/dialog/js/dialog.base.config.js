@@ -78,8 +78,10 @@ gj.dialog.config = {
          *     <div data-role="header"><h4 data-role="title">Dialog</h4></div>
          *     <div data-role="body">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
          *     <div data-role="footer">
-         *         <button onclick="dialog.close()" class="mdl-button">Ok</button>
-         *         <button onclick="dialog.close()" class="mdl-button">Cancel</button>
+         *         <div class="mdl-dialog__actions">
+         *             <button onclick="dialog.close()" class="mdl-button">Ok</button>
+         *             <button onclick="dialog.close()" class="mdl-button">Cancel</button>
+         *         </div>
          *     </div>
          * </div>
          * <script>

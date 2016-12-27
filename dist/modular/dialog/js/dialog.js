@@ -278,8 +278,10 @@ gj.dialog.config = {
          *     <div data-role="header"><h4 data-role="title">Dialog</h4></div>
          *     <div data-role="body">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
          *     <div data-role="footer">
-         *         <button onclick="dialog.close()" class="mdl-button">Ok</button>
-         *         <button onclick="dialog.close()" class="mdl-button">Cancel</button>
+         *         <div class="mdl-dialog__actions">
+         *             <button onclick="dialog.close()" class="mdl-button">Ok</button>
+         *             <button onclick="dialog.close()" class="mdl-button">Cancel</button>
+         *         </div>
          *     </div>
          * </div>
          * <script>
@@ -1073,16 +1075,14 @@ gj.dialog.methods = {
 
     open: function ($dialog) {
         var $footer;
-        if (!$dialog.is(':visible')) {
-            gj.dialog.events.opening($dialog);
-            $dialog.css('display', 'block');
-            $dialog.closest('div[data-role="modal"]').css('display', 'block');
-            $footer = $dialog.children('div[data-role="footer"]');
-            if ($footer.length && $footer.outerHeight()) {
-                $dialog.children('div[data-role="body"]').css('margin-bottom', $footer.outerHeight());
-            }
-            gj.dialog.events.opened($dialog);
+        gj.dialog.events.opening($dialog);
+        $dialog.css('display', 'block');
+        $dialog.closest('div[data-role="modal"]').css('display', 'block');
+        $footer = $dialog.children('div[data-role="footer"]');
+        if ($footer.length && $footer.outerHeight()) {
+            $dialog.children('div[data-role="body"]').css('margin-bottom', $footer.outerHeight());
         }
+        gj.dialog.events.opened($dialog);
         return $dialog;
     },
 
