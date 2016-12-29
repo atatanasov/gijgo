@@ -3087,7 +3087,8 @@ gj.grid.methods = {
                 $cell.addClass(style.sortable);
                 $cell.on('click', gj.grid.methods.createSortHandler($grid, $cell, columns[i]));
             }
-            if ('checkbox' === data.selectionMethod && 'multiple' === data.selectionType && 'checkbox' === columns[i].type) {
+            if ('checkbox' === data.selectionMethod && 'multiple' === data.selectionType &&
+                'checkbox' === columns[i].type && 'selectRow' === columns[i].role) {
                 $checkAllBoxes = $cell.find('input[data-role="selectAll"]');
                 if ($checkAllBoxes.length === 0) {
                     $checkAllBoxes = $('<input type="checkbox" data-role="selectAll" />');
