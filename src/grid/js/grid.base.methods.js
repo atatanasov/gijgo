@@ -867,14 +867,15 @@ gj.grid.methods = {
     },
 
     addRow: function ($grid, record) {
-        var totalRecords = $grid.data('totalRecords') + 1;
+        var data = $grid.data();
+        data.totalRecords = $grid.data('totalRecords') + 1;
         gj.grid.events.dataBinding($grid, [record]);
-        $grid.data('records').push(record);
-        $grid.data('totalRecords', totalRecords);
+        data.records.push(record);
+        data.dataSource.push(record);
         if (gj.grid.methods.isLastRecordVisible($grid)) {
             gj.grid.methods.renderRow($grid, null, record, $grid.count() - 1);
         }
-        gj.grid.events.dataBound($grid, [record], totalRecords);
+        gj.grid.events.dataBound($grid, [record], data.totalRecords);
         return $grid;
     },
 
