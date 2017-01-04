@@ -73,15 +73,17 @@ gj.dialog.widget.prototype.getHTMLConfig = gj.dialog.methods.getHTMLConfig;
 
 (function ($) {
     $.fn.dialog = function (method) {
-        var $widget;
-        if (typeof method === 'object' || !method) {
-            return new gj.dialog.widget(this, arguments);
-        } else {
-            $widget = new gj.dialog.widget(this, null);
-            if ($widget[method]) {
-                return $widget[method].apply(this, Array.prototype.slice.call(arguments, 1));
+        var $widget;        
+        if (this && this.length) {
+            if (typeof method === 'object' || !method) {
+                return new gj.dialog.widget(this, arguments);
             } else {
-                throw 'Method ' + method + ' does not exist.';
+                $widget = new gj.dialog.widget(this, null);
+                if ($widget[method]) {
+                    return $widget[method].apply(this, Array.prototype.slice.call(arguments, 1));
+                } else {
+                    throw 'Method ' + method + ' does not exist.';
+                }
             }
         }
     };

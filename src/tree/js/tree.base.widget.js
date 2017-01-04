@@ -449,15 +449,17 @@ gj.tree.widget.constructor = gj.tree.widget;
 
 (function ($) {
     $.fn.tree = function (method) {
-        var $widget;
-        if (typeof method === 'object' || !method) {
-            return new gj.tree.widget(this, arguments);
-        } else {
-            $widget = new gj.tree.widget(this, null);
-            if ($widget[method]) {
-                return $widget[method].apply(this, Array.prototype.slice.call(arguments, 1));
+        var $widget;        
+        if (this && this.length) {
+            if (typeof method === 'object' || !method) {
+                return new gj.tree.widget(this, arguments);
             } else {
-                throw 'Method ' + method + ' does not exist.';
+                $widget = new gj.tree.widget(this, null);
+                if ($widget[method]) {
+                    return $widget[method].apply(this, Array.prototype.slice.call(arguments, 1));
+                } else {
+                    throw 'Method ' + method + ' does not exist.';
+                }
             }
         }
     };

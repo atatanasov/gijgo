@@ -445,14 +445,16 @@ gj.droppable.widget.constructor = gj.droppable.widget;
 (function ($) {
     $.fn.droppable = function (method) {
         var $widget;
-        if (typeof method === 'object' || !method) {
-            return new gj.droppable.widget(this, arguments);
-        } else {
-            $widget = new gj.droppable.widget(this, null);
-            if ($widget[method]) {
-                return $widget[method].apply(this, Array.prototype.slice.call(arguments, 1));
+        if (this && this.length) {
+            if (typeof method === 'object' || !method) {
+                return new gj.droppable.widget(this, arguments);
             } else {
-                throw 'Method ' + method + ' does not exist.';
+                $widget = new gj.droppable.widget(this, null);
+                if ($widget[method]) {
+                    return $widget[method].apply(this, Array.prototype.slice.call(arguments, 1));
+                } else {
+                    throw 'Method ' + method + ' does not exist.';
+                }
             }
         }
     };

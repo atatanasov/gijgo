@@ -2905,14 +2905,16 @@ gj.grid.widget.prototype.getHTMLConfig = gj.grid.methods.getHTMLConfig;
 (function ($) {
     $.fn.grid = function (method) {
         var $widget;
-        if (typeof method === 'object' || !method) {
-            return new gj.grid.widget(this, arguments);
-        } else {
-            $widget = new gj.grid.widget(this, null);
-            if ($widget[method]) {
-                return $widget[method].apply(this, Array.prototype.slice.call(arguments, 1));
+        if (this && this.length) {
+            if (typeof method === 'object' || !method) {
+                return new gj.grid.widget(this, arguments);
             } else {
-                throw 'Method ' + method + ' does not exist.';
+                $widget = new gj.grid.widget(this, null);
+                if ($widget[method]) {
+                    return $widget[method].apply(this, Array.prototype.slice.call(arguments, 1));
+                } else {
+                    throw 'Method ' + method + ' does not exist.';
+                }
             }
         }
     };
@@ -3432,7 +3434,7 @@ gj.grid.plugins.inlineEditing.private = {
         if ($cell.attr('data-mode') !== 'edit' && column.editor) {
             if (data.inlineEditing.mode !== 'command') {
                 $('div[data-role="edit"]:visible').parent('td').each(function () {
-                    $(this).find('input, select').triggerHandler('blur');
+                    $(this).find('input, select, textarea').triggerHandler('blur');
                 });
             }
             $displayContainer = $cell.find('div[data-role="display"]').hide();
@@ -3442,7 +3444,7 @@ gj.grid.plugins.inlineEditing.private = {
                 $cell.append($editorContainer);
             }
             value = record[column.field] || $displayContainer.html();
-            $editorField = $editorContainer.find('input, select').first();
+            $editorField = $editorContainer.find('input, select, textarea').first();
             if ($editorField.length) {
                 $editorField.val(value);
             } else {
@@ -3451,7 +3453,7 @@ gj.grid.plugins.inlineEditing.private = {
                 } else if (typeof (column.editor) === 'boolean') {
                     $editorContainer.append('<input type="text" value="' + value + '" class="gj-width-full"/>');
                 }
-                $editorField = $editorContainer.find('input, select').first();
+                $editorField = $editorContainer.find('input, select, textarea').first();
                 if (data.inlineEditing.mode !== 'command') {
                     $editorField.on('blur', function (e) {
                         gj.grid.plugins.inlineEditing.private.displayMode($grid, $cell, column);
@@ -3492,7 +3494,7 @@ gj.grid.plugins.inlineEditing.private = {
         if ($cell.attr('data-mode') === 'edit') {
             $editorContainer = $cell.find('div[data-role="edit"]');
             $displayContainer = $cell.find('div[data-role="display"]');
-            newValue = $editorContainer.find('input, select').first().val();
+            newValue = $editorContainer.find('input, select, textarea').first().val();
             position = $cell.parent().data('position');
             record = $grid.get(position);
             oldValue = record[column.field];
