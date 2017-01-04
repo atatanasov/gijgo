@@ -1523,7 +1523,7 @@ gj.droppable.methods = {
         var $dropEl = this;
 
         gj.widget.prototype.init.call(this, jsConfig, 'droppable');
-        $dragEl.attr('data-droppable', 'true');
+        $dropEl.attr('data-droppable', 'true');
         
         gj.documentManager.subscribeForEvent('mousedown', $dropEl.data('guid'), gj.droppable.methods.createMouseDownHandler($dropEl));
         gj.documentManager.subscribeForEvent('mousemove', $dropEl.data('guid'), gj.droppable.methods.createMouseMoveHandler($dropEl));
