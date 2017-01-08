@@ -1,6 +1,6 @@
 {
   "name": "gijgo",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Gijgo is a set of free open source javascript controls distributed under MIT License. All widgets are high performance and built on top of the jQuery JavaScript Library. Gijgo is compatible with jQuery UI, Bootstrap and Foundation.",
   "main": [
     "./dist/combined/js/gijgo.js",

@@ -1,8 +1,8 @@
 {
   "name": "gijgo",
-  "version": "1.1.0",
-  "description": "jQuery Grid by Gijgo.com is a plug-in for the jQuery Javascript library. It is a very fast and extandable tool,  and will add advanced interaction controls to any HTML table. This plugin support pagination, javascript and server side data sources, jQuery UI and Bootstrap. Free open source tool distributed under MIT License.",
-  "main": "grid.js",
+  "version": "1.2.0",
+  "description": "Gijgo is a set of free open source javascript controls distributed under MIT License. All widgets are high performance, built on top of the jQuery JavaScript Library and with built-in support for Bootstrap and jQuery UI. They are designed to saves you time and scales with your development process.",
+  "main": "js/gijgo.js",
   "homepage": "http://gijgo.com/",
   "bugs": {
     "email": "nascovt@gmail.com"

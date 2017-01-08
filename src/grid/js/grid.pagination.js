@@ -277,7 +277,7 @@ gj.grid.plugins.pagination = {
                     data.params[data.defaultParams.limit] = data.pager.limit;
                 }
 
-                $row = $('<tr/>');
+                $row = $('<tr data-role="pager"/>');
                 $cell = $('<th/>').addClass(data.style.pager.cell);
                 $row.append($cell);
 
@@ -452,7 +452,7 @@ gj.grid.plugins.pagination = {
         },
 
         updatePagerColSpan: function ($grid) {
-            var $cell = $grid.find('tfoot > tr > th');
+            var $cell = $grid.find('tfoot > tr[data-role="pager"] > th');
             if ($cell && $cell.length) {
                 $cell.attr('colspan', gj.grid.methods.countVisibleColumns($grid));
             }
