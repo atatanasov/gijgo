@@ -150,6 +150,39 @@ gj.tree.config = {
          */
         childrenField: 'children',
 
+        /** Icon field name.
+         * @type string
+         * @default undefined
+         * @example Bootstrap <!-- bootstrap, tree.base -->
+         * <div id="tree"></div>
+         * <script>
+         *     var tree = $('#tree').tree({
+         *         iconField: 'icon',
+         *         uiLibrary: 'bootstrap',
+         *         dataSource: [ { text: 'folder', icon: 'glyphicon glyphicon-folder-close', children: [ { text: 'file', icon: 'glyphicon glyphicon-file' } ] } ]
+         *     });
+         * </script>
+         * @example Font.Awesome <!-- tree.base  -->
+         * <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+         * <div id="tree"></div>
+         * <script>
+         *     var tree = $('#tree').tree({
+         *         iconField: 'icon',
+         *         dataSource: [ { text: 'folder', icon: 'fa fa-folder', children: [ { text: 'file', icon: 'fa fa-file' } ] } ]
+         *     });
+         * </script>
+         * @example Material.Design <!-- materialdesign, tree.base -->
+         * <div id="tree"></div>
+         * <script>
+         *     var tree = $('#tree').tree({
+         *         iconField: 'icon',
+         *         uiLibrary: 'materialdesign',
+         *         dataSource: [ { text: 'folder', icon: '<i class="material-icons">folder</i>', children: [ { text: 'file', icon: '<i class="material-icons">insert_drive_file</i>' } ] } ]
+         *     });
+         * </script>
+         */
+        iconField: undefined,
+
         /** Width of the tree.
          * @type number
          * @default undefined
@@ -211,7 +244,6 @@ gj.tree.config = {
             item: 'gj-tree-item',
             active: 'gj-tree-base-active',
             leftSpacer: undefined,
-            expander: 'gj-tree-expander',
             display: 'gj-tree-display',
             expandIcon: undefined,
             collapseIcon: undefined,
@@ -226,10 +258,9 @@ gj.tree.config = {
             item: 'gj-tree-bootstrap-item list-group-item',
             active: 'active',
             leftSpacer: 'gj-tree-bootstrap-left-spacer',
-            expander: 'gj-tree-bootstrap-expander glyphicon',
             display: 'gj-tree-bootstrap-display',
-            expandIcon: 'glyphicon-plus',
-            collapseIcon: 'glyphicon-minus',
+            expandIcon: 'glyphicon glyphicon-plus',
+            collapseIcon: 'glyphicon glyphicon-minus',
             leafIcon: undefined
         }
     },
@@ -243,10 +274,9 @@ gj.tree.config = {
             item: 'gj-tree-mdl-item mdl-list__item',
             active: 'gj-tree-mdl-active',
             leftSpacer: '',
-            expander: 'material-icons gj-font-size-16 gj-cursor-pointer',
-            display: 'gj-tree-mdl-display mdl-list__item-primary-content',
-            expandIcon: 'gj-tree-mdl-icon-plus',
-            collapseIcon: 'gj-tree-mdl-icon-minus',
+            display: 'mdl-list__item-primary-content',
+            expandIcon: 'material-icons mdl-list__item-icon gj-cursor-pointer gj-tree-mdl-icon-plus',
+            collapseIcon: 'material-icons mdl-list__item-icon gj-cursor-pointer gj-tree-mdl-icon-minus',
             leafIcon: undefined
         }
     }

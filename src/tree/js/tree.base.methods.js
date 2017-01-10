@@ -86,8 +86,16 @@ gj.tree.methods = {
             }
         }
 
-        $expander.addClass(data.style.expander).on('click', gj.tree.methods.expanderClickHandler($tree));
+        $expander.on('click', gj.tree.methods.expanderClickHandler($tree));
         $node.append($expander);
+
+        if (data.iconField && nodeData.data[data.iconField]) {
+            if (nodeData.data[data.iconField].indexOf('<') === 0) {
+                $node.append(nodeData.data[data.iconField]);
+            } else {
+                $node.append('<span data-role="icon" class="' + nodeData.data[data.iconField] + '"></span>');
+            }
+        }
 
         $display.addClass(data.style.display).on('click', gj.tree.methods.displayClickHandler($tree));
         $node.append($display);

@@ -1,0 +1,19 @@
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Example</title>
+  <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+  <link href="../../dist/modular/tree/css/tree.css" rel="stylesheet" type="text/css">
+  <script src="../../dist/modular/tree/js/tree.js"></script>
+</head>
+<body>
+ <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+ <div id="tree"></div>
+ <script>
+     var tree = $('#tree').tree({
+         iconField: 'icon',
+         dataSource: [ { text: 'folder', icon: 'fa fa-folder', children: [ { text: 'file', icon: 'fa fa-file' } ] } ]
+     });
+ </script>
+</body>
+</html>

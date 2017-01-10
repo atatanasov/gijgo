@@ -1,0 +1,21 @@
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Example</title>
+  <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" rel="stylesheet" type="text/css">
+  <link href="../../dist/modular/tree/css/tree.css" rel="stylesheet" type="text/css">
+  <script src="../../dist/modular/tree/js/tree.js"></script>
+</head>
+<body>
+ <div id="tree"></div>
+ <script>
+     var tree = $('#tree').tree({
+         iconField: 'icon',
+         uiLibrary: 'bootstrap',
+         dataSource: [ { text: 'folder', icon: 'glyphicon glyphicon-folder-close', children: [ { text: 'file', icon: 'glyphicon glyphicon-file' } ] } ]
+     });
+ </script>
+</body>
+</html>

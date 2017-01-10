@@ -659,10 +659,15 @@ li.gj-tree-item {
     padding: 2px 0px 2px 16px;
 }
 
-.gj-tree-expander {
+li.gj-tree-item  [data-role="expander"] {
     padding-right: 4px;
     cursor: pointer;
     width: 10px;
+    float: left;
+}
+
+li.gj-tree-item  [data-role="icon"] {
+    padding-right: 4px;
     float: left;
 }
 
@@ -726,14 +731,19 @@ ul li.gj-tree-bootstrap-item ul li.gj-tree-bootstrap-item:last-child {
     width: 30px;
 }
 
-.gj-tree-bootstrap-expander {
-    padding: 10px 15px;
+ul li.gj-tree-bootstrap-item [data-role="expander"] {
+    padding: 10px 0px 10px 15px;
     cursor: pointer;
 }
+
+ul li.gj-tree-bootstrap-item [data-role="icon"] {
+    padding: 10px 0px 10px 15px;
+}
+
 .gj-tree-bootstrap-display {
     cursor: pointer;
     display: inline-block;
-    padding: 10px 0px 10px 0px;
+    padding: 10px 0px 10px 15px;
 }
 .list-group-item.active ul li, .list-group-item.active:focus ul li, .list-group-item.active:hover ul li {
     text-shadow: none;
@@ -743,16 +753,29 @@ ul li.gj-tree-bootstrap-item ul li.gj-tree-bootstrap-item:last-child {
 /* Material Design Theme */
 .gj-tree-mdl-list {
     padding: 0px;
+    list-style-type: none;
+}
+
+.gj-tree-mdl-list .gj-tree-mdl-list {
+    margin-left: 5px;
 }
 
 .gj-tree-mdl-item {
     display: list-item;
+    list-style-type: none;
     padding: 4px 4px 4px 16px;
     min-height: unset;
 }
 
-.gj-tree-mdl-item .gj-tree-mdl-display {
-    display: inline;
+li.gj-tree-mdl-item [data-role="expander"] {
+    cursor: pointer;
+    float: left;
+    height: 24px;
+}
+
+.gj-tree-mdl-item [data-role="display"] {
+    display: inline-block;
+    line-height: 24px;
     padding-left: 4px;
 }
 
