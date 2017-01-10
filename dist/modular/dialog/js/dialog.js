@@ -2,7 +2,7 @@
  * Gijgo Dialog v1.2.0
  * http://gijgo.com/dialog
  *
- * Copyright 2014, 2016 gijgo.com
+ * Copyright 2014, 2017 gijgo.com
  * Released under the MIT license
  */
 if (typeof (gj) === 'undefined') {

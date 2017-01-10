@@ -1,6 +1,6 @@
 ﻿/*
- * Gijgo Draggable v1.2.0
- * http://gijgo.com/draggable
+ * Gijgo Checkbox v1.2.0
+ * http://gijgo.com/checkbox
  *
  * Copyright 2014, 2017 gijgo.com
  * Released under the MIT license
