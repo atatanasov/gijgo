@@ -1524,7 +1524,7 @@ gj.grid.methods = {
             $grid.prepend($thead);
         }
 
-        $row = $('<tr/>');
+        $row = $('<tr data-role="caption" />');
         for (i = 0; i < columns.length; i += 1) {
             $cell = $('<th data-field="' + (columns[i].field || '') + '" />');
             if (columns[i].width) {
@@ -4917,12 +4917,22 @@ gj.grid.plugins.resizableColumns = {
             /** If set to true, users can resize columns by dragging the edges (resize handles) of their header cells.
              * @type boolean
              * @default false
-             * @example sample <!-- grid.base, draggable.base, grid.resizableColumns -->
+             * @example Base.Theme <!-- grid.base, draggable.base -->
              * <table id="grid"></table>
              * <script>
              *     var grid = $('#grid').grid({
              *         dataSource: '/DataSources/GetPlayers',
              *         resizableColumns: true,
+             *         columns: [ { field: 'ID', width: 34 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
+             *     });
+             * </script>
+             * @example Bootstrap <!-- bootstrap, grid.base, draggable.base -->
+             * <table id="grid"></table>
+             * <script>
+             *     var grid = $('#grid').grid({
+             *         dataSource: '/DataSources/GetPlayers',
+             *         resizableColumns: true,
+             *         uiLibrary: 'bootstrap',
              *         columns: [ { field: 'ID', width: 34 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
              *     });
              * </script>
@@ -4933,13 +4943,14 @@ gj.grid.plugins.resizableColumns = {
 
     private: {
         init: function ($grid, config) {
-            var $columns, $column, i, $wrapper, $resizer;
-            $columns = $grid.find('thead tr th');
+            var $columns, $column, i, $wrapper, $resizer, marginRight;
+            $columns = $grid.find('thead tr[data-role="caption"] th');
             if ($columns.length) {
                 for (i = 0; i < $columns.length - 1; i++) {
                     $column = $($columns[i]);
-                    $wrapper = $('<div class="gj-grid-base-column-resizer-wrapper" />');
-                    $resizer = $('<span class="gj-grid-base-column-resizer" />');
+                    $wrapper = $('<div class="gj-grid-column-resizer-wrapper" />');
+                    marginRight = parseInt($column.css('padding-right'), 10) + 3;
+                    $resizer = $('<span class="gj-grid-column-resizer" />').css('margin-right', '-' + marginRight + 'px');
                     if ($.fn.draggable) {
                         $resizer.draggable({
                             start: function () {
@@ -4949,6 +4960,9 @@ gj.grid.plugins.resizableColumns = {
                             stop: function () {
                                 $grid.removeClass('gj-unselectable');
                                 $grid.removeClass('gj-grid-resize-cursor');
+                                this.style.removeProperty('top');
+                                this.style.removeProperty('left');
+                                this.style.removeProperty('position');
                             },
                             drag: gj.grid.plugins.resizableColumns.private.createResizeHandle($grid, $column, config.columns[i])
                         });
@@ -4960,9 +4974,12 @@ gj.grid.plugins.resizableColumns = {
 
         createResizeHandle: function ($grid, $column, column) {
             return function (e, offset) {
-                var newWidth = $column.width() + offset.left + parseInt($column.css('paddingLeft').replace('px', ''), 10);
-                column.width = newWidth;
-                $column.width(newWidth);
+                var newWidth;
+                if (offset && offset.left) {
+                    newWidth = parseInt($column.attr('width'), 10) + offset.left;
+                    column.width = newWidth;
+                    $column.attr('width', newWidth);
+                }
             };
         }
     },

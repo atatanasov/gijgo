@@ -1,0 +1,23 @@
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Example</title>
+  <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" rel="stylesheet" type="text/css">
+  <link href="../../dist/modular/grid/css/grid.css" rel="stylesheet" type="text/css">
+  <script src="../../dist/modular/grid/js/grid.js"></script>
+  <script src="../../dist/modular/draggable/js/draggable.js"></script>
+</head>
+<body>
+ <table id="grid"></table>
+ <script>
+     var grid = $('#grid').grid({
+         dataSource: '/DataSources/GetPlayers',
+         resizableColumns: true,
+         uiLibrary: 'bootstrap',
+         columns: [ { field: 'ID', width: 34 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
+     });
+ </script>
+</body>
+</html>

@@ -603,7 +603,7 @@ TABLE.gj-grid-table tfoot tr th.gj-grid-bootstrap-tfoot-cell {
     line-height: 30px;
     background-color: #f5f5f5;
 }
-.gj-grid-base-table thead tr th div.gj-grid-base-column-resizer-wrapper {
+.gj-grid-table thead tr th div.gj-grid-column-resizer-wrapper {
     position: relative;
     width: 100%;
     height: 0px; 
@@ -612,9 +612,8 @@ TABLE.gj-grid-table tfoot tr th.gj-grid-bootstrap-tfoot-cell {
     padding: 0px;
 }
 
-span.gj-grid-base-column-resizer {
+span.gj-grid-column-resizer {
     position: absolute;
-    margin-right: -4px;
     right: 0px;
     width: 5px;
     top: -100px;

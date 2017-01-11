@@ -119,7 +119,7 @@ gj.grid.methods = {
             $grid.prepend($thead);
         }
 
-        $row = $('<tr/>');
+        $row = $('<tr data-role="caption" />');
         for (i = 0; i < columns.length; i += 1) {
             $cell = $('<th data-field="' + (columns[i].field || '') + '" />');
             if (columns[i].width) {
