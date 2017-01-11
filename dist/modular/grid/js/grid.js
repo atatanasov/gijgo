@@ -4940,6 +4940,16 @@ gj.grid.plugins.resizableColumns = {
              *         columns: [ { field: 'ID', width: 34 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
              *     });
              * </script>
+             * @example Material.Design <!-- materialdesign, grid.base, draggable.base -->
+             * <table id="grid"></table>
+             * <script>
+             *     var grid = $('#grid').grid({
+             *         dataSource: '/DataSources/GetPlayers',
+             *         resizableColumns: true,
+             *         uiLibrary: 'materialdesign',
+             *         columns: [ { field: 'ID', width: 34 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
+             *     });
+             * </script>
              */
             resizableColumns: false
         }
@@ -4978,9 +4988,12 @@ gj.grid.plugins.resizableColumns = {
 
         createResizeHandle: function ($grid, $column, column) {
             return function (e, offset) {
-                var newWidth;
+                var newWidth, currentWidth = parseInt($column.attr('width'), 10);
+                if (!currentWidth) {
+                    currentWidth = $column.outerWidth();
+                }
                 if (offset && offset.left) {
-                    newWidth = parseInt($column.attr('width'), 10) + offset.left;
+                    newWidth = currentWidth + offset.left;
                     column.width = newWidth;
                     $column.attr('width', newWidth);
                 }
