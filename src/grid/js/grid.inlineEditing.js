@@ -310,7 +310,11 @@ gj.grid.plugins.inlineEditing.private = {
                     });
                 }
             }
-            gj.grid.plugins.inlineEditing.private.setCaretAtEnd($editorField[0]);
+            if ($editorField.prop('tagName').toUpperCase() === "INPUT" && $editorField.prop('type').toUpperCase() === 'TEXT') {
+                gj.grid.plugins.inlineEditing.private.setCaretAtEnd($editorField[0]);
+            } else {
+                $editorField.focus();
+            }
             $cell.attr('data-mode', 'edit');
         }
     },
