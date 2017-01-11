@@ -139,6 +139,7 @@
                 gj.dialog.events.resizeStart($dialog);
             },
             'stop': function () {
+                this.removeAttribute('style');
                 $dialog.removeClass('gj-unselectable');
                 gj.dialog.events.resizeStop($dialog);
             }
