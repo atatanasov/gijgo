@@ -239,7 +239,7 @@ gj.tree.config = {
         autoGenId: 1,
 
         style: {
-            wrapper: 'gj-tree-unselectable',
+            wrapper: 'gj-unselectable',
             list: 'gj-tree-list',
             item: 'gj-tree-item',
             active: 'gj-tree-base-active',
@@ -253,7 +253,7 @@ gj.tree.config = {
 
     bootstrap: {
         style: {
-            wrapper: 'gj-tree-unselectable',
+            wrapper: 'gj-unselectable',
             list: 'gj-tree-bootstrap-list list-group',
             item: 'gj-tree-bootstrap-item list-group-item',
             active: 'active',
@@ -269,7 +269,7 @@ gj.tree.config = {
 
     materialdesign: {
         style: {
-            wrapper: 'gj-tree-unselectable',
+            wrapper: 'gj-unselectable',
             list: 'gj-tree-mdl-list mdl-list',
             item: 'gj-tree-mdl-item mdl-list__item',
             active: 'gj-tree-mdl-active',

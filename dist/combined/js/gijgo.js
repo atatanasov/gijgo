@@ -526,7 +526,7 @@ gj.dialog.config = {
             modal: 'gj-modal',
             content: 'gj-content',
             header: 'gj-header',
-            headerTitle: 'gj-title',
+            headerTitle: 'gj-title gj-unselectable',
             headerCloseButton: 'gj-close',
             body: 'gj-body',
             footer: 'gj-dialog-footer gj-footer'
@@ -562,7 +562,7 @@ gj.dialog.config = {
             modal: 'reveal-modal-bg',
             content: 'reveal-modal gj-dialog-fd-content',
             header: '',
-            headerTitle: 'gj-dialog-fd-title gj-dialog-unselectable',
+            headerTitle: 'gj-dialog-fd-title gj-unselectable',
             headerCloseButton: 'close-reveal-modal right gj-dialog-fd-close',
             body: 'gj-dialog-fd-body',
             footer: 'gj-dialog-footer gj-dialog-fd-footer'
@@ -574,7 +574,7 @@ gj.dialog.config = {
             modal: 'gj-modal',
             content: 'mdl-dialog gj-dialog-mdl-content',
             header: '',
-            headerTitle: 'mdl-dialog__title gj-dialog-unselectable',
+            headerTitle: 'mdl-dialog__title gj-unselectable',
             headerCloseButton: 'gj-dialog-mdl-close',
             body: 'mdl-dialog__content',
             footer: 'gj-dialog-footer'
@@ -982,11 +982,11 @@ gj.dialog.methods = {
         $dialog.draggable({
             handle: $header,
             start: function () {
-                $dialog.addClass('gj-dialog-unselectable');
+                $dialog.addClass('gj-unselectable');
                 gj.dialog.events.dragStart($dialog);
             },
             stop: function () {
-                $dialog.removeClass('gj-dialog-unselectable');
+                $dialog.removeClass('gj-unselectable');
                 gj.dialog.events.dragStop($dialog);
             }
         });
@@ -996,11 +996,11 @@ gj.dialog.methods = {
         var config = {
             'drag': gj.dialog.methods.resize,
             'start': function () {
-                $dialog.addClass('gj-dialog-unselectable');
+                $dialog.addClass('gj-unselectable');
                 gj.dialog.events.resizeStart($dialog);
             },
             'stop': function () {
-                $dialog.removeClass('gj-dialog-unselectable');
+                $dialog.removeClass('gj-unselectable');
                 gj.dialog.events.resizeStop($dialog);
             }
         };
@@ -6495,11 +6495,11 @@ gj.grid.plugins.resizableColumns = {
                     if ($.fn.draggable) {
                         $resizer.draggable({
                             start: function () {
-                                $grid.addClass('gj-grid-unselectable');
+                                $grid.addClass('gj-unselectable');
                                 $grid.addClass('gj-grid-resize-cursor');
                             },
                             stop: function () {
-                                $grid.removeClass('gj-grid-unselectable');
+                                $grid.removeClass('gj-unselectable');
                                 $grid.removeClass('gj-grid-resize-cursor');
                             },
                             drag: gj.grid.plugins.resizableColumns.private.createResizeHandle($grid, $column, config.columns[i])
@@ -7272,7 +7272,7 @@ gj.tree.config = {
         autoGenId: 1,
 
         style: {
-            wrapper: 'gj-tree-unselectable',
+            wrapper: 'gj-unselectable',
             list: 'gj-tree-list',
             item: 'gj-tree-item',
             active: 'gj-tree-base-active',
@@ -7286,7 +7286,7 @@ gj.tree.config = {
 
     bootstrap: {
         style: {
-            wrapper: 'gj-tree-unselectable',
+            wrapper: 'gj-unselectable',
             list: 'gj-tree-bootstrap-list list-group',
             item: 'gj-tree-bootstrap-item list-group-item',
             active: 'active',
@@ -7302,7 +7302,7 @@ gj.tree.config = {
 
     materialdesign: {
         style: {
-            wrapper: 'gj-tree-unselectable',
+            wrapper: 'gj-unselectable',
             list: 'gj-tree-mdl-list mdl-list',
             item: 'gj-tree-mdl-item mdl-list__item',
             active: 'gj-tree-mdl-active',

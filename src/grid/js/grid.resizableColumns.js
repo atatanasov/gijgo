@@ -34,11 +34,11 @@ gj.grid.plugins.resizableColumns = {
                     if ($.fn.draggable) {
                         $resizer.draggable({
                             start: function () {
-                                $grid.addClass('gj-grid-unselectable');
+                                $grid.addClass('gj-unselectable');
                                 $grid.addClass('gj-grid-resize-cursor');
                             },
                             stop: function () {
-                                $grid.removeClass('gj-grid-unselectable');
+                                $grid.removeClass('gj-unselectable');
                                 $grid.removeClass('gj-grid-resize-cursor');
                             },
                             drag: gj.grid.plugins.resizableColumns.private.createResizeHandle($grid, $column, config.columns[i])

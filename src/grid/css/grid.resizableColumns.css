@@ -21,12 +21,3 @@ span.gj-grid-base-column-resizer {
 .gj-grid-resize-cursor {
     cursor: e-resize;
 }
-
-.gj-grid-unselectable {
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-}

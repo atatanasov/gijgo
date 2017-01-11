@@ -7,6 +7,15 @@
     cursor: pointer;
 }
 
+.gj-unselectable {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
 .gj-margin-left-5 {
     margin-left: 5px;
 }
@@ -26,6 +35,7 @@
 .gj-font-size-16 {
     font-size: 16px;
 }
+
 ul.gj-tree-list {
     list-style: none;
     padding: 0px;
@@ -59,15 +69,6 @@ ul.gj-hidden {
 
 .gj-tree-base-active > span[data-role="display"] {
     background-color: #ddd;
-}
-
-.gj-tree-unselectable {
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
 }
 
 /* Bootstrap Theme */
