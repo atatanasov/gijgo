@@ -1,0 +1,51 @@
+.gj-button {
+    background-color: #f5f5f5;
+    border: 1px solid #ddd;
+    color: #000;
+    border-radius: 3px;
+    padding: 6px 10px;
+    cursor: pointer;
+}
+
+.gj-unselectable {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.gj-margin-left-5 {
+    margin-left: 5px;
+}
+
+.gj-margin-left-10 {
+    margin-left: 10px;
+}
+
+.gj-width-full {
+    width: 100%;
+}
+
+.gj-cursor-pointer {
+    cursor: pointer;
+}
+
+.gj-font-size-16 {
+    font-size: 16px;
+}
+
+.gj-checkbox {
+    border: 1px solid #000;
+    width: 19px;
+    height: 19px;
+}
+
+.gj-checkbox span[data-role="display"] {
+    width: 100%;
+    text-align: center;
+    display: inline-block;
+    font-size: 14px;
+    cursor: pointer;
+}

@@ -9,21 +9,14 @@ if (typeof (gj.checkbox) === 'undefined') {
 
 gj.checkbox.config = {
     base: {
-        /** If specified, restricts dragging from starting unless the mousedown occurs on the specified element.
-         * Only elements that descend from the checkbox element are permitted.
+        /** 
          * @type Number
          * @default undefined
-         * @example sample <!-- checkbox.base -->
-         * <style>
-         * .element { border: 1px solid #999; width: 300px; height: 200px; }
-         * .handle { background-color: #DDD; cursor: move; width: 200px; margin: 5px auto 0px auto; text-align: center; padding: 5px; }
-         * </style>
-         * <div id="element" class="element">
-         *   <div id="handle" class="handle">Handle for dragging</div>
-         * </div>
+         * @example sample <!-- checkbox -->
+         * <div id="element"></div>
          * <script>
          *     $('#element').checkbox({
-         *         handle: $('#handle')
+         *         width: 100
          *     });
          * </script>
          */
@@ -33,22 +26,57 @@ gj.checkbox.config = {
 
 gj.checkbox.methods = {
     init: function (jsConfig) {
-        var $handleEl, $dragEl = this;
+        var $chkb = this;
 
         gj.widget.prototype.init.call(this, jsConfig, 'checkbox');
-        $dragEl.attr('data-checkbox', 'true');
+        $chkb.attr('data-checkbox', 'true');
 
-        return $dragEl;
+        gj.checkbox.methods.initialize($chkb);
+
+        return $chkb;
     },
 
-    destroy: function ($checkboxEl) {
-        if ($checkboxEl.attr('data-checkbox') === 'true') {
-            $checkboxEl.removeData();
-            $checkboxEl.removeAttr('data-guid');
-            $checkboxEl.removeAttr('data-checkbox');
-            $checkboxEl.off();
+    initialize: function($chkb) {
+        var $display = $('<span data-role="display"></span>');
+        $chkb.addClass('gj-checkbox').append($display);
+    },
+
+    state: function ($chkb, value) {
+        var $display = $chkb.find('span[data-role="display"]');
+        if (value) {
+            if ('checked' === value) {
+                $display.text('✓');
+                $chkb.data('state', 'checked');
+            } else if ('unchecked' === value) {
+                $display.text('');
+                $chkb.data('state', 'unchecked');
+            } else if ('indeterminate' === value) {
+                $display.text('■');
+                $chkb.data('state', 'indeterminate');
+            }
+            return $chkb;
+        } else {
+            return $chkb.data('state');
         }
-        return $checkboxEl;
+    },
+
+    toggle: function ($chkb) {
+        if ($chkb.data('state') == 'checked') {
+            $chkb.state('unchecked');
+        } else {
+            $chkb.state('checked');
+        }
+        return $chkb;
+    },
+
+    destroy: function ($chkb) {
+        if ($chkb.attr('data-checkbox') === 'true') {
+            $chkb.removeData();
+            $chkb.removeAttr('data-guid');
+            $chkb.removeAttr('data-checkbox');
+            $chkb.off();
+        }
+        return $chkb;
     }
 };
 
@@ -58,12 +86,9 @@ gj.checkbox.events = {
      *
      * @event drag
      * @param {object} e - event data
-     * @param {object} offset - Current offset position as { top, left } object.
-     * @example sample <!-- checkbox.base -->
-     * <style>
-     * .element { border: 1px solid #999; width: 300px; height: 200px; cursor: move; text-align: center; background-color: #DDD; }
-     * </style>
-     * <div id="element" class="element">drag me</div>
+     * @param {object} state - Current offset position as { top, left } object.
+     * @example sample <!-- checkbox -->
+     * <div id="element">drag me</div>
      * <script>
      *     $('#element').checkbox({
      *         drag: function (e, offset) {
@@ -72,8 +97,8 @@ gj.checkbox.events = {
      *     });
      * </script>
      */
-    check: function () {
-        return $dragEl.triggerHandler('check');
+    change: function (state) {
+        return $dragEl.triggerHandler('change', [state]);
     }
 };
 
@@ -82,17 +107,50 @@ gj.checkbox.widget = function ($element, arguments) {
     var self = this,
         methods = gj.checkbox.methods;
 
+    /** Toogle the state of the checkbox.
+     * @method
+     * @fires change
+     * @return checked|unchecked|indeterminate|jquery
+     * @example sample <!-- checkbox -->
+     * <button onclick="$chkb.toggle()">toggle</button>
+     * <hr/>
+     * <div id="element"></div>
+     * <script>
+     *     var $chkb = $('#element').checkbox();
+     * </script>
+     */
+    self.toggle = function () {
+        return methods.toggle(this);
+    };
+
+    /** Return state or set state if you pass parameter.
+     * @method
+     * @fires change
+     * @param {string} value - State of the checkbox. Accept only checked, unchecked or indeterminate as values.
+     * @return checked|unchecked|indeterminate|jquery
+     * @example sample <!-- checkbox -->
+     * <button onclick="$chkb.state('checked')">Set to checked</button>
+     * <button onclick="$chkb.state('unchecked')">Set to unchecked</button>
+     * <button onclick="$chkb.state('indeterminate')">Set to indeterminate</button>
+     * <button onclick="alert($chkb.state())">Get state</button>
+     * <hr/>
+     * <div id="element"></div>
+     * <script>
+     *     var $chkb = $('#element').checkbox();
+     * </script>
+     */
+    self.state = function (value) {
+        return methods.state(this, value);
+    };
+
     /** Remove checkbox functionality from the element.
      * @method
      * @return jquery element
-     * @example sample <!-- checkbox.base -->
-     * <style>
-     * .element { border: 1px solid #999; width: 300px; height: 200px; cursor: move; text-align: center; background-color: #DDD; }
-     * </style>
-     * <button onclick="dragEl.destroy()">Destroy</button>
-     * <div id="element" class="element">Drag Me</div>
+     * @example sample <!-- checkbox -->
+     * <button onclick="$chkb.destroy()">Destroy</button>
+     * <div id="element"></div>
      * <script>
-     *     var dragEl = $('#element').checkbox();
+     *     var $chkb = $('#element').checkbox();
      * </script>
      */
     self.destroy = function () {

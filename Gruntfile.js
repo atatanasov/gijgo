@@ -19,7 +19,8 @@
                     { src: ['src/draggable/js/*.js'], dest: 'examples/draggable/' },
                     { src: ['src/droppable/js/*.js'], dest: 'examples/droppable/' },
                     { src: ['src/grid/js/*.js'], dest: 'examples/grid/' },
-                    { src: ['src/tree/js/*.js'], dest: 'examples/tree/' }
+                    { src: ['src/tree/js/*.js'], dest: 'examples/tree/' },
+                    { src: ['src/checkbox/js/*.js'], dest: 'examples/checkbox/' }
                 ]
             }
         },
@@ -57,6 +58,12 @@
                     'dist/modular/tree/css/tree.code.css': ['src/tree/css/tree.base.css']
                 }
             },
+            checkbox: {
+                files: {
+                    'dist/modular/checkbox/js/checkbox.code.js': ['src/checkbox/js/checkbox.base.js'],
+                    'dist/modular/checkbox/css/checkbox.code.css': ['src/checkbox/css/checkbox.base.css']
+                }
+            },
             final: {
                 files: {
                     'dist/modular/draggable/js/draggable.js': ['src/draggable/js/header.txt', 'src/widget.js', 'dist/modular/draggable/js/draggable.code.js'],
@@ -67,9 +74,11 @@
                     'dist/modular/grid/css/grid.css': ['src/widget.css', 'dist/modular/grid/css/grid.code.css'],
                     'dist/modular/tree/js/tree.js': ['src/tree/js/header.txt', 'src/widget.js', 'dist/modular/tree/js/tree.code.js'],
                     'dist/modular/tree/css/tree.css': ['src/widget.css', 'dist/modular/tree/css/tree.code.css'],
+                    'dist/modular/checkbox/js/checkbox.js': ['src/checkbox/js/header.txt', 'src/widget.js', 'dist/modular/checkbox/js/checkbox.code.js'],
+                    'dist/modular/checkbox/css/checkbox.css': ['src/widget.css', 'dist/modular/checkbox/css/checkbox.code.css'],
 
-                    'dist/combined/js/gijgo.js': ['src/header.txt', 'src/widget.js', 'dist/modular/dialog/js/dialog.code.js', 'dist/modular/draggable/js/draggable.code.js', 'dist/modular/droppable/js/droppable.code.js', 'dist/modular/grid/js/grid.code.js', 'dist/modular/tree/js/tree.code.js'],
-                    'dist/combined/css/gijgo.css': ['src/widget.css', 'dist/modular/dialog/css/dialog.code.css', 'dist/modular/grid/css/grid.code.css', 'dist/modular/tree/css/tree.code.css']
+                    'dist/combined/js/gijgo.js': ['src/header.txt', 'src/widget.js', 'dist/modular/dialog/js/dialog.code.js', 'dist/modular/draggable/js/draggable.code.js', 'dist/modular/droppable/js/droppable.code.js', 'dist/modular/grid/js/grid.code.js', 'dist/modular/tree/js/tree.code.js', 'dist/modular/checkbox/js/checkbox.code.js'],
+                    'dist/combined/css/gijgo.css': ['src/widget.css', 'dist/modular/dialog/css/dialog.code.css', 'dist/modular/grid/css/grid.code.css', 'dist/modular/tree/css/tree.code.css', 'dist/modular/checkbox/css/checkbox.code.css']
                 }
             }
         },
@@ -303,6 +312,9 @@ var writer = {
                     case 'tree.base':
                         result += '  <link href="../../dist/modular/tree/css/tree.css" rel="stylesheet" type="text/css">\r\n';
                         break;
+                    case 'checkbox':
+                        result += '  <link href="../../dist/modular/checkbox/css/checkbox.css" rel="stylesheet" type="text/css">\r\n';
+                        break;
                 }
             }
             for (i = 0; i < names.length; i++) {
@@ -322,6 +334,9 @@ var writer = {
                         break;
                     case 'tree.base':
                         result += '  <script src="../../dist/modular/tree/js/tree.js"></script>\r\n';
+                        break;
+                    case 'checkbox':
+                        result += '  <script src="../../dist/modular/checkbox/js/checkbox.js"></script>\r\n';
                         break;
                 }
             }

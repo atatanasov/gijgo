@@ -1,0 +1,19 @@
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Example</title>
+  <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+  <link href="../../dist/modular/checkbox/css/checkbox.css" rel="stylesheet" type="text/css">
+  <script src="../../dist/modular/checkbox/js/checkbox.js"></script>
+</head>
+<body>
+ <div id="element">drag me</div>
+ <script>
+     $('#element').checkbox({
+         drag: function (e, offset) {
+             $('body').append('<div>The drag event is fired. offset { top:' + offset.top + ', left: ' + offset.left + '}.</div>');
+         }
+     });
+ </script>
+</body>
+</html>
