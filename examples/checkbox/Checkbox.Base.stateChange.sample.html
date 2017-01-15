@@ -7,10 +7,12 @@
   <script src="../../dist/modular/checkbox/js/checkbox.js"></script>
 </head>
 <body>
- <div id="element"></div>
+ <input type="checkbox" id="checkbox"/>
  <script>
-     $('#element').checkbox({
-         width: 100
+     $('#checkbox').checkbox({
+         stateChange: function (e, state) {
+             alert(state);
+         }
      });
  </script>
 </body>

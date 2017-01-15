@@ -10,7 +10,7 @@
  <div id="tree" data-source="/DataSources/GetCountries"></div>
  <script>
      var tree = $('#tree').tree();
-     tree.on('unselect', function (e, node, id, record) {
+     tree.on('unselect', function (e, node, id) {
          alert('unselect is fired.');
      });
  </script>

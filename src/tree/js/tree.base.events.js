@@ -71,18 +71,17 @@ gj.tree.events = {
      * @param {object} e - event data
      * @param {object} node - the node as jquery object
      * @param {string} id - the id of the record
-     * @param {object} record - the data of the node
      * @example sample <!-- tree.base -->
      * <div id="tree" data-source="/DataSources/GetCountries"></div>
      * <script>
      *     var tree = $('#tree').tree();
-     *     tree.on('select', function (e, node, id, record) {
+     *     tree.on('select', function (e, node, id) {
      *         alert('select is fired.');
      *     });
      * </script>
      */
-    select: function ($tree, $node, id, record) {
-        return $tree.triggerHandler('select', [$node, id, record]);
+    select: function ($tree, $node, id) {
+        return $tree.triggerHandler('select', [$node, id]);
     },
 
     /**
@@ -91,18 +90,17 @@ gj.tree.events = {
      * @param {object} e - event data
      * @param {object} node - the node as jquery object
      * @param {string} id - the id of the record
-     * @param {object} record - the data of the node
      * @example sample <!-- tree.base -->
      * <div id="tree" data-source="/DataSources/GetCountries"></div>
      * <script>
      *     var tree = $('#tree').tree();
-     *     tree.on('unselect', function (e, node, id, record) {
+     *     tree.on('unselect', function (e, node, id) {
      *         alert('unselect is fired.');
      *     });
      * </script>
      */
-    unselect: function ($tree, $node, id, record) {
-        return $tree.triggerHandler('unselect', [$node, id, record]);
+    unselect: function ($tree, $node, id) {
+        return $tree.triggerHandler('unselect', [$node, id]);
     },
 
     /**
@@ -120,8 +118,8 @@ gj.tree.events = {
      *     });
      * </script>
      */
-    expand: function ($tree, $node, id, record) {
-        return $tree.triggerHandler('expand', [$node, id, record]);
+    expand: function ($tree, $node, id) {
+        return $tree.triggerHandler('expand', [$node, id]);
     },
 
     /**
@@ -139,8 +137,8 @@ gj.tree.events = {
      *     });
      * </script>
      */
-    collapse: function ($tree, $node, id, record) {
-        return $tree.triggerHandler('collapse', [$node, id, record]);
+    collapse: function ($tree, $node, id) {
+        return $tree.triggerHandler('collapse', [$node, id]);
     },
 
     /**
@@ -160,5 +158,26 @@ gj.tree.events = {
      */
     destroying: function ($tree) {
         return $tree.triggerHandler('destroying');
+    },
+
+    /**
+     * Event fires when the data is bound to node.
+     * @event nodeDataBound
+     * @param {object} e - event data
+     * @param {object} node - the node as jquery object
+     * @param {string} id - the id of the record
+     * @example Event.Sample <!-- tree.base -->
+     * <div id="tree" data-source="/DataSources/GetCountries"></div>
+     * <script>
+     *     var tree = $('#tree').tree();
+     *     tree.on('nodeDataBound', function (e, node, id) {
+     *         if ((parseInt(id, 10) % 2) === 0) {
+     *             node.css('background-color', 'red');
+     *         }
+     *     });
+     * </script>
+     */
+    nodeDataBound: function ($tree, $node, id) {
+        return $tree.triggerHandler('nodeDataBound', [$node, id]);
     }
 }

@@ -209,18 +209,6 @@ if (typeof (gj.checkbox) === 'undefined') {
 
 gj.checkbox.config = {
     base: {
-        /** 
-         * @type Number
-         * @default undefined
-         * @example sample <!-- checkbox -->
-         * <div id="element"></div>
-         * <script>
-         *     $('#element').checkbox({
-         *         width: 100
-         *     });
-         * </script>
-         */
-        width: undefined
     }
 };
 
@@ -236,27 +224,35 @@ gj.checkbox.methods = {
         return $chkb;
     },
 
-    initialize: function($chkb) {
-        var $display = $('<span data-role="display"></span>');
-        $chkb.addClass('gj-checkbox').append($display);
+    initialize: function ($chkb) {
+        $chkb.on('change', function (e) {
+            $chkb.state(this.checked ? 'checked' : 'unchecked');
+        });
     },
 
     state: function ($chkb, value) {
-        var $display = $chkb.find('span[data-role="display"]');
         if (value) {
             if ('checked' === value) {
-                $display.text('✓');
-                $chkb.data('state', 'checked');
+                $chkb.prop('indeterminate', false);
+                $chkb.prop('checked', true);
             } else if ('unchecked' === value) {
-                $display.text('');
-                $chkb.data('state', 'unchecked');
+                $chkb.prop('indeterminate', false);
+                $chkb.prop('checked', false);
             } else if ('indeterminate' === value) {
-                $display.text('■');
-                $chkb.data('state', 'indeterminate');
+                $chkb.prop('checked', true);
+                $chkb.prop('indeterminate', true);
             }
+            gj.checkbox.events.stateChange($chkb, value);
             return $chkb;
         } else {
-            return $chkb.data('state');
+            if ($chkb.prop('indeterminate')) {
+                value = 'indeterminate';
+            } else if ($chkb.prop('checked')) {
+                value = 'checked';
+            } else {
+                value = 'unchecked';
+            }
+            return value;
         }
     },
 
@@ -282,23 +278,23 @@ gj.checkbox.methods = {
 
 gj.checkbox.events = {
     /**
-     * Triggered while the mouse is moved during the dragging, immediately before the current move happens.
+     * Triggered when the state of the checkbox is changed
      *
      * @event drag
      * @param {object} e - event data
-     * @param {object} state - Current offset position as { top, left } object.
+     * @param {object} state - The new state of the checkbox.
      * @example sample <!-- checkbox -->
-     * <div id="element">drag me</div>
+     * <input type="checkbox" id="checkbox"/>
      * <script>
-     *     $('#element').checkbox({
-     *         drag: function (e, offset) {
-     *             $('body').append('<div>The drag event is fired. offset { top:' + offset.top + ', left: ' + offset.left + '}.</div>');
+     *     $('#checkbox').checkbox({
+     *         stateChange: function (e, state) {
+     *             alert(state);
      *         }
      *     });
      * </script>
      */
-    change: function (state) {
-        return $dragEl.triggerHandler('change', [state]);
+    stateChange: function ($chkb, state) {
+        return $chkb.triggerHandler('stateChange', [state]);
     }
 };
 
@@ -314,9 +310,9 @@ gj.checkbox.widget = function ($element, arguments) {
      * @example sample <!-- checkbox -->
      * <button onclick="$chkb.toggle()">toggle</button>
      * <hr/>
-     * <div id="element"></div>
+     * <input type="checkbox" id="checkbox"/>
      * <script>
-     *     var $chkb = $('#element').checkbox();
+     *     var $chkb = $('#checkbox').checkbox();
      * </script>
      */
     self.toggle = function () {
@@ -334,9 +330,9 @@ gj.checkbox.widget = function ($element, arguments) {
      * <button onclick="$chkb.state('indeterminate')">Set to indeterminate</button>
      * <button onclick="alert($chkb.state())">Get state</button>
      * <hr/>
-     * <div id="element"></div>
+     * <input type="checkbox" id="checkbox"/>
      * <script>
-     *     var $chkb = $('#element').checkbox();
+     *     var $chkb = $('#checkbox').checkbox();
      * </script>
      */
     self.state = function (value) {
@@ -348,9 +344,9 @@ gj.checkbox.widget = function ($element, arguments) {
      * @return jquery element
      * @example sample <!-- checkbox -->
      * <button onclick="$chkb.destroy()">Destroy</button>
-     * <div id="element"></div>
+     * <input type="checkbox" id="checkbox"/>
      * <script>
-     *     var $chkb = $('#element').checkbox();
+     *     var $chkb = $('#checkbox').checkbox();
      * </script>
      */
     self.destroy = function () {

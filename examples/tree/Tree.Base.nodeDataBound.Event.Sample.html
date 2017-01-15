@@ -10,8 +10,10 @@
  <div id="tree" data-source="/DataSources/GetCountries"></div>
  <script>
      var tree = $('#tree').tree();
-     tree.on('select', function (e, node, id) {
-         alert('select is fired.');
+     tree.on('nodeDataBound', function (e, node, id) {
+         if ((parseInt(id, 10) % 2) === 0) {
+             node.css('background-color', 'red');
+         }
      });
  </script>
 </body>

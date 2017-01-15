@@ -7422,18 +7422,17 @@ gj.tree.events = {
      * @param {object} e - event data
      * @param {object} node - the node as jquery object
      * @param {string} id - the id of the record
-     * @param {object} record - the data of the node
      * @example sample <!-- tree.base -->
      * <div id="tree" data-source="/DataSources/GetCountries"></div>
      * <script>
      *     var tree = $('#tree').tree();
-     *     tree.on('select', function (e, node, id, record) {
+     *     tree.on('select', function (e, node, id) {
      *         alert('select is fired.');
      *     });
      * </script>
      */
-    select: function ($tree, $node, id, record) {
-        return $tree.triggerHandler('select', [$node, id, record]);
+    select: function ($tree, $node, id) {
+        return $tree.triggerHandler('select', [$node, id]);
     },
 
     /**
@@ -7442,18 +7441,17 @@ gj.tree.events = {
      * @param {object} e - event data
      * @param {object} node - the node as jquery object
      * @param {string} id - the id of the record
-     * @param {object} record - the data of the node
      * @example sample <!-- tree.base -->
      * <div id="tree" data-source="/DataSources/GetCountries"></div>
      * <script>
      *     var tree = $('#tree').tree();
-     *     tree.on('unselect', function (e, node, id, record) {
+     *     tree.on('unselect', function (e, node, id) {
      *         alert('unselect is fired.');
      *     });
      * </script>
      */
-    unselect: function ($tree, $node, id, record) {
-        return $tree.triggerHandler('unselect', [$node, id, record]);
+    unselect: function ($tree, $node, id) {
+        return $tree.triggerHandler('unselect', [$node, id]);
     },
 
     /**
@@ -7471,8 +7469,8 @@ gj.tree.events = {
      *     });
      * </script>
      */
-    expand: function ($tree, $node, id, record) {
-        return $tree.triggerHandler('expand', [$node, id, record]);
+    expand: function ($tree, $node, id) {
+        return $tree.triggerHandler('expand', [$node, id]);
     },
 
     /**
@@ -7490,8 +7488,8 @@ gj.tree.events = {
      *     });
      * </script>
      */
-    collapse: function ($tree, $node, id, record) {
-        return $tree.triggerHandler('collapse', [$node, id, record]);
+    collapse: function ($tree, $node, id) {
+        return $tree.triggerHandler('collapse', [$node, id]);
     },
 
     /**
@@ -7511,6 +7509,27 @@ gj.tree.events = {
      */
     destroying: function ($tree) {
         return $tree.triggerHandler('destroying');
+    },
+
+    /**
+     * Event fires when the data is bound to node.
+     * @event nodeDataBound
+     * @param {object} e - event data
+     * @param {object} node - the node as jquery object
+     * @param {string} id - the id of the record
+     * @example Event.Sample <!-- tree.base -->
+     * <div id="tree" data-source="/DataSources/GetCountries"></div>
+     * <script>
+     *     var tree = $('#tree').tree();
+     *     tree.on('nodeDataBound', function (e, node, id) {
+     *         if ((parseInt(id, 10) % 2) === 0) {
+     *             node.css('background-color', 'red');
+     *         }
+     *     });
+     * </script>
+     */
+    nodeDataBound: function ($tree, $node, id) {
+        return $tree.triggerHandler('nodeDataBound', [$node, id]);
     }
 }
 /*global gj $*/
@@ -7632,6 +7651,8 @@ gj.tree.methods = {
         } else {
             $parent.append($node);
         }
+
+        gj.tree.events.nodeDataBound($tree, $node, nodeData.id);
     },
 
     expanderClickHandler: function ($tree) {
@@ -7652,16 +7673,14 @@ gj.tree.methods = {
             data = $tree.data(),
             id = $node.attr('data-id'),
             $list = $node.children('ul');
-        if ($list && $list.length) {
-            if (gj.tree.events.expand($tree, $node, id) !== false) {
-                $list.show();
-                $expander.attr('data-mode', 'open');
-                data.style.collapseIcon ? $expander.removeClass(data.style.expandIcon).addClass(data.style.collapseIcon) : $expander.text('-');
-                if (cascade) {
-                    $children = $node.find('ul>li');
-                    for (i = 0; i < $children.length; i++) {
-                        gj.tree.methods.expand($tree, $($children[i]), cascade);
-                    }
+        if ($list && $list.length && gj.tree.events.expand($tree, $node, id) !== false) {
+            $list.show();
+            $expander.attr('data-mode', 'open');
+            data.style.collapseIcon ? $expander.removeClass(data.style.expandIcon).addClass(data.style.collapseIcon) : $expander.text('-');
+            if (cascade) {
+                $children = $node.find('ul>li');
+                for (i = 0; i < $children.length; i++) {
+                    gj.tree.methods.expand($tree, $($children[i]), cascade);
                 }
             }
         }
@@ -7674,16 +7693,14 @@ gj.tree.methods = {
             data = $tree.data(),
             id = $node.attr('data-id'),
             $list = $node.children('ul');
-        if ($list && $list.length) {
-            if (gj.tree.events.collapse($tree, $node, id) !== false) {
-                $list.hide();
-                $expander.attr('data-mode', 'close');
-                data.style.expandIcon ? $expander.removeClass(data.style.collapseIcon).addClass(data.style.expandIcon) : $expander.text('+');
-                if (cascade) {
-                    $children = $node.find('ul>li');
-                    for (i = 0; i < $children.length; i++) {
-                        gj.tree.methods.collapse($tree, $($children[i]), cascade);
-                    }
+        if ($list && $list.length && gj.tree.events.collapse($tree, $node, id) !== false) {
+            $list.hide();
+            $expander.attr('data-mode', 'close');
+            data.style.expandIcon ? $expander.removeClass(data.style.collapseIcon).addClass(data.style.expandIcon) : $expander.text('+');
+            if (cascade) {
+                $children = $node.find('ul>li');
+                for (i = 0; i < $children.length; i++) {
+                    gj.tree.methods.collapse($tree, $($children[i]), cascade);
                 }
             }
         }
@@ -7732,7 +7749,7 @@ gj.tree.methods = {
 
     select: function ($tree, $node, cascade) {
         var i, $children, data = $tree.data();
-        if ($node.attr('data-selected') !== 'true' && gj.tree.events.select($tree, $node) !== false) {
+        if ($node.attr('data-selected') !== 'true' && gj.tree.events.select($tree, $node, $node.attr('data-id')) !== false) {
             $node.addClass(data.style.active).attr('data-selected', 'true');
             if (cascade) {
                 $children = $node.find('ul>li');
@@ -7753,7 +7770,7 @@ gj.tree.methods = {
 
     unselect: function ($tree, $node, cascade) {
         var i, $children, data = $tree.data();
-        if ($node.attr('data-selected') === 'true' && gj.tree.events.unselect($tree, $node) !== false) {
+        if ($node.attr('data-selected') === 'true' && gj.tree.events.unselect($tree, $node, $node.attr('data-id')) !== false) {
             $node.removeClass($tree.data().style.active).removeAttr('data-selected');
             if (cascade) {
                 $children = $node.find('ul li');
@@ -8374,6 +8391,107 @@ gj.tree.widget.constructor = gj.tree.widget;
         }
     };
 })(jQuery);
+/** 
+ * @widget Tree 
+ * @plugin Checkboxes
+ */
+gj.tree.plugins.checkboxes = {
+    config: {
+        base: {
+            /** Template for the content in the checkboxes. Appears in a separate row on top of the tree.
+              * @type string
+              * @default undefined
+              * @example sample <!-- checkbox, tree.base -->
+              * <ul id="tree"></table>
+              * <script>
+              *     var tree = $('#tree').tree({
+              *         dataSource: '/DataSources/GetCountries',
+              *         checkboxes: true
+              *     });
+              * </script>
+              */
+            checkboxes: undefined,
+
+            style: {}
+        },
+
+        jqueryui: {
+            style: {}
+        },
+
+        bootstrap: {
+            style: {}
+        }
+    },
+
+    private: {
+        nodeDataBound: function ($tree, $node) {
+            var data = $tree.data(),
+                $expander = $node.find('>[data-role="expander"]'),
+                $checkbox = $('<input type="checkbox"/>').checkbox(),
+                $wrapper = $('<span data-role="checkbox"></span>').append($checkbox);
+            $checkbox.on('click', function (e) {
+                var $node = $checkbox.closest('li'),
+                    state = $checkbox.state();
+                gj.tree.plugins.checkboxes.private.updateChildrenState($node, state);
+                gj.tree.plugins.checkboxes.private.updateParentState($node, state);
+            });
+            $expander.after($wrapper);
+        },
+
+        updateParentState: function ($node, state) {
+            var $parentNode, $parentCheckbox, $siblingCheckboxes, allChecked, allUnchecked, parentState;
+
+            $parentNode = $node.parent('ul').parent('li');
+            if ($parentNode.length === 1) {
+                $parentCheckbox = $node.parent('ul').parent('li').find('> span[data-role="checkbox"] input[type="checkbox"]');
+                $siblingCheckboxes = $node.siblings().find('> span[data-role="checkbox"] input[type="checkbox"]');
+                allChecked = (state === 'checked');
+                allUnchecked = (state === 'unchecked');
+                parentState = 'indeterminate';
+                $.each($siblingCheckboxes, function () {
+                    var state = $(this).checkbox('state');
+                    if (allChecked && state !== 'checked') {
+                        allChecked = false;
+                    }
+                    if (allUnchecked && state !== 'unchecked') {
+                        allUnchecked = false;
+                    }
+                });
+                if (allChecked && !allUnchecked) {
+                    parentState = 'checked';
+                }
+                if (!allChecked && allUnchecked) {
+                    parentState = 'unchecked';
+                }
+                $parentCheckbox.checkbox('state', parentState);
+                gj.tree.plugins.checkboxes.private.updateParentState($parentNode, $parentCheckbox.checkbox('state'));
+            }
+        },
+
+        updateChildrenState: function ($node, state) {
+            var $childrenCheckboxes = $node.find('ul li span[data-role="checkbox"] input[type="checkbox"]');
+            if ($childrenCheckboxes.length > 1) {
+                $.each($childrenCheckboxes, function () {
+                    $(this).checkbox('state', state);
+                });
+            }
+        }
+    },
+
+    public: {
+    },
+
+    configure: function ($tree) {
+        $.extend(true, $tree, gj.tree.plugins.checkboxes.public);
+        if ($tree.data('checkboxes')) {
+            $tree.on('nodeDataBound', function (e, $node) {
+                gj.tree.plugins.checkboxes.private.nodeDataBound($tree, $node);
+            });
+        }
+    }
+};
+
 /* global window alert jQuery */
 /** 
  * @widget Checkbox 
@@ -8385,18 +8503,6 @@ if (typeof (gj.checkbox) === 'undefined') {
 
 gj.checkbox.config = {
     base: {
-        /** 
-         * @type Number
-         * @default undefined
-         * @example sample <!-- checkbox -->
-         * <div id="element"></div>
-         * <script>
-         *     $('#element').checkbox({
-         *         width: 100
-         *     });
-         * </script>
-         */
-        width: undefined
     }
 };
 
@@ -8412,27 +8518,35 @@ gj.checkbox.methods = {
         return $chkb;
     },
 
-    initialize: function($chkb) {
-        var $display = $('<span data-role="display"></span>');
-        $chkb.addClass('gj-checkbox').append($display);
+    initialize: function ($chkb) {
+        $chkb.on('change', function (e) {
+            $chkb.state(this.checked ? 'checked' : 'unchecked');
+        });
     },
 
     state: function ($chkb, value) {
-        var $display = $chkb.find('span[data-role="display"]');
         if (value) {
             if ('checked' === value) {
-                $display.text('✓');
-                $chkb.data('state', 'checked');
+                $chkb.prop('indeterminate', false);
+                $chkb.prop('checked', true);
             } else if ('unchecked' === value) {
-                $display.text('');
-                $chkb.data('state', 'unchecked');
+                $chkb.prop('indeterminate', false);
+                $chkb.prop('checked', false);
             } else if ('indeterminate' === value) {
-                $display.text('■');
-                $chkb.data('state', 'indeterminate');
+                $chkb.prop('checked', true);
+                $chkb.prop('indeterminate', true);
             }
+            gj.checkbox.events.stateChange($chkb, value);
             return $chkb;
         } else {
-            return $chkb.data('state');
+            if ($chkb.prop('indeterminate')) {
+                value = 'indeterminate';
+            } else if ($chkb.prop('checked')) {
+                value = 'checked';
+            } else {
+                value = 'unchecked';
+            }
+            return value;
         }
     },
 
@@ -8458,23 +8572,23 @@ gj.checkbox.methods = {
 
 gj.checkbox.events = {
     /**
-     * Triggered while the mouse is moved during the dragging, immediately before the current move happens.
+     * Triggered when the state of the checkbox is changed
      *
      * @event drag
      * @param {object} e - event data
-     * @param {object} state - Current offset position as { top, left } object.
+     * @param {object} state - The new state of the checkbox.
      * @example sample <!-- checkbox -->
-     * <div id="element">drag me</div>
+     * <input type="checkbox" id="checkbox"/>
      * <script>
-     *     $('#element').checkbox({
-     *         drag: function (e, offset) {
-     *             $('body').append('<div>The drag event is fired. offset { top:' + offset.top + ', left: ' + offset.left + '}.</div>');
+     *     $('#checkbox').checkbox({
+     *         stateChange: function (e, state) {
+     *             alert(state);
      *         }
      *     });
      * </script>
      */
-    change: function (state) {
-        return $dragEl.triggerHandler('change', [state]);
+    stateChange: function ($chkb, state) {
+        return $chkb.triggerHandler('stateChange', [state]);
     }
 };
 
@@ -8490,9 +8604,9 @@ gj.checkbox.widget = function ($element, arguments) {
      * @example sample <!-- checkbox -->
      * <button onclick="$chkb.toggle()">toggle</button>
      * <hr/>
-     * <div id="element"></div>
+     * <input type="checkbox" id="checkbox"/>
      * <script>
-     *     var $chkb = $('#element').checkbox();
+     *     var $chkb = $('#checkbox').checkbox();
      * </script>
      */
     self.toggle = function () {
@@ -8510,9 +8624,9 @@ gj.checkbox.widget = function ($element, arguments) {
      * <button onclick="$chkb.state('indeterminate')">Set to indeterminate</button>
      * <button onclick="alert($chkb.state())">Get state</button>
      * <hr/>
-     * <div id="element"></div>
+     * <input type="checkbox" id="checkbox"/>
      * <script>
-     *     var $chkb = $('#element').checkbox();
+     *     var $chkb = $('#checkbox').checkbox();
      * </script>
      */
     self.state = function (value) {
@@ -8524,9 +8638,9 @@ gj.checkbox.widget = function ($element, arguments) {
      * @return jquery element
      * @example sample <!-- checkbox -->
      * <button onclick="$chkb.destroy()">Destroy</button>
-     * <div id="element"></div>
+     * <input type="checkbox" id="checkbox"/>
      * <script>
-     *     var $chkb = $('#element').checkbox();
+     *     var $chkb = $('#checkbox').checkbox();
      * </script>
      */
     self.destroy = function () {

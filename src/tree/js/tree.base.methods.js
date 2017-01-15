@@ -117,6 +117,8 @@ gj.tree.methods = {
         } else {
             $parent.append($node);
         }
+
+        gj.tree.events.nodeDataBound($tree, $node, nodeData.id);
     },
 
     expanderClickHandler: function ($tree) {
@@ -137,16 +139,14 @@ gj.tree.methods = {
             data = $tree.data(),
             id = $node.attr('data-id'),
             $list = $node.children('ul');
-        if ($list && $list.length) {
-            if (gj.tree.events.expand($tree, $node, id) !== false) {
-                $list.show();
-                $expander.attr('data-mode', 'open');
-                data.style.collapseIcon ? $expander.removeClass(data.style.expandIcon).addClass(data.style.collapseIcon) : $expander.text('-');
-                if (cascade) {
-                    $children = $node.find('ul>li');
-                    for (i = 0; i < $children.length; i++) {
-                        gj.tree.methods.expand($tree, $($children[i]), cascade);
-                    }
+        if ($list && $list.length && gj.tree.events.expand($tree, $node, id) !== false) {
+            $list.show();
+            $expander.attr('data-mode', 'open');
+            data.style.collapseIcon ? $expander.removeClass(data.style.expandIcon).addClass(data.style.collapseIcon) : $expander.text('-');
+            if (cascade) {
+                $children = $node.find('ul>li');
+                for (i = 0; i < $children.length; i++) {
+                    gj.tree.methods.expand($tree, $($children[i]), cascade);
                 }
             }
         }
@@ -159,16 +159,14 @@ gj.tree.methods = {
             data = $tree.data(),
             id = $node.attr('data-id'),
             $list = $node.children('ul');
-        if ($list && $list.length) {
-            if (gj.tree.events.collapse($tree, $node, id) !== false) {
-                $list.hide();
-                $expander.attr('data-mode', 'close');
-                data.style.expandIcon ? $expander.removeClass(data.style.collapseIcon).addClass(data.style.expandIcon) : $expander.text('+');
-                if (cascade) {
-                    $children = $node.find('ul>li');
-                    for (i = 0; i < $children.length; i++) {
-                        gj.tree.methods.collapse($tree, $($children[i]), cascade);
-                    }
+        if ($list && $list.length && gj.tree.events.collapse($tree, $node, id) !== false) {
+            $list.hide();
+            $expander.attr('data-mode', 'close');
+            data.style.expandIcon ? $expander.removeClass(data.style.collapseIcon).addClass(data.style.expandIcon) : $expander.text('+');
+            if (cascade) {
+                $children = $node.find('ul>li');
+                for (i = 0; i < $children.length; i++) {
+                    gj.tree.methods.collapse($tree, $($children[i]), cascade);
                 }
             }
         }
@@ -217,7 +215,7 @@ gj.tree.methods = {
 
     select: function ($tree, $node, cascade) {
         var i, $children, data = $tree.data();
-        if ($node.attr('data-selected') !== 'true' && gj.tree.events.select($tree, $node) !== false) {
+        if ($node.attr('data-selected') !== 'true' && gj.tree.events.select($tree, $node, $node.attr('data-id')) !== false) {
             $node.addClass(data.style.active).attr('data-selected', 'true');
             if (cascade) {
                 $children = $node.find('ul>li');
@@ -238,7 +236,7 @@ gj.tree.methods = {
 
     unselect: function ($tree, $node, cascade) {
         var i, $children, data = $tree.data();
-        if ($node.attr('data-selected') === 'true' && gj.tree.events.unselect($tree, $node) !== false) {
+        if ($node.attr('data-selected') === 'true' && gj.tree.events.unselect($tree, $node, $node.attr('data-id')) !== false) {
             $node.removeClass($tree.data().style.active).removeAttr('data-selected');
             if (cascade) {
                 $children = $node.find('ul li');
