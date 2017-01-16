@@ -7275,7 +7275,7 @@ gj.tree.config = {
          * @additionalinfo The css files for Bootstrap should be manually included if you use bootstrap as UI Library.
          * @type (base|bootstrap|materialdesign)
          * @default single
-         * @example Bootstrap <!-- bootstrap, tree.base -->
+         * @example Bootstrap <!-- bootstrap, tree.base, checkbox -->
          * <div id="tree"></div>
          * <script>
          *     var tree = $('#tree').tree({
@@ -7285,10 +7285,11 @@ gj.tree.config = {
          *             { text: 'South America', children: [ { text: 'Brazil' },  { text: 'Argentina' },  { text: 'Columbia' } ] }
          *         ],
          *         width: 500,
-         *         uiLibrary: 'bootstrap'
+         *         uiLibrary: 'bootstrap',
+         *         checkboxes: true
          *     });
          * </script>
-         * @example MaterialDesign <!-- materialdesign, tree.base -->
+         * @example MaterialDesign <!-- materialdesign, tree.base, checkbox -->
          * <div id="tree"></div>
          * <script>
          *     var tree = $('#tree').tree({
@@ -7298,7 +7299,8 @@ gj.tree.config = {
          *             { text: 'South America', children: [ { text: 'Brazil' },  { text: 'Argentina' },  { text: 'Columbia' } ] }
          *         ],
          *         width: 500,
-         *         uiLibrary: 'materialdesign'
+         *         uiLibrary: 'materialdesign',
+         *         checkboxes: true
          *     });
          * </script>
          */
@@ -7306,12 +7308,13 @@ gj.tree.config = {
 
         autoGenId: 1,
 
+        indentation: 20,
+
         style: {
             wrapper: 'gj-unselectable',
             list: 'gj-tree-list',
             item: 'gj-tree-item',
             active: 'gj-tree-base-active',
-            leftSpacer: undefined,
             display: 'gj-tree-display',
             expandIcon: undefined,
             collapseIcon: undefined,
@@ -7320,12 +7323,12 @@ gj.tree.config = {
     },
 
     bootstrap: {
+        indentation: 24,
         style: {
             wrapper: 'gj-unselectable',
             list: 'gj-tree-bootstrap-list list-group',
-            item: 'gj-tree-bootstrap-item list-group-item',
+            item: 'gj-tree-item gj-tree-bootstrap-item list-group-item',
             active: 'active',
-            leftSpacer: 'gj-tree-bootstrap-left-spacer',
             display: 'gj-tree-bootstrap-display',
             expandIcon: 'glyphicon glyphicon-plus',
             collapseIcon: 'glyphicon glyphicon-minus',
@@ -7336,12 +7339,12 @@ gj.tree.config = {
     jqueryui: {},
 
     materialdesign: {
+        indentation: 24,
         style: {
             wrapper: 'gj-unselectable',
             list: 'gj-tree-mdl-list mdl-list',
-            item: 'gj-tree-mdl-item mdl-list__item',
+            item: 'gj-tree-item gj-tree-mdl-item mdl-list__item',
             active: 'gj-tree-mdl-active',
-            leftSpacer: '',
             display: 'mdl-list__item-primary-content',
             expandIcon: 'material-icons mdl-list__item-icon gj-cursor-pointer gj-tree-mdl-icon-plus',
             collapseIcon: 'material-icons mdl-list__item-icon gj-cursor-pointer gj-tree-mdl-icon-minus',
@@ -7608,31 +7611,28 @@ gj.tree.methods = {
         var i, $node, $newParent,
             data = $tree.data(),
             $node = $('<li data-id="' + nodeData.id + '"/>').addClass(data.style.item),
+            $wrapper = $('<div data-role="wrapper" />'),
             $expander = $('<span data-role="expander" data-mode="close"></span>'),
             $display = $('<span data-role="display">' + nodeData.data[data.textField] + '</span>');
 
-        if (data.style.leftSpacer) {
-            if (!level) {
-                level = $parent.parents('ul').length + 1;
-            }
-            for (i = 1; i < level; i++) {
-                $node.append('<span data-role="spacer" class="' + data.style.leftSpacer + '"></span>');
-            }
+        if (data.indentation && level > 1) {
+            $wrapper.append('<span data-role="spacer" style="width: ' + (data.indentation * (level - 1)) + 'px; display: table-cell;"></span>');
         }
 
         $expander.on('click', gj.tree.methods.expanderClickHandler($tree));
-        $node.append($expander);
+        $wrapper.append($expander);
 
         if (data.iconField && nodeData.data[data.iconField]) {
             if (nodeData.data[data.iconField].indexOf('<') === 0) {
-                $node.append(nodeData.data[data.iconField]);
+                $wrapper.append(nodeData.data[data.iconField]);
             } else {
-                $node.append('<span data-role="icon" class="' + nodeData.data[data.iconField] + '"></span>');
+                $wrapper.append('<span data-role="icon" class="' + nodeData.data[data.iconField] + '"></span>');
             }
         }
 
         $display.addClass(data.style.display).on('click', gj.tree.methods.displayClickHandler($tree));
-        $node.append($display);
+        $wrapper.append($display);
+        $node.append($wrapper);
 
         if (nodeData.children && nodeData.children.length) {
             data.style.expandIcon ? $expander.addClass(data.style.expandIcon) : $expander.text('+');
@@ -7658,7 +7658,7 @@ gj.tree.methods = {
     expanderClickHandler: function ($tree) {
         return function (e) {
             var $expander = $(this),
-                $node = $expander.parent('li');
+                $node = $expander.closest('li');
             if ($expander.attr('data-mode') === 'close') {
                 $tree.expand($node);
             } else {
@@ -7669,7 +7669,7 @@ gj.tree.methods = {
 
     expand: function ($tree, $node, cascade) {
         var $children, i,
-            $expander = $node.children('[data-role="expander"]'),
+            $expander = $node.find('>[data-role="wrapper"]>[data-role="expander"]'),
             data = $tree.data(),
             id = $node.attr('data-id'),
             $list = $node.children('ul');
@@ -7689,7 +7689,7 @@ gj.tree.methods = {
 
     collapse: function ($tree, $node, cascade) {
         var $children, i,
-            $expander = $node.children('[data-role="expander"]'),
+            $expander = $node.find('>[data-role="wrapper"]>[data-role="expander"]'),
             data = $tree.data(),
             id = $node.attr('data-id'),
             $list = $node.children('ul');
@@ -7726,7 +7726,7 @@ gj.tree.methods = {
     displayClickHandler: function ($tree) {
         return function (e) {
             var $display = $(this),
-                $node = $display.parent('li'),
+                $node = $display.closest('li'),
                 cascade = $tree.data().cascadeSelection;
             if ($node.attr('data-selected') === 'true') {
                 gj.tree.methods.unselect($tree, $node, cascade);
@@ -7773,7 +7773,7 @@ gj.tree.methods = {
         if ($node.attr('data-selected') === 'true' && gj.tree.events.unselect($tree, $node, $node.attr('data-id')) !== false) {
             $node.removeClass($tree.data().style.active).removeAttr('data-selected');
             if (cascade) {
-                $children = $node.find('ul li');
+                $children = $node.find('ul>li');
                 for (i = 0; i < $children.length; i++) {
                     gj.tree.methods.unselect($tree, $($children[i]), cascade);
                 }
@@ -8402,7 +8402,7 @@ gj.tree.plugins.checkboxes = {
               * @type string
               * @default undefined
               * @example sample <!-- checkbox, tree.base -->
-              * <ul id="tree"></table>
+              * <div id="tree"></div>
               * <script>
               *     var tree = $('#tree').tree({
               *         dataSource: '/DataSources/GetCountries',
@@ -8427,7 +8427,7 @@ gj.tree.plugins.checkboxes = {
     private: {
         nodeDataBound: function ($tree, $node) {
             var data = $tree.data(),
-                $expander = $node.find('>[data-role="expander"]'),
+                $expander = $node.find('> [data-role="wrapper"] > [data-role="expander"]'),
                 $checkbox = $('<input type="checkbox"/>').checkbox(),
                 $wrapper = $('<span data-role="checkbox"></span>').append($checkbox);
             $checkbox.on('click', function (e) {
@@ -8444,8 +8444,8 @@ gj.tree.plugins.checkboxes = {
 
             $parentNode = $node.parent('ul').parent('li');
             if ($parentNode.length === 1) {
-                $parentCheckbox = $node.parent('ul').parent('li').find('> span[data-role="checkbox"] input[type="checkbox"]');
-                $siblingCheckboxes = $node.siblings().find('> span[data-role="checkbox"] input[type="checkbox"]');
+                $parentCheckbox = $node.parent('ul').parent('li').find('> [data-role="wrapper"] > [data-role="checkbox"] input[type="checkbox"]');
+                $siblingCheckboxes = $node.siblings().find('> [data-role="wrapper"] > span[data-role="checkbox"] input[type="checkbox"]');
                 allChecked = (state === 'checked');
                 allUnchecked = (state === 'unchecked');
                 parentState = 'indeterminate';
@@ -8470,7 +8470,7 @@ gj.tree.plugins.checkboxes = {
         },
 
         updateChildrenState: function ($node, state) {
-            var $childrenCheckboxes = $node.find('ul li span[data-role="checkbox"] input[type="checkbox"]');
+            var $childrenCheckboxes = $node.find('ul li [data-role="wrapper"] [data-role="checkbox"] input[type="checkbox"]');
             if ($childrenCheckboxes.length > 1) {
                 $.each($childrenCheckboxes, function () {
                     $(this).checkbox('state', state);

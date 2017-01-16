@@ -207,7 +207,7 @@ gj.tree.config = {
          * @additionalinfo The css files for Bootstrap should be manually included if you use bootstrap as UI Library.
          * @type (base|bootstrap|materialdesign)
          * @default single
-         * @example Bootstrap <!-- bootstrap, tree.base -->
+         * @example Bootstrap <!-- bootstrap, tree.base, checkbox -->
          * <div id="tree"></div>
          * <script>
          *     var tree = $('#tree').tree({
@@ -217,10 +217,11 @@ gj.tree.config = {
          *             { text: 'South America', children: [ { text: 'Brazil' },  { text: 'Argentina' },  { text: 'Columbia' } ] }
          *         ],
          *         width: 500,
-         *         uiLibrary: 'bootstrap'
+         *         uiLibrary: 'bootstrap',
+         *         checkboxes: true
          *     });
          * </script>
-         * @example MaterialDesign <!-- materialdesign, tree.base -->
+         * @example MaterialDesign <!-- materialdesign, tree.base, checkbox -->
          * <div id="tree"></div>
          * <script>
          *     var tree = $('#tree').tree({
@@ -230,7 +231,8 @@ gj.tree.config = {
          *             { text: 'South America', children: [ { text: 'Brazil' },  { text: 'Argentina' },  { text: 'Columbia' } ] }
          *         ],
          *         width: 500,
-         *         uiLibrary: 'materialdesign'
+         *         uiLibrary: 'materialdesign',
+         *         checkboxes: true
          *     });
          * </script>
          */
@@ -238,12 +240,13 @@ gj.tree.config = {
 
         autoGenId: 1,
 
+        indentation: 20,
+
         style: {
             wrapper: 'gj-unselectable',
             list: 'gj-tree-list',
             item: 'gj-tree-item',
             active: 'gj-tree-base-active',
-            leftSpacer: undefined,
             display: 'gj-tree-display',
             expandIcon: undefined,
             collapseIcon: undefined,
@@ -252,12 +255,12 @@ gj.tree.config = {
     },
 
     bootstrap: {
+        indentation: 24,
         style: {
             wrapper: 'gj-unselectable',
             list: 'gj-tree-bootstrap-list list-group',
-            item: 'gj-tree-bootstrap-item list-group-item',
+            item: 'gj-tree-item gj-tree-bootstrap-item list-group-item',
             active: 'active',
-            leftSpacer: 'gj-tree-bootstrap-left-spacer',
             display: 'gj-tree-bootstrap-display',
             expandIcon: 'glyphicon glyphicon-plus',
             collapseIcon: 'glyphicon glyphicon-minus',
@@ -268,12 +271,12 @@ gj.tree.config = {
     jqueryui: {},
 
     materialdesign: {
+        indentation: 24,
         style: {
             wrapper: 'gj-unselectable',
             list: 'gj-tree-mdl-list mdl-list',
-            item: 'gj-tree-mdl-item mdl-list__item',
+            item: 'gj-tree-item gj-tree-mdl-item mdl-list__item',
             active: 'gj-tree-mdl-active',
-            leftSpacer: '',
             display: 'mdl-list__item-primary-content',
             expandIcon: 'material-icons mdl-list__item-icon gj-cursor-pointer gj-tree-mdl-icon-plus',
             collapseIcon: 'material-icons mdl-list__item-icon gj-cursor-pointer gj-tree-mdl-icon-minus',

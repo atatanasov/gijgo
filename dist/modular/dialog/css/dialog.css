@@ -36,6 +36,10 @@
     font-size: 16px;
 }
 
+.gj-hidden {
+    display: none;
+}
+
 .gj-draggable {
     cursor: move;
 }

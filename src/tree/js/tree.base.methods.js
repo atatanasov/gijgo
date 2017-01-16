@@ -74,31 +74,28 @@ gj.tree.methods = {
         var i, $node, $newParent,
             data = $tree.data(),
             $node = $('<li data-id="' + nodeData.id + '"/>').addClass(data.style.item),
+            $wrapper = $('<div data-role="wrapper" />'),
             $expander = $('<span data-role="expander" data-mode="close"></span>'),
             $display = $('<span data-role="display">' + nodeData.data[data.textField] + '</span>');
 
-        if (data.style.leftSpacer) {
-            if (!level) {
-                level = $parent.parents('ul').length + 1;
-            }
-            for (i = 1; i < level; i++) {
-                $node.append('<span data-role="spacer" class="' + data.style.leftSpacer + '"></span>');
-            }
+        if (data.indentation && level > 1) {
+            $wrapper.append('<span data-role="spacer" style="width: ' + (data.indentation * (level - 1)) + 'px; display: table-cell;"></span>');
         }
 
         $expander.on('click', gj.tree.methods.expanderClickHandler($tree));
-        $node.append($expander);
+        $wrapper.append($expander);
 
         if (data.iconField && nodeData.data[data.iconField]) {
             if (nodeData.data[data.iconField].indexOf('<') === 0) {
-                $node.append(nodeData.data[data.iconField]);
+                $wrapper.append(nodeData.data[data.iconField]);
             } else {
-                $node.append('<span data-role="icon" class="' + nodeData.data[data.iconField] + '"></span>');
+                $wrapper.append('<span data-role="icon" class="' + nodeData.data[data.iconField] + '"></span>');
             }
         }
 
         $display.addClass(data.style.display).on('click', gj.tree.methods.displayClickHandler($tree));
-        $node.append($display);
+        $wrapper.append($display);
+        $node.append($wrapper);
 
         if (nodeData.children && nodeData.children.length) {
             data.style.expandIcon ? $expander.addClass(data.style.expandIcon) : $expander.text('+');
@@ -124,7 +121,7 @@ gj.tree.methods = {
     expanderClickHandler: function ($tree) {
         return function (e) {
             var $expander = $(this),
-                $node = $expander.parent('li');
+                $node = $expander.closest('li');
             if ($expander.attr('data-mode') === 'close') {
                 $tree.expand($node);
             } else {
@@ -135,7 +132,7 @@ gj.tree.methods = {
 
     expand: function ($tree, $node, cascade) {
         var $children, i,
-            $expander = $node.children('[data-role="expander"]'),
+            $expander = $node.find('>[data-role="wrapper"]>[data-role="expander"]'),
             data = $tree.data(),
             id = $node.attr('data-id'),
             $list = $node.children('ul');
@@ -155,7 +152,7 @@ gj.tree.methods = {
 
     collapse: function ($tree, $node, cascade) {
         var $children, i,
-            $expander = $node.children('[data-role="expander"]'),
+            $expander = $node.find('>[data-role="wrapper"]>[data-role="expander"]'),
             data = $tree.data(),
             id = $node.attr('data-id'),
             $list = $node.children('ul');
@@ -192,7 +189,7 @@ gj.tree.methods = {
     displayClickHandler: function ($tree) {
         return function (e) {
             var $display = $(this),
-                $node = $display.parent('li'),
+                $node = $display.closest('li'),
                 cascade = $tree.data().cascadeSelection;
             if ($node.attr('data-selected') === 'true') {
                 gj.tree.methods.unselect($tree, $node, cascade);
@@ -239,7 +236,7 @@ gj.tree.methods = {
         if ($node.attr('data-selected') === 'true' && gj.tree.events.unselect($tree, $node, $node.attr('data-id')) !== false) {
             $node.removeClass($tree.data().style.active).removeAttr('data-selected');
             if (cascade) {
-                $children = $node.find('ul li');
+                $children = $node.find('ul>li');
                 for (i = 0; i < $children.length; i++) {
                     gj.tree.methods.unselect($tree, $($children[i]), cascade);
                 }

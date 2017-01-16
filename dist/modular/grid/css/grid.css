@@ -36,6 +36,10 @@
     font-size: 16px;
 }
 
+.gj-hidden {
+    display: none;
+}
+
 DIV.gj-grid-wrapper {
     margin: auto;
     position: relative;

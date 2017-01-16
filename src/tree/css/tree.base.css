@@ -5,38 +5,52 @@
 }
 
 li.gj-tree-item {
-    padding: 2px 0px 2px 16px;
+    padding: 0px;
+    margin: 0px;
 }
 
-li.gj-tree-item  [data-role="expander"] {
-    padding-right: 4px;
+li.gj-tree-item div[data-role="wrapper"] {
+    display: table;
+}
+
+li.gj-tree-item [data-role="expander"] {
+    display: table-cell;
+    vertical-align:middle;
+    text-align:center;
     cursor: pointer;
-    width: 10px;
-    float: left;
 }
 
-li.gj-tree-item  [data-role="icon"] {
-    padding-right: 4px;
-    float: left;
+li.gj-tree-item [data-role="checkbox"] {
+    display: table-cell;
+    vertical-align:middle;
+    text-align:center;
+}
+
+li.gj-tree-item [data-role="icon"] {
+    display: table-cell;
+    vertical-align:middle;
+    text-align:center;
+}
+
+li.gj-tree-item [data-role="display"] {
+    display: table-cell;
+    vertical-align:middle;
+    cursor: pointer;
+}
+
+li.gj-tree-item [data-role="expander"] {
+    width: 10px;
 }
 
 .gj-tree-display {
-    cursor: pointer;
     padding: 2px 4px;
 }
 
-ul.gj-hidden {
-    display: none;
-}
-
-.gj-tree-base-active > span[data-role="display"] {
+.gj-tree-base-active span[data-role="display"] {
     background-color: #ddd;
 }
 
 /* Bootstrap Theme */
-/*li ul.gj-tree-bootstrap-list-group {
-    margin: 5px 0px 0px 0px;
-}*/
 ul.gj-tree-bootstrap-list {
     padding-left: 0px;
     margin-bottom: 0px;
@@ -47,7 +61,6 @@ li ul.gj-tree-bootstrap-list {
 }
 
 li.gj-tree-bootstrap-item {
-    padding: 0px;
 }
 
 ul li.gj-tree-bootstrap-item ul li.gj-tree-bootstrap-item {
@@ -66,24 +79,20 @@ ul li.gj-tree-bootstrap-item ul li.gj-tree-bootstrap-item:last-child {
     border-bottom-right-radius: 0px;
 }
 
-.gj-tree-bootstrap-left-spacer {
-    display: inline-block;
-    width: 30px;
+ul li.gj-tree-bootstrap-item [data-role="expander"] {
+    width: 24px;
 }
 
-ul li.gj-tree-bootstrap-item [data-role="expander"] {
-    padding: 10px 0px 10px 15px;
-    cursor: pointer;
+ul li.gj-tree-bootstrap-item [data-role="checkbox"] {
+    width: 24px;
 }
 
 ul li.gj-tree-bootstrap-item [data-role="icon"] {
-    padding: 10px 0px 10px 15px;
+    width: 24px;
 }
 
 .gj-tree-bootstrap-display {
-    cursor: pointer;
-    display: inline-block;
-    padding: 10px 0px 10px 15px;
+    padding: 10px 0px;
 }
 .list-group-item.active ul li, .list-group-item.active:focus ul li, .list-group-item.active:hover ul li {
     text-shadow: none;
@@ -96,27 +105,26 @@ ul li.gj-tree-bootstrap-item [data-role="icon"] {
     list-style-type: none;
 }
 
-.gj-tree-mdl-list .gj-tree-mdl-list {
-    margin-left: 5px;
-}
-
 .gj-tree-mdl-item {
     display: list-item;
     list-style-type: none;
-    padding: 4px 4px 4px 16px;
+    padding: 4px 0px 4px 0px;
     min-height: unset;
 }
 
 li.gj-tree-mdl-item [data-role="expander"] {
-    cursor: pointer;
-    float: left;
     height: 24px;
+    width: 24px;
 }
 
-.gj-tree-mdl-item [data-role="display"] {
-    display: inline-block;
-    line-height: 24px;
-    padding-left: 4px;
+li.gj-tree-mdl-item [data-role="checkbox"] {
+    height: 24px;
+    width: 24px;
+}
+
+li.gj-tree-mdl-item [data-role="icon"] {
+    height: 24px;
+    width: 24px;
 }
 
 .gj-tree-mdl-icon-plus::after {
