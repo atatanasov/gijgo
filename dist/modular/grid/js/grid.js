@@ -5231,7 +5231,7 @@ gj.grid.plugins.rowReorder = {
 
     configure: function ($grid, fullConfig, clientConfig) {
         $.extend(true, $grid, gj.grid.plugins.rowReorder.public);
-        if (fullConfig.rowReorder) {
+        if (fullConfig.rowReorder && $.fn.draggable && $.fn.droppable) {
             $grid.on('dataBound', function () {
                 gj.grid.plugins.rowReorder.private.init($grid);
             });

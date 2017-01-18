@@ -54,7 +54,7 @@
             },
             tree: {
                 files: {
-                    'dist/modular/tree/js/tree.code.js': ['src/tree/js/tree.base.config.js', 'src/tree/js/tree.base.events.js', 'src/tree/js/tree.base.methods.js', 'src/tree/js/tree.base.widget.js', 'src/tree/js/tree.checkboxes.js'],
+                    'dist/modular/tree/js/tree.code.js': ['src/tree/js/tree.base.config.js', 'src/tree/js/tree.base.events.js', 'src/tree/js/tree.base.methods.js', 'src/tree/js/tree.base.widget.js', 'src/tree/js/tree.checkboxes.js', 'src/tree/js/tree.dragAndDrop.js'],
                     'dist/modular/tree/css/tree.code.css': ['src/tree/css/tree.base.css']
                 }
             },

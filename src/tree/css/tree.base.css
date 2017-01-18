@@ -42,6 +42,10 @@ li.gj-tree-item [data-role="expander"] {
     width: 10px;
 }
 
+span[data-role="indicator"] {
+    width: 10px;
+}
+
 .gj-tree-display {
     padding: 2px 4px;
 }

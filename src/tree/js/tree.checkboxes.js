@@ -5,8 +5,8 @@
 gj.tree.plugins.checkboxes = {
     config: {
         base: {
-            /** Template for the content in the checkboxes. Appears in a separate row on top of the tree.
-              * @type string
+            /** Add checkbox for each node, if set to true.
+              * @type Boolean
               * @default undefined
               * @example sample <!-- checkbox, tree.base -->
               * <div id="tree"></div>
