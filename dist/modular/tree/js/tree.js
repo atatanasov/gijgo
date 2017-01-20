@@ -742,7 +742,7 @@ gj.tree.methods = {
     appendNode: function ($tree, $parent, nodeData, level, position) {
         var i, $node, $newParent,
             data = $tree.data(),
-            $node = $('<li data-id="' + nodeData.id + '"/>').addClass(data.style.item),
+            $node = $('<li data-id="' + nodeData.id + '" data-role="node" />').addClass(data.style.item),
             $wrapper = $('<div data-role="wrapper" />'),
             $expander = $('<span data-role="expander" data-mode="close"></span>'),
             $display = $('<span data-role="display">' + nodeData.data[data.textField] + '</span>');
@@ -1645,7 +1645,10 @@ gj.tree.plugins.dragAndDrop = {
               */
 			dragAndDrop: undefined,
 
-			style: {}
+			style: {
+			    dropAsChildIcon: undefined,
+			    dropBelow: 'gj-tree-base-drop-below'
+			}
 		},
 
 		jqueryui: {
@@ -1671,7 +1674,7 @@ gj.tree.plugins.dragAndDrop = {
 		        var $dragEl = $display.clone();
 		        $('body').append($dragEl);
 		        $dragEl.attr('data-role', 'draggable-clone').css('cursor', 'move');
-		        $dragEl.append('<span data-role="indicator" />');
+		        $dragEl.prepend('<span data-role="indicator" />');
 		        $dragEl.draggable({
 		            stop: gj.tree.plugins.dragAndDrop.private.createDragStopHandler($tree, $node, $display)
 		        });
@@ -1681,14 +1684,24 @@ gj.tree.plugins.dragAndDrop = {
 		        if ($display.attr('data-droppable') === 'true') {
 		            $display.droppable('destroy');
 		        }
-		        $tree.find('[data-role="display"]').not($display).each(function () {
+		        $tree.find('[data-role="display"]').not($display).not($node.find('[data-role="display"]')).each(function () {
 		            var $dropEl = $(this);
 		            if ($dropEl.attr('data-droppable') === 'true') {
 		                $dropEl.droppable('destroy');
 		            }
 		            $dropEl.droppable({
-		                over: gj.tree.plugins.dragAndDrop.private.createDroppableOverHandler($tree, $dragEl),
-		                out: gj.tree.plugins.dragAndDrop.private.createDroppableOutHandler($tree, $dragEl)
+		                over: gj.tree.plugins.dragAndDrop.private.createOverDisplayHandler($tree, $dragEl),
+		                out: gj.tree.plugins.dragAndDrop.private.createOutDisplayHandler($tree, $dragEl)
+		            });
+		        });
+		        $tree.find('[data-role="wrapper"]').not($node.find('[data-role="wrapper"]')).each(function () {
+		            var $dropEl = $(this);
+		            if ($dropEl.attr('data-droppable') === 'true') {
+		                $dropEl.droppable('destroy');
+		            }
+		            $dropEl.droppable({
+		                over: gj.tree.plugins.dragAndDrop.private.createOverNodeHandler($tree, $dragEl),
+		                out: gj.tree.plugins.dragAndDrop.private.createOutNodeHandler($tree, $dragEl)
 		            });
 		        });
 		        $dragEl.trigger('mousedown');
@@ -1718,19 +1731,38 @@ gj.tree.plugins.dragAndDrop = {
 	        }
 	    },
 
-	    createDroppableOverHandler: function ($tree, $dragEl) {
+	    createOverDisplayHandler: function ($tree, $dragEl) {
 	        return function (e) {
 	            var $indicator = $dragEl.find('[data-role="indicator"]'),
 	                data = $tree.data();
 	            if ($indicator.length) {
-	                data.style.addAsChildIcon ? $indicator.attr('class', data.style.addAsChildIcon) : $indicator.text('+');
+	                data.style.addAsChildIcon ? $indicator.attr('class', data.style.dropAsChildIcon) : $indicator.text('+');
+	            }
+	            $(this).closest('[data-role="wrapper"]').removeClass(data.style.dropBelow);
+	            $tree.attr('data-over-display', 'true');
+	        };
+	    },
+
+	    createOutDisplayHandler: function ($tree, $dragEl) {
+	        return function (e) {
+	            $dragEl.find('[data-role="indicator"]').removeClass($tree.data().style.dropAsChildIcon).empty();
+	            $tree.attr('data-over-display', 'false');
+	        };
+	    },
+
+	    createOverNodeHandler: function ($tree, $dragEl) {
+	        return function (e) {
+	            var $indicator = $dragEl.find('[data-role="indicator"]'),
+	                data = $tree.data();
+	            if ($indicator.length && $tree.attr('data-over-display') === 'false') {
+	                $(this).addClass(data.style.dropBelow);
 	            }
 	        };
 	    },
 
-	    createDroppableOutHandler: function ($tree, $dragEl) {
+	    createOutNodeHandler: function ($tree, $dragEl) {
 	        return function (e) {
-	            $dragEl.find('[data-role="indicator"]').empty();
+	            $(this).removeClass($tree.data().style.dropBelow);
 	        };
 	    },
 

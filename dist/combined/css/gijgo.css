@@ -788,6 +788,9 @@ li.gj-tree-mdl-item [data-role="icon"] {
 .gj-tree-mdl-active {
     background: #b3d4fc;
 }
+.gj-tree-base-drop-below {
+    border-bottom: 1px solid #000;
+}
 .gj-checkbox {
     border: 1px solid #000;
     width: 19px;

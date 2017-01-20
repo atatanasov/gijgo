@@ -99,6 +99,7 @@
     <Content Include="src\grid\js\header.txt" />
     <Content Include="src\header.txt" />
     <Content Include="src\tree\css\tree.base.css" />
+    <Content Include="src\tree\css\tree.dragAndDrop.css" />
     <Content Include="src\tree\js\header.txt" />
     <Content Include="src\tree\js\tree.base.config.js" />
     <Content Include="src\tree\js\tree.base.events.js" />

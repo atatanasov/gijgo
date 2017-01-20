@@ -44,7 +44,8 @@ gj.grid.widget = function ($grid, arguments) {
      * <script>
      *     var grid = $('#grid').grid({
      *         dataSource: '/DataSources/GetPlayers',
-     *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
+     *         columns: [ { field: 'ID', width: 24 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
+     *         pager: { limit: 5 }
      *     });
      *     $('#btnClear').on('click', function () {
      *         grid.clear();

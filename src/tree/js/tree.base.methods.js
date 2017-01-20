@@ -73,7 +73,7 @@ gj.tree.methods = {
     appendNode: function ($tree, $parent, nodeData, level, position) {
         var i, $node, $newParent,
             data = $tree.data(),
-            $node = $('<li data-id="' + nodeData.id + '"/>').addClass(data.style.item),
+            $node = $('<li data-id="' + nodeData.id + '" data-role="node" />').addClass(data.style.item),
             $wrapper = $('<div data-role="wrapper" />'),
             $expander = $('<span data-role="expander" data-mode="close"></span>'),
             $display = $('<span data-role="display">' + nodeData.data[data.textField] + '</span>');
