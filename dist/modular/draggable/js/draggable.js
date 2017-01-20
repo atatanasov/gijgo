@@ -282,9 +282,7 @@ gj.draggable.methods = {
             $dragEl.attr('data-draggable-dragging', true);
             $dragEl.removeAttr('data-draggable-x');
             $dragEl.removeAttr('data-draggable-y');
-            if ($dragEl.css('position') !== 'aboslute') {
-                $dragEl.css('position', 'absolute');
-            }
+            $dragEl.css('position', 'absolute');
             gj.documentManager.subscribeForEvent('mousemove', $dragEl.data('guid'), gj.draggable.methods.createMouseMoveHandler($dragEl));
         });
 
