@@ -1,3 +1,7 @@
-﻿.gj-tree-base-drop-below {
+﻿.gj-tree-base-drop-above {    
+    border-top: 1px solid #000;
+}
+
+.gj-tree-base-drop-below {
     border-bottom: 1px solid #000;
 }

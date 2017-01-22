@@ -301,7 +301,10 @@ gj.draggable.methods = {
             if ($dragEl.attr('data-draggable-dragging') === 'true') {
                 $dragEl.attr('data-draggable-dragging', false);
                 gj.documentManager.unsubscribeForEvent('mousemove', $dragEl.data('guid'));
-                gj.draggable.events.stop($dragEl, e);
+                gj.draggable.events.stop($dragEl, {
+                    left: gj.droppable.methods.mouseX(e),
+                    top: gj.droppable.methods.mouseY(e)
+                });
             }
         };
     },
@@ -317,7 +320,7 @@ gj.draggable.methods = {
                 if (prevX && prevY) {                
                     offsetX = $dragEl.data('horizontal') ? x - parseInt(prevX, 10) : 0;
                     offsetY = $dragEl.data('vertical') ? y - parseInt(prevY, 10) : 0;
-                    if (false !== gj.draggable.events.drag($dragEl, offsetX, offsetY)) {
+                    if (false !== gj.draggable.events.drag($dragEl, offsetX, offsetY, x, y)) {
                         gj.draggable.methods.move($dragEl, offsetX, offsetY);
                     }
                 } else {
@@ -379,6 +382,7 @@ gj.draggable.events = {
      * @event drag
      * @param {object} e - event data
      * @param {object} offset - Current offset position as { top, left } object.
+     * @param {object} mousePosition - Current mouse position as { top, left } object.
      * @example sample <!-- draggable.base -->
      * <style>
      * .element { border: 1px solid #999; width: 300px; height: 200px; cursor: move; text-align: center; background-color: #DDD; }
@@ -392,8 +396,8 @@ gj.draggable.events = {
      *     });
      * </script>
      */
-    drag: function ($dragEl, offsetX, offsetY) {
-        return $dragEl.triggerHandler('drag', [{ top: offsetY, left: offsetX }]);
+    drag: function ($dragEl, offsetX, offsetY, mouseX, mouseY) {
+        return $dragEl.triggerHandler('drag', [{ top: offsetY, left: offsetX }, { top: mouseY, left: mouseX }]);
     },
 
     /**
@@ -425,6 +429,7 @@ gj.draggable.events = {
      *
      * @event stop
      * @param {object} e - event data
+     * @param {object} mousePosition - Current mouse position as { top, left } object.
      * @example sample <!-- draggable.base -->
      * <style>
      * .element { border: 1px solid #999; width: 300px; height: 200px; cursor: move; text-align: center; background-color: #DDD; }
@@ -440,8 +445,8 @@ gj.draggable.events = {
      *     });
      * </script>
      */
-    stop: function ($dragEl, mouseEvent) { // TODO: change mouseEvent to mousePosition and add it to the docs.
-        $dragEl.triggerHandler('stop', [mouseEvent]); //mouseEvent is in use by columnReorder
+    stop: function ($dragEl, mousePosition) {
+        $dragEl.triggerHandler('stop', [mousePosition]);
     }
 };
 

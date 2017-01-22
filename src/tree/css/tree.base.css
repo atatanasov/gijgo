@@ -11,6 +11,7 @@ li.gj-tree-item {
 
 li.gj-tree-item div[data-role="wrapper"] {
     display: table;
+    width: 100%;
 }
 
 li.gj-tree-item [data-role="expander"] {

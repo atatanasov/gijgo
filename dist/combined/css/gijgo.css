@@ -658,6 +658,7 @@ li.gj-tree-item {
 
 li.gj-tree-item div[data-role="wrapper"] {
     display: table;
+    width: 100%;
 }
 
 li.gj-tree-item [data-role="expander"] {
@@ -788,6 +789,10 @@ li.gj-tree-mdl-item [data-role="icon"] {
 .gj-tree-mdl-active {
     background: #b3d4fc;
 }
+.gj-tree-base-drop-above {    
+    border-top: 1px solid #000;
+}
+
 .gj-tree-base-drop-below {
     border-bottom: 1px solid #000;
 }

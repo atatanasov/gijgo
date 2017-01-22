@@ -251,13 +251,17 @@ gj.droppable.methods = {
         return function (e) {
             if ($dropEl.isDragging) {
                 var hoverClass = $dropEl.data('hoverClass'),
-                    newIsOver = gj.droppable.methods.isOver($dropEl, e);
+                    mousePosition = {
+                        left: gj.droppable.methods.mouseX(e),
+                        top: gj.droppable.methods.mouseY(e)
+                    },
+                    newIsOver = gj.droppable.methods.isOver($dropEl, mousePosition);
                 if (newIsOver != $dropEl.isOver) {
                     if (newIsOver) {
                         if (hoverClass) {
                             $dropEl.addClass(hoverClass);
                         }
-                        gj.droppable.events.over($dropEl);
+                        gj.droppable.events.over($dropEl, mousePosition);
                     } else {
                         if (hoverClass) {
                             $dropEl.removeClass(hoverClass);
@@ -272,18 +276,21 @@ gj.droppable.methods = {
 
     createMouseUpHandler: function ($dropEl) {
         return function (e) {
+            var mousePosition = {
+                left: gj.droppable.methods.mouseX(e),
+                top: gj.droppable.methods.mouseY(e)
+            };
             $dropEl.isDragging = false;
-            if (gj.droppable.methods.isOver($dropEl, e)) {
+            if (gj.droppable.methods.isOver($dropEl, mousePosition)) {
                 gj.droppable.events.drop($dropEl);
             }
         }
     },
 
-    isOver: function ($dropEl, e) {
-        var x = gj.droppable.methods.mouseX(e),
-            y = gj.droppable.methods.mouseY(e),
-            offset = $dropEl.offset();
-        return x > offset.left && x < (offset.left + $dropEl.width()) && y > offset.top && y < (offset.top + $dropEl.height());
+    isOver: function ($dropEl, mousePosition) {
+        var offset = $dropEl.offset();
+        return mousePosition.left > offset.left && mousePosition.left < (offset.left + $dropEl.width())
+            && mousePosition.top > offset.top && mousePosition.top < (offset.top + $dropEl.height());
     },
 
     mouseX: function (e) {
@@ -346,6 +353,7 @@ gj.droppable.events = {
     /** Triggered when a draggable element is dragged over the droppable.
      * @event over
      * @param {object} e - event data
+     * @param {object} mousePosition - Current mouse position as { top, left } object.
      * @example sample <!-- droppable.base, draggable.base -->
      * <style>
      * .draggable { border: 1px solid #999; width: 300px; height: 200px; text-align: center; }
@@ -362,8 +370,8 @@ gj.droppable.events = {
      *     });
      * </script>
      */
-    over: function ($dropEl) {
-        $dropEl.trigger('over');
+    over: function ($dropEl, mousePosition) {
+        $dropEl.trigger('over', [mousePosition]);
     },
 
     /** Triggered when a draggable element is dragged out of the droppable.
@@ -427,8 +435,8 @@ gj.droppable.widget = function ($element, arguments) {
         return methods.destroy(this);
     }
 
-    self.isOver = function (mouseEvent) {
-        return methods.isOver(this, mouseEvent);
+    self.isOver = function (mousePosition) {
+        return methods.isOver(this, mousePosition);
     }
 
     $.extend($element, self);

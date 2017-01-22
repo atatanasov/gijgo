@@ -78,7 +78,7 @@ gj.tree.methods = {
             $expander = $('<span data-role="expander" data-mode="close"></span>'),
             $display = $('<span data-role="display">' + nodeData.data[data.textField] + '</span>');
 
-        if (data.indentation && level > 1) {
+        if (data.indentation) {
             $wrapper.append('<span data-role="spacer" style="width: ' + (data.indentation * (level - 1)) + 'px; display: table-cell;"></span>');
         }
 

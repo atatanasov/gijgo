@@ -1294,7 +1294,10 @@ gj.draggable.methods = {
             if ($dragEl.attr('data-draggable-dragging') === 'true') {
                 $dragEl.attr('data-draggable-dragging', false);
                 gj.documentManager.unsubscribeForEvent('mousemove', $dragEl.data('guid'));
-                gj.draggable.events.stop($dragEl, e);
+                gj.draggable.events.stop($dragEl, {
+                    left: gj.droppable.methods.mouseX(e),
+                    top: gj.droppable.methods.mouseY(e)
+                });
             }
         };
     },
@@ -1310,7 +1313,7 @@ gj.draggable.methods = {
                 if (prevX && prevY) {                
                     offsetX = $dragEl.data('horizontal') ? x - parseInt(prevX, 10) : 0;
                     offsetY = $dragEl.data('vertical') ? y - parseInt(prevY, 10) : 0;
-                    if (false !== gj.draggable.events.drag($dragEl, offsetX, offsetY)) {
+                    if (false !== gj.draggable.events.drag($dragEl, offsetX, offsetY, x, y)) {
                         gj.draggable.methods.move($dragEl, offsetX, offsetY);
                     }
                 } else {
@@ -1372,6 +1375,7 @@ gj.draggable.events = {
      * @event drag
      * @param {object} e - event data
      * @param {object} offset - Current offset position as { top, left } object.
+     * @param {object} mousePosition - Current mouse position as { top, left } object.
      * @example sample <!-- draggable.base -->
      * <style>
      * .element { border: 1px solid #999; width: 300px; height: 200px; cursor: move; text-align: center; background-color: #DDD; }
@@ -1385,8 +1389,8 @@ gj.draggable.events = {
      *     });
      * </script>
      */
-    drag: function ($dragEl, offsetX, offsetY) {
-        return $dragEl.triggerHandler('drag', [{ top: offsetY, left: offsetX }]);
+    drag: function ($dragEl, offsetX, offsetY, mouseX, mouseY) {
+        return $dragEl.triggerHandler('drag', [{ top: offsetY, left: offsetX }, { top: mouseY, left: mouseX }]);
     },
 
     /**
@@ -1418,6 +1422,7 @@ gj.draggable.events = {
      *
      * @event stop
      * @param {object} e - event data
+     * @param {object} mousePosition - Current mouse position as { top, left } object.
      * @example sample <!-- draggable.base -->
      * <style>
      * .element { border: 1px solid #999; width: 300px; height: 200px; cursor: move; text-align: center; background-color: #DDD; }
@@ -1433,8 +1438,8 @@ gj.draggable.events = {
      *     });
      * </script>
      */
-    stop: function ($dragEl, mouseEvent) { // TODO: change mouseEvent to mousePosition and add it to the docs.
-        $dragEl.triggerHandler('stop', [mouseEvent]); //mouseEvent is in use by columnReorder
+    stop: function ($dragEl, mousePosition) {
+        $dragEl.triggerHandler('stop', [mousePosition]);
     }
 };
 
@@ -1541,13 +1546,17 @@ gj.droppable.methods = {
         return function (e) {
             if ($dropEl.isDragging) {
                 var hoverClass = $dropEl.data('hoverClass'),
-                    newIsOver = gj.droppable.methods.isOver($dropEl, e);
+                    mousePosition = {
+                        left: gj.droppable.methods.mouseX(e),
+                        top: gj.droppable.methods.mouseY(e)
+                    },
+                    newIsOver = gj.droppable.methods.isOver($dropEl, mousePosition);
                 if (newIsOver != $dropEl.isOver) {
                     if (newIsOver) {
                         if (hoverClass) {
                             $dropEl.addClass(hoverClass);
                         }
-                        gj.droppable.events.over($dropEl);
+                        gj.droppable.events.over($dropEl, mousePosition);
                     } else {
                         if (hoverClass) {
                             $dropEl.removeClass(hoverClass);
@@ -1562,18 +1571,21 @@ gj.droppable.methods = {
 
     createMouseUpHandler: function ($dropEl) {
         return function (e) {
+            var mousePosition = {
+                left: gj.droppable.methods.mouseX(e),
+                top: gj.droppable.methods.mouseY(e)
+            };
             $dropEl.isDragging = false;
-            if (gj.droppable.methods.isOver($dropEl, e)) {
+            if (gj.droppable.methods.isOver($dropEl, mousePosition)) {
                 gj.droppable.events.drop($dropEl);
             }
         }
     },
 
-    isOver: function ($dropEl, e) {
-        var x = gj.droppable.methods.mouseX(e),
-            y = gj.droppable.methods.mouseY(e),
-            offset = $dropEl.offset();
-        return x > offset.left && x < (offset.left + $dropEl.width()) && y > offset.top && y < (offset.top + $dropEl.height());
+    isOver: function ($dropEl, mousePosition) {
+        var offset = $dropEl.offset();
+        return mousePosition.left > offset.left && mousePosition.left < (offset.left + $dropEl.width())
+            && mousePosition.top > offset.top && mousePosition.top < (offset.top + $dropEl.height());
     },
 
     mouseX: function (e) {
@@ -1636,6 +1648,7 @@ gj.droppable.events = {
     /** Triggered when a draggable element is dragged over the droppable.
      * @event over
      * @param {object} e - event data
+     * @param {object} mousePosition - Current mouse position as { top, left } object.
      * @example sample <!-- droppable.base, draggable.base -->
      * <style>
      * .draggable { border: 1px solid #999; width: 300px; height: 200px; text-align: center; }
@@ -1652,8 +1665,8 @@ gj.droppable.events = {
      *     });
      * </script>
      */
-    over: function ($dropEl) {
-        $dropEl.trigger('over');
+    over: function ($dropEl, mousePosition) {
+        $dropEl.trigger('over', [mousePosition]);
     },
 
     /** Triggered when a draggable element is dragged out of the droppable.
@@ -1717,8 +1730,8 @@ gj.droppable.widget = function ($element, arguments) {
         return methods.destroy(this);
     }
 
-    self.isOver = function (mouseEvent) {
-        return methods.isOver(this, mouseEvent);
+    self.isOver = function (mousePosition) {
+        return methods.isOver(this, mousePosition);
     }
 
     $.extend($element, self);
@@ -6720,7 +6733,7 @@ gj.grid.plugins.rowReorder = {
         },
 
         createDragStopHandler: function ($grid, $trSource) {
-            return function (e, mouseEvent) {
+            return function (e, mousePosition) {
                 $('table[data-role="draggable-clone"]').draggable('destroy').remove();
                 $trSource.siblings('tr[data-role="row"]').each(function () {
                     var $trTarget = $(this),
@@ -6729,7 +6742,7 @@ gj.grid.plugins.rowReorder = {
                         data = $grid.data(),
                         $rows, $row, i, record, id;
                         
-                    if ($trTarget.droppable('isOver', mouseEvent)) {
+                    if ($trTarget.droppable('isOver', mousePosition)) {
                         if (targetPosition < sourcePosition) {
                             $trTarget.before($trSource);
                         } else {
@@ -6865,7 +6878,7 @@ gj.grid.plugins.columnReorder = {
         },
 
         createDragStopHandler: function ($grid, $thSource) {
-            return function (e, mouseEvent) {
+            return function (e, mousePosition) {
                 $('table[data-role="draggable-clone"]').draggable('destroy').remove();
                 $thSource.siblings('th').each(function () {
                     var $thTarget = $(this),
@@ -6875,7 +6888,7 @@ gj.grid.plugins.columnReorder = {
 
                     $thTarget.removeClass('gj-grid-base-left-border').removeClass('gj-grid-base-right-border');
                     $thTarget.closest('table').find('tbody tr[data-role="row"] td:nth-child(' + ($thTarget.index() + 1) + ')').removeClass('gj-grid-base-left-border').removeClass('gj-grid-base-right-border');
-                    if ($thTarget.droppable('isOver', mouseEvent)) {
+                    if ($thTarget.droppable('isOver', mousePosition)) {
                         if (targetPosition < sourcePosition) {
                             $thTarget.before($thSource);
                         } else {
@@ -7307,7 +7320,7 @@ gj.tree.config = {
 
         autoGenId: 1,
 
-        indentation: 20,
+        indentation: 16,
 
         style: {
             wrapper: 'gj-unselectable',
@@ -7614,7 +7627,7 @@ gj.tree.methods = {
             $expander = $('<span data-role="expander" data-mode="close"></span>'),
             $display = $('<span data-role="display">' + nodeData.data[data.textField] + '</span>');
 
-        if (data.indentation && level > 1) {
+        if (data.indentation) {
             $wrapper.append('<span data-role="spacer" style="width: ' + (data.indentation * (level - 1)) + 'px; display: table-cell;"></span>');
         }
 
@@ -8514,6 +8527,7 @@ gj.tree.plugins.dragAndDrop = {
 
 			style: {
 			    dropAsChildIcon: undefined,
+			    dropAbove: 'gj-tree-base-drop-above',
 			    dropBelow: 'gj-tree-base-drop-below'
 			}
 		},
@@ -8540,9 +8554,10 @@ gj.tree.plugins.dragAndDrop = {
 		    return function (e) {
 		        var $dragEl = $display.clone();
 		        $('body').append($dragEl);
-		        $dragEl.attr('data-role', 'draggable-clone').css('cursor', 'move');
+		        $dragEl.attr('data-role', 'draggable-clone').css('cursor', 'move').addClass('gj-unselectable');
 		        $dragEl.prepend('<span data-role="indicator" />');
 		        $dragEl.draggable({
+		            drag: gj.tree.plugins.dragAndDrop.private.createDragHandler($tree, $node, $display),
 		            stop: gj.tree.plugins.dragAndDrop.private.createDragStopHandler($tree, $node, $display)
 		        });
 		        $dragEl.css({
@@ -8551,91 +8566,123 @@ gj.tree.plugins.dragAndDrop = {
 		        if ($display.attr('data-droppable') === 'true') {
 		            $display.droppable('destroy');
 		        }
-		        $tree.find('[data-role="display"]').not($display).not($node.find('[data-role="display"]')).each(function () {
+		        gj.tree.plugins.dragAndDrop.private.getTargetDisplays($tree, $node, $display).each(function () {
 		            var $dropEl = $(this);
 		            if ($dropEl.attr('data-droppable') === 'true') {
 		                $dropEl.droppable('destroy');
 		            }
-		            $dropEl.droppable({
-		                over: gj.tree.plugins.dragAndDrop.private.createOverDisplayHandler($tree, $dragEl),
-		                out: gj.tree.plugins.dragAndDrop.private.createOutDisplayHandler($tree, $dragEl)
-		            });
+		            $dropEl.droppable();
 		        });
-		        $tree.find('[data-role="wrapper"]').not($node.find('[data-role="wrapper"]')).each(function () {
+		        gj.tree.plugins.dragAndDrop.private.getTargetDisplays($tree, $node).each(function () {
 		            var $dropEl = $(this);
 		            if ($dropEl.attr('data-droppable') === 'true') {
 		                $dropEl.droppable('destroy');
 		            }
-		            $dropEl.droppable({
-		                over: gj.tree.plugins.dragAndDrop.private.createOverNodeHandler($tree, $dragEl),
-		                out: gj.tree.plugins.dragAndDrop.private.createOutNodeHandler($tree, $dragEl)
-		            });
+		            $dropEl.droppable();
 		        });
 		        $dragEl.trigger('mousedown');
 		    };
 	    },
 
+	    getTargetDisplays: function ($tree, $node, $display) {
+	        return $tree.find('[data-role="display"]').not($display).not($node.find('[data-role="display"]'));
+	    },
+
+	    getTargetWrappers: function ($tree, $node) {
+	        return $tree.find('[data-role="wrapper"]').not($node.find('[data-role="wrapper"]'));
+	    },
+
+	    createDragHandler: function ($tree, $node, $display) {
+	        var $displays = gj.tree.plugins.dragAndDrop.private.getTargetDisplays($tree, $node, $display),
+                $wrappers = gj.tree.plugins.dragAndDrop.private.getTargetWrappers($tree, $node),
+	            data = $tree.data();
+	        return function (e, offset, mousePosition) {
+	            var $dragEl = $(this), success = false;
+	            $displays.each(function () {
+	                var $targetDisplay = $(this),
+	                    $indicator;
+	                if ($targetDisplay.droppable('isOver', mousePosition)) {
+	                    $indicator = $dragEl.find('[data-role="indicator"]');
+	                    data.style.addAsChildIcon ? $indicator.attr('class', data.style.dropAsChildIcon) : $indicator.text('+');
+	                    success = true;
+	                    return false;
+	                } else {
+	                    $dragEl.find('[data-role="indicator"]').removeClass($tree.data().style.dropAsChildIcon).empty();
+                    }
+	            });
+	            $wrappers.each(function () {
+	                var $wrapper = $(this),
+                        $indicator, middle;
+	                if (!success && $wrapper.droppable('isOver', mousePosition)) {
+	                    middle = $wrapper.position().top + ($wrapper.outerHeight() / 2);
+	                    if (mousePosition.top < middle) {
+	                        $wrapper.addClass(data.style.dropAbove).removeClass(data.style.dropBelow);
+	                    } else {
+	                        $wrapper.addClass(data.style.dropBelow).removeClass(data.style.dropAbove);
+	                    }
+	                } else {
+	                    $wrapper.removeClass(data.style.dropAbove).removeClass(data.style.dropBelow);
+	                }
+	            });
+	        };
+        },
+
 	    createDragStopHandler: function ($tree, $sourceNode, $sourceDisplay) {
-	        return function (e, mouseEvent) {
-	            $('[data-role="draggable-clone"]').draggable('destroy').remove();
-	            $tree.find('[data-role="display"]').not($sourceDisplay).each(function () {
-	                var $targetDisplay = $(this), $targetNode, $ul, $sourceParentNode;
-	                if ($targetDisplay.droppable('isOver', mouseEvent)) {
-	                    $sourceParentNode = $sourceNode.parent('ul').parent('li');
+	        var $displays = gj.tree.plugins.dragAndDrop.private.getTargetDisplays($tree, $sourceNode, $sourceDisplay),
+                $wrappers = gj.tree.plugins.dragAndDrop.private.getTargetWrappers($tree, $sourceNode),
+	            data = $tree.data();
+	        return function (e, mousePosition) {
+	            var success = false;
+	            $(this).draggable('destroy').remove();
+	            $displays.each(function () {
+	                var $targetDisplay = $(this), $targetNode, $ul;
+	                if ($targetDisplay.droppable('isOver', mousePosition)) {
 	                    $targetNode = $targetDisplay.closest('li');
 	                    $ul = $targetNode.children('ul');
 	                    if ($ul.length === 0) {
-	                        $ul = $('<ul />').addClass($tree.data().style.list);
+	                        $ul = $('<ul />').addClass(data.style.list);
 	                        $targetNode.append($ul);
 	                    }
 	                    $ul.append($sourceNode);
-	                    gj.tree.plugins.dragAndDrop.private.refreshNode($tree, $targetNode);
-	                    gj.tree.plugins.dragAndDrop.private.refreshNode($tree, $sourceNode);
-	                    gj.tree.plugins.dragAndDrop.private.refreshNode($tree, $sourceParentNode);
+	                    gj.tree.plugins.dragAndDrop.private.refresh($tree, $sourceNode, $targetNode);
+	                    success = true;
 	                }
 	                $targetDisplay.droppable('destroy');
 	            });
+	            if (!success) {
+	                $wrappers.each(function () {
+	                    var $targetWrapper = $(this), $targetNode, middle;
+	                    if ($targetWrapper.droppable('isOver', mousePosition)) {
+	                        $targetNode = $targetWrapper.closest('li');
+	                        middle = $targetWrapper.position().top +($targetWrapper.outerHeight() / 2);
+	                        if (mousePosition.top < middle) {
+	                            $sourceNode.insertBefore($targetNode);
+	                        } else {
+	                            $sourceNode.insertAfter($targetNode);
+	                        }
+	                        gj.tree.plugins.dragAndDrop.private.refresh($tree, $sourceNode, $targetNode);
+	                    }
+	                    $targetWrapper.droppable('destroy');
+	                });
+                }
 	        }
 	    },
 
-	    createOverDisplayHandler: function ($tree, $dragEl) {
-	        return function (e) {
-	            var $indicator = $dragEl.find('[data-role="indicator"]'),
-	                data = $tree.data();
-	            if ($indicator.length) {
-	                data.style.addAsChildIcon ? $indicator.attr('class', data.style.dropAsChildIcon) : $indicator.text('+');
-	            }
-	            $(this).closest('[data-role="wrapper"]').removeClass(data.style.dropBelow);
-	            $tree.attr('data-over-display', 'true');
-	        };
-	    },
-
-	    createOutDisplayHandler: function ($tree, $dragEl) {
-	        return function (e) {
-	            $dragEl.find('[data-role="indicator"]').removeClass($tree.data().style.dropAsChildIcon).empty();
-	            $tree.attr('data-over-display', 'false');
-	        };
-	    },
-
-	    createOverNodeHandler: function ($tree, $dragEl) {
-	        return function (e) {
-	            var $indicator = $dragEl.find('[data-role="indicator"]'),
-	                data = $tree.data();
-	            if ($indicator.length && $tree.attr('data-over-display') === 'false') {
-	                $(this).addClass(data.style.dropBelow);
-	            }
-	        };
-	    },
-
-	    createOutNodeHandler: function ($tree, $dragEl) {
-	        return function (e) {
-	            $(this).removeClass($tree.data().style.dropBelow);
-	        };
-	    },
+	    refresh: function ($tree, $sourceNode, $targetNode) {
+	        var $sourceParentNode = $sourceNode.parent('ul').parent('li');
+	        gj.tree.plugins.dragAndDrop.private.refreshNode($tree, $targetNode);
+	        gj.tree.plugins.dragAndDrop.private.refreshNode($tree, $sourceParentNode);
+	        gj.tree.plugins.dragAndDrop.private.refreshNode($tree, $sourceNode);
+	        $sourceNode.find('li[data-role="node"]').each(function () {
+	            gj.tree.plugins.dragAndDrop.private.refreshNode($tree, $(this));
+	        });
+	        $targetNode.children('[data-role="wrapper"]').removeClass(data.style.dropAbove).removeClass(data.style.dropBelow);
+        },
 
 	    refreshNode: function ($tree, $node) {
-	        var $expander = $node.find('>[data-role="wrapper"]>[data-role="expander"]'),
-	            $spacer = $node.find('>[data-role="wrapper"]>[data-role="spacer"]'),
+	        var $wrapper = $node.children('[data-role="wrapper"]'),
+	            $expander = $wrapper.children('[data-role="expander"]'),
+	            $spacer = $wrapper.children('[data-role="spacer"]'),
 	            $list = $node.children('ul'),
                 data = $tree.data(),
 	            level = $node.parentsUntil('[data-type="tree"]', 'ul').length;
@@ -8649,6 +8696,7 @@ gj.tree.plugins.dragAndDrop = {
 	        } else {
 	            $expander.empty();
 	        }
+	        $wrapper.removeClass(data.style.dropAbove).removeClass(data.style.dropBelow);
 
 	        $spacer.css('width', (data.indentation * (level - 1)));
 	    }

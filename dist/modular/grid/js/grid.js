@@ -5169,7 +5169,7 @@ gj.grid.plugins.rowReorder = {
         },
 
         createDragStopHandler: function ($grid, $trSource) {
-            return function (e, mouseEvent) {
+            return function (e, mousePosition) {
                 $('table[data-role="draggable-clone"]').draggable('destroy').remove();
                 $trSource.siblings('tr[data-role="row"]').each(function () {
                     var $trTarget = $(this),
@@ -5178,7 +5178,7 @@ gj.grid.plugins.rowReorder = {
                         data = $grid.data(),
                         $rows, $row, i, record, id;
                         
-                    if ($trTarget.droppable('isOver', mouseEvent)) {
+                    if ($trTarget.droppable('isOver', mousePosition)) {
                         if (targetPosition < sourcePosition) {
                             $trTarget.before($trSource);
                         } else {
@@ -5314,7 +5314,7 @@ gj.grid.plugins.columnReorder = {
         },
 
         createDragStopHandler: function ($grid, $thSource) {
-            return function (e, mouseEvent) {
+            return function (e, mousePosition) {
                 $('table[data-role="draggable-clone"]').draggable('destroy').remove();
                 $thSource.siblings('th').each(function () {
                     var $thTarget = $(this),
@@ -5324,7 +5324,7 @@ gj.grid.plugins.columnReorder = {
 
                     $thTarget.removeClass('gj-grid-base-left-border').removeClass('gj-grid-base-right-border');
                     $thTarget.closest('table').find('tbody tr[data-role="row"] td:nth-child(' + ($thTarget.index() + 1) + ')').removeClass('gj-grid-base-left-border').removeClass('gj-grid-base-right-border');
-                    if ($thTarget.droppable('isOver', mouseEvent)) {
+                    if ($thTarget.droppable('isOver', mousePosition)) {
                         if (targetPosition < sourcePosition) {
                             $thTarget.before($thSource);
                         } else {

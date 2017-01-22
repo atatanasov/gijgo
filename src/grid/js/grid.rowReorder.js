@@ -152,7 +152,7 @@ gj.grid.plugins.rowReorder = {
         },
 
         createDragStopHandler: function ($grid, $trSource) {
-            return function (e, mouseEvent) {
+            return function (e, mousePosition) {
                 $('table[data-role="draggable-clone"]').draggable('destroy').remove();
                 $trSource.siblings('tr[data-role="row"]').each(function () {
                     var $trTarget = $(this),
@@ -161,7 +161,7 @@ gj.grid.plugins.rowReorder = {
                         data = $grid.data(),
                         $rows, $row, i, record, id;
                         
-                    if ($trTarget.droppable('isOver', mouseEvent)) {
+                    if ($trTarget.droppable('isOver', mousePosition)) {
                         if (targetPosition < sourcePosition) {
                             $trTarget.before($trSource);
                         } else {

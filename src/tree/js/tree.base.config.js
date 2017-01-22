@@ -240,7 +240,7 @@ gj.tree.config = {
 
         autoGenId: 1,
 
-        indentation: 20,
+        indentation: 16,
 
         style: {
             wrapper: 'gj-unselectable',
