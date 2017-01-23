@@ -209,6 +209,35 @@ if (typeof (gj.checkbox) === 'undefined') {
 
 gj.checkbox.config = {
     base: {
+        /** The name of the UI library that is going to be in use. Currently we support only Material Design Lite and Bootstrap. 
+         * @additionalinfo The css files for Material Design Lite or Bootstrap should be manually included to the page where the checkbox is in use.
+         * @type string (bootstrap|materialdesign)
+         * @default undefined
+         * @example Bootstrap <!-- bootstrap, checkbox -->
+         * <div class="container"/>
+         * <input type="checkbox" id="checkbox"/>
+         * <button onclick="$chkb.state('indeterminate')" class="btn btn-default">indeterminate</button>
+         * </div>
+         * <script>
+         *     var $chkb = $('#checkbox').checkbox({
+         *         uiLibrary: 'bootstrap'
+         *     });
+         * </script>
+         * @example Material.Design <!-- materialdesign, checkbox  -->
+         * <input type="checkbox" id="checkbox"/>
+         * <script>
+         *     var $chkb = $('#checkbox').checkbox({
+         *         uiLibrary: 'materialdesign'
+         *     });
+         * </script>
+         */
+        uiLibrary: undefined,
+
+        cssClass: undefined,
+    },
+
+    bootstrap: {
+        cssClass: 'gj-checkbox-bootstrap'
     }
 };
 
@@ -225,9 +254,15 @@ gj.checkbox.methods = {
     },
 
     initialize: function ($chkb) {
+        var data = $chkb.data();
         $chkb.on('change', function (e) {
             $chkb.state(this.checked ? 'checked' : 'unchecked');
         });
+
+        if (data.cssClass) {
+            $chkb.wrap('<label class="' + data.cssClass + '"></label>');
+            $chkb.parent().append('<span/>');
+        }
     },
 
     state: function ($chkb, value) {

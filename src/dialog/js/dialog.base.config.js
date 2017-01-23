@@ -267,9 +267,9 @@ gj.dialog.config = {
          */
         title: 'Dialog',
 
-        /** The name of the UI library that is going to be in use. Currently we support only jQuery UI and Bootstrap. 
-         * @additionalinfo The css files for jQuery UI, Foundation or Bootstrap should be manually included to the page where the dialog is in use.
-         * @type string (jqueryui|bootstrap|foundation)
+        /** The name of the UI library that is going to be in use. Currently we support only jQuery UI, Foundation, Material Design Lite and Bootstrap. 
+         * @additionalinfo The css files for jQuery UI, Foundation, Material Design Lite or Bootstrap should be manually included to the page where the dialog is in use.
+         * @type string (jqueryui|bootstrap|materialdesign|foundation)
          * @default undefined
          * @example jQueryUI <!-- draggable.base, dialog.base, jqueryui -->
          * <div id="dialog">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>

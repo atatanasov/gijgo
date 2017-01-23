@@ -1789,7 +1789,8 @@ gj.tree.plugins.dragAndDrop = {
 	    },
 
 	    refresh: function ($tree, $sourceNode, $targetNode) {
-	        var $sourceParentNode = $sourceNode.parent('ul').parent('li');
+	        var $sourceParentNode = $sourceNode.parent('ul').parent('li'),
+	            data = $tree.data();
 	        gj.tree.plugins.dragAndDrop.private.refreshNode($tree, $targetNode);
 	        gj.tree.plugins.dragAndDrop.private.refreshNode($tree, $sourceParentNode);
 	        gj.tree.plugins.dragAndDrop.private.refreshNode($tree, $sourceNode);

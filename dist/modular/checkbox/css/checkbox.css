@@ -40,16 +40,61 @@
     display: none;
 }
 
-.gj-checkbox {
-    border: 1px solid #000;
-    width: 19px;
-    height: 19px;
+.gj-checkbox-bootstrap {
+    min-width: 0;
+    font-size: 0;
+    letter-spacing: -1px;
+    font-weight: normal;
 }
 
-.gj-checkbox span[data-role="display"] {
-    width: 100%;
-    text-align: center;
-    display: inline-block;
-    font-size: 14px;
+.gj-checkbox-bootstrap input[type="checkbox"] {
+    display: none;
+    margin-bottom: -12px;
+}
+
+.gj-checkbox-bootstrap span {
+    background: #fff;
+    display: block;
+    content: " ";
+    float: left;
+    width: 18px;
+    height: 18px;
+    line-height: 11px;
+    font-size: 11px;
+    padding: 2px;
+    margin-right: 4px;
+    color: #555555;
+    border: 1px solid #cccccc;
+    border-radius: 3px;
+    transition: box-shadow 0.2s linear, border-color 0.2s linear;
     cursor: pointer;
+}
+
+.gj-checkbox-bootstrap input[type="checkbox"]:focus + span:before {
+    outline: 0;
+    box-shadow: 0 0 0 0 #66afe9, 0 0 6px rgba(102, 175, 233, .6);
+    border-color: #66afe9;
+}
+
+.gj-checkbox-bootstrap input[type="checkbox"]:checked + span:before {
+    display: inline-block;
+    font-family: 'Glyphicons Halflings';
+    content: "\e013 ";
+}
+
+.gj-checkbox-bootstrap input[type="checkbox"]:indeterminate + span:before {
+    display: inline-block;
+    font-family: 'Glyphicons Halflings';
+    content: "\2212 ";
+}
+
+.gj-checkbox-bootstrap input[type="checkbox"][disabled] + span {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.gj-checkbox-bootstrap input[type="checkbox"][disabled] + span:before {
+    background: #eee;
+    border: 1px solid #ccc;
+    color: #888;
 }

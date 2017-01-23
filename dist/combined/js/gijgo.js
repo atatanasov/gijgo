@@ -467,9 +467,9 @@ gj.dialog.config = {
          */
         title: 'Dialog',
 
-        /** The name of the UI library that is going to be in use. Currently we support only jQuery UI and Bootstrap. 
-         * @additionalinfo The css files for jQuery UI, Foundation or Bootstrap should be manually included to the page where the dialog is in use.
-         * @type string (jqueryui|bootstrap|foundation)
+        /** The name of the UI library that is going to be in use. Currently we support only jQuery UI, Foundation, Material Design Lite and Bootstrap. 
+         * @additionalinfo The css files for jQuery UI, Foundation, Material Design Lite or Bootstrap should be manually included to the page where the dialog is in use.
+         * @type string (jqueryui|bootstrap|materialdesign|foundation)
          * @default undefined
          * @example jQueryUI <!-- draggable.base, dialog.base, jqueryui -->
          * <div id="dialog">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
@@ -8669,7 +8669,8 @@ gj.tree.plugins.dragAndDrop = {
 	    },
 
 	    refresh: function ($tree, $sourceNode, $targetNode) {
-	        var $sourceParentNode = $sourceNode.parent('ul').parent('li');
+	        var $sourceParentNode = $sourceNode.parent('ul').parent('li'),
+	            data = $tree.data();
 	        gj.tree.plugins.dragAndDrop.private.refreshNode($tree, $targetNode);
 	        gj.tree.plugins.dragAndDrop.private.refreshNode($tree, $sourceParentNode);
 	        gj.tree.plugins.dragAndDrop.private.refreshNode($tree, $sourceNode);
@@ -8726,6 +8727,35 @@ if (typeof (gj.checkbox) === 'undefined') {
 
 gj.checkbox.config = {
     base: {
+        /** The name of the UI library that is going to be in use. Currently we support only Material Design Lite and Bootstrap. 
+         * @additionalinfo The css files for Material Design Lite or Bootstrap should be manually included to the page where the checkbox is in use.
+         * @type string (bootstrap|materialdesign)
+         * @default undefined
+         * @example Bootstrap <!-- bootstrap, checkbox -->
+         * <div class="container"/>
+         * <input type="checkbox" id="checkbox"/>
+         * <button onclick="$chkb.state('indeterminate')" class="btn btn-default">indeterminate</button>
+         * </div>
+         * <script>
+         *     var $chkb = $('#checkbox').checkbox({
+         *         uiLibrary: 'bootstrap'
+         *     });
+         * </script>
+         * @example Material.Design <!-- materialdesign, checkbox  -->
+         * <input type="checkbox" id="checkbox"/>
+         * <script>
+         *     var $chkb = $('#checkbox').checkbox({
+         *         uiLibrary: 'materialdesign'
+         *     });
+         * </script>
+         */
+        uiLibrary: undefined,
+
+        cssClass: undefined,
+    },
+
+    bootstrap: {
+        cssClass: 'gj-checkbox-bootstrap'
     }
 };
 
@@ -8742,9 +8772,15 @@ gj.checkbox.methods = {
     },
 
     initialize: function ($chkb) {
+        var data = $chkb.data();
         $chkb.on('change', function (e) {
             $chkb.state(this.checked ? 'checked' : 'unchecked');
         });
+
+        if (data.cssClass) {
+            $chkb.wrap('<label class="' + data.cssClass + '"></label>');
+            $chkb.parent().append('<span/>');
+        }
     },
 
     state: function ($chkb, value) {
