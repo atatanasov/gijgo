@@ -875,7 +875,9 @@ gj.grid.methods = {
         data.totalRecords = $grid.data('totalRecords') + 1;
         gj.grid.events.dataBinding($grid, [record]);
         data.records.push(record);
-        data.dataSource.push(record);
+        if ($.isArray(data.dataSource)) {
+            data.dataSource.push(record);
+        }
         if (gj.grid.methods.isLastRecordVisible($grid)) {
             gj.grid.methods.renderRow($grid, null, record, $grid.count() - 1);
         }
