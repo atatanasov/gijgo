@@ -3791,9 +3791,11 @@ gj.grid.methods = {
             $cells;
 
         if (position > -1) {
-            $grid.find('thead>tr>th:eq(' + position + ')').show();
+            $grid.find('thead>tr').each(function() {
+                $(this).children('th').eq(position).show();
+            });
             $.each($grid.find('tbody>tr'), function () {
-                $(this).find('td:eq(' + position + ')').show();
+                $(this).children('td').eq(position).show();
             });
             data.columns[position].hidden = false;
 
@@ -3814,9 +3816,11 @@ gj.grid.methods = {
             $cells;
 
         if (position > -1) {
-            $grid.find('thead>tr>th:eq(' + position + ')').hide();
+            $grid.find('thead>tr').each(function () {
+                $(this).children('th').eq(position).hide();
+            });
             $.each($grid.find('tbody>tr'), function () {
-                $(this).find('td:eq(' + position + ')').hide();
+                $(this).children('td').eq(position).hide();
             });
             data.columns[position].hidden = true;
 
@@ -7031,7 +7035,7 @@ gj.grid.plugins.headerFilter = {
                 $filterTr = $('<tr data-role="filter"/>');
 
             for (i = 0; i < data.columns.length; i++) {
-                $th = $('<td/>');
+                $th = $('<th/>');
                 $ctrl = $('<input data-field="' + data.columns[i].field + '" class="gj-width-full" />');
                 if ('onchange' === data.headerFilter.type) {
                     $ctrl.on('input propertychange', function (e) {
@@ -7046,6 +7050,9 @@ gj.grid.plugins.headerFilter = {
                     $ctrl.on('blur', function (e) {
                         gj.grid.plugins.headerFilter.private.reload($grid, $(this));
                     });
+                }
+                if (data.columns[i].hidden) {
+                    $th.hide();
                 }
                 $th.append($ctrl);
                 $filterTr.append($th);

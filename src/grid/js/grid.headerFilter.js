@@ -79,7 +79,7 @@ gj.grid.plugins.headerFilter = {
                 $filterTr = $('<tr data-role="filter"/>');
 
             for (i = 0; i < data.columns.length; i++) {
-                $th = $('<td/>');
+                $th = $('<th/>');
                 $ctrl = $('<input data-field="' + data.columns[i].field + '" class="gj-width-full" />');
                 if ('onchange' === data.headerFilter.type) {
                     $ctrl.on('input propertychange', function (e) {
@@ -94,6 +94,9 @@ gj.grid.plugins.headerFilter = {
                     $ctrl.on('blur', function (e) {
                         gj.grid.plugins.headerFilter.private.reload($grid, $(this));
                     });
+                }
+                if (data.columns[i].hidden) {
+                    $th.hide();
                 }
                 $th.append($ctrl);
                 $filterTr.append($th);

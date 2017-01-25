@@ -822,9 +822,11 @@ gj.grid.methods = {
             $cells;
 
         if (position > -1) {
-            $grid.find('thead>tr>th:eq(' + position + ')').show();
+            $grid.find('thead>tr').each(function() {
+                $(this).children('th').eq(position).show();
+            });
             $.each($grid.find('tbody>tr'), function () {
-                $(this).find('td:eq(' + position + ')').show();
+                $(this).children('td').eq(position).show();
             });
             data.columns[position].hidden = false;
 
@@ -845,9 +847,11 @@ gj.grid.methods = {
             $cells;
 
         if (position > -1) {
-            $grid.find('thead>tr>th:eq(' + position + ')').hide();
+            $grid.find('thead>tr').each(function () {
+                $(this).children('th').eq(position).hide();
+            });
             $.each($grid.find('tbody>tr'), function () {
-                $(this).find('td:eq(' + position + ')').hide();
+                $(this).children('td').eq(position).hide();
             });
             data.columns[position].hidden = true;
 
