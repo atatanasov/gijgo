@@ -5,3 +5,7 @@
 .gj-tree-base-drop-below {
     border-bottom: 1px solid #000;
 }
+
+span [data-role="indicator"] {
+    width: 10px;
+}

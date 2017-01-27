@@ -8,12 +8,24 @@ gj.tree.plugins.checkboxes = {
             /** Add checkbox for each node, if set to true.
               * @type Boolean
               * @default undefined
-              * @example sample <!-- checkbox, tree.base -->
+              * @example Base.Theme <!-- checkbox, tree.base -->
               * <div id="tree"></div>
               * <script>
               *     var tree = $('#tree').tree({
               *         dataSource: '/DataSources/GetCountries',
               *         checkboxes: true
+              *     });
+              * </script>
+              * @example Bootstrap <!-- bootstrap, checkbox, tree.base -->
+              * <div class="container-fluid">
+              *     <h3>Bootstrap Treeview With Checkboxes</h3>
+              *     <div id="tree"></div>
+              * </div>
+              * <script>
+              *     var tree = $('#tree').tree({
+              *         dataSource: '/DataSources/GetCountries',
+              *         checkboxes: true,
+              *         uiLibrary: 'bootstrap'
               *     });
               * </script>
               */
@@ -35,8 +47,9 @@ gj.tree.plugins.checkboxes = {
         nodeDataBound: function ($tree, $node) {
             var data = $tree.data(),
                 $expander = $node.find('> [data-role="wrapper"] > [data-role="expander"]'),
-                $checkbox = $('<input type="checkbox"/>').checkbox(),
+                $checkbox = $('<input type="checkbox"/>'),
                 $wrapper = $('<span data-role="checkbox"></span>').append($checkbox);
+            $checkbox.checkbox({ uiLibrary: data.uiLibrary });
             $checkbox.on('click', function (e) {
                 var $node = $checkbox.closest('li'),
                     state = $checkbox.state();

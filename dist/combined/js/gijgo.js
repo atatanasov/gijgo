@@ -7336,7 +7336,7 @@ gj.tree.config = {
             list: 'gj-tree-list',
             item: 'gj-tree-item',
             active: 'gj-tree-base-active',
-            display: 'gj-tree-display',
+            display: undefined,
             expandIcon: undefined,
             collapseIcon: undefined,
             leafIcon: undefined
@@ -7348,9 +7348,9 @@ gj.tree.config = {
         style: {
             wrapper: 'gj-unselectable',
             list: 'gj-tree-bootstrap-list list-group',
-            item: 'gj-tree-item gj-tree-bootstrap-item list-group-item',
+            item: 'gj-tree-item list-group-item',
             active: 'active',
-            display: 'gj-tree-bootstrap-display',
+            display: undefined,
             expandIcon: 'glyphicon glyphicon-plus',
             collapseIcon: 'glyphicon glyphicon-minus',
             leafIcon: undefined
@@ -7637,7 +7637,7 @@ gj.tree.methods = {
             $display = $('<span data-role="display">' + nodeData.data[data.textField] + '</span>');
 
         if (data.indentation) {
-            $wrapper.append('<span data-role="spacer" style="width: ' + (data.indentation * (level - 1)) + 'px; display: table-cell;"></span>');
+            $wrapper.append('<span data-role="spacer" style="width: ' + (data.indentation * (level - 1)) + 'px;"></span>');
         }
 
         $expander.on('click', gj.tree.methods.expanderClickHandler($tree));
@@ -8422,12 +8422,24 @@ gj.tree.plugins.checkboxes = {
             /** Add checkbox for each node, if set to true.
               * @type Boolean
               * @default undefined
-              * @example sample <!-- checkbox, tree.base -->
+              * @example Base.Theme <!-- checkbox, tree.base -->
               * <div id="tree"></div>
               * <script>
               *     var tree = $('#tree').tree({
               *         dataSource: '/DataSources/GetCountries',
               *         checkboxes: true
+              *     });
+              * </script>
+              * @example Bootstrap <!-- bootstrap, checkbox, tree.base -->
+              * <div class="container-fluid">
+              *     <h3>Bootstrap Treeview With Checkboxes</h3>
+              *     <div id="tree"></div>
+              * </div>
+              * <script>
+              *     var tree = $('#tree').tree({
+              *         dataSource: '/DataSources/GetCountries',
+              *         checkboxes: true,
+              *         uiLibrary: 'bootstrap'
               *     });
               * </script>
               */
@@ -8449,8 +8461,9 @@ gj.tree.plugins.checkboxes = {
         nodeDataBound: function ($tree, $node) {
             var data = $tree.data(),
                 $expander = $node.find('> [data-role="wrapper"] > [data-role="expander"]'),
-                $checkbox = $('<input type="checkbox"/>').checkbox(),
+                $checkbox = $('<input type="checkbox"/>'),
                 $wrapper = $('<span data-role="checkbox"></span>').append($checkbox);
+            $checkbox.checkbox({ uiLibrary: data.uiLibrary });
             $checkbox.on('click', function (e) {
                 var $node = $checkbox.closest('li'),
                     state = $checkbox.state();

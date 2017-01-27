@@ -653,12 +653,15 @@ ul.gj-tree-list {
 
 li.gj-tree-item {
     padding: 0px;
-    margin: 0px;
 }
 
 li.gj-tree-item div[data-role="wrapper"] {
     display: table;
     width: 100%;
+}
+
+li.gj-tree-item [data-role="spacer"] {
+    display: table-cell;
 }
 
 li.gj-tree-item [data-role="expander"] {
@@ -690,11 +693,7 @@ li.gj-tree-item [data-role="expander"] {
     width: 10px;
 }
 
-span[data-role="indicator"] {
-    width: 10px;
-}
-
-.gj-tree-display {
+li.gj-tree-item [data-role="display"]  {
     padding: 2px 4px;
 }
 
@@ -712,39 +711,42 @@ li ul.gj-tree-bootstrap-list {
     padding-left: 0px;
 }
 
-li.gj-tree-bootstrap-item {
-}
-
-ul li.gj-tree-bootstrap-item ul li.gj-tree-bootstrap-item {
+ul.gj-tree-bootstrap-list li.gj-tree-item ul li.gj-tree-item {
     border-left: 0px;
     border-right: 0px;
 }
 
-ul li.gj-tree-bootstrap-item ul li.gj-tree-bootstrap-item:first-child {
+ul.gj-tree-bootstrap-list li.gj-tree-item ul li.gj-tree-item:first-child {
     border-top-left-radius: 0px;
     border-top-right-radius: 0px;
 }
 
-ul li.gj-tree-bootstrap-item ul li.gj-tree-bootstrap-item:last-child {
+ul.gj-tree-bootstrap-list li.gj-tree-item ul li.gj-tree-item:last-child {
     border-bottom: 0px;
     border-bottom-left-radius: 0px;
     border-bottom-right-radius: 0px;
 }
 
-ul li.gj-tree-bootstrap-item [data-role="expander"] {
+
+ul.gj-tree-bootstrap-list li [data-role="wrapper"] {
+    padding: 0px 10px;
+}
+
+ul.gj-tree-bootstrap-list li [data-role="expander"] {
     width: 24px;
 }
 
-ul li.gj-tree-bootstrap-item [data-role="checkbox"] {
+ul.gj-tree-bootstrap-list li [data-role="checkbox"] {
+    width: 24px;
+    padding-top: 4px;
+}
+
+ul.gj-tree-bootstrap-list li [data-role="icon"] {
     width: 24px;
 }
 
-ul li.gj-tree-bootstrap-item [data-role="icon"] {
-    width: 24px;
-}
-
-.gj-tree-bootstrap-display {
-    padding: 10px 0px;
+ul.gj-tree-bootstrap-list li [data-role="display"] {
+    padding: 12px 0px 8px 5px;
 }
 .list-group-item.active ul li, .list-group-item.active:focus ul li, .list-group-item.active:hover ul li {
     text-shadow: none;
@@ -796,11 +798,18 @@ li.gj-tree-mdl-item [data-role="icon"] {
 .gj-tree-base-drop-below {
     border-bottom: 1px solid #000;
 }
+
+span [data-role="indicator"] {
+    width: 10px;
+}
 .gj-checkbox-bootstrap {
     min-width: 0;
     font-size: 0;
-    letter-spacing: -1px;
     font-weight: normal;
+    margin: 0px;
+    text-align: center;
+    width: 18px;
+    height: 18px;
 }
 
 .gj-checkbox-bootstrap input[type="checkbox"] {
@@ -812,7 +821,6 @@ li.gj-tree-mdl-item [data-role="icon"] {
     background: #fff;
     display: block;
     content: " ";
-    float: left;
     width: 18px;
     height: 18px;
     line-height: 11px;

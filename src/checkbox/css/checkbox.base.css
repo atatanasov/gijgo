@@ -1,8 +1,11 @@
 ﻿.gj-checkbox-bootstrap {
     min-width: 0;
     font-size: 0;
-    letter-spacing: -1px;
     font-weight: normal;
+    margin: 0px;
+    text-align: center;
+    width: 18px;
+    height: 18px;
 }
 
 .gj-checkbox-bootstrap input[type="checkbox"] {
@@ -14,7 +17,6 @@
     background: #fff;
     display: block;
     content: " ";
-    float: left;
     width: 18px;
     height: 18px;
     line-height: 11px;

@@ -247,7 +247,7 @@ gj.tree.config = {
             list: 'gj-tree-list',
             item: 'gj-tree-item',
             active: 'gj-tree-base-active',
-            display: 'gj-tree-display',
+            display: undefined,
             expandIcon: undefined,
             collapseIcon: undefined,
             leafIcon: undefined
@@ -259,9 +259,9 @@ gj.tree.config = {
         style: {
             wrapper: 'gj-unselectable',
             list: 'gj-tree-bootstrap-list list-group',
-            item: 'gj-tree-item gj-tree-bootstrap-item list-group-item',
+            item: 'gj-tree-item list-group-item',
             active: 'active',
-            display: 'gj-tree-bootstrap-display',
+            display: undefined,
             expandIcon: 'glyphicon glyphicon-plus',
             collapseIcon: 'glyphicon glyphicon-minus',
             leafIcon: undefined
