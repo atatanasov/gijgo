@@ -9,9 +9,11 @@
   <script src="../../dist/modular/checkbox/js/checkbox.js"></script>
 </head>
 <body>
- <div class="container"/>
- <input type="checkbox" id="checkbox"/>
- <button onclick="$chkb.state('indeterminate')" class="btn btn-default">indeterminate</button>
+ <div class="container-fluid" style="margin-top:10px">
+     <input type="checkbox" id="checkbox"/><br/><br/>
+     <button onclick="$chkb.state('checked')" class="btn btn-default">Checked</button>
+     <button onclick="$chkb.state('unchecked')" class="btn btn-default">Unchecked</button>
+     <button onclick="$chkb.state('indeterminate')" class="btn btn-default">Indeterminate</button>
  </div>
  <script>
      var $chkb = $('#checkbox').checkbox({

@@ -3,13 +3,23 @@
   <meta charset="utf-8" />
   <title>Example</title>
   <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+  <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">
-  <link href="https://code.getmdl.io/1.2.1/material.indigo-pink.min.css" rel="stylesheet" type="text/css">
+  <link href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css" rel="stylesheet" type="text/css">
   <link href="../../dist/modular/checkbox/css/checkbox.css" rel="stylesheet" type="text/css">
   <script src="../../dist/modular/checkbox/js/checkbox.js"></script>
 </head>
 <body>
- <input type="checkbox" id="checkbox"/>
+ <div class="mdl-layout" style="margin:10px">
+     <div class="mdl-layout__content">
+         <input type="checkbox" id="checkbox"/><br/><br/>
+         <button onclick="$chkb.state('checked')" class="btn btn-default">Checked</button>
+         <button onclick="$chkb.state('unchecked')" class="btn btn-default">Unchecked</button>
+         <button onclick="$chkb.state('indeterminate')" class="btn btn-default">Indeterminate</button>
+         <button onclick="$chkb.prop('disabled', true)" class="btn btn-default">Enable</button>
+         <button onclick="$chkb.prop('disabled', false)" class="btn btn-default">Disable</button>
+     </div>
+ </div>
  <script>
      var $chkb = $('#checkbox').checkbox({
          uiLibrary: 'materialdesign'

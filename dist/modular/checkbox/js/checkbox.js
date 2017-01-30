@@ -214,9 +214,11 @@ gj.checkbox.config = {
          * @type string (bootstrap|materialdesign)
          * @default undefined
          * @example Bootstrap <!-- bootstrap, checkbox -->
-         * <div class="container"/>
-         * <input type="checkbox" id="checkbox"/>
-         * <button onclick="$chkb.state('indeterminate')" class="btn btn-default">indeterminate</button>
+         * <div class="container-fluid" style="margin-top:10px">
+         *     <input type="checkbox" id="checkbox"/><br/><br/>
+         *     <button onclick="$chkb.state('checked')" class="btn btn-default">Checked</button>
+         *     <button onclick="$chkb.state('unchecked')" class="btn btn-default">Unchecked</button>
+         *     <button onclick="$chkb.state('indeterminate')" class="btn btn-default">Indeterminate</button>
          * </div>
          * <script>
          *     var $chkb = $('#checkbox').checkbox({
@@ -224,7 +226,16 @@ gj.checkbox.config = {
          *     });
          * </script>
          * @example Material.Design <!-- materialdesign, checkbox  -->
-         * <input type="checkbox" id="checkbox"/>
+         * <div class="mdl-layout" style="margin:10px">
+         *     <div class="mdl-layout__content">
+         *         <input type="checkbox" id="checkbox"/><br/><br/>
+         *         <button onclick="$chkb.state('checked')" class="btn btn-default">Checked</button>
+         *         <button onclick="$chkb.state('unchecked')" class="btn btn-default">Unchecked</button>
+         *         <button onclick="$chkb.state('indeterminate')" class="btn btn-default">Indeterminate</button>
+         *         <button onclick="$chkb.prop('disabled', true)" class="btn btn-default">Enable</button>
+         *         <button onclick="$chkb.prop('disabled', false)" class="btn btn-default">Disable</button>
+         *     </div>
+         * </div>
          * <script>
          *     var $chkb = $('#checkbox').checkbox({
          *         uiLibrary: 'materialdesign'
@@ -233,11 +244,28 @@ gj.checkbox.config = {
          */
         uiLibrary: undefined,
 
-        cssClass: undefined,
+        style: {
+            wrapperCssClass: undefined,
+            inputCssClass: undefined,
+            spanCssClass: undefined
+        }
+        
     },
 
     bootstrap: {
-        cssClass: 'gj-checkbox-bootstrap'
+        style: {
+            wrapperCssClass: 'gj-checkbox-bootstrap',
+            inputCssClass: undefined,
+            spanCssClass: undefined
+        }
+    },
+
+    materialdesign: {
+        style: {
+            wrapperCssClass: 'gj-checkbox-md',
+            inputCssClass: undefined,
+            spanCssClass: 'material-icons md-light'
+        }
     }
 };
 
@@ -254,14 +282,26 @@ gj.checkbox.methods = {
     },
 
     initialize: function ($chkb) {
-        var data = $chkb.data();
+        var data = $chkb.data(), $wrapper, $span;
         $chkb.on('change', function (e) {
             $chkb.state(this.checked ? 'checked' : 'unchecked');
         });
 
-        if (data.cssClass) {
-            $chkb.wrap('<label class="' + data.cssClass + '"></label>');
-            $chkb.parent().append('<span/>');
+        if (data.style.inputCssClass) {
+            $chkb.addClass(data.style.inputCssClass);
+        }
+
+        if (data.style.wrapperCssClass) {
+            $wrapper = $('<label class="' + data.style.wrapperCssClass + '"></label>');
+            if ($chkb.attr('id')) {
+                $wrapper.attr('for', $chkb.attr('id'));
+            }
+            $chkb.wrap($wrapper);
+            $span = $('<span />');
+            if (data.style.spanCssClass) {
+                $span.addClass(data.style.spanCssClass);
+            }
+            $chkb.parent().append($span);
         }
     },
 
