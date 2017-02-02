@@ -28,6 +28,18 @@ gj.tree.plugins.checkboxes = {
               *         uiLibrary: 'bootstrap'
               *     });
               * </script>
+              * @example Material.Design <!-- materialdesign, checkbox, tree.base -->
+              * <div class="container-fluid">
+              *     <h3>Material Design Treeview With Checkboxes</h3>
+              *     <div id="tree"></div>
+              * </div>
+              * <script>
+              *     var tree = $('#tree').tree({
+              *         dataSource: '/DataSources/GetCountries',
+              *         checkboxes: true,
+              *         uiLibrary: 'materialdesign'
+              *     });
+              * </script>
               */
             checkboxes: undefined,
 

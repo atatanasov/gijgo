@@ -32,8 +32,8 @@ gj.checkbox.config = {
          *         <button onclick="$chkb.state('checked')" class="btn btn-default">Checked</button>
          *         <button onclick="$chkb.state('unchecked')" class="btn btn-default">Unchecked</button>
          *         <button onclick="$chkb.state('indeterminate')" class="btn btn-default">Indeterminate</button>
-         *         <button onclick="$chkb.prop('disabled', true)" class="btn btn-default">Enable</button>
-         *         <button onclick="$chkb.prop('disabled', false)" class="btn btn-default">Disable</button>
+         *         <button onclick="$chkb.prop('disabled', false)" class="btn btn-default">Enable</button>
+         *         <button onclick="$chkb.prop('disabled', true)" class="btn btn-default">Disable</button>
          *     </div>
          * </div>
          * <script>

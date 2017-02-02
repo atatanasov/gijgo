@@ -7228,7 +7228,7 @@ gj.tree.config = {
         /** Children field name.
          * @type string
          * @default 'children'
-         * @example sample <!-- tree.base -->
+         * @example Custom.FieldName <!-- tree.base -->
          * <div id="tree"></div>
          * <script>
          *     var tree = $('#tree').tree({
@@ -7239,16 +7239,15 @@ gj.tree.config = {
          */
         childrenField: 'children',
 
-        /** Icon field name.
+        /** Image css class field name.
          * @type string
-         * @default undefined
+         * @default 'imageCssClass'
          * @example Bootstrap <!-- bootstrap, tree.base -->
          * <div id="tree"></div>
          * <script>
          *     var tree = $('#tree').tree({
-         *         iconField: 'icon',
          *         uiLibrary: 'bootstrap',
-         *         dataSource: [ { text: 'folder', icon: 'glyphicon glyphicon-folder-close', children: [ { text: 'file', icon: 'glyphicon glyphicon-file' } ] } ]
+         *         dataSource: [ { text: 'folder', imageCssClass: 'glyphicon glyphicon-folder-close', children: [ { text: 'file', imageCssClass: 'glyphicon glyphicon-file' } ] } ]
          *     });
          * </script>
          * @example Font.Awesome <!-- tree.base  -->
@@ -7256,21 +7255,67 @@ gj.tree.config = {
          * <div id="tree"></div>
          * <script>
          *     var tree = $('#tree').tree({
-         *         iconField: 'icon',
-         *         dataSource: [ { text: 'folder', icon: 'fa fa-folder', children: [ { text: 'file', icon: 'fa fa-file' } ] } ]
+         *         imageCssClass: 'faCssClass',
+         *         dataSource: [ { text: 'folder', faCssClass: 'fa fa-folder', children: [ { text: 'file', faCssClass: 'fa fa-file' } ] } ]
          *     });
          * </script>
          * @example Material.Design <!-- materialdesign, tree.base -->
          * <div id="tree"></div>
          * <script>
          *     var tree = $('#tree').tree({
-         *         iconField: 'icon',
+         *         imageCssClass: 'icon',
          *         uiLibrary: 'materialdesign',
          *         dataSource: [ { text: 'folder', icon: '<i class="material-icons">folder</i>', children: [ { text: 'file', icon: '<i class="material-icons">insert_drive_file</i>' } ] } ]
          *     });
          * </script>
          */
-        iconField: undefined,
+        imageCssClassField: 'imageCssClass',
+
+        /** Image url field name.
+         * @type string
+         * @default 'imageUrl'
+         * @example Default.HTML.Field.Name <!-- materialdesign, tree.base -->
+         * <div id="tree"></div>
+         * <script>
+         *     var tree = $('#tree').tree({
+         *         uiLibrary: 'materialdesign',
+         *         dataSource: [ { text: 'World', imageUrl: 'http://gijgo.com/content/icons/world-icon.png', children: [ { text: 'USA', imageUrl: 'http://gijgo.com/content/icons/usa-oval-icon.png' } ] } ]
+         *     });
+         * </script>
+         * @example Custom.HTML.Field.Name <!-- materialdesign, tree.base -->
+         * <div id="tree"></div>
+         * <script>
+         *     var tree = $('#tree').tree({
+         *         imageUrlField: 'icon',
+         *         uiLibrary: 'materialdesign',
+         *         dataSource: [ { text: 'folder', icon: '<i class="material-icons">folder</i>', children: [ { text: 'file', icon: '<i class="material-icons">insert_drive_file</i>' } ] } ]
+         *     });
+         * </script>
+         */
+        imageUrlField: 'imageUrl',
+
+        /** Image html field name.
+         * @type string
+         * @default 'imageHtml'
+         * @example Default.HTML.Field.Name <!-- materialdesign, tree.base -->
+         * <div id="tree"></div>
+         * <script>
+         *     var tree = $('#tree').tree({
+         *         uiLibrary: 'materialdesign',
+         *         dataSource: [ { text: 'folder', imageHtml: '<i class="material-icons">folder</i>', children: [ { text: 'file', imageHtml: '<i class="material-icons">insert_drive_file</i>' } ] } ]
+         *     });
+         * </script>
+         * @example Custom.HTML.Field.Name <!-- materialdesign, tree.base -->
+         * <div id="tree"></div>
+         * <script>
+         *     var tree = $('#tree').tree({
+         *         imageHtmlField: 'icon',
+         *         uiLibrary: 'materialdesign',
+         *         dataSource: [ { text: 'folder', icon: '<i class="material-icons">folder</i>', children: [ { text: 'file', icon: '<i class="material-icons">insert_drive_file</i>' } ] } ]
+         *     });
+         * </script>
+         */
+        imageHtmlField: 'imageHtml',
 
         /** Width of the tree.
          * @type number
@@ -7629,7 +7674,7 @@ gj.tree.methods = {
     },
 
     appendNode: function ($tree, $parent, nodeData, level, position) {
-        var i, $node, $newParent,
+        var i, $node, $newParent, $span, $img,
             data = $tree.data(),
             $node = $('<li data-id="' + nodeData.id + '" data-role="node" />').addClass(data.style.item),
             $wrapper = $('<div data-role="wrapper" />'),
@@ -7642,14 +7687,6 @@ gj.tree.methods = {
 
         $expander.on('click', gj.tree.methods.expanderClickHandler($tree));
         $wrapper.append($expander);
-
-        if (data.iconField && nodeData.data[data.iconField]) {
-            if (nodeData.data[data.iconField].indexOf('<') === 0) {
-                $wrapper.append(nodeData.data[data.iconField]);
-            } else {
-                $wrapper.append('<span data-role="icon" class="' + nodeData.data[data.iconField] + '"></span>');
-            }
-        }
 
         $display.addClass(data.style.display).on('click', gj.tree.methods.displayClickHandler($tree));
         $wrapper.append($display);
@@ -7671,6 +7708,20 @@ gj.tree.methods = {
             $parent.find('li:eq(' + (position - 1) + ')').before($node);
         } else {
             $parent.append($node);
+        }
+
+        if (data.imageCssClassField && nodeData.data[data.imageCssClassField]) {
+            $('<span data-role="image" class="' + nodeData.data[data.imageCssClassField] + '"></span>').insertBefore($display);
+        } else if (data.imageUrlField && nodeData.data[data.imageUrlField]) {
+            $span = $('<span data-role="image"></span>');
+            $span.insertBefore($display);
+            $img = $('<img src="' + nodeData.data[data.imageUrlField] + '"></img>');
+            $img.attr('width', $span.width()).attr('height', $span.height());
+            $span.append($img);
+        } else if (data.imageHtmlField && nodeData.data[data.imageHtmlField]) {
+            $img = $(nodeData.data[data.imageHtmlField]);
+            $img.attr('data-role', 'image');
+            $img.insertBefore($display);
         }
 
         gj.tree.events.nodeDataBound($tree, $node, nodeData.id);
@@ -8442,6 +8493,18 @@ gj.tree.plugins.checkboxes = {
               *         uiLibrary: 'bootstrap'
               *     });
               * </script>
+              * @example Material.Design <!-- materialdesign, checkbox, tree.base -->
+              * <div class="container-fluid">
+              *     <h3>Material Design Treeview With Checkboxes</h3>
+              *     <div id="tree"></div>
+              * </div>
+              * <script>
+              *     var tree = $('#tree').tree({
+              *         dataSource: '/DataSources/GetCountries',
+              *         checkboxes: true,
+              *         uiLibrary: 'materialdesign'
+              *     });
+              * </script>
               */
             checkboxes: undefined,
 
@@ -8772,8 +8835,8 @@ gj.checkbox.config = {
          *         <button onclick="$chkb.state('checked')" class="btn btn-default">Checked</button>
          *         <button onclick="$chkb.state('unchecked')" class="btn btn-default">Unchecked</button>
          *         <button onclick="$chkb.state('indeterminate')" class="btn btn-default">Indeterminate</button>
-         *         <button onclick="$chkb.prop('disabled', true)" class="btn btn-default">Enable</button>
-         *         <button onclick="$chkb.prop('disabled', false)" class="btn btn-default">Disable</button>
+         *         <button onclick="$chkb.prop('disabled', false)" class="btn btn-default">Enable</button>
+         *         <button onclick="$chkb.prop('disabled', true)" class="btn btn-default">Disable</button>
          *     </div>
          * </div>
          * <script>

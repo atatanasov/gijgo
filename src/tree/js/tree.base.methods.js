@@ -71,7 +71,7 @@ gj.tree.methods = {
     },
 
     appendNode: function ($tree, $parent, nodeData, level, position) {
-        var i, $node, $newParent,
+        var i, $node, $newParent, $span, $img,
             data = $tree.data(),
             $node = $('<li data-id="' + nodeData.id + '" data-role="node" />').addClass(data.style.item),
             $wrapper = $('<div data-role="wrapper" />'),
@@ -84,14 +84,6 @@ gj.tree.methods = {
 
         $expander.on('click', gj.tree.methods.expanderClickHandler($tree));
         $wrapper.append($expander);
-
-        if (data.iconField && nodeData.data[data.iconField]) {
-            if (nodeData.data[data.iconField].indexOf('<') === 0) {
-                $wrapper.append(nodeData.data[data.iconField]);
-            } else {
-                $wrapper.append('<span data-role="icon" class="' + nodeData.data[data.iconField] + '"></span>');
-            }
-        }
 
         $display.addClass(data.style.display).on('click', gj.tree.methods.displayClickHandler($tree));
         $wrapper.append($display);
@@ -113,6 +105,20 @@ gj.tree.methods = {
             $parent.find('li:eq(' + (position - 1) + ')').before($node);
         } else {
             $parent.append($node);
+        }
+
+        if (data.imageCssClassField && nodeData.data[data.imageCssClassField]) {
+            $('<span data-role="image" class="' + nodeData.data[data.imageCssClassField] + '"></span>').insertBefore($display);
+        } else if (data.imageUrlField && nodeData.data[data.imageUrlField]) {
+            $span = $('<span data-role="image"></span>');
+            $span.insertBefore($display);
+            $img = $('<img src="' + nodeData.data[data.imageUrlField] + '"></img>');
+            $img.attr('width', $span.width()).attr('height', $span.height());
+            $span.append($img);
+        } else if (data.imageHtmlField && nodeData.data[data.imageHtmlField]) {
+            $img = $(nodeData.data[data.imageHtmlField]);
+            $img.attr('data-role', 'image');
+            $img.insertBefore($display);
         }
 
         gj.tree.events.nodeDataBound($tree, $node, nodeData.id);

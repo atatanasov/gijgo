@@ -139,7 +139,7 @@ gj.tree.config = {
         /** Children field name.
          * @type string
          * @default 'children'
-         * @example sample <!-- tree.base -->
+         * @example Custom.FieldName <!-- tree.base -->
          * <div id="tree"></div>
          * <script>
          *     var tree = $('#tree').tree({
@@ -150,16 +150,15 @@ gj.tree.config = {
          */
         childrenField: 'children',
 
-        /** Icon field name.
+        /** Image css class field name.
          * @type string
-         * @default undefined
+         * @default 'imageCssClass'
          * @example Bootstrap <!-- bootstrap, tree.base -->
          * <div id="tree"></div>
          * <script>
          *     var tree = $('#tree').tree({
-         *         iconField: 'icon',
          *         uiLibrary: 'bootstrap',
-         *         dataSource: [ { text: 'folder', icon: 'glyphicon glyphicon-folder-close', children: [ { text: 'file', icon: 'glyphicon glyphicon-file' } ] } ]
+         *         dataSource: [ { text: 'folder', imageCssClass: 'glyphicon glyphicon-folder-close', children: [ { text: 'file', imageCssClass: 'glyphicon glyphicon-file' } ] } ]
          *     });
          * </script>
          * @example Font.Awesome <!-- tree.base  -->
@@ -167,21 +166,67 @@ gj.tree.config = {
          * <div id="tree"></div>
          * <script>
          *     var tree = $('#tree').tree({
-         *         iconField: 'icon',
-         *         dataSource: [ { text: 'folder', icon: 'fa fa-folder', children: [ { text: 'file', icon: 'fa fa-file' } ] } ]
+         *         imageCssClass: 'faCssClass',
+         *         dataSource: [ { text: 'folder', faCssClass: 'fa fa-folder', children: [ { text: 'file', faCssClass: 'fa fa-file' } ] } ]
          *     });
          * </script>
          * @example Material.Design <!-- materialdesign, tree.base -->
          * <div id="tree"></div>
          * <script>
          *     var tree = $('#tree').tree({
-         *         iconField: 'icon',
+         *         imageCssClass: 'icon',
          *         uiLibrary: 'materialdesign',
          *         dataSource: [ { text: 'folder', icon: '<i class="material-icons">folder</i>', children: [ { text: 'file', icon: '<i class="material-icons">insert_drive_file</i>' } ] } ]
          *     });
          * </script>
          */
-        iconField: undefined,
+        imageCssClassField: 'imageCssClass',
+
+        /** Image url field name.
+         * @type string
+         * @default 'imageUrl'
+         * @example Default.HTML.Field.Name <!-- materialdesign, tree.base -->
+         * <div id="tree"></div>
+         * <script>
+         *     var tree = $('#tree').tree({
+         *         uiLibrary: 'materialdesign',
+         *         dataSource: [ { text: 'World', imageUrl: 'http://gijgo.com/content/icons/world-icon.png', children: [ { text: 'USA', imageUrl: 'http://gijgo.com/content/icons/usa-oval-icon.png' } ] } ]
+         *     });
+         * </script>
+         * @example Custom.HTML.Field.Name <!-- materialdesign, tree.base -->
+         * <div id="tree"></div>
+         * <script>
+         *     var tree = $('#tree').tree({
+         *         imageUrlField: 'icon',
+         *         uiLibrary: 'materialdesign',
+         *         dataSource: [ { text: 'folder', icon: '<i class="material-icons">folder</i>', children: [ { text: 'file', icon: '<i class="material-icons">insert_drive_file</i>' } ] } ]
+         *     });
+         * </script>
+         */
+        imageUrlField: 'imageUrl',
+
+        /** Image html field name.
+         * @type string
+         * @default 'imageHtml'
+         * @example Default.HTML.Field.Name <!-- materialdesign, tree.base -->
+         * <div id="tree"></div>
+         * <script>
+         *     var tree = $('#tree').tree({
+         *         uiLibrary: 'materialdesign',
+         *         dataSource: [ { text: 'folder', imageHtml: '<i class="material-icons">folder</i>', children: [ { text: 'file', imageHtml: '<i class="material-icons">insert_drive_file</i>' } ] } ]
+         *     });
+         * </script>
+         * @example Custom.HTML.Field.Name <!-- materialdesign, tree.base -->
+         * <div id="tree"></div>
+         * <script>
+         *     var tree = $('#tree').tree({
+         *         imageHtmlField: 'icon',
+         *         uiLibrary: 'materialdesign',
+         *         dataSource: [ { text: 'folder', icon: '<i class="material-icons">folder</i>', children: [ { text: 'file', icon: '<i class="material-icons">insert_drive_file</i>' } ] } ]
+         *     });
+         * </script>
+         */
+        imageHtmlField: 'imageHtml',
 
         /** Width of the tree.
          * @type number
