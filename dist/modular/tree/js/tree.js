@@ -523,8 +523,8 @@ gj.tree.config = {
             item: 'gj-tree-item gj-tree-mdl-item mdl-list__item',
             active: 'gj-tree-mdl-active',
             display: 'mdl-list__item-primary-content',
-            expandIcon: 'material-icons mdl-list__item-icon gj-cursor-pointer gj-tree-mdl-icon-plus',
-            collapseIcon: 'material-icons mdl-list__item-icon gj-cursor-pointer gj-tree-mdl-icon-minus',
+            expandIcon: 'material-icons mdl-list__item-icon gj-cursor-pointer gj-mdl-icon-plus',
+            collapseIcon: 'material-icons mdl-list__item-icon gj-cursor-pointer gj-mdl-icon-minus',
             leafIcon: undefined
         }
     }

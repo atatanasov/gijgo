@@ -28,8 +28,20 @@ gj.grid.plugins.expandCollapseRows = {
              *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'DateOfBirth', type: 'date' } ]
              *     });
              * </script>
+             * @example materialdesign <!-- materialdesign, grid.base -->
+             * <table id="grid"></table>
+             * <script>
+             *     $('#grid').grid({
+             *         dataSource: '/DataSources/GetPlayers',
+             *         uiLibrary: 'materialdesign',
+             *         detailTemplate: '<div style="text-align: left"><b>Place Of Birth:</b> {PlaceOfBirth}</div>',
+             *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'DateOfBirth', type: 'date' } ]
+             *     });
+             * </script>
              */
             detailTemplate: undefined,
+
+            defaultExpandCollapseColumnWidth: 24,
 
             style: {
                 expandIcon: '',
@@ -43,9 +55,17 @@ gj.grid.plugins.expandCollapseRows = {
             }
         },
         bootstrap: {
+            defaultExpandCollapseColumnWidth: 34,
             style: {
                 expandIcon: 'glyphicon glyphicon-plus',
                 collapseIcon: 'glyphicon glyphicon-minus'
+            }
+        },
+        materialdesign: {
+            defaultExpandCollapseColumnWidth: 70,
+            style: {
+                expandIcon: 'material-icons gj-mdl-icon-plus',
+                collapseIcon: 'material-icons gj-mdl-icon-minus'
             }
         }
     },
@@ -192,7 +212,7 @@ gj.grid.plugins.expandCollapseRows = {
             column = {
                 title: '',
                 field: data.primaryKey,
-                width: (data.uiLibrary === 'bootstrap' ? 34 : 24),
+                width: data.defaultExpandCollapseColumnWidth,
                 align: 'center',
                 stopPropagation: true,
                 events: {

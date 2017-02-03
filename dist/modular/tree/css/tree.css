@@ -40,6 +40,14 @@
     display: none;
 }
 
+.gj-mdl-icon-plus::after {
+    content: "\E145";
+}
+
+.gj-mdl-icon-minus::after {
+    content: "\E15B";
+}
+
 ul.gj-tree-list {
     list-style: none;
     padding: 0px;
@@ -175,13 +183,6 @@ li.gj-tree-mdl-item [data-role="checkbox"] {
 li.gj-tree-mdl-item [data-role="image"] {
     height: 24px;
     width: 24px;
-}
-
-.gj-tree-mdl-icon-plus::after {
-    content: "\E145";
-}
-.gj-tree-mdl-icon-minus::after {
-    content: "\E15B";
 }
 
 .gj-tree-mdl-active {

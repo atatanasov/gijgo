@@ -40,6 +40,14 @@
     display: none;
 }
 
+.gj-mdl-icon-plus::after {
+    content: "\E145";
+}
+
+.gj-mdl-icon-minus::after {
+    content: "\E15B";
+}
+
 .gj-checkbox-bootstrap {
     min-width: 0;
     font-size: 0;
