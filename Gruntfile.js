@@ -266,7 +266,8 @@ var writer = {
 
     analyzeLibs: function (libs) {
         var i, libs, local = false, result = '<head>\r\n';
-        result += '  <meta charset="utf-8" />\r\n';
+        result += '  <meta charset="utf-8">\r\n';
+        result += '  <meta name="viewport" content="width=device-width, initial-scale=1">\r\n';
         result += '  <title>Example</title>\r\n';
         if (local) {
             result += '  <script src="../../dist/libraries/jquery/jquery.min.js"></script>\r\n';

@@ -547,7 +547,7 @@ gj.grid.config = {
              * @param {object} record - the data of the row record
              * @param {object} $cell - the current table cell presented as jquery object
              * @param {object} $displayEl - inner div element for display of the cell value presented as jquery object
-             * @param {object} id - the id of the record
+             * @param {string} id - the id of the record
              * @example sample <!-- grid.base, jqueryui -->
              * <table id="grid" data-source="/DataSources/GetPlayers"></table>
              * <script>

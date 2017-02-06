@@ -77,7 +77,7 @@ gj.grid.events = {
      * @event rowDataBound
      * @param {object} e - event data
      * @param {object} $row - the row presented as jquery object
-     * @param {object} id - the id of the record
+     * @param {string} id - the id of the record
      * @param {object} record - the data of the row record
      * @example sample <!-- grid.base -->
      * <table id="grid"></table>
@@ -177,7 +177,7 @@ gj.grid.events = {
      * @event rowRemoving
      * @param {object} e - event data
      * @param {object} $row - the row presented as jquery object
-     * @param {object} id - the id of the record
+     * @param {string} id - the id of the record
      * @param {object} record - the data of the row record
      * @example sample <!-- grid.base -->
      * <button onclick="grid.removeRow('1')">Remove Row</button><br/>

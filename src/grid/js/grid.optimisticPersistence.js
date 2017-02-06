@@ -7,7 +7,7 @@ gj.grid.plugins.optimisticPersistence = {
     config: {
         base: {
             optimisticPersistence: {
-                /** Array that contains a list with param names that needs to be saved in the localStorage. You need to specify guid on the initialization of the grid in order enable this feature.
+                /** Array that contains a list with param names that needs to be saved in the localStorage. You need to specify guid on the initialization of the grid in order to enable this feature.
                  * @additionalinfo This feature is using <a href="https://developer.mozilla.org/en/docs/Web/API/Window/localStorage" target="_blank">HTML5 localStorage</a> to store params and values.
                  * You can clear the data saved in localStorage when you clear your browser cache.
                  * @alias optimisticPersistence.localStorage
@@ -29,7 +29,7 @@ gj.grid.plugins.optimisticPersistence = {
                  */
                 localStorage: undefined,
 
-                /** Array that contains a list with param names that needs to be saved in the sessionStorage. You need to specify guid on the initialization of the grid in order enable this feature.
+                /** Array that contains a list with param names that needs to be saved in the sessionStorage. You need to specify guid on the initialization of the grid in order to enable this feature.
                  * @additionalinfo This feature is using <a href="https://developer.mozilla.org/en/docs/Web/API/Window/sessionStorage" target="_blank">HTML5 sessionStorage</a> to store params and values.
                  * You can clear the data saved in sessionStorage when you open and close the browser.
                  * @alias optimisticPersistence.sessionStorage
@@ -96,11 +96,13 @@ gj.grid.plugins.optimisticPersistence = {
     },
 
     configure: function ($grid, fullConfig, clientConfig) {
-        if (fullConfig.optimisticPersistence.localStorage || fullConfig.optimisticPersistence.sessionStorage) {
-            gj.grid.plugins.optimisticPersistence.private.applyParams($grid);
-            $grid.on('dataBound', function (e) {
-                gj.grid.plugins.optimisticPersistence.private.saveParams($grid);
-            });
+        if (fullConfig.guid) {
+            if (fullConfig.optimisticPersistence.localStorage || fullConfig.optimisticPersistence.sessionStorage) {
+                gj.grid.plugins.optimisticPersistence.private.applyParams($grid);
+                $grid.on('dataBound', function (e) {
+                    gj.grid.plugins.optimisticPersistence.private.saveParams($grid);
+                });
+            }
         }
     }
 };

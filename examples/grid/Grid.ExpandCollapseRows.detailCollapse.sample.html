@@ -1,6 +1,7 @@
 <html>
 <head>
-  <meta charset="utf-8" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Example</title>
   <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
   <link href="../../dist/modular/grid/css/grid.css" rel="stylesheet" type="text/css">
@@ -10,14 +11,16 @@
  <table id="grid"></table>
  <script>
      var grid = $('#grid').grid({
+         primaryKey: 'ID',
          dataSource: '/DataSources/GetPlayers',
          detailTemplate: '<div></div>',
          columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'DateOfBirth', type: 'date' } ]
      });
-     grid.on('detailExpand', function (e, $detailWrapper, record) {
+     grid.on('detailExpand', function (e, $detailWrapper, id) {
+         var record = grid.getById(id);
          $detailWrapper.append('<b>Place Of Birth:</b>' + record.PlaceOfBirth);
      });
-     grid.on('detailCollapse', function (e, $detailWrapper, record) {
+     grid.on('detailCollapse', function (e, $detailWrapper, id) {
          $detailWrapper.empty();
          alert('detailCollapse is fired.');
      });
