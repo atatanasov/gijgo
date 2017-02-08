@@ -1595,19 +1595,19 @@ gj.grid.methods = {
             $sortIcon = $('<span data-role="sorticon" style="margin-left:5px"/>');
             $cell.append($sortIcon);
 
-            if ('asc' === direction) {
-                $sortIcon.empty().removeClass(style.sortDescIcon);
-                if (style.sortAscIcon) {
-                    $sortIcon.addClass(style.sortAscIcon);
-                } else {
-                    $sortIcon.text('▲');
-                }
-            } else {
+            if ('desc' === direction) {
                 $sortIcon.empty().removeClass(style.sortAscIcon);
                 if (style.sortDescIcon) {
                     $sortIcon.addClass(style.sortDescIcon);
                 } else {
                     $sortIcon.text('▼');
+                }
+            } else {
+                $sortIcon.empty().removeClass(style.sortDescIcon);
+                if (style.sortAscIcon) {
+                    $sortIcon.addClass(style.sortAscIcon);
+                } else {
+                    $sortIcon.text('▲');
                 }
             }
         }

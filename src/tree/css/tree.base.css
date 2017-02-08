@@ -22,12 +22,14 @@ li.gj-tree-item [data-role="expander"] {
     vertical-align:middle;
     text-align:center;
     cursor: pointer;
+    width: 10px;
 }
 
 li.gj-tree-item [data-role="checkbox"] {
     display: table-cell;
     vertical-align:middle;
     text-align:center;
+    width: 20px;
 }
 
 li.gj-tree-item [data-role="image"] {
@@ -41,13 +43,6 @@ li.gj-tree-item [data-role="display"] {
     display: table-cell;
     vertical-align:middle;
     cursor: pointer;
-}
-
-li.gj-tree-item [data-role="expander"] {
-    width: 10px;
-}
-
-li.gj-tree-item [data-role="display"]  {
     padding: 2px 4px;
 }
 

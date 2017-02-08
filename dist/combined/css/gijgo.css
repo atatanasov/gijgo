@@ -677,12 +677,14 @@ li.gj-tree-item [data-role="expander"] {
     vertical-align:middle;
     text-align:center;
     cursor: pointer;
+    width: 10px;
 }
 
 li.gj-tree-item [data-role="checkbox"] {
     display: table-cell;
     vertical-align:middle;
     text-align:center;
+    width: 20px;
 }
 
 li.gj-tree-item [data-role="image"] {
@@ -696,13 +698,6 @@ li.gj-tree-item [data-role="display"] {
     display: table-cell;
     vertical-align:middle;
     cursor: pointer;
-}
-
-li.gj-tree-item [data-role="expander"] {
-    width: 10px;
-}
-
-li.gj-tree-item [data-role="display"]  {
     padding: 2px 4px;
 }
 
@@ -793,16 +788,47 @@ li.gj-tree-mdl-item [data-role="image"] {
 .gj-tree-mdl-active {
     background: #b3d4fc;
 }
-.gj-tree-base-drop-above {    
+.gj-tree-drop-above {    
     border-top: 1px solid #000;
 }
 
-.gj-tree-base-drop-below {
+.gj-tree-drop-below {
     border-bottom: 1px solid #000;
 }
 
-span [data-role="indicator"] {
-    width: 10px;
+.gj-tree-drag-el ul {
+    padding: 0px;
+    margin: 0px;
+}
+
+.gj-tree-drag-el ul li {
+    padding: 0px;
+    margin: 0px;
+}
+
+.gj-tree-drag-el [data-role="wrapper"] {
+    cursor: move;
+    display: table;
+}
+
+.gj-tree-drag-el [data-role="indicator"] {
+    width: 14px;
+    padding: 0px 3px;
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;
+}
+
+.gj-tree-bootstrap-drag-el [data-role="indicator"] {
+    width: 24px;
+    height: 24px;
+    padding: 0px;
+}
+
+.gj-tree-mdl-drag-el [data-role="indicator"] {
+    width: 24px;
+    height: 24px;
+    padding: 0px;
 }
 .gj-checkbox-bootstrap {
     min-width: 0;
