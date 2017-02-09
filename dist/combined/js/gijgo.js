@@ -1583,8 +1583,8 @@ gj.droppable.methods = {
     },
 
     isOver: function ($dropEl, mousePosition) {
-        var offsetTop = $dropEl.offset().top + parseInt($dropEl.css("border-top-width")) + parseInt($dropEl.css("margin-top")) + parseInt($dropEl.css("padding-top")),
-            offsetLeft = $dropEl.offset().left + parseInt($dropEl.css("border-left-width")) + parseInt($dropEl.css("margin-left")) + parseInt($dropEl.css("padding-left"));
+        var offsetTop = $dropEl.offset().top;// + parseInt($dropEl.css("border-top-width")) + parseInt($dropEl.css("margin-top")) + parseInt($dropEl.css("padding-top")),
+        offsetLeft = $dropEl.offset().left;// + parseInt($dropEl.css("border-left-width")) + parseInt($dropEl.css("margin-left")) + parseInt($dropEl.css("padding-left"));
         return mousePosition.left > offsetLeft && mousePosition.left < (offsetLeft + $dropEl.outerWidth(true))
             && mousePosition.top > offsetTop && mousePosition.top < (offsetTop + $dropEl.outerHeight(true));
     },
@@ -8759,7 +8759,7 @@ gj.tree.plugins.dragAndDrop = {
 
 	    createNodeMouseDownHandler: function ($tree, $node, $display) {
 		    return function (e) {
-		        var data = $tree.data(), $dragEl, offsetTop, offsetLeft;
+		        var data = $tree.data(), $dragEl, $wrapper, offsetTop, offsetLeft;
 		        $dragEl = $display.clone().wrap('<div data-role="wrapper"/>').closest('div')
                             .wrap('<li class="' + data.style.item + '" />').closest('li')
                             .wrap('<ul class="' + data.style.list + '" />').closest('ul');
@@ -8770,8 +8770,11 @@ gj.tree.plugins.dragAndDrop = {
 		            drag: gj.tree.plugins.dragAndDrop.private.createDragHandler($tree, $node, $display),
 		            stop: gj.tree.plugins.dragAndDrop.private.createDragStopHandler($tree, $node, $display)
 		        });
-		        offsetTop = $display.offset().top;// + parseInt($display.css("border-top-width")) + parseInt($display.css("margin-top")) + parseInt($display.css("padding-top"));
-		        offsetLeft = $display.offset().left;// + parseInt($display.css("border-left-width")) + parseInt($display.css("margin-left")) + parseInt($display.css("padding-left"));
+		        $wrapper = $display.parent();
+		        offsetTop = $display.offset().top;
+		        offsetTop -= parseInt($wrapper.css("border-top-width")) + parseInt($wrapper.css("margin-top")) + parseInt($wrapper.css("padding-top"));
+		        offsetLeft = $display.offset().left;
+		        offsetLeft -= parseInt($wrapper.css("border-left-width")) + parseInt($wrapper.css("margin-left")) + parseInt($wrapper.css("padding-left"));
 		        offsetLeft -= $dragEl.find('[data-role="indicator"]').outerWidth(true);
 		        $dragEl.css({
 		            position: 'absolute', top: offsetTop, left: offsetLeft, width: $display.outerWidth(true)

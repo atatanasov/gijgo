@@ -79,7 +79,7 @@ gj.tree.plugins.dragAndDrop = {
 
 	    createNodeMouseDownHandler: function ($tree, $node, $display) {
 		    return function (e) {
-		        var data = $tree.data(), $dragEl, offsetTop, offsetLeft;
+		        var data = $tree.data(), $dragEl, $wrapper, offsetTop, offsetLeft;
 		        $dragEl = $display.clone().wrap('<div data-role="wrapper"/>').closest('div')
                             .wrap('<li class="' + data.style.item + '" />').closest('li')
                             .wrap('<ul class="' + data.style.list + '" />').closest('ul');
@@ -90,8 +90,11 @@ gj.tree.plugins.dragAndDrop = {
 		            drag: gj.tree.plugins.dragAndDrop.private.createDragHandler($tree, $node, $display),
 		            stop: gj.tree.plugins.dragAndDrop.private.createDragStopHandler($tree, $node, $display)
 		        });
-		        offsetTop = $display.offset().top;// + parseInt($display.css("border-top-width")) + parseInt($display.css("margin-top")) + parseInt($display.css("padding-top"));
-		        offsetLeft = $display.offset().left;// + parseInt($display.css("border-left-width")) + parseInt($display.css("margin-left")) + parseInt($display.css("padding-left"));
+		        $wrapper = $display.parent();
+		        offsetTop = $display.offset().top;
+		        offsetTop -= parseInt($wrapper.css("border-top-width")) + parseInt($wrapper.css("margin-top")) + parseInt($wrapper.css("padding-top"));
+		        offsetLeft = $display.offset().left;
+		        offsetLeft -= parseInt($wrapper.css("border-left-width")) + parseInt($wrapper.css("margin-left")) + parseInt($wrapper.css("padding-left"));
 		        offsetLeft -= $dragEl.find('[data-role="indicator"]').outerWidth(true);
 		        $dragEl.css({
 		            position: 'absolute', top: offsetTop, left: offsetLeft, width: $display.outerWidth(true)

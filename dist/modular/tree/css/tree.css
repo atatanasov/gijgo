@@ -191,12 +191,12 @@ li.gj-tree-mdl-item [data-role="image"] {
     border-bottom: 1px solid #000;
 }
 
-.gj-tree-drag-el ul {
+.gj-tree-drag-el {
     padding: 0px;
     margin: 0px;
 }
 
-.gj-tree-drag-el ul li {
+.gj-tree-drag-el li {
     padding: 0px;
     margin: 0px;
 }
