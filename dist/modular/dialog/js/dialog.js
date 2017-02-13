@@ -20,6 +20,28 @@ gj.widget = function () {
         }
         return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
     };
+
+    self.mouseX = function (e) {
+        if (e) {
+            if (e.pageX) {
+                return e.pageX;
+            } else if (e.clientX) {
+                return e.clientX + (document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft);
+            }
+        }
+        return null;
+    };
+
+    self.mouseY = function (e) {
+        if (e) {
+            if (e.pageY) {
+                return e.pageY;
+            } else if (e.clientY) {
+                return e.clientY + (document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop);
+            }
+        }
+        return null;
+    };
 };
 
 gj.widget.prototype.init = function (jsConfig, type) {
@@ -198,17 +220,22 @@ gj.documentManager = {
         }
     }
 };
+if (typeof (gj.dialog) === 'undefined') {
+    gj.dialog = {
+        plugins: {},
+        messages: []
+    };
+}
+
+gj.dialog.messages['en-us'] = {
+    Close: 'Close',
+    DefaultTitle: 'Dialog'
+};
 /* global window alert jQuery */
 /** 
  * @widget Dialog 
  * @plugin Base
  */
-if (typeof (gj.dialog) === 'undefined') {
-    gj.dialog = {
-        plugins: {}
-    };
-}
-
 gj.dialog.config = {
     base: {
         /** If set to true, the dialog will automatically open upon initialization.
@@ -327,6 +354,31 @@ gj.dialog.config = {
          * </script>
          */
         height: 'auto',
+
+        /** The language that needs to be in use.
+         * @type string
+         * @default 'en-us'
+         * @example French.Default <!-- draggable.base, dialog.base-->
+         * <script src="../../dist/modular/dialog/js/messages/messages.fr-fr.js"></script>
+         * <div id="dialog">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
+         * <script>
+         *     $("#dialog").dialog({
+         *         resizable: true,
+         *         locale: 'fr-fr'
+         *     });
+         * </script>
+         * @example French.Custom <!-- draggable.base, dialog.base -->
+         * <script src="../../dist/modular/dialog/js/messages/messages.fr-fr.js"></script>
+         * <div id="dialog">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
+         * <script>
+         *     gj.dialog.messages['fr-fr'].DefaultTitle = 'Titre de la boîte de dialogue';
+         *     $("#dialog").dialog({
+         *         resizable: true,
+         *         locale: 'fr-fr'
+         *     });
+         * </script>
+         */
+        locale: 'en-us',
 
         /** The minimum height in pixels to which the dialog can be resized.
          * @type number
@@ -465,7 +517,7 @@ gj.dialog.config = {
          *     $("#dialog").dialog();
          * </script>
          */
-        title: 'Dialog',
+        title: undefined,
 
         /** The name of the UI library that is going to be in use. Currently we support only jQuery UI, Foundation, Material Design Lite and Bootstrap. 
          * @additionalinfo The css files for jQuery UI, Foundation, Material Design Lite or Bootstrap should be manually included to the page where the dialog is in use.
@@ -865,9 +917,17 @@ gj.dialog.methods = {
         this.attr('data-type', 'dialog');
         gj.widget.prototype.init.call(this, jsConfig, 'dialog');
 
+        gj.dialog.methods.localization(this);
         gj.dialog.methods.initialize(this);
         gj.dialog.events.initialized(this);
         return this;
+    },
+
+    localization: function($dialog) {
+        var data = $dialog.data();
+        if (typeof (data.title) === 'undefined') {
+            data.title = gj.dialog.messages[data.locale].DefaultTitle;
+        }
     },
 
     getHTMLConfig: function () {
@@ -958,7 +1018,7 @@ gj.dialog.methods = {
 
         $closeButton = $header.find('[data-role="close"]');
         if ($closeButton.length === 0 && data.closeButtonInHeader) {
-            $closeButton = $('<button type="button" data-role="close"><span>×</span></button>');
+            $closeButton = $('<button type="button" data-role="close" title="' + gj.dialog.messages[data.locale].Close + '"><span>×</span></button>');
             $closeButton.addClass(data.style.headerCloseButton);
             $header.prepend($closeButton);
         } else if ($closeButton.length > 0 && data.closeButtonInHeader === false) {

@@ -52,8 +52,8 @@ gj.droppable.methods = {
             if ($dropEl.isDragging) {
                 var hoverClass = $dropEl.data('hoverClass'),
                     mousePosition = {
-                        left: gj.droppable.methods.mouseX(e),
-                        top: gj.droppable.methods.mouseY(e)
+                        left: $dropEl.mouseX(e),
+                        top: $dropEl.mouseY(e)
                     },
                     newIsOver = gj.droppable.methods.isOver($dropEl, mousePosition);
                 if (newIsOver != $dropEl.isOver) {
@@ -77,8 +77,8 @@ gj.droppable.methods = {
     createMouseUpHandler: function ($dropEl) {
         return function (e) {
             var mousePosition = {
-                left: gj.droppable.methods.mouseX(e),
-                top: gj.droppable.methods.mouseY(e)
+                left: $dropEl.mouseX(e),
+                top: $dropEl.mouseY(e)
             };
             $dropEl.isDragging = false;
             if (gj.droppable.methods.isOver($dropEl, mousePosition)) {
@@ -92,28 +92,6 @@ gj.droppable.methods = {
         offsetLeft = $dropEl.offset().left;// + parseInt($dropEl.css("border-left-width")) + parseInt($dropEl.css("margin-left")) + parseInt($dropEl.css("padding-left"));
         return mousePosition.left > offsetLeft && mousePosition.left < (offsetLeft + $dropEl.outerWidth(true))
             && mousePosition.top > offsetTop && mousePosition.top < (offsetTop + $dropEl.outerHeight(true));
-    },
-
-    mouseX: function (e) {
-        if (e) {
-            if (e.pageX) {
-                return e.pageX;
-            } else if (e.clientX) {
-                return e.clientX + (document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft);
-            }
-        }
-        return null;
-    },
-
-    mouseY: function (e) {
-        if (e) {
-            if (e.pageY) {
-                return e.pageY;
-            } else if (e.clientY) {
-                return e.clientY + (document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop);
-            }
-        }
-        return null;
     },
 
     destroy: function ($dropEl) {

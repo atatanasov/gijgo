@@ -3,12 +3,6 @@
  * @widget Dialog 
  * @plugin Base
  */
-if (typeof (gj.dialog) === 'undefined') {
-    gj.dialog = {
-        plugins: {}
-    };
-}
-
 gj.dialog.config = {
     base: {
         /** If set to true, the dialog will automatically open upon initialization.
@@ -127,6 +121,31 @@ gj.dialog.config = {
          * </script>
          */
         height: 'auto',
+
+        /** The language that needs to be in use.
+         * @type string
+         * @default 'en-us'
+         * @example French.Default <!-- draggable.base, dialog.base-->
+         * <script src="../../dist/modular/dialog/js/messages/messages.fr-fr.js"></script>
+         * <div id="dialog">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
+         * <script>
+         *     $("#dialog").dialog({
+         *         resizable: true,
+         *         locale: 'fr-fr'
+         *     });
+         * </script>
+         * @example French.Custom <!-- draggable.base, dialog.base -->
+         * <script src="../../dist/modular/dialog/js/messages/messages.fr-fr.js"></script>
+         * <div id="dialog">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
+         * <script>
+         *     gj.dialog.messages['fr-fr'].DefaultTitle = 'Titre de la boîte de dialogue';
+         *     $("#dialog").dialog({
+         *         resizable: true,
+         *         locale: 'fr-fr'
+         *     });
+         * </script>
+         */
+        locale: 'en-us',
 
         /** The minimum height in pixels to which the dialog can be resized.
          * @type number
@@ -265,7 +284,7 @@ gj.dialog.config = {
          *     $("#dialog").dialog();
          * </script>
          */
-        title: 'Dialog',
+        title: undefined,
 
         /** The name of the UI library that is going to be in use. Currently we support only jQuery UI, Foundation, Material Design Lite and Bootstrap. 
          * @additionalinfo The css files for jQuery UI, Foundation, Material Design Lite or Bootstrap should be manually included to the page where the dialog is in use.

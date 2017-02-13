@@ -3,12 +3,6 @@
   * @widget Grid
   * @plugin Base
   */
-if (typeof(gj.grid) === 'undefined') {
-    gj.grid = {
-        plugins: {}
-    };
-}
-
 gj.grid.config = {
     base: {
         /** The data source for the grid.
@@ -850,7 +844,46 @@ gj.grid.config = {
          */
         primaryKey: undefined,
 
-        defaultCheckboxColumnWidth: 30
+        defaultCheckboxColumnWidth: 30,
+
+        /** The language that needs to be in use.
+         * @type string
+         * @default 'en-us'
+         * @example French.Default <!-- bootstrap, grid.base-->
+         * <script src="../../dist/modular/grid/js/messages/messages.fr-fr.js"></script>
+         * <table id="grid"></table>
+         * <script>
+         *     $('#grid').grid({
+         *         dataSource: '/DataSources/GetPlayers',
+         *         uiLibrary: 'bootstrap',
+         *         locale: 'fr-fr',
+         *         columns: [ 
+         *             { field: 'ID', width: 32 },
+         *             { field: 'Name', title: 'Prénom' },
+         *             { field: 'PlaceOfBirth', title: 'Lieu de naissance' }
+         *         ],
+         *         pager: { limit: 2 }
+         *     });
+         * </script>
+         * @example French.Custom <!-- bootstrap, grid.base-->
+         * <script src="../../dist/modular/grid/js/messages/messages.fr-fr.js"></script>
+         * <table id="grid"></table>
+         * <script>
+         *     gj.grid.messages['fr-fr'].DisplayingRecords = 'Mes résultats';
+         *     $('#grid').grid({
+         *         dataSource: '/DataSources/GetPlayers',
+         *         uiLibrary: 'bootstrap',
+         *         locale: 'fr-fr',
+         *         columns: [ 
+         *             { field: 'ID', width: 32 },
+         *             { field: 'Name', title: 'Prénom' },
+         *             { field: 'PlaceOfBirth', title: 'Lieu de naissance' }
+         *         ],
+         *         pager: { limit: 2 }
+         *     });
+         * </script>
+         */
+        locale: 'en-us',
     },
 
     jqueryui: {

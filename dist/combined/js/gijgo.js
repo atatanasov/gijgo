@@ -20,6 +20,28 @@ gj.widget = function () {
         }
         return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
     };
+
+    self.mouseX = function (e) {
+        if (e) {
+            if (e.pageX) {
+                return e.pageX;
+            } else if (e.clientX) {
+                return e.clientX + (document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft);
+            }
+        }
+        return null;
+    };
+
+    self.mouseY = function (e) {
+        if (e) {
+            if (e.pageY) {
+                return e.pageY;
+            } else if (e.clientY) {
+                return e.clientY + (document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop);
+            }
+        }
+        return null;
+    };
 };
 
 gj.widget.prototype.init = function (jsConfig, type) {
@@ -198,17 +220,22 @@ gj.documentManager = {
         }
     }
 };
+if (typeof (gj.dialog) === 'undefined') {
+    gj.dialog = {
+        plugins: {},
+        messages: []
+    };
+}
+
+gj.dialog.messages['en-us'] = {
+    Close: 'Close',
+    DefaultTitle: 'Dialog'
+};
 /* global window alert jQuery */
 /** 
  * @widget Dialog 
  * @plugin Base
  */
-if (typeof (gj.dialog) === 'undefined') {
-    gj.dialog = {
-        plugins: {}
-    };
-}
-
 gj.dialog.config = {
     base: {
         /** If set to true, the dialog will automatically open upon initialization.
@@ -327,6 +354,31 @@ gj.dialog.config = {
          * </script>
          */
         height: 'auto',
+
+        /** The language that needs to be in use.
+         * @type string
+         * @default 'en-us'
+         * @example French.Default <!-- draggable.base, dialog.base-->
+         * <script src="../../dist/modular/dialog/js/messages/messages.fr-fr.js"></script>
+         * <div id="dialog">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
+         * <script>
+         *     $("#dialog").dialog({
+         *         resizable: true,
+         *         locale: 'fr-fr'
+         *     });
+         * </script>
+         * @example French.Custom <!-- draggable.base, dialog.base -->
+         * <script src="../../dist/modular/dialog/js/messages/messages.fr-fr.js"></script>
+         * <div id="dialog">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
+         * <script>
+         *     gj.dialog.messages['fr-fr'].DefaultTitle = 'Titre de la boîte de dialogue';
+         *     $("#dialog").dialog({
+         *         resizable: true,
+         *         locale: 'fr-fr'
+         *     });
+         * </script>
+         */
+        locale: 'en-us',
 
         /** The minimum height in pixels to which the dialog can be resized.
          * @type number
@@ -465,7 +517,7 @@ gj.dialog.config = {
          *     $("#dialog").dialog();
          * </script>
          */
-        title: 'Dialog',
+        title: undefined,
 
         /** The name of the UI library that is going to be in use. Currently we support only jQuery UI, Foundation, Material Design Lite and Bootstrap. 
          * @additionalinfo The css files for jQuery UI, Foundation, Material Design Lite or Bootstrap should be manually included to the page where the dialog is in use.
@@ -865,9 +917,17 @@ gj.dialog.methods = {
         this.attr('data-type', 'dialog');
         gj.widget.prototype.init.call(this, jsConfig, 'dialog');
 
+        gj.dialog.methods.localization(this);
         gj.dialog.methods.initialize(this);
         gj.dialog.events.initialized(this);
         return this;
+    },
+
+    localization: function($dialog) {
+        var data = $dialog.data();
+        if (typeof (data.title) === 'undefined') {
+            data.title = gj.dialog.messages[data.locale].DefaultTitle;
+        }
     },
 
     getHTMLConfig: function () {
@@ -958,7 +1018,7 @@ gj.dialog.methods = {
 
         $closeButton = $header.find('[data-role="close"]');
         if ($closeButton.length === 0 && data.closeButtonInHeader) {
-            $closeButton = $('<button type="button" data-role="close"><span>×</span></button>');
+            $closeButton = $('<button type="button" data-role="close" title="' + gj.dialog.messages[data.locale].Close + '"><span>×</span></button>');
             $closeButton.addClass(data.style.headerCloseButton);
             $header.prepend($closeButton);
         } else if ($closeButton.length > 0 && data.closeButtonInHeader === false) {
@@ -1295,8 +1355,8 @@ gj.draggable.methods = {
                 $dragEl.attr('data-draggable-dragging', false);
                 gj.documentManager.unsubscribeForEvent('mousemove', $dragEl.data('guid'));
                 gj.draggable.events.stop($dragEl, {
-                    left: gj.droppable.methods.mouseX(e),
-                    top: gj.droppable.methods.mouseY(e)
+                    left: $dragEl.mouseX(e),
+                    top: $dragEl.mouseY(e)
                 });
             }
         };
@@ -1306,8 +1366,8 @@ gj.draggable.methods = {
         return function (e) {
             var x, y, offsetX, offsetY, prevX, prevY;
             if ($dragEl.attr('data-draggable-dragging') === 'true') {
-                x = gj.draggable.methods.mouseX(e);
-                y = gj.draggable.methods.mouseY(e);
+                x = $dragEl.mouseX(e);
+                y = $dragEl.mouseY(e);
                 prevX = $dragEl.attr('data-draggable-x');
                 prevY = $dragEl.attr('data-draggable-y');
                 if (prevX && prevY) {                
@@ -1331,28 +1391,6 @@ gj.draggable.methods = {
             left = target.style.left ? parseInt(target.style.left) : $dragEl.position().left;
         target.style.top = (top + offsetY) + 'px';
         target.style.left = (left + offsetX) + 'px';
-    },
-
-    mouseX: function (e) {
-        if (e) {
-            if (e.pageX) {
-                return e.pageX;
-            } else if (e.clientX) {
-                return e.clientX + (document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft);
-            }
-        }
-        return null;
-    },
-
-    mouseY: function (e) {
-        if (e) {
-            if (e.pageY) {
-                return e.pageY;
-            } else if (e.clientY) {
-                return e.clientY + (document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop);
-            }
-        }
-        return null;
     },
 
     destroy: function ($dragEl) {
@@ -1547,8 +1585,8 @@ gj.droppable.methods = {
             if ($dropEl.isDragging) {
                 var hoverClass = $dropEl.data('hoverClass'),
                     mousePosition = {
-                        left: gj.droppable.methods.mouseX(e),
-                        top: gj.droppable.methods.mouseY(e)
+                        left: $dropEl.mouseX(e),
+                        top: $dropEl.mouseY(e)
                     },
                     newIsOver = gj.droppable.methods.isOver($dropEl, mousePosition);
                 if (newIsOver != $dropEl.isOver) {
@@ -1572,8 +1610,8 @@ gj.droppable.methods = {
     createMouseUpHandler: function ($dropEl) {
         return function (e) {
             var mousePosition = {
-                left: gj.droppable.methods.mouseX(e),
-                top: gj.droppable.methods.mouseY(e)
+                left: $dropEl.mouseX(e),
+                top: $dropEl.mouseY(e)
             };
             $dropEl.isDragging = false;
             if (gj.droppable.methods.isOver($dropEl, mousePosition)) {
@@ -1587,28 +1625,6 @@ gj.droppable.methods = {
         offsetLeft = $dropEl.offset().left;// + parseInt($dropEl.css("border-left-width")) + parseInt($dropEl.css("margin-left")) + parseInt($dropEl.css("padding-left"));
         return mousePosition.left > offsetLeft && mousePosition.left < (offsetLeft + $dropEl.outerWidth(true))
             && mousePosition.top > offsetTop && mousePosition.top < (offsetTop + $dropEl.outerHeight(true));
-    },
-
-    mouseX: function (e) {
-        if (e) {
-            if (e.pageX) {
-                return e.pageX;
-            } else if (e.clientX) {
-                return e.clientX + (document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft);
-            }
-        }
-        return null;
-    },
-
-    mouseY: function (e) {
-        if (e) {
-            if (e.pageY) {
-                return e.pageY;
-            } else if (e.clientY) {
-                return e.clientY + (document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop);
-            }
-        }
-        return null;
     },
 
     destroy: function ($dropEl) {
@@ -1763,17 +1779,37 @@ gj.droppable.widget.constructor = gj.droppable.widget;
         }
     };
 })(jQuery);
+if (typeof (gj.grid) === 'undefined') {
+    gj.grid = {
+        plugins: {},
+        messages: []
+    };
+}
+
+gj.grid.messages['en-us'] = {
+    First: 'First',
+    Previous: 'Previous',
+    Next: 'Next',
+    Last: 'Last',
+    Page: 'Page',
+    FirstPageTooltip: 'First Page',
+    PreviousPageTooltip: 'Previous Page',
+    NextPageTooltip: 'Next Page',
+    LastPageTooltip: 'Last Page',
+    Refresh: 'Refresh',
+    Of: 'Of',
+    DisplayingRecords: 'Displaying records',
+    Edit: 'Edit',
+    Delete: 'Delete',
+    Update: 'Update',
+    Cancel: 'Cancel',
+    NoRecordsFound: 'No records found.'
+};
 /* global window alert jQuery gj */
 /**
   * @widget Grid
   * @plugin Base
   */
-if (typeof(gj.grid) === 'undefined') {
-    gj.grid = {
-        plugins: {}
-    };
-}
-
 gj.grid.config = {
     base: {
         /** The data source for the grid.
@@ -2615,7 +2651,46 @@ gj.grid.config = {
          */
         primaryKey: undefined,
 
-        defaultCheckboxColumnWidth: 30
+        defaultCheckboxColumnWidth: 30,
+
+        /** The language that needs to be in use.
+         * @type string
+         * @default 'en-us'
+         * @example French.Default <!-- bootstrap, grid.base-->
+         * <script src="../../dist/modular/grid/js/messages/messages.fr-fr.js"></script>
+         * <table id="grid"></table>
+         * <script>
+         *     $('#grid').grid({
+         *         dataSource: '/DataSources/GetPlayers',
+         *         uiLibrary: 'bootstrap',
+         *         locale: 'fr-fr',
+         *         columns: [ 
+         *             { field: 'ID', width: 32 },
+         *             { field: 'Name', title: 'Prénom' },
+         *             { field: 'PlaceOfBirth', title: 'Lieu de naissance' }
+         *         ],
+         *         pager: { limit: 2 }
+         *     });
+         * </script>
+         * @example French.Custom <!-- bootstrap, grid.base-->
+         * <script src="../../dist/modular/grid/js/messages/messages.fr-fr.js"></script>
+         * <table id="grid"></table>
+         * <script>
+         *     gj.grid.messages['fr-fr'].DisplayingRecords = 'Mes résultats';
+         *     $('#grid').grid({
+         *         dataSource: '/DataSources/GetPlayers',
+         *         uiLibrary: 'bootstrap',
+         *         locale: 'fr-fr',
+         *         columns: [ 
+         *             { field: 'ID', width: 32 },
+         *             { field: 'Name', title: 'Prénom' },
+         *             { field: 'PlaceOfBirth', title: 'Lieu de naissance' }
+         *         ],
+         *         pager: { limit: 2 }
+         *     });
+         * </script>
+         */
+        locale: 'en-us',
     },
 
     jqueryui: {
@@ -5653,7 +5728,7 @@ gj.grid.plugins.pagination = {
                  * @alias pager.leftControls
                  * @type array
                  * @default array
-                 * @example Font.Awesome <!-- grid.base, grid.pagination  -->
+                 * @example Font.Awesome <!-- grid.base  -->
                  * <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
                  * <style>
                  * .icon-disabled { color: #ccc; }
@@ -5695,27 +5770,14 @@ gj.grid.plugins.pagination = {
                  *     });
                  * </script>
                  */
-                leftControls: [
-                    $('<button title="Previous" data-role="page-previous" class="gj-cursor-pointer"><span>«</span></button>'),
-                    $('<button data-role="page-button-one" class="gj-cursor-pointer">1</button>'),
-                    $('<button data-role="page-button-two" class="gj-cursor-pointer">2</button>'),
-                    $('<button data-role="page-button-three" class="gj-cursor-pointer">3</button>'),
-                    $('<button title="Next" data-role="page-next" class="gj-cursor-pointer"><span>»</span></button> &nbsp;')
-                ],
+                leftControls: undefined,
 
                 /** Array that contains a list with jquery objects that are going to be used on the right side of the pager.
                  * @alias pager.rightControls
                  * @type array
                  * @default array
                  */
-                rightControls: [
-                    $('<div>Displaying records&nbsp;</div>'),
-                    $('<div data-role="record-first">0</div>'),
-                    $('<div>&nbsp;-&nbsp;</div>'),
-                    $('<div data-role="record-last">0</div>'),
-                    $('<div>&nbsp;of&nbsp;</div>'),
-                    $('<div data-role="record-total">0</div>').css({ "margin-right": "5px" })
-                ]
+                rightControls: undefined
             }
         },
         jqueryui: {
@@ -5755,36 +5817,6 @@ gj.grid.plugins.pagination = {
                     cell: 'gj-grid-bootstrap-tfoot-cell',
                     stateDisabled: ''
                 }
-            },
-            pager: {
-                leftControls: [
-                    $('<button type="button" data-role="page-first" title="First Page" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-step-backward"></span></button>'),
-                    $('<div>&nbsp;</div>'),
-                    $('<button type="button" data-role="page-previous" title="Previous Page" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-backward"></span></button>'),
-                    $('<div>&nbsp;</div>'),
-                    $('<div>Page</div>'),
-                    $('<div>&nbsp;</div>'),
-                    $('<div></div>').append($('<input data-role="page-number" class="form-control input-sm" style="width: 40px; text-align: right;" type="text" value="0">')),
-                    $('<div>&nbsp;</div>'),
-                    $('<div>of&nbsp;</div>'),
-                    $('<div data-role="page-label-last">0</div>'),
-                    $('<div>&nbsp;</div>'),
-                    $('<button type="button" data-role="page-next" title="Next Page" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-forward"></span></button>'),
-                    $('<div>&nbsp;</div>'),
-                    $('<button type="button" data-role="page-last" title="Last Page" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-step-forward"></span></button>'),
-                    $('<div>&nbsp;</div>'),
-                    $('<button type="button" data-role="page-refresh" title="Reload" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-refresh"></span></button>'),
-                    $('<div>&nbsp;</div>'),
-                    $('<div></div>').append($('<select data-role="page-size" class="form-control input-sm"></select></div>'))
-                ],
-                rightControls: [
-                    $('<div>Displaying records&nbsp;</div>'),
-                    $('<div data-role="record-first">0</div>'),
-                    $('<div>&nbsp;-&nbsp;</div>'),
-                    $('<div data-role="record-last">0</div>'),
-                    $('<div>&nbsp;of&nbsp;</div>'),
-                    $('<div data-role="record-total">0</div>').css({ "margin-right": "5px" })
-                ]
             }
         },
         materialdesign: {
@@ -5833,6 +5865,8 @@ gj.grid.plugins.pagination = {
                     data.params[data.defaultParams.limit] = data.pager.limit;
                 }
 
+                gj.grid.plugins.pagination.private.localization(data);
+
                 $row = $('<tr data-role="pager"/>');
                 $cell = $('<th/>').addClass(data.style.pager.cell);
                 $row.append($cell);
@@ -5864,6 +5898,71 @@ gj.grid.plugins.pagination = {
                     gj.grid.plugins.pagination.private.initPagerControl($(controls[i]), $grid);
                 }
             }
+        },
+
+        localization: function (data) {
+            if (data.uiLibrary === 'bootstrap') {
+                gj.grid.plugins.pagination.private.localizationBootstrap(data);
+            } else {
+                gj.grid.plugins.pagination.private.localizationBaseTheme(data);
+            }
+        },
+
+        localizationBootstrap: function (data) {
+            if (typeof (data.pager.leftControls) === 'undefined') {
+                data.pager.leftControls = [
+                    $('<button type="button" data-role="page-first" title="' + gj.grid.messages[data.locale].FirstPageTooltip + '" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-step-backward"></span></button>'),
+                    $('<div>&nbsp;</div>'),
+                    $('<button type="button" data-role="page-previous" title="' + gj.grid.messages[data.locale].PreviousPageTooltip + '" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-backward"></span></button>'),
+                    $('<div>&nbsp;</div>'),
+                    $('<div>' + gj.grid.messages[data.locale].Page + '</div>'),
+                    $('<div>&nbsp;</div>'),
+                    $('<div></div>').append($('<input data-role="page-number" class="form-control input-sm" style="width: 40px; text-align: right;" type="text" value="0">')),
+                    $('<div>&nbsp;</div>'),
+                    $('<div>' + gj.grid.messages[data.locale].Of + '&nbsp;</div>'),
+                    $('<div data-role="page-label-last">0</div>'),
+                    $('<div>&nbsp;</div>'),
+                    $('<button type="button" data-role="page-next" title="' + gj.grid.messages[data.locale].NextPageTooltip + '" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-forward"></span></button>'),
+                    $('<div>&nbsp;</div>'),
+                    $('<button type="button" data-role="page-last" title="' + gj.grid.messages[data.locale].LastPageTooltip + '" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-step-forward"></span></button>'),
+                    $('<div>&nbsp;</div>'),
+                    $('<button type="button" data-role="page-refresh" title="' + gj.grid.messages[data.locale].Refresh + '" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-refresh"></span></button>'),
+                    $('<div>&nbsp;</div>'),
+                    $('<div></div>').append($('<select data-role="page-size" class="form-control input-sm"></select></div>'))
+                ];
+            }
+            if (typeof (data.pager.rightControls) === 'undefined') {
+                data.pager.rightControls = [
+                    $('<div>' + gj.grid.messages[data.locale].DisplayingRecords + '&nbsp;</div>'),
+                    $('<div data-role="record-first">0</div>'),
+                    $('<div>&nbsp;-&nbsp;</div>'),
+                    $('<div data-role="record-last">0</div>'),
+                    $('<div>&nbsp;' + gj.grid.messages[data.locale].Of + '&nbsp;</div>'),
+                    $('<div data-role="record-total">0</div>').css({ "margin-right": "5px" })
+                ];
+            }
+        },
+
+        localizationBaseTheme: function (data) {
+            if (typeof (data.pager.leftControls) === 'undefined') {
+                data.pager.leftControls = [
+                    $('<button title="Previous" data-role="page-previous" class="gj-cursor-pointer"><span>«</span></button>'),
+                    $('<button data-role="page-button-one" class="gj-cursor-pointer">1</button>'),
+                    $('<button data-role="page-button-two" class="gj-cursor-pointer">2</button>'),
+                    $('<button data-role="page-button-three" class="gj-cursor-pointer">3</button>'),
+                    $('<button title="Next" data-role="page-next" class="gj-cursor-pointer"><span>»</span></button> &nbsp;')
+                ];
+            }
+            if (typeof (data.pager.rightControls) === 'undefined') {
+                data.pager.rightControls = [
+                    $('<div>Displaying records&nbsp;</div>'),
+                    $('<div data-role="record-first">0</div>'),
+                    $('<div>&nbsp;-&nbsp;</div>'),
+                    $('<div data-role="record-last">0</div>'),
+                    $('<div>&nbsp;of&nbsp;</div>'),
+                    $('<div data-role="record-total">0</div>').css({ "margin-right": "5px" })
+                ];
+            }            
         },
 
         initPagerControl: function ($control, $grid) {

@@ -20,6 +20,28 @@ gj.widget = function () {
         }
         return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
     };
+
+    self.mouseX = function (e) {
+        if (e) {
+            if (e.pageX) {
+                return e.pageX;
+            } else if (e.clientX) {
+                return e.clientX + (document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft);
+            }
+        }
+        return null;
+    };
+
+    self.mouseY = function (e) {
+        if (e) {
+            if (e.pageY) {
+                return e.pageY;
+            } else if (e.clientY) {
+                return e.clientY + (document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop);
+            }
+        }
+        return null;
+    };
 };
 
 gj.widget.prototype.init = function (jsConfig, type) {
@@ -302,8 +324,8 @@ gj.draggable.methods = {
                 $dragEl.attr('data-draggable-dragging', false);
                 gj.documentManager.unsubscribeForEvent('mousemove', $dragEl.data('guid'));
                 gj.draggable.events.stop($dragEl, {
-                    left: gj.droppable.methods.mouseX(e),
-                    top: gj.droppable.methods.mouseY(e)
+                    left: $dragEl.mouseX(e),
+                    top: $dragEl.mouseY(e)
                 });
             }
         };
@@ -313,8 +335,8 @@ gj.draggable.methods = {
         return function (e) {
             var x, y, offsetX, offsetY, prevX, prevY;
             if ($dragEl.attr('data-draggable-dragging') === 'true') {
-                x = gj.draggable.methods.mouseX(e);
-                y = gj.draggable.methods.mouseY(e);
+                x = $dragEl.mouseX(e);
+                y = $dragEl.mouseY(e);
                 prevX = $dragEl.attr('data-draggable-x');
                 prevY = $dragEl.attr('data-draggable-y');
                 if (prevX && prevY) {                
@@ -338,28 +360,6 @@ gj.draggable.methods = {
             left = target.style.left ? parseInt(target.style.left) : $dragEl.position().left;
         target.style.top = (top + offsetY) + 'px';
         target.style.left = (left + offsetX) + 'px';
-    },
-
-    mouseX: function (e) {
-        if (e) {
-            if (e.pageX) {
-                return e.pageX;
-            } else if (e.clientX) {
-                return e.clientX + (document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft);
-            }
-        }
-        return null;
-    },
-
-    mouseY: function (e) {
-        if (e) {
-            if (e.pageY) {
-                return e.pageY;
-            } else if (e.clientY) {
-                return e.clientY + (document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop);
-            }
-        }
-        return null;
     },
 
     destroy: function ($dragEl) {

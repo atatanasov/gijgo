@@ -20,6 +20,28 @@ gj.widget = function () {
         }
         return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
     };
+
+    self.mouseX = function (e) {
+        if (e) {
+            if (e.pageX) {
+                return e.pageX;
+            } else if (e.clientX) {
+                return e.clientX + (document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft);
+            }
+        }
+        return null;
+    };
+
+    self.mouseY = function (e) {
+        if (e) {
+            if (e.pageY) {
+                return e.pageY;
+            } else if (e.clientY) {
+                return e.clientY + (document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop);
+            }
+        }
+        return null;
+    };
 };
 
 gj.widget.prototype.init = function (jsConfig, type) {

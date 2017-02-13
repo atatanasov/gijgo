@@ -70,6 +70,9 @@
     <Content Include="src\dialog\js\dialog.base.events.js" />
     <Content Include="src\dialog\js\dialog.base.widget.js" />
     <Content Include="src\dialog\js\header.txt" />
+    <Content Include="src\dialog\js\messages\messages.bg-bg.js" />
+    <Content Include="src\dialog\js\messages\messages.en-us.js" />
+    <Content Include="src\dialog\js\messages\messages.fr-fr.js" />
     <Content Include="src\draggable\js\draggable.base.js" />
     <Content Include="src\draggable\js\header.txt" />
     <Content Include="src\droppable\js\droppable.base.js" />
@@ -98,6 +101,9 @@
     <Content Include="src\grid\js\grid.base.widget.js" />
     <Content Include="src\grid\js\header.txt" />
     <Content Include="src\header.txt" />
+    <Content Include="src\grid\js\messages\messages.bg-bg.js" />
+    <Content Include="src\grid\js\messages\messages.en-us.js" />
+    <Content Include="src\grid\js\messages\messages.fr-fr.js" />
     <Content Include="src\tree\css\tree.base.css" />
     <Content Include="src\tree\css\tree.dragAndDrop.css" />
     <Content Include="src\tree\js\header.txt" />

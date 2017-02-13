@@ -4,9 +4,17 @@
         this.attr('data-type', 'dialog');
         gj.widget.prototype.init.call(this, jsConfig, 'dialog');
 
+        gj.dialog.methods.localization(this);
         gj.dialog.methods.initialize(this);
         gj.dialog.events.initialized(this);
         return this;
+    },
+
+    localization: function($dialog) {
+        var data = $dialog.data();
+        if (typeof (data.title) === 'undefined') {
+            data.title = gj.dialog.messages[data.locale].DefaultTitle;
+        }
     },
 
     getHTMLConfig: function () {
@@ -97,7 +105,7 @@
 
         $closeButton = $header.find('[data-role="close"]');
         if ($closeButton.length === 0 && data.closeButtonInHeader) {
-            $closeButton = $('<button type="button" data-role="close"><span>×</span></button>');
+            $closeButton = $('<button type="button" data-role="close" title="' + gj.dialog.messages[data.locale].Close + '"><span>×</span></button>');
             $closeButton.addClass(data.style.headerCloseButton);
             $header.prepend($closeButton);
         } else if ($closeButton.length > 0 && data.closeButtonInHeader === false) {

@@ -8,7 +8,9 @@
                 files: [
                     { cwd: 'node_modules/jquery/dist', src: '**/*', dest: 'dist/libraries/jquery', expand: true },
                     { cwd: 'node_modules/bootstrap/dist', src: '**/*', dest: 'dist/libraries/bootstrap', expand: true },
-                    { cwd: 'node_modules/jquery-ui/themes/base', src: '**/*', dest: 'dist/libraries/jquery-ui', expand: true }
+                    { cwd: 'node_modules/jquery-ui/themes/base', src: '**/*', dest: 'dist/libraries/jquery-ui', expand: true },
+                    { cwd: 'src/dialog/js/messages', src: '**/*', dest: 'dist/modular/dialog/js/messages', expand: true },
+                    { cwd: 'src/grid/js/messages', src: '**/*', dest: 'dist/modular/grid/js/messages', expand: true }
                 ]
             }
         },
@@ -27,7 +29,7 @@
         concat: {
             dialog: {
                 files : {
-                    'dist/modular/dialog/js/dialog.code.js': ['src/dialog/js/dialog.base.config.js', 'src/dialog/js/dialog.base.events.js', 'src/dialog/js/dialog.base.methods.js', 'src/dialog/js/dialog.base.widget.js'],
+                    'dist/modular/dialog/js/dialog.code.js': ['src/dialog/js/messages/messages.en-us.js', 'src/dialog/js/dialog.base.config.js', 'src/dialog/js/dialog.base.events.js', 'src/dialog/js/dialog.base.methods.js', 'src/dialog/js/dialog.base.widget.js'],
                     'dist/modular/dialog/css/dialog.code.css': ['src/dialog/css/dialog.base.css']
                 }
             },
@@ -43,7 +45,7 @@
             },
             grid: {
                 files: {
-                    'dist/modular/grid/js/grid.code.js': ['src/grid/js/grid.base.config.js', 'src/grid/js/grid.base.events.js', 'src/grid/js/grid.base.methods.js', 'src/grid/js/grid.base.widget.js',
+                    'dist/modular/grid/js/grid.code.js': ['src/grid/js/messages/messages.en-us.js', 'src/grid/js/grid.base.config.js', 'src/grid/js/grid.base.events.js', 'src/grid/js/grid.base.methods.js', 'src/grid/js/grid.base.widget.js',
                         'src/grid/js/grid.expandCollapseRows.js', 'src/grid/js/grid.inlineEditing.js', 'src/grid/js/grid.optimisticPersistence.js', 'src/grid/js/grid.pagination.js',
                         'src/grid/js/grid.responsiveDesign.js', 'src/grid/js/grid.toolbar.js', 'src/grid/js/grid.resizableColumns.js', 'src/grid/js/grid.rowReorder.js',
                         'src/grid/js/grid.columnReorder.js', 'src/grid/js/grid.headerFilter.js'],
@@ -76,9 +78,11 @@
                     'dist/modular/tree/css/tree.css': ['src/widget.css', 'dist/modular/tree/css/tree.code.css'],
                     'dist/modular/checkbox/js/checkbox.js': ['src/checkbox/js/header.txt', 'src/widget.js', 'dist/modular/checkbox/js/checkbox.code.js'],
                     'dist/modular/checkbox/css/checkbox.css': ['src/widget.css', 'dist/modular/checkbox/css/checkbox.code.css'],
-
+                    
                     'dist/combined/js/gijgo.js': ['src/header.txt', 'src/widget.js', 'dist/modular/dialog/js/dialog.code.js', 'dist/modular/draggable/js/draggable.code.js', 'dist/modular/droppable/js/droppable.code.js', 'dist/modular/grid/js/grid.code.js', 'dist/modular/tree/js/tree.code.js', 'dist/modular/checkbox/js/checkbox.code.js'],
-                    'dist/combined/css/gijgo.css': ['src/widget.css', 'dist/modular/dialog/css/dialog.code.css', 'dist/modular/grid/css/grid.code.css', 'dist/modular/tree/css/tree.code.css', 'dist/modular/checkbox/css/checkbox.code.css']
+                    'dist/combined/css/gijgo.css': ['src/widget.css', 'dist/modular/dialog/css/dialog.code.css', 'dist/modular/grid/css/grid.code.css', 'dist/modular/tree/css/tree.code.css', 'dist/modular/checkbox/css/checkbox.code.css'],
+                    'dist/combined/js/messages/messages.bg-bg.js': ['src/dialog/js/messages/messages.bg-bg.js', 'src/grid/js/messages/messages.bg-bg.js'],
+                    'dist/combined/js/messages/messages.fr-fr.js': ['src/dialog/js/messages/messages.fr-fr.js', 'src/grid/js/messages/messages.fr-fr.js']
                 }
             }
         },
