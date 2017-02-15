@@ -110,6 +110,8 @@
             $header.prepend($closeButton);
         } else if ($closeButton.length > 0 && data.closeButtonInHeader === false) {
             $closeButton.hide();
+        } else {
+            $closeButton.addClass(data.style.headerCloseButton);
         }
 
         return $header;
@@ -246,5 +248,27 @@
 
     isOpen: function ($dialog) {
         return $dialog.is(':visible');
+    },
+
+    destroy: function ($dialog, keepHtml) {
+        var data = $dialog.data();
+        if (data) {
+            if (keepHtml === false) {
+                $dialog.remove();
+            } else {
+                $dialog.close();
+                $dialog.off();
+                $dialog.removeData();
+                $dialog.removeAttr('data-type');
+                $dialog.removeClass(data.style.content);
+                $dialog.find('[data-role="header"]').removeClass(data.style.header);
+                $dialog.find('[data-role="title"]').removeClass(data.style.headerTitle);
+                $dialog.find('[data-role="close"]').remove();
+                $dialog.find('[data-role="body"]').removeClass(data.style.body);
+                $dialog.find('[data-role="footer"]').removeClass(data.style.footer);
+            }
+            
+        }
+        return $dialog;
     }
 };

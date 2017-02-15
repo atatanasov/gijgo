@@ -250,7 +250,10 @@ gj.draggable.widget = function ($element, arguments) {
         return methods.destroy(this);
     };
 
-    $.extend($element, self);
+    if (!$element.destroy) {
+        $element.destroy = self.destroy;
+    }
+
     if ('true' !== $element.attr('data-draggable')) {
         methods.init.apply($element, arguments);
     }

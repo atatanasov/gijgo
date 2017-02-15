@@ -58,6 +58,40 @@ gj.dialog.widget = function ($element, arguments) {
         return methods.isOpen(this);
     }
 
+    /**
+     * Destroy the dialog.
+     * @method
+     * @param {boolean} keepHtml - If this flag is set to false, the dialog html markup will be removed from the HTML dom tree.
+     * @return void
+     * @example Keep.HTML.Markup <!-- draggable.base, dialog.base -->
+     * <div id="dialog" style="display: none">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
+     * <button onclick="create()">Create</button>
+     * <button onclick="dialog.destroy()">Destroy</button>
+     * <script>
+     *     var dialog;
+     *     function create() { 
+     *         dialog = $('#dialog').dialog();
+     *     }
+     * </script>
+     * @example Remove.HTML.Markup <!-- draggable.base, dialog.base -->
+     * <div id="dialog" style="display: none">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
+     * <button onclick="create()">Create</button>
+     * <button onclick="dialog.destroy(false)">Destroy</button>
+     * <script>
+     *     var dialog;
+     *     function create() {
+     *         if ($('#dialog').length === 0) {
+     *             alert('The dialog can not be created.');
+     *         } else {
+     *             dialog = $('#dialog').dialog();
+     *         }
+     *     }
+     * </script>
+     */
+    self.destroy = function (keepHtml) {
+        return methods.destroy(this, keepHtml);
+    }
+
     $.extend($element, self);
     if ('dialog' !== $element.attr('data-type')) {
         methods.init.apply($element, arguments);

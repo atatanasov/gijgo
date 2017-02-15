@@ -1023,6 +1023,8 @@ gj.dialog.methods = {
             $header.prepend($closeButton);
         } else if ($closeButton.length > 0 && data.closeButtonInHeader === false) {
             $closeButton.hide();
+        } else {
+            $closeButton.addClass(data.style.headerCloseButton);
         }
 
         return $header;
@@ -1159,6 +1161,28 @@ gj.dialog.methods = {
 
     isOpen: function ($dialog) {
         return $dialog.is(':visible');
+    },
+
+    destroy: function ($dialog, keepHtml) {
+        var data = $dialog.data();
+        if (data) {
+            if (keepHtml === false) {
+                $dialog.remove();
+            } else {
+                $dialog.close();
+                $dialog.off();
+                $dialog.removeData();
+                $dialog.removeAttr('data-type');
+                $dialog.removeClass(data.style.content);
+                $dialog.find('[data-role="header"]').removeClass(data.style.header);
+                $dialog.find('[data-role="title"]').removeClass(data.style.headerTitle);
+                $dialog.find('[data-role="close"]').remove();
+                $dialog.find('[data-role="body"]').removeClass(data.style.body);
+                $dialog.find('[data-role="footer"]').removeClass(data.style.footer);
+            }
+            
+        }
+        return $dialog;
     }
 };
 /** 
@@ -1219,6 +1243,40 @@ gj.dialog.widget = function ($element, arguments) {
      */
     self.isOpen = function () {
         return methods.isOpen(this);
+    }
+
+    /**
+     * Destroy the dialog.
+     * @method
+     * @param {boolean} keepHtml - If this flag is set to false, the dialog html markup will be removed from the HTML dom tree.
+     * @return void
+     * @example Keep.HTML.Markup <!-- draggable.base, dialog.base -->
+     * <div id="dialog" style="display: none">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
+     * <button onclick="create()">Create</button>
+     * <button onclick="dialog.destroy()">Destroy</button>
+     * <script>
+     *     var dialog;
+     *     function create() { 
+     *         dialog = $('#dialog').dialog();
+     *     }
+     * </script>
+     * @example Remove.HTML.Markup <!-- draggable.base, dialog.base -->
+     * <div id="dialog" style="display: none">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
+     * <button onclick="create()">Create</button>
+     * <button onclick="dialog.destroy(false)">Destroy</button>
+     * <script>
+     *     var dialog;
+     *     function create() {
+     *         if ($('#dialog').length === 0) {
+     *             alert('The dialog can not be created.');
+     *         } else {
+     *             dialog = $('#dialog').dialog();
+     *         }
+     *     }
+     * </script>
+     */
+    self.destroy = function (keepHtml) {
+        return methods.destroy(this, keepHtml);
     }
 
     $.extend($element, self);
