@@ -234,21 +234,13 @@ gj.grid.plugins.inlineEditing.config = {
             */
             managementColumn: true,
 
-            editButton: '<u class="gj-cursor-pointer">edit</u>',
-            deleteButton: '<u class="gj-cursor-pointer gj-margin-left-5">delete</u>',
-            updateButton: '<u class="gj-cursor-pointer">update</u>',
-            cancelButton: '<u class="gj-cursor-pointer gj-margin-left-5">cancel</u>',
             managementColumnConfig: { width: 100, align: 'center', renderer: gj.grid.plugins.inlineEditing.renderers.editManager }
         }
     },
 
     bootstrap: {
         inlineEditing: {
-            editButton: '<button type="button" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Edit</button>',
-            deleteButton: '<button type="button" class="btn btn-default btn-sm gj-margin-left-10"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Delete</button>',
-            updateButton: '<button type="button" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Update</button>',
-            cancelButton: '<button type="button" class="btn btn-default btn-sm gj-margin-left-10"><span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span> Cancel</button>',
-            managementColumnConfig: { width: 190, align: 'center', renderer: gj.grid.plugins.inlineEditing.renderers.editManager }
+            managementColumnConfig: { width: 200, align: 'center', renderer: gj.grid.plugins.inlineEditing.renderers.editManager }
         }
     },
 
@@ -264,16 +256,31 @@ gj.grid.plugins.inlineEditing.config = {
 
     materialdesign: {
         inlineEditing: {
-            editButton: '<button class="mdl-button mdl-js-button"><i class="material-icons">mode_edit</i> EDIT</button>',
-            deleteButton: '<button class="mdl-button mdl-js-button"><i class="material-icons">delete</i> DELETE</button>',
-            updateButton: '<button class="mdl-button mdl-js-button"><i class="material-icons">check_circle</i> UPDATE</button>',
-            cancelButton: '<button class="mdl-button mdl-js-button"><i class="material-icons">cancel</i> CANCEL</button>',
             managementColumnConfig: { width: 300, align: 'center', renderer: gj.grid.plugins.inlineEditing.renderers.editManager }
         }
     }
 };
 
 gj.grid.plugins.inlineEditing.private = {
+    localization: function (data) {
+        if (data.uiLibrary === 'bootstrap') {
+            data.inlineEditing.editButton = '<button type="button" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> ' + gj.grid.messages[data.locale].Edit + '</button>';
+            data.inlineEditing.deleteButton = '<button type="button" class="btn btn-default btn-sm gj-margin-left-10"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> ' + gj.grid.messages[data.locale].Delete + '</button>';
+            data.inlineEditing.updateButton = '<button type="button" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> ' + gj.grid.messages[data.locale].Update + '</button>';
+            data.inlineEditing.cancelButton = '<button type="button" class="btn btn-default btn-sm gj-margin-left-10"><span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span> ' + gj.grid.messages[data.locale].Cancel + '</button>';
+        } else if (data.uiLibrary === 'materialdesign') {
+            data.inlineEditing.editButton = '<button class="mdl-button mdl-js-button"><i class="material-icons">mode_edit</i> ' + gj.grid.messages[data.locale].Edit.toUpperCase() + '</button>';
+            data.inlineEditing.deleteButton = '<button class="mdl-button mdl-js-button"><i class="material-icons">delete</i> ' + gj.grid.messages[data.locale].Delete.toUpperCase() + '</button>';
+            data.inlineEditing.updateButton = '<button class="mdl-button mdl-js-button"><i class="material-icons">check_circle</i> ' + gj.grid.messages[data.locale].Update.toUpperCase() + '</button>';
+            data.inlineEditing.cancelButton = '<button class="mdl-button mdl-js-button"><i class="material-icons">cancel</i> ' + gj.grid.messages[data.locale].Cancel.toUpperCase() + '</button>';
+        } else {
+            data.inlineEditing.editButton = '<u class="gj-cursor-pointer">' + gj.grid.messages[data.locale].Edit.toLowerCase() + '</u>';
+            data.inlineEditing.deleteButton = '<u class="gj-cursor-pointer gj-margin-left-5">' + gj.grid.messages[data.locale].Delete.toLowerCase() + '</u>';
+            data.inlineEditing.updateButton = '<u class="gj-cursor-pointer">' + gj.grid.messages[data.locale].Update.toLowerCase() + '</u>';
+            data.inlineEditing.cancelButton = '<u class="gj-cursor-pointer gj-margin-left-5">' + gj.grid.messages[data.locale].Cancel.toLowerCase() + '</u>';
+        }
+    },
+
     editMode: function ($grid, $cell, column, record) {
         var $displayContainer, $editorContainer, $editorField, value, data = $grid.data();
         if ($cell.attr('data-mode') !== 'edit' && column.editor) {
@@ -619,6 +626,7 @@ gj.grid.plugins.inlineEditing.configure = function ($grid, fullConfig, clientCon
         });
     }
     if (data.inlineEditing.mode === 'command') {
+        gj.grid.plugins.inlineEditing.private.localization(data);
         if (fullConfig.inlineEditing.managementColumn) {
             data.columns.push(fullConfig.inlineEditing.managementColumnConfig);
         }

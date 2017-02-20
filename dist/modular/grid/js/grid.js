@@ -238,7 +238,7 @@ gj.grid.messages['en-us'] = {
     NextPageTooltip: 'Next Page',
     LastPageTooltip: 'Last Page',
     Refresh: 'Refresh',
-    Of: 'Of',
+    Of: 'of',
     DisplayingRecords: 'Displaying records',
     Edit: 'Edit',
     Delete: 'Delete',
@@ -1097,7 +1097,7 @@ gj.grid.config = {
         /** The language that needs to be in use.
          * @type string
          * @default 'en-us'
-         * @example French.Default <!-- bootstrap, grid.base-->
+         * @example French.Bootstrap.Default <!-- bootstrap, grid.base-->
          * <script src="../../dist/modular/grid/js/messages/messages.fr-fr.js"></script>
          * <table id="grid"></table>
          * <script>
@@ -1113,14 +1113,14 @@ gj.grid.config = {
          *         pager: { limit: 2 }
          *     });
          * </script>
-         * @example French.Custom <!-- bootstrap, grid.base-->
+         * @example French.MaterialDesign.Custom <!-- materialdesign, grid.base-->
          * <script src="../../dist/modular/grid/js/messages/messages.fr-fr.js"></script>
          * <table id="grid"></table>
          * <script>
          *     gj.grid.messages['fr-fr'].DisplayingRecords = 'Mes résultats';
          *     $('#grid').grid({
          *         dataSource: '/DataSources/GetPlayers',
-         *         uiLibrary: 'bootstrap',
+         *         uiLibrary: 'materialdesign',
          *         locale: 'fr-fr',
          *         columns: [ 
          *             { field: 'ID', width: 32 },
@@ -2237,6 +2237,7 @@ gj.grid.methods = {
         var data = $grid.data();
         $grid.xhr && $grid.xhr.abort();
         $grid.children('tbody').empty();
+        data.records = [];
         gj.grid.methods.stopLoading($grid);
         gj.grid.methods.appendEmptyRow($grid, showNotFoundText ? data.notFoundText : '&nbsp;');
         gj.grid.events.dataBound($grid, [], 0);
@@ -3563,21 +3564,13 @@ gj.grid.plugins.inlineEditing.config = {
             */
             managementColumn: true,
 
-            editButton: '<u class="gj-cursor-pointer">edit</u>',
-            deleteButton: '<u class="gj-cursor-pointer gj-margin-left-5">delete</u>',
-            updateButton: '<u class="gj-cursor-pointer">update</u>',
-            cancelButton: '<u class="gj-cursor-pointer gj-margin-left-5">cancel</u>',
             managementColumnConfig: { width: 100, align: 'center', renderer: gj.grid.plugins.inlineEditing.renderers.editManager }
         }
     },
 
     bootstrap: {
         inlineEditing: {
-            editButton: '<button type="button" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Edit</button>',
-            deleteButton: '<button type="button" class="btn btn-default btn-sm gj-margin-left-10"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Delete</button>',
-            updateButton: '<button type="button" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Update</button>',
-            cancelButton: '<button type="button" class="btn btn-default btn-sm gj-margin-left-10"><span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span> Cancel</button>',
-            managementColumnConfig: { width: 190, align: 'center', renderer: gj.grid.plugins.inlineEditing.renderers.editManager }
+            managementColumnConfig: { width: 200, align: 'center', renderer: gj.grid.plugins.inlineEditing.renderers.editManager }
         }
     },
 
@@ -3593,16 +3586,31 @@ gj.grid.plugins.inlineEditing.config = {
 
     materialdesign: {
         inlineEditing: {
-            editButton: '<button class="mdl-button mdl-js-button"><i class="material-icons">mode_edit</i> EDIT</button>',
-            deleteButton: '<button class="mdl-button mdl-js-button"><i class="material-icons">delete</i> DELETE</button>',
-            updateButton: '<button class="mdl-button mdl-js-button"><i class="material-icons">check_circle</i> UPDATE</button>',
-            cancelButton: '<button class="mdl-button mdl-js-button"><i class="material-icons">cancel</i> CANCEL</button>',
             managementColumnConfig: { width: 300, align: 'center', renderer: gj.grid.plugins.inlineEditing.renderers.editManager }
         }
     }
 };
 
 gj.grid.plugins.inlineEditing.private = {
+    localization: function (data) {
+        if (data.uiLibrary === 'bootstrap') {
+            data.inlineEditing.editButton = '<button type="button" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> ' + gj.grid.messages[data.locale].Edit + '</button>';
+            data.inlineEditing.deleteButton = '<button type="button" class="btn btn-default btn-sm gj-margin-left-10"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> ' + gj.grid.messages[data.locale].Delete + '</button>';
+            data.inlineEditing.updateButton = '<button type="button" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> ' + gj.grid.messages[data.locale].Update + '</button>';
+            data.inlineEditing.cancelButton = '<button type="button" class="btn btn-default btn-sm gj-margin-left-10"><span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span> ' + gj.grid.messages[data.locale].Cancel + '</button>';
+        } else if (data.uiLibrary === 'materialdesign') {
+            data.inlineEditing.editButton = '<button class="mdl-button mdl-js-button"><i class="material-icons">mode_edit</i> ' + gj.grid.messages[data.locale].Edit.toUpperCase() + '</button>';
+            data.inlineEditing.deleteButton = '<button class="mdl-button mdl-js-button"><i class="material-icons">delete</i> ' + gj.grid.messages[data.locale].Delete.toUpperCase() + '</button>';
+            data.inlineEditing.updateButton = '<button class="mdl-button mdl-js-button"><i class="material-icons">check_circle</i> ' + gj.grid.messages[data.locale].Update.toUpperCase() + '</button>';
+            data.inlineEditing.cancelButton = '<button class="mdl-button mdl-js-button"><i class="material-icons">cancel</i> ' + gj.grid.messages[data.locale].Cancel.toUpperCase() + '</button>';
+        } else {
+            data.inlineEditing.editButton = '<u class="gj-cursor-pointer">' + gj.grid.messages[data.locale].Edit.toLowerCase() + '</u>';
+            data.inlineEditing.deleteButton = '<u class="gj-cursor-pointer gj-margin-left-5">' + gj.grid.messages[data.locale].Delete.toLowerCase() + '</u>';
+            data.inlineEditing.updateButton = '<u class="gj-cursor-pointer">' + gj.grid.messages[data.locale].Update.toLowerCase() + '</u>';
+            data.inlineEditing.cancelButton = '<u class="gj-cursor-pointer gj-margin-left-5">' + gj.grid.messages[data.locale].Cancel.toLowerCase() + '</u>';
+        }
+    },
+
     editMode: function ($grid, $cell, column, record) {
         var $displayContainer, $editorContainer, $editorField, value, data = $grid.data();
         if ($cell.attr('data-mode') !== 'edit' && column.editor) {
@@ -3948,6 +3956,7 @@ gj.grid.plugins.inlineEditing.configure = function ($grid, fullConfig, clientCon
         });
     }
     if (data.inlineEditing.mode === 'command') {
+        gj.grid.plugins.inlineEditing.private.localization(data);
         if (fullConfig.inlineEditing.managementColumn) {
             data.columns.push(fullConfig.inlineEditing.managementColumnConfig);
         }
@@ -4266,28 +4275,6 @@ gj.grid.plugins.pagination = {
                     cell: '',
                     stateDisabled: ''
                 }
-            },
-            pager: {
-                leftControls: [
-                    $('<button data-role="page-first" title="First Page" class="mdl-button mdl-js-button mdl-button--icon"><i class="material-icons">first_page</i></button>'),
-                    $('<button data-role="page-previous" title="Previous Page" class="mdl-button mdl-js-button mdl-button--icon"><i class="material-icons">chevron_left</i></button>'),
-                    $('<span class="gj-grid-mdl-pager-label">Page</span>'),
-                    $('<input data-role="page-number" class="mdl-textfield__input gj-grid-mdl-page" type="text" value="0">'),
-                    $('<span class="gj-grid-mdl-pager-label">of</span>'),
-                    $('<span data-role="page-label-last" class="gj-grid-mdl-pager-label">0</span>'),
-                    $('<button data-role="page-next" title="Next Page" class="mdl-button mdl-js-button mdl-button--icon"><i class="material-icons">chevron_right</i>'),
-                    $('<button data-role="page-last" title="Last Page" class="mdl-button mdl-js-button mdl-button--icon"><i class="material-icons">last_page</i>'),
-                    $('<button data-role="page-refresh" title="Reload" class="mdl-button mdl-js-button mdl-button--icon"><i class="material-icons">refresh</i>'),
-                    $('<select data-role="page-size" class="mdl-textfield__input gj-grid-mdl-limit-select"></select></div>')
-                ],
-                rightControls: [
-                    $('<span class="gj-grid-mdl-pager-label">Displaying records</span>'),
-                    $('<span data-role="record-first" class="gj-grid-mdl-pager-label">0</span>'),
-                    $('<span class="gj-grid-mdl-pager-label">-</span>'),
-                    $('<span data-role="record-last" class="gj-grid-mdl-pager-label">0</span>'),
-                    $('<span class="gj-grid-mdl-pager-label">of</span>'),
-                    $('<span data-role="record-total" class="gj-grid-mdl-pager-label">0</span>')
-                ]
             }
         }
     },
@@ -4344,6 +4331,8 @@ gj.grid.plugins.pagination = {
         localization: function (data) {
             if (data.uiLibrary === 'bootstrap') {
                 gj.grid.plugins.pagination.private.localizationBootstrap(data);
+            } else if (data.uiLibrary === 'materialdesign') {
+                gj.grid.plugins.pagination.private.localizationMaterialDesign(data);
             } else {
                 gj.grid.plugins.pagination.private.localizationBaseTheme(data);
             }
@@ -4384,23 +4373,50 @@ gj.grid.plugins.pagination = {
             }
         },
 
-        localizationBaseTheme: function (data) {
+        localizationMaterialDesign: function (data) {
             if (typeof (data.pager.leftControls) === 'undefined') {
                 data.pager.leftControls = [
-                    $('<button title="Previous" data-role="page-previous" class="gj-cursor-pointer"><span>«</span></button>'),
-                    $('<button data-role="page-button-one" class="gj-cursor-pointer">1</button>'),
-                    $('<button data-role="page-button-two" class="gj-cursor-pointer">2</button>'),
-                    $('<button data-role="page-button-three" class="gj-cursor-pointer">3</button>'),
-                    $('<button title="Next" data-role="page-next" class="gj-cursor-pointer"><span>»</span></button> &nbsp;')
+                    $('<button data-role="page-first" title="' + gj.grid.messages[data.locale].FirstPageTooltip + '" class="mdl-button mdl-js-button mdl-button--icon"><i class="material-icons">first_page</i></button>'),
+                    $('<button data-role="page-previous" title="' + gj.grid.messages[data.locale].PreviousPageTooltip + '" class="mdl-button mdl-js-button mdl-button--icon"><i class="material-icons">chevron_left</i></button>'),
+                    $('<span class="gj-grid-mdl-pager-label">' + gj.grid.messages[data.locale].Page + '</span>'),
+                    $('<input data-role="page-number" class="mdl-textfield__input gj-grid-mdl-page" type="text" value="0">'),
+                    $('<span class="gj-grid-mdl-pager-label">' + gj.grid.messages[data.locale].Of + '</span>'),
+                    $('<span data-role="page-label-last" class="gj-grid-mdl-pager-label">0</span>'),
+                    $('<button data-role="page-next" title="' + gj.grid.messages[data.locale].NextPageTooltip + '" class="mdl-button mdl-js-button mdl-button--icon"><i class="material-icons">chevron_right</i>'),
+                    $('<button data-role="page-last" title="' + gj.grid.messages[data.locale].LastPageTooltip + '" class="mdl-button mdl-js-button mdl-button--icon"><i class="material-icons">last_page</i>'),
+                    $('<button data-role="page-refresh" title="' + gj.grid.messages[data.locale].Refresh + '" class="mdl-button mdl-js-button mdl-button--icon"><i class="material-icons">refresh</i>'),
+                    $('<select data-role="page-size" class="mdl-textfield__input gj-grid-mdl-limit-select"></select></div>')
                 ];
             }
             if (typeof (data.pager.rightControls) === 'undefined') {
                 data.pager.rightControls = [
-                    $('<div>Displaying records&nbsp;</div>'),
+                    $('<span class="gj-grid-mdl-pager-label">' + gj.grid.messages[data.locale].DisplayingRecords + '</span>'),
+                    $('<span data-role="record-first" class="gj-grid-mdl-pager-label">0</span>'),
+                    $('<span class="gj-grid-mdl-pager-label">-</span>'),
+                    $('<span data-role="record-last" class="gj-grid-mdl-pager-label">0</span>'),
+                    $('<span class="gj-grid-mdl-pager-label">' + gj.grid.messages[data.locale].Of + '</span>'),
+                    $('<span data-role="record-total" class="gj-grid-mdl-pager-label">0</span>')
+                ];
+            }
+        },
+
+        localizationBaseTheme: function (data) {
+            if (typeof (data.pager.leftControls) === 'undefined') {
+                data.pager.leftControls = [
+                    $('<button title="' + gj.grid.messages[data.locale].PreviousPageTooltip + '" data-role="page-previous" class="gj-cursor-pointer"><span>«</span></button>'),
+                    $('<button data-role="page-button-one" class="gj-cursor-pointer">1</button>'),
+                    $('<button data-role="page-button-two" class="gj-cursor-pointer">2</button>'),
+                    $('<button data-role="page-button-three" class="gj-cursor-pointer">3</button>'),
+                    $('<button title="' + gj.grid.messages[data.locale].NextPageTooltip + '" data-role="page-next" class="gj-cursor-pointer"><span>»</span></button> &nbsp;')
+                ];
+            }
+            if (typeof (data.pager.rightControls) === 'undefined') {
+                data.pager.rightControls = [
+                    $('<div>' + gj.grid.messages[data.locale].DisplayingRecords + '&nbsp;</div>'),
                     $('<div data-role="record-first">0</div>'),
                     $('<div>&nbsp;-&nbsp;</div>'),
                     $('<div data-role="record-last">0</div>'),
-                    $('<div>&nbsp;of&nbsp;</div>'),
+                    $('<div>&nbsp;' + gj.grid.messages[data.locale].Of + '&nbsp;</div>'),
                     $('<div data-role="record-total">0</div>').css({ "margin-right": "5px" })
                 ];
             }            

@@ -16,7 +16,7 @@ gj.grid.messages['en-us'] = {
     NextPageTooltip: 'Next Page',
     LastPageTooltip: 'Last Page',
     Refresh: 'Refresh',
-    Of: 'Of',
+    Of: 'of',
     DisplayingRecords: 'Displaying records',
     Edit: 'Edit',
     Delete: 'Delete',

@@ -751,6 +751,7 @@ gj.grid.methods = {
         var data = $grid.data();
         $grid.xhr && $grid.xhr.abort();
         $grid.children('tbody').empty();
+        data.records = [];
         gj.grid.methods.stopLoading($grid);
         gj.grid.methods.appendEmptyRow($grid, showNotFoundText ? data.notFoundText : '&nbsp;');
         gj.grid.events.dataBound($grid, [], 0);

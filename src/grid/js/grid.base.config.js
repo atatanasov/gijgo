@@ -849,7 +849,7 @@ gj.grid.config = {
         /** The language that needs to be in use.
          * @type string
          * @default 'en-us'
-         * @example French.Default <!-- bootstrap, grid.base-->
+         * @example French.Bootstrap.Default <!-- bootstrap, grid.base-->
          * <script src="../../dist/modular/grid/js/messages/messages.fr-fr.js"></script>
          * <table id="grid"></table>
          * <script>
@@ -865,14 +865,14 @@ gj.grid.config = {
          *         pager: { limit: 2 }
          *     });
          * </script>
-         * @example French.Custom <!-- bootstrap, grid.base-->
+         * @example French.MaterialDesign.Custom <!-- materialdesign, grid.base-->
          * <script src="../../dist/modular/grid/js/messages/messages.fr-fr.js"></script>
          * <table id="grid"></table>
          * <script>
          *     gj.grid.messages['fr-fr'].DisplayingRecords = 'Mes résultats';
          *     $('#grid').grid({
          *         dataSource: '/DataSources/GetPlayers',
-         *         uiLibrary: 'bootstrap',
+         *         uiLibrary: 'materialdesign',
          *         locale: 'fr-fr',
          *         columns: [ 
          *             { field: 'ID', width: 32 },
