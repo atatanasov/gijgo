@@ -7228,6 +7228,28 @@ gj.grid.plugins.columnReorder = {
 gj.grid.plugins.headerFilter = {
     config: {
         base: {
+            defaultColumnSettings: {
+                /** Indicates if the column is sortable. If set to false the header filter is hidden.
+                 * @alias column.filterable
+                 * @type boolean
+                 * @default true
+                 * @example sample <!-- grid.base -->
+                 * <table id="grid"></table>
+                 * <script>
+                 *     $('#grid').grid({
+                 *         dataSource: '/DataSources/GetPlayers',
+                 *         headerFilter: true,
+                 *         columns: [
+                 *             { field: 'ID', width: 36, filterable: false },
+                 *             { field: 'Name', filterable: true },
+                 *             { field: 'PlaceOfBirth' }
+                 *         ]
+                 *     });
+                 * </script>
+                 */
+                filterable: true
+            },
+
             /** If set to true, add filters for each column
              * @type boolean
              * @default object
@@ -7256,8 +7278,8 @@ gj.grid.plugins.headerFilter = {
              *         headerFilter: true,
              *         columns: [ 
              *             { field: 'ID', width: 36 }, 
-             *             { field: 'Name', sortable: true }, 
-             *             { field: 'PlaceOfBirth', sortable: true } 
+             *             { field: 'Name' }, 
+             *             { field: 'PlaceOfBirth' } 
              *         ],
              *         pager: { limit: 5 }
              *     });
@@ -7303,25 +7325,27 @@ gj.grid.plugins.headerFilter = {
 
             for (i = 0; i < data.columns.length; i++) {
                 $th = $('<th/>');
-                $ctrl = $('<input data-field="' + data.columns[i].field + '" class="gj-width-full" />');
-                if ('onchange' === data.headerFilter.type) {
-                    $ctrl.on('input propertychange', function (e) {
-                        gj.grid.plugins.headerFilter.private.reload($grid, $(this));
-                    });
-                } else {
-                    $ctrl.on('keypress', function (e) {
-                        if (e.which == 13) {
+                if (data.columns[i].filterable) {
+                    $ctrl = $('<input data-field="' + data.columns[i].field + '" class="gj-width-full" />');
+                    if ('onchange' === data.headerFilter.type) {
+                        $ctrl.on('input propertychange', function (e) {
                             gj.grid.plugins.headerFilter.private.reload($grid, $(this));
-                        }
-                    });
-                    $ctrl.on('blur', function (e) {
-                        gj.grid.plugins.headerFilter.private.reload($grid, $(this));
-                    });
+                        });
+                    } else {
+                        $ctrl.on('keypress', function (e) {
+                            if (e.which == 13) {
+                                gj.grid.plugins.headerFilter.private.reload($grid, $(this));
+                            }
+                        });
+                        $ctrl.on('blur', function (e) {
+                            gj.grid.plugins.headerFilter.private.reload($grid, $(this));
+                        });
+                    }
+                    $th.append($ctrl);
                 }
                 if (data.columns[i].hidden) {
                     $th.hide();
                 }
-                $th.append($ctrl);
                 $filterTr.append($th);
             }
 
