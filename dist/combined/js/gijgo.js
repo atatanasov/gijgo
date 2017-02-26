@@ -134,7 +134,7 @@ gj.widget.prototype.createErrorHandler = function () {
     var $widget = this;
     return function (response) {
         if (response && response.statusText && response.statusText !== 'abort') {
-            alert(response);
+            alert(response.statusText);
         }
     };
 };
@@ -5443,6 +5443,7 @@ gj.grid.plugins.inlineEditing.public = {
      * @method
      * @param {string} id - The id of the row that needs to be updated
      * @return grid
+     * @fires rowDataChanged
      * @example Update.Row <!-- grid.base -->
      * <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
      * <table id="grid"></table>
@@ -5484,6 +5485,8 @@ gj.grid.plugins.inlineEditing.public = {
         for (i = 0; i < $cells.length; i++) {
             gj.grid.plugins.inlineEditing.private.displayMode(this, $($cells[i]), columns[i], false);
         }
+
+        gj.grid.plugins.inlineEditing.events.rowDataChanged(this, id, record);
 
         return this;
     },
@@ -5564,6 +5567,31 @@ gj.grid.plugins.inlineEditing.events = {
      */
     cellDataChanged: function ($grid, $cell, column, record, oldValue, newValue) {
         $grid.triggerHandler('cellDataChanged', [$cell, column, record, oldValue, newValue]);
+    },
+
+    /**
+     * Event fires after inline edit of a row in the grid.
+     *
+     * @event rowDataChanged
+     * @param {object} e - event data
+     * @param {object} id - the id of the record
+     * @param {object} record - the data of the row record
+     * @example sample <!-- grid.base, grid.inlineEditing -->
+     * <table id="grid"></table>
+     * <script>
+     *     var grid = $('#grid').grid({
+     *         primaryKey: 'ID',
+     *         dataSource: '/DataSources/GetPlayers',
+     *         inlineEditing: { mode: 'command' },
+     *         columns: [ { field: 'ID', width: 30 }, { field: 'Name', editor: true }, { field: 'PlaceOfBirth', editor: true } ]
+     *     });
+     *     grid.on('rowDataChanged', function (e, id, record) {
+     *         alert('Record with id="' + id + '" is changed to "' + JSON.stringify(record) + '"');
+     *     });
+     * </script>
+     */
+    rowDataChanged: function ($grid, id, record) {
+        $grid.triggerHandler('rowDataChanged', [id, record]);
     }
 };
 
