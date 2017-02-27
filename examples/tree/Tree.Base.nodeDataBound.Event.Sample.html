@@ -11,7 +11,7 @@
  <div id="tree" data-source="/DataSources/GetCountries"></div>
  <script>
      var tree = $('#tree').tree();
-     tree.on('nodeDataBound', function (e, node, id) {
+     tree.on('nodeDataBound', function (e, node, id, record) {
          if ((parseInt(id, 10) % 2) === 0) {
              node.css('background-color', 'red');
          }

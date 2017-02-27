@@ -1,0 +1,22 @@
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Example</title>
+  <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+  <link href="../../dist/modular/checkbox/css/checkbox.css" rel="stylesheet" type="text/css">
+  <link href="../../dist/modular/tree/css/tree.css" rel="stylesheet" type="text/css">
+  <script src="../../dist/modular/checkbox/js/checkbox.js"></script>
+  <script src="../../dist/modular/tree/js/tree.js"></script>
+</head>
+<body>
+ <div id="tree"></div>
+ <script>
+     var tree = $('#tree').tree({
+         checkboxes: true,
+         checkedField: 'checkedFieldName',
+         dataSource: [ { text: 'foo', checkedFieldName: false, children: [ { text: 'bar', checkedFieldName: true }, { text: 'bar2', checkedFieldName: false } ] }, { text: 'foo2'} ]
+     });
+ </script>
+</body>
+</html>

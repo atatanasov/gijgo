@@ -166,18 +166,19 @@ gj.tree.events = {
      * @param {object} e - event data
      * @param {object} node - the node as jquery object
      * @param {string} id - the id of the record
+     * @param {object} record - the data of the node record
      * @example Event.Sample <!-- tree.base -->
      * <div id="tree" data-source="/DataSources/GetCountries"></div>
      * <script>
      *     var tree = $('#tree').tree();
-     *     tree.on('nodeDataBound', function (e, node, id) {
+     *     tree.on('nodeDataBound', function (e, node, id, record) {
      *         if ((parseInt(id, 10) % 2) === 0) {
      *             node.css('background-color', 'red');
      *         }
      *     });
      * </script>
      */
-    nodeDataBound: function ($tree, $node, id) {
-        return $tree.triggerHandler('nodeDataBound', [$node, id]);
+    nodeDataBound: function ($tree, $node, id, record) {
+        return $tree.triggerHandler('nodeDataBound', [$node, id, record]);
     }
 }

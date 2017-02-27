@@ -121,7 +121,7 @@ gj.tree.methods = {
             $img.insertBefore($display);
         }
 
-        gj.tree.events.nodeDataBound($tree, $node, nodeData.id);
+        gj.tree.events.nodeDataBound($tree, $node, nodeData.id, nodeData.data);
     },
 
     expanderClickHandler: function ($tree) {
