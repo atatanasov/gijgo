@@ -180,25 +180,30 @@ gj.tree.plugins.dragAndDrop = {
 	                        $ul = $('<ul />').addClass(data.style.list);
 	                        $targetNode.append($ul);
 	                    }
-	                    $ul.append($sourceNode);
-	                    gj.tree.plugins.dragAndDrop.private.refresh($tree, $sourceNode, $targetNode, $sourceParentNode);
+	                    if (gj.tree.plugins.dragAndDrop.events.nodeDrop($tree, $sourceNode.data('id'), $targetNode.data('id'), $ul.children('li').length + 1)) {
+	                        $ul.append($sourceNode);
+	                        gj.tree.plugins.dragAndDrop.private.refresh($tree, $sourceNode, $targetNode, $sourceParentNode);
+	                    }
 	                    success = true;
 	                }
 	                $targetDisplay.droppable('destroy');
 	            });
 	            if (!success) {
 	                $wrappers.each(function () {
-	                    var $targetWrapper = $(this), $targetNode, $sourceParentNode, middle;
+	                    var $targetWrapper = $(this), $targetNode, $sourceParentNode, prepend, orderNumber;
 	                    if ($targetWrapper.droppable('isOver', mousePosition)) {
 	                        $targetNode = $targetWrapper.closest('li');
 	                        $sourceParentNode = $sourceNode.parent('ul').parent('li');
-	                        middle = $targetWrapper.position().top +($targetWrapper.outerHeight() / 2);
-	                        if (mousePosition.top < middle) {
-	                            $sourceNode.insertBefore($targetNode);
-	                        } else {
-	                            $sourceNode.insertAfter($targetNode);
+	                        prepend = mousePosition.top < ($targetWrapper.position().top + ($targetWrapper.outerHeight() / 2));
+	                        orderNumber = $targetNode.prev('li').length + (prepend ? 1 : 2);
+	                        if (gj.tree.plugins.dragAndDrop.events.nodeDrop($tree, $sourceNode.data('id'), $targetNode.parent('ul').parent('li').data('id'), orderNumber)) {
+	                            if (prepend) {
+	                                $sourceNode.insertBefore($targetNode);
+	                            } else {
+	                                $sourceNode.insertAfter($targetNode);
+	                            }
+	                            gj.tree.plugins.dragAndDrop.private.refresh($tree, $sourceNode, $targetNode, $sourceParentNode);
 	                        }
-	                        gj.tree.plugins.dragAndDrop.private.refresh($tree, $sourceNode, $targetNode, $sourceParentNode);
 	                    }
 	                    $targetWrapper.droppable('destroy');
 	                });
@@ -242,6 +247,36 @@ gj.tree.plugins.dragAndDrop = {
 
 	public: {
 	},
+
+	events: {
+	    /**
+         * Event fires when the data is bound to node.
+         * @event nodeDrop
+         * @param {object} e - event data
+         * @param {string} id - the id of the record
+         * @param {object} parentId - the id of the new parend node
+         * @param {object} orderNumber - the new order number
+         * @example Event.Sample <!-- draggable.base, droppable.base, tree.base -->
+         * <div id="tree" data-source="/DataSources/GetCountries" data-drag-and-drop="true"></div>
+         * <script>
+         *     var tree = $('#tree').tree();
+         *     tree.on('nodeDrop', function (e, id, parentId, orderNumber) {
+         *         var node = tree.getDataById(id),
+         *             parent = parentId ? tree.getDataById(parentId) : {};
+         *         if (parent.text === 'North America') {
+         *             alert('Can\'t add children to North America.');
+         *             return false;
+         *         } else {
+         *             alert(node.text + ' is added to ' + parent.text + ' as ' + orderNumber);
+         *             return true;
+         *         }
+         *     });
+         * </script>
+         */
+	    nodeDrop: function ($tree, id, parentId, orderNumber) {
+	        return $tree.triggerHandler('nodeDrop', [id, parentId, orderNumber]);
+        }
+    },
 
 	configure: function ($tree) {
 		$.extend(true, $tree, gj.tree.plugins.dragAndDrop.public);

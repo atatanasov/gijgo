@@ -233,27 +233,26 @@ gj.draggable.widget = function ($element, arguments) {
     var self = this,
         methods = gj.draggable.methods;
 
-    /** Remove draggable functionality from the element.
-     * @method
-     * @return jquery element
-     * @example sample <!-- draggable.base -->
-     * <style>
-     * .element { border: 1px solid #999; width: 300px; height: 200px; cursor: move; text-align: center; background-color: #DDD; }
-     * </style>
-     * <button onclick="dragEl.destroy()">Destroy</button>
-     * <div id="element" class="element">Drag Me</div>
-     * <script>
-     *     var dragEl = $('#element').draggable();
-     * </script>
-     */
-    self.destroy = function () {
-        return methods.destroy(this);
-    };
-
     if (!$element.destroy) {
-        $element.destroy = self.destroy;
+        /** Remove draggable functionality from the element.
+         * @method
+         * @return jquery element
+         * @example sample <!-- draggable.base -->
+         * <style>
+         * .element { border: 1px solid #999; width: 300px; height: 200px; cursor: move; text-align: center; background-color: #DDD; }
+         * </style>
+         * <button onclick="dragEl.destroy()">Destroy</button>
+         * <div id="element" class="element">Drag Me</div>
+         * <script>
+         *     var dragEl = $('#element').draggable();
+         * </script>
+         */
+        self.destroy = function () {
+            return methods.destroy(this);
+        };
     }
 
+    $.extend($element, self);
     if ('true' !== $element.attr('data-draggable')) {
         methods.init.apply($element, arguments);
     }

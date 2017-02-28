@@ -1,0 +1,29 @@
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Example</title>
+  <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+  <link href="../../dist/modular/tree/css/tree.css" rel="stylesheet" type="text/css">
+  <script src="../../dist/modular/draggable/js/draggable.js"></script>
+  <script src="../../dist/modular/droppable/js/droppable.js"></script>
+  <script src="../../dist/modular/tree/js/tree.js"></script>
+</head>
+<body>
+ <div id="tree" data-source="/DataSources/GetCountries" data-drag-and-drop="true"></div>
+ <script>
+     var tree = $('#tree').tree();
+     tree.on('nodeDrop', function (e, id, parentId, orderNumber) {
+         var node = tree.getDataById(id),
+             parent = parentId ? tree.getDataById(parentId) : {};
+         if (parent.text === 'North America') {
+             alert('Can\'t add children to North America.');
+             return false;
+         } else {
+             alert(node.text + ' is added to ' + parent.text + ' as ' + orderNumber);
+             return true;
+         }
+     });
+ </script>
+</body>
+</html>
