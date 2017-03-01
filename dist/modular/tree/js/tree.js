@@ -1953,7 +1953,7 @@ gj.tree.plugins.dragAndDrop = {
 	                        $ul = $('<ul />').addClass(data.style.list);
 	                        $targetNode.append($ul);
 	                    }
-	                    if (gj.tree.plugins.dragAndDrop.events.nodeDrop($tree, $sourceNode.data('id'), $targetNode.data('id'), $ul.children('li').length + 1)) {
+	                    if (gj.tree.plugins.dragAndDrop.events.nodeDrop($tree, $sourceNode.data('id'), $targetNode.data('id'), $ul.children('li').length + 1) !== false) {
 	                        $ul.append($sourceNode);
 	                        gj.tree.plugins.dragAndDrop.private.refresh($tree, $sourceNode, $targetNode, $sourceParentNode);
 	                    }
@@ -1969,7 +1969,7 @@ gj.tree.plugins.dragAndDrop = {
 	                        $sourceParentNode = $sourceNode.parent('ul').parent('li');
 	                        prepend = mousePosition.top < ($targetWrapper.position().top + ($targetWrapper.outerHeight() / 2));
 	                        orderNumber = $targetNode.prev('li').length + (prepend ? 1 : 2);
-	                        if (gj.tree.plugins.dragAndDrop.events.nodeDrop($tree, $sourceNode.data('id'), $targetNode.parent('ul').parent('li').data('id'), orderNumber)) {
+	                        if (gj.tree.plugins.dragAndDrop.events.nodeDrop($tree, $sourceNode.data('id'), $targetNode.parent('ul').parent('li').data('id'), orderNumber) !== false) {
 	                            if (prepend) {
 	                                $sourceNode.insertBefore($targetNode);
 	                            } else {
