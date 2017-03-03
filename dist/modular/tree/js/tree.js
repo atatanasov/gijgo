@@ -1958,6 +1958,7 @@ gj.tree.plugins.dragAndDrop = {
 	                        gj.tree.plugins.dragAndDrop.private.refresh($tree, $sourceNode, $targetNode, $sourceParentNode);
 	                    }
 	                    success = true;
+	                    return false;
 	                }
 	                $targetDisplay.droppable('destroy');
 	            });
@@ -1977,6 +1978,7 @@ gj.tree.plugins.dragAndDrop = {
 	                            }
 	                            gj.tree.plugins.dragAndDrop.private.refresh($tree, $sourceNode, $targetNode, $sourceParentNode);
 	                        }
+	                        return false;
 	                    }
 	                    $targetWrapper.droppable('destroy');
 	                });
