@@ -87,6 +87,7 @@
     <Content Include="src\grid\js\grid.base.methods.js" />
     <Content Include="src\grid\js\grid.columnReorder.js" />
     <Content Include="src\grid\js\grid.expandCollapseRows.js" />
+    <Content Include="src\grid\js\grid.grouping.js" />
     <Content Include="src\grid\js\grid.headerFilter.js" />
     <Content Include="src\grid\js\grid.inlineEditing.js" />
     <Content Include="src\grid\js\grid.optimisticPersistence.js" />

@@ -352,8 +352,8 @@ gj.grid.methods = {
         data = $grid.data();
         if (!$row || $row.length === 0) {
             mode = 'create';
-            $row = $($grid.find('tbody')[0].insertRow(position));
-            $row.attr('data-role', 'row');
+            $row = $('<tr data-role="row"/>');
+            $grid.children('tbody').append($row);
             $row.on('mouseenter', gj.grid.methods.createAddRowHoverHandler($row, data.style.content.rowHover));
             $row.on('mouseleave', gj.grid.methods.createRemoveRowHoverHandler($row, data.style.content.rowHover));
         } else {

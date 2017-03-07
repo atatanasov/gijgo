@@ -657,6 +657,20 @@ gj.grid.config = {
          *         pager: { limit: 2, sizes: [2, 5, 10, 20] }
          *     });
          * </script>
+         * @example bootstrap4 <!-- bootstrap4, grid.base -->
+         * <table id="grid"></table>
+         * <script>
+         *     $('#grid').grid({
+         *         dataSource: '/DataSources/GetPlayers',
+         *         uiLibrary: 'bootstrap4',
+         *         columns: [
+         *             { field: 'ID' },
+         *             { field: 'Name', sortable: true },
+         *             { field: 'PlaceOfBirth' }
+         *         ],
+         *         pager: { limit: 2, sizes: [2, 5, 10, 20] }
+         *     });
+         * </script>
          */
         uiLibrary: 'base',
 
@@ -912,6 +926,23 @@ gj.grid.config = {
                 sortable: 'gj-cursor-pointer',
                 sortAscIcon: 'glyphicon glyphicon-sort-by-alphabet',
                 sortDescIcon: 'glyphicon glyphicon-sort-by-alphabet-alt'
+            },
+            content: {
+                rowHover: '',
+                rowSelected: 'active'
+            }
+        }
+    },
+
+    bootstrap4: {
+        style: {
+            wrapper: 'gj-grid-wrapper',
+            table: 'gj-grid-table table table-bordered table-hover',
+            header: {
+                cell: 'gj-grid-bootstrap-thead-cell',
+                sortable: 'gj-cursor-pointer',
+                sortAscIcon: undefined,
+                sortDescIcon: undefined
             },
             content: {
                 rowHover: '',
