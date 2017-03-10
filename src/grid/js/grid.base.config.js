@@ -581,11 +581,11 @@ gj.grid.config = {
 
         params: {},
 
-        defaultParams: {
+        paramNames: {
 
             /** The name of the parameter that is going to send the name of the column for sorting.
              * The "sortable" setting for at least one column should be enabled in order this parameter to be in use.
-             * @alias defaultParams.sortBy
+             * @alias paramNames.sortBy
              * @type string
              * @default "sortBy"
              */
@@ -593,7 +593,7 @@ gj.grid.config = {
 
             /** The name of the parameter that is going to send the direction for sorting.
              * The "sortable" setting for at least one column should be enabled in order this parameter to be in use.
-             * @alias defaultParams.direction
+             * @alias paramNames.direction
              * @type string
              * @default "direction"
              */

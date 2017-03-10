@@ -167,9 +167,9 @@ gj.grid.methods = {
             var data, params = {};
             if ($grid.count() > 0) {
                 data = $grid.data();
-                params[data.defaultParams.sortBy] = column.field;
+                params[data.paramNames.sortBy] = column.field;
                 column.direction = (column.direction === 'asc' ? 'desc' : 'asc');
-                params[data.defaultParams.direction] = column.direction;
+                params[data.paramNames.direction] = column.direction;
                 $grid.reload(params);
             }
         };
@@ -179,8 +179,8 @@ gj.grid.methods = {
         var $sortIcon,
             data = $grid.data(),
             style = data.style.header,
-            sortBy = data.params[data.defaultParams.sortBy],
-            direction = data.params[data.defaultParams.direction];
+            sortBy = data.params[data.paramNames.sortBy],
+            direction = data.params[data.paramNames.direction];
         
         $grid.find('thead tr th span[data-role="sorticon"]').remove();
         
@@ -318,13 +318,14 @@ gj.grid.methods = {
         if ('checkbox' === data.selectionMethod && 'multiple' === data.selectionType) {
             $grid.find('thead input[data-role="selectAll"]').prop('checked', false);
         }
-        $tbody.find('tr[data-role!="row"]').remove();
+        $tbody.children('tr').not('[data-role="row"]').remove();
         if (0 === recLen) {
             $tbody.empty();
             gj.grid.methods.appendEmptyRow($grid);
         }
 
         $rows = $tbody.children('tr');
+
         rowCount = $rows.length;
 
         for (i = 0; i < rowCount; i++) {
@@ -332,7 +333,7 @@ gj.grid.methods = {
                 $row = $rows.eq(i);
                 gj.grid.methods.renderRow($grid, $row, records[i], i);
             } else {
-                $tbody.find('tr:gt(' + (i - 1) + ')').remove();
+                $tbody.find('tr[data-role="row"]:gt(' + (i - 1) + ')').remove();
                 break;
             }
         }
@@ -770,28 +771,32 @@ gj.grid.methods = {
     filter: function ($grid) {
         var field, column,
             data = $grid.data(),
-            result = data.dataSource.slice();
+            records = data.dataSource.slice();
 
-        if (data.params[data.defaultParams.sortBy]) {
-            column = gj.grid.methods.getColumnInfo($grid, data.params[data.defaultParams.sortBy]);
-            result.sort(column.sortable.sorter ? column.sortable.sorter(column.direction, column) : gj.grid.methods.createDefaultSorter(column.direction, column));
+        if (data.params[data.paramNames.sortBy]) {
+            column = gj.grid.methods.getColumnInfo($grid, data.params[data.paramNames.sortBy]);
+            records.sort(column.sortable.sorter ? column.sortable.sorter(column.direction, column) : gj.grid.methods.createDefaultSorter(column.direction, column.field));
         }
+
         for (field in data.params) {
             if (data.params[field] &&
-                field !== data.defaultParams.sortBy && field !== data.defaultParams.direction &&
-                field !== data.defaultParams.page && field !== data.defaultParams.limit) {
-                result = $.grep(result, function (e) {
+                field !== data.paramNames.sortBy && field !== data.paramNames.direction &&
+                field !== data.paramNames.page && field !== data.paramNames.limit) {
+                records = $.grep(records, function (e) {
                     return e[field].indexOf(data.params[field]) > -1;
                 });
             }
-        }        
-        return result;
+        }
+
+        gj.grid.events.dataFiltered($grid, records);
+
+        return records;
     },
 
-    createDefaultSorter: function (direction, column) {
+    createDefaultSorter: function (direction, field) {
         return function (recordA, recordB) {
-            var a = (recordA[column.field] || '').toString(),
-                b = (recordB[column.field] || '').toString();
+            var a = (recordA[field] || '').toString(),
+                b = (recordB[field] || '').toString();
             return (direction === 'asc') ? a.localeCompare(b) : b.localeCompare(a);
         };
     },

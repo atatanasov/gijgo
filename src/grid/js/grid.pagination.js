@@ -13,10 +13,10 @@ gj.grid.plugins.pagination = {
                 }
             },
 
-            defaultParams: {
+            paramNames: {
                 /** The name of the parameter that is going to send the number of the page.
                  * The pager should be enabled in order this parameter to be in use.
-                 * @alias defaultParams.page
+                 * @alias paramNames.page
                  * @type string
                  * @default "page"
                  */
@@ -24,7 +24,7 @@ gj.grid.plugins.pagination = {
 
                 /** The name of the parameter that is going to send the maximum number of records per page.
                  * The pager should be enabled in order this parameter to be in use.
-                 * @alias defaultParams.limit
+                 * @alias paramNames.limit
                  * @type string
                  * @default "limit"
                  */
@@ -213,11 +213,11 @@ gj.grid.plugins.pagination = {
             data = $grid.data();
 
             if (data.pager) {
-                if (!data.params[data.defaultParams.page]) {
-                    data.params[data.defaultParams.page] = 1;
+                if (!data.params[data.paramNames.page]) {
+                    data.params[data.paramNames.page] = 1;
                 }
-                if (!data.params[data.defaultParams.limit]) {
-                    data.params[data.defaultParams.limit] = data.pager.limit;
+                if (!data.params[data.paramNames.limit]) {
+                    data.params[data.paramNames.limit] = data.pager.limit;
                 }
 
                 gj.grid.plugins.pagination.private.localization(data);
@@ -401,11 +401,11 @@ gj.grid.plugins.pagination = {
                         });
                         $control.change(function () {
                             var newSize = parseInt(this.value, 10);
-                            data.params[data.defaultParams.limit] = newSize;
+                            data.params[data.paramNames.limit] = newSize;
                             gj.grid.plugins.pagination.private.changePage($grid, 1);
                             gj.grid.plugins.pagination.events.pageSizeChange($grid, newSize);
                         });
-                        $control.val(data.params[data.defaultParams.limit]);
+                        $control.val(data.params[data.paramNames.limit]);
                     } else {
                         $control.hide();
                     }
@@ -423,8 +423,8 @@ gj.grid.plugins.pagination = {
             data = $grid.data();
 
             if (data.pager) {
-                page = (0 === totalRecords) ? 0 : data.params[data.defaultParams.page];
-                limit = parseInt(data.params[data.defaultParams.limit], 10);
+                page = (0 === totalRecords) ? 0 : data.params[data.paramNames.page];
+                limit = parseInt(data.params[data.paramNames.limit], 10);
                 lastPage = Math.ceil(totalRecords / limit);
                 firstRecord = (0 === page) ? 0 : (limit * (page - 1)) + 1;
                 lastRecord = (firstRecord + limit) > totalRecords ? totalRecords : (firstRecord + limit) - 1;
@@ -526,7 +526,7 @@ gj.grid.plugins.pagination = {
         changePage: function ($grid, newPage) {
             var data = $grid.data();
             $grid.find('TFOOT [data-role="page-number"]').val(newPage);
-            data.params[data.defaultParams.page] = newPage;
+            data.params[data.paramNames.page] = newPage;
             gj.grid.plugins.pagination.events.pageChanging($grid, newPage);
             $grid.reload();
         },
@@ -541,8 +541,8 @@ gj.grid.plugins.pagination = {
         isLastRecordVisible: function ($grid) {
             var result = true,
                 data = $grid.data(),
-                limit = parseInt(data.params[data.defaultParams.limit], 10),
-                page = parseInt(data.params[data.defaultParams.page], 10),
+                limit = parseInt(data.params[data.paramNames.limit], 10),
+                page = parseInt(data.params[data.paramNames.page], 10),
                 count = $grid.count();
             if (limit && page) {
                 result = ((page - 1) * limit) + count === data.totalRecords;
@@ -554,9 +554,9 @@ gj.grid.plugins.pagination = {
     public: {
         getAll: function (includeAllRecords) {
             var limit, page, start, data = this.data();
-            if (!includeAllRecords && $.isArray(data.dataSource) && data.params[data.defaultParams.limit] && data.params[data.defaultParams.page]) {
-                limit = parseInt(data.params[data.defaultParams.limit], 10);
-                page = parseInt(data.params[data.defaultParams.page], 10);
+            if (!includeAllRecords && $.isArray(data.dataSource) && data.params[data.paramNames.limit] && data.params[data.paramNames.page]) {
+                limit = parseInt(data.params[data.paramNames.limit], 10);
+                page = parseInt(data.params[data.paramNames.page], 10);
                 start = (page - 1) * limit;
                 return data.records.slice(start, start + limit);
             } else {

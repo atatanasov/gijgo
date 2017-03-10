@@ -292,5 +292,38 @@ gj.grid.events = {
      */
     initialized: function ($grid) {
         $grid.triggerHandler('initialized');
+    },
+
+    /**
+     * Event fires when the grid data is filtered.
+     *
+     * @additionalinfo This event is firing only when you use local dataSource, because the filtering with remote dataSource needs to be done on the server side.
+     * @event dataFiltered
+     * @param {object} e - event data
+     * @param {object} records - The records after the filtering.
+     * @example sample <!-- grid.base -->
+     * <table id="grid"></table>
+     * <script>
+     *     var grid, data = [
+     *         { 'ID': 1, 'Name': 'Hristo Stoichkov', 'PlaceOfBirth': 'Plovdiv, Bulgaria', Nationality: 'Bulgaria' },
+     *         { 'ID': 2, 'Name': 'Ronaldo Luís Nazário de Lima', 'PlaceOfBirth': 'Rio de Janeiro, Brazil', Nationality: 'Brazil' },
+     *         { 'ID': 3, 'Name': 'David Platt', 'PlaceOfBirth': 'Chadderton, Lancashire, England', Nationality: 'England' },
+     *         { 'ID': 4, 'Name': 'Manuel Neuer', 'PlaceOfBirth': 'Gelsenkirchen, West Germany', Nationality: 'Germany' },
+     *         { 'ID': 5, 'Name': 'James Rodríguez', 'PlaceOfBirth': 'Cúcuta, Colombia', Nationality: 'Colombia' },
+     *         { 'ID': 6, 'Name': 'Dimitar Berbatov', 'PlaceOfBirth': 'Blagoevgrad, Bulgaria', Nationality: 'Bulgaria' }
+     *     ];
+     *     grid = $('#grid').grid({
+     *         dataSource: data,
+     *         columns: [ { field: 'ID', width: 34 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
+     *         dataFiltered: function (e, records) {
+     *             records.reverse(); // reverse the data
+     *             records.splice(3, 2); // remove 2 elements after the 3rd record
+     *         }
+     *     });
+     *     grid.on();
+     * </script>
+     */
+    dataFiltered: function ($grid, records) {
+        $grid.triggerHandler('dataFiltered', [records]);
     }
 };

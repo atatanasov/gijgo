@@ -1,5 +1,5 @@
 /*
- * Gijgo JavaScript Library v1.2.0
+ * Gijgo JavaScript Library v1.3.0
  * http://gijgo.com/
  *
  * Copyright 2014, 2017 gijgo.com
@@ -140,14 +140,14 @@ gj.widget.prototype.createErrorHandler = function () {
 };
 
 gj.widget.prototype.reload = function (params) {
-    var ajaxOptions, result, data = this.data();
+    var ajaxOptions, result, data = this.data(), type = this.data('type');
     if (data.dataSource === undefined) {
-        gj[this.data('type')].methods.useHtmlDataSource(this, data);
+        gj[type].methods.useHtmlDataSource(this, data);
     }
     $.extend(data.params, params);
     if ($.isArray(data.dataSource)) {
-        result = gj[this.data('type')].methods.filter(this);
-        gj[this.data('type')].methods.render(this, result);
+        result = gj[type].methods.filter(this);
+        gj[type].methods.render(this, result);
     } else if (typeof(data.dataSource) === 'string') {
         ajaxOptions = { url: data.dataSource, data: data.params };
         if (this.xhr) {
@@ -2448,11 +2448,11 @@ gj.grid.config = {
 
         params: {},
 
-        defaultParams: {
+        paramNames: {
 
             /** The name of the parameter that is going to send the name of the column for sorting.
              * The "sortable" setting for at least one column should be enabled in order this parameter to be in use.
-             * @alias defaultParams.sortBy
+             * @alias paramNames.sortBy
              * @type string
              * @default "sortBy"
              */
@@ -2460,7 +2460,7 @@ gj.grid.config = {
 
             /** The name of the parameter that is going to send the direction for sorting.
              * The "sortable" setting for at least one column should be enabled in order this parameter to be in use.
-             * @alias defaultParams.direction
+             * @alias paramNames.direction
              * @type string
              * @default "direction"
              */
@@ -3131,6 +3131,39 @@ gj.grid.events = {
      */
     initialized: function ($grid) {
         $grid.triggerHandler('initialized');
+    },
+
+    /**
+     * Event fires when the grid data is filtered.
+     *
+     * @additionalinfo This event is firing only when you use local dataSource, because the filtering with remote dataSource needs to be done on the server side.
+     * @event dataFiltered
+     * @param {object} e - event data
+     * @param {object} records - The records after the filtering.
+     * @example sample <!-- grid.base -->
+     * <table id="grid"></table>
+     * <script>
+     *     var grid, data = [
+     *         { 'ID': 1, 'Name': 'Hristo Stoichkov', 'PlaceOfBirth': 'Plovdiv, Bulgaria', Nationality: 'Bulgaria' },
+     *         { 'ID': 2, 'Name': 'Ronaldo Luís Nazário de Lima', 'PlaceOfBirth': 'Rio de Janeiro, Brazil', Nationality: 'Brazil' },
+     *         { 'ID': 3, 'Name': 'David Platt', 'PlaceOfBirth': 'Chadderton, Lancashire, England', Nationality: 'England' },
+     *         { 'ID': 4, 'Name': 'Manuel Neuer', 'PlaceOfBirth': 'Gelsenkirchen, West Germany', Nationality: 'Germany' },
+     *         { 'ID': 5, 'Name': 'James Rodríguez', 'PlaceOfBirth': 'Cúcuta, Colombia', Nationality: 'Colombia' },
+     *         { 'ID': 6, 'Name': 'Dimitar Berbatov', 'PlaceOfBirth': 'Blagoevgrad, Bulgaria', Nationality: 'Bulgaria' }
+     *     ];
+     *     grid = $('#grid').grid({
+     *         dataSource: data,
+     *         columns: [ { field: 'ID', width: 34 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
+     *         dataFiltered: function (e, records) {
+     *             records.reverse(); // reverse the data
+     *             records.splice(3, 2); // remove 2 elements after the 3rd record
+     *         }
+     *     });
+     *     grid.on();
+     * </script>
+     */
+    dataFiltered: function ($grid, records) {
+        $grid.triggerHandler('dataFiltered', [records]);
     }
 };
 
@@ -3303,9 +3336,9 @@ gj.grid.methods = {
             var data, params = {};
             if ($grid.count() > 0) {
                 data = $grid.data();
-                params[data.defaultParams.sortBy] = column.field;
+                params[data.paramNames.sortBy] = column.field;
                 column.direction = (column.direction === 'asc' ? 'desc' : 'asc');
-                params[data.defaultParams.direction] = column.direction;
+                params[data.paramNames.direction] = column.direction;
                 $grid.reload(params);
             }
         };
@@ -3315,8 +3348,8 @@ gj.grid.methods = {
         var $sortIcon,
             data = $grid.data(),
             style = data.style.header,
-            sortBy = data.params[data.defaultParams.sortBy],
-            direction = data.params[data.defaultParams.direction];
+            sortBy = data.params[data.paramNames.sortBy],
+            direction = data.params[data.paramNames.direction];
         
         $grid.find('thead tr th span[data-role="sorticon"]').remove();
         
@@ -3454,13 +3487,14 @@ gj.grid.methods = {
         if ('checkbox' === data.selectionMethod && 'multiple' === data.selectionType) {
             $grid.find('thead input[data-role="selectAll"]').prop('checked', false);
         }
-        $tbody.find('tr[data-role!="row"]').remove();
+        $tbody.children('tr').not('[data-role="row"]').remove();
         if (0 === recLen) {
             $tbody.empty();
             gj.grid.methods.appendEmptyRow($grid);
         }
 
         $rows = $tbody.children('tr');
+
         rowCount = $rows.length;
 
         for (i = 0; i < rowCount; i++) {
@@ -3468,7 +3502,7 @@ gj.grid.methods = {
                 $row = $rows.eq(i);
                 gj.grid.methods.renderRow($grid, $row, records[i], i);
             } else {
-                $tbody.find('tr:gt(' + (i - 1) + ')').remove();
+                $tbody.find('tr[data-role="row"]:gt(' + (i - 1) + ')').remove();
                 break;
             }
         }
@@ -3906,28 +3940,32 @@ gj.grid.methods = {
     filter: function ($grid) {
         var field, column,
             data = $grid.data(),
-            result = data.dataSource.slice();
+            records = data.dataSource.slice();
 
-        if (data.params[data.defaultParams.sortBy]) {
-            column = gj.grid.methods.getColumnInfo($grid, data.params[data.defaultParams.sortBy]);
-            result.sort(column.sortable.sorter ? column.sortable.sorter(column.direction, column) : gj.grid.methods.createDefaultSorter(column.direction, column));
+        if (data.params[data.paramNames.sortBy]) {
+            column = gj.grid.methods.getColumnInfo($grid, data.params[data.paramNames.sortBy]);
+            records.sort(column.sortable.sorter ? column.sortable.sorter(column.direction, column) : gj.grid.methods.createDefaultSorter(column.direction, column.field));
         }
+
         for (field in data.params) {
             if (data.params[field] &&
-                field !== data.defaultParams.sortBy && field !== data.defaultParams.direction &&
-                field !== data.defaultParams.page && field !== data.defaultParams.limit) {
-                result = $.grep(result, function (e) {
+                field !== data.paramNames.sortBy && field !== data.paramNames.direction &&
+                field !== data.paramNames.page && field !== data.paramNames.limit) {
+                records = $.grep(records, function (e) {
                     return e[field].indexOf(data.params[field]) > -1;
                 });
             }
-        }        
-        return result;
+        }
+
+        gj.grid.events.dataFiltered($grid, records);
+
+        return records;
     },
 
-    createDefaultSorter: function (direction, column) {
+    createDefaultSorter: function (direction, field) {
         return function (recordA, recordB) {
-            var a = (recordA[column.field] || '').toString(),
-                b = (recordB[column.field] || '').toString();
+            var a = (recordA[field] || '').toString(),
+                b = (recordB[field] || '').toString();
             return (direction === 'asc') ? a.localeCompare(b) : b.localeCompare(a);
         };
     },
@@ -4763,7 +4801,9 @@ gj.grid.plugins.expandCollapseRows = {
                 $detailsRow = $('<tr data-role="details"></tr>'),
                 $detailsCell = $('<td colspan="' + gj.grid.methods.countVisibleColumns($grid) + '"></td>'),
                 data = $grid.data(),
-                id = gj.grid.methods.getId($contentRow, data.primaryKey, $contentRow.data('position'));
+                position = $contentRow.data('position'),
+                record = $grid.get(position),
+                id = gj.grid.methods.getId(record, data.primaryKey, record);
 
             $detailsRow.append($detailsCell.append($contentRow.data('details')));
             $detailsRow.insertAfter($contentRow);
@@ -5772,10 +5812,10 @@ gj.grid.plugins.pagination = {
                 }
             },
 
-            defaultParams: {
+            paramNames: {
                 /** The name of the parameter that is going to send the number of the page.
                  * The pager should be enabled in order this parameter to be in use.
-                 * @alias defaultParams.page
+                 * @alias paramNames.page
                  * @type string
                  * @default "page"
                  */
@@ -5783,7 +5823,7 @@ gj.grid.plugins.pagination = {
 
                 /** The name of the parameter that is going to send the maximum number of records per page.
                  * The pager should be enabled in order this parameter to be in use.
-                 * @alias defaultParams.limit
+                 * @alias paramNames.limit
                  * @type string
                  * @default "limit"
                  */
@@ -5972,11 +6012,11 @@ gj.grid.plugins.pagination = {
             data = $grid.data();
 
             if (data.pager) {
-                if (!data.params[data.defaultParams.page]) {
-                    data.params[data.defaultParams.page] = 1;
+                if (!data.params[data.paramNames.page]) {
+                    data.params[data.paramNames.page] = 1;
                 }
-                if (!data.params[data.defaultParams.limit]) {
-                    data.params[data.defaultParams.limit] = data.pager.limit;
+                if (!data.params[data.paramNames.limit]) {
+                    data.params[data.paramNames.limit] = data.pager.limit;
                 }
 
                 gj.grid.plugins.pagination.private.localization(data);
@@ -6160,11 +6200,11 @@ gj.grid.plugins.pagination = {
                         });
                         $control.change(function () {
                             var newSize = parseInt(this.value, 10);
-                            data.params[data.defaultParams.limit] = newSize;
+                            data.params[data.paramNames.limit] = newSize;
                             gj.grid.plugins.pagination.private.changePage($grid, 1);
                             gj.grid.plugins.pagination.events.pageSizeChange($grid, newSize);
                         });
-                        $control.val(data.params[data.defaultParams.limit]);
+                        $control.val(data.params[data.paramNames.limit]);
                     } else {
                         $control.hide();
                     }
@@ -6182,8 +6222,8 @@ gj.grid.plugins.pagination = {
             data = $grid.data();
 
             if (data.pager) {
-                page = (0 === totalRecords) ? 0 : data.params[data.defaultParams.page];
-                limit = parseInt(data.params[data.defaultParams.limit], 10);
+                page = (0 === totalRecords) ? 0 : data.params[data.paramNames.page];
+                limit = parseInt(data.params[data.paramNames.limit], 10);
                 lastPage = Math.ceil(totalRecords / limit);
                 firstRecord = (0 === page) ? 0 : (limit * (page - 1)) + 1;
                 lastRecord = (firstRecord + limit) > totalRecords ? totalRecords : (firstRecord + limit) - 1;
@@ -6285,7 +6325,7 @@ gj.grid.plugins.pagination = {
         changePage: function ($grid, newPage) {
             var data = $grid.data();
             $grid.find('TFOOT [data-role="page-number"]').val(newPage);
-            data.params[data.defaultParams.page] = newPage;
+            data.params[data.paramNames.page] = newPage;
             gj.grid.plugins.pagination.events.pageChanging($grid, newPage);
             $grid.reload();
         },
@@ -6300,8 +6340,8 @@ gj.grid.plugins.pagination = {
         isLastRecordVisible: function ($grid) {
             var result = true,
                 data = $grid.data(),
-                limit = parseInt(data.params[data.defaultParams.limit], 10),
-                page = parseInt(data.params[data.defaultParams.page], 10),
+                limit = parseInt(data.params[data.paramNames.limit], 10),
+                page = parseInt(data.params[data.paramNames.page], 10),
                 count = $grid.count();
             if (limit && page) {
                 result = ((page - 1) * limit) + count === data.totalRecords;
@@ -6313,9 +6353,9 @@ gj.grid.plugins.pagination = {
     public: {
         getAll: function (includeAllRecords) {
             var limit, page, start, data = this.data();
-            if (!includeAllRecords && $.isArray(data.dataSource) && data.params[data.defaultParams.limit] && data.params[data.defaultParams.page]) {
-                limit = parseInt(data.params[data.defaultParams.limit], 10);
-                page = parseInt(data.params[data.defaultParams.page], 10);
+            if (!includeAllRecords && $.isArray(data.dataSource) && data.params[data.paramNames.limit] && data.params[data.paramNames.page]) {
+                limit = parseInt(data.params[data.paramNames.limit], 10);
+                page = parseInt(data.params[data.paramNames.page], 10);
                 start = (page - 1) * limit;
                 return data.records.slice(start, start + limit);
             } else {
@@ -7513,6 +7553,16 @@ gj.grid.plugins.grouping = {
                   *         pager: { limit: 5 }
                   *     });
                   * </script>
+                  * @example Remote.Data <!-- grid.base, grid.grouping -->
+                  * <table id="grid"></table>
+                  * <script>
+                  *     $('#grid').grid({
+                  *         dataSource: '/DataSources/GetPlayers',
+                  *         grouping: { groupBy: 'Nationality' },
+                  *         columns: [ { field: 'ID', width: 30 }, { field: 'Name', sortable: true }, { field: 'PlaceOfBirth' } ],
+                  *         pager: { limit: 5 }
+                  *     });
+                  * </script>
                   */
                 groupBy: undefined,
 
@@ -7523,26 +7573,36 @@ gj.grid.plugins.grouping = {
 
     private: {
         init: function ($grid) {
-            var data = $grid.data();
+            var previousValue, data = $grid.data();
             if (data.grouping && data.grouping.groupBy) {
-                data.previousValue = undefined;
+                previousValue = undefined;
                 $grid.on('rowDataBound', function (e, $row, id, record) {
-                    if (data.previousValue !== record[data.grouping.groupBy]) {
+                    if (previousValue !== record[data.grouping.groupBy]) {
                         var colspan = gj.grid.methods.countVisibleColumns($grid),
-                            $groupRow = $('<tr data-role="group"><td colspan="' + colspan + '">' + record[data.grouping.groupBy] + '</td></tr>');
+                            $groupRow = $('<tr data-role="group" />');
+                        $groupRow.append('<td colspan="' + colspan + '"><div data-role="display">' + data.grouping.groupBy + ': ' + record[data.grouping.groupBy] + '</div></td>');
                         $groupRow.insertBefore($row);
+                        previousValue = record[data.grouping.groupBy];
                     }
                 });
             }
+        },
+
+        grouping: function ($grid, records) {
+            var data = $grid.data();
+            if (data.grouping && data.grouping.groupBy) {
+                records.sort(gj.grid.methods.createDefaultSorter(data.grouping.direction, data.grouping.groupBy));
+            }
         }
     },
-
-    public: {},
 
     configure: function ($grid) {
         $.extend(true, $grid, gj.grid.plugins.grouping.public);
         $grid.on('initialized', function () {
             gj.grid.plugins.grouping.private.init($grid);
+        });
+        $grid.on('dataFiltered', function (e, records) {
+            gj.grid.plugins.grouping.private.grouping($grid, records);
         });
     }
 };

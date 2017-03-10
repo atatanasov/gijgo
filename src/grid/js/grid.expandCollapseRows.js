@@ -102,7 +102,9 @@ gj.grid.plugins.expandCollapseRows = {
                 $detailsRow = $('<tr data-role="details"></tr>'),
                 $detailsCell = $('<td colspan="' + gj.grid.methods.countVisibleColumns($grid) + '"></td>'),
                 data = $grid.data(),
-                id = gj.grid.methods.getId($contentRow, data.primaryKey, $contentRow.data('position'));
+                position = $contentRow.data('position'),
+                record = $grid.get(position),
+                id = gj.grid.methods.getId(record, data.primaryKey, record);
 
             $detailsRow.append($detailsCell.append($contentRow.data('details')));
             $detailsRow.insertAfter($contentRow);

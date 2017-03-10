@@ -28,6 +28,16 @@ gj.grid.plugins.grouping = {
                   *         pager: { limit: 5 }
                   *     });
                   * </script>
+                  * @example Remote.Data <!-- grid.base, grid.grouping -->
+                  * <table id="grid"></table>
+                  * <script>
+                  *     $('#grid').grid({
+                  *         dataSource: '/DataSources/GetPlayers',
+                  *         grouping: { groupBy: 'Nationality' },
+                  *         columns: [ { field: 'ID', width: 30 }, { field: 'Name', sortable: true }, { field: 'PlaceOfBirth' } ],
+                  *         pager: { limit: 5 }
+                  *     });
+                  * </script>
                   */
                 groupBy: undefined,
 
@@ -38,26 +48,36 @@ gj.grid.plugins.grouping = {
 
     private: {
         init: function ($grid) {
-            var data = $grid.data();
+            var previousValue, data = $grid.data();
             if (data.grouping && data.grouping.groupBy) {
-                data.previousValue = undefined;
+                previousValue = undefined;
                 $grid.on('rowDataBound', function (e, $row, id, record) {
-                    if (data.previousValue !== record[data.grouping.groupBy]) {
+                    if (previousValue !== record[data.grouping.groupBy]) {
                         var colspan = gj.grid.methods.countVisibleColumns($grid),
-                            $groupRow = $('<tr data-role="group"><td colspan="' + colspan + '">' + record[data.grouping.groupBy] + '</td></tr>');
+                            $groupRow = $('<tr data-role="group" />');
+                        $groupRow.append('<td colspan="' + colspan + '"><div data-role="display">' + data.grouping.groupBy + ': ' + record[data.grouping.groupBy] + '</div></td>');
                         $groupRow.insertBefore($row);
+                        previousValue = record[data.grouping.groupBy];
                     }
                 });
             }
+        },
+
+        grouping: function ($grid, records) {
+            var data = $grid.data();
+            if (data.grouping && data.grouping.groupBy) {
+                records.sort(gj.grid.methods.createDefaultSorter(data.grouping.direction, data.grouping.groupBy));
+            }
         }
     },
-
-    public: {},
 
     configure: function ($grid) {
         $.extend(true, $grid, gj.grid.plugins.grouping.public);
         $grid.on('initialized', function () {
             gj.grid.plugins.grouping.private.init($grid);
+        });
+        $grid.on('dataFiltered', function (e, records) {
+            gj.grid.plugins.grouping.private.grouping($grid, records);
         });
     }
 };

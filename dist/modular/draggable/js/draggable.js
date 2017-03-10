@@ -1,5 +1,5 @@
 /*
- * Gijgo Draggable v1.2.0
+ * Gijgo Draggable v1.3.0
  * http://gijgo.com/draggable
  *
  * Copyright 2014, 2017 gijgo.com
@@ -140,14 +140,14 @@ gj.widget.prototype.createErrorHandler = function () {
 };
 
 gj.widget.prototype.reload = function (params) {
-    var ajaxOptions, result, data = this.data();
+    var ajaxOptions, result, data = this.data(), type = this.data('type');
     if (data.dataSource === undefined) {
-        gj[this.data('type')].methods.useHtmlDataSource(this, data);
+        gj[type].methods.useHtmlDataSource(this, data);
     }
     $.extend(data.params, params);
     if ($.isArray(data.dataSource)) {
-        result = gj[this.data('type')].methods.filter(this);
-        gj[this.data('type')].methods.render(this, result);
+        result = gj[type].methods.filter(this);
+        gj[type].methods.render(this, result);
     } else if (typeof(data.dataSource) === 'string') {
         ajaxOptions = { url: data.dataSource, data: data.params };
         if (this.xhr) {
