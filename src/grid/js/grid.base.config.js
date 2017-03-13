@@ -688,7 +688,9 @@ gj.grid.config = {
             content: {
                 rowHover: undefined,
                 rowSelected: 'gj-grid-base-active'
-            }
+            },
+            expandIcon: undefined,
+            collapseIcon: undefined
         },
 
         /** The type of the row selection.<br/>
@@ -913,7 +915,9 @@ gj.grid.config = {
             content: {
                 rowHover: 'ui-state-hover',
                 rowSelected: 'ui-state-active'
-            }
+            },
+            expandIcon: 'ui-icon ui-icon-plus',
+            collapseIcon: 'ui-icon ui-icon-minus'
         }
     },
 
@@ -930,7 +934,9 @@ gj.grid.config = {
             content: {
                 rowHover: '',
                 rowSelected: 'active'
-            }
+            },
+            expandIcon: 'glyphicon glyphicon-plus',
+            collapseIcon: 'glyphicon glyphicon-minus'
         }
     },
 
@@ -965,7 +971,9 @@ gj.grid.config = {
             content: {
                 rowHover: '',
                 rowSelected: 'is-selected'
-            }
+            },
+            expandIcon: 'material-icons gj-mdl-icon-plus',
+            collapseIcon: 'material-icons gj-mdl-icon-minus'
         }
     }
 };

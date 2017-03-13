@@ -89,6 +89,12 @@ gj.tree.methods = {
         $wrapper.append($display);
         $node.append($wrapper);
 
+        if (position) {
+            $parent.find('li:eq(' + (position - 1) + ')').before($node);
+        } else {
+            $parent.append($node);
+        }
+
         if (nodeData.children && nodeData.children.length) {
             data.style.expandIcon ? $expander.addClass(data.style.expandIcon) : $expander.text('+');
             $newParent = $('<ul />').addClass(data.style.list).addClass('gj-hidden');
@@ -99,12 +105,6 @@ gj.tree.methods = {
             }
         } else {
             data.style.leafIcon ? $expander.addClass(data.style.leafIcon) : $expander.html('&nbsp;');
-        }
-
-        if (position) {
-            $parent.find('li:eq(' + (position - 1) + ')').before($node);
-        } else {
-            $parent.append($node);
         }
 
         if (data.imageCssClassField && nodeData.data[data.imageCssClassField]) {

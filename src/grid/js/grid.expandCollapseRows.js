@@ -67,32 +67,14 @@ gj.grid.plugins.expandCollapseRows = {
              */
             keepExpandedRows: true,
 
-            defaultExpandCollapseColumnWidth: 24,
+            defaultExpandCollapseColumnWidth: 24
 
-            style: {
-                expandIcon: '',
-                collapseIcon: ''
-            }
-        },
-        jqueryui: {
-            style: {
-                expandIcon: 'ui-icon ui-icon-plus',
-                collapseIcon: 'ui-icon ui-icon-minus'
-            }
         },
         bootstrap: {
-            defaultExpandCollapseColumnWidth: 34,
-            style: {
-                expandIcon: 'glyphicon glyphicon-plus',
-                collapseIcon: 'glyphicon glyphicon-minus'
-            }
+            defaultExpandCollapseColumnWidth: 34
         },
         materialdesign: {
-            defaultExpandCollapseColumnWidth: 70,
-            style: {
-                expandIcon: 'material-icons gj-mdl-icon-plus',
-                collapseIcon: 'material-icons gj-mdl-icon-minus'
-            }
+            defaultExpandCollapseColumnWidth: 70
         }
     },
 

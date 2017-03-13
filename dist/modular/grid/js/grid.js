@@ -936,7 +936,9 @@ gj.grid.config = {
             content: {
                 rowHover: undefined,
                 rowSelected: 'gj-grid-base-active'
-            }
+            },
+            expandIcon: undefined,
+            collapseIcon: undefined
         },
 
         /** The type of the row selection.<br/>
@@ -1161,7 +1163,9 @@ gj.grid.config = {
             content: {
                 rowHover: 'ui-state-hover',
                 rowSelected: 'ui-state-active'
-            }
+            },
+            expandIcon: 'ui-icon ui-icon-plus',
+            collapseIcon: 'ui-icon ui-icon-minus'
         }
     },
 
@@ -1178,7 +1182,9 @@ gj.grid.config = {
             content: {
                 rowHover: '',
                 rowSelected: 'active'
-            }
+            },
+            expandIcon: 'glyphicon glyphicon-plus',
+            collapseIcon: 'glyphicon glyphicon-minus'
         }
     },
 
@@ -1213,7 +1219,9 @@ gj.grid.config = {
             content: {
                 rowHover: '',
                 rowSelected: 'is-selected'
-            }
+            },
+            expandIcon: 'material-icons gj-mdl-icon-plus',
+            collapseIcon: 'material-icons gj-mdl-icon-minus'
         }
     }
 };
@@ -3147,32 +3155,14 @@ gj.grid.plugins.expandCollapseRows = {
              */
             keepExpandedRows: true,
 
-            defaultExpandCollapseColumnWidth: 24,
+            defaultExpandCollapseColumnWidth: 24
 
-            style: {
-                expandIcon: '',
-                collapseIcon: ''
-            }
-        },
-        jqueryui: {
-            style: {
-                expandIcon: 'ui-icon ui-icon-plus',
-                collapseIcon: 'ui-icon ui-icon-minus'
-            }
         },
         bootstrap: {
-            defaultExpandCollapseColumnWidth: 34,
-            style: {
-                expandIcon: 'glyphicon glyphicon-plus',
-                collapseIcon: 'glyphicon glyphicon-minus'
-            }
+            defaultExpandCollapseColumnWidth: 34
         },
         materialdesign: {
-            defaultExpandCollapseColumnWidth: 70,
-            style: {
-                expandIcon: 'material-icons gj-mdl-icon-plus',
-                collapseIcon: 'material-icons gj-mdl-icon-minus'
-            }
+            defaultExpandCollapseColumnWidth: 70
         }
     },
 
@@ -5911,6 +5901,24 @@ gj.grid.plugins.headerFilter = {
 gj.grid.plugins.grouping = {
     config: {
         base: {
+            paramNames: {
+                /** The name of the parameter that is going to send the name of the column for grouping.
+                 * The grouping should be enabled in order this parameter to be in use.
+                 * @alias paramNames.groupBy
+                 * @type string
+                 * @default "groupBy"
+                 */
+                groupBy: 'groupBy',
+
+                /** The name of the parameter that is going to send the direction for grouping.
+                 * The grouping should be enabled in order this parameter to be in use.
+                 * @alias paramNames.groupByDirection
+                 * @type string
+                 * @default "groupByDirection"
+                 */
+                groupByDirection: 'groupByDirection'
+            },
+
             grouping: {
                 /** The name of the field that needs to be in use for grouping.
                   * @type string
@@ -5966,6 +5974,9 @@ gj.grid.plugins.grouping = {
                         previousValue = record[data.grouping.groupBy];
                     }
                 });
+
+                data.params[data.paramNames.groupBy] = data.grouping.groupBy;
+                data.params[data.paramNames.groupByDirection] = data.grouping.direction;
             }
         },
 

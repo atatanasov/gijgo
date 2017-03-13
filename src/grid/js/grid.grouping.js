@@ -5,6 +5,24 @@
 gj.grid.plugins.grouping = {
     config: {
         base: {
+            paramNames: {
+                /** The name of the parameter that is going to send the name of the column for grouping.
+                 * The grouping should be enabled in order this parameter to be in use.
+                 * @alias paramNames.groupBy
+                 * @type string
+                 * @default "groupBy"
+                 */
+                groupBy: 'groupBy',
+
+                /** The name of the parameter that is going to send the direction for grouping.
+                 * The grouping should be enabled in order this parameter to be in use.
+                 * @alias paramNames.groupByDirection
+                 * @type string
+                 * @default "groupByDirection"
+                 */
+                groupByDirection: 'groupByDirection'
+            },
+
             grouping: {
                 /** The name of the field that needs to be in use for grouping.
                   * @type string
@@ -60,6 +78,9 @@ gj.grid.plugins.grouping = {
                         previousValue = record[data.grouping.groupBy];
                     }
                 });
+
+                data.params[data.paramNames.groupBy] = data.grouping.groupBy;
+                data.params[data.paramNames.groupByDirection] = data.grouping.direction;
             }
         },
 

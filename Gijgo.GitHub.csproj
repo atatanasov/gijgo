@@ -74,6 +74,7 @@
     <Content Include="src\dialog\js\messages\messages.de-de.js" />
     <Content Include="src\dialog\js\messages\messages.en-us.js" />
     <Content Include="src\dialog\js\messages\messages.fr-fr.js" />
+    <Content Include="src\dialog\js\messages\messages.pt-br.js" />
     <Content Include="src\draggable\js\draggable.base.js" />
     <Content Include="src\draggable\js\header.txt" />
     <Content Include="src\droppable\js\droppable.base.js" />
@@ -103,6 +104,7 @@
     <Content Include="src\grid\js\grid.base.widget.js" />
     <Content Include="src\grid\js\header.txt" />
     <Content Include="src\grid\js\messages\messages.de-de.js" />
+    <Content Include="src\grid\js\messages\messages.pt-br.js" />
     <Content Include="src\header.txt" />
     <Content Include="src\grid\js\messages\messages.bg-bg.js" />
     <Content Include="src\grid\js\messages\messages.en-us.js" />

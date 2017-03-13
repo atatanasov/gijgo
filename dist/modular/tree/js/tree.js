@@ -375,7 +375,7 @@ gj.tree.config = {
         /** Image css class field name.
          * @type string
          * @default 'imageCssClass'
-         * @example Bootstrap <!-- bootstrap, tree.base -->
+         * @example Default.Name <!-- bootstrap, tree.base -->
          * <div id="tree"></div>
          * <script>
          *     var tree = $('#tree').tree({
@@ -383,22 +383,13 @@ gj.tree.config = {
          *         dataSource: [ { text: 'folder', imageCssClass: 'glyphicon glyphicon-folder-close', children: [ { text: 'file', imageCssClass: 'glyphicon glyphicon-file' } ] } ]
          *     });
          * </script>
-         * @example Font.Awesome <!-- tree.base  -->
+         * @example Custom.Name <!-- tree.base  -->
          * <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
          * <div id="tree"></div>
          * <script>
          *     var tree = $('#tree').tree({
-         *         imageCssClass: 'faCssClass',
+         *         imageCssClassField: 'faCssClass',
          *         dataSource: [ { text: 'folder', faCssClass: 'fa fa-folder', children: [ { text: 'file', faCssClass: 'fa fa-file' } ] } ]
-         *     });
-         * </script>
-         * @example Material.Design <!-- materialdesign, tree.base -->
-         * <div id="tree"></div>
-         * <script>
-         *     var tree = $('#tree').tree({
-         *         imageCssClass: 'icon',
-         *         uiLibrary: 'materialdesign',
-         *         dataSource: [ { text: 'folder', icon: '<i class="material-icons">folder</i>', children: [ { text: 'file', icon: '<i class="material-icons">insert_drive_file</i>' } ] } ]
          *     });
          * </script>
          */
@@ -421,7 +412,7 @@ gj.tree.config = {
          *     var tree = $('#tree').tree({
          *         imageUrlField: 'icon',
          *         uiLibrary: 'materialdesign',
-         *         dataSource: [ { text: 'folder', icon: '<i class="material-icons">folder</i>', children: [ { text: 'file', icon: '<i class="material-icons">insert_drive_file</i>' } ] } ]
+         *         dataSource: [ { text: 'World', icon: 'http://gijgo.com/content/icons/world-icon.png', children: [ { text: 'USA', icon: 'http://gijgo.com/content/icons/usa-oval-icon.png' } ] } ]
          *     });
          * </script>
          */
@@ -826,6 +817,12 @@ gj.tree.methods = {
         $wrapper.append($display);
         $node.append($wrapper);
 
+        if (position) {
+            $parent.find('li:eq(' + (position - 1) + ')').before($node);
+        } else {
+            $parent.append($node);
+        }
+
         if (nodeData.children && nodeData.children.length) {
             data.style.expandIcon ? $expander.addClass(data.style.expandIcon) : $expander.text('+');
             $newParent = $('<ul />').addClass(data.style.list).addClass('gj-hidden');
@@ -836,12 +833,6 @@ gj.tree.methods = {
             }
         } else {
             data.style.leafIcon ? $expander.addClass(data.style.leafIcon) : $expander.html('&nbsp;');
-        }
-
-        if (position) {
-            $parent.find('li:eq(' + (position - 1) + ')').before($node);
-        } else {
-            $parent.append($node);
         }
 
         if (data.imageCssClassField && nodeData.data[data.imageCssClassField]) {
