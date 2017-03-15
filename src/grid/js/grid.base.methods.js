@@ -151,7 +151,7 @@ gj.grid.methods = {
                     }
                 });
             } else {
-                $cell.append($('<div style="float: left"/>').html(typeof (columns[i].title) === 'undefined' ? columns[i].field : columns[i].title));
+                $cell.append($('<div data-role="title"/>').html(typeof (columns[i].title) === 'undefined' ? columns[i].field : columns[i].title));
             }
             if (columns[i].hidden) {
                 $cell.hide();
@@ -182,29 +182,13 @@ gj.grid.methods = {
             sortBy = data.params[data.paramNames.sortBy],
             direction = data.params[data.paramNames.direction];
         
-        $grid.find('thead tr th span[data-role="sorticon"]').remove();
+        $grid.find('thead tr th [data-role="sorticon"]').remove();
         
         if (sortBy) {
             position = gj.grid.methods.getColumnPosition($grid.data('columns'), sortBy);
             $cell = $grid.find('thead tr th:eq(' + position + ')');
-            $sortIcon = $('<span data-role="sorticon" style="margin-left:5px"/>');
+            $sortIcon = $(('desc' === direction) ? data.icons.desc : data.icons.asc).attr('data-role', 'sorticon').addClass('gj-unselectable');
             $cell.append($sortIcon);
-
-            if ('desc' === direction) {
-                $sortIcon.empty().removeClass(style.sortAscIcon);
-                if (style.sortDescIcon) {
-                    $sortIcon.addClass(style.sortDescIcon);
-                } else {
-                    $sortIcon.text('▼');
-                }
-            } else {
-                $sortIcon.empty().removeClass(style.sortDescIcon);
-                if (style.sortAscIcon) {
-                    $sortIcon.addClass(style.sortAscIcon);
-                } else {
-                    $sortIcon.text('▲');
-                }
-            }
         }
     },
 

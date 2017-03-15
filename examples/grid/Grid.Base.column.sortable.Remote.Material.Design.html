@@ -13,11 +13,13 @@
  <table id="grid"></table>
  <script>
      $('#grid').grid({
-         dataSource: '/DataSources/GetPlayers',
          uiLibrary: 'materialdesign',
-         grouping: { groupBy: 'Nationality' },
-         columns: [ { field: 'Name', sortable: true }, { field: 'PlaceOfBirth' } ],
-         pager: { limit: 5 }
+         dataSource: '/DataSources/GetPlayers',
+         columns: [
+             { field: 'ID', width: 42 },
+             { field: 'Name', sortable: true },
+             { field: 'PlaceOfBirth', sortable: false }
+         ]
      });
  </script>
 </body>

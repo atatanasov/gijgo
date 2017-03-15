@@ -4,6 +4,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Example</title>
   <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
   <link href="../../dist/modular/grid/css/grid.css" rel="stylesheet" type="text/css">
   <script src="../../dist/modular/grid/js/grid.js"></script>
 </head>
@@ -11,9 +12,10 @@
  <table id="grid"></table>
  <script>
      $('#grid').grid({
+         uiLibrary: 'bootstrap4',
          dataSource: '/DataSources/GetPlayers',
          columns: [
-             { field: 'ID' },
+             { field: 'ID', width: 42 },
              { field: 'Name', sortable: true },
              { field: 'PlaceOfBirth', sortable: false }
          ]

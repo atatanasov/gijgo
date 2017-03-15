@@ -181,19 +181,19 @@ gj.grid.config = {
              * @alias column.sortable
              * @type boolean|object
              * @default false
-             * @example Remote.DataSource <!-- grid.base -->
+             * @example Remote.Base.Theme <!-- grid.base -->
              * <table id="grid"></table>
              * <script>
              *     $('#grid').grid({
              *         dataSource: '/DataSources/GetPlayers',
              *         columns: [
-             *             { field: 'ID' },
+             *             { field: 'ID', width: 24 },
              *             { field: 'Name', sortable: true },
              *             { field: 'PlaceOfBirth', sortable: false }
              *         ]
              *     });
              * </script>
-             * @example Local.DataSource <!-- grid.base -->
+             * @example Local.Custom <!-- grid.base -->
              * <table id="grid"></table>
              * <script>
              *     var data = [
@@ -215,6 +215,58 @@ gj.grid.config = {
              *             { field: 'ID' },
              *             { field: 'Value1', sortable: true },
              *             { field: 'Value2', sortable: { sorter: caseSensitiveSort } }
+             *         ]
+             *     });
+             * </script>
+             * @example Remote.Bootstrap.3 <!-- bootstrap, grid.base -->
+             * <table id="grid"></table>
+             * <script>
+             *     $('#grid').grid({
+             *         uiLibrary: 'bootstrap',
+             *         dataSource: '/DataSources/GetPlayers',
+             *         columns: [
+             *             { field: 'ID', width: 34 },
+             *             { field: 'Name', sortable: true },
+             *             { field: 'PlaceOfBirth', sortable: false }
+             *         ]
+             *     });
+             * @example Remote.Bootstrap.4.Base <!-- bootstrap4, grid.base -->
+             * <table id="grid"></table>
+             * <script>
+             *     $('#grid').grid({
+             *         uiLibrary: 'bootstrap4',
+             *         dataSource: '/DataSources/GetPlayers',
+             *         columns: [
+             *             { field: 'ID', width: 42 },
+             *             { field: 'Name', sortable: true },
+             *             { field: 'PlaceOfBirth', sortable: false }
+             *         ]
+             *     });
+             * </script>
+             * @example Remote.Bootstrap.4.FontAwesome <!-- bootstrap4, fontawesome, grid.base -->
+             * <table id="grid"></table>
+             * <script>
+             *     $('#grid').grid({
+             *         uiLibrary: 'bootstrap4',
+             *         iconsLibrary: 'fontawesome',
+             *         dataSource: '/DataSources/GetPlayers',
+             *         columns: [
+             *             { field: 'ID', width: 42 },
+             *             { field: 'Name', sortable: true },
+             *             { field: 'PlaceOfBirth', sortable: false }
+             *         ]
+             *     });
+             * </script>
+             * @example Remote.Material.Design <!-- materialdesign, grid.base -->
+             * <table id="grid"></table>
+             * <script>
+             *     $('#grid').grid({
+             *         uiLibrary: 'materialdesign',
+             *         dataSource: '/DataSources/GetPlayers',
+             *         columns: [
+             *             { field: 'ID', width: 42 },
+             *             { field: 'Name', sortable: true },
+             *             { field: 'PlaceOfBirth', sortable: false }
              *         ]
              *     });
              * </script>
@@ -602,7 +654,7 @@ gj.grid.config = {
 
         /** The name of the UI library that is going to be in use. Currently we support jQuery UI, Bootstrap and Material Design.
          * @additionalinfo The css files for jQuery UI, Bootstrap or Material Design should be manually included to the page where the grid is in use.
-         * @type (base|jqueryui|bootstrap|materialdesign)
+         * @type (base|jqueryui|bootstrap|bootstrap4|materialdesign)
          * @default "base"
          * @example base.theme <!-- grid.base -->
          * <table id="grid"></table>
@@ -673,6 +725,25 @@ gj.grid.config = {
          * </script>
          */
         uiLibrary: 'base',
+
+        /** The name of the icons library that is going to be in use. Currently we support Material Icons, Font Awesome and Glyphicons.
+         * @additionalinfo If you use Bootstrap 3 as uiLibrary, then the iconsLibrary is set to Glyphicons by default.<br/>
+         * If you use Material Design as uiLibrary, then the iconsLibrary is set to Material Icons by default.<br/>
+         * The css files for Material Icons, Font Awesome or Glyphicons should be manually included to the page where the grid is in use.
+         * @type (materialicons|fontawesome|glyphicons)
+         * @default undefined
+         * @example base.theme <!-- materialicons, grid.base, grid.pagination -->
+         * <table id="grid"></table>
+         * <script>
+         *     $('#grid').grid({
+         *         dataSource: '/DataSources/GetPlayers',
+         *         iconsLibrary: 'materialicons',
+         *         columns: [ { field: 'ID', width: 24 }, { field: 'Name', sortable: true }, { field: 'PlaceOfBirth' } ],
+         *         pager: { limit: 5 }
+         *     });
+         * </script>
+         */
+        iconsLibrary: undefined,
 
         /** The type of the row selection.<br/>
          * If the type is set to multiple the user will be able to select more then one row from the grid.
@@ -899,6 +970,11 @@ gj.grid.config = {
             },
             expandIcon: undefined,
             collapseIcon: undefined
+        },
+
+        icons: {
+            asc: '<div>▲</div>',
+            desc: '<div>▼</div>'
         }
     },
 
@@ -925,11 +1001,6 @@ gj.grid.config = {
         style: {
             wrapper: 'gj-grid-wrapper',
             table: 'gj-grid-table gj-grid-bootstrap-table table table-bordered table-hover',
-            header: {
-                sortable: 'gj-cursor-pointer',
-                sortAscIcon: 'glyphicon glyphicon-sort-by-alphabet',
-                sortDescIcon: 'glyphicon glyphicon-sort-by-alphabet-alt'
-            },
             content: {
                 rowHover: '',
                 rowSelected: 'active'
@@ -938,6 +1009,8 @@ gj.grid.config = {
             collapseIcon: 'glyphicon glyphicon-minus'
         },
 
+        iconsLibrary: 'glyphicons',
+
         defaultIconColumnWidth: 34
     },
 
@@ -945,11 +1018,6 @@ gj.grid.config = {
         style: {
             wrapper: 'gj-grid-wrapper',
             table: 'gj-grid-table gj-grid-bootstrap-table table table-bordered table-hover',
-            header: {
-                sortable: 'gj-cursor-pointer',
-                sortAscIcon: undefined,
-                sortDescIcon: undefined
-            },
             content: {
                 rowHover: '',
                 rowSelected: 'active'
@@ -963,19 +1031,35 @@ gj.grid.config = {
         defaultIconColumnWidth: 70,
         style: {
             wrapper: 'gj-grid-wrapper',
-            table: 'gj-grid-table mdl-data-table mdl-js-data-table mdl-shadow--2dp', 
-            header: {
-                cell: '',
-                sortable: 'gj-cursor-pointer',
-                sortAscIcon: 'material-icons gj-grid-mdl-sort-icon-asc',
-                sortDescIcon: 'material-icons gj-grid-mdl-sort-icon-desc'
-            },
+            table: 'gj-grid-table mdl-data-table mdl-js-data-table mdl-shadow--2dp',
             content: {
                 rowHover: '',
                 rowSelected: 'is-selected'
             },
             expandIcon: 'material-icons gj-mdl-icon-plus',
             collapseIcon: 'material-icons gj-mdl-icon-minus'
+        },
+        iconsLibrary: 'materialicons'
+    },
+
+    materialicons: {
+        icons: {
+            asc: '<i class="material-icons gj-grid-mdl-sort-icon-asc"></i>',
+            desc: '<i class="material-icons gj-grid-mdl-sort-icon-desc"></i>'
+        }
+    },
+
+    fontawesome: {
+        icons: {
+            asc: '<i class="fa fa-sort-amount-asc" aria-hidden="true"></i>',
+            desc: '<i class="fa fa-sort-amount-desc" aria-hidden="true"></i>'
+        }
+    },
+
+    glyphicons: {
+        icons: {
+            asc: '<div class="glyphicon glyphicon-sort-by-alphabet" />',
+            desc: '<div class="glyphicon glyphicon-sort-by-alphabet-alt" />'
         }
     }
 };

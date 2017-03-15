@@ -97,8 +97,7 @@ gj.grid.plugins.pagination = {
                  * @alias pager.leftControls
                  * @type array
                  * @default array
-                 * @example Font.Awesome <!-- grid.base  -->
-                 * <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+                 * @example Font.Awesome <!-- fontawesome, grid.base  -->
                  * <style>
                  * .icon-disabled { color: #ccc; }
                  * </style>

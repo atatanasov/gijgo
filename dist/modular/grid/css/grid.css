@@ -65,8 +65,16 @@ TABLE.gj-grid-table {
     table-layout: fixed;
 }
 
-TABLE.gj-grid-table THEAD TH #checkAllBoxes {
+TABLE.gj-grid-table THEAD TH [data-role="selectAll"] {
     margin: auto;
+}
+
+TABLE.gj-grid-table THEAD TH [data-role="title"] {
+    display: inline-block;
+}
+
+TABLE.gj-grid-table THEAD TH [data-role="sorticon"] {
+    display: inline-block;
 }
 
 TABLE.gj-grid-table > thead > tr > th,
@@ -175,12 +183,16 @@ div.gj-grid-wrapper div.gj-grid-bootstrap-toolbar {
     border: 1px solid #ddd;
 }
 
-TABLE.gj-grid-bootstrap-table thead tr th {
+table.gj-grid-bootstrap-table thead th {
     background-color: #f5f5f5;
     vertical-align:middle;
 }
 
-TABLE.gj-grid-bootstrap-table tbody tr td div[data-role="display"] {
+table.gj-grid-bootstrap-table thead th [data-role="sorticon"] {
+    margin-left: 5px;
+}
+
+table.gj-grid-bootstrap-table tbody tr td div[data-role="display"] {
     padding: 0px;
 }
 
@@ -264,14 +276,19 @@ TABLE.gj-grid-table > tbody > tr > td > div
 
 
 /* Material Design Theme */
-.gj-grid-table .gj-grid-mdl-sort-icon-asc::after {
+.gj-grid-mdl-sort-icon-asc::after {
     content: "\2191";
-    font-size: 16px;
+    font-size: 24px;
 }
-.gj-grid-table .gj-grid-mdl-sort-icon-desc::after {
+.gj-grid-mdl-sort-icon-desc::after {
     content: "\2193";
-    font-size: 16px;
+    font-size: 24px;
 }
+
+table.mdl-data-table thead th [data-role="sorticon"] {
+    margin-left: 5px;
+}
+
 .gj-grid-table .gj-grid-mdl-limit-select {
     text-align: right;
     display: inline-block;

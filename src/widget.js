@@ -67,7 +67,7 @@ gj.widget.prototype.init = function (jsConfig, type) {
 };
 
 gj.widget.prototype.getConfig = function (clientConfig, type) {
-    var config, uiLibrary, plugin;
+    var config, uiLibrary, iconsLibrary, plugin;
 
     config = $.extend(true, {}, gj[type].config.base);
 
@@ -76,11 +76,19 @@ gj.widget.prototype.getConfig = function (clientConfig, type) {
         $.extend(true, config, gj[type].config[uiLibrary]);
     }
 
+    iconsLibrary = clientConfig.iconsLibrary || config.iconsLibrary;
+    if (gj[type].config[iconsLibrary]) {
+        $.extend(true, config, gj[type].config[iconsLibrary]);
+    }
+
     for (plugin in gj[type].plugins) {
         if (gj[type].plugins.hasOwnProperty(plugin)) {
             $.extend(true, config, gj[type].plugins[plugin].config.base);
             if (gj[type].plugins[plugin].config[uiLibrary]) {
                 $.extend(true, config, gj[type].plugins[plugin].config[uiLibrary]);
+            }
+            if (gj[type].plugins[plugin].config[iconsLibrary]) {
+                $.extend(true, config, gj[type].plugins[plugin].config[iconsLibrary]);
             }
         }
     }

@@ -115,10 +115,10 @@ gj.grid.plugins.grouping = {
                     $groupRow = $cell.closest('tr');
                 if ($groupRow.next(':visible').data('role') === 'row') {
                     $groupRow.nextUntil('[data-role="group"]').hide();
-                    data.style.expandIcon ? $display.html('<span class="' + data.style.expandIcon + '" />'): $display.text('+');
+                    data.style.expandIcon ? $display.html('<span class="' + data.style.expandIcon + '" />') : $display.text('+');
                 } else {
                     $groupRow.nextUntil('[data-role="group"]').show();
-                    data.style.collapseIcon ? $display.html('<span class="' + data.style.collapseIcon + '" />'): $display.text('-');
+                    data.style.collapseIcon ? $display.html('<span class="' + data.style.collapseIcon + '" />') : $display.text('-');
                 }
             };
         }
