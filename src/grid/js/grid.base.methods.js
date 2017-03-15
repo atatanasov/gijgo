@@ -88,7 +88,7 @@ gj.grid.methods = {
             data.columns = [{
                 title: '',
                 field: data.primaryKey || '',
-                width: data.defaultCheckboxColumnWidth,
+                width: data.defaultIconColumnWidth,
                 align: 'center',
                 type: 'checkbox',
                 role: 'selectRow',
@@ -125,7 +125,7 @@ gj.grid.methods = {
             if (columns[i].width) {
                 $cell.attr('width', columns[i].width);
             } else if (columns[i].type === 'checkbox') {
-                $cell.attr('width', data.defaultCheckboxColumnWidth);
+                $cell.attr('width', data.defaultIconColumnWidth);
             }
             $cell.addClass(style.cell);
             if (columns[i].headerCssClass) {
@@ -779,9 +779,7 @@ gj.grid.methods = {
         }
 
         for (field in data.params) {
-            if (data.params[field] &&
-                field !== data.paramNames.sortBy && field !== data.paramNames.direction &&
-                field !== data.paramNames.page && field !== data.paramNames.limit) {
+            if (data.params[field] && !data.paramNames[field]) {
                 records = $.grep(records, function (e) {
                     return e[field].indexOf(data.params[field]) > -1;
                 });

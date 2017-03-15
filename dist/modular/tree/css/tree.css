@@ -32,6 +32,10 @@
     cursor: pointer;
 }
 
+.gj-text-align-center {
+    text-align: center;
+}
+
 .gj-font-size-16 {
     font-size: 16px;
 }

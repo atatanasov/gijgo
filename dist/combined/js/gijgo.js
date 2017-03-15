@@ -2541,25 +2541,6 @@ gj.grid.config = {
          */
         uiLibrary: 'base',
 
-        style: {
-            wrapper: 'gj-grid-wrapper',
-            table: 'gj-grid-table gj-grid-base-table',
-            loadingCover: 'gj-grid-loading-cover',
-            loadingText: 'gj-grid-loading-text',
-            header: {
-                cell: undefined,
-                sortable: 'gj-cursor-pointer',
-                sortAscIcon: '',
-                sortDescIcon: ''
-            },
-            content: {
-                rowHover: undefined,
-                rowSelected: 'gj-grid-base-active'
-            },
-            expandIcon: undefined,
-            collapseIcon: undefined
-        },
-
         /** The type of the row selection.<br/>
          * If the type is set to multiple the user will be able to select more then one row from the grid.
          * @type (single|multiple)
@@ -2727,8 +2708,6 @@ gj.grid.config = {
          */
         primaryKey: undefined,
 
-        defaultCheckboxColumnWidth: 30,
-
         /** The language that needs to be in use.
          * @type string
          * @default 'en-us'
@@ -2767,10 +2746,31 @@ gj.grid.config = {
          * </script>
          */
         locale: 'en-us',
+
+        defaultIconColumnWidth: 30,
+
+        style: {
+            wrapper: 'gj-grid-wrapper',
+            table: 'gj-grid-table gj-grid-base-table',
+            loadingCover: 'gj-grid-loading-cover',
+            loadingText: 'gj-grid-loading-text',
+            header: {
+                cell: undefined,
+                sortable: 'gj-cursor-pointer',
+                sortAscIcon: '',
+                sortDescIcon: ''
+            },
+            content: {
+                rowHover: undefined,
+                rowSelected: 'gj-grid-base-active'
+            },
+            expandIcon: undefined,
+            collapseIcon: undefined
+        }
     },
 
     jqueryui: {
-        defaultCheckboxColumnWidth: 24,
+        defaultIconColumnWidth: 24,
         style: {
             table: 'gj-grid-table ui-widget-content gj-grid-ui-table',
             header: {
@@ -2791,9 +2791,8 @@ gj.grid.config = {
     bootstrap: {
         style: {
             wrapper: 'gj-grid-wrapper',
-            table: 'gj-grid-table table table-bordered table-hover',
+            table: 'gj-grid-table gj-grid-bootstrap-table table table-bordered table-hover',
             header: {
-                cell: 'gj-grid-bootstrap-thead-cell',
                 sortable: 'gj-cursor-pointer',
                 sortAscIcon: 'glyphicon glyphicon-sort-by-alphabet',
                 sortDescIcon: 'glyphicon glyphicon-sort-by-alphabet-alt'
@@ -2804,15 +2803,16 @@ gj.grid.config = {
             },
             expandIcon: 'glyphicon glyphicon-plus',
             collapseIcon: 'glyphicon glyphicon-minus'
-        }
+        },
+
+        defaultIconColumnWidth: 34
     },
 
     bootstrap4: {
         style: {
             wrapper: 'gj-grid-wrapper',
-            table: 'gj-grid-table table table-bordered table-hover',
+            table: 'gj-grid-table gj-grid-bootstrap-table table table-bordered table-hover',
             header: {
-                cell: 'gj-grid-bootstrap-thead-cell',
                 sortable: 'gj-cursor-pointer',
                 sortAscIcon: undefined,
                 sortDescIcon: undefined
@@ -2821,11 +2821,13 @@ gj.grid.config = {
                 rowHover: '',
                 rowSelected: 'active'
             }
-        }
+        },
+
+        defaultIconColumnWidth: 34
     },
 
     materialdesign: {
-        defaultCheckboxColumnWidth: 70,
+        defaultIconColumnWidth: 70,
         style: {
             wrapper: 'gj-grid-wrapper',
             table: 'gj-grid-table mdl-data-table mdl-js-data-table mdl-shadow--2dp', 
@@ -3265,7 +3267,7 @@ gj.grid.methods = {
             data.columns = [{
                 title: '',
                 field: data.primaryKey || '',
-                width: data.defaultCheckboxColumnWidth,
+                width: data.defaultIconColumnWidth,
                 align: 'center',
                 type: 'checkbox',
                 role: 'selectRow',
@@ -3302,7 +3304,7 @@ gj.grid.methods = {
             if (columns[i].width) {
                 $cell.attr('width', columns[i].width);
             } else if (columns[i].type === 'checkbox') {
-                $cell.attr('width', data.defaultCheckboxColumnWidth);
+                $cell.attr('width', data.defaultIconColumnWidth);
             }
             $cell.addClass(style.cell);
             if (columns[i].headerCssClass) {
@@ -3956,9 +3958,7 @@ gj.grid.methods = {
         }
 
         for (field in data.params) {
-            if (data.params[field] &&
-                field !== data.paramNames.sortBy && field !== data.paramNames.direction &&
-                field !== data.paramNames.page && field !== data.paramNames.limit) {
+            if (data.params[field] && !data.paramNames[field]) {
                 records = $.grep(records, function (e) {
                     return e[field].indexOf(data.params[field]) > -1;
                 });
@@ -4772,30 +4772,22 @@ gj.grid.plugins.expandCollapseRows = {
              *     });
              * </script>
              */
-            keepExpandedRows: true,
-
-            defaultExpandCollapseColumnWidth: 24
-
-        },
-        bootstrap: {
-            defaultExpandCollapseColumnWidth: 34
-        },
-        materialdesign: {
-            defaultExpandCollapseColumnWidth: 70
+            keepExpandedRows: true
         }
     },
 
     'private': {
         detailExpand: function ($grid, $cell) {
             var $contentRow = $cell.closest('tr'),
-                $detailsRow = $('<tr data-role="details"></tr>'),
-                $detailsCell = $('<td colspan="' + gj.grid.methods.countVisibleColumns($grid) + '"></td>'),
+                $detailsRow = $('<tr data-role="details" />'),
+                $detailsCell = $('<td colspan="' + gj.grid.methods.countVisibleColumns($grid) + '" />'),
+                $detailsWrapper = $('<div data-role="display" />'),
                 data = $grid.data(),
                 position = $contentRow.data('position'),
                 record = $grid.get(position),
                 id = gj.grid.methods.getId(record, data.primaryKey, record);
 
-            $detailsRow.append($detailsCell.append($contentRow.data('details')));
+            $detailsRow.append($detailsCell.append($detailsWrapper.append($contentRow.data('details'))));
             $detailsRow.insertAfter($contentRow);
             if (data.style.collapseIcon) {
                 $cell.find('span').attr('class', data.style.collapseIcon);
@@ -4947,9 +4939,8 @@ gj.grid.plugins.expandCollapseRows = {
             column = {
                 title: '',
                 field: data.primaryKey,
-                width: data.defaultExpandCollapseColumnWidth,
+                width: data.defaultIconColumnWidth,
                 align: 'center',
-                role: 'expandRow',
                 stopPropagation: true,
                 events: {
                     'click': function (e) {
@@ -7557,7 +7548,7 @@ gj.grid.plugins.grouping = {
                   *     $('#grid').grid({
                   *         dataSource: data,
                   *         grouping: { groupBy: 'Nationality' },
-                  *         columns: [ { field: 'ID', width: 30 }, { field: 'Name', sortable: true }, { field: 'PlaceOfBirth' } ],
+                  *         columns: [ { field: 'Name', sortable: true }, { field: 'PlaceOfBirth' } ],
                   *         pager: { limit: 5 }
                   *     });
                   * </script>
@@ -7567,7 +7558,18 @@ gj.grid.plugins.grouping = {
                   *     $('#grid').grid({
                   *         dataSource: '/DataSources/GetPlayers',
                   *         grouping: { groupBy: 'Nationality' },
-                  *         columns: [ { field: 'ID', width: 30 }, { field: 'Name', sortable: true }, { field: 'PlaceOfBirth' } ],
+                  *         columns: [ { field: 'Name', sortable: true }, { field: 'PlaceOfBirth' } ],
+                  *         pager: { limit: 5 }
+                  *     });
+                  * </script>
+                  * @example Material.Design <!-- materialdesign, grid.base, grid.grouping -->
+                  * <table id="grid"></table>
+                  * <script>
+                  *     $('#grid').grid({
+                  *         dataSource: '/DataSources/GetPlayers',
+                  *         uiLibrary: 'materialdesign',
+                  *         grouping: { groupBy: 'Nationality' },
+                  *         columns: [ { field: 'Name', sortable: true }, { field: 'PlaceOfBirth' } ],
                   *         pager: { limit: 5 }
                   *     });
                   * </script>
@@ -7582,39 +7584,74 @@ gj.grid.plugins.grouping = {
     private: {
         init: function ($grid) {
             var previousValue, data = $grid.data();
-            if (data.grouping && data.grouping.groupBy) {
-                previousValue = undefined;
-                $grid.on('rowDataBound', function (e, $row, id, record) {
-                    if (previousValue !== record[data.grouping.groupBy]) {
-                        var colspan = gj.grid.methods.countVisibleColumns($grid),
-                            $groupRow = $('<tr data-role="group" />');
-                        $groupRow.append('<td colspan="' + colspan + '"><div data-role="display">' + data.grouping.groupBy + ': ' + record[data.grouping.groupBy] + '</div></td>');
-                        $groupRow.insertBefore($row);
-                        previousValue = record[data.grouping.groupBy];
-                    }
-                });
 
-                data.params[data.paramNames.groupBy] = data.grouping.groupBy;
-                data.params[data.paramNames.groupByDirection] = data.grouping.direction;
-            }
+            previousValue = undefined;
+            $grid.on('rowDataBound', function (e, $row, id, record) {
+                if (previousValue !== record[data.grouping.groupBy]) {
+                    var colspan = gj.grid.methods.countVisibleColumns($grid) - 1,
+                        $groupRow = $('<tr data-role="group" />'),
+                        $expandCollapseCell = $('<td class="gj-text-align-center gj-unselectable gj-cursor-pointer" />');
+
+                    if (data.style.collapseIcon) {
+                        $expandCollapseCell.append('<div data-role="display"><span class="' + data.style.collapseIcon + '" /></div>');
+                    } else {
+                        $expandCollapseCell.append('<div data-role="display">-</div>');
+                    }
+                    $expandCollapseCell.on('click', gj.grid.plugins.grouping.private.createExpandCollapseHandler(data));
+                    $groupRow.append($expandCollapseCell);
+                    $groupRow.append('<td colspan="' + colspan + '"><div data-role="display">' + data.grouping.groupBy + ': ' + record[data.grouping.groupBy] + '</div></td>');
+                    $groupRow.insertBefore($row);
+                    previousValue = record[data.grouping.groupBy];
+                }
+            });
+
+            data.params[data.paramNames.groupBy] = data.grouping.groupBy;
+            data.params[data.paramNames.groupByDirection] = data.grouping.direction;
         },
 
         grouping: function ($grid, records) {
             var data = $grid.data();
-            if (data.grouping && data.grouping.groupBy) {
-                records.sort(gj.grid.methods.createDefaultSorter(data.grouping.direction, data.grouping.groupBy));
-            }
+            records.sort(gj.grid.methods.createDefaultSorter(data.grouping.direction, data.grouping.groupBy));
+        },
+
+        createExpandCollapseHandler: function (data) {
+            return function (e) {
+                var $cell = $(this),
+                    $display = $cell.children('div[data-role="display"]'),
+                    $groupRow = $cell.closest('tr');
+                if ($groupRow.next(':visible').data('role') === 'row') {
+                    $groupRow.nextUntil('[data-role="group"]').hide();
+                    data.style.expandIcon ? $display.html('<span class="' + data.style.expandIcon + '" />'): $display.text('+');
+                } else {
+                    $groupRow.nextUntil('[data-role="group"]').show();
+                    data.style.collapseIcon ? $display.html('<span class="' + data.style.collapseIcon + '" />'): $display.text('-');
+                }
+            };
         }
     },
 
+    public: { },
+
     configure: function ($grid) {
+        var column, data = $grid.data();
         $.extend(true, $grid, gj.grid.plugins.grouping.public);
-        $grid.on('initialized', function () {
-            gj.grid.plugins.grouping.private.init($grid);
-        });
-        $grid.on('dataFiltered', function (e, records) {
-            gj.grid.plugins.grouping.private.grouping($grid, records);
-        });
+        if (data.grouping && data.grouping.groupBy) {
+            column = {
+                title: '',
+                field: '',
+                width: data.defaultIconColumnWidth,
+                align: 'center'
+            };
+            data.columns = [column].concat(data.columns);
+
+            $grid.on('initialized', function () {
+                gj.grid.plugins.grouping.private.init($grid);
+            });
+
+            $grid.on('dataFiltered', function (e, records) {
+                gj.grid.plugins.grouping.private.grouping($grid, records);
+            });
+        }
     }
 };
 

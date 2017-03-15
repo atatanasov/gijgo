@@ -674,25 +674,6 @@ gj.grid.config = {
          */
         uiLibrary: 'base',
 
-        style: {
-            wrapper: 'gj-grid-wrapper',
-            table: 'gj-grid-table gj-grid-base-table',
-            loadingCover: 'gj-grid-loading-cover',
-            loadingText: 'gj-grid-loading-text',
-            header: {
-                cell: undefined,
-                sortable: 'gj-cursor-pointer',
-                sortAscIcon: '',
-                sortDescIcon: ''
-            },
-            content: {
-                rowHover: undefined,
-                rowSelected: 'gj-grid-base-active'
-            },
-            expandIcon: undefined,
-            collapseIcon: undefined
-        },
-
         /** The type of the row selection.<br/>
          * If the type is set to multiple the user will be able to select more then one row from the grid.
          * @type (single|multiple)
@@ -860,8 +841,6 @@ gj.grid.config = {
          */
         primaryKey: undefined,
 
-        defaultCheckboxColumnWidth: 30,
-
         /** The language that needs to be in use.
          * @type string
          * @default 'en-us'
@@ -900,10 +879,31 @@ gj.grid.config = {
          * </script>
          */
         locale: 'en-us',
+
+        defaultIconColumnWidth: 30,
+
+        style: {
+            wrapper: 'gj-grid-wrapper',
+            table: 'gj-grid-table gj-grid-base-table',
+            loadingCover: 'gj-grid-loading-cover',
+            loadingText: 'gj-grid-loading-text',
+            header: {
+                cell: undefined,
+                sortable: 'gj-cursor-pointer',
+                sortAscIcon: '',
+                sortDescIcon: ''
+            },
+            content: {
+                rowHover: undefined,
+                rowSelected: 'gj-grid-base-active'
+            },
+            expandIcon: undefined,
+            collapseIcon: undefined
+        }
     },
 
     jqueryui: {
-        defaultCheckboxColumnWidth: 24,
+        defaultIconColumnWidth: 24,
         style: {
             table: 'gj-grid-table ui-widget-content gj-grid-ui-table',
             header: {
@@ -924,9 +924,8 @@ gj.grid.config = {
     bootstrap: {
         style: {
             wrapper: 'gj-grid-wrapper',
-            table: 'gj-grid-table table table-bordered table-hover',
+            table: 'gj-grid-table gj-grid-bootstrap-table table table-bordered table-hover',
             header: {
-                cell: 'gj-grid-bootstrap-thead-cell',
                 sortable: 'gj-cursor-pointer',
                 sortAscIcon: 'glyphicon glyphicon-sort-by-alphabet',
                 sortDescIcon: 'glyphicon glyphicon-sort-by-alphabet-alt'
@@ -937,15 +936,16 @@ gj.grid.config = {
             },
             expandIcon: 'glyphicon glyphicon-plus',
             collapseIcon: 'glyphicon glyphicon-minus'
-        }
+        },
+
+        defaultIconColumnWidth: 34
     },
 
     bootstrap4: {
         style: {
             wrapper: 'gj-grid-wrapper',
-            table: 'gj-grid-table table table-bordered table-hover',
+            table: 'gj-grid-table gj-grid-bootstrap-table table table-bordered table-hover',
             header: {
-                cell: 'gj-grid-bootstrap-thead-cell',
                 sortable: 'gj-cursor-pointer',
                 sortAscIcon: undefined,
                 sortDescIcon: undefined
@@ -954,11 +954,13 @@ gj.grid.config = {
                 rowHover: '',
                 rowSelected: 'active'
             }
-        }
+        },
+
+        defaultIconColumnWidth: 34
     },
 
     materialdesign: {
-        defaultCheckboxColumnWidth: 70,
+        defaultIconColumnWidth: 70,
         style: {
             wrapper: 'gj-grid-wrapper',
             table: 'gj-grid-table mdl-data-table mdl-js-data-table mdl-shadow--2dp', 

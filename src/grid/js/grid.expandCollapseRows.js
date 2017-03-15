@@ -65,30 +65,22 @@ gj.grid.plugins.expandCollapseRows = {
              *     });
              * </script>
              */
-            keepExpandedRows: true,
-
-            defaultExpandCollapseColumnWidth: 24
-
-        },
-        bootstrap: {
-            defaultExpandCollapseColumnWidth: 34
-        },
-        materialdesign: {
-            defaultExpandCollapseColumnWidth: 70
+            keepExpandedRows: true
         }
     },
 
     'private': {
         detailExpand: function ($grid, $cell) {
             var $contentRow = $cell.closest('tr'),
-                $detailsRow = $('<tr data-role="details"></tr>'),
-                $detailsCell = $('<td colspan="' + gj.grid.methods.countVisibleColumns($grid) + '"></td>'),
+                $detailsRow = $('<tr data-role="details" />'),
+                $detailsCell = $('<td colspan="' + gj.grid.methods.countVisibleColumns($grid) + '" />'),
+                $detailsWrapper = $('<div data-role="display" />'),
                 data = $grid.data(),
                 position = $contentRow.data('position'),
                 record = $grid.get(position),
                 id = gj.grid.methods.getId(record, data.primaryKey, record);
 
-            $detailsRow.append($detailsCell.append($contentRow.data('details')));
+            $detailsRow.append($detailsCell.append($detailsWrapper.append($contentRow.data('details'))));
             $detailsRow.insertAfter($contentRow);
             if (data.style.collapseIcon) {
                 $cell.find('span').attr('class', data.style.collapseIcon);
@@ -240,9 +232,8 @@ gj.grid.plugins.expandCollapseRows = {
             column = {
                 title: '',
                 field: data.primaryKey,
-                width: data.defaultExpandCollapseColumnWidth,
+                width: data.defaultIconColumnWidth,
                 align: 'center',
-                role: 'expandRow',
                 stopPropagation: true,
                 events: {
                     'click': function (e) {
