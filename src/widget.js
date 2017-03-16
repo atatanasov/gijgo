@@ -71,12 +71,12 @@ gj.widget.prototype.getConfig = function (clientConfig, type) {
 
     config = $.extend(true, {}, gj[type].config.base);
 
-    uiLibrary = clientConfig.uiLibrary || config.uiLibrary;
+    uiLibrary = clientConfig.hasOwnProperty('uiLibrary') ? clientConfig.uiLibrary : config.uiLibrary;
     if (gj[type].config[uiLibrary]) {
         $.extend(true, config, gj[type].config[uiLibrary]);
     }
 
-    iconsLibrary = clientConfig.iconsLibrary || config.iconsLibrary;
+    iconsLibrary = clientConfig.hasOwnProperty('iconsLibrary') ? clientConfig.iconsLibrary : config.iconsLibrary;
     if (gj[type].config[iconsLibrary]) {
         $.extend(true, config, gj[type].config[iconsLibrary]);
     }

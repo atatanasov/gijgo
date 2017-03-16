@@ -695,31 +695,35 @@ gj.grid.config = {
          *         pager: { limit: 2, sizes: [2, 5, 10, 20] }
          *     });
          * </script>
-         * @example materialdesign <!-- materialdesign, grid.base -->
+         * @example Material.Design.With.Icons <!-- materialdesign, grid.base -->
          * <table id="grid"></table>
          * <script>
          *     $('#grid').grid({
          *         dataSource: '/DataSources/GetPlayers',
          *         uiLibrary: 'materialdesign',
-         *         columns: [
-         *             { field: 'ID', width: 40 },
-         *             { field: 'Name', sortable: true },
-         *             { field: 'PlaceOfBirth' }
-         *         ],
+         *         columns: [ { field: 'ID', width: 40 }, { field: 'Name', sortable: true }, { field: 'PlaceOfBirth' } ],
          *         pager: { limit: 2, sizes: [2, 5, 10, 20] }
          *     });
          * </script>
-         * @example bootstrap4 <!-- bootstrap4, grid.base -->
+         * @example Material.Design.Without.Icons <!-- materialdesign, grid.base -->
+         * <table id="grid"></table>
+         * <script>
+         *     $('#grid').grid({
+         *         dataSource: '/DataSources/GetPlayers',
+         *         uiLibrary: 'materialdesign',
+         *         iconsLibrary: '',
+         *         columns: [ { field: 'ID', width: 40 }, { field: 'Name', sortable: true }, { field: 'PlaceOfBirth' } ],
+         *         pager: { limit: 2, sizes: [2, 5, 10, 20] }
+         *     });
+         * </script>
+         * @example Bootstrap.4.Font.Awesome <!-- bootstrap4, fontawesome, grid.base -->
          * <table id="grid"></table>
          * <script>
          *     $('#grid').grid({
          *         dataSource: '/DataSources/GetPlayers',
          *         uiLibrary: 'bootstrap4',
-         *         columns: [
-         *             { field: 'ID' },
-         *             { field: 'Name', sortable: true },
-         *             { field: 'PlaceOfBirth' }
-         *         ],
+         *         iconsLibrary: 'fontawesome',
+         *         columns: [ { field: 'ID', width: 38 }, { field: 'Name', sortable: true }, { field: 'PlaceOfBirth' } ],
          *         pager: { limit: 2, sizes: [2, 5, 10, 20] }
          *     });
          * </script>
@@ -960,9 +964,7 @@ gj.grid.config = {
             loadingText: 'gj-grid-loading-text',
             header: {
                 cell: undefined,
-                sortable: 'gj-cursor-pointer',
-                sortAscIcon: '',
-                sortDescIcon: ''
+                sortable: 'gj-cursor-pointer'
             },
             content: {
                 rowHover: undefined,
@@ -1044,8 +1046,8 @@ gj.grid.config = {
 
     materialicons: {
         icons: {
-            asc: '<i class="material-icons gj-grid-mdl-sort-icon-asc"></i>',
-            desc: '<i class="material-icons gj-grid-mdl-sort-icon-desc"></i>'
+            asc: '<div><i class="material-icons">arrow_upward</i></div>',
+            desc: '<div><i class="material-icons">arrow_downward</i></div>'
         }
     },
 

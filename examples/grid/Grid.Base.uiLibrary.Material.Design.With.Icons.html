@@ -15,11 +15,7 @@
      $('#grid').grid({
          dataSource: '/DataSources/GetPlayers',
          uiLibrary: 'materialdesign',
-         columns: [
-             { field: 'ID', width: 40 },
-             { field: 'Name', sortable: true },
-             { field: 'PlaceOfBirth' }
-         ],
+         columns: [ { field: 'ID', width: 40 }, { field: 'Name', sortable: true }, { field: 'PlaceOfBirth' } ],
          pager: { limit: 2, sizes: [2, 5, 10, 20] }
      });
  </script>

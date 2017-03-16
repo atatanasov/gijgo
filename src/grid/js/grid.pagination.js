@@ -179,6 +179,7 @@ gj.grid.plugins.pagination = {
                 ]
             }
         },
+
         bootstrap: {
             style: {
                 pager: {
@@ -187,6 +188,7 @@ gj.grid.plugins.pagination = {
                 }
             }
         },
+
         bootstrap4: {
             style: {
                 pager: {
@@ -195,12 +197,33 @@ gj.grid.plugins.pagination = {
                 }
             }
         },
+
         materialdesign: {
             style: {
                 pager: {
                     cell: '',
                     stateDisabled: ''
                 }
+            }
+        },
+
+        materialicons: {
+            icons: {
+                first: '<button class="mdl-button mdl-button--icon"><i class="material-icons">first_page</i></button>',
+                previous: '<button class="mdl-button mdl-button--icon"><i class="material-icons">chevron_left</i></button>',
+                next: '<button class="mdl-button mdl-button--icon"><i class="material-icons">chevron_right</i></button>',
+                last: '<button class="mdl-button mdl-button--icon"><i class="material-icons">last_page</i></button>',
+                refresh: '<button class="mdl-button mdl-button--icon"><i class="material-icons">refresh</i></button>'
+            }
+        },
+
+        fontawesome: {
+            icons: {
+                first: '<i class="fa fa-fast-backward" aria-hidden="true"></i>',
+                previous: '<i class="fa fa-backward" aria-hidden="true"></i>',
+                next: '<i class="fa fa-forward" aria-hidden="true"></i>',
+                last: '<i class="fa fa-fast-forward" aria-hidden="true"></i>',
+                refresh: '<i class="fa fa-refresh" aria-hidden="true"></i>'
             }
         }
     },
@@ -306,9 +329,9 @@ gj.grid.plugins.pagination = {
             var msg = gj.grid.messages[data.locale];
             if (typeof (data.pager.leftControls) === 'undefined') {
                 data.pager.leftControls = [
-                    $('<button type="button" data-role="page-first" title="' + msg.FirstPageTooltip + '" class="btn btn-default btn-sm gj-cursor-pointer">' + msg.First + '</button>'),
+                    $('<button class="btn btn-default btn-sm gj-cursor-pointer">' + (data.icons.first || msg.First) + '</button>').attr('title', msg.FirstPageTooltip).attr('data-role', 'page-first'),
                     $('<div>&nbsp;</div>'),
-                    $('<button type="button" data-role="page-previous" title="' + msg.PreviousPageTooltip + '" class="btn btn-default btn-sm gj-cursor-pointer">' + msg.Previous + '</button>'),
+                    $('<button class="btn btn-default btn-sm gj-cursor-pointer">' + (data.icons.first || msg.Previous) + '</button>').attr('title', msg.PreviousPageTooltip).attr('data-role', 'page-previous'),
                     $('<div>&nbsp;</div>'),
                     $('<div>' + msg.Page + '</div>'),
                     $('<div>&nbsp;</div>'),
@@ -317,11 +340,11 @@ gj.grid.plugins.pagination = {
                     $('<div>' + msg.Of + '&nbsp;</div>'),
                     $('<div data-role="page-label-last">0</div>'),
                     $('<div>&nbsp;</div>'),
-                    $('<button type="button" data-role="page-next" title="' + msg.NextPageTooltip + '" class="btn btn-default btn-sm gj-cursor-pointer">' + msg.Next + '</button>'),
+                    $('<button class="btn btn-default btn-sm gj-cursor-pointer">' + (data.icons.next || msg.Next) + '</button>').attr('title', msg.NextPageTooltip).attr('data-role', 'page-next'),
                     $('<div>&nbsp;</div>'),
-                    $('<button type="button" data-role="page-last" title="' + msg.LastPageTooltip + '" class="btn btn-default btn-sm gj-cursor-pointer">' + msg.Last + '</button>'),
+                    $('<button class="btn btn-default btn-sm gj-cursor-pointer">' + (data.icons.last || msg.Last) + '</button>').attr('title', msg.LastPageTooltip).attr('data-role', 'page-last'),
                     $('<div>&nbsp;</div>'),
-                    $('<button type="button" data-role="page-refresh" title="' + msg.Refresh + '" class="btn btn-default btn-sm gj-cursor-pointer">' + msg.Refresh + '</button>'),
+                    $('<button class="btn btn-default btn-sm gj-cursor-pointer">' + (data.icons.refresh || msg.Refresh) + '</button>').attr('title', msg.Refresh).attr('data-role', 'page-refresh'),
                     $('<div>&nbsp;</div>'),
                     $('<div></div>').append($('<select data-role="page-size" class="form-control form-control-sm"></select></div>'))
                 ];
@@ -342,15 +365,15 @@ gj.grid.plugins.pagination = {
             var msg = gj.grid.messages[data.locale];
             if (typeof (data.pager.leftControls) === 'undefined') {
                 data.pager.leftControls = [
-                    $('<button data-role="page-first" title="' + msg.FirstPageTooltip + '" class="mdl-button mdl-js-button mdl-button--icon"><i class="material-icons">first_page</i></button>'),
-                    $('<button data-role="page-previous" title="' + msg.PreviousPageTooltip + '" class="mdl-button mdl-js-button mdl-button--icon"><i class="material-icons">chevron_left</i></button>'),
+                    $(data.icons.first || '<button class="mdl-button">' + msg.First + '</button>').attr('title', msg.FirstPageTooltip).attr('data-role', 'page-first'),
+                    $(data.icons.previous || '<button class="mdl-button">' + msg.Previous + '</button>').attr('title', msg.PreviousPageTooltip).attr('data-role', 'page-previous'),
                     $('<span class="gj-grid-mdl-pager-label">' + msg.Page + '</span>'),
                     $('<input data-role="page-number" class="mdl-textfield__input gj-grid-mdl-page" type="text" value="0">'),
                     $('<span class="gj-grid-mdl-pager-label">' + msg.Of + '</span>'),
                     $('<span data-role="page-label-last" class="gj-grid-mdl-pager-label">0</span>'),
-                    $('<button data-role="page-next" title="' + msg.NextPageTooltip + '" class="mdl-button mdl-js-button mdl-button--icon"><i class="material-icons">chevron_right</i>'),
-                    $('<button data-role="page-last" title="' + msg.LastPageTooltip + '" class="mdl-button mdl-js-button mdl-button--icon"><i class="material-icons">last_page</i>'),
-                    $('<button data-role="page-refresh" title="' + msg.Refresh + '" class="mdl-button mdl-js-button mdl-button--icon"><i class="material-icons">refresh</i>'),
+                    $(data.icons.next || '<button class="mdl-button">' + msg.Next + '</button>').attr('title', msg.NextPageTooltip).attr('data-role', 'page-next'),
+                    $(data.icons.last || '<button class="mdl-button">' + msg.Last + '</button>').attr('title', msg.LastPageTooltip).attr('data-role', 'page-last'),
+                    $(data.icons.refresh || '<button class="mdl-button">' + msg.Refresh + '</button>').attr('title', msg.Refresh).attr('data-role', 'page-refresh'),
                     $('<select data-role="page-size" class="mdl-textfield__input gj-grid-mdl-limit-select"></select></div>')
                 ];
             }
