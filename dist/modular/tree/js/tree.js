@@ -1074,7 +1074,7 @@ gj.tree.methods = {
         if ($nodes && $nodes.length) {
             for (i = 0; i < $nodes.length; i++) {
                 $node = $($nodes[i]);
-                if (text === $node.children('[data-role="display"]').text()) {
+                if (text === $node.find('>[data-role="wrapper"]>[data-role="display"]').text()) {
                     $result = $node;
                     break;
                 } else if ($node.has('ul')) {
@@ -1089,12 +1089,13 @@ gj.tree.methods = {
     },
 
     addNode: function ($tree, data, $parent, position) {
-        var nodeData = gj.tree.methods.getRecords($tree, [data]);
+        var nodeData = gj.tree.methods.getRecords($tree, [data]),
+            level = $parent.parentsUntil('[data-type="tree"]', 'ul').length + 1;
         if (!$parent || !$parent.length) {
             $parent = $tree.children('ul');
         }
         
-        gj.tree.methods.appendNode($tree, $parent, nodeData[0], undefined, position);
+        gj.tree.methods.appendNode($tree, $parent, nodeData[0], level, position);
 
         return $tree;
     },
