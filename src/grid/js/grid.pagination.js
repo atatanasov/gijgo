@@ -207,6 +207,16 @@ gj.grid.plugins.pagination = {
             }
         },
 
+        glyphicons: {
+            icons: {
+                first: '<span class="glyphicon glyphicon-step-backward"></span>',
+                previous: '<span class="glyphicon glyphicon-backward"></span>',
+                next: '<span class="glyphicon glyphicon-forward"></span>',
+                last: '<span class="glyphicon glyphicon-step-forward"></span>',
+                refresh: '<span class="glyphicon glyphicon-refresh"></span>'
+            }
+        },
+
         materialicons: {
             icons: {
                 first: '<button class="mdl-button mdl-button--icon"><i class="material-icons">first_page</i></button>',
@@ -293,9 +303,9 @@ gj.grid.plugins.pagination = {
             var msg = gj.grid.messages[data.locale];
             if (typeof (data.pager.leftControls) === 'undefined') {
                 data.pager.leftControls = [
-                    $('<button type="button" data-role="page-first" title="' + msg.FirstPageTooltip + '" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-step-backward"></span></button>'),
+                    $('<button type="button" class="btn btn-default btn-sm">' + (data.icons.first || msg.First) + '</button>').attr('title', msg.FirstPageTooltip).attr('data-role', 'page-first'),
                     $('<div>&nbsp;</div>'),
-                    $('<button type="button" data-role="page-previous" title="' + msg.PreviousPageTooltip + '" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-backward"></span></button>'),
+                    $('<button type="button" class="btn btn-default btn-sm">' + (data.icons.previous || msg.Previous) + '</button>').attr('title', msg.PreviousPageTooltip).attr('data-role', 'page-previous'),
                     $('<div>&nbsp;</div>'),
                     $('<div>' + msg.Page + '</div>'),
                     $('<div>&nbsp;</div>'),
@@ -304,11 +314,11 @@ gj.grid.plugins.pagination = {
                     $('<div>' + msg.Of + '&nbsp;</div>'),
                     $('<div data-role="page-label-last">0</div>'),
                     $('<div>&nbsp;</div>'),
-                    $('<button type="button" data-role="page-next" title="' + msg.NextPageTooltip + '" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-forward"></span></button>'),
+                    $('<button type="button" class="btn btn-default btn-sm">' + (data.icons.next || msg.Next) + '</button>').attr('title', msg.NextPageTooltip).attr('data-role', 'page-next'),
                     $('<div>&nbsp;</div>'),
-                    $('<button type="button" data-role="page-last" title="' + msg.LastPageTooltip + '" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-step-forward"></span></button>'),
+                    $('<button type="button" class="btn btn-default btn-sm">' + (data.icons.last || msg.Last) + '</button>').attr('title', msg.LastPageTooltip).attr('data-role', 'page-last'),
                     $('<div>&nbsp;</div>'),
-                    $('<button type="button" data-role="page-refresh" title="' + msg.Refresh + '" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-refresh"></span></button>'),
+                    $('<button type="button" class="btn btn-default btn-sm">' + (data.icons.refresh || msg.Refresh) + '</button>').attr('title', msg.Refresh).attr('data-role', 'page-refresh'),
                     $('<div>&nbsp;</div>'),
                     $('<div></div>').append($('<select data-role="page-size" class="form-control input-sm"></select></div>'))
                 ];
@@ -331,7 +341,7 @@ gj.grid.plugins.pagination = {
                 data.pager.leftControls = [
                     $('<button class="btn btn-default btn-sm gj-cursor-pointer">' + (data.icons.first || msg.First) + '</button>').attr('title', msg.FirstPageTooltip).attr('data-role', 'page-first'),
                     $('<div>&nbsp;</div>'),
-                    $('<button class="btn btn-default btn-sm gj-cursor-pointer">' + (data.icons.first || msg.Previous) + '</button>').attr('title', msg.PreviousPageTooltip).attr('data-role', 'page-previous'),
+                    $('<button class="btn btn-default btn-sm gj-cursor-pointer">' + (data.icons.previous || msg.Previous) + '</button>').attr('title', msg.PreviousPageTooltip).attr('data-role', 'page-previous'),
                     $('<div>&nbsp;</div>'),
                     $('<div>' + msg.Page + '</div>'),
                     $('<div>&nbsp;</div>'),

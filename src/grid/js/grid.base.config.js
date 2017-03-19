@@ -681,7 +681,7 @@ gj.grid.config = {
          *         ]
          *     });
          * </script>
-         * @example bootstrap <!-- bootstrap, grid.base -->
+         * @example Bootstrap <!-- bootstrap, grid.base -->
          * <table id="grid"></table>
          * <script>
          *     $('#grid').grid({
