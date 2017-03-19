@@ -485,26 +485,27 @@ gj.grid.widget = function ($grid, arguments) {
      * @param {string} id - The id of the row that needs to be updated
      * @param {object} record - Object with data for the new record.
      * @return grid
-     * @example sample <!-- jqueryui, grid.base -->
+     * @example sample <!-- grid.base, grid.pagination -->
      * <table id="grid"></table>
      * <script>
-     *     var grid, data;
+     *     var grid;
      *     function Edit(e) {
      *         grid.updateRow(e.data.id, { 'ID': e.data.id, 'Name': 'Ronaldo', 'PlaceOfBirth': 'Rio, Brazil' });
      *     }
      *     grid = $('#grid').grid({
+     *         primaryKey: 'ID',
      *         dataSource: [
      *             { 'ID': 1, 'Name': 'Hristo Stoichkov', 'PlaceOfBirth': 'Plovdiv, Bulgaria' },
      *             { 'ID': 2, 'Name': 'Ronaldo Luis Nazario de Lima', 'PlaceOfBirth': 'Rio de Janeiro, Brazil' },
      *             { 'ID': 3, 'Name': 'David Platt', 'PlaceOfBirth': 'Chadderton, Lancashire, England' }
      *         ],
-     *         uiLibrary: 'jqueryui',
      *         columns: [
-     *             { field: 'ID' },
+     *             { field: 'ID', width: 24 },
      *             { field: 'Name' },
      *             { field: 'PlaceOfBirth' },
-     *             { title: '', width: 20, type: 'icon', icon: 'ui-icon-pencil', events: { 'click': Edit } }
-     *         ]
+     *             { title: '', width: 50, align: 'center', tmpl: '<u>Edit</u>', events: { 'click': Edit } }
+     *         ],
+     *         pager: { limit: 2 }
      *     });
      * </script>
      */
