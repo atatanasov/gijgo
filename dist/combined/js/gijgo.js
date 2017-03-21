@@ -2844,14 +2844,14 @@ gj.grid.config = {
             content: {
                 rowHover: undefined,
                 rowSelected: 'gj-grid-base-active'
-            },
-            expandIcon: undefined,
-            collapseIcon: undefined
+            }
         },
 
         icons: {
-            asc: '<div>▲</div>',
-            desc: '<div>▼</div>'
+            asc: '▲',
+            desc: '▼',
+            expand: '+',
+            collapse: '-'
         }
     },
 
@@ -2868,9 +2868,7 @@ gj.grid.config = {
             content: {
                 rowHover: 'ui-state-hover',
                 rowSelected: 'ui-state-active'
-            },
-            expandIcon: 'ui-icon ui-icon-plus',
-            collapseIcon: 'ui-icon ui-icon-minus'
+            }
         }
     },
 
@@ -2881,9 +2879,7 @@ gj.grid.config = {
             content: {
                 rowHover: '',
                 rowSelected: 'active'
-            },
-            expandIcon: 'glyphicon glyphicon-plus',
-            collapseIcon: 'glyphicon glyphicon-minus'
+            }
         },
 
         iconsLibrary: 'glyphicons',
@@ -2901,7 +2897,7 @@ gj.grid.config = {
             }
         },
 
-        defaultIconColumnWidth: 34
+        defaultIconColumnWidth: 42
     },
 
     materialdesign: {
@@ -2912,17 +2908,15 @@ gj.grid.config = {
             content: {
                 rowHover: '',
                 rowSelected: 'is-selected'
-            },
-            expandIcon: 'material-icons gj-mdl-icon-plus',
-            collapseIcon: 'material-icons gj-mdl-icon-minus'
+            }
         },
         iconsLibrary: 'materialicons'
     },
 
     materialicons: {
         icons: {
-            asc: '<div><i class="material-icons">arrow_upward</i></div>',
-            desc: '<div><i class="material-icons">arrow_downward</i></div>',
+            asc: '<i class="material-icons">arrow_upward</i>',
+            desc: '<i class="material-icons">arrow_downward</i>',
             expand: '<i class="material-icons">add</i>',
             collapse: '<i class="material-icons">remove</i>'
         }
@@ -2931,14 +2925,18 @@ gj.grid.config = {
     fontawesome: {
         icons: {
             asc: '<i class="fa fa-sort-amount-asc" aria-hidden="true"></i>',
-            desc: '<i class="fa fa-sort-amount-desc" aria-hidden="true"></i>'
+            desc: '<i class="fa fa-sort-amount-desc" aria-hidden="true"></i>',
+            expand: '<i class="fa fa-plus" aria-hidden="true"></i>',
+            collapse: '<i class="fa fa-minus" aria-hidden="true"></i>'
         }
     },
 
     glyphicons: {
         icons: {
             asc: '<div class="glyphicon glyphicon-sort-by-alphabet" />',
-            desc: '<div class="glyphicon glyphicon-sort-by-alphabet-alt" />'
+            desc: '<div class="glyphicon glyphicon-sort-by-alphabet-alt" />',
+            expand: '<div class="glyphicon glyphicon-plus" />',
+            collapse: '<div class="glyphicon glyphicon-minus" />'
         }
     }
 };
@@ -3462,7 +3460,7 @@ gj.grid.methods = {
         if (sortBy) {
             position = gj.grid.methods.getColumnPosition($grid.data('columns'), sortBy);
             $cell = $grid.find('thead tr th:eq(' + position + ')');
-            $sortIcon = $(('desc' === direction) ? data.icons.desc : data.icons.asc).attr('data-role', 'sorticon').addClass('gj-unselectable');
+            $sortIcon = $('<div data-role="sorticon" class="gj-unselectable" />').append(('desc' === direction) ? data.icons.desc : data.icons.asc);
             $cell.append($sortIcon);
         }
     },
@@ -4816,7 +4814,7 @@ gj.grid.plugins.expandCollapseRows = {
              *         columns: [ { field: 'ID', width: 36 }, { field: 'Name' }, { field: 'DateOfBirth', type: 'date' } ]
              *     });
              * </script>
-             * @example Bootstrap.4 <!-- bootstrap4, grid.base, grid.expandCollapseRows -->
+             * @example Bootstrap.4.Font.Awesome <!-- bootstrap4, fontawesome, grid.base, grid.expandCollapseRows -->
              * <table id="grid"></table>
              * <script>
              *     $('#grid').grid({
@@ -4881,11 +4879,7 @@ gj.grid.plugins.expandCollapseRows = {
 
             $detailsRow.append($detailsCell.append($detailsWrapper.append($contentRow.data('details'))));
             $detailsRow.insertAfter($contentRow);
-            if (data.style.collapseIcon) {
-                $cell.find('span').attr('class', data.style.collapseIcon);
-            } else {
-                $cell.find('div[data-role="display"]').text('-');
-            }
+            $cell.children('div[data-role="display"]').empty().append(data.icons.collapse);
             $grid.updateDetails($contentRow);
             gj.grid.plugins.expandCollapseRows.events.detailExpand($grid, $detailsRow.find('td>div'), id);
         },
@@ -4896,11 +4890,7 @@ gj.grid.plugins.expandCollapseRows = {
                 data = $grid.data(),
                 id = gj.grid.methods.getId($contentRow, data.primaryKey, $contentRow.data('position'));
             $detailsRow.remove();
-            if (data.style.expandIcon) {
-                $cell.find('span').attr('class', data.style.expandIcon);
-            } else {
-                $cell.find('div[data-role="display"]').text('+');
-            }
+            $cell.children('div[data-role="display"]').empty().append(data.icons.expand);
             gj.grid.plugins.expandCollapseRows.events.detailCollapse($grid, $detailsRow.find('td>div'), id);
         },
 
@@ -5034,17 +5024,17 @@ gj.grid.plugins.expandCollapseRows = {
                 width: data.defaultIconColumnWidth,
                 align: 'center',
                 stopPropagation: true,
-                cssClass: 'gj-cursor-pointer',
+                cssClass: 'gj-cursor-pointer gj-unselectable',
                 tmpl: data.icons.expand,
                 events: {
                     'click': function (e) {
-                        var $cell = $(this);
-                        if ($cell.closest('tr').next().data('role') === 'details') {
-                            gj.grid.plugins.expandCollapseRows.private.detailCollapse($grid, $cell);
-                            gj.grid.plugins.expandCollapseRows.private.removeSelection($grid, e.data.id);
+                        var $cell = $(this), methods = gj.grid.plugins.expandCollapseRows.private;
+                        if ($cell.closest('tr').next().attr('data-role') === 'details') {
+                            methods.detailCollapse($grid, $cell);
+                            methods.removeSelection($grid, e.data.id);
                         } else {
-                            gj.grid.plugins.expandCollapseRows.private.detailExpand($grid, $(this));
-                            gj.grid.plugins.expandCollapseRows.private.keepSelection($grid, e.data.id);
+                            methods.detailExpand($grid, $(this));
+                            methods.keepSelection($grid, e.data.id);
                         }
                     }
                 }
@@ -7713,17 +7703,14 @@ gj.grid.plugins.grouping = {
                         $groupRow = $('<tr data-role="group" />'),
                         $expandCollapseCell = $('<td class="gj-text-align-center gj-unselectable gj-cursor-pointer" />');
 
-                    if (data.style.collapseIcon) {
-                        $expandCollapseCell.append('<div data-role="display"><span class="' + data.style.collapseIcon + '" /></div>');
-                    } else {
-                        $expandCollapseCell.append('<div data-role="display">-</div>');
-                    }
+                    $expandCollapseCell.append('<div data-role="display">' + data.icons.collapse + '</div>');
                     $expandCollapseCell.on('click', gj.grid.plugins.grouping.private.createExpandCollapseHandler(data));
                     $groupRow.append($expandCollapseCell);
                     $groupRow.append('<td colspan="' + colspan + '"><div data-role="display">' + data.grouping.groupBy + ': ' + record[data.grouping.groupBy] + '</div></td>');
                     $groupRow.insertBefore($row);
                     previousValue = record[data.grouping.groupBy];
                 }
+                $row.show();
             });
 
             data.params[data.paramNames.groupBy] = data.grouping.groupBy;
@@ -7742,10 +7729,10 @@ gj.grid.plugins.grouping = {
                     $groupRow = $cell.closest('tr');
                 if ($groupRow.next(':visible').data('role') === 'row') {
                     $groupRow.nextUntil('[data-role="group"]').hide();
-                    data.style.expandIcon ? $display.html('<span class="' + data.style.expandIcon + '" />') : $display.text('+');
+                    $display.empty().append(data.icons.expand);
                 } else {
                     $groupRow.nextUntil('[data-role="group"]').show();
-                    data.style.collapseIcon ? $display.html('<span class="' + data.style.collapseIcon + '" />') : $display.text('-');
+                    $display.empty().append(data.icons.collapse);
                 }
             };
         }
@@ -7761,7 +7748,9 @@ gj.grid.plugins.grouping = {
                 title: '',
                 field: '',
                 width: data.defaultIconColumnWidth,
-                align: 'center'
+                align: 'center',
+                stopPropagation: true,
+                cssClass: 'gj-cursor-pointer gj-unselectable'
             };
             data.columns = [column].concat(data.columns);
 

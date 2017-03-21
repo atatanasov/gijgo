@@ -86,17 +86,14 @@ gj.grid.plugins.grouping = {
                         $groupRow = $('<tr data-role="group" />'),
                         $expandCollapseCell = $('<td class="gj-text-align-center gj-unselectable gj-cursor-pointer" />');
 
-                    if (data.style.collapseIcon) {
-                        $expandCollapseCell.append('<div data-role="display"><span class="' + data.style.collapseIcon + '" /></div>');
-                    } else {
-                        $expandCollapseCell.append('<div data-role="display">-</div>');
-                    }
+                    $expandCollapseCell.append('<div data-role="display">' + data.icons.collapse + '</div>');
                     $expandCollapseCell.on('click', gj.grid.plugins.grouping.private.createExpandCollapseHandler(data));
                     $groupRow.append($expandCollapseCell);
                     $groupRow.append('<td colspan="' + colspan + '"><div data-role="display">' + data.grouping.groupBy + ': ' + record[data.grouping.groupBy] + '</div></td>');
                     $groupRow.insertBefore($row);
                     previousValue = record[data.grouping.groupBy];
                 }
+                $row.show();
             });
 
             data.params[data.paramNames.groupBy] = data.grouping.groupBy;
@@ -115,10 +112,10 @@ gj.grid.plugins.grouping = {
                     $groupRow = $cell.closest('tr');
                 if ($groupRow.next(':visible').data('role') === 'row') {
                     $groupRow.nextUntil('[data-role="group"]').hide();
-                    data.style.expandIcon ? $display.html('<span class="' + data.style.expandIcon + '" />') : $display.text('+');
+                    $display.empty().append(data.icons.expand);
                 } else {
                     $groupRow.nextUntil('[data-role="group"]').show();
-                    data.style.collapseIcon ? $display.html('<span class="' + data.style.collapseIcon + '" />') : $display.text('-');
+                    $display.empty().append(data.icons.collapse);
                 }
             };
         }
@@ -134,7 +131,9 @@ gj.grid.plugins.grouping = {
                 title: '',
                 field: '',
                 width: data.defaultIconColumnWidth,
-                align: 'center'
+                align: 'center',
+                stopPropagation: true,
+                cssClass: 'gj-cursor-pointer gj-unselectable'
             };
             data.columns = [column].concat(data.columns);
 

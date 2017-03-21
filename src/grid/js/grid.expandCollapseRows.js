@@ -28,7 +28,7 @@ gj.grid.plugins.expandCollapseRows = {
              *         columns: [ { field: 'ID', width: 36 }, { field: 'Name' }, { field: 'DateOfBirth', type: 'date' } ]
              *     });
              * </script>
-             * @example Bootstrap.4 <!-- bootstrap4, grid.base, grid.expandCollapseRows -->
+             * @example Bootstrap.4.Font.Awesome <!-- bootstrap4, fontawesome, grid.base, grid.expandCollapseRows -->
              * <table id="grid"></table>
              * <script>
              *     $('#grid').grid({
@@ -93,11 +93,7 @@ gj.grid.plugins.expandCollapseRows = {
 
             $detailsRow.append($detailsCell.append($detailsWrapper.append($contentRow.data('details'))));
             $detailsRow.insertAfter($contentRow);
-            if (data.style.collapseIcon) {
-                $cell.find('span').attr('class', data.style.collapseIcon);
-            } else {
-                $cell.find('div[data-role="display"]').text('-');
-            }
+            $cell.children('div[data-role="display"]').empty().append(data.icons.collapse);
             $grid.updateDetails($contentRow);
             gj.grid.plugins.expandCollapseRows.events.detailExpand($grid, $detailsRow.find('td>div'), id);
         },
@@ -108,11 +104,7 @@ gj.grid.plugins.expandCollapseRows = {
                 data = $grid.data(),
                 id = gj.grid.methods.getId($contentRow, data.primaryKey, $contentRow.data('position'));
             $detailsRow.remove();
-            if (data.style.expandIcon) {
-                $cell.find('span').attr('class', data.style.expandIcon);
-            } else {
-                $cell.find('div[data-role="display"]').text('+');
-            }
+            $cell.children('div[data-role="display"]').empty().append(data.icons.expand);
             gj.grid.plugins.expandCollapseRows.events.detailCollapse($grid, $detailsRow.find('td>div'), id);
         },
 
@@ -246,17 +238,17 @@ gj.grid.plugins.expandCollapseRows = {
                 width: data.defaultIconColumnWidth,
                 align: 'center',
                 stopPropagation: true,
-                cssClass: 'gj-cursor-pointer',
+                cssClass: 'gj-cursor-pointer gj-unselectable',
                 tmpl: data.icons.expand,
                 events: {
                     'click': function (e) {
-                        var $cell = $(this);
-                        if ($cell.closest('tr').next().data('role') === 'details') {
-                            gj.grid.plugins.expandCollapseRows.private.detailCollapse($grid, $cell);
-                            gj.grid.plugins.expandCollapseRows.private.removeSelection($grid, e.data.id);
+                        var $cell = $(this), methods = gj.grid.plugins.expandCollapseRows.private;
+                        if ($cell.closest('tr').next().attr('data-role') === 'details') {
+                            methods.detailCollapse($grid, $cell);
+                            methods.removeSelection($grid, e.data.id);
                         } else {
-                            gj.grid.plugins.expandCollapseRows.private.detailExpand($grid, $(this));
-                            gj.grid.plugins.expandCollapseRows.private.keepSelection($grid, e.data.id);
+                            methods.detailExpand($grid, $(this));
+                            methods.keepSelection($grid, e.data.id);
                         }
                     }
                 }

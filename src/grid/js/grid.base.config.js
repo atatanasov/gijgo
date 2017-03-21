@@ -969,14 +969,14 @@ gj.grid.config = {
             content: {
                 rowHover: undefined,
                 rowSelected: 'gj-grid-base-active'
-            },
-            expandIcon: undefined,
-            collapseIcon: undefined
+            }
         },
 
         icons: {
-            asc: '<div>▲</div>',
-            desc: '<div>▼</div>'
+            asc: '▲',
+            desc: '▼',
+            expand: '+',
+            collapse: '-'
         }
     },
 
@@ -993,9 +993,7 @@ gj.grid.config = {
             content: {
                 rowHover: 'ui-state-hover',
                 rowSelected: 'ui-state-active'
-            },
-            expandIcon: 'ui-icon ui-icon-plus',
-            collapseIcon: 'ui-icon ui-icon-minus'
+            }
         }
     },
 
@@ -1006,9 +1004,7 @@ gj.grid.config = {
             content: {
                 rowHover: '',
                 rowSelected: 'active'
-            },
-            expandIcon: 'glyphicon glyphicon-plus',
-            collapseIcon: 'glyphicon glyphicon-minus'
+            }
         },
 
         iconsLibrary: 'glyphicons',
@@ -1026,7 +1022,7 @@ gj.grid.config = {
             }
         },
 
-        defaultIconColumnWidth: 34
+        defaultIconColumnWidth: 42
     },
 
     materialdesign: {
@@ -1037,17 +1033,15 @@ gj.grid.config = {
             content: {
                 rowHover: '',
                 rowSelected: 'is-selected'
-            },
-            expandIcon: 'material-icons gj-mdl-icon-plus',
-            collapseIcon: 'material-icons gj-mdl-icon-minus'
+            }
         },
         iconsLibrary: 'materialicons'
     },
 
     materialicons: {
         icons: {
-            asc: '<div><i class="material-icons">arrow_upward</i></div>',
-            desc: '<div><i class="material-icons">arrow_downward</i></div>',
+            asc: '<i class="material-icons">arrow_upward</i>',
+            desc: '<i class="material-icons">arrow_downward</i>',
             expand: '<i class="material-icons">add</i>',
             collapse: '<i class="material-icons">remove</i>'
         }
@@ -1056,14 +1050,18 @@ gj.grid.config = {
     fontawesome: {
         icons: {
             asc: '<i class="fa fa-sort-amount-asc" aria-hidden="true"></i>',
-            desc: '<i class="fa fa-sort-amount-desc" aria-hidden="true"></i>'
+            desc: '<i class="fa fa-sort-amount-desc" aria-hidden="true"></i>',
+            expand: '<i class="fa fa-plus" aria-hidden="true"></i>',
+            collapse: '<i class="fa fa-minus" aria-hidden="true"></i>'
         }
     },
 
     glyphicons: {
         icons: {
             asc: '<div class="glyphicon glyphicon-sort-by-alphabet" />',
-            desc: '<div class="glyphicon glyphicon-sort-by-alphabet-alt" />'
+            desc: '<div class="glyphicon glyphicon-sort-by-alphabet-alt" />',
+            expand: '<div class="glyphicon glyphicon-plus" />',
+            collapse: '<div class="glyphicon glyphicon-minus" />'
         }
     }
 };

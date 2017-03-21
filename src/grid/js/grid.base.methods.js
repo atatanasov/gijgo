@@ -187,7 +187,7 @@ gj.grid.methods = {
         if (sortBy) {
             position = gj.grid.methods.getColumnPosition($grid.data('columns'), sortBy);
             $cell = $grid.find('thead tr th:eq(' + position + ')');
-            $sortIcon = $(('desc' === direction) ? data.icons.desc : data.icons.asc).attr('data-role', 'sorticon').addClass('gj-unselectable');
+            $sortIcon = $('<div data-role="sorticon" class="gj-unselectable" />').append(('desc' === direction) ? data.icons.desc : data.icons.asc);
             $cell.append($sortIcon);
         }
     },
