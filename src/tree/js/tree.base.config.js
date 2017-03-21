@@ -304,8 +304,6 @@ gj.tree.config = {
         }
     },
 
-    jqueryui: {},
-
     materialdesign: {
         indentation: 24,
         style: {

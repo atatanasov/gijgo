@@ -2922,7 +2922,9 @@ gj.grid.config = {
     materialicons: {
         icons: {
             asc: '<div><i class="material-icons">arrow_upward</i></div>',
-            desc: '<div><i class="material-icons">arrow_downward</i></div>'
+            desc: '<div><i class="material-icons">arrow_downward</i></div>',
+            expand: '<i class="material-icons">add</i>',
+            collapse: '<i class="material-icons">remove</i>'
         }
     },
 
@@ -4795,7 +4797,7 @@ gj.grid.plugins.expandCollapseRows = {
              * Automatically add expand collapse column as a first column in the grid during initialization.
              * @type string
              * @default undefined
-             * @example base.theme <!-- grid.base, grid.expandCollapseRows -->
+             * @example Base.Theme <!-- grid.base, grid.expandCollapseRows -->
              * <table id="grid"></table>
              * <script>
              *     $('#grid').grid({
@@ -4804,24 +4806,35 @@ gj.grid.plugins.expandCollapseRows = {
              *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'DateOfBirth', type: 'date' } ]
              *     });
              * </script>
-             * @example bootstrap <!-- bootstrap, grid.base, grid.expandCollapseRows -->
+             * @example Bootstrap.3 <!-- bootstrap, grid.base, grid.expandCollapseRows -->
              * <table id="grid"></table>
              * <script>
              *     $('#grid').grid({
              *         dataSource: '/DataSources/GetPlayers',
              *         uiLibrary: 'bootstrap',
              *         detailTemplate: '<div><b>Place Of Birth:</b> {PlaceOfBirth}</div>',
-             *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'DateOfBirth', type: 'date' } ]
+             *         columns: [ { field: 'ID', width: 36 }, { field: 'Name' }, { field: 'DateOfBirth', type: 'date' } ]
              *     });
              * </script>
-             * @example materialdesign <!-- materialdesign, grid.base -->
+             * @example Bootstrap.4 <!-- bootstrap4, grid.base, grid.expandCollapseRows -->
+             * <table id="grid"></table>
+             * <script>
+             *     $('#grid').grid({
+             *         dataSource: '/DataSources/GetPlayers',
+             *         uiLibrary: 'bootstrap4',
+             *         iconsLibrary: 'fontawesome',
+             *         detailTemplate: '<div><b>Place Of Birth:</b> {PlaceOfBirth}</div>',
+             *         columns: [ { field: 'ID', width: 36 }, { field: 'Name' }, { field: 'DateOfBirth', type: 'date' } ]
+             *     });
+             * </script>
+             * @example Material.Design <!-- materialdesign, grid.base -->
              * <table id="grid"></table>
              * <script>
              *     $('#grid').grid({
              *         dataSource: '/DataSources/GetPlayers',
              *         uiLibrary: 'materialdesign',
              *         detailTemplate: '<div style="text-align: left"><b>Place Of Birth:</b> {PlaceOfBirth}</div>',
-             *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'DateOfBirth', type: 'date' } ]
+             *         columns: [ { field: 'ID', width: 70 }, { field: 'Name' }, { field: 'DateOfBirth', type: 'date' } ]
              *     });
              * </script>
              */
@@ -5021,6 +5034,8 @@ gj.grid.plugins.expandCollapseRows = {
                 width: data.defaultIconColumnWidth,
                 align: 'center',
                 stopPropagation: true,
+                cssClass: 'gj-cursor-pointer',
+                tmpl: data.icons.expand,
                 events: {
                     'click': function (e) {
                         var $cell = $(this);
@@ -5034,13 +5049,6 @@ gj.grid.plugins.expandCollapseRows = {
                     }
                 }
             };
-            if (data.style.expandIcon) {
-                column.type = 'icon';
-                column.icon = data.style.expandIcon;
-            } else {
-                column.tmpl = '+';
-                column.cssClass = 'gj-cursor-pointer';
-            }
             data.columns = [column].concat(data.columns);
 
             $grid.on('rowDataBound', function (e, $row, id, record) {
@@ -5927,7 +5935,7 @@ gj.grid.plugins.pagination = {
                  * @alias pager.sizes
                  * @type array
                  * @default undefined
-                 * @example bootstrap <!-- bootstrap, grid.base, grid.pagination  -->
+                 * @example Bootstrap.3 <!-- bootstrap, grid.base, grid.pagination  -->
                  * <div class="container">
                  *     <table id="grid"></table>
                  * </div>
@@ -5939,13 +5947,15 @@ gj.grid.plugins.pagination = {
                  *         pager: { limit: 2, sizes: [2, 5, 10, 20] }
                  *     });
                  * </script>
-                 * @example jqueryui <!-- jqueryui, grid.base, grid.pagination  -->
-                 * <table id="grid"></table>
+                 * @example Material.Design <!-- materialdesign, grid.base, grid.pagination  -->
+                 * <div class="container">
+                 *     <table id="grid"></table>
+                 * </div>
                  * <script>
                  *     var grid = $('#grid').grid({
                  *         dataSource: '/DataSources/GetPlayers',
-                 *         uiLibrary: 'jqueryui',
-                 *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
+                 *         uiLibrary: 'materialdesign',
+                 *         columns: [ { field: 'ID', width: 70 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
                  *         pager: { limit: 2, sizes: [2, 5, 10, 20] }
                  *     });
                  * </script>
@@ -6078,11 +6088,11 @@ gj.grid.plugins.pagination = {
 
         materialicons: {
             icons: {
-                first: '<button class="mdl-button mdl-button--icon"><i class="material-icons">first_page</i></button>',
-                previous: '<button class="mdl-button mdl-button--icon"><i class="material-icons">chevron_left</i></button>',
-                next: '<button class="mdl-button mdl-button--icon"><i class="material-icons">chevron_right</i></button>',
-                last: '<button class="mdl-button mdl-button--icon"><i class="material-icons">last_page</i></button>',
-                refresh: '<button class="mdl-button mdl-button--icon"><i class="material-icons">refresh</i></button>'
+                first: '<i class="material-icons">first_page</i>',
+                previous: '<i class="material-icons">chevron_left</i>',
+                next: '<i class="material-icons">chevron_right</i>',
+                last: '<i class="material-icons">last_page</i>',
+                refresh: '<i class="material-icons">refresh</i>'
             }
         },
 
@@ -6234,15 +6244,15 @@ gj.grid.plugins.pagination = {
             var msg = gj.grid.messages[data.locale];
             if (typeof (data.pager.leftControls) === 'undefined') {
                 data.pager.leftControls = [
-                    $(data.icons.first || '<button class="mdl-button">' + msg.First + '</button>').attr('title', msg.FirstPageTooltip).attr('data-role', 'page-first'),
-                    $(data.icons.previous || '<button class="mdl-button">' + msg.Previous + '</button>').attr('title', msg.PreviousPageTooltip).attr('data-role', 'page-previous'),
+                    $('<button class="mdl-button">' + (data.icons.first || msg.First) + '</button>').attr('title', msg.FirstPageTooltip).attr('data-role', 'page-first').addClass(data.icons.first ? 'mdl-button--icon' : ''),
+                    $('<button class="mdl-button">' + (data.icons.previous || msg.Previous) + '</button>').attr('title', msg.PreviousPageTooltip).attr('data-role', 'page-previous').addClass(data.icons.previous ? 'mdl-button--icon' : ''),
                     $('<span class="gj-grid-mdl-pager-label">' + msg.Page + '</span>'),
                     $('<input data-role="page-number" class="mdl-textfield__input gj-grid-mdl-page" type="text" value="0">'),
                     $('<span class="gj-grid-mdl-pager-label">' + msg.Of + '</span>'),
                     $('<span data-role="page-label-last" class="gj-grid-mdl-pager-label">0</span>'),
-                    $(data.icons.next || '<button class="mdl-button">' + msg.Next + '</button>').attr('title', msg.NextPageTooltip).attr('data-role', 'page-next'),
-                    $(data.icons.last || '<button class="mdl-button">' + msg.Last + '</button>').attr('title', msg.LastPageTooltip).attr('data-role', 'page-last'),
-                    $(data.icons.refresh || '<button class="mdl-button">' + msg.Refresh + '</button>').attr('title', msg.Refresh).attr('data-role', 'page-refresh'),
+                    $('<button class="mdl-button">' + (data.icons.next || msg.Next) + '</button>').attr('title', msg.NextPageTooltip).attr('data-role', 'page-next').addClass(data.icons.next ? 'mdl-button--icon' : ''),
+                    $('<button class="mdl-button">' + (data.icons.last || msg.Last) + '</button>').attr('title', msg.LastPageTooltip).attr('data-role', 'page-last').addClass(data.icons.last ? 'mdl-button--icon' : ''),
+                    $('<button class="mdl-button">' + (data.icons.refresh || msg.Refresh) + '</button>').attr('title', msg.Refresh).attr('data-role', 'page-refresh').addClass(data.icons.refresh ? 'mdl-button--icon' : ''),
                     $('<select data-role="page-size" class="mdl-textfield__input gj-grid-mdl-limit-select"></select></div>')
                 ];
             }
@@ -6314,7 +6324,7 @@ gj.grid.plugins.pagination = {
             data = $grid.data();
 
             if (data.pager) {
-                page = (0 === totalRecords) ? 0 : data.params[data.paramNames.page];
+                page = (0 === totalRecords) ? 0 : parseInt(data.params[data.paramNames.page], 10);
                 limit = parseInt(data.params[data.paramNames.limit], 10);
                 lastPage = Math.ceil(totalRecords / limit);
                 firstRecord = (0 === page) ? 0 : (limit * (page - 1)) + 1;
@@ -8071,8 +8081,6 @@ gj.tree.config = {
             leafIcon: undefined
         }
     },
-
-    jqueryui: {},
 
     materialdesign: {
         indentation: 24,

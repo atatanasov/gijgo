@@ -1047,7 +1047,9 @@ gj.grid.config = {
     materialicons: {
         icons: {
             asc: '<div><i class="material-icons">arrow_upward</i></div>',
-            desc: '<div><i class="material-icons">arrow_downward</i></div>'
+            desc: '<div><i class="material-icons">arrow_downward</i></div>',
+            expand: '<i class="material-icons">add</i>',
+            collapse: '<i class="material-icons">remove</i>'
         }
     },
 
