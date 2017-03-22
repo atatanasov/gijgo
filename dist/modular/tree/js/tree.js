@@ -470,18 +470,14 @@ gj.tree.config = {
         width: undefined,
 
         /** The name of the UI library that is going to be in use.
-         * @additionalinfo The css files for Bootstrap should be manually included if you use bootstrap as UI Library.
+         * @additionalinfo The css files for Bootstrap or Material Design Lite should be manually included if you use those as UI Library.
          * @type (base|bootstrap|materialdesign)
          * @default single
-         * @example Bootstrap <!-- bootstrap, tree.base, checkbox -->
+         * @example Bootstrap.3 <!-- bootstrap, tree.base, checkbox -->
          * <div id="tree"></div>
          * <script>
          *     var tree = $('#tree').tree({
-         *         dataSource: [
-         *             { text: 'North America', children: [ { text: 'USA', children: [ { text: 'California' }, { text: 'Miami' } ] }, { text: 'Canada' },  { text: 'Mexico' } ] },
-         *             { text: 'Europe', children: [ { text: 'France' },  { text: 'Spain' },  { text: 'Italy' } ] },
-         *             { text: 'South America', children: [ { text: 'Brazil' },  { text: 'Argentina' },  { text: 'Columbia' } ] }
-         *         ],
+         *         dataSource: '/DataSources/GetCountries',
          *         width: 500,
          *         uiLibrary: 'bootstrap',
          *         checkboxes: true
@@ -491,11 +487,7 @@ gj.tree.config = {
          * <div id="tree"></div>
          * <script>
          *     var tree = $('#tree').tree({
-         *         dataSource: [
-         *             { text: 'North America', children: [ { text: 'USA', children: [ { text: 'California' }, { text: 'Miami' } ] }, { text: 'Canada' },  { text: 'Mexico' } ] },
-         *             { text: 'Europe', children: [ { text: 'France' },  { text: 'Spain' },  { text: 'Italy' } ] },
-         *             { text: 'South America', children: [ { text: 'Brazil' },  { text: 'Argentina' },  { text: 'Columbia' } ] }
-         *         ],
+         *         dataSource: '/DataSources/GetCountries',
          *         width: 500,
          *         uiLibrary: 'materialdesign',
          *         checkboxes: true
@@ -503,6 +495,34 @@ gj.tree.config = {
          * </script>
          */
         uiLibrary: 'base',
+
+        /** The name of the icons library that is going to be in use. Currently we support Material Icons, Font Awesome and Glyphicons.
+         * @additionalinfo If you use Bootstrap 3 as uiLibrary, then the iconsLibrary is set to Glyphicons by default.<br/>
+         * If you use Material Design as uiLibrary, then the iconsLibrary is set to Material Icons by default.<br/>
+         * The css files for Material Icons, Font Awesome or Glyphicons should be manually included to the page where the grid is in use.
+         * @type (materialicons|fontawesome|glyphicons)
+         * @default undefined
+         * @example Base.Theme.Material.Icons <!-- materialicons, tree.base -->
+         * <div id="tree"></div>
+         * <script>
+         *     var tree = $('#tree').tree({
+         *         dataSource: '/DataSources/GetCountries',
+         *         width: 500,
+         *         iconsLibrary: 'materialicons'
+         *     });
+         * </script>
+         * @example Bootstrap.4.Font.Awesome <!-- bootstrap4, fontawesome, tree.base -->
+         * <div id="tree"></div>
+         * <script>
+         *     var tree = $('#tree').tree({
+         *         dataSource: '/DataSources/GetCountries',
+         *         width: 500,
+         *         uiLibrary: 'bootstrap4',
+         *         iconsLibrary: 'fontawesome'
+         *     });
+         * </script>
+         */
+        iconsLibrary: undefined,
 
         autoGenId: 1,
 
@@ -514,9 +534,12 @@ gj.tree.config = {
             item: 'gj-tree-item',
             active: 'gj-tree-base-active',
             display: undefined,
-            expandIcon: undefined,
-            collapseIcon: undefined,
             leafIcon: undefined
+        },
+
+        icons: {
+            expand: '+',
+            collapse: '-'
         }
     },
 
@@ -526,11 +549,18 @@ gj.tree.config = {
             wrapper: 'gj-unselectable',
             list: 'gj-tree-bootstrap-list list-group',
             item: 'gj-tree-item list-group-item',
-            active: 'active',
-            display: undefined,
-            expandIcon: 'glyphicon glyphicon-plus',
-            collapseIcon: 'glyphicon glyphicon-minus',
-            leafIcon: undefined
+            active: 'active'
+        },
+        iconsLibrary: 'glyphicons'
+    },
+
+    bootstrap4: {
+        indentation: 24,
+        style: {
+            wrapper: 'gj-unselectable',
+            list: 'gj-tree-bootstrap-list list-group',
+            item: 'gj-tree-item list-group-item',
+            active: 'active'
         }
     },
 
@@ -542,9 +572,41 @@ gj.tree.config = {
             item: 'gj-tree-item gj-tree-mdl-item mdl-list__item',
             active: 'gj-tree-mdl-active',
             display: 'mdl-list__item-primary-content',
-            expandIcon: 'material-icons mdl-list__item-icon gj-cursor-pointer gj-mdl-icon-plus',
-            collapseIcon: 'material-icons mdl-list__item-icon gj-cursor-pointer gj-mdl-icon-minus',
+            //expandIcon: 'material-icons mdl-list__item-icon gj-cursor-pointer gj-mdl-icon-plus',
+            //collapseIcon: 'material-icons mdl-list__item-icon gj-cursor-pointer gj-mdl-icon-minus',
             leafIcon: undefined
+        },
+        iconsLibrary: 'materialicons'
+    },
+
+    materialicons: {
+        indentation: 24,
+        style: {
+            expander: 'gj-tree-material-icons-expander'
+        },
+        icons: {
+            expand: '<i class="material-icons">add</i>',
+            collapse: '<i class="material-icons">remove</i>'
+        }
+    },
+
+    fontawesome: {
+        style: {
+            expander: 'gj-tree-font-awesome-expander'
+        },
+        icons: {
+            expand: '<i class="fa fa-plus" aria-hidden="true"></i>',
+            collapse: '<i class="fa fa-minus" aria-hidden="true"></i>'
+        }
+    },
+
+    glyphicons: {
+        style: {
+            expander: 'gj-tree-glyphicons-expander'
+        },
+        icons: {
+            expand: '<span class="glyphicon glyphicon-plus" />',
+            collapse: '<span class="glyphicon glyphicon-minus" />'
         }
     }
 };
@@ -809,7 +871,7 @@ gj.tree.methods = {
             data = $tree.data(),
             $node = $('<li data-id="' + nodeData.id + '" data-role="node" />').addClass(data.style.item),
             $wrapper = $('<div data-role="wrapper" />'),
-            $expander = $('<span data-role="expander" data-mode="close"></span>'),
+            $expander = $('<span data-role="expander" data-mode="close"></span>').addClass(data.style.expander),
             $display = $('<span data-role="display">' + nodeData.data[data.textField] + '</span>');
 
         if (data.indentation) {
@@ -830,7 +892,7 @@ gj.tree.methods = {
         }
 
         if (nodeData.children && nodeData.children.length) {
-            data.style.expandIcon ? $expander.addClass(data.style.expandIcon) : $expander.text('+');
+            $expander.empty().append(data.icons.expand);
             $newParent = $('<ul />').addClass(data.style.list).addClass('gj-hidden');
             $node.append($newParent);
 
@@ -879,7 +941,7 @@ gj.tree.methods = {
         if ($list && $list.length && gj.tree.events.expand($tree, $node, id) !== false) {
             $list.show();
             $expander.attr('data-mode', 'open');
-            data.style.collapseIcon ? $expander.removeClass(data.style.expandIcon).addClass(data.style.collapseIcon) : $expander.text('-');
+            $expander.empty().append(data.icons.collapse);
             if (cascade) {
                 $children = $node.find('ul>li');
                 for (i = 0; i < $children.length; i++) {
@@ -899,7 +961,7 @@ gj.tree.methods = {
         if ($list && $list.length && gj.tree.events.collapse($tree, $node, id) !== false) {
             $list.hide();
             $expander.attr('data-mode', 'close');
-            data.style.expandIcon ? $expander.removeClass(data.style.collapseIcon).addClass(data.style.expandIcon) : $expander.text('+');
+            $expander.empty().append(data.icons.expand);
             if (cascade) {
                 $children = $node.find('ul>li');
                 for (i = 0; i < $children.length; i++) {
@@ -2005,12 +2067,12 @@ gj.tree.plugins.dragAndDrop = {
 
 	        if ($list.length && $list.children().length) {
 	            if ($list.is(':visible')) {
-	                data.style.collapseIcon ? $expander.addClass(data.style.collapseIcon) : $expander.text('-');
+	                $expander.empty().append(data.icons.collapse);
 	            } else {
-	                data.style.expandIcon ? $expander.addClass(data.style.expandIcon) : $expander.text('+');
+	                $expander.empty().append(data.icons.expand);
 	            }
 	        } else {
-	            $expander.removeClass(data.style.expandIcon).removeClass(data.style.collapseIcon).empty();
+	            $expander.empty();
 	        }
 	        $wrapper.removeClass(data.style.dropAbove).removeClass(data.style.dropBelow);
 

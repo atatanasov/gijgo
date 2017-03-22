@@ -75,7 +75,7 @@ gj.tree.methods = {
             data = $tree.data(),
             $node = $('<li data-id="' + nodeData.id + '" data-role="node" />').addClass(data.style.item),
             $wrapper = $('<div data-role="wrapper" />'),
-            $expander = $('<span data-role="expander" data-mode="close"></span>'),
+            $expander = $('<span data-role="expander" data-mode="close"></span>').addClass(data.style.expander),
             $display = $('<span data-role="display">' + nodeData.data[data.textField] + '</span>');
 
         if (data.indentation) {
@@ -96,7 +96,7 @@ gj.tree.methods = {
         }
 
         if (nodeData.children && nodeData.children.length) {
-            data.style.expandIcon ? $expander.addClass(data.style.expandIcon) : $expander.text('+');
+            $expander.empty().append(data.icons.expand);
             $newParent = $('<ul />').addClass(data.style.list).addClass('gj-hidden');
             $node.append($newParent);
 
@@ -145,7 +145,7 @@ gj.tree.methods = {
         if ($list && $list.length && gj.tree.events.expand($tree, $node, id) !== false) {
             $list.show();
             $expander.attr('data-mode', 'open');
-            data.style.collapseIcon ? $expander.removeClass(data.style.expandIcon).addClass(data.style.collapseIcon) : $expander.text('-');
+            $expander.empty().append(data.icons.collapse);
             if (cascade) {
                 $children = $node.find('ul>li');
                 for (i = 0; i < $children.length; i++) {
@@ -165,7 +165,7 @@ gj.tree.methods = {
         if ($list && $list.length && gj.tree.events.collapse($tree, $node, id) !== false) {
             $list.hide();
             $expander.attr('data-mode', 'close');
-            data.style.expandIcon ? $expander.removeClass(data.style.collapseIcon).addClass(data.style.expandIcon) : $expander.text('+');
+            $expander.empty().append(data.icons.expand);
             if (cascade) {
                 $children = $node.find('ul>li');
                 for (i = 0; i < $children.length; i++) {

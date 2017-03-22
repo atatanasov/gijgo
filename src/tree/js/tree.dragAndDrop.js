@@ -234,12 +234,12 @@ gj.tree.plugins.dragAndDrop = {
 
 	        if ($list.length && $list.children().length) {
 	            if ($list.is(':visible')) {
-	                data.style.collapseIcon ? $expander.addClass(data.style.collapseIcon) : $expander.text('-');
+	                $expander.empty().append(data.icons.collapse);
 	            } else {
-	                data.style.expandIcon ? $expander.addClass(data.style.expandIcon) : $expander.text('+');
+	                $expander.empty().append(data.icons.expand);
 	            }
 	        } else {
-	            $expander.removeClass(data.style.expandIcon).removeClass(data.style.collapseIcon).empty();
+	            $expander.empty();
 	        }
 	        $wrapper.removeClass(data.style.dropAbove).removeClass(data.style.dropBelow);
 

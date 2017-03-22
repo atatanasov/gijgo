@@ -71,7 +71,7 @@ li.gj-tree-item [data-role="spacer"] {
     display: table-cell;
 }
 
-li.gj-tree-item [data-role="expander"] {
+[data-type="tree"] ul li [data-role="expander"] {
     display: table-cell;
     vertical-align:middle;
     text-align:center;
@@ -112,6 +112,7 @@ ul.gj-tree-bootstrap-list {
 
 li ul.gj-tree-bootstrap-list {
     padding-left: 0px;
+    width: 100%;
 }
 
 ul.gj-tree-bootstrap-list li.gj-tree-item ul li.gj-tree-item {
@@ -133,10 +134,6 @@ ul.gj-tree-bootstrap-list li.gj-tree-item ul li.gj-tree-item:last-child {
 
 ul.gj-tree-bootstrap-list li [data-role="wrapper"] {
     padding: 0px 10px;
-}
-
-ul.gj-tree-bootstrap-list li [data-role="expander"] {
-    width: 24px;
 }
 
 ul.gj-tree-bootstrap-list li [data-role="checkbox"] {
@@ -169,11 +166,6 @@ ul.gj-tree-bootstrap-list li [data-role="display"] {
     min-height: unset;
 }
 
-li.gj-tree-mdl-item [data-role="expander"] {
-    height: 24px;
-    width: 24px;
-}
-
 li.gj-tree-mdl-item [data-role="checkbox"] {
     height: 24px;
     width: 24px;
@@ -186,6 +178,19 @@ li.gj-tree-mdl-item [data-role="image"] {
 
 .gj-tree-mdl-active {
     background: #b3d4fc;
+}
+
+[data-type="tree"] ul li [data-role="expander"].gj-tree-material-icons-expander {
+    height: 24px;
+    width: 24px;
+}
+
+[data-type="tree"] ul li [data-role="expander"].gj-tree-font-awesome-expander {
+    width: 24px;
+}
+
+[data-type="tree"] ul li [data-role="expander"].gj-tree-glyphicons-expander {
+    width: 24px;
 }
 .gj-tree-drop-above {    
     border-top: 1px solid #000;

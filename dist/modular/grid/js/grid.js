@@ -1314,10 +1314,10 @@ gj.grid.config = {
 
     glyphicons: {
         icons: {
-            asc: '<div class="glyphicon glyphicon-sort-by-alphabet" />',
-            desc: '<div class="glyphicon glyphicon-sort-by-alphabet-alt" />',
-            expand: '<div class="glyphicon glyphicon-plus" />',
-            collapse: '<div class="glyphicon glyphicon-minus" />'
+            asc: '<span class="glyphicon glyphicon-sort-by-alphabet" />',
+            desc: '<span class="glyphicon glyphicon-sort-by-alphabet-alt" />',
+            expand: '<span class="glyphicon glyphicon-plus" />',
+            collapse: '<span class="glyphicon glyphicon-minus" />'
         }
     }
 };
