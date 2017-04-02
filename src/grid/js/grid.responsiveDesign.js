@@ -48,6 +48,7 @@ gj.grid.plugins.responsiveDesign = {
 
             /** Automatically adds hidden columns to the details section of the row.
              * This setting works only if the responsive setting is set to true and the detailTemplate is set.
+             * You need to set priority and minWidth on the colums, that needs to be hidden in smaller screens.
              * @type boolean
              * @default false
              * @example sample <!-- bootstrap, grid.base, grid.expandCollapseRows, grid.responsiveDesign -->
