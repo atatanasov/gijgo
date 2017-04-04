@@ -15,8 +15,8 @@
  </div>
  <script>
      $('#element').draggable({
-         start: function (e, offset) {
-             $('body').append('<div>The start event is fired.</div>');
+         start: function (e, offset, mousePosition) {
+             $('body').append('<div>The start event is fired. offset { top:' + offset.top + ', left: ' + offset.left + '}. mousePosition { top:' + mousePosition.top + ', left: ' + mousePosition.left + '}.</div>');
          }
      });
  </script>

@@ -13,7 +13,7 @@
  <div id="element" class="element gj-unselectable">drag me</div>
  <script>
      $('#element').draggable({
-         drag: function (e, offset) {
+         drag: function (e, offset, mousePosition) {
              $('body').append('<div>The drag event is fired. offset { top:' + offset.top + ', left: ' + offset.left + '}.</div>');
          }
      });

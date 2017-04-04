@@ -132,7 +132,7 @@ gj.draggable.methods = {
                         gj.draggable.methods.move($dragEl, offsetX, offsetY);
                     }
                 } else {
-                    gj.draggable.events.start($dragEl);
+                    gj.draggable.events.start($dragEl, offsetX, offsetY, x, y);
                 }
                 $dragEl.attr('data-draggable-x', x);
                 $dragEl.attr('data-draggable-y', y);
@@ -176,7 +176,7 @@ gj.draggable.events = {
      * <div id="element" class="element gj-unselectable">drag me</div>
      * <script>
      *     $('#element').draggable({
-     *         drag: function (e, offset) {
+     *         drag: function (e, offset, mousePosition) {
      *             $('body').append('<div>The drag event is fired. offset { top:' + offset.top + ', left: ' + offset.left + '}.</div>');
      *         }
      *     });
@@ -200,14 +200,14 @@ gj.draggable.events = {
      * </div>
      * <script>
      *     $('#element').draggable({
-     *         start: function (e, offset) {
-     *             $('body').append('<div>The start event is fired.</div>');
+     *         start: function (e, offset, mousePosition) {
+     *             $('body').append('<div>The start event is fired. offset { top:' + offset.top + ', left: ' + offset.left + '}. mousePosition { top:' + mousePosition.top + ', left: ' + mousePosition.left + '}.</div>');
      *         }
      *     });
      * </script>
      */
-    start: function ($dragEl) {
-        $dragEl.triggerHandler('start');
+    start: function ($dragEl, offsetX, offsetY, mouseX, mouseY) {
+        $dragEl.triggerHandler('start', [{ top: offsetY, left: offsetX }, { top: mouseY, left: mouseX }]);
     },
 
     /**
