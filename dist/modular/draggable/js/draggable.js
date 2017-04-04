@@ -308,12 +308,17 @@ gj.draggable.methods = {
 
         $handleEl = gj.draggable.methods.getHandleElement($dragEl);
 
-        $handleEl.on('mousedown touchstart', function (e) {
+        $handleEl.on('mousedown', function (e) {
             $dragEl.attr('data-draggable-dragging', true);
-            $dragEl.removeAttr('data-draggable-x');
-            $dragEl.removeAttr('data-draggable-y');
+            $dragEl.removeAttr('data-draggable-x').removeAttr('data-draggable-y');
             $dragEl.css('position', 'absolute');
             gj.documentManager.subscribeForEvent('mousemove', $dragEl.data('guid'), gj.draggable.methods.createMouseMoveHandler($dragEl));
+        });
+
+        $handleEl.on('touchstart', function (e) {
+            $dragEl.attr('data-draggable-dragging', true);
+            $dragEl.removeAttr('data-draggable-x').removeAttr('data-draggable-y');
+            $dragEl.css('position', 'absolute');
             gj.documentManager.subscribeForEvent('touchmove', $dragEl.data('guid'), gj.draggable.methods.createMouseMoveHandler($dragEl));
         });
 
@@ -398,7 +403,7 @@ gj.draggable.events = {
      * <style>
      * .element { border: 1px solid #999; width: 300px; height: 200px; cursor: move; text-align: center; background-color: #DDD; }
      * </style>
-     * <div id="element" class="element">drag me</div>
+     * <div id="element" class="element gj-unselectable">drag me</div>
      * <script>
      *     $('#element').draggable({
      *         drag: function (e, offset) {
@@ -420,7 +425,7 @@ gj.draggable.events = {
      * <style>
      * .element { border: 1px solid #999; width: 300px; height: 200px; cursor: move; text-align: center; background-color: #DDD; }
      * </style>
-     * <div id="element" class="element">
+     * <div id="element" class="element gj-unselectable">
      *   drag me
      * </div>
      * <script>
@@ -445,7 +450,7 @@ gj.draggable.events = {
      * <style>
      * .element { border: 1px solid #999; width: 300px; height: 200px; cursor: move; text-align: center; background-color: #DDD; }
      * </style>
-     * <div id="element" class="element">
+     * <div id="element" class="element gj-unselectable">
      *   drag me
      * </div>
      * <script>
