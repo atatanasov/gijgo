@@ -11,7 +11,7 @@
  <table id="grid"></table>
  <script>
      var grid = $('#grid').grid({
-         dataSource: '/DataSources/GetPlayers',
+         dataSource: '/Players/Get',
          columns: [ { field: 'ID' }, { field: 'Name', editor: true }, { field: 'PlaceOfBirth', editor: true } ]
      });
      grid.on('cellDataChanged', function (e, $cell, column, record, oldValue, newValue) {

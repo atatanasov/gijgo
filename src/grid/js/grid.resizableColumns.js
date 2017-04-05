@@ -12,7 +12,7 @@ gj.grid.plugins.resizableColumns = {
              * <table id="grid"></table>
              * <script>
              *     var grid = $('#grid').grid({
-             *         dataSource: '/DataSources/GetPlayers',
+             *         dataSource: '/Players/Get',
              *         resizableColumns: true,
              *         columns: [ { field: 'ID', width: 34 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
              *     });
@@ -21,7 +21,7 @@ gj.grid.plugins.resizableColumns = {
              * <table id="grid"></table>
              * <script>
              *     var grid = $('#grid').grid({
-             *         dataSource: '/DataSources/GetPlayers',
+             *         dataSource: '/Players/Get',
              *         resizableColumns: true,
              *         uiLibrary: 'bootstrap',
              *         columns: [ { field: 'ID', width: 34 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
@@ -31,7 +31,7 @@ gj.grid.plugins.resizableColumns = {
              * <table id="grid"></table>
              * <script>
              *     var grid = $('#grid').grid({
-             *         dataSource: '/DataSources/GetPlayers',
+             *         dataSource: '/Players/Get',
              *         resizableColumns: true,
              *         uiLibrary: 'materialdesign',
              *         columns: [ { field: 'ID', width: 34 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]

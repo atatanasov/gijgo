@@ -101,7 +101,7 @@ gj.tree.config = {
          * <div id="tree"></div>
          * <script>
          *     $('#tree').tree({
-         *         dataSource: '/DataSources/GetCountries'
+         *         dataSource: '/Locations/Get'
          *     });
          * </script>
          */
@@ -226,13 +226,13 @@ gj.tree.config = {
          * <div id="tree"></div>
          * <script>
          *     var tree = $('#tree').tree({
-         *         dataSource: '/DataSources/GetCountries',
+         *         dataSource: '/Locations/Get',
          *         width: 500,
          *         uiLibrary: 'bootstrap'
          *     });
          * </script>
          * @example HTML.Config <!-- bootstrap, tree.base -->
-         * <div id="tree" width="500" data-source="/DataSources/GetCountries" data-ui-library="bootstrap"></div>
+         * <div id="tree" width="500" data-source="/Locations/Get" data-ui-library="bootstrap"></div>
          * <script>
          *     $('#tree').tree();
          * </script>
@@ -247,7 +247,7 @@ gj.tree.config = {
          * <div id="tree"></div>
          * <script>
          *     var tree = $('#tree').tree({
-         *         dataSource: '/DataSources/GetCountries',
+         *         dataSource: '/Locations/Get',
          *         width: 500,
          *         uiLibrary: 'bootstrap',
          *         checkboxes: true
@@ -257,7 +257,7 @@ gj.tree.config = {
          * <div id="tree"></div>
          * <script>
          *     var tree = $('#tree').tree({
-         *         dataSource: '/DataSources/GetCountries',
+         *         dataSource: '/Locations/Get',
          *         width: 500,
          *         uiLibrary: 'materialdesign',
          *         checkboxes: true
@@ -276,7 +276,7 @@ gj.tree.config = {
          * <div id="tree"></div>
          * <script>
          *     var tree = $('#tree').tree({
-         *         dataSource: '/DataSources/GetCountries',
+         *         dataSource: '/Locations/Get',
          *         width: 500,
          *         iconsLibrary: 'materialicons'
          *     });
@@ -285,7 +285,7 @@ gj.tree.config = {
          * <div id="tree"></div>
          * <script>
          *     var tree = $('#tree').tree({
-         *         dataSource: '/DataSources/GetCountries',
+         *         dataSource: '/Locations/Get',
          *         width: 500,
          *         uiLibrary: 'bootstrap4',
          *         iconsLibrary: 'fontawesome'

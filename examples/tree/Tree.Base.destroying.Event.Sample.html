@@ -10,7 +10,7 @@
 <body>
  <button onclick="tree.destroy()">Destroy</button>
  <br/><br/>
- <div id="tree" data-source="/DataSources/GetCountries"></div>
+ <div id="tree" data-source="/Locations/Get"></div>
  <script>
      var tree = $('#tree').tree();
      tree.on('destroying', function (e) {

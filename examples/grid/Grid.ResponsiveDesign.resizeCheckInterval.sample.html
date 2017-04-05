@@ -11,7 +11,7 @@
  <table id="grid"></table>
  <script>
      var grid = $('#grid').grid({
-         dataSource: '/DataSources/GetPlayers',
+         dataSource: '/Players/Get',
          responsive: true,
          resizeCheckInterval: 2000, //check if the grid is resized on each 2 second
          columns: [ { field: 'ID', width: 20 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]

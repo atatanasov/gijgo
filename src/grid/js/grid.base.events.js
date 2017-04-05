@@ -13,7 +13,7 @@ gj.grid.events = {
      * <script>
      *     var grid = $('#grid').grid({
      *         dataSource: {
-     *             url: '/DataSources/GetPlayers',
+     *             url: '/Players/Get',
      *             data: { name: 'not existing data' } //search for not existing data in order to fire the event
      *         },
      *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
@@ -37,7 +37,7 @@ gj.grid.events = {
      * <table id="grid"></table>
      * <script>
      *     var grid = $('#grid').grid({
-     *         dataSource: '/DataSources/GetPlayers',
+     *         dataSource: '/Players/Get',
      *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
      *     });
      *     grid.on('dataBinding', function (e, records) {
@@ -60,7 +60,7 @@ gj.grid.events = {
      * <table id="grid"></table>
      * <script>
      *     var grid = $('#grid').grid({
-     *         dataSource: '/DataSources/GetPlayers',
+     *         dataSource: '/Players/Get',
      *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
      *     });
      *     grid.on('dataBound', function (e, records, totalRecords) {
@@ -83,7 +83,7 @@ gj.grid.events = {
      * <table id="grid"></table>
      * <script>
      *     var grid = $('#grid').grid({
-     *         dataSource: '/DataSources/GetPlayers',
+     *         dataSource: '/Players/Get',
      *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
      *     });
      *     grid.on('rowDataBound', function (e, $row, id, record) {
@@ -108,7 +108,7 @@ gj.grid.events = {
      * <table id="grid"></table>
      * <script>
      *     var grid = $('#grid').grid({
-     *         dataSource: '/DataSources/GetPlayers',
+     *         dataSource: '/Players/Get',
      *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' }, { field: 'Bulgarian', title: 'Is Bulgarian?' } ]
      *     });
      *     grid.on('cellDataBound', function (e, $displayEl, id, column, record) {
@@ -134,7 +134,7 @@ gj.grid.events = {
      * <table id="grid"></table>
      * <script>
      *     var grid = $('#grid').grid({
-     *         dataSource: '/DataSources/GetPlayers',
+     *         dataSource: '/Players/Get',
      *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
      *         selectionMethod: 'checkbox'
      *     });
@@ -159,7 +159,7 @@ gj.grid.events = {
      * <table id="grid"></table>
      * <script>
      *     var grid = $('#grid').grid({
-     *         dataSource: '/DataSources/GetPlayers',
+     *         dataSource: '/Players/Get',
      *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
      *         selectionMethod: 'checkbox'
      *     });
@@ -212,7 +212,7 @@ gj.grid.events = {
      * <table id="grid"></table>
      * <script>
      *     var grid = $('#grid').grid({
-     *         dataSource: '/DataSources/GetPlayers',
+     *         dataSource: '/Players/Get',
      *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
      *     });
      *     grid.on('destroying', function (e) {
@@ -237,7 +237,7 @@ gj.grid.events = {
      * <table id="grid"></table>
      * <script>
      *     var grid = $('#grid').grid({
-     *         dataSource: '/DataSources/GetPlayers',
+     *         dataSource: '/Players/Get',
      *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
      *     });
      *     grid.on('columnHide', function (e, column) {
@@ -260,7 +260,7 @@ gj.grid.events = {
      * <table id="grid"></table>
      * <script>
      *     var grid = $('#grid').grid({
-     *         dataSource: '/DataSources/GetPlayers',
+     *         dataSource: '/Players/Get',
      *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth', hidden: true } ]
      *     });
      *     grid.on('columnShow', function (e, column) {
@@ -282,7 +282,7 @@ gj.grid.events = {
      * <table id="grid"></table>
      * <script>
      *     var grid = $('#grid').grid({
-     *         dataSource: '/DataSources/GetPlayers',
+     *         dataSource: '/Players/Get',
      *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth', hidden: true } ],
      *         initialized: function (e) {
      *             alert('The grid is initialized.');

@@ -53,7 +53,7 @@ gj.grid.plugins.inlineEditing.config = {
              *         $container.append('<input type="text" value="' + currentValue + '"/>');
              *     }
              *     $('#grid').grid({
-             *         dataSource: '/DataSources/GetPlayers',
+             *         dataSource: '/Players/Get',
              *         columns: [
              *             { field: 'ID' },
              *             { field: 'Name', editor: edit },
@@ -72,7 +72,7 @@ gj.grid.plugins.inlineEditing.config = {
              * <table id="grid"></table>
              * <script>
              *     $('#grid').grid({
-             *         dataSource: '/DataSources/GetPlayers',
+             *         dataSource: '/Players/Get',
              *         columns: [
              *             { field: 'ID' },
              *             { field: 'Name', editor: true, mode: 'edit' },
@@ -93,7 +93,7 @@ gj.grid.plugins.inlineEditing.config = {
              * <table id="grid"></table>
              * <script>
              *     var grid = $('#grid').grid({
-             *         dataSource: '/DataSources/GetPlayers',
+             *         dataSource: '/Players/Get',
              *         primaryKey: 'ID',
              *         inlineEditing: { mode: 'dblclick' },
              *         columns: [
@@ -445,7 +445,7 @@ gj.grid.plugins.inlineEditing.public = {
      * <script>
      *     var grid = $('#grid').grid({
      *         primaryKey: 'ID',
-     *         dataSource: '/DataSources/GetPlayers',
+     *         dataSource: '/Players/Get',
      *         columns: [ { field: 'ID' }, { field: 'Name', editor: true }, { field: 'PlaceOfBirth', editor: true } ]
      *     });
      *     $('#btnGetChanges').on('click', function () {
@@ -484,7 +484,7 @@ gj.grid.plugins.inlineEditing.public = {
      *     }
      *     grid = $('#grid').grid({
      *         primaryKey: 'ID',
-     *         dataSource: '/DataSources/GetPlayers',
+     *         dataSource: '/Players/Get',
      *         inlineEditing: { mode: 'command', managementColumn: false },
      *         columns: [ 
      *             { field: 'ID', width: 24 },
@@ -535,7 +535,7 @@ gj.grid.plugins.inlineEditing.public = {
      *     }
      *     grid = $('#grid').grid({
      *         primaryKey: 'ID',
-     *         dataSource: '/DataSources/GetPlayers',
+     *         dataSource: '/Players/Get',
      *         inlineEditing: { mode: 'command', managementColumn: false },
      *         columns: [ 
      *             { field: 'ID', width: 24 },
@@ -587,7 +587,7 @@ gj.grid.plugins.inlineEditing.public = {
      *     }
      *     grid = $('#grid').grid({
      *         primaryKey: 'ID',
-     *         dataSource: '/DataSources/GetPlayers',
+     *         dataSource: '/Players/Get',
      *         inlineEditing: { mode: 'command', managementColumn: false },
      *         columns: [ 
      *             { field: 'ID', width: 24 },
@@ -626,7 +626,7 @@ gj.grid.plugins.inlineEditing.events = {
      * <table id="grid"></table>
      * <script>
      *     var grid = $('#grid').grid({
-     *         dataSource: '/DataSources/GetPlayers',
+     *         dataSource: '/Players/Get',
      *         columns: [ { field: 'ID' }, { field: 'Name', editor: true }, { field: 'PlaceOfBirth', editor: true } ]
      *     });
      *     grid.on('cellDataChanged', function (e, $cell, column, record, oldValue, newValue) {
@@ -650,7 +650,7 @@ gj.grid.plugins.inlineEditing.events = {
      * <script>
      *     var grid = $('#grid').grid({
      *         primaryKey: 'ID',
-     *         dataSource: '/DataSources/GetPlayers',
+     *         dataSource: '/Players/Get',
      *         inlineEditing: { mode: 'command' },
      *         columns: [ { field: 'ID', width: 30 }, { field: 'Name', editor: true }, { field: 'PlaceOfBirth', editor: true } ]
      *     });

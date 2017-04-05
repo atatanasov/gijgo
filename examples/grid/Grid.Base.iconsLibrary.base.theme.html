@@ -12,7 +12,7 @@
  <table id="grid"></table>
  <script>
      $('#grid').grid({
-         dataSource: '/DataSources/GetPlayers',
+         dataSource: '/Players/Get',
          iconsLibrary: 'materialicons',
          columns: [ { field: 'ID', width: 24 }, { field: 'Name', sortable: true }, { field: 'PlaceOfBirth' } ],
          pager: { limit: 5 }

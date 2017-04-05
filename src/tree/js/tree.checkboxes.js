@@ -12,7 +12,7 @@ gj.tree.plugins.checkboxes = {
               * <div id="tree"></div>
               * <script>
               *     var tree = $('#tree').tree({
-              *         dataSource: '/DataSources/GetCountries',
+              *         dataSource: '/Locations/Get',
               *         checkboxes: true
               *     });
               * </script>
@@ -23,7 +23,7 @@ gj.tree.plugins.checkboxes = {
               * </div>
               * <script>
               *     var tree = $('#tree').tree({
-              *         dataSource: '/DataSources/GetCountries',
+              *         dataSource: '/Locations/Get',
               *         checkboxes: true,
               *         uiLibrary: 'bootstrap'
               *     });
@@ -35,7 +35,7 @@ gj.tree.plugins.checkboxes = {
               * </div>
               * <script>
               *     var tree = $('#tree').tree({
-              *         dataSource: '/DataSources/GetCountries',
+              *         dataSource: '/Locations/Get',
               *         checkboxes: true,
               *         uiLibrary: 'materialdesign'
               *     });
@@ -129,7 +129,7 @@ gj.tree.plugins.checkboxes = {
          * <div id="tree"></div>
          * <script>
          *     var tree = $('#tree').tree({
-         *         dataSource: '/DataSources/GetCountries',
+         *         dataSource: '/Locations/Get',
          *         checkboxes: true
          *     });
          *     $('#btnGet').on('click', function() {

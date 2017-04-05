@@ -55,7 +55,7 @@ gj.grid.plugins.pagination = {
                  * <table id="grid"></table>
                  * <script>
                  *     var grid = $('#grid').grid({
-                 *         dataSource: '/DataSources/GetPlayers',
+                 *         dataSource: '/Players/Get',
                  *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
                  *         pager: { limit: 2 }
                  *     });
@@ -74,7 +74,7 @@ gj.grid.plugins.pagination = {
                  * </div>
                  * <script>
                  *     var grid = $('#grid').grid({
-                 *         dataSource: '/DataSources/GetPlayers',
+                 *         dataSource: '/Players/Get',
                  *         uiLibrary: 'bootstrap',
                  *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
                  *         pager: { limit: 2, sizes: [2, 5, 10, 20] }
@@ -86,7 +86,7 @@ gj.grid.plugins.pagination = {
                  * </div>
                  * <script>
                  *     var grid = $('#grid').grid({
-                 *         dataSource: '/DataSources/GetPlayers',
+                 *         dataSource: '/Players/Get',
                  *         uiLibrary: 'materialdesign',
                  *         columns: [ { field: 'ID', width: 70 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
                  *         pager: { limit: 2, sizes: [2, 5, 10, 20] }
@@ -106,7 +106,7 @@ gj.grid.plugins.pagination = {
                  * <table id="grid"></table>
                  * <script>
                  *     var grid = $('#grid').grid({
-                 *         dataSource: '/DataSources/GetPlayers',
+                 *         dataSource: '/Players/Get',
                  *         columns: [ { field: 'ID', width: 24 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
                  *         style: {
                  *             pager: {
@@ -610,7 +610,7 @@ gj.grid.plugins.pagination = {
          * <table id="grid"></table>
          * <script>
          *     var grid = $('#grid').grid({
-         *         dataSource: '/DataSources/GetPlayers',
+         *         dataSource: '/Players/Get',
          *         uiLibrary: 'bootstrap',
          *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
          *         pager: { limit: 2, sizes: [2, 5, 10, 20] }
@@ -634,7 +634,7 @@ gj.grid.plugins.pagination = {
          * <table id="grid"></table>
          * <script>
          *     var grid = $('#grid').grid({
-         *         dataSource: '/DataSources/GetPlayers',
+         *         dataSource: '/Players/Get',
          *         uiLibrary: 'jqueryui',
          *         columns: [ { field: 'ID' }, { field: 'Name', sortable: true }, { field: 'PlaceOfBirth' } ],
          *         pager: { limit: 2, sizes: [2, 5, 10, 20] }

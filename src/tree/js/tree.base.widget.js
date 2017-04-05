@@ -17,7 +17,7 @@ gj.tree.widget = function ($element, arguments) {
      * <div id="tree"></div>
      * <script>
      *     var tree = $('#tree').tree({
-     *         dataSource: '/DataSources/GetCountries',
+     *         dataSource: '/Locations/Get',
      *         autoLoad: false
      *     });
      * </script>
@@ -41,7 +41,7 @@ gj.tree.widget = function ($element, arguments) {
      *         tree.render(response);
      *     };
      *     tree = $('#tree').tree({
-     *         dataSource: { url: '/DataSources/GetCountries', success: onSuccessFunc }
+     *         dataSource: { url: '/Locations/Get', success: onSuccessFunc }
      *     });
      * </script>
      */
@@ -59,7 +59,7 @@ gj.tree.widget = function ($element, arguments) {
      * @example Append.ToRoot <!-- tree.base -->
      * <button onclick="append()">Append Node</button>
      * <br/><br/>
-     * <div id="tree" data-source="/DataSources/GetCountries"></div>
+     * <div id="tree" data-source="/Locations/Get"></div>
      * <script>
      *     var tree = $('#tree').tree();
      *     function append() {
@@ -69,7 +69,7 @@ gj.tree.widget = function ($element, arguments) {
      * @example Append.Parent <!-- tree.base -->
      * <button onclick="append()">Append Node</button>
      * <br/><br/>
-     * <div id="tree" data-source="/DataSources/GetCountries"></div>
+     * <div id="tree" data-source="/Locations/Get"></div>
      * <script>
      *     var parent, tree = $('#tree').tree();
      *     tree.on('dataBound', function () {
@@ -83,7 +83,7 @@ gj.tree.widget = function ($element, arguments) {
      * @example Bootstrap <!-- tree.base, bootstrap -->
      * <button onclick="append()">Append Node</button>
      * <br/><br/>
-     * <div id="tree" data-source="/DataSources/GetCountries" data-ui-library="bootstrap"></div>
+     * <div id="tree" data-source="/Locations/Get" data-ui-library="bootstrap"></div>
      * <script>
      *     var parent, tree = $('#tree').tree();
      *     tree.on('dataBound', function () {
@@ -97,7 +97,7 @@ gj.tree.widget = function ($element, arguments) {
      * @example Prepend <!-- tree.base -->
      * <button onclick="append()">Append Node</button>
      * <br/><br/>
-     * <div id="tree" data-source="/DataSources/GetCountries"></div>
+     * <div id="tree" data-source="/Locations/Get"></div>
      * <script>
      *     var parent, tree = $('#tree').tree();
      *     tree.on('dataBound', function () {
@@ -111,7 +111,7 @@ gj.tree.widget = function ($element, arguments) {
      * @example Position <!-- tree.base -->
      * <button onclick="append()">Append Node</button>
      * <br/><br/>
-     * <div id="tree" data-source="/DataSources/GetCountries"></div>
+     * <div id="tree" data-source="/Locations/Get"></div>
      * <script>
      *     var parent, tree = $('#tree').tree();
      *     tree.on('dataBound', function () {
@@ -138,7 +138,7 @@ gj.tree.widget = function ($element, arguments) {
      * <div id="tree"></div>
      * <script>
      *     var tree = $('#tree').tree({
-     *         dataSource: '/DataSources/GetCountries'
+     *         dataSource: '/Locations/Get'
      *     });
      *     function remove() {
      *         var node = tree.getNodeByText('USA');
@@ -160,7 +160,7 @@ gj.tree.widget = function ($element, arguments) {
      * <div id="tree"></div>
      * <script>
      *     var tree = $('#tree').tree({
-     *         dataSource: '/DataSources/GetCountries'
+     *         dataSource: '/Locations/Get'
      *     });
      * </script>
      */
@@ -180,7 +180,7 @@ gj.tree.widget = function ($element, arguments) {
      * <div id="tree"></div>
      * <script>
      *     var tree = $('#tree').tree({
-     *         dataSource: '/DataSources/GetCountries'
+     *         dataSource: '/Locations/Get'
      *     });
      *     function expand() {
      *         var node = tree.getNodeByText('Asia');
@@ -197,7 +197,7 @@ gj.tree.widget = function ($element, arguments) {
      * <div id="tree"></div>
      * <script>
      *     var tree = $('#tree').tree({
-     *         dataSource: '/DataSources/GetCountries'
+     *         dataSource: '/Locations/Get'
      *     });
      *     function expand() {
      *         var node = tree.getNodeByText('North America');
@@ -221,7 +221,7 @@ gj.tree.widget = function ($element, arguments) {
      * <div id="tree"></div>
      * <script>
      *     var tree = $('#tree').tree({
-     *         dataSource: '/DataSources/GetCountries'
+     *         dataSource: '/Locations/Get'
      *     });
      *     function expand() {
      *         var node = tree.getNodeByText('Asia');
@@ -238,7 +238,7 @@ gj.tree.widget = function ($element, arguments) {
      * <div id="tree"></div>
      * <script>
      *     var tree = $('#tree').tree({
-     *         dataSource: '/DataSources/GetCountries'
+     *         dataSource: '/Locations/Get'
      *     });
      *     function collapse() {
      *         var node = tree.getNodeByText('North America');
@@ -257,7 +257,7 @@ gj.tree.widget = function ($element, arguments) {
      * @example Sample <!-- tree.base -->
      * <button onclick="tree.expandAll()">Expand All</button><button onclick="tree.collapseAll()">Collapse All</button>
      * <br/><br/>
-     * <div id="tree" data-source="/DataSources/GetCountries"></div>
+     * <div id="tree" data-source="/Locations/Get"></div>
      * <script>
      *     var tree = $('#tree').tree();
      * </script>
@@ -273,7 +273,7 @@ gj.tree.widget = function ($element, arguments) {
      * @example Sample <!-- tree.base -->
      * <button onclick="tree.expandAll()">Expand All</button><button onclick="tree.collapseAll()">Collapse All</button>
      * <br/><br/>
-     * <div id="tree" data-source="/DataSources/GetCountries"></div>
+     * <div id="tree" data-source="/Locations/Get"></div>
      * <script>
      *     var tree = $('#tree').tree();
      * </script>
@@ -293,7 +293,7 @@ gj.tree.widget = function ($element, arguments) {
      * <div id="tree"></div>
      * <script>
      *     var tree = $('#tree').tree({
-     *         dataSource: '/DataSources/GetCountries',
+     *         dataSource: '/Locations/Get',
      *         primaryKey: 'id' //define the name of the column that you want to use as ID here.
      *     });
      *     $('#btnGetData').on('click', function () {
@@ -317,7 +317,7 @@ gj.tree.widget = function ($element, arguments) {
      * <div id="tree"></div>
      * <script>
      *     var tree = $('#tree').tree({
-     *         dataSource: '/DataSources/GetCountries',
+     *         dataSource: '/Locations/Get',
      *     });
      *     $('#btnGetData').on('click', function () {
      *         var data = tree.getDataByText('California');
@@ -338,7 +338,7 @@ gj.tree.widget = function ($element, arguments) {
      * <div id="tree"></div>
      * <script>
      *     var tree = $('#tree').tree({
-     *         dataSource: '/DataSources/GetCountries',
+     *         dataSource: '/Locations/Get',
      *         primaryKey: 'id' //define the name of the column that you want to use as ID here.
      *     });
      *     tree.on('dataBound', function() {
@@ -360,7 +360,7 @@ gj.tree.widget = function ($element, arguments) {
      * <div id="tree"></div>
      * <script>
      *     var tree = $('#tree').tree({
-     *         dataSource: '/DataSources/GetCountries'
+     *         dataSource: '/Locations/Get'
      *     });
      *     tree.on('dataBound', function() {
      *         var node = tree.getNodeByText('Asia');
@@ -379,7 +379,7 @@ gj.tree.widget = function ($element, arguments) {
      * @example Sample <!-- tree.base -->
      * <button onclick="tree.selectAll()">Select All</button><button onclick="tree.unselectAll()">Unselect All</button>
      * <br/><br/>
-     * <div id="tree" data-source="/DataSources/GetCountries"></div>
+     * <div id="tree" data-source="/Locations/Get"></div>
      * <script>
      *     var tree = $('#tree').tree({
      *         selectionType: 'multiple'
@@ -400,7 +400,7 @@ gj.tree.widget = function ($element, arguments) {
      * @example Sample <!-- tree.base -->
      * <button onclick="tree.selectAll()">Select All</button><button onclick="tree.unselectAll()">Unselect All</button>
      * <br/><br/>
-     * <div id="tree" data-source="/DataSources/GetCountries"></div>
+     * <div id="tree" data-source="/Locations/Get"></div>
      * <script>
      *     var tree = $('#tree').tree({
      *         selectionType: 'multiple'
@@ -421,7 +421,7 @@ gj.tree.widget = function ($element, arguments) {
      * @example Sample <!-- tree.base -->
      * <button id="btnShowSelection">Show Selections</button>
      * <br/><br/>
-     * <div id="tree" data-source="/DataSources/GetCountries"></div>
+     * <div id="tree" data-source="/Locations/Get"></div>
      * <script>
      *     var tree = $('#tree').tree({
      *         selectionType: 'multiple'

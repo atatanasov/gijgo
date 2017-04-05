@@ -80,7 +80,7 @@ server.get('/Players/Get', function (req, res) {
 });
 
 
-server.get('/DataSources/GetCountries', function (req, res) {
+server.get('/Locations/Get', function (req, res) {
     var params, data;
 
     params = url.parse(req.url, true).query;

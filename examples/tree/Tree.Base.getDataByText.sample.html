@@ -13,7 +13,7 @@
  <div id="tree"></div>
  <script>
      var tree = $('#tree').tree({
-         dataSource: '/DataSources/GetCountries',
+         dataSource: '/Locations/Get',
      });
      $('#btnGetData').on('click', function () {
          var data = tree.getDataByText('California');

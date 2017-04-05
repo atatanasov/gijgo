@@ -13,7 +13,7 @@ gj.grid.plugins.columnReorder = {
              * <table id="grid"></table>
              * <script>
              *     $('#grid').grid({
-             *         dataSource: '/DataSources/GetPlayers',
+             *         dataSource: '/Players/Get',
              *         columnReorder: true,
              *         columns: [ { field: 'ID', width: 36 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
              *     });

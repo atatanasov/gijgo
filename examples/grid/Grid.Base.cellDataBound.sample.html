@@ -11,7 +11,7 @@
  <table id="grid"></table>
  <script>
      var grid = $('#grid').grid({
-         dataSource: '/DataSources/GetPlayers',
+         dataSource: '/Players/Get',
          columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' }, { field: 'Bulgarian', title: 'Is Bulgarian?' } ]
      });
      grid.on('cellDataBound', function (e, $displayEl, id, column, record) {

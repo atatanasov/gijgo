@@ -529,7 +529,7 @@ gj.dialog.config = {
 
         /** The name of the UI library that is going to be in use. Currently we support only jQuery UI, Foundation, Material Design Lite and Bootstrap. 
          * @additionalinfo The css files for jQuery UI, Foundation, Material Design Lite or Bootstrap should be manually included to the page where the dialog is in use.
-         * @type string (jqueryui|bootstrap|materialdesign|foundation)
+         * @type string (jqueryui|bootstrap|materialdesign)
          * @default undefined
          * @example jQueryUI <!-- draggable.base, dialog.base, jqueryui -->
          * <div id="dialog">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
@@ -544,13 +544,6 @@ gj.dialog.config = {
          * <script>
          *     $("#dialog").dialog({
          *         uiLibrary: 'jqueryui'
-         *     });
-         * </script>
-         * @example Foundation <!-- draggable.base, dialog.base, foundation -->
-         * <div id="dialog">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
-         * <script>
-         *     $("#dialog").dialog({
-         *         uiLibrary: 'foundation'
          *     });
          * </script>
          * @example Bootstrap <!-- draggable.base, dialog.base, bootstrap -->
@@ -614,18 +607,6 @@ gj.dialog.config = {
             headerCloseButton: 'gj-dialog-ui-close ui-button ui-widget ui-state-default ui-corner-all',
             body: 'gj-dialog-ui-body',
             footer: 'gj-dialog-footer'
-        }
-    },
-
-    foundation: {
-        style: {
-            modal: 'reveal-modal-bg',
-            content: 'reveal-modal gj-dialog-fd-content',
-            header: '',
-            headerTitle: 'gj-dialog-fd-title gj-unselectable',
-            headerCloseButton: 'close-reveal-modal right gj-dialog-fd-close',
-            body: 'gj-dialog-fd-body',
-            footer: 'gj-dialog-footer gj-dialog-fd-footer'
         }
     },
 

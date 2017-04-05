@@ -12,7 +12,7 @@
 <body>
  <button onclick="append()">Append Node</button>
  <br/><br/>
- <div id="tree" data-source="/DataSources/GetCountries" data-ui-library="bootstrap"></div>
+ <div id="tree" data-source="/Locations/Get" data-ui-library="bootstrap"></div>
  <script>
      var parent, tree = $('#tree').tree();
      tree.on('dataBound', function () {

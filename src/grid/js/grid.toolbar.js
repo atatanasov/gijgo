@@ -12,7 +12,7 @@ gj.grid.plugins.toolbar = {
               * <table id="grid"></table>
               * <script>
               *     var grid = $('#grid').grid({
-              *         dataSource: '/DataSources/GetPlayers',
+              *         dataSource: '/Players/Get',
               *         uiLibrary: 'bootstrap',
               *         toolbarTemplate: '<div class="row"><div class="col-md-8" style="line-height:34px"><span data-role="title">Grid Title</span></div><div class="col-md-4 text-right"><button onclick="grid.reload()" class="btn btn-default">click here to refresh</button></div></div>',
               *         columns: [ { field: 'ID', width: 34 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
@@ -29,7 +29,7 @@ gj.grid.plugins.toolbar = {
               * <table id="grid"></table>
               * <script>
               *     $('#grid').grid({
-              *         dataSource: '/DataSources/GetPlayers',
+              *         dataSource: '/Players/Get',
               *         title: 'Players',
               *         columns: [ { field: 'ID', width: 34 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
               *     });
@@ -103,7 +103,7 @@ gj.grid.plugins.toolbar = {
          * <table id="grid"></table>
          * <script>
          *     var grid = $('#grid').grid({
-         *         dataSource: '/DataSources/GetPlayers',
+         *         dataSource: '/Players/Get',
          *         title: 'Initial Grid Title',
          *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
          *     });
@@ -115,7 +115,7 @@ gj.grid.plugins.toolbar = {
          * <table id="grid"></table>
          * <script>
          *     var grid = $('#grid').grid({
-         *         dataSource: '/DataSources/GetPlayers',
+         *         dataSource: '/Players/Get',
          *         toolbarTemplate: '<div data-role="title">Initial Grid Title</div>',
          *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
          *     });

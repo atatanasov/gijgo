@@ -14,7 +14,7 @@
  <table id="grid"></table>
  <script>
      var grid = $('#grid').grid({
-         dataSource: '/DataSources/GetPlayers',
+         dataSource: '/Players/Get',
          columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
          selectionMethod: 'checkbox',
          selectionType: 'multiple'

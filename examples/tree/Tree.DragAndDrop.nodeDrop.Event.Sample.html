@@ -10,7 +10,7 @@
   <script src="../../dist/modular/tree/js/tree.js"></script>
 </head>
 <body>
- <div id="tree" data-source="/DataSources/GetCountries" data-drag-and-drop="true"></div>
+ <div id="tree" data-source="/Locations/Get" data-drag-and-drop="true"></div>
  <script>
      var tree = $('#tree').tree();
      tree.on('nodeDrop', function (e, id, parentId, orderNumber) {

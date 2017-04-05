@@ -15,7 +15,7 @@
          grid.render(response);
      };
      grid = $('#grid').grid({
-         dataSource: { url: '/DataSources/GetPlayers', data: {}, success: onSuccessFunc },
+         dataSource: { url: '/Players/Get', data: {}, success: onSuccessFunc },
          columns: [ { field: 'Name' }, { field: 'PlaceOfBirth' } ]
      });
  </script>

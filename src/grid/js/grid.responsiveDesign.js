@@ -13,7 +13,7 @@ gj.grid.plugins.responsiveDesign = {
              * <table id="grid"></table>
              * <script>
              *     var grid = $('#grid').grid({
-             *         dataSource: '/DataSources/GetPlayers',
+             *         dataSource: '/Players/Get',
              *         responsive: true,
              *         resizeCheckInterval: 2000, //check if the grid is resized on each 2 second
              *         columns: [ { field: 'ID', width: 20 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
@@ -34,7 +34,7 @@ gj.grid.plugins.responsiveDesign = {
              * <table id="grid"></table>
              * <script>
              *     $('#grid').grid({
-             *         dataSource: '/DataSources/GetPlayers',
+             *         dataSource: '/Players/Get',
              *         responsive: true,
              *         columns: [
              *             { field: 'Name' },
@@ -55,7 +55,7 @@ gj.grid.plugins.responsiveDesign = {
              * <table id="grid"></table>
              * <script>
              *     $('#grid').grid({
-             *         dataSource: '/DataSources/GetPlayers',
+             *         dataSource: '/Players/Get',
              *         detailTemplate: '<div class="row"></div>',
              *         responsive: true,
              *         showHiddenColumnsAsDetails: true,
@@ -81,7 +81,7 @@ gj.grid.plugins.responsiveDesign = {
                  * <table id="grid"></table>
                  * <script>
                  *     $('#grid').grid({
-                 *         dataSource: '/DataSources/GetPlayers',
+                 *         dataSource: '/Players/Get',
                  *         responsive: true,
                  *         columns: [
                  *             { field: 'Name' },
@@ -103,7 +103,7 @@ gj.grid.plugins.responsiveDesign = {
                  * <table id="grid"></table>
                  * <script>
                  *     $('#grid').grid({
-                 *         dataSource: '/DataSources/GetPlayers',
+                 *         dataSource: '/Players/Get',
                  *         responsive: true,
                  *         columns: [
                  *             { field: 'Name' },
@@ -207,7 +207,7 @@ gj.grid.plugins.responsiveDesign = {
          * <table id="grid"></table>
          * <script>
          *     var grid = $('#grid').grid({
-         *         dataSource: '/DataSources/GetPlayers',
+         *         dataSource: '/Players/Get',
          *         responsive: false,
          *         columns: [
          *             { field: 'ID', width: 20 },
@@ -261,7 +261,7 @@ gj.grid.plugins.responsiveDesign = {
          * <table id="grid"></table>
          * <script>
          *     var grid = $('#grid').grid({
-         *         dataSource: '/DataSources/GetPlayers',
+         *         dataSource: '/Players/Get',
          *         responsive: true,
          *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
          *     });

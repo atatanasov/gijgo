@@ -13,7 +13,7 @@ gj.grid.plugins.rowReorder = {
              * <table id="grid"></table>
              * <script>
              *     $('#grid').grid({
-             *         dataSource: '/DataSources/GetPlayers',
+             *         dataSource: '/Players/Get',
              *         rowReorder: true,
              *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
              *     });
@@ -23,7 +23,7 @@ gj.grid.plugins.rowReorder = {
              * <table id="grid"></table>
              * <script>
              *     $('#grid').grid({
-             *         dataSource: '/DataSources/GetPlayers',
+             *         dataSource: '/Players/Get',
              *         rowReorder: true,
              *         uiLibrary: 'bootstrap',
              *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
@@ -34,7 +34,7 @@ gj.grid.plugins.rowReorder = {
              * <table id="grid"></table>
              * <script>
              *     $('#grid').grid({
-             *         dataSource: '/DataSources/GetPlayers',
+             *         dataSource: '/Players/Get',
              *         rowReorder: true,
              *         uiLibrary: 'jqueryui',
              *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
@@ -51,7 +51,7 @@ gj.grid.plugins.rowReorder = {
              * <table id="grid"></table>
              * <script>
              *     $('#grid').grid({
-             *         dataSource: '/DataSources/GetPlayers',
+             *         dataSource: '/Players/Get',
              *         rowReorder: true,
              *         rowReorderColumn: 'ID',
              *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]

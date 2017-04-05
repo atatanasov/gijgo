@@ -14,7 +14,7 @@ gj.grid.plugins.headerFilter = {
                  * <table id="grid"></table>
                  * <script>
                  *     $('#grid').grid({
-                 *         dataSource: '/DataSources/GetPlayers',
+                 *         dataSource: '/Players/Get',
                  *         headerFilter: true,
                  *         columns: [
                  *             { field: 'ID', width: 36, filterable: false },
@@ -34,7 +34,7 @@ gj.grid.plugins.headerFilter = {
              * <table id="grid"></table>
              * <script>
              *     $('#grid').grid({
-             *         dataSource: '/DataSources/GetPlayers',
+             *         dataSource: '/Players/Get',
              *         headerFilter: true,
              *         columns: [ { field: 'ID', width: 36 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
              *     });
@@ -71,7 +71,7 @@ gj.grid.plugins.headerFilter = {
                  * <table id="grid"></table>
                  * <script>
                  *     $('#grid').grid({
-                 *         dataSource: '/DataSources/GetPlayers',
+                 *         dataSource: '/Players/Get',
                  *         headerFilter: {
                  *             type: 'onenterkeypress'
                  *         },
@@ -82,7 +82,7 @@ gj.grid.plugins.headerFilter = {
                  * <table id="grid"></table>
                  * <script>
                  *     $('#grid').grid({
-                 *         dataSource: '/DataSources/GetPlayers',
+                 *         dataSource: '/Players/Get',
                  *         headerFilter: {
                  *             type: 'onchange'
                  *         },

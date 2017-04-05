@@ -19,7 +19,7 @@ gj.grid.widget = function ($grid, arguments) {
      * <table id="grid"></table>
      * <script>
      *     var grid = $('#grid').grid({
-     *         dataSource: '/DataSources/GetPlayers',
+     *         dataSource: '/Players/Get',
      *         columns: [ { field: 'ID', width: 24 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
      *     });
      *     $('#btnSearch').on('click', function () {
@@ -43,7 +43,7 @@ gj.grid.widget = function ($grid, arguments) {
      * <table id="grid"></table>
      * <script>
      *     var grid = $('#grid').grid({
-     *         dataSource: '/DataSources/GetPlayers',
+     *         dataSource: '/Players/Get',
      *         columns: [ { field: 'ID', width: 24 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
      *         pager: { limit: 5 }
      *     });
@@ -87,7 +87,7 @@ gj.grid.widget = function ($grid, arguments) {
      * <table id="grid"></table>
      * <script>
      *     var grid = $('#grid').grid({
-     *         dataSource: '/DataSources/GetPlayers',
+     *         dataSource: '/Players/Get',
      *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
      *         uiLibrary: 'bootstrap',
      *         pager: { limit: 2, sizes: [2, 5, 10] }
@@ -113,7 +113,7 @@ gj.grid.widget = function ($grid, arguments) {
      *         grid.render(response);
      *     };
      *     grid = $('#grid').grid({
-     *         dataSource: { url: '/DataSources/GetPlayers', success: onSuccessFunc },
+     *         dataSource: { url: '/Players/Get', success: onSuccessFunc },
      *         columns: [ { field: 'Name' }, { field: 'PlaceOfBirth' } ]
      *     });
      * </script>
@@ -139,7 +139,7 @@ gj.grid.widget = function ($grid, arguments) {
      * <script>
      *     var createFunc = function() {
      *         $('#grid').grid({
-     *             dataSource: '/DataSources/GetPlayers',
+     *             dataSource: '/Players/Get',
      *             columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
      *         });
      *     };
@@ -157,7 +157,7 @@ gj.grid.widget = function ($grid, arguments) {
      * <table id="grid"></table>
      * <script>
      *     var grid = $('#grid').grid({
-     *         dataSource: '/DataSources/GetPlayers',
+     *         dataSource: '/Players/Get',
      *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
      *     });
      *     $('#btnRemove').on('click', function () {
@@ -181,7 +181,7 @@ gj.grid.widget = function ($grid, arguments) {
      * <table id="grid"></table>
      * <script>
      *     var grid = $('#grid').grid({
-     *         dataSource: '/DataSources/GetPlayers',
+     *         dataSource: '/Players/Get',
      *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
      *         selectionMethod: 'checkbox'
      *     });
@@ -205,7 +205,7 @@ gj.grid.widget = function ($grid, arguments) {
      * <table id="grid"></table>
      * <script>
      *     var grid = $('#grid').grid({
-     *         dataSource: '/DataSources/GetPlayers',
+     *         dataSource: '/Players/Get',
      *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
      *         selectionMethod: 'checkbox'
      *     });
@@ -228,7 +228,7 @@ gj.grid.widget = function ($grid, arguments) {
      * <table id="grid"></table>
      * <script>
      *     var grid = $('#grid').grid({
-     *         dataSource: '/DataSources/GetPlayers',
+     *         dataSource: '/Players/Get',
      *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
      *         selectionMethod: 'checkbox',
      *         selectionType: 'multiple'
@@ -255,7 +255,7 @@ gj.grid.widget = function ($grid, arguments) {
      * <table id="grid"></table>
      * <script>
      *     var grid = $('#grid').grid({
-     *         dataSource: '/DataSources/GetPlayers',
+     *         dataSource: '/Players/Get',
      *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
      *         selectionMethod: 'checkbox',
      *         selectionType: 'multiple'
@@ -280,7 +280,7 @@ gj.grid.widget = function ($grid, arguments) {
      * <table id="grid"></table>
      * <script>
      *     var grid = $('#grid').grid({
-     *         dataSource: '/DataSources/GetPlayers',
+     *         dataSource: '/Players/Get',
      *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
      *         selectionMethod: 'checkbox',
      *         selectionType: 'multiple'
@@ -308,7 +308,7 @@ gj.grid.widget = function ($grid, arguments) {
      * <table id="grid"></table>
      * <script>
      *     var grid = $('#grid').grid({
-     *         dataSource: '/DataSources/GetPlayers',
+     *         dataSource: '/Players/Get',
      *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
      *         primaryKey: 'ID' //define the name of the column that you want to use as ID here.
      *     });
@@ -333,7 +333,7 @@ gj.grid.widget = function ($grid, arguments) {
      * <table id="grid"></table>
      * <script>
      *     var grid = $('#grid').grid({
-     *         dataSource: '/DataSources/GetPlayers',
+     *         dataSource: '/Players/Get',
      *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
      *     });
      *     $('#btnGetData').on('click', function () {
@@ -377,7 +377,7 @@ gj.grid.widget = function ($grid, arguments) {
      * <table id="grid"></table>
      * <script>
      *     var grid = $('#grid').grid({
-     *         dataSource: '/DataSources/GetPlayers',
+     *         dataSource: '/Players/Get',
      *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
      *         uiLibrary: 'bootstrap',
      *         pager: { limit: 2, sizes: [2, 5, 10] }
@@ -399,7 +399,7 @@ gj.grid.widget = function ($grid, arguments) {
      * <table id="grid"></table>
      * <script>
      *     var grid = $('#grid').grid({
-     *         dataSource: '/DataSources/GetPlayers',
+     *         dataSource: '/Players/Get',
      *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth', hidden: true } ]
      *     });
      *     $('#btnShowColumn').on('click', function () {
@@ -422,7 +422,7 @@ gj.grid.widget = function ($grid, arguments) {
      * <table id="grid"></table>
      * <script>
      *     var grid = $('#grid').grid({
-     *         dataSource: '/DataSources/GetPlayers',
+     *         dataSource: '/Players/Get',
      *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
      *     });
      *     $('#btnHideColumn').on('click', function () {

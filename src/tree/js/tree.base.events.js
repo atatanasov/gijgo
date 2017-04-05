@@ -13,7 +13,7 @@ gj.tree.events = {
      * <div id="tree"></div>
      * <script>
      *     var tree = $('#tree').tree({
-     *         dataSource: '/DataSources/GetCountries',
+     *         dataSource: '/Locations/Get',
      *         initialized: function (e) {
      *             alert('initialized is fired.');
      *         }
@@ -35,7 +35,7 @@ gj.tree.events = {
      * <div id="tree"></div>
      * <script>
      *     $('#tree').tree({
-     *         dataSource: '/DataSources/GetCountries',
+     *         dataSource: '/Locations/Get',
      *         dataBinding: function (e) {
      *             alert('dataBinding is fired.');
      *         }
@@ -54,7 +54,7 @@ gj.tree.events = {
      * <div id="tree"></div>
      * <script>
      *     $('#tree').tree({
-     *         dataSource: '/DataSources/GetCountries',
+     *         dataSource: '/Locations/Get',
      *         dataBound: function (e) {
      *             alert('dataBound is fired.');
      *         }
@@ -72,7 +72,7 @@ gj.tree.events = {
      * @param {object} node - the node as jquery object
      * @param {string} id - the id of the record
      * @example sample <!-- tree.base -->
-     * <div id="tree" data-source="/DataSources/GetCountries"></div>
+     * <div id="tree" data-source="/Locations/Get"></div>
      * <script>
      *     var tree = $('#tree').tree();
      *     tree.on('select', function (e, node, id) {
@@ -91,7 +91,7 @@ gj.tree.events = {
      * @param {object} node - the node as jquery object
      * @param {string} id - the id of the record
      * @example sample <!-- tree.base -->
-     * <div id="tree" data-source="/DataSources/GetCountries"></div>
+     * <div id="tree" data-source="/Locations/Get"></div>
      * <script>
      *     var tree = $('#tree').tree();
      *     tree.on('unselect', function (e, node, id) {
@@ -110,7 +110,7 @@ gj.tree.events = {
      * @param {object} node - the node as jquery object
      * @param {string} id - the id of the record
      * @example Event.Sample <!-- tree.base -->
-     * <div id="tree" data-source="/DataSources/GetCountries"></div>
+     * <div id="tree" data-source="/Locations/Get"></div>
      * <script>
      *     var tree = $('#tree').tree();
      *     tree.on('expand', function (e, node, id) {
@@ -129,7 +129,7 @@ gj.tree.events = {
      * @param {object} node - the node as jquery object
      * @param {string} id - the id of the record
      * @example Event.Sample <!-- tree.base -->
-     * <div id="tree" data-source="/DataSources/GetCountries"></div>
+     * <div id="tree" data-source="/Locations/Get"></div>
      * <script>
      *     var tree = $('#tree').tree();
      *     tree.on('collapse', function (e, node, id) {
@@ -148,7 +148,7 @@ gj.tree.events = {
      * @example Event.Sample <!-- tree.base -->
      * <button onclick="tree.destroy()">Destroy</button>
      * <br/><br/>
-     * <div id="tree" data-source="/DataSources/GetCountries"></div>
+     * <div id="tree" data-source="/Locations/Get"></div>
      * <script>
      *     var tree = $('#tree').tree();
      *     tree.on('destroying', function (e) {
@@ -168,7 +168,7 @@ gj.tree.events = {
      * @param {string} id - the id of the record
      * @param {object} record - the data of the node record
      * @example Event.Sample <!-- tree.base -->
-     * <div id="tree" data-source="/DataSources/GetCountries"></div>
+     * <div id="tree" data-source="/Locations/Get"></div>
      * <script>
      *     var tree = $('#tree').tree();
      *     tree.on('nodeDataBound', function (e, node, id, record) {

@@ -529,7 +529,7 @@ gj.dialog.config = {
 
         /** The name of the UI library that is going to be in use. Currently we support only jQuery UI, Foundation, Material Design Lite and Bootstrap. 
          * @additionalinfo The css files for jQuery UI, Foundation, Material Design Lite or Bootstrap should be manually included to the page where the dialog is in use.
-         * @type string (jqueryui|bootstrap|materialdesign|foundation)
+         * @type string (jqueryui|bootstrap|materialdesign)
          * @default undefined
          * @example jQueryUI <!-- draggable.base, dialog.base, jqueryui -->
          * <div id="dialog">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
@@ -544,13 +544,6 @@ gj.dialog.config = {
          * <script>
          *     $("#dialog").dialog({
          *         uiLibrary: 'jqueryui'
-         *     });
-         * </script>
-         * @example Foundation <!-- draggable.base, dialog.base, foundation -->
-         * <div id="dialog">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
-         * <script>
-         *     $("#dialog").dialog({
-         *         uiLibrary: 'foundation'
          *     });
          * </script>
          * @example Bootstrap <!-- draggable.base, dialog.base, bootstrap -->
@@ -614,18 +607,6 @@ gj.dialog.config = {
             headerCloseButton: 'gj-dialog-ui-close ui-button ui-widget ui-state-default ui-corner-all',
             body: 'gj-dialog-ui-body',
             footer: 'gj-dialog-footer'
-        }
-    },
-
-    foundation: {
-        style: {
-            modal: 'reveal-modal-bg',
-            content: 'reveal-modal gj-dialog-fd-content',
-            header: '',
-            headerTitle: 'gj-dialog-fd-title gj-unselectable',
-            headerCloseButton: 'close-reveal-modal right gj-dialog-fd-close',
-            body: 'gj-dialog-fd-body',
-            footer: 'gj-dialog-footer gj-dialog-fd-footer'
         }
     },
 
@@ -1903,7 +1884,7 @@ gj.grid.config = {
          *     });
          * </script>
          * @example Remote.Html.Configuration <!-- grid.base -->
-         * <table id="grid" data-source="/DataSources/GetPlayers">
+         * <table id="grid" data-source="/Players/Get">
          *     <thead>
          *         <tr>
          *             <th width="24" data-field="ID">#</th>
@@ -1966,7 +1947,7 @@ gj.grid.config = {
          *         grid.render(response);
          *     };
          *     grid = $('#grid').grid({
-         *         dataSource: { url: '/DataSources/GetPlayers', data: {}, success: onSuccessFunc },
+         *         dataSource: { url: '/Players/Get', data: {}, success: onSuccessFunc },
          *         columns: [ { field: 'Name' }, { field: 'PlaceOfBirth' } ]
          *     });
          * </script>
@@ -1990,7 +1971,7 @@ gj.grid.config = {
          * <table id="grid"></table>
          * <script>
          *     $('#grid').grid({
-         *         dataSource: '/DataSources/GetPlayers',
+         *         dataSource: '/Players/Get',
          *         columns: [ { field: 'ID', width: 30 }, { field: 'Name' }, { field: 'PlaceOfBirth', name: 'Birth Place' } ]
          *     });
          * </script>
@@ -2003,7 +1984,7 @@ gj.grid.config = {
          * <table id="grid"></table>
          * <script>
          *     $('#grid').grid({
-         *         dataSource: '/DataSources/GetPlayers',
+         *         dataSource: '/Players/Get',
          *         autoGenerateColumns: true
          *     });
          * </script>
@@ -2016,7 +1997,7 @@ gj.grid.config = {
          * <table id="grid"></table>
          * <script>
          *     $('#grid').grid({
-         *         dataSource: '/DataSources/GetPlayers',
+         *         dataSource: '/Players/Get',
          *         defaultColumnSettings: { align: 'right' },
          *         columns: [ { field: 'ID', width: 30 }, { field: 'Name' }, { field: 'PlaceOfBirth', name: 'Birth Place' } ]
          *     });
@@ -2032,7 +2013,7 @@ gj.grid.config = {
              * <table id="grid"></table>
              * <script>
              *     $('#grid').grid({
-             *         dataSource: '/DataSources/GetPlayers',
+             *         dataSource: '/Players/Get',
              *         columns: [ { field: 'ID', width: 30 }, { field: 'Name' }, { field: 'PlaceOfBirth', hidden: true } ]
              *     });
              * </script>
@@ -2048,7 +2029,7 @@ gj.grid.config = {
              * <table id="grid"></table>
              * <script>
              *     $('#grid').grid({
-             *         dataSource: '/DataSources/GetPlayers',
+             *         dataSource: '/Players/Get',
              *         columns: [
              *             { field: 'ID', width: 20 },
              *             { field: 'Name', width: 120 },
@@ -2068,7 +2049,7 @@ gj.grid.config = {
              * <table id="grid"></table>
              * <script>
              *     $('#grid').grid({
-             *         dataSource: '/DataSources/GetPlayers',
+             *         dataSource: '/Players/Get',
              *         columns: [
              *             { field: 'ID', width: 24 },
              *             { field: 'Name', sortable: true },
@@ -2106,7 +2087,7 @@ gj.grid.config = {
              * <script>
              *     $('#grid').grid({
              *         uiLibrary: 'bootstrap',
-             *         dataSource: '/DataSources/GetPlayers',
+             *         dataSource: '/Players/Get',
              *         columns: [
              *             { field: 'ID', width: 34 },
              *             { field: 'Name', sortable: true },
@@ -2118,7 +2099,7 @@ gj.grid.config = {
              * <script>
              *     $('#grid').grid({
              *         uiLibrary: 'bootstrap4',
-             *         dataSource: '/DataSources/GetPlayers',
+             *         dataSource: '/Players/Get',
              *         columns: [
              *             { field: 'ID', width: 42 },
              *             { field: 'Name', sortable: true },
@@ -2132,7 +2113,7 @@ gj.grid.config = {
              *     $('#grid').grid({
              *         uiLibrary: 'bootstrap4',
              *         iconsLibrary: 'fontawesome',
-             *         dataSource: '/DataSources/GetPlayers',
+             *         dataSource: '/Players/Get',
              *         columns: [
              *             { field: 'ID', width: 42 },
              *             { field: 'Name', sortable: true },
@@ -2145,7 +2126,7 @@ gj.grid.config = {
              * <script>
              *     $('#grid').grid({
              *         uiLibrary: 'materialdesign',
-             *         dataSource: '/DataSources/GetPlayers',
+             *         dataSource: '/Players/Get',
              *         columns: [
              *             { field: 'ID', width: 42 },
              *             { field: 'Name', sortable: true },
@@ -2164,7 +2145,7 @@ gj.grid.config = {
              * <table id="grid"></table>
              * <script>
              *     $('#grid').grid({
-             *         dataSource: '/DataSources/GetPlayers',
+             *         dataSource: '/Players/Get',
              *         uiLibrary: 'bootstrap',
              *         columns: [
              *             { field: 'ID', width: 34 },
@@ -2192,7 +2173,7 @@ gj.grid.config = {
              * <table id="grid"></table>
              * <script>
              *     $('#grid').grid({
-             *         dataSource: '/DataSources/GetPlayers',
+             *         dataSource: '/Players/Get',
              *         columns: [
              *             { field: 'ID', width: 24 },
              *             { field: 'Name', title: 'Player' },
@@ -2212,7 +2193,7 @@ gj.grid.config = {
              * <table id="grid"></table>
              * <script>
              *     $('#grid').grid({
-             *         dataSource: '/DataSources/GetPlayers',
+             *         dataSource: '/Players/Get',
              *         columns: [
              *             { field: 'ID', width: 24 },
              *             { field: 'Name' },
@@ -2231,7 +2212,7 @@ gj.grid.config = {
              * <table id="grid"></table>
              * <script>
              *     $('#grid').grid({
-             *         dataSource: '/DataSources/GetPlayers',
+             *         dataSource: '/Players/Get',
              *         columns: [
              *             { field: 'ID', align: 'center' },
              *             { field: 'Name', align: 'right' },
@@ -2254,7 +2235,7 @@ gj.grid.config = {
              * </style>
              * <script>
              *     $('#grid').grid({
-             *         dataSource: '/DataSources/GetPlayers',
+             *         dataSource: '/Players/Get',
              *         columns: [
              *             { field: 'ID', width: 20 },
              *             { field: 'Name', width: 100, cssClass: 'nowrap bold' },
@@ -2276,7 +2257,7 @@ gj.grid.config = {
              * </style>
              * <script>
              *     $('#grid').grid({
-             *         dataSource: '/DataSources/GetPlayers',
+             *         dataSource: '/Players/Get',
              *         columns: [
              *             { field: 'ID', width: 20 },
              *             { field: 'Name', width: 100, headerCssClass: 'italic' },
@@ -2295,7 +2276,7 @@ gj.grid.config = {
              * <table id="grid"></table>
              * <script>
              *     $('#grid').grid({
-             *         dataSource: '/DataSources/GetPlayers',
+             *         dataSource: '/Players/Get',
              *         columns: [
              *             { field: 'ID', tooltip: 'This is my tooltip 1.' },
              *             { field: 'Name', tooltip: 'This is my tooltip 2.' },
@@ -2315,7 +2296,7 @@ gj.grid.config = {
              * <table id="grid"></table>
              * <script>
              *     $('#grid').grid({
-             *         dataSource: '/DataSources/GetPlayers',
+             *         dataSource: '/Players/Get',
              *         uiLibrary: 'jqueryui',
              *         columns: [
              *             { field: 'ID' },
@@ -2337,7 +2318,7 @@ gj.grid.config = {
              * <table id="grid"></table>
              * <script>
              *     $('#grid').grid({
-             *         dataSource: '/DataSources/GetPlayers',
+             *         dataSource: '/Players/Get',
              *         uiLibrary: 'jqueryui',
              *         columns: [
              *             { field: 'ID' },
@@ -2366,7 +2347,7 @@ gj.grid.config = {
              *     });
              * </script>
              * @example html.configuration <!-- jqueryui, grid.base -->
-             * <table id="grid" data-source="/DataSources/GetPlayers" data-ui-library="jqueryui">
+             * <table id="grid" data-source="/Players/Get" data-ui-library="jqueryui">
              *     <thead>
              *         <tr>
              *             <th data-field="ID" width="24">ID</th>
@@ -2403,7 +2384,7 @@ gj.grid.config = {
              * <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.0/moment.min.js"></script>
              * <script>
              *     $('#grid').grid({
-             *         dataSource: '/DataSources/GetPlayers',
+             *         dataSource: '/Players/Get',
              *         columns: [
              *             { field: 'ID', width: 24 },
              *             { field: 'Name' },
@@ -2435,7 +2416,7 @@ gj.grid.config = {
              * <table id="grid"></table>
              * <script>
              *     $('#grid').grid({
-             *         dataSource: '/DataSources/GetPlayers',
+             *         dataSource: '/Players/Get',
              *         columns: [
              *             { field: 'ID' },
              *             { field: 'Name' },
@@ -2451,7 +2432,7 @@ gj.grid.config = {
              * @type boolean
              * @default false
              * @example sample <!-- jqueryui, grid.base -->
-             * <table id="grid" data-source="/DataSources/GetPlayers"></table>
+             * <table id="grid" data-source="/Players/Get"></table>
              * <script>
              *     $('#grid').grid({
              *         uiLibrary: 'jqueryui',
@@ -2478,7 +2459,7 @@ gj.grid.config = {
              * @param {object} $displayEl - inner div element for display of the cell value presented as jquery object
              * @param {string} id - the id of the record
              * @example sample <!-- grid.base, jqueryui -->
-             * <table id="grid" data-source="/DataSources/GetPlayers"></table>
+             * <table id="grid" data-source="/Players/Get"></table>
              * <script>
              *     var nameRenderer = function (value, record, $cell, $displayEl) { 
              *         $cell.css('font-style', 'italic'); 
@@ -2543,7 +2524,7 @@ gj.grid.config = {
          * <table id="grid"></table>
          * <script>
          *     $('#grid').grid({
-         *         dataSource: '/DataSources/GetPlayers',
+         *         dataSource: '/Players/Get',
          *         columns: [
          *             { field: 'ID', width: 24 },
          *             { field: 'Name', sortable: true },
@@ -2555,7 +2536,7 @@ gj.grid.config = {
          * <table id="grid"></table>
          * <script>
          *     $('#grid').grid({
-         *         dataSource: '/DataSources/GetPlayers',
+         *         dataSource: '/Players/Get',
          *         uiLibrary: 'jqueryui',
          *         columns: [
          *             { field: 'ID' },
@@ -2568,7 +2549,7 @@ gj.grid.config = {
          * <table id="grid"></table>
          * <script>
          *     $('#grid').grid({
-         *         dataSource: '/DataSources/GetPlayers',
+         *         dataSource: '/Players/Get',
          *         uiLibrary: 'bootstrap',
          *         columns: [
          *             { field: 'ID' },
@@ -2582,7 +2563,7 @@ gj.grid.config = {
          * <table id="grid"></table>
          * <script>
          *     $('#grid').grid({
-         *         dataSource: '/DataSources/GetPlayers',
+         *         dataSource: '/Players/Get',
          *         uiLibrary: 'materialdesign',
          *         columns: [ { field: 'ID', width: 40 }, { field: 'Name', sortable: true }, { field: 'PlaceOfBirth' } ],
          *         pager: { limit: 2, sizes: [2, 5, 10, 20] }
@@ -2592,7 +2573,7 @@ gj.grid.config = {
          * <table id="grid"></table>
          * <script>
          *     $('#grid').grid({
-         *         dataSource: '/DataSources/GetPlayers',
+         *         dataSource: '/Players/Get',
          *         uiLibrary: 'materialdesign',
          *         iconsLibrary: '',
          *         columns: [ { field: 'ID', width: 40 }, { field: 'Name', sortable: true }, { field: 'PlaceOfBirth' } ],
@@ -2603,7 +2584,7 @@ gj.grid.config = {
          * <table id="grid"></table>
          * <script>
          *     $('#grid').grid({
-         *         dataSource: '/DataSources/GetPlayers',
+         *         dataSource: '/Players/Get',
          *         uiLibrary: 'bootstrap4',
          *         iconsLibrary: 'fontawesome',
          *         columns: [ { field: 'ID', width: 38 }, { field: 'Name', sortable: true }, { field: 'PlaceOfBirth' } ],
@@ -2623,7 +2604,7 @@ gj.grid.config = {
          * <table id="grid"></table>
          * <script>
          *     $('#grid').grid({
-         *         dataSource: '/DataSources/GetPlayers',
+         *         dataSource: '/Players/Get',
          *         iconsLibrary: 'materialicons',
          *         columns: [ { field: 'ID', width: 24 }, { field: 'Name', sortable: true }, { field: 'PlaceOfBirth' } ],
          *         pager: { limit: 5 }
@@ -2640,7 +2621,7 @@ gj.grid.config = {
          * <table id="grid"></table>
          * <script>
          *     $('#grid').grid({
-         *         dataSource: '/DataSources/GetPlayers',
+         *         dataSource: '/Players/Get',
          *         selectionType: 'multiple',
          *         selectionMethod: 'checkbox',
          *         columns: [ { field: 'ID', width: 24 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
@@ -2650,7 +2631,7 @@ gj.grid.config = {
          * <table id="grid"></table>
          * <script>
          *     $('#grid').grid({
-         *         dataSource: '/DataSources/GetPlayers',
+         *         dataSource: '/Players/Get',
          *         selectionType: 'single',
          *         selectionMethod: 'checkbox',
          *         columns: [ { field: 'ID', width: 24 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
@@ -2668,7 +2649,7 @@ gj.grid.config = {
          * <table id="grid"></table>
          * <script>
          *     $('#grid').grid({
-         *         dataSource: '/DataSources/GetPlayers',
+         *         dataSource: '/Players/Get',
          *         selectionType: 'single',
          *         selectionMethod: 'checkbox',
          *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
@@ -2684,7 +2665,7 @@ gj.grid.config = {
          * <table id="grid"></table>
          * <script>
          *     var grid = $('#grid').grid({
-         *         dataSource: '/DataSources/GetPlayers',
+         *         dataSource: '/Players/Get',
          *         autoLoad: false,
          *         columns: [ { field: 'ID' }, { field: 'Name' } ]
          *     });
@@ -2694,7 +2675,7 @@ gj.grid.config = {
          * <table id="grid"></table>
          * <script>
          *     $('#grid').grid({
-         *         dataSource: '/DataSources/GetPlayers',
+         *         dataSource: '/Players/Get',
          *         autoLoad: true,
          *         columns: [ { field: 'ID' }, { field: 'Name' } ]
          *     });
@@ -2709,7 +2690,7 @@ gj.grid.config = {
          * <table id="grid"></table>
          * <script>
          *     $('#grid').grid({
-         *         dataSource: { url: '/DataSources/GetPlayers', data: { name: 'not existing name' } },
+         *         dataSource: { url: '/Players/Get', data: { name: 'not existing name' } },
          *         notFoundText: 'No records found custom message',
          *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
          *     });
@@ -2724,7 +2705,7 @@ gj.grid.config = {
          * <table id="grid"></table>
          * <script>
          *     $('#grid').grid({
-         *         dataSource: '/DataSources/GetPlayers',
+         *         dataSource: '/Players/Get',
          *         width: 400,
          *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
          *     });
@@ -2745,7 +2726,7 @@ gj.grid.config = {
          * <table id="grid"></table>
          * <script>
          *     $('#grid').grid({
-         *         dataSource: '/DataSources/GetPlayers',
+         *         dataSource: '/Players/Get',
          *         fontSize: '16px',
          *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
          *     });
@@ -2807,7 +2788,7 @@ gj.grid.config = {
          * <table id="grid"></table>
          * <script>
          *     $('#grid').grid({
-         *         dataSource: '/DataSources/GetPlayers',
+         *         dataSource: '/Players/Get',
          *         uiLibrary: 'bootstrap',
          *         locale: 'fr-fr',
          *         columns: [ 
@@ -2824,7 +2805,7 @@ gj.grid.config = {
          * <script>
          *     gj.grid.messages['fr-fr'].DisplayingRecords = 'Mes résultats';
          *     $('#grid').grid({
-         *         dataSource: '/DataSources/GetPlayers',
+         *         dataSource: '/Players/Get',
          *         uiLibrary: 'materialdesign',
          *         locale: 'fr-fr',
          *         columns: [ 
@@ -2964,7 +2945,7 @@ gj.grid.events = {
      * <script>
      *     var grid = $('#grid').grid({
      *         dataSource: {
-     *             url: '/DataSources/GetPlayers',
+     *             url: '/Players/Get',
      *             data: { name: 'not existing data' } //search for not existing data in order to fire the event
      *         },
      *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
@@ -2988,7 +2969,7 @@ gj.grid.events = {
      * <table id="grid"></table>
      * <script>
      *     var grid = $('#grid').grid({
-     *         dataSource: '/DataSources/GetPlayers',
+     *         dataSource: '/Players/Get',
      *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
      *     });
      *     grid.on('dataBinding', function (e, records) {
@@ -3011,7 +2992,7 @@ gj.grid.events = {
      * <table id="grid"></table>
      * <script>
      *     var grid = $('#grid').grid({
-     *         dataSource: '/DataSources/GetPlayers',
+     *         dataSource: '/Players/Get',
      *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
      *     });
      *     grid.on('dataBound', function (e, records, totalRecords) {
@@ -3034,7 +3015,7 @@ gj.grid.events = {
      * <table id="grid"></table>
      * <script>
      *     var grid = $('#grid').grid({
-     *         dataSource: '/DataSources/GetPlayers',
+     *         dataSource: '/Players/Get',
      *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
      *     });
      *     grid.on('rowDataBound', function (e, $row, id, record) {
@@ -3059,7 +3040,7 @@ gj.grid.events = {
      * <table id="grid"></table>
      * <script>
      *     var grid = $('#grid').grid({
-     *         dataSource: '/DataSources/GetPlayers',
+     *         dataSource: '/Players/Get',
      *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' }, { field: 'Bulgarian', title: 'Is Bulgarian?' } ]
      *     });
      *     grid.on('cellDataBound', function (e, $displayEl, id, column, record) {
@@ -3085,7 +3066,7 @@ gj.grid.events = {
      * <table id="grid"></table>
      * <script>
      *     var grid = $('#grid').grid({
-     *         dataSource: '/DataSources/GetPlayers',
+     *         dataSource: '/Players/Get',
      *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
      *         selectionMethod: 'checkbox'
      *     });
@@ -3110,7 +3091,7 @@ gj.grid.events = {
      * <table id="grid"></table>
      * <script>
      *     var grid = $('#grid').grid({
-     *         dataSource: '/DataSources/GetPlayers',
+     *         dataSource: '/Players/Get',
      *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
      *         selectionMethod: 'checkbox'
      *     });
@@ -3163,7 +3144,7 @@ gj.grid.events = {
      * <table id="grid"></table>
      * <script>
      *     var grid = $('#grid').grid({
-     *         dataSource: '/DataSources/GetPlayers',
+     *         dataSource: '/Players/Get',
      *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
      *     });
      *     grid.on('destroying', function (e) {
@@ -3188,7 +3169,7 @@ gj.grid.events = {
      * <table id="grid"></table>
      * <script>
      *     var grid = $('#grid').grid({
-     *         dataSource: '/DataSources/GetPlayers',
+     *         dataSource: '/Players/Get',
      *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
      *     });
      *     grid.on('columnHide', function (e, column) {
@@ -3211,7 +3192,7 @@ gj.grid.events = {
      * <table id="grid"></table>
      * <script>
      *     var grid = $('#grid').grid({
-     *         dataSource: '/DataSources/GetPlayers',
+     *         dataSource: '/Players/Get',
      *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth', hidden: true } ]
      *     });
      *     grid.on('columnShow', function (e, column) {
@@ -3233,7 +3214,7 @@ gj.grid.events = {
      * <table id="grid"></table>
      * <script>
      *     var grid = $('#grid').grid({
-     *         dataSource: '/DataSources/GetPlayers',
+     *         dataSource: '/Players/Get',
      *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth', hidden: true } ],
      *         initialized: function (e) {
      *             alert('The grid is initialized.');
@@ -4201,7 +4182,7 @@ gj.grid.widget = function ($grid, arguments) {
      * <table id="grid"></table>
      * <script>
      *     var grid = $('#grid').grid({
-     *         dataSource: '/DataSources/GetPlayers',
+     *         dataSource: '/Players/Get',
      *         columns: [ { field: 'ID', width: 24 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
      *     });
      *     $('#btnSearch').on('click', function () {
@@ -4225,7 +4206,7 @@ gj.grid.widget = function ($grid, arguments) {
      * <table id="grid"></table>
      * <script>
      *     var grid = $('#grid').grid({
-     *         dataSource: '/DataSources/GetPlayers',
+     *         dataSource: '/Players/Get',
      *         columns: [ { field: 'ID', width: 24 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
      *         pager: { limit: 5 }
      *     });
@@ -4269,7 +4250,7 @@ gj.grid.widget = function ($grid, arguments) {
      * <table id="grid"></table>
      * <script>
      *     var grid = $('#grid').grid({
-     *         dataSource: '/DataSources/GetPlayers',
+     *         dataSource: '/Players/Get',
      *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
      *         uiLibrary: 'bootstrap',
      *         pager: { limit: 2, sizes: [2, 5, 10] }
@@ -4295,7 +4276,7 @@ gj.grid.widget = function ($grid, arguments) {
      *         grid.render(response);
      *     };
      *     grid = $('#grid').grid({
-     *         dataSource: { url: '/DataSources/GetPlayers', success: onSuccessFunc },
+     *         dataSource: { url: '/Players/Get', success: onSuccessFunc },
      *         columns: [ { field: 'Name' }, { field: 'PlaceOfBirth' } ]
      *     });
      * </script>
@@ -4321,7 +4302,7 @@ gj.grid.widget = function ($grid, arguments) {
      * <script>
      *     var createFunc = function() {
      *         $('#grid').grid({
-     *             dataSource: '/DataSources/GetPlayers',
+     *             dataSource: '/Players/Get',
      *             columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
      *         });
      *     };
@@ -4339,7 +4320,7 @@ gj.grid.widget = function ($grid, arguments) {
      * <table id="grid"></table>
      * <script>
      *     var grid = $('#grid').grid({
-     *         dataSource: '/DataSources/GetPlayers',
+     *         dataSource: '/Players/Get',
      *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
      *     });
      *     $('#btnRemove').on('click', function () {
@@ -4363,7 +4344,7 @@ gj.grid.widget = function ($grid, arguments) {
      * <table id="grid"></table>
      * <script>
      *     var grid = $('#grid').grid({
-     *         dataSource: '/DataSources/GetPlayers',
+     *         dataSource: '/Players/Get',
      *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
      *         selectionMethod: 'checkbox'
      *     });
@@ -4387,7 +4368,7 @@ gj.grid.widget = function ($grid, arguments) {
      * <table id="grid"></table>
      * <script>
      *     var grid = $('#grid').grid({
-     *         dataSource: '/DataSources/GetPlayers',
+     *         dataSource: '/Players/Get',
      *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
      *         selectionMethod: 'checkbox'
      *     });
@@ -4410,7 +4391,7 @@ gj.grid.widget = function ($grid, arguments) {
      * <table id="grid"></table>
      * <script>
      *     var grid = $('#grid').grid({
-     *         dataSource: '/DataSources/GetPlayers',
+     *         dataSource: '/Players/Get',
      *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
      *         selectionMethod: 'checkbox',
      *         selectionType: 'multiple'
@@ -4437,7 +4418,7 @@ gj.grid.widget = function ($grid, arguments) {
      * <table id="grid"></table>
      * <script>
      *     var grid = $('#grid').grid({
-     *         dataSource: '/DataSources/GetPlayers',
+     *         dataSource: '/Players/Get',
      *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
      *         selectionMethod: 'checkbox',
      *         selectionType: 'multiple'
@@ -4462,7 +4443,7 @@ gj.grid.widget = function ($grid, arguments) {
      * <table id="grid"></table>
      * <script>
      *     var grid = $('#grid').grid({
-     *         dataSource: '/DataSources/GetPlayers',
+     *         dataSource: '/Players/Get',
      *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
      *         selectionMethod: 'checkbox',
      *         selectionType: 'multiple'
@@ -4490,7 +4471,7 @@ gj.grid.widget = function ($grid, arguments) {
      * <table id="grid"></table>
      * <script>
      *     var grid = $('#grid').grid({
-     *         dataSource: '/DataSources/GetPlayers',
+     *         dataSource: '/Players/Get',
      *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
      *         primaryKey: 'ID' //define the name of the column that you want to use as ID here.
      *     });
@@ -4515,7 +4496,7 @@ gj.grid.widget = function ($grid, arguments) {
      * <table id="grid"></table>
      * <script>
      *     var grid = $('#grid').grid({
-     *         dataSource: '/DataSources/GetPlayers',
+     *         dataSource: '/Players/Get',
      *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
      *     });
      *     $('#btnGetData').on('click', function () {
@@ -4559,7 +4540,7 @@ gj.grid.widget = function ($grid, arguments) {
      * <table id="grid"></table>
      * <script>
      *     var grid = $('#grid').grid({
-     *         dataSource: '/DataSources/GetPlayers',
+     *         dataSource: '/Players/Get',
      *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
      *         uiLibrary: 'bootstrap',
      *         pager: { limit: 2, sizes: [2, 5, 10] }
@@ -4581,7 +4562,7 @@ gj.grid.widget = function ($grid, arguments) {
      * <table id="grid"></table>
      * <script>
      *     var grid = $('#grid').grid({
-     *         dataSource: '/DataSources/GetPlayers',
+     *         dataSource: '/Players/Get',
      *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth', hidden: true } ]
      *     });
      *     $('#btnShowColumn').on('click', function () {
@@ -4604,7 +4585,7 @@ gj.grid.widget = function ($grid, arguments) {
      * <table id="grid"></table>
      * <script>
      *     var grid = $('#grid').grid({
-     *         dataSource: '/DataSources/GetPlayers',
+     *         dataSource: '/Players/Get',
      *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
      *     });
      *     $('#btnHideColumn').on('click', function () {
@@ -4807,7 +4788,7 @@ gj.grid.plugins.expandCollapseRows = {
              * <table id="grid"></table>
              * <script>
              *     $('#grid').grid({
-             *         dataSource: '/DataSources/GetPlayers',
+             *         dataSource: '/Players/Get',
              *         detailTemplate: '<div><b>Place Of Birth:</b> {PlaceOfBirth}</div>',
              *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'DateOfBirth', type: 'date' } ]
              *     });
@@ -4816,7 +4797,7 @@ gj.grid.plugins.expandCollapseRows = {
              * <table id="grid"></table>
              * <script>
              *     $('#grid').grid({
-             *         dataSource: '/DataSources/GetPlayers',
+             *         dataSource: '/Players/Get',
              *         uiLibrary: 'bootstrap',
              *         detailTemplate: '<div><b>Place Of Birth:</b> {PlaceOfBirth}</div>',
              *         columns: [ { field: 'ID', width: 36 }, { field: 'Name' }, { field: 'DateOfBirth', type: 'date' } ]
@@ -4826,7 +4807,7 @@ gj.grid.plugins.expandCollapseRows = {
              * <table id="grid"></table>
              * <script>
              *     $('#grid').grid({
-             *         dataSource: '/DataSources/GetPlayers',
+             *         dataSource: '/Players/Get',
              *         uiLibrary: 'bootstrap4',
              *         iconsLibrary: 'fontawesome',
              *         detailTemplate: '<div><b>Place Of Birth:</b> {PlaceOfBirth}</div>',
@@ -4837,7 +4818,7 @@ gj.grid.plugins.expandCollapseRows = {
              * <table id="grid"></table>
              * <script>
              *     $('#grid').grid({
-             *         dataSource: '/DataSources/GetPlayers',
+             *         dataSource: '/Players/Get',
              *         uiLibrary: 'materialdesign',
              *         detailTemplate: '<div style="text-align: left"><b>Place Of Birth:</b> {PlaceOfBirth}</div>',
              *         columns: [ { field: 'ID', width: 70 }, { field: 'Name' }, { field: 'DateOfBirth', type: 'date' } ]
@@ -4862,7 +4843,7 @@ gj.grid.plugins.expandCollapseRows = {
              *     var grid = $('#grid').grid({
              *         uiLibrary: 'bootstrap',
              *         primaryKey: 'ID',
-             *         dataSource: '/DataSources/GetPlayers',
+             *         dataSource: '/Players/Get',
              *         columns: [ { field: 'ID', width: 34 }, { field: 'Name' } ],
              *         detailTemplate: '<div><b>Place Of Birth:</b> {PlaceOfBirth}</div>',
              *         keepExpandedRows: true,
@@ -4975,7 +4956,7 @@ gj.grid.plugins.expandCollapseRows = {
          * <script>
          *     var grid = $('#grid').grid({
          *         primaryKey: 'ID',
-         *         dataSource: '/DataSources/GetPlayers',
+         *         dataSource: '/Players/Get',
          *         detailTemplate: '<div></div>',
          *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'DateOfBirth', type: 'date' } ]
          *     });
@@ -5001,7 +4982,7 @@ gj.grid.plugins.expandCollapseRows = {
          * <script>
          *     var grid = $('#grid').grid({
          *         primaryKey: 'ID',
-         *         dataSource: '/DataSources/GetPlayers',
+         *         dataSource: '/Players/Get',
          *         detailTemplate: '<div></div>',
          *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'DateOfBirth', type: 'date' } ]
          *     });
@@ -5139,7 +5120,7 @@ gj.grid.plugins.inlineEditing.config = {
              *         $container.append('<input type="text" value="' + currentValue + '"/>');
              *     }
              *     $('#grid').grid({
-             *         dataSource: '/DataSources/GetPlayers',
+             *         dataSource: '/Players/Get',
              *         columns: [
              *             { field: 'ID' },
              *             { field: 'Name', editor: edit },
@@ -5158,7 +5139,7 @@ gj.grid.plugins.inlineEditing.config = {
              * <table id="grid"></table>
              * <script>
              *     $('#grid').grid({
-             *         dataSource: '/DataSources/GetPlayers',
+             *         dataSource: '/Players/Get',
              *         columns: [
              *             { field: 'ID' },
              *             { field: 'Name', editor: true, mode: 'edit' },
@@ -5179,7 +5160,7 @@ gj.grid.plugins.inlineEditing.config = {
              * <table id="grid"></table>
              * <script>
              *     var grid = $('#grid').grid({
-             *         dataSource: '/DataSources/GetPlayers',
+             *         dataSource: '/Players/Get',
              *         primaryKey: 'ID',
              *         inlineEditing: { mode: 'dblclick' },
              *         columns: [
@@ -5531,7 +5512,7 @@ gj.grid.plugins.inlineEditing.public = {
      * <script>
      *     var grid = $('#grid').grid({
      *         primaryKey: 'ID',
-     *         dataSource: '/DataSources/GetPlayers',
+     *         dataSource: '/Players/Get',
      *         columns: [ { field: 'ID' }, { field: 'Name', editor: true }, { field: 'PlaceOfBirth', editor: true } ]
      *     });
      *     $('#btnGetChanges').on('click', function () {
@@ -5570,7 +5551,7 @@ gj.grid.plugins.inlineEditing.public = {
      *     }
      *     grid = $('#grid').grid({
      *         primaryKey: 'ID',
-     *         dataSource: '/DataSources/GetPlayers',
+     *         dataSource: '/Players/Get',
      *         inlineEditing: { mode: 'command', managementColumn: false },
      *         columns: [ 
      *             { field: 'ID', width: 24 },
@@ -5621,7 +5602,7 @@ gj.grid.plugins.inlineEditing.public = {
      *     }
      *     grid = $('#grid').grid({
      *         primaryKey: 'ID',
-     *         dataSource: '/DataSources/GetPlayers',
+     *         dataSource: '/Players/Get',
      *         inlineEditing: { mode: 'command', managementColumn: false },
      *         columns: [ 
      *             { field: 'ID', width: 24 },
@@ -5673,7 +5654,7 @@ gj.grid.plugins.inlineEditing.public = {
      *     }
      *     grid = $('#grid').grid({
      *         primaryKey: 'ID',
-     *         dataSource: '/DataSources/GetPlayers',
+     *         dataSource: '/Players/Get',
      *         inlineEditing: { mode: 'command', managementColumn: false },
      *         columns: [ 
      *             { field: 'ID', width: 24 },
@@ -5712,7 +5693,7 @@ gj.grid.plugins.inlineEditing.events = {
      * <table id="grid"></table>
      * <script>
      *     var grid = $('#grid').grid({
-     *         dataSource: '/DataSources/GetPlayers',
+     *         dataSource: '/Players/Get',
      *         columns: [ { field: 'ID' }, { field: 'Name', editor: true }, { field: 'PlaceOfBirth', editor: true } ]
      *     });
      *     grid.on('cellDataChanged', function (e, $cell, column, record, oldValue, newValue) {
@@ -5736,7 +5717,7 @@ gj.grid.plugins.inlineEditing.events = {
      * <script>
      *     var grid = $('#grid').grid({
      *         primaryKey: 'ID',
-     *         dataSource: '/DataSources/GetPlayers',
+     *         dataSource: '/Players/Get',
      *         inlineEditing: { mode: 'command' },
      *         columns: [ { field: 'ID', width: 30 }, { field: 'Name', editor: true }, { field: 'PlaceOfBirth', editor: true } ]
      *     });
@@ -5796,7 +5777,7 @@ gj.grid.plugins.optimisticPersistence = {
                  *     var grid = $('#grid').grid({
                  *         guid: '58d47231-ac7b-e6d2-ddba-5e0195b31f2e',
                  *         uiLibrary: 'bootstrap',
-                 *         dataSource: '/DataSources/GetPlayers',
+                 *         dataSource: '/Players/Get',
                  *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
                  *         optimisticPersistence: { localStorage: ["page", "limit"] },
                  *         pager: { limit: 2, sizes: [2, 5, 10, 20] }
@@ -5818,7 +5799,7 @@ gj.grid.plugins.optimisticPersistence = {
                  *     var grid = $('#grid').grid({
                  *         guid: '58d47231-ac7b-e6d2-ddba-5e0195b31f2f',
                  *         uiLibrary: 'bootstrap',
-                 *         dataSource: '/DataSources/GetPlayers',
+                 *         dataSource: '/Players/Get',
                  *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
                  *         optimisticPersistence: { sessionStorage: ["page", "limit"] },
                  *         pager: { limit: 2, sizes: [2, 5, 10, 20] }
@@ -5939,7 +5920,7 @@ gj.grid.plugins.pagination = {
                  * <table id="grid"></table>
                  * <script>
                  *     var grid = $('#grid').grid({
-                 *         dataSource: '/DataSources/GetPlayers',
+                 *         dataSource: '/Players/Get',
                  *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
                  *         pager: { limit: 2 }
                  *     });
@@ -5958,7 +5939,7 @@ gj.grid.plugins.pagination = {
                  * </div>
                  * <script>
                  *     var grid = $('#grid').grid({
-                 *         dataSource: '/DataSources/GetPlayers',
+                 *         dataSource: '/Players/Get',
                  *         uiLibrary: 'bootstrap',
                  *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
                  *         pager: { limit: 2, sizes: [2, 5, 10, 20] }
@@ -5970,7 +5951,7 @@ gj.grid.plugins.pagination = {
                  * </div>
                  * <script>
                  *     var grid = $('#grid').grid({
-                 *         dataSource: '/DataSources/GetPlayers',
+                 *         dataSource: '/Players/Get',
                  *         uiLibrary: 'materialdesign',
                  *         columns: [ { field: 'ID', width: 70 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
                  *         pager: { limit: 2, sizes: [2, 5, 10, 20] }
@@ -5990,7 +5971,7 @@ gj.grid.plugins.pagination = {
                  * <table id="grid"></table>
                  * <script>
                  *     var grid = $('#grid').grid({
-                 *         dataSource: '/DataSources/GetPlayers',
+                 *         dataSource: '/Players/Get',
                  *         columns: [ { field: 'ID', width: 24 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
                  *         style: {
                  *             pager: {
@@ -6494,7 +6475,7 @@ gj.grid.plugins.pagination = {
          * <table id="grid"></table>
          * <script>
          *     var grid = $('#grid').grid({
-         *         dataSource: '/DataSources/GetPlayers',
+         *         dataSource: '/Players/Get',
          *         uiLibrary: 'bootstrap',
          *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
          *         pager: { limit: 2, sizes: [2, 5, 10, 20] }
@@ -6518,7 +6499,7 @@ gj.grid.plugins.pagination = {
          * <table id="grid"></table>
          * <script>
          *     var grid = $('#grid').grid({
-         *         dataSource: '/DataSources/GetPlayers',
+         *         dataSource: '/Players/Get',
          *         uiLibrary: 'jqueryui',
          *         columns: [ { field: 'ID' }, { field: 'Name', sortable: true }, { field: 'PlaceOfBirth' } ],
          *         pager: { limit: 2, sizes: [2, 5, 10, 20] }
@@ -6570,7 +6551,7 @@ gj.grid.plugins.responsiveDesign = {
              * <table id="grid"></table>
              * <script>
              *     var grid = $('#grid').grid({
-             *         dataSource: '/DataSources/GetPlayers',
+             *         dataSource: '/Players/Get',
              *         responsive: true,
              *         resizeCheckInterval: 2000, //check if the grid is resized on each 2 second
              *         columns: [ { field: 'ID', width: 20 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
@@ -6591,7 +6572,7 @@ gj.grid.plugins.responsiveDesign = {
              * <table id="grid"></table>
              * <script>
              *     $('#grid').grid({
-             *         dataSource: '/DataSources/GetPlayers',
+             *         dataSource: '/Players/Get',
              *         responsive: true,
              *         columns: [
              *             { field: 'Name' },
@@ -6612,7 +6593,7 @@ gj.grid.plugins.responsiveDesign = {
              * <table id="grid"></table>
              * <script>
              *     $('#grid').grid({
-             *         dataSource: '/DataSources/GetPlayers',
+             *         dataSource: '/Players/Get',
              *         detailTemplate: '<div class="row"></div>',
              *         responsive: true,
              *         showHiddenColumnsAsDetails: true,
@@ -6638,7 +6619,7 @@ gj.grid.plugins.responsiveDesign = {
                  * <table id="grid"></table>
                  * <script>
                  *     $('#grid').grid({
-                 *         dataSource: '/DataSources/GetPlayers',
+                 *         dataSource: '/Players/Get',
                  *         responsive: true,
                  *         columns: [
                  *             { field: 'Name' },
@@ -6660,7 +6641,7 @@ gj.grid.plugins.responsiveDesign = {
                  * <table id="grid"></table>
                  * <script>
                  *     $('#grid').grid({
-                 *         dataSource: '/DataSources/GetPlayers',
+                 *         dataSource: '/Players/Get',
                  *         responsive: true,
                  *         columns: [
                  *             { field: 'Name' },
@@ -6764,7 +6745,7 @@ gj.grid.plugins.responsiveDesign = {
          * <table id="grid"></table>
          * <script>
          *     var grid = $('#grid').grid({
-         *         dataSource: '/DataSources/GetPlayers',
+         *         dataSource: '/Players/Get',
          *         responsive: false,
          *         columns: [
          *             { field: 'ID', width: 20 },
@@ -6818,7 +6799,7 @@ gj.grid.plugins.responsiveDesign = {
          * <table id="grid"></table>
          * <script>
          *     var grid = $('#grid').grid({
-         *         dataSource: '/DataSources/GetPlayers',
+         *         dataSource: '/Players/Get',
          *         responsive: true,
          *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
          *     });
@@ -6886,7 +6867,7 @@ gj.grid.plugins.toolbar = {
               * <table id="grid"></table>
               * <script>
               *     var grid = $('#grid').grid({
-              *         dataSource: '/DataSources/GetPlayers',
+              *         dataSource: '/Players/Get',
               *         uiLibrary: 'bootstrap',
               *         toolbarTemplate: '<div class="row"><div class="col-md-8" style="line-height:34px"><span data-role="title">Grid Title</span></div><div class="col-md-4 text-right"><button onclick="grid.reload()" class="btn btn-default">click here to refresh</button></div></div>',
               *         columns: [ { field: 'ID', width: 34 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
@@ -6903,7 +6884,7 @@ gj.grid.plugins.toolbar = {
               * <table id="grid"></table>
               * <script>
               *     $('#grid').grid({
-              *         dataSource: '/DataSources/GetPlayers',
+              *         dataSource: '/Players/Get',
               *         title: 'Players',
               *         columns: [ { field: 'ID', width: 34 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
               *     });
@@ -6977,7 +6958,7 @@ gj.grid.plugins.toolbar = {
          * <table id="grid"></table>
          * <script>
          *     var grid = $('#grid').grid({
-         *         dataSource: '/DataSources/GetPlayers',
+         *         dataSource: '/Players/Get',
          *         title: 'Initial Grid Title',
          *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
          *     });
@@ -6989,7 +6970,7 @@ gj.grid.plugins.toolbar = {
          * <table id="grid"></table>
          * <script>
          *     var grid = $('#grid').grid({
-         *         dataSource: '/DataSources/GetPlayers',
+         *         dataSource: '/Players/Get',
          *         toolbarTemplate: '<div data-role="title">Initial Grid Title</div>',
          *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
          *     });
@@ -7028,7 +7009,7 @@ gj.grid.plugins.resizableColumns = {
              * <table id="grid"></table>
              * <script>
              *     var grid = $('#grid').grid({
-             *         dataSource: '/DataSources/GetPlayers',
+             *         dataSource: '/Players/Get',
              *         resizableColumns: true,
              *         columns: [ { field: 'ID', width: 34 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
              *     });
@@ -7037,7 +7018,7 @@ gj.grid.plugins.resizableColumns = {
              * <table id="grid"></table>
              * <script>
              *     var grid = $('#grid').grid({
-             *         dataSource: '/DataSources/GetPlayers',
+             *         dataSource: '/Players/Get',
              *         resizableColumns: true,
              *         uiLibrary: 'bootstrap',
              *         columns: [ { field: 'ID', width: 34 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
@@ -7047,7 +7028,7 @@ gj.grid.plugins.resizableColumns = {
              * <table id="grid"></table>
              * <script>
              *     var grid = $('#grid').grid({
-             *         dataSource: '/DataSources/GetPlayers',
+             *         dataSource: '/Players/Get',
              *         resizableColumns: true,
              *         uiLibrary: 'materialdesign',
              *         columns: [ { field: 'ID', width: 34 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
@@ -7132,7 +7113,7 @@ gj.grid.plugins.rowReorder = {
              * <table id="grid"></table>
              * <script>
              *     $('#grid').grid({
-             *         dataSource: '/DataSources/GetPlayers',
+             *         dataSource: '/Players/Get',
              *         rowReorder: true,
              *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
              *     });
@@ -7142,7 +7123,7 @@ gj.grid.plugins.rowReorder = {
              * <table id="grid"></table>
              * <script>
              *     $('#grid').grid({
-             *         dataSource: '/DataSources/GetPlayers',
+             *         dataSource: '/Players/Get',
              *         rowReorder: true,
              *         uiLibrary: 'bootstrap',
              *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
@@ -7153,7 +7134,7 @@ gj.grid.plugins.rowReorder = {
              * <table id="grid"></table>
              * <script>
              *     $('#grid').grid({
-             *         dataSource: '/DataSources/GetPlayers',
+             *         dataSource: '/Players/Get',
              *         rowReorder: true,
              *         uiLibrary: 'jqueryui',
              *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
@@ -7170,7 +7151,7 @@ gj.grid.plugins.rowReorder = {
              * <table id="grid"></table>
              * <script>
              *     $('#grid').grid({
-             *         dataSource: '/DataSources/GetPlayers',
+             *         dataSource: '/Players/Get',
              *         rowReorder: true,
              *         rowReorderColumn: 'ID',
              *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
@@ -7357,7 +7338,7 @@ gj.grid.plugins.columnReorder = {
              * <table id="grid"></table>
              * <script>
              *     $('#grid').grid({
-             *         dataSource: '/DataSources/GetPlayers',
+             *         dataSource: '/Players/Get',
              *         columnReorder: true,
              *         columns: [ { field: 'ID', width: 36 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
              *     });
@@ -7504,7 +7485,7 @@ gj.grid.plugins.headerFilter = {
                  * <table id="grid"></table>
                  * <script>
                  *     $('#grid').grid({
-                 *         dataSource: '/DataSources/GetPlayers',
+                 *         dataSource: '/Players/Get',
                  *         headerFilter: true,
                  *         columns: [
                  *             { field: 'ID', width: 36, filterable: false },
@@ -7524,7 +7505,7 @@ gj.grid.plugins.headerFilter = {
              * <table id="grid"></table>
              * <script>
              *     $('#grid').grid({
-             *         dataSource: '/DataSources/GetPlayers',
+             *         dataSource: '/Players/Get',
              *         headerFilter: true,
              *         columns: [ { field: 'ID', width: 36 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
              *     });
@@ -7561,7 +7542,7 @@ gj.grid.plugins.headerFilter = {
                  * <table id="grid"></table>
                  * <script>
                  *     $('#grid').grid({
-                 *         dataSource: '/DataSources/GetPlayers',
+                 *         dataSource: '/Players/Get',
                  *         headerFilter: {
                  *             type: 'onenterkeypress'
                  *         },
@@ -7572,7 +7553,7 @@ gj.grid.plugins.headerFilter = {
                  * <table id="grid"></table>
                  * <script>
                  *     $('#grid').grid({
-                 *         dataSource: '/DataSources/GetPlayers',
+                 *         dataSource: '/Players/Get',
                  *         headerFilter: {
                  *             type: 'onchange'
                  *         },
@@ -7695,7 +7676,7 @@ gj.grid.plugins.grouping = {
                   * <table id="grid"></table>
                   * <script>
                   *     $('#grid').grid({
-                  *         dataSource: '/DataSources/GetPlayers',
+                  *         dataSource: '/Players/Get',
                   *         grouping: { groupBy: 'Nationality' },
                   *         columns: [ { field: 'Name', sortable: true }, { field: 'PlaceOfBirth' } ],
                   *         pager: { limit: 5 }
@@ -7705,7 +7686,7 @@ gj.grid.plugins.grouping = {
                   * <table id="grid"></table>
                   * <script>
                   *     $('#grid').grid({
-                  *         dataSource: '/DataSources/GetPlayers',
+                  *         dataSource: '/Players/Get',
                   *         uiLibrary: 'materialdesign',
                   *         grouping: { groupBy: 'Nationality' },
                   *         columns: [ { field: 'Name', sortable: true }, { field: 'PlaceOfBirth' } ],
@@ -7896,7 +7877,7 @@ gj.tree.config = {
          * <div id="tree"></div>
          * <script>
          *     $('#tree').tree({
-         *         dataSource: '/DataSources/GetCountries'
+         *         dataSource: '/Locations/Get'
          *     });
          * </script>
          */
@@ -8021,13 +8002,13 @@ gj.tree.config = {
          * <div id="tree"></div>
          * <script>
          *     var tree = $('#tree').tree({
-         *         dataSource: '/DataSources/GetCountries',
+         *         dataSource: '/Locations/Get',
          *         width: 500,
          *         uiLibrary: 'bootstrap'
          *     });
          * </script>
          * @example HTML.Config <!-- bootstrap, tree.base -->
-         * <div id="tree" width="500" data-source="/DataSources/GetCountries" data-ui-library="bootstrap"></div>
+         * <div id="tree" width="500" data-source="/Locations/Get" data-ui-library="bootstrap"></div>
          * <script>
          *     $('#tree').tree();
          * </script>
@@ -8042,7 +8023,7 @@ gj.tree.config = {
          * <div id="tree"></div>
          * <script>
          *     var tree = $('#tree').tree({
-         *         dataSource: '/DataSources/GetCountries',
+         *         dataSource: '/Locations/Get',
          *         width: 500,
          *         uiLibrary: 'bootstrap',
          *         checkboxes: true
@@ -8052,7 +8033,7 @@ gj.tree.config = {
          * <div id="tree"></div>
          * <script>
          *     var tree = $('#tree').tree({
-         *         dataSource: '/DataSources/GetCountries',
+         *         dataSource: '/Locations/Get',
          *         width: 500,
          *         uiLibrary: 'materialdesign',
          *         checkboxes: true
@@ -8071,7 +8052,7 @@ gj.tree.config = {
          * <div id="tree"></div>
          * <script>
          *     var tree = $('#tree').tree({
-         *         dataSource: '/DataSources/GetCountries',
+         *         dataSource: '/Locations/Get',
          *         width: 500,
          *         iconsLibrary: 'materialicons'
          *     });
@@ -8080,7 +8061,7 @@ gj.tree.config = {
          * <div id="tree"></div>
          * <script>
          *     var tree = $('#tree').tree({
-         *         dataSource: '/DataSources/GetCountries',
+         *         dataSource: '/Locations/Get',
          *         width: 500,
          *         uiLibrary: 'bootstrap4',
          *         iconsLibrary: 'fontawesome'
@@ -8190,7 +8171,7 @@ gj.tree.events = {
      * <div id="tree"></div>
      * <script>
      *     var tree = $('#tree').tree({
-     *         dataSource: '/DataSources/GetCountries',
+     *         dataSource: '/Locations/Get',
      *         initialized: function (e) {
      *             alert('initialized is fired.');
      *         }
@@ -8212,7 +8193,7 @@ gj.tree.events = {
      * <div id="tree"></div>
      * <script>
      *     $('#tree').tree({
-     *         dataSource: '/DataSources/GetCountries',
+     *         dataSource: '/Locations/Get',
      *         dataBinding: function (e) {
      *             alert('dataBinding is fired.');
      *         }
@@ -8231,7 +8212,7 @@ gj.tree.events = {
      * <div id="tree"></div>
      * <script>
      *     $('#tree').tree({
-     *         dataSource: '/DataSources/GetCountries',
+     *         dataSource: '/Locations/Get',
      *         dataBound: function (e) {
      *             alert('dataBound is fired.');
      *         }
@@ -8249,7 +8230,7 @@ gj.tree.events = {
      * @param {object} node - the node as jquery object
      * @param {string} id - the id of the record
      * @example sample <!-- tree.base -->
-     * <div id="tree" data-source="/DataSources/GetCountries"></div>
+     * <div id="tree" data-source="/Locations/Get"></div>
      * <script>
      *     var tree = $('#tree').tree();
      *     tree.on('select', function (e, node, id) {
@@ -8268,7 +8249,7 @@ gj.tree.events = {
      * @param {object} node - the node as jquery object
      * @param {string} id - the id of the record
      * @example sample <!-- tree.base -->
-     * <div id="tree" data-source="/DataSources/GetCountries"></div>
+     * <div id="tree" data-source="/Locations/Get"></div>
      * <script>
      *     var tree = $('#tree').tree();
      *     tree.on('unselect', function (e, node, id) {
@@ -8287,7 +8268,7 @@ gj.tree.events = {
      * @param {object} node - the node as jquery object
      * @param {string} id - the id of the record
      * @example Event.Sample <!-- tree.base -->
-     * <div id="tree" data-source="/DataSources/GetCountries"></div>
+     * <div id="tree" data-source="/Locations/Get"></div>
      * <script>
      *     var tree = $('#tree').tree();
      *     tree.on('expand', function (e, node, id) {
@@ -8306,7 +8287,7 @@ gj.tree.events = {
      * @param {object} node - the node as jquery object
      * @param {string} id - the id of the record
      * @example Event.Sample <!-- tree.base -->
-     * <div id="tree" data-source="/DataSources/GetCountries"></div>
+     * <div id="tree" data-source="/Locations/Get"></div>
      * <script>
      *     var tree = $('#tree').tree();
      *     tree.on('collapse', function (e, node, id) {
@@ -8325,7 +8306,7 @@ gj.tree.events = {
      * @example Event.Sample <!-- tree.base -->
      * <button onclick="tree.destroy()">Destroy</button>
      * <br/><br/>
-     * <div id="tree" data-source="/DataSources/GetCountries"></div>
+     * <div id="tree" data-source="/Locations/Get"></div>
      * <script>
      *     var tree = $('#tree').tree();
      *     tree.on('destroying', function (e) {
@@ -8345,7 +8326,7 @@ gj.tree.events = {
      * @param {string} id - the id of the record
      * @param {object} record - the data of the node record
      * @example Event.Sample <!-- tree.base -->
-     * <div id="tree" data-source="/DataSources/GetCountries"></div>
+     * <div id="tree" data-source="/Locations/Get"></div>
      * <script>
      *     var tree = $('#tree').tree();
      *     tree.on('nodeDataBound', function (e, node, id, record) {
@@ -8775,7 +8756,7 @@ gj.tree.widget = function ($element, arguments) {
      * <div id="tree"></div>
      * <script>
      *     var tree = $('#tree').tree({
-     *         dataSource: '/DataSources/GetCountries',
+     *         dataSource: '/Locations/Get',
      *         autoLoad: false
      *     });
      * </script>
@@ -8799,7 +8780,7 @@ gj.tree.widget = function ($element, arguments) {
      *         tree.render(response);
      *     };
      *     tree = $('#tree').tree({
-     *         dataSource: { url: '/DataSources/GetCountries', success: onSuccessFunc }
+     *         dataSource: { url: '/Locations/Get', success: onSuccessFunc }
      *     });
      * </script>
      */
@@ -8817,7 +8798,7 @@ gj.tree.widget = function ($element, arguments) {
      * @example Append.ToRoot <!-- tree.base -->
      * <button onclick="append()">Append Node</button>
      * <br/><br/>
-     * <div id="tree" data-source="/DataSources/GetCountries"></div>
+     * <div id="tree" data-source="/Locations/Get"></div>
      * <script>
      *     var tree = $('#tree').tree();
      *     function append() {
@@ -8827,7 +8808,7 @@ gj.tree.widget = function ($element, arguments) {
      * @example Append.Parent <!-- tree.base -->
      * <button onclick="append()">Append Node</button>
      * <br/><br/>
-     * <div id="tree" data-source="/DataSources/GetCountries"></div>
+     * <div id="tree" data-source="/Locations/Get"></div>
      * <script>
      *     var parent, tree = $('#tree').tree();
      *     tree.on('dataBound', function () {
@@ -8841,7 +8822,7 @@ gj.tree.widget = function ($element, arguments) {
      * @example Bootstrap <!-- tree.base, bootstrap -->
      * <button onclick="append()">Append Node</button>
      * <br/><br/>
-     * <div id="tree" data-source="/DataSources/GetCountries" data-ui-library="bootstrap"></div>
+     * <div id="tree" data-source="/Locations/Get" data-ui-library="bootstrap"></div>
      * <script>
      *     var parent, tree = $('#tree').tree();
      *     tree.on('dataBound', function () {
@@ -8855,7 +8836,7 @@ gj.tree.widget = function ($element, arguments) {
      * @example Prepend <!-- tree.base -->
      * <button onclick="append()">Append Node</button>
      * <br/><br/>
-     * <div id="tree" data-source="/DataSources/GetCountries"></div>
+     * <div id="tree" data-source="/Locations/Get"></div>
      * <script>
      *     var parent, tree = $('#tree').tree();
      *     tree.on('dataBound', function () {
@@ -8869,7 +8850,7 @@ gj.tree.widget = function ($element, arguments) {
      * @example Position <!-- tree.base -->
      * <button onclick="append()">Append Node</button>
      * <br/><br/>
-     * <div id="tree" data-source="/DataSources/GetCountries"></div>
+     * <div id="tree" data-source="/Locations/Get"></div>
      * <script>
      *     var parent, tree = $('#tree').tree();
      *     tree.on('dataBound', function () {
@@ -8896,7 +8877,7 @@ gj.tree.widget = function ($element, arguments) {
      * <div id="tree"></div>
      * <script>
      *     var tree = $('#tree').tree({
-     *         dataSource: '/DataSources/GetCountries'
+     *         dataSource: '/Locations/Get'
      *     });
      *     function remove() {
      *         var node = tree.getNodeByText('USA');
@@ -8918,7 +8899,7 @@ gj.tree.widget = function ($element, arguments) {
      * <div id="tree"></div>
      * <script>
      *     var tree = $('#tree').tree({
-     *         dataSource: '/DataSources/GetCountries'
+     *         dataSource: '/Locations/Get'
      *     });
      * </script>
      */
@@ -8938,7 +8919,7 @@ gj.tree.widget = function ($element, arguments) {
      * <div id="tree"></div>
      * <script>
      *     var tree = $('#tree').tree({
-     *         dataSource: '/DataSources/GetCountries'
+     *         dataSource: '/Locations/Get'
      *     });
      *     function expand() {
      *         var node = tree.getNodeByText('Asia');
@@ -8955,7 +8936,7 @@ gj.tree.widget = function ($element, arguments) {
      * <div id="tree"></div>
      * <script>
      *     var tree = $('#tree').tree({
-     *         dataSource: '/DataSources/GetCountries'
+     *         dataSource: '/Locations/Get'
      *     });
      *     function expand() {
      *         var node = tree.getNodeByText('North America');
@@ -8979,7 +8960,7 @@ gj.tree.widget = function ($element, arguments) {
      * <div id="tree"></div>
      * <script>
      *     var tree = $('#tree').tree({
-     *         dataSource: '/DataSources/GetCountries'
+     *         dataSource: '/Locations/Get'
      *     });
      *     function expand() {
      *         var node = tree.getNodeByText('Asia');
@@ -8996,7 +8977,7 @@ gj.tree.widget = function ($element, arguments) {
      * <div id="tree"></div>
      * <script>
      *     var tree = $('#tree').tree({
-     *         dataSource: '/DataSources/GetCountries'
+     *         dataSource: '/Locations/Get'
      *     });
      *     function collapse() {
      *         var node = tree.getNodeByText('North America');
@@ -9015,7 +8996,7 @@ gj.tree.widget = function ($element, arguments) {
      * @example Sample <!-- tree.base -->
      * <button onclick="tree.expandAll()">Expand All</button><button onclick="tree.collapseAll()">Collapse All</button>
      * <br/><br/>
-     * <div id="tree" data-source="/DataSources/GetCountries"></div>
+     * <div id="tree" data-source="/Locations/Get"></div>
      * <script>
      *     var tree = $('#tree').tree();
      * </script>
@@ -9031,7 +9012,7 @@ gj.tree.widget = function ($element, arguments) {
      * @example Sample <!-- tree.base -->
      * <button onclick="tree.expandAll()">Expand All</button><button onclick="tree.collapseAll()">Collapse All</button>
      * <br/><br/>
-     * <div id="tree" data-source="/DataSources/GetCountries"></div>
+     * <div id="tree" data-source="/Locations/Get"></div>
      * <script>
      *     var tree = $('#tree').tree();
      * </script>
@@ -9051,7 +9032,7 @@ gj.tree.widget = function ($element, arguments) {
      * <div id="tree"></div>
      * <script>
      *     var tree = $('#tree').tree({
-     *         dataSource: '/DataSources/GetCountries',
+     *         dataSource: '/Locations/Get',
      *         primaryKey: 'id' //define the name of the column that you want to use as ID here.
      *     });
      *     $('#btnGetData').on('click', function () {
@@ -9075,7 +9056,7 @@ gj.tree.widget = function ($element, arguments) {
      * <div id="tree"></div>
      * <script>
      *     var tree = $('#tree').tree({
-     *         dataSource: '/DataSources/GetCountries',
+     *         dataSource: '/Locations/Get',
      *     });
      *     $('#btnGetData').on('click', function () {
      *         var data = tree.getDataByText('California');
@@ -9096,7 +9077,7 @@ gj.tree.widget = function ($element, arguments) {
      * <div id="tree"></div>
      * <script>
      *     var tree = $('#tree').tree({
-     *         dataSource: '/DataSources/GetCountries',
+     *         dataSource: '/Locations/Get',
      *         primaryKey: 'id' //define the name of the column that you want to use as ID here.
      *     });
      *     tree.on('dataBound', function() {
@@ -9118,7 +9099,7 @@ gj.tree.widget = function ($element, arguments) {
      * <div id="tree"></div>
      * <script>
      *     var tree = $('#tree').tree({
-     *         dataSource: '/DataSources/GetCountries'
+     *         dataSource: '/Locations/Get'
      *     });
      *     tree.on('dataBound', function() {
      *         var node = tree.getNodeByText('Asia');
@@ -9137,7 +9118,7 @@ gj.tree.widget = function ($element, arguments) {
      * @example Sample <!-- tree.base -->
      * <button onclick="tree.selectAll()">Select All</button><button onclick="tree.unselectAll()">Unselect All</button>
      * <br/><br/>
-     * <div id="tree" data-source="/DataSources/GetCountries"></div>
+     * <div id="tree" data-source="/Locations/Get"></div>
      * <script>
      *     var tree = $('#tree').tree({
      *         selectionType: 'multiple'
@@ -9158,7 +9139,7 @@ gj.tree.widget = function ($element, arguments) {
      * @example Sample <!-- tree.base -->
      * <button onclick="tree.selectAll()">Select All</button><button onclick="tree.unselectAll()">Unselect All</button>
      * <br/><br/>
-     * <div id="tree" data-source="/DataSources/GetCountries"></div>
+     * <div id="tree" data-source="/Locations/Get"></div>
      * <script>
      *     var tree = $('#tree').tree({
      *         selectionType: 'multiple'
@@ -9179,7 +9160,7 @@ gj.tree.widget = function ($element, arguments) {
      * @example Sample <!-- tree.base -->
      * <button id="btnShowSelection">Show Selections</button>
      * <br/><br/>
-     * <div id="tree" data-source="/DataSources/GetCountries"></div>
+     * <div id="tree" data-source="/Locations/Get"></div>
      * <script>
      *     var tree = $('#tree').tree({
      *         selectionType: 'multiple'
@@ -9236,7 +9217,7 @@ gj.tree.plugins.checkboxes = {
               * <div id="tree"></div>
               * <script>
               *     var tree = $('#tree').tree({
-              *         dataSource: '/DataSources/GetCountries',
+              *         dataSource: '/Locations/Get',
               *         checkboxes: true
               *     });
               * </script>
@@ -9247,7 +9228,7 @@ gj.tree.plugins.checkboxes = {
               * </div>
               * <script>
               *     var tree = $('#tree').tree({
-              *         dataSource: '/DataSources/GetCountries',
+              *         dataSource: '/Locations/Get',
               *         checkboxes: true,
               *         uiLibrary: 'bootstrap'
               *     });
@@ -9259,7 +9240,7 @@ gj.tree.plugins.checkboxes = {
               * </div>
               * <script>
               *     var tree = $('#tree').tree({
-              *         dataSource: '/DataSources/GetCountries',
+              *         dataSource: '/Locations/Get',
               *         checkboxes: true,
               *         uiLibrary: 'materialdesign'
               *     });
@@ -9353,7 +9334,7 @@ gj.tree.plugins.checkboxes = {
          * <div id="tree"></div>
          * <script>
          *     var tree = $('#tree').tree({
-         *         dataSource: '/DataSources/GetCountries',
+         *         dataSource: '/Locations/Get',
          *         checkboxes: true
          *     });
          *     $('#btnGet').on('click', function() {
@@ -9410,7 +9391,7 @@ gj.tree.plugins.dragAndDrop = {
               * <div id="tree"></div>
               * <script>
               *     $('#tree').tree({
-              *         dataSource: '/DataSources/GetCountries',
+              *         dataSource: '/Locations/Get',
               *         dragAndDrop: true
               *     });
               * </script>
@@ -9421,7 +9402,7 @@ gj.tree.plugins.dragAndDrop = {
               * </div>
               * <script>
               *     $('#tree').tree({
-              *         dataSource: '/DataSources/GetCountries',
+              *         dataSource: '/Locations/Get',
               *         dragAndDrop: true,
               *         uiLibrary: 'bootstrap'
               *     });
@@ -9431,7 +9412,7 @@ gj.tree.plugins.dragAndDrop = {
               * <div id="tree"></div>
               * <script>
               *     $('#tree').tree({
-              *         dataSource: '/DataSources/GetCountries',
+              *         dataSource: '/Locations/Get',
               *         dragAndDrop: true,
               *         uiLibrary: 'materialdesign'
               *     });
@@ -9657,7 +9638,7 @@ gj.tree.plugins.dragAndDrop = {
          * @param {object} parentId - the id of the new parend node
          * @param {object} orderNumber - the new order number
          * @example Event.Sample <!-- draggable.base, droppable.base, tree.base -->
-         * <div id="tree" data-source="/DataSources/GetCountries" data-drag-and-drop="true"></div>
+         * <div id="tree" data-source="/Locations/Get" data-drag-and-drop="true"></div>
          * <script>
          *     var tree = $('#tree').tree();
          *     tree.on('nodeDrop', function (e, id, parentId, orderNumber) {

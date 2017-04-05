@@ -12,7 +12,7 @@ gj.tree.plugins.dragAndDrop = {
               * <div id="tree"></div>
               * <script>
               *     $('#tree').tree({
-              *         dataSource: '/DataSources/GetCountries',
+              *         dataSource: '/Locations/Get',
               *         dragAndDrop: true
               *     });
               * </script>
@@ -23,7 +23,7 @@ gj.tree.plugins.dragAndDrop = {
               * </div>
               * <script>
               *     $('#tree').tree({
-              *         dataSource: '/DataSources/GetCountries',
+              *         dataSource: '/Locations/Get',
               *         dragAndDrop: true,
               *         uiLibrary: 'bootstrap'
               *     });
@@ -33,7 +33,7 @@ gj.tree.plugins.dragAndDrop = {
               * <div id="tree"></div>
               * <script>
               *     $('#tree').tree({
-              *         dataSource: '/DataSources/GetCountries',
+              *         dataSource: '/Locations/Get',
               *         dragAndDrop: true,
               *         uiLibrary: 'materialdesign'
               *     });
@@ -259,7 +259,7 @@ gj.tree.plugins.dragAndDrop = {
          * @param {object} parentId - the id of the new parend node
          * @param {object} orderNumber - the new order number
          * @example Event.Sample <!-- draggable.base, droppable.base, tree.base -->
-         * <div id="tree" data-source="/DataSources/GetCountries" data-drag-and-drop="true"></div>
+         * <div id="tree" data-source="/Locations/Get" data-drag-and-drop="true"></div>
          * <script>
          *     var tree = $('#tree').tree();
          *     tree.on('nodeDrop', function (e, id, parentId, orderNumber) {

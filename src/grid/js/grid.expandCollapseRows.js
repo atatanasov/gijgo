@@ -13,7 +13,7 @@ gj.grid.plugins.expandCollapseRows = {
              * <table id="grid"></table>
              * <script>
              *     $('#grid').grid({
-             *         dataSource: '/DataSources/GetPlayers',
+             *         dataSource: '/Players/Get',
              *         detailTemplate: '<div><b>Place Of Birth:</b> {PlaceOfBirth}</div>',
              *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'DateOfBirth', type: 'date' } ]
              *     });
@@ -22,7 +22,7 @@ gj.grid.plugins.expandCollapseRows = {
              * <table id="grid"></table>
              * <script>
              *     $('#grid').grid({
-             *         dataSource: '/DataSources/GetPlayers',
+             *         dataSource: '/Players/Get',
              *         uiLibrary: 'bootstrap',
              *         detailTemplate: '<div><b>Place Of Birth:</b> {PlaceOfBirth}</div>',
              *         columns: [ { field: 'ID', width: 36 }, { field: 'Name' }, { field: 'DateOfBirth', type: 'date' } ]
@@ -32,7 +32,7 @@ gj.grid.plugins.expandCollapseRows = {
              * <table id="grid"></table>
              * <script>
              *     $('#grid').grid({
-             *         dataSource: '/DataSources/GetPlayers',
+             *         dataSource: '/Players/Get',
              *         uiLibrary: 'bootstrap4',
              *         iconsLibrary: 'fontawesome',
              *         detailTemplate: '<div><b>Place Of Birth:</b> {PlaceOfBirth}</div>',
@@ -43,7 +43,7 @@ gj.grid.plugins.expandCollapseRows = {
              * <table id="grid"></table>
              * <script>
              *     $('#grid').grid({
-             *         dataSource: '/DataSources/GetPlayers',
+             *         dataSource: '/Players/Get',
              *         uiLibrary: 'materialdesign',
              *         detailTemplate: '<div style="text-align: left"><b>Place Of Birth:</b> {PlaceOfBirth}</div>',
              *         columns: [ { field: 'ID', width: 70 }, { field: 'Name' }, { field: 'DateOfBirth', type: 'date' } ]
@@ -68,7 +68,7 @@ gj.grid.plugins.expandCollapseRows = {
              *     var grid = $('#grid').grid({
              *         uiLibrary: 'bootstrap',
              *         primaryKey: 'ID',
-             *         dataSource: '/DataSources/GetPlayers',
+             *         dataSource: '/Players/Get',
              *         columns: [ { field: 'ID', width: 34 }, { field: 'Name' } ],
              *         detailTemplate: '<div><b>Place Of Birth:</b> {PlaceOfBirth}</div>',
              *         keepExpandedRows: true,
@@ -181,7 +181,7 @@ gj.grid.plugins.expandCollapseRows = {
          * <script>
          *     var grid = $('#grid').grid({
          *         primaryKey: 'ID',
-         *         dataSource: '/DataSources/GetPlayers',
+         *         dataSource: '/Players/Get',
          *         detailTemplate: '<div></div>',
          *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'DateOfBirth', type: 'date' } ]
          *     });
@@ -207,7 +207,7 @@ gj.grid.plugins.expandCollapseRows = {
          * <script>
          *     var grid = $('#grid').grid({
          *         primaryKey: 'ID',
-         *         dataSource: '/DataSources/GetPlayers',
+         *         dataSource: '/Players/Get',
          *         detailTemplate: '<div></div>',
          *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'DateOfBirth', type: 'date' } ]
          *     });

@@ -14,7 +14,7 @@
          $container.append('<input type="text" value="' + currentValue + '"/>');
      }
      $('#grid').grid({
-         dataSource: '/DataSources/GetPlayers',
+         dataSource: '/Players/Get',
          columns: [
              { field: 'ID' },
              { field: 'Name', editor: edit },

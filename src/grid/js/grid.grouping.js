@@ -50,7 +50,7 @@ gj.grid.plugins.grouping = {
                   * <table id="grid"></table>
                   * <script>
                   *     $('#grid').grid({
-                  *         dataSource: '/DataSources/GetPlayers',
+                  *         dataSource: '/Players/Get',
                   *         grouping: { groupBy: 'Nationality' },
                   *         columns: [ { field: 'Name', sortable: true }, { field: 'PlaceOfBirth' } ],
                   *         pager: { limit: 5 }
@@ -60,7 +60,7 @@ gj.grid.plugins.grouping = {
                   * <table id="grid"></table>
                   * <script>
                   *     $('#grid').grid({
-                  *         dataSource: '/DataSources/GetPlayers',
+                  *         dataSource: '/Players/Get',
                   *         uiLibrary: 'materialdesign',
                   *         grouping: { groupBy: 'Nationality' },
                   *         columns: [ { field: 'Name', sortable: true }, { field: 'PlaceOfBirth' } ],
