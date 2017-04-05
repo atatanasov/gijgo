@@ -11,8 +11,12 @@
  <table id="grid"></table>
  <script>
      $('#grid').grid({
-         dataSource: '/Players/Get',
-         columns: [ { field: 'Name' }, { field: 'PlaceOfBirth' } ]
+         dataSource: '/DataSources/GetPlayers',
+         columns: [
+             { field: 'ID' },
+             { field: 'Name', editor: true, mode: 'edit' },
+             { field: 'PlaceOfBirth', editor: true }
+         ]
      });
  </script>
 </body>

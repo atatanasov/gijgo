@@ -1,5 +1,5 @@
 /*
- * Gijgo Grid v1.3.0
+ * Gijgo Grid v1.3.1
  * http://gijgo.com/grid
  *
  * Copyright 2014, 2017 gijgo.com
@@ -271,7 +271,7 @@ gj.grid.config = {
          * <table id="grid"></table>
          * <script>
          *     $('#grid').grid({
-         *         dataSource: '/DataSources/GetPlayers',
+         *         dataSource: '/Players/Get',
          *         columns: [ { field: 'Name' }, { field: 'PlaceOfBirth' } ]
          *     });
          * </script>
@@ -3521,7 +3521,26 @@ gj.grid.plugins.inlineEditing.config = {
              *     });
              * </script>
              */
-            editor: undefined
+            editor: undefined,
+
+            /** Provides a way to specify a display mode for the column.
+             * @alias column.mode
+             * @type display|edit
+             * @default display
+             * @example sample <!-- grid.base -->
+             * <table id="grid"></table>
+             * <script>
+             *     $('#grid').grid({
+             *         dataSource: '/DataSources/GetPlayers',
+             *         columns: [
+             *             { field: 'ID' },
+             *             { field: 'Name', editor: true, mode: 'edit' },
+             *             { field: 'PlaceOfBirth', editor: true }
+             *         ]
+             *     });
+             * </script>
+             */
+            mode: 'display'
         },
         inlineEditing: {
 

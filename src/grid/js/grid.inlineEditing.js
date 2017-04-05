@@ -62,7 +62,26 @@ gj.grid.plugins.inlineEditing.config = {
              *     });
              * </script>
              */
-            editor: undefined
+            editor: undefined,
+
+            /** Provides a way to specify a display mode for the column.
+             * @alias column.mode
+             * @type display|edit
+             * @default display
+             * @example sample <!-- grid.base -->
+             * <table id="grid"></table>
+             * <script>
+             *     $('#grid').grid({
+             *         dataSource: '/DataSources/GetPlayers',
+             *         columns: [
+             *             { field: 'ID' },
+             *             { field: 'Name', editor: true, mode: 'edit' },
+             *             { field: 'PlaceOfBirth', editor: true }
+             *         ]
+             *     });
+             * </script>
+             */
+            mode: 'display'
         },
         inlineEditing: {
 

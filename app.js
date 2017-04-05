@@ -5,7 +5,7 @@
 
 server.use(express.static(__dirname));
 
-server.get('/DataSources/GetPlayers', function (req, res) {
+server.get('/Players/Get', function (req, res) {
     var params, data, result, name, placeOfBirth, startInd, page, limit;
 
     params = url.parse(req.url, true).query;
