@@ -3535,7 +3535,7 @@ gj.grid.plugins.inlineEditing.config = {
              *         columns: [
              *             { field: 'ID' },
              *             { field: 'Name', editor: true, mode: 'edit' },
-             *             { field: 'PlaceOfBirth', editor: true }
+             *             { field: 'PlaceOfBirth', editor: true, mode: 'edit' }
              *         ]
              *     });
              * </script>
@@ -4142,6 +4142,9 @@ gj.grid.plugins.inlineEditing.configure = function ($grid, fullConfig, clientCon
                 $displayEl.parent('td').on(data.inlineEditing.mode === 'dblclick' ? 'dblclick' : 'click', function () {
                     gj.grid.plugins.inlineEditing.private.editMode($grid, $displayEl.parent(), column, record);
                 });
+                if (column.mode === 'edit') {
+                    gj.grid.plugins.inlineEditing.private.editMode($grid, $displayEl.parent(), column, record);
+                }
             }
         });
     }
