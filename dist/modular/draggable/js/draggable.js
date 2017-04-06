@@ -353,7 +353,7 @@ gj.draggable.methods = {
             if ($dragEl.attr('data-draggable-dragging') === 'true') {
                 x = $dragEl.mouseX(e);
                 y = $dragEl.mouseY(e);
-                $('body').append('<div>e.originalEvent.changedTouches: ' + e.originalEvent.changedTouches + ', e.touches[0].pageX: ' + e.touches[0].pageX + '</div>');
+                $('body').append('<div>e.originalEvent.changedTouches: ' + e.originalEvent.changedTouches + ', e.touches: ' + e.touches + '</div>'); 
                 prevX = $dragEl.attr('data-draggable-x');
                 prevY = $dragEl.attr('data-draggable-y');
                 if (prevX && prevY) {                
