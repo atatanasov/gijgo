@@ -30,7 +30,7 @@ gj.widget = function () {
                 return e.clientX + (document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft);
             }
         }
-        return null;
+        return undefined;
     };
 
     self.mouseY = function (e) {
@@ -49,7 +49,7 @@ gj.widget = function () {
                 return e.clientY + (document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop);
             }
         }
-        return null;
+        return undefined;
     };
 };
 
