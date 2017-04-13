@@ -23,20 +23,18 @@ gj.widget = function () {
 
     self.mouseX = function (e) {
         if (e) {
-            if (e.pageX) {
+            if (e.touches && e.touches.length) {
+                return e.touches[0].pageX;
+            } else if (e.changedTouches && e.changedTouches.length) {
+                return e.changedTouches[0].pageX;
+            } else if (e.originalEvent && e.originalEvent.touches && e.originalEvent.touches.length) {
+                return e.originalEvent.touches[0].pageX;
+            } else if (e.originalEvent && e.originalEvent.changedTouches && e.originalEvent.changedTouches.length) {
+                return e.originalEvent.touches[0].pageX;
+            } else if (e.pageX) {
                 return e.pageX;
             } else if (e.clientX) {
                 return e.clientX + (document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft);
-            } else if (e.touches) {
-                return e.touches[0].pageX;
-            } else if (e.changedTouches) {
-                return e.changedTouches[0].pageX;
-            } else if (e.originalEvent) {
-                if (e.originalEvent.touches) {
-                    return e.originalEvent.touches[0].pageX;
-                } else if (e.originalEvent.changedTouches) {
-                    return e.originalEvent.changedTouches[0].pageX;
-                }
             }
         }
         return null;
@@ -44,20 +42,18 @@ gj.widget = function () {
 
     self.mouseY = function (e) {
         if (e) {
-            if (e.pageY) {
+            if (e.touches && e.touches.length) {
+                return e.touches[0].pageY;
+            } else if (e.changedTouches && e.changedTouches.length) {
+                return e.changedTouches[0].pageY;
+            } else if (e.originalEvent && e.originalEvent.touches && e.originalEvent.touches.length) {
+                return e.originalEvent.touches[0].pageY;
+            } else if (e.originalEvent && e.originalEvent.changedTouches && e.originalEvent.changedTouches.length) {
+                return e.originalEvent.touches[0].pageY;
+            } else if (e.pageY) {
                 return e.pageY;
             } else if (e.clientY) {
                 return e.clientY + (document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop);
-            } else if (e.touches) {
-                return e.touches[0].pageY;
-            } else if (e.changedTouches) {
-                return e.changedTouches[0].pageY;
-            } else if (e.originalEvent) {
-                if (e.originalEvent.touches) {
-                    return e.originalEvent.touches[0].pageY;
-                } else if (e.originalEvent.changedTouches) {
-                    return e.originalEvent.changedTouches[0].pageY;
-                }
             }
         }
         return null;
