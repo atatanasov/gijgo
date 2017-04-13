@@ -16,7 +16,11 @@ gj.widget = function () {
 
     self.mouseX = function (e) {
         if (e) {
-            if (e.touches && e.touches.length) {
+            if (e.pageX) {
+                return e.pageX;
+            } else if (e.clientX) {
+                return e.clientX + (document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft);
+            } else if (e.touches && e.touches.length) {
                 return e.touches[0].pageX;
             } else if (e.changedTouches && e.changedTouches.length) {
                 return e.changedTouches[0].pageX;
@@ -24,18 +28,18 @@ gj.widget = function () {
                 return e.originalEvent.touches[0].pageX;
             } else if (e.originalEvent && e.originalEvent.changedTouches && e.originalEvent.changedTouches.length) {
                 return e.originalEvent.touches[0].pageX;
-            } else if (e.pageX) {
-                return e.pageX;
-            } else if (e.clientX) {
-                return e.clientX + (document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft);
             }
         }
-        return undefined;
+        return null;
     };
 
     self.mouseY = function (e) {
         if (e) {
-            if (e.touches && e.touches.length) {
+            if (e.pageY) {
+                return e.pageY;
+            } else if (e.clientY) {
+                return e.clientY + (document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop);
+            } else if (e.touches && e.touches.length) {
                 return e.touches[0].pageY;
             } else if (e.changedTouches && e.changedTouches.length) {
                 return e.changedTouches[0].pageY;
@@ -43,13 +47,9 @@ gj.widget = function () {
                 return e.originalEvent.touches[0].pageY;
             } else if (e.originalEvent && e.originalEvent.changedTouches && e.originalEvent.changedTouches.length) {
                 return e.originalEvent.touches[0].pageY;
-            } else if (e.pageY) {
-                return e.pageY;
-            } else if (e.clientY) {
-                return e.clientY + (document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop);
             }
         }
-        return undefined;
+        return null;
     };
 };
 

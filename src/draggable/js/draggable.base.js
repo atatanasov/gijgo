@@ -82,19 +82,19 @@ gj.draggable.methods = {
             $dragEl.attr('data-draggable-dragging', true);
             $dragEl.removeAttr('data-draggable-x').removeAttr('data-draggable-y');
             $dragEl.css('position', 'absolute');
-            gj.documentManager.subscribeForEvent('mousemove', $dragEl.data('guid'), gj.draggable.methods.createMouseMoveHandler($dragEl));
+            gj.documentManager.subscribeForEvent('mousemove', $dragEl.data('guid'), gj.draggable.methods.createMoveHandler($dragEl));
         });
 
         $handleEl.on('touchstart', function (e) {
             $dragEl.attr('data-draggable-dragging', true);
             $dragEl.removeAttr('data-draggable-x').removeAttr('data-draggable-y');
             $dragEl.css('position', 'absolute');
-            gj.documentManager.subscribeForEvent('touchmove', $dragEl.data('guid'), gj.draggable.methods.createMouseMoveHandler($dragEl));
+            gj.documentManager.subscribeForEvent('touchmove', $dragEl.data('guid'), gj.draggable.methods.createMoveHandler($dragEl));
         });
 
-        gj.documentManager.subscribeForEvent('mouseup', $dragEl.data('guid'), gj.draggable.methods.createMouseUpHandler($dragEl));
-        gj.documentManager.subscribeForEvent('touchend', $dragEl.data('guid'), gj.draggable.methods.createMouseUpHandler($dragEl));
-        gj.documentManager.subscribeForEvent('touchcancel', $dragEl.data('guid'), gj.draggable.methods.createMouseUpHandler($dragEl));
+        gj.documentManager.subscribeForEvent('mouseup', $dragEl.data('guid'), gj.draggable.methods.createUpHandler($dragEl));
+        gj.documentManager.subscribeForEvent('touchend', $dragEl.data('guid'), gj.draggable.methods.createUpHandler($dragEl));
+        gj.documentManager.subscribeForEvent('touchcancel', $dragEl.data('guid'), gj.draggable.methods.createUpHandler($dragEl));
 
         return $dragEl;
     },
@@ -104,20 +104,18 @@ gj.draggable.methods = {
         return ($handle && $handle.length) ? $handle : $dragEl;
     },
 
-    createMouseUpHandler: function ($dragEl) {
+    createUpHandler: function ($dragEl) {
         return function (e) {
             if ($dragEl.attr('data-draggable-dragging') === 'true') {
                 $dragEl.attr('data-draggable-dragging', false);
                 gj.documentManager.unsubscribeForEvent('mousemove', $dragEl.data('guid'));
-                gj.draggable.events.stop($dragEl, {
-                    left: $dragEl.mouseX(e),
-                    top: $dragEl.mouseY(e)
-                });
+                gj.documentManager.unsubscribeForEvent('touchmove', $dragEl.data('guid'));
+                gj.draggable.events.stop($dragEl, { left: $dragEl.mouseX(e), top: $dragEl.mouseY(e) });
             }
         };
     },
 
-    createMouseMoveHandler: function ($dragEl) {
+    createMoveHandler: function ($dragEl) {
         return function (e) {
             var x, y, offsetX, offsetY, prevX, prevY;
             if ($dragEl.attr('data-draggable-dragging') === 'true') {
