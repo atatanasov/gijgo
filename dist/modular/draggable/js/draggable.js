@@ -27,10 +27,16 @@ gj.widget = function () {
                 return e.pageX;
             } else if (e.clientX) {
                 return e.clientX + (document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft);
-            } else if (e.originalEvent.touches) {
-                return e.originalEvent.touches[0].pageX;
-            } else if (e.originalEvent.changedTouches) {
-                return e.originalEvent.changedTouches[0].pageX;
+            } else if (e.touches) {
+                return e.touches[0].pageX;
+            } else if (e.changedTouches) {
+                return e.changedTouches[0].pageX;
+            } else if (e.originalEvent) {
+                if (e.originalEvent.touches) {
+                    return e.originalEvent.touches[0].pageX;
+                } else if (e.originalEvent.changedTouches) {
+                    return e.originalEvent.changedTouches[0].pageX;
+                }
             }
         }
         return null;
@@ -42,10 +48,16 @@ gj.widget = function () {
                 return e.pageY;
             } else if (e.clientY) {
                 return e.clientY + (document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop);
-            } else if (e.originalEvent.touches) {
-                return e.originalEvent.touches[0].pageY;
-            } else if (e.originalEvent.changedTouches) {
-                return e.originalEvent.changedTouches[0].pageY;
+            } else if (e.touches) {
+                return e.touches[0].pageY;
+            } else if (e.changedTouches) {
+                return e.changedTouches[0].pageY;
+            } else if (e.originalEvent) {
+                if (e.originalEvent.touches) {
+                    return e.originalEvent.touches[0].pageY;
+                } else if (e.originalEvent.changedTouches) {
+                    return e.originalEvent.changedTouches[0].pageY;
+                }
             }
         }
         return null;
@@ -359,12 +371,6 @@ gj.draggable.methods = {
         return function (e) {
             var x, y, offsetX, offsetY, prevX, prevY;
             if ($dragEl.attr('data-draggable-dragging') === 'true') {
-                if (e.originalEvent.changedTouches) {
-                    $('body').append('<div>e.originalEvent.changedTouches: ' + JSON.stringify(e.originalEvent.changedTouches[0]) + '</div>');
-                }
-                if (e.originalEvent.touches) {
-                    $('body').append('<div>e.originalEvent.changedTouches: ' + JSON.stringify(e.originalEvent.touches[0]) + '</div>');
-                }
                 x = $dragEl.mouseX(e);
                 y = $dragEl.mouseY(e);
                 prevX = $dragEl.attr('data-draggable-x');
