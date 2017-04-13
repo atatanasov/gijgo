@@ -27,6 +27,10 @@ gj.widget = function () {
                 return e.pageX;
             } else if (e.clientX) {
                 return e.clientX + (document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft);
+            } else if (e.originalEvent.touches) {
+                return e.originalEvent.touches[0].pageX;
+            } else if (e.originalEvent.changedTouches) {
+                return e.originalEvent.changedTouches[0].pageX;
             }
         }
         return null;
@@ -38,6 +42,10 @@ gj.widget = function () {
                 return e.pageY;
             } else if (e.clientY) {
                 return e.clientY + (document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop);
+            } else if (e.originalEvent.touches) {
+                return e.originalEvent.touches[0].pageY;
+            } else if (e.originalEvent.changedTouches) {
+                return e.originalEvent.changedTouches[0].pageY;
             }
         }
         return null;

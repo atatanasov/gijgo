@@ -124,6 +124,9 @@ gj.draggable.methods = {
                 if (e.originalEvent.changedTouches) {
                     $('body').append('<div>e.originalEvent.changedTouches: ' + JSON.stringify(e.originalEvent.changedTouches[0]) + '</div>');
                 }
+                if (e.originalEvent.touches) {
+                    $('body').append('<div>e.originalEvent.changedTouches: ' + JSON.stringify(e.originalEvent.touches[0]) + '</div>');
+                }
                 x = $dragEl.mouseX(e);
                 y = $dragEl.mouseY(e);
                 prevX = $dragEl.attr('data-draggable-x');
