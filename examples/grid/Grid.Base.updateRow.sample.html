@@ -11,9 +11,6 @@
  <table id="grid"></table>
  <script>
      var grid;
-     function Edit(e) {
-         grid.updateRow(e.data.id, { 'ID': e.data.id, 'Name': 'Ronaldo', 'PlaceOfBirth': 'Rio, Brazil' });
-     }
      grid = $('#grid').grid({
          primaryKey: 'ID',
          dataSource: [
@@ -29,6 +26,9 @@
          ],
          pager: { limit: 2 }
      });
+     function Edit(e) {
+         grid.updateRow(e.data.id, { 'ID': e.data.id, 'Name': 'Ronaldo', 'PlaceOfBirth': 'Rio, Brazil' });
+     }
  </script>
 </body>
 </html>

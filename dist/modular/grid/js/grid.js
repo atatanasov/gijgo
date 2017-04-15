@@ -2544,8 +2544,13 @@ gj.grid.methods = {
     },
 
     updateRow: function ($grid, id, record) {
-        var $row = gj.grid.methods.getRowById($grid, id);
-        $grid.data('records')[$row.data('position') - 1] = record;
+        var $row = gj.grid.methods.getRowById($grid, id),
+            data = $grid.data(), position;
+        data.records[$row.data('position') - 1] = record;
+        if ($.isArray(data.dataSource)) {
+            position = gj.grid.methods.getRecVPosById($grid, id);
+            data.dataSource[position] = record;
+        }
         gj.grid.methods.renderRow($grid, $row, record, $row.index());
         return $grid;
     },
@@ -2573,7 +2578,7 @@ gj.grid.methods = {
   * @widget Grid
   * @plugin Base
   */
-gj.grid.widget = function ($grid, arguments) {
+gj.grid.widget = function ($grid, jsConfig) {
     var self = this,
         methods = gj.grid.methods;
 
@@ -3060,9 +3065,6 @@ gj.grid.widget = function ($grid, arguments) {
      * <table id="grid"></table>
      * <script>
      *     var grid;
-     *     function Edit(e) {
-     *         grid.updateRow(e.data.id, { 'ID': e.data.id, 'Name': 'Ronaldo', 'PlaceOfBirth': 'Rio, Brazil' });
-     *     }
      *     grid = $('#grid').grid({
      *         primaryKey: 'ID',
      *         dataSource: [
@@ -3078,6 +3080,9 @@ gj.grid.widget = function ($grid, arguments) {
      *         ],
      *         pager: { limit: 2 }
      *     });
+     *     function Edit(e) {
+     *         grid.updateRow(e.data.id, { 'ID': e.data.id, 'Name': 'Ronaldo', 'PlaceOfBirth': 'Rio, Brazil' });
+     *     }
      * </script>
      */
     self.updateRow = function (id, record) {
@@ -3151,7 +3156,7 @@ gj.grid.widget = function ($grid, arguments) {
 
     $.extend($grid, self);
     if ('grid' !== $grid.attr('data-type')) {
-        methods.init.apply($grid, arguments);
+        methods.init.call($grid, jsConfig);
     }
 
     return $grid;
@@ -3168,7 +3173,7 @@ gj.grid.widget.prototype.getHTMLConfig = gj.grid.methods.getHTMLConfig;
         var $widget;
         if (this && this.length) {
             if (typeof method === 'object' || !method) {
-                return new gj.grid.widget(this, arguments);
+                return new gj.grid.widget(this, method);
             } else {
                 $widget = new gj.grid.widget(this, null);
                 if ($widget[method]) {

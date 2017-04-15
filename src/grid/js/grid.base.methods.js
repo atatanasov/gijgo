@@ -874,8 +874,13 @@ gj.grid.methods = {
     },
 
     updateRow: function ($grid, id, record) {
-        var $row = gj.grid.methods.getRowById($grid, id);
-        $grid.data('records')[$row.data('position') - 1] = record;
+        var $row = gj.grid.methods.getRowById($grid, id),
+            data = $grid.data(), position;
+        data.records[$row.data('position') - 1] = record;
+        if ($.isArray(data.dataSource)) {
+            position = gj.grid.methods.getRecVPosById($grid, id);
+            data.dataSource[position] = record;
+        }
         gj.grid.methods.renderRow($grid, $row, record, $row.index());
         return $grid;
     },
