@@ -174,7 +174,7 @@ gj.checkbox.events = {
 };
 
 
-gj.checkbox.widget = function ($element, arguments) {
+gj.checkbox.widget = function ($element, jsConfig) {
     var self = this,
         methods = gj.checkbox.methods;
 
@@ -230,7 +230,7 @@ gj.checkbox.widget = function ($element, arguments) {
 
     $.extend($element, self);
     if ('true' !== $element.attr('data-checkbox')) {
-        methods.init.apply($element, arguments);
+        methods.init.call($element, jsConfig);
     }
 
     return $element;
@@ -244,7 +244,7 @@ gj.checkbox.widget.constructor = gj.checkbox.widget;
         var $widget;
         if (this && this.length) {
             if (typeof method === 'object' || !method) {
-                return new gj.checkbox.widget(this, arguments);
+                return new gj.checkbox.widget(this, method);
             } else {
                 $widget = new gj.checkbox.widget(this, null);
                 if ($widget[method]) {

@@ -177,8 +177,7 @@ gj.droppable.events = {
     }
 };
 
-
-gj.droppable.widget = function ($element, arguments) {
+gj.droppable.widget = function ($element, jsConfig) {
     var self = this,
         methods = gj.droppable.methods;
 
@@ -220,7 +219,7 @@ gj.droppable.widget = function ($element, arguments) {
 
     $.extend($element, self);
     if ('true' !== $element.attr('data-droppable')) {
-        methods.init.apply($element, arguments);
+        methods.init.apply($element, jsConfig);
     }
 
     return $element;
@@ -234,7 +233,7 @@ gj.droppable.widget.constructor = gj.droppable.widget;
         var $widget;
         if (this && this.length) {
             if (typeof method === 'object' || !method) {
-                return new gj.droppable.widget(this, arguments);
+                return new gj.droppable.widget(this, method);
             } else {
                 $widget = new gj.droppable.widget(this, null);
                 if ($widget[method]) {

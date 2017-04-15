@@ -474,8 +474,7 @@ gj.draggable.events = {
     }
 };
 
-
-gj.draggable.widget = function ($element, arguments) {
+gj.draggable.widget = function ($element, jsConfig) {
     var self = this,
         methods = gj.draggable.methods;
 
@@ -500,7 +499,7 @@ gj.draggable.widget = function ($element, arguments) {
 
     $.extend($element, self);
     if ('true' !== $element.attr('data-draggable')) {
-        methods.init.apply($element, arguments);
+        methods.init.call($element, jsConfig);
     }
 
     return $element;
@@ -514,7 +513,7 @@ gj.draggable.widget.constructor = gj.draggable.widget;
         var $widget;        
         if (this && this.length) {
             if (typeof method === 'object' || !method) {
-                return new gj.draggable.widget(this, arguments);
+                return new gj.draggable.widget(this, method);
             } else {
                 $widget = new gj.draggable.widget(this, null);
                 if ($widget[method]) {

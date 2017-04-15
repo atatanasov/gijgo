@@ -1194,7 +1194,7 @@ gj.dialog.methods = {
   * @widget Dialog 
   * @plugin Base
   */
-gj.dialog.widget = function ($element, arguments) {
+gj.dialog.widget = function ($element, jsConfig) {
     var self = this,
         methods = gj.dialog.methods;
 
@@ -1286,7 +1286,7 @@ gj.dialog.widget = function ($element, arguments) {
 
     $.extend($element, self);
     if ('dialog' !== $element.attr('data-type')) {
-        methods.init.apply($element, arguments);
+        methods.init.call($element, jsConfig);
     }
 
     return $element;
@@ -1302,7 +1302,7 @@ gj.dialog.widget.prototype.getHTMLConfig = gj.dialog.methods.getHTMLConfig;
         var $widget;        
         if (this && this.length) {
             if (typeof method === 'object' || !method) {
-                return new gj.dialog.widget(this, arguments);
+                return new gj.dialog.widget(this, method);
             } else {
                 $widget = new gj.dialog.widget(this, null);
                 if ($widget[method]) {
@@ -1544,8 +1544,7 @@ gj.draggable.events = {
     }
 };
 
-
-gj.draggable.widget = function ($element, arguments) {
+gj.draggable.widget = function ($element, jsConfig) {
     var self = this,
         methods = gj.draggable.methods;
 
@@ -1570,7 +1569,7 @@ gj.draggable.widget = function ($element, arguments) {
 
     $.extend($element, self);
     if ('true' !== $element.attr('data-draggable')) {
-        methods.init.apply($element, arguments);
+        methods.init.call($element, jsConfig);
     }
 
     return $element;
@@ -1584,7 +1583,7 @@ gj.draggable.widget.constructor = gj.draggable.widget;
         var $widget;        
         if (this && this.length) {
             if (typeof method === 'object' || !method) {
-                return new gj.draggable.widget(this, arguments);
+                return new gj.draggable.widget(this, method);
             } else {
                 $widget = new gj.draggable.widget(this, null);
                 if ($widget[method]) {
@@ -1775,8 +1774,7 @@ gj.droppable.events = {
     }
 };
 
-
-gj.droppable.widget = function ($element, arguments) {
+gj.droppable.widget = function ($element, jsConfig) {
     var self = this,
         methods = gj.droppable.methods;
 
@@ -1818,7 +1816,7 @@ gj.droppable.widget = function ($element, arguments) {
 
     $.extend($element, self);
     if ('true' !== $element.attr('data-droppable')) {
-        methods.init.apply($element, arguments);
+        methods.init.apply($element, jsConfig);
     }
 
     return $element;
@@ -1832,7 +1830,7 @@ gj.droppable.widget.constructor = gj.droppable.widget;
         var $widget;
         if (this && this.length) {
             if (typeof method === 'object' || !method) {
-                return new gj.droppable.widget(this, arguments);
+                return new gj.droppable.widget(this, method);
             } else {
                 $widget = new gj.droppable.widget(this, null);
                 if ($widget[method]) {
@@ -8757,7 +8755,7 @@ gj.tree.methods = {
   * @widget Tree
   * @plugin Base
   */
-gj.tree.widget = function ($element, arguments) {
+gj.tree.widget = function ($element, jsConfig) {
     var self = this,
         methods = gj.tree.methods;
 
@@ -9193,7 +9191,7 @@ gj.tree.widget = function ($element, arguments) {
 
     $.extend($element, self);
     if ('tree' !== $element.attr('data-type')) {
-        methods.init.apply($element, arguments);
+        methods.init.call($element, jsConfig);
     }
 
     return $element;
@@ -9207,7 +9205,7 @@ gj.tree.widget.constructor = gj.tree.widget;
         var $widget;        
         if (this && this.length) {
             if (typeof method === 'object' || !method) {
-                return new gj.tree.widget(this, arguments);
+                return new gj.tree.widget(this, method);
             } else {
                 $widget = new gj.tree.widget(this, null);
                 if ($widget[method]) {
@@ -9861,7 +9859,7 @@ gj.checkbox.events = {
 };
 
 
-gj.checkbox.widget = function ($element, arguments) {
+gj.checkbox.widget = function ($element, jsConfig) {
     var self = this,
         methods = gj.checkbox.methods;
 
@@ -9917,7 +9915,7 @@ gj.checkbox.widget = function ($element, arguments) {
 
     $.extend($element, self);
     if ('true' !== $element.attr('data-checkbox')) {
-        methods.init.apply($element, arguments);
+        methods.init.call($element, jsConfig);
     }
 
     return $element;
@@ -9931,7 +9929,7 @@ gj.checkbox.widget.constructor = gj.checkbox.widget;
         var $widget;
         if (this && this.length) {
             if (typeof method === 'object' || !method) {
-                return new gj.checkbox.widget(this, arguments);
+                return new gj.checkbox.widget(this, method);
             } else {
                 $widget = new gj.checkbox.widget(this, null);
                 if ($widget[method]) {

@@ -1211,7 +1211,7 @@ gj.tree.methods = {
   * @widget Tree
   * @plugin Base
   */
-gj.tree.widget = function ($element, arguments) {
+gj.tree.widget = function ($element, jsConfig) {
     var self = this,
         methods = gj.tree.methods;
 
@@ -1647,7 +1647,7 @@ gj.tree.widget = function ($element, arguments) {
 
     $.extend($element, self);
     if ('tree' !== $element.attr('data-type')) {
-        methods.init.apply($element, arguments);
+        methods.init.call($element, jsConfig);
     }
 
     return $element;
@@ -1661,7 +1661,7 @@ gj.tree.widget.constructor = gj.tree.widget;
         var $widget;        
         if (this && this.length) {
             if (typeof method === 'object' || !method) {
-                return new gj.tree.widget(this, arguments);
+                return new gj.tree.widget(this, method);
             } else {
                 $widget = new gj.tree.widget(this, null);
                 if ($widget[method]) {

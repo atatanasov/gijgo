@@ -2,7 +2,7 @@
   * @widget Dialog 
   * @plugin Base
   */
-gj.dialog.widget = function ($element, arguments) {
+gj.dialog.widget = function ($element, jsConfig) {
     var self = this,
         methods = gj.dialog.methods;
 
@@ -94,7 +94,7 @@ gj.dialog.widget = function ($element, arguments) {
 
     $.extend($element, self);
     if ('dialog' !== $element.attr('data-type')) {
-        methods.init.apply($element, arguments);
+        methods.init.call($element, jsConfig);
     }
 
     return $element;
@@ -110,7 +110,7 @@ gj.dialog.widget.prototype.getHTMLConfig = gj.dialog.methods.getHTMLConfig;
         var $widget;        
         if (this && this.length) {
             if (typeof method === 'object' || !method) {
-                return new gj.dialog.widget(this, arguments);
+                return new gj.dialog.widget(this, method);
             } else {
                 $widget = new gj.dialog.widget(this, null);
                 if ($widget[method]) {
