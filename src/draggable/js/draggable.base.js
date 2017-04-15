@@ -78,18 +78,12 @@ gj.draggable.methods = {
 
         $handleEl = gj.draggable.methods.getHandleElement($dragEl);
 
-        $handleEl.on('mousedown', function (e) {
-            $dragEl.attr('data-draggable-dragging', true);
-            $dragEl.removeAttr('data-draggable-x').removeAttr('data-draggable-y');
-            $dragEl.css('position', 'absolute');
-            gj.documentManager.subscribeForEvent('mousemove', $dragEl.data('guid'), gj.draggable.methods.createMoveHandler($dragEl));
-        });
-
-        $handleEl.on('touchstart', function (e) {
+        $handleEl.on('touchstart mousedown', function (e) {
             $dragEl.attr('data-draggable-dragging', true);
             $dragEl.removeAttr('data-draggable-x').removeAttr('data-draggable-y');
             $dragEl.css('position', 'absolute');
             gj.documentManager.subscribeForEvent('touchmove', $dragEl.data('guid'), gj.draggable.methods.createMoveHandler($dragEl));
+            gj.documentManager.subscribeForEvent('mousemove', $dragEl.data('guid'), gj.draggable.methods.createMoveHandler($dragEl));
         });
 
         gj.documentManager.subscribeForEvent('mouseup', $dragEl.data('guid'), gj.draggable.methods.createUpHandler($dragEl));
