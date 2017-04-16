@@ -764,8 +764,11 @@ gj.grid.methods = {
 
         for (field in data.params) {
             if (data.params[field] && !data.paramNames[field]) {
-                records = $.grep(records, function (e) {
-                    return e[field].indexOf(data.params[field]) > -1;
+                column = gj.grid.methods.getColumnInfo($grid, field);
+                records = $.grep(records, function (record) {
+                    var value = record[field] || '',
+                        searchStr = data.params[field] || '';
+                    return column && typeof (column.filter) === 'function' ? column.filter(value, searchStr) : (value.toUpperCase().indexOf(searchStr.toUpperCase()) > -1);
                 });
             }
         }

@@ -884,7 +884,44 @@ gj.grid.config = {
              *     });
              * </script>
              */
-            renderer: undefined
+            renderer: undefined,
+
+            /** Function which can be used to customize filtering with local data (javascript sourced data).
+             * @additionalinfo The default filtering is not case sensitive. The filtering with remote data sources needs to be handled on the server.
+             * @alias column.filter
+             * @type function
+             * @default undefined
+             * @param {string} value - the record field value
+             * @param {string} searchStr - the search string
+             * @example example <!-- grid.base -->
+             * <input type="text" id="txtValue1" placeholder="Value 1" /> &nbsp;
+             * <input type="text" id="txtValue2" placeholder="Value 2" /> &nbsp;
+             * <button id="btnSearch">Search</button> <br/><br/>
+             * <table id="grid"></table>
+             * <script>
+             *     var grid, data = [
+             *             { 'ID': 1, 'Value1': 'Foo', 'Value2': 'Foo' },
+             *             { 'ID': 2, 'Value1': 'bar', 'Value2': 'bar' },
+             *             { 'ID': 3, 'Value1': 'moo', 'Value2': 'moo' },
+             *             { 'ID': 4, 'Value1': null, 'Value2': undefined }
+             *         ],
+             *         caseSensitiveFilter = function (value, searchStr) { 
+             *             return value.indexOf(searchStr) > -1
+             *         };
+             *     grid = $('#grid').grid({
+             *         dataSource: data,
+             *         columns: [
+             *             { field: 'ID' },
+             *             { field: 'Value1' },
+             *             { field: 'Value2', filter: caseSensitiveFilter }
+             *         ]
+             *     });
+             *     $('#btnSearch').on('click', function () {
+             *         grid.reload({ Value1: $('#txtValue1').val(), Value2: $('#txtValue2').val() });
+             *     });
+             * </script>
+             */
+            filter: undefined
         },
 
         mapping: {
@@ -2434,8 +2471,11 @@ gj.grid.methods = {
 
         for (field in data.params) {
             if (data.params[field] && !data.paramNames[field]) {
-                records = $.grep(records, function (e) {
-                    return e[field].indexOf(data.params[field]) > -1;
+                column = gj.grid.methods.getColumnInfo($grid, field);
+                records = $.grep(records, function (record) {
+                    var value = record[field] || '',
+                        searchStr = data.params[field] || '';
+                    return column && typeof (column.filter) === 'function' ? column.filter(value, searchStr) : (value.toUpperCase().indexOf(searchStr.toUpperCase()) > -1);
                 });
             }
         }
