@@ -104,7 +104,7 @@ li.gj-tree-item [data-role="display"] {
     background-color: #ddd;
 }
 
-/* Bootstrap Theme */
+/* Bootstrap 3 Theme */
 ul.gj-tree-bootstrap-list {
     padding-left: 0px;
     margin-bottom: 0px;
@@ -131,7 +131,6 @@ ul.gj-tree-bootstrap-list li.gj-tree-item ul li.gj-tree-item:last-child {
     border-bottom-right-radius: 0px;
 }
 
-
 ul.gj-tree-bootstrap-list li [data-role="wrapper"] {
     padding: 0px 10px;
 }
@@ -145,13 +144,26 @@ ul.gj-tree-bootstrap-list li [data-role="image"] {
     width: 24px;
 }
 
-ul.gj-tree-bootstrap-list li [data-role="display"] {
+.gj-tree-bootstrap-3 ul.gj-tree-bootstrap-list li [data-role="display"] {
     padding: 12px 0px 8px 5px;
+}
+
+.gj-tree-bootstrap-4 ul.gj-tree-bootstrap-list li [data-role="display"] {
+    padding: 8px 0px 8px 5px;
 }
 .list-group-item.active ul li, .list-group-item.active:focus ul li, .list-group-item.active:hover ul li {
     text-shadow: none;
     color:initial;
 }
+
+/* BEGIN: Bootstrap With Border */
+ul.gj-tree-bootstrap-list li.gj-tree-item {
+    border: 0px;
+}
+.gj-tree-bootstrap-border ul.gj-tree-bootstrap-list li.gj-tree-item {
+    border: 1px solid #ddd;
+}
+/* END: Bootstrap With Border */
 
 /* Material Design Theme */
 .gj-tree-mdl-list {
@@ -162,9 +174,29 @@ ul.gj-tree-bootstrap-list li [data-role="display"] {
 .gj-tree-mdl-item {
     display: list-item;
     list-style-type: none;
-    padding: 4px 0px 4px 0px;
+    padding: 0px;
     min-height: unset;
 }
+
+li.gj-tree-item.gj-tree-mdl-item [data-role="display"] {
+    padding: 8px 0px 8px 5px;
+}
+
+/* BEGIN: Material Design With Border */
+.gj-tree-mdl-border .gj-tree-mdl-item {
+    border: 1px solid rgba(0,0,0,.87);
+    margin-bottom: -1px;
+}
+
+.gj-tree-mdl-border ul.gj-tree-mdl-list li.gj-tree-item ul li.gj-tree-item {
+    border-left: 0px;
+    border-right: 0px;
+}
+
+.gj-tree-mdl-border ul.gj-tree-mdl-list li.gj-tree-item ul li.gj-tree-item:last-child {
+    border-bottom: 0px;
+}
+/* END: Material Design With Border */
 
 li.gj-tree-mdl-item [data-role="checkbox"] {
     height: 24px;

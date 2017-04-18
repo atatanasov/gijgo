@@ -239,6 +239,64 @@ gj.tree.config = {
          */
         width: undefined,
 
+        /** When this setting is enabled the content of the tree will be wrapped by borders.
+         * @type boolean
+         * @default false
+         * @example Material.Design.True <!-- materialdesign, tree.base -->
+         * <div id="tree"></div>
+         * <script>
+         *     $('#tree').tree({
+         *         dataSource: '/Locations/Get',
+         *         width: 500,
+         *         uiLibrary: 'materialdesign',
+         *         border: true,
+         *         checkboxes: true
+         *     });
+         * </script>
+         * @example Material.Design.False <!-- materialdesign, tree.base -->
+         * <div id="tree"></div>
+         * <script>
+         *     $('#tree').tree({
+         *         dataSource: '/Locations/Get',
+         *         width: 500,
+         *         uiLibrary: 'materialdesign',
+         *         border: false
+         *     });
+         * </script>
+         * @example Bootstrap.3.True <!-- bootstrap, tree.base -->
+         * <div id="tree"></div>
+         * <script>
+         *     $('#tree').tree({
+         *         dataSource: '/Locations/Get',
+         *         width: 500,
+         *         uiLibrary: 'bootstrap',
+         *         border: true
+         *     });
+         * </script>
+         * @example Bootstrap.3.False <!-- bootstrap, tree.base -->
+         * <div id="tree"></div>
+         * <script>
+         *     $('#tree').tree({
+         *         dataSource: '/Locations/Get',
+         *         width: 500,
+         *         uiLibrary: 'bootstrap',
+         *         border: false
+         *     });
+         * </script>
+         * @example Bootstrap.4.False <!-- bootstrap4, fontawesome, tree.base -->
+         * <div id="tree"></div>
+         * <script>
+         *     $('#tree').tree({
+         *         dataSource: '/Locations/Get',
+         *         width: 500,
+         *         uiLibrary: 'bootstrap4',
+         *         iconsLibrary: 'fontawesome',
+         *         border: false
+         *     });
+         * </script>
+         */
+        border: false,
+
         /** The name of the UI library that is going to be in use.
          * @additionalinfo The css files for Bootstrap or Material Design Lite should be manually included if you use those as UI Library.
          * @type (base|bootstrap|materialdesign)
@@ -316,10 +374,11 @@ gj.tree.config = {
     bootstrap: {
         indentation: 24,
         style: {
-            wrapper: 'gj-unselectable',
+            wrapper: 'gj-unselectable gj-tree-bootstrap-3',
             list: 'gj-tree-bootstrap-list list-group',
             item: 'gj-tree-item list-group-item',
-            active: 'active'
+            active: 'active',
+            border: 'gj-tree-bootstrap-border'
         },
         iconsLibrary: 'glyphicons'
     },
@@ -327,10 +386,11 @@ gj.tree.config = {
     bootstrap4: {
         indentation: 24,
         style: {
-            wrapper: 'gj-unselectable',
+            wrapper: 'gj-unselectable gj-tree-bootstrap-4',
             list: 'gj-tree-bootstrap-list list-group',
             item: 'gj-tree-item list-group-item',
-            active: 'active'
+            active: 'active',
+            border: 'gj-tree-bootstrap-border'
         }
     },
 
@@ -342,9 +402,8 @@ gj.tree.config = {
             item: 'gj-tree-item gj-tree-mdl-item mdl-list__item',
             active: 'gj-tree-mdl-active',
             display: 'mdl-list__item-primary-content',
-            //expandIcon: 'material-icons mdl-list__item-icon gj-cursor-pointer gj-mdl-icon-plus',
-            //collapseIcon: 'material-icons mdl-list__item-icon gj-cursor-pointer gj-mdl-icon-minus',
-            leafIcon: undefined
+            leafIcon: undefined,
+            border: 'gj-tree-mdl-border'
         },
         iconsLibrary: 'materialicons'
     },

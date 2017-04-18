@@ -20,6 +20,9 @@ gj.tree.methods = {
         if (data.width) {
             this.width(data.width);
         }
+        if (data.border) {
+            this.addClass(data.style.border);
+        }
         gj.tree.events.initialized(this);
     },
 
