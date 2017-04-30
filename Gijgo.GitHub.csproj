@@ -79,6 +79,10 @@
     <Content Include="src\draggable\js\header.txt" />
     <Content Include="src\droppable\js\droppable.base.js" />
     <Content Include="src\droppable\js\header.txt" />
+    <Content Include="src\editor\css\editor.base.css" />
+    <Content Include="src\editor\js\editor.base.js" />
+    <Content Include="src\editor\js\header.txt" />
+    <Content Include="src\editor\js\messages\messages.en-us.js" />
     <Content Include="src\grid\css\grid.base.css" />
     <Content Include="src\grid\css\grid.columnReorder.css" />
     <Content Include="src\grid\css\grid.pagination.css" />

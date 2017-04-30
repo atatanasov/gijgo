@@ -255,8 +255,8 @@ if (typeof (gj.checkbox) === 'undefined') {
 
 gj.checkbox.config = {
     base: {
-        /** The name of the UI library that is going to be in use. Currently we support only Material Design Lite and Bootstrap. 
-         * @additionalinfo The css files for Material Design Lite or Bootstrap should be manually included to the page where the checkbox is in use.
+        /** The name of the UI library that is going to be in use. Currently we support only Material Design and Bootstrap. 
+         * @additionalinfo The css files for Bootstrap should be manually included to the page if you use bootstrap as uiLibrary.
          * @type string (bootstrap|materialdesign)
          * @default undefined
          * @example Bootstrap <!-- bootstrap, checkbox -->
@@ -401,7 +401,7 @@ gj.checkbox.events = {
     /**
      * Triggered when the state of the checkbox is changed
      *
-     * @event drag
+     * @event stateChange
      * @param {object} e - event data
      * @param {object} state - The new state of the checkbox.
      * @example sample <!-- checkbox -->
