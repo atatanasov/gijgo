@@ -1227,12 +1227,13 @@ gj.tree.methods = {
     },
 
     addNode: function ($tree, data, $parent, position) {
-        var nodeData = gj.tree.methods.getRecords($tree, [data]),
-            level = $parent.parentsUntil('[data-type="tree"]', 'ul').length + 1;
+        var level, nodeData = gj.tree.methods.getRecords($tree, [data]);
+
         if (!$parent || !$parent.length) {
             $parent = $tree.children('ul');
         }
-        
+        level = $parent.parentsUntil('[data-type="tree"]', 'ul').length + 1;
+
         gj.tree.methods.appendNode($tree, $parent, nodeData[0], level, position);
 
         return $tree;

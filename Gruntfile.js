@@ -142,6 +142,8 @@
                     'dist/modular/draggable/js/draggable.min.js': ['dist/modular/draggable/js/draggable.js'],
                     'dist/modular/droppable/js/droppable.min.js': ['dist/modular/droppable/js/droppable.js'],
                     'dist/modular/dialog/js/dialog.min.js': ['dist/modular/dialog/js/dialog.js'],
+                    'dist/modular/checkbox/js/checkbox.min.js': ['dist/modular/checkbox/js/checkbox.js'],
+                    'dist/modular/editor/js/editor.min.js': ['dist/modular/editor/js/editor.js'],
                     'dist/modular/grid/js/grid.min.js': ['dist/modular/grid/js/grid.js'],
                     'dist/modular/tree/js/tree.min.js': ['dist/modular/tree/js/tree.js']
                 }
@@ -152,6 +154,8 @@
                 files: [
                     { expand: true, cwd: 'dist/combined/css', src: ['*.css', '!*.min.css'], dest: 'dist/combined/css', ext: '.min.css' },
                     { expand: true, cwd: 'dist/modular/dialog/css', src: ['dialog.css'], dest: 'dist/modular/dialog/css', ext: '.min.css' },
+                    { expand: true, cwd: 'dist/modular/editor/css', src: ['editor.css'], dest: 'dist/modular/editor/css', ext: '.min.css' },
+                    { expand: true, cwd: 'dist/modular/checkbox/css', src: ['checkbox.css'], dest: 'dist/modular/checkbox/css', ext: '.min.css' },
                     { expand: true, cwd: 'dist/modular/tree/css', src: ['tree.css'], dest: 'dist/modular/tree/css', ext: '.min.css' },
                     { expand: true, cwd: 'dist/modular/grid/css', src: ['grid.css'], dest: 'dist/modular/grid/css', ext: '.min.css' }
                 ]
