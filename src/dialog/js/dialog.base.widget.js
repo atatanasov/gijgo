@@ -9,9 +9,10 @@ gj.dialog.widget = function ($element, jsConfig) {
     /**
      * Opens the dialog.
      * @method
+     * @param {String} title - The dialog title.
      * @fires opening, opened
      * @return dialog
-     * @example sample <!-- draggable.base, dialog.base, bootstrap -->
+     * @example Sample <!-- draggable.base, dialog.base, bootstrap -->
      * <div id="dialog" style="display: none">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
      * <button onclick="dialog.open()">Open Dialog</button>
      * <script>
@@ -19,9 +20,17 @@ gj.dialog.widget = function ($element, jsConfig) {
      *         autoOpen: false
      *     });
      * </script>
+     * @example Title <!-- draggable.base, dialog.base, bootstrap -->
+     * <div id="dialog" style="display: none">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
+     * <button onclick="dialog.open('Custom Text')">Open Dialog</button>
+     * <script>
+     *     var dialog = $('#dialog').dialog({
+     *         autoOpen: false
+     *     });
+     * </script>
      */
-    self.open = function () {
-        return methods.open(this);
+    self.open = function (title) {
+        return methods.open(this, title);
     }
 
     /**

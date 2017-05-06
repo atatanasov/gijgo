@@ -223,7 +223,7 @@
         return result;
     },
 
-    open: function ($dialog) {
+    open: function ($dialog, title) {
         var $footer;
         gj.dialog.events.opening($dialog);
         $dialog.css('display', 'block');
@@ -231,6 +231,9 @@
         $footer = $dialog.children('div[data-role="footer"]');
         if ($footer.length && $footer.outerHeight()) {
             $dialog.children('div[data-role="body"]').css('margin-bottom', $footer.outerHeight());
+        }
+        if (title !== undefined) {
+            $dialog.find('[data-role="title"]').html(title);
         }
         gj.dialog.events.opened($dialog);
         return $dialog;

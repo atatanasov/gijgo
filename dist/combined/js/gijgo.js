@@ -1,5 +1,5 @@
 /*
- * Gijgo JavaScript Library v1.3.1
+ * Gijgo JavaScript Library v1.4.0
  * http://gijgo.com/
  *
  * Copyright 2014, 2017 gijgo.com
@@ -1141,7 +1141,7 @@ gj.dialog.methods = {
         return result;
     },
 
-    open: function ($dialog) {
+    open: function ($dialog, title) {
         var $footer;
         gj.dialog.events.opening($dialog);
         $dialog.css('display', 'block');
@@ -1149,6 +1149,9 @@ gj.dialog.methods = {
         $footer = $dialog.children('div[data-role="footer"]');
         if ($footer.length && $footer.outerHeight()) {
             $dialog.children('div[data-role="body"]').css('margin-bottom', $footer.outerHeight());
+        }
+        if (title !== undefined) {
+            $dialog.find('[data-role="title"]').html(title);
         }
         gj.dialog.events.opened($dialog);
         return $dialog;
@@ -1201,9 +1204,10 @@ gj.dialog.widget = function ($element, jsConfig) {
     /**
      * Opens the dialog.
      * @method
+     * @param {String} title - The dialog title.
      * @fires opening, opened
      * @return dialog
-     * @example sample <!-- draggable.base, dialog.base, bootstrap -->
+     * @example Sample <!-- draggable.base, dialog.base, bootstrap -->
      * <div id="dialog" style="display: none">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
      * <button onclick="dialog.open()">Open Dialog</button>
      * <script>
@@ -1211,9 +1215,17 @@ gj.dialog.widget = function ($element, jsConfig) {
      *         autoOpen: false
      *     });
      * </script>
+     * @example Title <!-- draggable.base, dialog.base, bootstrap -->
+     * <div id="dialog" style="display: none">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
+     * <button onclick="dialog.open('Custom Text')">Open Dialog</button>
+     * <script>
+     *     var dialog = $('#dialog').dialog({
+     *         autoOpen: false
+     *     });
+     * </script>
      */
-    self.open = function () {
-        return methods.open(this);
+    self.open = function (title) {
+        return methods.open(this, title);
     }
 
     /**
