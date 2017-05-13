@@ -160,11 +160,13 @@ gj.grid.plugins.expandCollapseRows = {
                 content = $detailWrapper.html(),
                 record = $grid.get($contentRow.data('position'));
 
-            $detailWrapper.html().replace(/\{(.+?)\}/g, function ($0, $1) {
-                var column = gj.grid.methods.getColumnInfo($grid, $1);
-                content = content.replace($0, gj.grid.methods.formatText(record[$1], column));
-            });
-            $detailWrapper.html(content);
+            if (record) {
+                $detailWrapper.html().replace(/\{(.+?)\}/g, function ($0, $1) {
+                    var column = gj.grid.methods.getColumnInfo($grid, $1);
+                    content = content.replace($0, gj.grid.methods.formatText(record[$1], column));
+                });
+                $detailWrapper.html(content);
+            }
         }
     },
 

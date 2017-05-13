@@ -5051,11 +5051,13 @@ gj.grid.plugins.expandCollapseRows = {
                 content = $detailWrapper.html(),
                 record = $grid.get($contentRow.data('position'));
 
-            $detailWrapper.html().replace(/\{(.+?)\}/g, function ($0, $1) {
-                var column = gj.grid.methods.getColumnInfo($grid, $1);
-                content = content.replace($0, gj.grid.methods.formatText(record[$1], column));
-            });
-            $detailWrapper.html(content);
+            if (record) {
+                $detailWrapper.html().replace(/\{(.+?)\}/g, function ($0, $1) {
+                    var column = gj.grid.methods.getColumnInfo($grid, $1);
+                    content = content.replace($0, gj.grid.methods.formatText(record[$1], column));
+                });
+                $detailWrapper.html(content);
+            }
         }
     },
 
@@ -6708,7 +6710,7 @@ gj.grid.plugins.responsiveDesign = {
              * You need to set priority and minWidth on the colums, that needs to be hidden in smaller screens.
              * @type boolean
              * @default false
-             * @example sample <!-- bootstrap, grid.base, grid.expandCollapseRows, grid.responsiveDesign -->
+             * @example Remote.Data.Source <!-- bootstrap, grid.base, grid.expandCollapseRows, grid.responsiveDesign -->
              * <table id="grid"></table>
              * <script>
              *     $('#grid').grid({
@@ -6722,6 +6724,28 @@ gj.grid.plugins.responsiveDesign = {
              *             { field: 'Name', minWidth: 320, priority: 1 },
              *             { field: 'PlaceOfBirth', minWidth: 320, priority: 2 }
              *         ]
+             *     });
+             * </script>
+             * @example Local.Data.Source <!-- bootstrap, grid.base, grid.expandCollapseRows, grid.responsiveDesign -->
+             * <table id="grid"></table>
+             * <script>             
+             *     var data = [
+             *         { 'ID': 1, 'Name': 'Hristo Stoichkov', 'PlaceOfBirth': 'Plovdiv, Bulgaria' },
+             *         { 'ID': 2, 'Name': 'Ronaldo Luis Nazario de Lima', 'PlaceOfBirth': 'Rio de Janeiro, Brazil' },
+             *         { 'ID': 3, 'Name': 'David Platt', 'PlaceOfBirth': 'Chadderton, Lancashire, England' }
+             *     ];
+             *     $('#grid').grid({
+             *         dataSource: data,
+             *         detailTemplate: '<div class="row"></div>',
+             *         responsive: true,
+             *         showHiddenColumnsAsDetails: true,
+             *         uiLibrary: 'bootstrap',
+             *         columns: [
+             *             { field: 'ID', width: 34 },
+             *             { field: 'Name', minWidth: 320, priority: 1 },
+             *             { field: 'PlaceOfBirth', minWidth: 320, priority: 2 }
+             *         ],
+             *         pager: { limit: 2 }
              *     });
              * </script>
              */
