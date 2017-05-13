@@ -291,7 +291,7 @@ var writer = {
         if (local) {
             result += '  <script src="../../dist/libraries/jquery/jquery.min.js"></script>\r\n';
         } else {
-            result += '  <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>\r\n';
+            result += '  <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>\r\n';
         }
         if (libs) {
             names = libs.replace('<!--', '').replace('-->', '').trim().split(',');

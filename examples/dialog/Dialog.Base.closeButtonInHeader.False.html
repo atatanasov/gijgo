@@ -3,10 +3,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Example</title>
-  <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
   <link href="../../dist/modular/dialog/css/dialog.css" rel="stylesheet" type="text/css">
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">
-  <link href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css" rel="stylesheet" type="text/css">
   <script src="../../dist/modular/dialog/js/dialog.js"></script>
   <script src="../../dist/modular/draggable/js/draggable.js"></script>
 </head>
@@ -15,16 +13,13 @@
      <div data-role="header"><h4 data-role="title">Dialog</h4></div>
      <div data-role="body">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
      <div data-role="footer">
-         <div class="mdl-dialog__actions">
-             <button onclick="dialog.close()" class="mdl-button">Ok</button>
-             <button onclick="dialog.close()" class="mdl-button">Cancel</button>
-         </div>
+         <button onclick="dialog.close()" class="gj-md-button">Ok</button>
+         <button onclick="dialog.close()" class="gj-md-button">Cancel</button>
      </div>
  </div>
  <script>
      var dialog = $("#dialog").dialog({
-         closeButtonInHeader: false,
-         uiLibrary: 'materialdesign'
+         closeButtonInHeader: false
      });
  </script>
 </body>

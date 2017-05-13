@@ -28,7 +28,7 @@
 
     initialize: function ($dialog) {
         var data = $dialog.data(),
-            $header, $body;
+            $header, $body, $footer;
 
         $dialog.addClass(data.style.content);
 
@@ -52,7 +52,7 @@
 
         $header = gj.dialog.methods.renderHeader($dialog);
 
-        $dialog.children('div[data-role="footer"]').addClass(data.style.footer);
+        $footer = $dialog.children('div[data-role="footer"]').addClass(data.style.footer);
 
         $dialog.find('[data-role="close"]').on('click', function () {
             $dialog.close();
@@ -64,6 +64,14 @@
 
         if (data.resizable && $.fn.draggable) {
             gj.dialog.methods.resizable($dialog);
+        }
+
+        if (data.scrollable && data.height) {
+            $dialog.addClass('gj-dialog-scrollable');
+            $dialog.on('opened', function () {
+                var $body = $dialog.children('div[data-role="body"]');
+                $body.css('height', data.height - $header.outerHeight() - ($footer.length ? $footer.outerHeight() : 0));
+            });            
         }
 
         gj.dialog.methods.setPosition($dialog);
@@ -107,7 +115,7 @@
         if ($closeButton.length === 0 && data.closeButtonInHeader) {
             $closeButton = $('<button type="button" data-role="close" title="' + gj.dialog.messages[data.locale].Close + '"><span>×</span></button>');
             $closeButton.addClass(data.style.headerCloseButton);
-            $header.prepend($closeButton);
+            $header.append($closeButton);
         } else if ($closeButton.length > 0 && data.closeButtonInHeader === false) {
             $closeButton.hide();
         } else {

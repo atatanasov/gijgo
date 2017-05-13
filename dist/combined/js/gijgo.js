@@ -314,8 +314,8 @@ gj.dialog.config = {
          *     <div data-role="header"><h4 data-role="title">Dialog</h4></div>
          *     <div data-role="body">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
          *     <div data-role="footer">
-         *         <button onclick="dialog.close()" class="gj-button">Ok</button>
-         *         <button onclick="dialog.close()" class="gj-button">Cancel</button>
+         *         <button onclick="dialog.close()" class="gj-md-button">Ok</button>
+         *         <button onclick="dialog.close()" class="gj-md-button">Cancel</button>
          *     </div>
          * </div>
          * <script>
@@ -324,21 +324,18 @@ gj.dialog.config = {
          *         height: 200
          *     });
          * </script>
-         * @example False <!-- dialog.base, draggable.base, materialdesign -->
+         * @example False <!-- dialog.base, draggable.base -->
          * <div id="dialog">
          *     <div data-role="header"><h4 data-role="title">Dialog</h4></div>
          *     <div data-role="body">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
          *     <div data-role="footer">
-         *         <div class="mdl-dialog__actions">
-         *             <button onclick="dialog.close()" class="mdl-button">Ok</button>
-         *             <button onclick="dialog.close()" class="mdl-button">Cancel</button>
-         *         </div>
+         *         <button onclick="dialog.close()" class="gj-md-button">Ok</button>
+         *         <button onclick="dialog.close()" class="gj-md-button">Cancel</button>
          *     </div>
          * </div>
          * <script>
          *     var dialog = $("#dialog").dialog({
-         *         closeButtonInHeader: false,
-         *         uiLibrary: 'materialdesign'
+         *         closeButtonInHeader: false
          *     });
          * </script>
          */
@@ -369,11 +366,34 @@ gj.dialog.config = {
          * The only supported string value is "auto" which will allow the dialog height to adjust based on its content.
          * @type (number|string)
          * @default "auto"
-         * @example sample <!-- draggable.base, dialog.base -->
+         * @example Short.Text <!-- draggable.base, dialog.base -->
          * <div id="dialog">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
          * <script>
          *     $("#dialog").dialog({
-         *         height: 400
+         *         height: 200
+         *     });
+         * </script>
+         * @example Long.Text.Material.Design <!-- draggable.base, dialog.base -->
+         * <div id="dialog">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus porttitor quam in magna vulputate, vitae laoreet odio ultrices. Phasellus at efficitur magna. Mauris purus dolor, egestas quis leo et, vulputate dictum mauris. Vivamus maximus lectus sollicitudin lorem blandit tempor. Maecenas eget posuere mi. Suspendisse id hendrerit nibh. Morbi eu odio euismod, venenatis ipsum in, egestas nunc. Mauris dignissim metus ac risus porta eleifend. Aliquam tempus libero orci, id placerat odio vehicula eu. Donec tincidunt justo dolor, sit amet tempus turpis varius sit amet. Suspendisse ut ex blandit, hendrerit enim tristique, iaculis ipsum. Vivamus venenatis dolor justo, eget scelerisque lacus dignissim quis. Duis imperdiet ex at aliquet cursus. Proin non ultricies leo. Fusce quam diam, laoreet quis fringilla vitae, viverra id magna. Nam laoreet sem in volutpat rhoncus.</div>
+         * <script>
+         *     $("#dialog").dialog({
+         *         height: 350
+         *     });
+         * </script>
+         * @example Long.Text.Bootstrap3 <!-- bootstrap, draggable.base, dialog.base -->
+         * <div id="dialog">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus porttitor quam in magna vulputate, vitae laoreet odio ultrices. Phasellus at efficitur magna. Mauris purus dolor, egestas quis leo et, vulputate dictum mauris. Vivamus maximus lectus sollicitudin lorem blandit tempor. Maecenas eget posuere mi. Suspendisse id hendrerit nibh. Morbi eu odio euismod, venenatis ipsum in, egestas nunc. Mauris dignissim metus ac risus porta eleifend. Aliquam tempus libero orci, id placerat odio vehicula eu. Donec tincidunt justo dolor, sit amet tempus turpis varius sit amet. Suspendisse ut ex blandit, hendrerit enim tristique, iaculis ipsum. Vivamus venenatis dolor justo, eget scelerisque lacus dignissim quis. Duis imperdiet ex at aliquet cursus. Proin non ultricies leo. Fusce quam diam, laoreet quis fringilla vitae, viverra id magna. Nam laoreet sem in volutpat rhoncus.</div>
+         * <script>
+         *     $("#dialog").dialog({
+         *         height: 350,
+         *         uiLibrary: 'bootstrap'
+         *     });
+         * </script>
+         * @example Long.Text.Bootstrap4 <!-- bootstrap4, draggable.base, dialog.base -->
+         * <div id="dialog">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus porttitor quam in magna vulputate, vitae laoreet odio ultrices. Phasellus at efficitur magna. Mauris purus dolor, egestas quis leo et, vulputate dictum mauris. Vivamus maximus lectus sollicitudin lorem blandit tempor. Maecenas eget posuere mi. Suspendisse id hendrerit nibh. Morbi eu odio euismod, venenatis ipsum in, egestas nunc. Mauris dignissim metus ac risus porta eleifend. Aliquam tempus libero orci, id placerat odio vehicula eu. Donec tincidunt justo dolor, sit amet tempus turpis varius sit amet. Suspendisse ut ex blandit, hendrerit enim tristique, iaculis ipsum. Vivamus venenatis dolor justo, eget scelerisque lacus dignissim quis. Duis imperdiet ex at aliquet cursus. Proin non ultricies leo. Fusce quam diam, laoreet quis fringilla vitae, viverra id magna. Nam laoreet sem in volutpat rhoncus.</div>
+         * <script>
+         *     $("#dialog").dialog({
+         *         height: 350,
+         *         uiLibrary: 'bootstrap4'
          *     });
          * </script>
          */
@@ -398,7 +418,8 @@ gj.dialog.config = {
          *     gj.dialog.messages['fr-fr'].DefaultTitle = 'Titre de la boîte de dialogue';
          *     $("#dialog").dialog({
          *         resizable: true,
-         *         locale: 'fr-fr'
+         *         locale: 'fr-fr',
+         *         width: 700
          *     });
          * </script>
          */
@@ -525,61 +546,97 @@ gj.dialog.config = {
          */
         resizable: false,
 
+        /** If set to true, add vertical scroller to the dialog body.
+         * @type Boolean
+         * @default false
+         * @example Bootstrap.3 <!-- bootstrap, draggable.base, dialog.base -->
+         * <div id="dialog">
+         *     <div data-role="body">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus porttitor quam in magna vulputate, vitae laoreet odio ultrices. Phasellus at efficitur magna. Mauris purus dolor, egestas quis leo et, vulputate dictum mauris. Vivamus maximus lectus sollicitudin lorem blandit tempor. Maecenas eget posuere mi. Suspendisse id hendrerit nibh. Morbi eu odio euismod, venenatis ipsum in, egestas nunc. Mauris dignissim metus ac risus porta eleifend. Aliquam tempus libero orci, id placerat odio vehicula eu. Donec tincidunt justo dolor, sit amet tempus turpis varius sit amet. Suspendisse ut ex blandit, hendrerit enim tristique, iaculis ipsum. Vivamus venenatis dolor justo, eget scelerisque lacus dignissim quis. Duis imperdiet ex at aliquet cursus. Proin non ultricies leo. Fusce quam diam, laoreet quis fringilla vitae, viverra id magna. Nam laoreet sem in volutpat rhoncus.</div>
+         *     <div data-role="footer">
+         *         <button class="btn btn-default" data-role="close">Cancel</button>
+         *         <button class="btn btn-default" onclick="dialog.close()">OK</button>
+         *     </div>
+         * </div>
+         * <script>
+         *     var dialog = $("#dialog").dialog({
+         *         scrollable: true,
+         *         height: 300,
+         *         uiLibrary: 'bootstrap'
+         *     });
+         * </script>
+         * @example Bootstrap.4 <!-- bootstrap4, draggable.base, dialog.base -->
+         * <div id="dialog">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus porttitor quam in magna vulputate, vitae laoreet odio ultrices. Phasellus at efficitur magna. Mauris purus dolor, egestas quis leo et, vulputate dictum mauris. Vivamus maximus lectus sollicitudin lorem blandit tempor. Maecenas eget posuere mi. Suspendisse id hendrerit nibh. Morbi eu odio euismod, venenatis ipsum in, egestas nunc. Mauris dignissim metus ac risus porta eleifend. Aliquam tempus libero orci, id placerat odio vehicula eu. Donec tincidunt justo dolor, sit amet tempus turpis varius sit amet. Suspendisse ut ex blandit, hendrerit enim tristique, iaculis ipsum. Vivamus venenatis dolor justo, eget scelerisque lacus dignissim quis. Duis imperdiet ex at aliquet cursus. Proin non ultricies leo. Fusce quam diam, laoreet quis fringilla vitae, viverra id magna. Nam laoreet sem in volutpat rhoncus.</div>
+         * <script>
+         *     $("#dialog").dialog({
+         *         scrollable: true,
+         *         height: 300,
+         *         uiLibrary: 'bootstrap'
+         *     });
+         * </script>
+         * @example Material.Design <!-- draggable.base, dialog.base -->
+         * <div id="dialog">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus porttitor quam in magna vulputate, vitae laoreet odio ultrices. Phasellus at efficitur magna. Mauris purus dolor, egestas quis leo et, vulputate dictum mauris. Vivamus maximus lectus sollicitudin lorem blandit tempor. Maecenas eget posuere mi. Suspendisse id hendrerit nibh. Morbi eu odio euismod, venenatis ipsum in, egestas nunc. Mauris dignissim metus ac risus porta eleifend. Aliquam tempus libero orci, id placerat odio vehicula eu. Donec tincidunt justo dolor, sit amet tempus turpis varius sit amet. Suspendisse ut ex blandit, hendrerit enim tristique, iaculis ipsum. Vivamus venenatis dolor justo, eget scelerisque lacus dignissim quis. Duis imperdiet ex at aliquet cursus. Proin non ultricies leo. Fusce quam diam, laoreet quis fringilla vitae, viverra id magna. Nam laoreet sem in volutpat rhoncus.</div>
+         * <script>
+         *     $("#dialog").dialog({
+         *         scrollable: true,
+         *         height: 300,
+         *         uiLibrary: 'materialdesign'
+         *     });
+         * </script>
+         */
+        scrollable: false,
+
         /** The title of the dialog. Can be also set through the title attribute of the html element.
-         * @type string
+         * @type String
          * @default "Dialog"
          * @example Js.Config <!-- draggable.base, dialog.base -->
          * <div id="dialog">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
          * <script>
          *     $("#dialog").dialog({
-         *         title: 'My Custom Title'
+         *         title: 'My Custom Title',
+         *         width: 400
          *     });
          * </script>
          * @example Html.Config <!-- draggable.base, dialog.base -->
-         * <div id="dialog" title="My Custom Title">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
+         * <div id="dialog" title="My Custom Title" width="400">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
          * <script>
          *     $("#dialog").dialog();
          * </script>
          */
         title: undefined,
 
-        /** The name of the UI library that is going to be in use. Currently we support only jQuery UI, Foundation, Material Design Lite and Bootstrap. 
-         * @additionalinfo The css files for jQuery UI, Foundation, Material Design Lite or Bootstrap should be manually included to the page where the dialog is in use.
-         * @type string (jqueryui|bootstrap|materialdesign)
+        /** The name of the UI library that is going to be in use. Currently we support Material Design and Bootstrap. 
+         * @additionalinfo The css files for Material Design Lite or Bootstrap should be manually included to the page where the dialog is in use.
+         * @type string (bootstrap|materialdesign)
          * @default undefined
-         * @example jQueryUI <!-- draggable.base, dialog.base, jqueryui -->
-         * <div id="dialog">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
-         * <script>
-         *     $("#dialog").dialog({
-         *         uiLibrary: 'jqueryui'
-         *     });
-         * </script>
-         * @example jQueryUI.Theme <!-- draggable.base, dialog.base, jqueryui -->
-         * <link href="https://code.jquery.com/ui/1.11.4/themes/start/jquery-ui.css" rel="stylesheet">
-         * <div id="dialog">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
-         * <script>
-         *     $("#dialog").dialog({
-         *         uiLibrary: 'jqueryui'
-         *     });
-         * </script>
-         * @example Bootstrap <!-- draggable.base, dialog.base, bootstrap -->
+         * @example Bootstrap.3 <!-- draggable.base, dialog.base, bootstrap -->
          * <div id="dialog">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
          * <script>
          *     $("#dialog").dialog({
          *         uiLibrary: 'bootstrap'
          *     });
          * </script>
-         * @example Material.Design <!-- materialdesign, draggable.base, dialog.base  -->
+         * @example Bootstrap.4 <!-- draggable.base, dialog.base, bootstrap4 -->
+         * <div id="dialog">
+         *     <div data-role="body">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
+         *     <div data-role="footer">
+         *         <button class="btn btn-default" data-role="close">Cancel</button>
+         *         <button class="btn btn-default" onclick="dialog.close()">OK</button>
+         *     </div>
+         * </div>
+         * <script>
+         *     var dialog = $("#dialog").dialog({
+         *         uiLibrary: 'bootstrap4'
+         *     });
+         * </script>
+         * @example Material.Design <!-- draggable.base, dialog.base  -->
          * <div id="dialog">
          *   <div data-role="body">
          *     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
          *     Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
          *   </div>
          *   <div data-role="footer">
-         *     <div class="mdl-dialog__actions">
-         *       <button class="mdl-button" onclick="dialog.close()">OK</button>
-         *       <button class="mdl-button" data-role="close">Cancel</button>
-         *     </div>
+         *     <button class="gj-md-button" onclick="dialog.close()">OK</button>
+         *     <button class="gj-md-button" data-role="close">Cancel</button>
          *   </div>
          * </div>
          * <script>
@@ -593,19 +650,19 @@ gj.dialog.config = {
 
         style: {
             modal: 'gj-modal',
-            content: 'gj-content',
-            header: 'gj-header',
-            headerTitle: 'gj-title gj-unselectable',
-            headerCloseButton: 'gj-close',
-            body: 'gj-body',
-            footer: 'gj-dialog-footer gj-footer'
+            content: 'gj-dialog-md',
+            header: 'gj-dialog-md-header gj-unselectable',
+            headerTitle: 'gj-dialog-md-title',
+            headerCloseButton: 'gj-dialog-md-close',
+            body: 'gj-dialog-md-body',
+            footer: 'gj-dialog-footer gj-dialog-md-footer'
         }
     },
 
     bootstrap: {
         style: {
             modal: 'modal',
-            content: 'modal-content',
+            content: 'modal-content gj-dialog-bootstrap',
             header: 'modal-header',
             headerTitle: 'modal-title',
             headerCloseButton: 'close',
@@ -614,27 +671,15 @@ gj.dialog.config = {
         }
     },
 
-    jqueryui: {
+    bootstrap4: {
         style: {
-            modal: 'gj-modal',
-            content: 'ui-widget ui-widget-content gj-dialog-content',
-            header: 'gj-dialog-ui-header ui-widget-header',
-            headerTitle: 'gj-dialog-ui-title',
-            headerCloseButton: 'gj-dialog-ui-close ui-button ui-widget ui-state-default ui-corner-all',
-            body: 'gj-dialog-ui-body',
-            footer: 'gj-dialog-footer'
-        }
-    },
-
-    materialdesign: {
-        style: {
-            modal: 'gj-modal',
-            content: 'mdl-dialog gj-dialog-mdl-content',
-            header: '',
-            headerTitle: 'mdl-dialog__title gj-unselectable',
-            headerCloseButton: 'gj-dialog-mdl-close',
-            body: 'mdl-dialog__content',
-            footer: 'gj-dialog-footer'
+            modal: 'modal',
+            content: 'modal-content gj-dialog-bootstrap4',
+            header: 'modal-header',
+            headerTitle: 'modal-title',
+            headerCloseButton: 'close',
+            body: 'modal-body',
+            footer: 'gj-dialog-footer modal-footer'
         }
     }
 };
@@ -946,7 +991,7 @@ gj.dialog.methods = {
 
     initialize: function ($dialog) {
         var data = $dialog.data(),
-            $header, $body;
+            $header, $body, $footer;
 
         $dialog.addClass(data.style.content);
 
@@ -970,7 +1015,7 @@ gj.dialog.methods = {
 
         $header = gj.dialog.methods.renderHeader($dialog);
 
-        $dialog.children('div[data-role="footer"]').addClass(data.style.footer);
+        $footer = $dialog.children('div[data-role="footer"]').addClass(data.style.footer);
 
         $dialog.find('[data-role="close"]').on('click', function () {
             $dialog.close();
@@ -982,6 +1027,14 @@ gj.dialog.methods = {
 
         if (data.resizable && $.fn.draggable) {
             gj.dialog.methods.resizable($dialog);
+        }
+
+        if (data.scrollable && data.height) {
+            $dialog.addClass('gj-dialog-scrollable');
+            $dialog.on('opened', function () {
+                var $body = $dialog.children('div[data-role="body"]');
+                $body.css('height', data.height - $header.outerHeight() - ($footer.length ? $footer.outerHeight() : 0));
+            });            
         }
 
         gj.dialog.methods.setPosition($dialog);
@@ -1025,7 +1078,7 @@ gj.dialog.methods = {
         if ($closeButton.length === 0 && data.closeButtonInHeader) {
             $closeButton = $('<button type="button" data-role="close" title="' + gj.dialog.messages[data.locale].Close + '"><span>×</span></button>');
             $closeButton.addClass(data.style.headerCloseButton);
-            $header.prepend($closeButton);
+            $header.append($closeButton);
         } else if ($closeButton.length > 0 && data.closeButtonInHeader === false) {
             $closeButton.hide();
         } else {
