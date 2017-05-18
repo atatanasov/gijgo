@@ -36,7 +36,7 @@ gj.dialog.widget = function ($element, jsConfig) {
     /**
      * Close the dialog.
      * @method
-     * @fires closinging, closed
+     * @fires closing, closed
      * @return dialog
      * @example sample <!-- draggable.base, dialog.base, bootstrap -->
      * <div id="dialog" style="display: none">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
