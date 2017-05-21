@@ -11,7 +11,7 @@ gj.tree.widget = function ($element, jsConfig) {
      * @method
      * @param {object} params - Params that needs to be send to the server. Only in use for remote data sources.
      * @return jQuery object
-     * @example Method.Sample <!-- tree.base -->
+     * @example Method.Sample <!-- materialicons, tree.base -->
      * <button onclick="tree.reload()">Reload</button>
      * <br/><br/>
      * <div id="tree"></div>
@@ -32,7 +32,7 @@ gj.tree.widget = function ($element, jsConfig) {
      * @param {object} response - An object that contains the data that needs to be loaded in the tree.
      * @fires dataBinding, dataBound
      * @return tree
-     * @example sample <!-- tree.base -->
+     * @example sample <!-- materialicons, tree.base -->
      * <div id="tree"></div>
      * <script>
      *     var tree, onSuccessFunc;
@@ -56,7 +56,7 @@ gj.tree.widget = function ($element, jsConfig) {
      * @param {object} parentNode - Parent node as jquery object.
      * @param {Number} position - Position where the new node need to be added. 
      * @return jQuery object
-     * @example Append.ToRoot <!-- tree.base -->
+     * @example Append.ToRoot <!-- materialicons, tree.base -->
      * <button onclick="append()">Append Node</button>
      * <br/><br/>
      * <div id="tree" data-source="/Locations/Get"></div>
@@ -66,7 +66,7 @@ gj.tree.widget = function ($element, jsConfig) {
      *         tree.addNode({ text: 'New Node' });
      *     }
      * </script>
-     * @example Append.Parent <!-- tree.base -->
+     * @example Append.Parent <!-- materialicons, tree.base -->
      * <button onclick="append()">Append Node</button>
      * <br/><br/>
      * <div id="tree" data-source="/Locations/Get"></div>
@@ -80,7 +80,7 @@ gj.tree.widget = function ($element, jsConfig) {
      *         tree.addNode({ text: 'New Node' }, parent);
      *     }
      * </script>
-     * @example Bootstrap <!-- tree.base, bootstrap -->
+     * @example Bootstrap <!-- bootstrap, tree.base -->
      * <button onclick="append()">Append Node</button>
      * <br/><br/>
      * <div id="tree" data-source="/Locations/Get" data-ui-library="bootstrap"></div>
@@ -94,7 +94,7 @@ gj.tree.widget = function ($element, jsConfig) {
      *         tree.addNode({ text: 'New Node' }, parent);
      *     }
      * </script>
-     * @example Prepend <!-- tree.base -->
+     * @example Prepend <!-- materialicons, tree.base -->
      * <button onclick="append()">Append Node</button>
      * <br/><br/>
      * <div id="tree" data-source="/Locations/Get"></div>
@@ -108,7 +108,7 @@ gj.tree.widget = function ($element, jsConfig) {
      *         tree.addNode({ text: 'New Node' }, parent, 1);
      *     }
      * </script>
-     * @example Position <!-- tree.base -->
+     * @example Position <!-- materialicons, tree.base -->
      * <button onclick="append()">Append Node</button>
      * <br/><br/>
      * <div id="tree" data-source="/Locations/Get"></div>
@@ -132,7 +132,7 @@ gj.tree.widget = function ($element, jsConfig) {
      * @method
      * @param {object} node - The node as jQuery object
      * @return jQuery object
-     * @example Method.Sample <!-- tree.base -->
+     * @example Method.Sample <!-- materialicons, tree.base -->
      * <button onclick="remove()">Remove USA</button>
      * <br/><br/>
      * <div id="tree"></div>
@@ -154,7 +154,7 @@ gj.tree.widget = function ($element, jsConfig) {
      * Destroy the tree.
      * @method
      * @return jQuery object
-     * @example Method.Sample <!-- tree.base -->
+     * @example Method.Sample <!-- materialicons, tree.base -->
      * <button onclick="tree.destroy()">Destroy</button>
      * <br/><br/>
      * <div id="tree"></div>
@@ -174,7 +174,7 @@ gj.tree.widget = function ($element, jsConfig) {
      * @param {object} node - The node as jQuery object
      * @param {boolean} cascade - Expand all children
      * @return jQuery object
-     * @example Method.Sample <!-- tree.base -->
+     * @example Method.Sample <!-- materialicons, tree.base -->
      * <button onclick="expand()">Expand Asia</button><button onclick="collapse()">Collapse Asia</button>
      * <br/><br/>
      * <div id="tree"></div>
@@ -191,7 +191,7 @@ gj.tree.widget = function ($element, jsConfig) {
      *         tree.collapse(node);
      *     }
      * </script>
-     * @example Cascade <!-- tree.base -->
+     * @example Cascade <!-- materialicons, tree.base -->
      * <button onclick="expand()">Expand North America</button>
      * <br/><br/>
      * <div id="tree"></div>
@@ -215,7 +215,7 @@ gj.tree.widget = function ($element, jsConfig) {
      * @param {object} node - The node as jQuery object
      * @param {boolean} cascade - Collapse all children
      * @return jQuery object
-     * @example Method.Sample <!-- tree.base -->
+     * @example Method.Sample <!-- materialicons, tree.base -->
      * <button onclick="expand()">Expand Asia</button><button onclick="collapse()">Collapse Asia</button>
      * <br/><br/>
      * <div id="tree"></div>
@@ -232,7 +232,7 @@ gj.tree.widget = function ($element, jsConfig) {
      *         tree.collapse(node);
      *     }
      * </script>
-     * @example Cascade <!-- tree.base -->
+     * @example Cascade <!-- materialicons, tree.base -->
      * <button onclick="collapse()">Collapse North America</button>
      * <br/><br>
      * <div id="tree"></div>
@@ -254,7 +254,7 @@ gj.tree.widget = function ($element, jsConfig) {
      * Expand all tree nodes
      * @method
      * @return jQuery object
-     * @example Sample <!-- tree.base -->
+     * @example Sample <!-- materialicons, tree.base -->
      * <button onclick="tree.expandAll()">Expand All</button><button onclick="tree.collapseAll()">Collapse All</button>
      * <br/><br/>
      * <div id="tree" data-source="/Locations/Get"></div>
@@ -270,7 +270,7 @@ gj.tree.widget = function ($element, jsConfig) {
      * Collapse all tree nodes
      * @method
      * @return jQuery object
-     * @example Sample <!-- tree.base -->
+     * @example Sample <!-- materialicons, tree.base -->
      * <button onclick="tree.expandAll()">Expand All</button><button onclick="tree.collapseAll()">Collapse All</button>
      * <br/><br/>
      * <div id="tree" data-source="/Locations/Get"></div>
@@ -287,7 +287,7 @@ gj.tree.widget = function ($element, jsConfig) {
      * @method
      * @param {string|number} id - The id of the record that needs to be returned
      * @return object
-     * @example sample <!-- tree.base -->
+     * @example sample <!-- materialicons, tree.base -->
      * <button id="btnGetData">Get Data</button>
      * <br/><br/>
      * <div id="tree"></div>
@@ -311,7 +311,7 @@ gj.tree.widget = function ($element, jsConfig) {
      * @method
      * @param {string} text - The text of the record that needs to be returned
      * @return object
-     * @example sample <!-- tree.base -->
+     * @example sample <!-- materialicons, tree.base -->
      * <button id="btnGetData">Get Data</button>
      * <br/><br/>
      * <div id="tree"></div>
@@ -334,7 +334,7 @@ gj.tree.widget = function ($element, jsConfig) {
      * @method
      * @param {string} id - The id of the node that needs to be returned
      * @return jQuery object
-     * @example sample <!-- tree.base -->
+     * @example sample <!-- materialicons, tree.base -->
      * <div id="tree"></div>
      * <script>
      *     var tree = $('#tree').tree({
@@ -356,7 +356,7 @@ gj.tree.widget = function ($element, jsConfig) {
      * @method
      * @param {string} text - The text in the node that needs to be returned
      * @return jQuery object
-     * @example sample <!-- tree.base -->
+     * @example sample <!-- materialicons, tree.base -->
      * <div id="tree"></div>
      * <script>
      *     var tree = $('#tree').tree({
@@ -376,7 +376,7 @@ gj.tree.widget = function ($element, jsConfig) {
      * Select all tree nodes
      * @method
      * @return jQuery object
-     * @example Sample <!-- tree.base -->
+     * @example Sample <!-- materialicons, tree.base -->
      * <button onclick="tree.selectAll()">Select All</button><button onclick="tree.unselectAll()">Unselect All</button>
      * <br/><br/>
      * <div id="tree" data-source="/Locations/Get"></div>
@@ -397,7 +397,7 @@ gj.tree.widget = function ($element, jsConfig) {
      * Unselect all tree nodes
      * @method
      * @return jQuery object
-     * @example Sample <!-- tree.base -->
+     * @example Sample <!-- materialicons, tree.base -->
      * <button onclick="tree.selectAll()">Select All</button><button onclick="tree.unselectAll()">Unselect All</button>
      * <br/><br/>
      * <div id="tree" data-source="/Locations/Get"></div>
@@ -418,7 +418,7 @@ gj.tree.widget = function ($element, jsConfig) {
      * Return an array with the ids of the selected nodes.
      * @method
      * @return array
-     * @example Sample <!-- tree.base -->
+     * @example Sample <!-- materialicons, tree.base -->
      * <button id="btnShowSelection">Show Selections</button>
      * <br/><br/>
      * <div id="tree" data-source="/Locations/Get"></div>

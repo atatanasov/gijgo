@@ -88,7 +88,7 @@ gj.tree.methods = {
         $expander.on('click', gj.tree.methods.expanderClickHandler($tree));
         $wrapper.append($expander);
 
-        $display.addClass(data.style.display).on('click', gj.tree.methods.displayClickHandler($tree));
+        $display.on('click', gj.tree.methods.displayClickHandler($tree));
         $wrapper.append($display);
         $node.append($wrapper);
 

@@ -261,20 +261,20 @@ gj.tree.config = {
         /** When this setting is enabled the content of the tree will be loaded automatically after the creation of the tree.
          * @type boolean
          * @default true
-         * @example disabled <!-- tree.base -->
+         * @example disabled <!-- materialicons, tree.base -->
          * <div id="tree"></div>
          * <script>
          *     var tree = $('#tree').tree({
-         *         dataSource: [ { text: 'foo', children: [ { text: 'bar' } ] } ],
+         *         dataSource: '/Locations/Get',
          *         autoLoad: false
          *     });
          *     tree.reload(); //call .reload() explicitly in order to load the data in the tree
          * </script>
-         * @example enabled <!-- tree.base -->
+         * @example enabled <!-- materialicons, tree.base -->
          * <div id="tree"></div>
          * <script>
          *     $('#tree').tree({
-         *         dataSource: [ { text: 'foo', children: [ { text: 'bar' } ] } ],
+         *         dataSource: '/Locations/Get',
          *         autoLoad: true
          *     });
          * </script>
@@ -285,27 +285,19 @@ gj.tree.config = {
          * If the type is set to multiple the user will be able to select more then one node in the tree.
          * @type (single|multiple)
          * @default single
-         * @example Single.Selection <!-- tree.base -->
+         * @example Single.Selection <!-- materialicons, tree.base -->
          * <div id="tree"></div>
          * <script>
          *     var tree = $('#tree').tree({
-         *         dataSource: [
-         *             { text: 'North America', children: [ { text: 'USA', children: [ { text: 'California' }, { text: 'Miami' } ] }, { text: 'Canada' },  { text: 'Mexico' } ] },
-         *             { text: 'Europe', children: [ { text: 'France' },  { text: 'Spain' },  { text: 'Italy' } ] },
-         *             { text: 'South America', children: [ { text: 'Brazil' },  { text: 'Argentina' },  { text: 'Columbia' } ] }
-         *         ],
+         *         dataSource: '/Locations/Get',
          *         selectionType: 'single'
          *     });
          * </script>
-         * @example Multiple.Selection <!-- tree.base -->
+         * @example Multiple.Selection <!-- materialicons, tree.base -->
          * <div id="tree"></div>
          * <script>
          *     $('#tree').tree({
-         *         dataSource: [
-         *             { text: 'North America', children: [ { text: 'USA', children: [ { text: 'California' }, { text: 'Miami' } ] }, { text: 'Canada' },  { text: 'Mexico' } ] },
-         *             { text: 'Europe', children: [ { text: 'France' },  { text: 'Spain' },  { text: 'Italy' } ] },
-         *             { text: 'South America', children: [ { text: 'Brazil' },  { text: 'Argentina' },  { text: 'Columbia' } ] }
-         *         ],
+         *         dataSource: '/Locations/Get',
          *         selectionType: 'multiple'
          *     });
          * </script>
@@ -315,15 +307,11 @@ gj.tree.config = {
         /** This setting enable cascade selection and unselection of children
          * @type boolean
          * @default false
-         * @example Sample <!-- tree.base -->
+         * @example Sample <!-- materialicons, tree.base -->
          * <div id="tree"></div>
          * <script>
          *     $('#tree').tree({
-         *         dataSource: [
-         *             { text: 'North America', children: [ { text: 'USA', children: [ { text: 'California' }, { text: 'Miami' } ] }, { text: 'Canada' },  { text: 'Mexico' } ] },
-         *             { text: 'Europe', children: [ { text: 'France' },  { text: 'Spain' },  { text: 'Italy' } ] },
-         *             { text: 'South America', children: [ { text: 'Brazil' },  { text: 'Argentina' },  { text: 'Columbia' } ] }
-         *         ],
+         *         dataSource: '/Locations/Get',
          *         cascadeSelection: true
          *     });
          * </script>
@@ -336,14 +324,14 @@ gj.tree.config = {
          * If set to array, then the tree is going to use the array as data for tree nodes.
          * @type (string|object|array)
          * @default undefined
-         * @example Local.DataSource <!-- tree.base -->
+         * @example Local.DataSource <!-- materialicons, tree.base -->
          * <div id="tree"></div>
          * <script>
          *     $('#tree').tree({
          *         dataSource: [ { text: 'foo', children: [ { text: 'bar' } ] } ]
          *     });
          * </script>
-         * @example Remote.DataSource <!-- tree.base -->
+         * @example Remote.DataSource <!-- materialicons, tree.base -->
          * <div id="tree"></div>
          * <script>
          *     $('#tree').tree({
@@ -356,7 +344,7 @@ gj.tree.config = {
         /** Primary key field name.
          * @type string
          * @default undefined
-         * @example sample <!-- tree.base -->
+         * @example sample <!-- materialicons, tree.base -->
          * <div id="tree"></div>
          * <script>
          *     var tree = $('#tree').tree({
@@ -371,7 +359,7 @@ gj.tree.config = {
         /** Text field name.
          * @type string
          * @default 'text'
-         * @example sample <!-- tree.base -->
+         * @example sample <!-- materialicons, tree.base -->
          * <div id="tree"></div>
          * <script>
          *     var tree = $('#tree').tree({
@@ -385,7 +373,7 @@ gj.tree.config = {
         /** Children field name.
          * @type string
          * @default 'children'
-         * @example Custom.FieldName <!-- tree.base -->
+         * @example Custom.FieldName <!-- materialicons, tree.base -->
          * <div id="tree"></div>
          * <script>
          *     var tree = $('#tree').tree({
@@ -407,7 +395,7 @@ gj.tree.config = {
          *         dataSource: [ { text: 'folder', imageCssClass: 'glyphicon glyphicon-folder-close', children: [ { text: 'file', imageCssClass: 'glyphicon glyphicon-file' } ] } ]
          *     });
          * </script>
-         * @example Custom.Name <!-- tree.base  -->
+         * @example Custom.Name <!-- materialicons, tree.base  -->
          * <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
          * <div id="tree"></div>
          * <script>
@@ -422,20 +410,18 @@ gj.tree.config = {
         /** Image url field name.
          * @type string
          * @default 'imageUrl'
-         * @example Default.HTML.Field.Name <!-- materialdesign, tree.base -->
+         * @example Default.HTML.Field.Name <!-- materialicons, tree.base -->
          * <div id="tree"></div>
          * <script>
          *     var tree = $('#tree').tree({
-         *         uiLibrary: 'materialdesign',
          *         dataSource: [ { text: 'World', imageUrl: 'http://gijgo.com/content/icons/world-icon.png', children: [ { text: 'USA', imageUrl: 'http://gijgo.com/content/icons/usa-oval-icon.png' } ] } ]
          *     });
          * </script>
-         * @example Custom.HTML.Field.Name <!-- materialdesign, tree.base -->
+         * @example Custom.HTML.Field.Name <!-- materialicons, tree.base -->
          * <div id="tree"></div>
          * <script>
          *     var tree = $('#tree').tree({
          *         imageUrlField: 'icon',
-         *         uiLibrary: 'materialdesign',
          *         dataSource: [ { text: 'World', icon: 'http://gijgo.com/content/icons/world-icon.png', children: [ { text: 'USA', icon: 'http://gijgo.com/content/icons/usa-oval-icon.png' } ] } ]
          *     });
          * </script>
@@ -445,20 +431,18 @@ gj.tree.config = {
         /** Image html field name.
          * @type string
          * @default 'imageHtml'
-         * @example Default.HTML.Field.Name <!-- materialdesign, tree.base -->
+         * @example Default.HTML.Field.Name <!-- materialicons, tree.base -->
          * <div id="tree"></div>
          * <script>
          *     var tree = $('#tree').tree({
-         *         uiLibrary: 'materialdesign',
          *         dataSource: [ { text: 'folder', imageHtml: '<i class="material-icons">folder</i>', children: [ { text: 'file', imageHtml: '<i class="material-icons">insert_drive_file</i>' } ] } ]
          *     });
          * </script>
-         * @example Custom.HTML.Field.Name <!-- materialdesign, tree.base -->
+         * @example Custom.HTML.Field.Name <!-- materialicons, tree.base -->
          * <div id="tree"></div>
          * <script>
          *     var tree = $('#tree').tree({
          *         imageHtmlField: 'icon',
-         *         uiLibrary: 'materialdesign',
          *         dataSource: [ { text: 'folder', icon: '<i class="material-icons">folder</i>', children: [ { text: 'file', icon: '<i class="material-icons">insert_drive_file</i>' } ] } ]
          *     });
          * </script>
@@ -488,24 +472,22 @@ gj.tree.config = {
         /** When this setting is enabled the content of the tree will be wrapped by borders.
          * @type boolean
          * @default false
-         * @example Material.Design.True <!-- materialdesign, tree.base -->
+         * @example Material.Design.True <!-- materialicons, checkbox, tree.base -->
          * <div id="tree"></div>
          * <script>
          *     $('#tree').tree({
          *         dataSource: '/Locations/Get',
          *         width: 500,
-         *         uiLibrary: 'materialdesign',
          *         border: true,
          *         checkboxes: true
          *     });
          * </script>
-         * @example Material.Design.False <!-- materialdesign, tree.base -->
+         * @example Material.Design.False <!-- materialicons, tree.base -->
          * <div id="tree"></div>
          * <script>
          *     $('#tree').tree({
          *         dataSource: '/Locations/Get',
          *         width: 500,
-         *         uiLibrary: 'materialdesign',
          *         border: false
          *     });
          * </script>
@@ -545,8 +527,18 @@ gj.tree.config = {
 
         /** The name of the UI library that is going to be in use.
          * @additionalinfo The css files for Bootstrap or Material Design Lite should be manually included if you use those as UI Library.
-         * @type (base|bootstrap|materialdesign)
-         * @default single
+         * @type (materialdesign|bootstrap|bootstrap4)
+         * @default materialdesign
+         * @example MaterialDesign <!-- materialicons, tree.base, checkbox -->
+         * <div id="tree"></div>
+         * <script>
+         *     var tree = $('#tree').tree({
+         *         dataSource: '/Locations/Get',
+         *         width: 500,
+         *         uiLibrary: 'materialdesign',
+         *         checkboxes: true
+         *     });
+         * </script>
          * @example Bootstrap.3 <!-- bootstrap, tree.base, checkbox -->
          * <div id="tree"></div>
          * <script>
@@ -557,25 +549,25 @@ gj.tree.config = {
          *         checkboxes: true
          *     });
          * </script>
-         * @example MaterialDesign <!-- materialdesign, tree.base, checkbox -->
+         * @example Bootstrap.4 <!-- materialicons, bootstrap4, tree.base, checkbox -->
          * <div id="tree"></div>
          * <script>
          *     var tree = $('#tree').tree({
          *         dataSource: '/Locations/Get',
          *         width: 500,
-         *         uiLibrary: 'materialdesign',
+         *         uiLibrary: 'bootstrap4',
          *         checkboxes: true
          *     });
          * </script>
          */
-        uiLibrary: 'base',
+        uiLibrary: 'materialdesign',
 
         /** The name of the icons library that is going to be in use. Currently we support Material Icons, Font Awesome and Glyphicons.
          * @additionalinfo If you use Bootstrap 3 as uiLibrary, then the iconsLibrary is set to Glyphicons by default.<br/>
          * If you use Material Design as uiLibrary, then the iconsLibrary is set to Material Icons by default.<br/>
          * The css files for Material Icons, Font Awesome or Glyphicons should be manually included to the page where the grid is in use.
          * @type (materialicons|fontawesome|glyphicons)
-         * @default undefined
+         * @default 'materialicons'
          * @example Base.Theme.Material.Icons <!-- materialicons, tree.base -->
          * <div id="tree"></div>
          * <script>
@@ -596,24 +588,57 @@ gj.tree.config = {
          *     });
          * </script>
          */
-        iconsLibrary: undefined,
+        iconsLibrary: 'materialicons',
 
         autoGenId: 1,
 
-        indentation: 16,
+        indentation: 24,
 
         style: {
             wrapper: 'gj-unselectable',
-            list: 'gj-tree-list',
-            item: 'gj-tree-item',
-            active: 'gj-tree-base-active',
-            display: undefined,
-            leafIcon: undefined
+            list: 'gj-tree-md-list',
+            item: 'gj-tree-item gj-tree-md-item',
+            active: 'gj-tree-md-active',
+            leafIcon: undefined,
+            border: 'gj-tree-md-border'
         },
 
         icons: {
-            expand: '+',
-            collapse: '-'
+            /** Expand icon definition.
+             * @alias icons.expand
+             * @type String
+             * @default '<i class="material-icons">keyboard_arrow_right</i>'
+             * @example Plus.Minus.Icons <!-- materialicons, tree.base -->
+             * <div id="tree"></div>
+             * <script>
+             *     var tree = $('#tree').tree({
+             *         dataSource: '/Locations/Get',
+             *         icons: { 
+             *             expand: '<i class="material-icons">add</i>',
+             *             collapse: '<i class="material-icons">remove</i>'
+             *         }
+             *     });
+             * </script>
+             */
+            expand: '<i class="material-icons">keyboard_arrow_right</i>',
+
+            /** Collapse icon definition.
+             * @alias icons.expand
+             * @type String
+             * @default '<i class="material-icons">keyboard_arrow_right</i>'
+             * @example Plus.Minus.Icons <!-- materialicons, tree.base -->
+             * <div id="tree"></div>
+             * <script>
+             *     var tree = $('#tree').tree({
+             *         dataSource: '/Locations/Get',
+             *         icons: { 
+             *             expand: '<i class="material-icons">add</i>',
+             *             collapse: '<i class="material-icons">remove</i>'
+             *         }
+             *     });
+             * </script>
+             */
+            collapse: '<i class="material-icons">keyboard_arrow_down</i>'
         }
     },
 
@@ -640,28 +665,10 @@ gj.tree.config = {
         }
     },
 
-    materialdesign: {
-        indentation: 24,
-        style: {
-            wrapper: 'gj-unselectable',
-            list: 'gj-tree-mdl-list mdl-list',
-            item: 'gj-tree-item gj-tree-mdl-item mdl-list__item',
-            active: 'gj-tree-mdl-active',
-            display: 'mdl-list__item-primary-content',
-            leafIcon: undefined,
-            border: 'gj-tree-mdl-border'
-        },
-        iconsLibrary: 'materialicons'
-    },
-
     materialicons: {
         indentation: 24,
         style: {
             expander: 'gj-tree-material-icons-expander'
-        },
-        icons: {
-            expand: '<i class="material-icons">add</i>',
-            collapse: '<i class="material-icons">remove</i>'
         }
     },
 
@@ -695,7 +702,7 @@ gj.tree.events = {
      * Event fires when the tree is initialized
      * @event initialized
      * @param {object} e - event data
-     * @example sample <!-- tree.base -->
+     * @example sample <!-- materialicons, tree.base -->
      * <button id="reload">Reload</button>
      * <div id="tree"></div>
      * <script>
@@ -718,7 +725,7 @@ gj.tree.events = {
      * Event fired before data binding takes place.
      * @event dataBinding
      * @param {object} e - event data
-     * @example sample <!-- tree.base -->
+     * @example sample <!-- materialicons, tree.base -->
      * <div id="tree"></div>
      * <script>
      *     $('#tree').tree({
@@ -737,7 +744,7 @@ gj.tree.events = {
      * Event fires after the loading of the data in the grid.
      * @event dataBound
      * @param {object} e - event data
-     * @example sample <!-- tree.base -->
+     * @example sample <!-- materialicons, tree.base -->
      * <div id="tree"></div>
      * <script>
      *     $('#tree').tree({
@@ -758,7 +765,7 @@ gj.tree.events = {
      * @param {object} e - event data
      * @param {object} node - the node as jquery object
      * @param {string} id - the id of the record
-     * @example sample <!-- tree.base -->
+     * @example sample <!-- materialicons, tree.base -->
      * <div id="tree" data-source="/Locations/Get"></div>
      * <script>
      *     var tree = $('#tree').tree();
@@ -777,7 +784,7 @@ gj.tree.events = {
      * @param {object} e - event data
      * @param {object} node - the node as jquery object
      * @param {string} id - the id of the record
-     * @example sample <!-- tree.base -->
+     * @example sample <!-- materialicons, tree.base -->
      * <div id="tree" data-source="/Locations/Get"></div>
      * <script>
      *     var tree = $('#tree').tree();
@@ -796,7 +803,7 @@ gj.tree.events = {
      * @param {object} e - event data
      * @param {object} node - the node as jquery object
      * @param {string} id - the id of the record
-     * @example Event.Sample <!-- tree.base -->
+     * @example Event.Sample <!-- materialicons, tree.base -->
      * <div id="tree" data-source="/Locations/Get"></div>
      * <script>
      *     var tree = $('#tree').tree();
@@ -815,7 +822,7 @@ gj.tree.events = {
      * @param {object} e - event data
      * @param {object} node - the node as jquery object
      * @param {string} id - the id of the record
-     * @example Event.Sample <!-- tree.base -->
+     * @example Event.Sample <!-- materialicons, tree.base -->
      * <div id="tree" data-source="/Locations/Get"></div>
      * <script>
      *     var tree = $('#tree').tree();
@@ -832,7 +839,7 @@ gj.tree.events = {
      * Event fires before tree destroy
      * @event destroying
      * @param {object} e - event data
-     * @example Event.Sample <!-- tree.base -->
+     * @example Event.Sample <!-- materialicons, tree.base -->
      * <button onclick="tree.destroy()">Destroy</button>
      * <br/><br/>
      * <div id="tree" data-source="/Locations/Get"></div>
@@ -854,7 +861,7 @@ gj.tree.events = {
      * @param {object} node - the node as jquery object
      * @param {string} id - the id of the record
      * @param {object} record - the data of the node record
-     * @example Event.Sample <!-- tree.base -->
+     * @example Event.Sample <!-- materialicons, tree.base -->
      * <div id="tree" data-source="/Locations/Get"></div>
      * <script>
      *     var tree = $('#tree').tree();
@@ -959,7 +966,7 @@ gj.tree.methods = {
         $expander.on('click', gj.tree.methods.expanderClickHandler($tree));
         $wrapper.append($expander);
 
-        $display.addClass(data.style.display).on('click', gj.tree.methods.displayClickHandler($tree));
+        $display.on('click', gj.tree.methods.displayClickHandler($tree));
         $wrapper.append($display);
         $node.append($wrapper);
 
@@ -1283,7 +1290,7 @@ gj.tree.widget = function ($element, jsConfig) {
      * @method
      * @param {object} params - Params that needs to be send to the server. Only in use for remote data sources.
      * @return jQuery object
-     * @example Method.Sample <!-- tree.base -->
+     * @example Method.Sample <!-- materialicons, tree.base -->
      * <button onclick="tree.reload()">Reload</button>
      * <br/><br/>
      * <div id="tree"></div>
@@ -1304,7 +1311,7 @@ gj.tree.widget = function ($element, jsConfig) {
      * @param {object} response - An object that contains the data that needs to be loaded in the tree.
      * @fires dataBinding, dataBound
      * @return tree
-     * @example sample <!-- tree.base -->
+     * @example sample <!-- materialicons, tree.base -->
      * <div id="tree"></div>
      * <script>
      *     var tree, onSuccessFunc;
@@ -1328,7 +1335,7 @@ gj.tree.widget = function ($element, jsConfig) {
      * @param {object} parentNode - Parent node as jquery object.
      * @param {Number} position - Position where the new node need to be added. 
      * @return jQuery object
-     * @example Append.ToRoot <!-- tree.base -->
+     * @example Append.ToRoot <!-- materialicons, tree.base -->
      * <button onclick="append()">Append Node</button>
      * <br/><br/>
      * <div id="tree" data-source="/Locations/Get"></div>
@@ -1338,7 +1345,7 @@ gj.tree.widget = function ($element, jsConfig) {
      *         tree.addNode({ text: 'New Node' });
      *     }
      * </script>
-     * @example Append.Parent <!-- tree.base -->
+     * @example Append.Parent <!-- materialicons, tree.base -->
      * <button onclick="append()">Append Node</button>
      * <br/><br/>
      * <div id="tree" data-source="/Locations/Get"></div>
@@ -1352,7 +1359,7 @@ gj.tree.widget = function ($element, jsConfig) {
      *         tree.addNode({ text: 'New Node' }, parent);
      *     }
      * </script>
-     * @example Bootstrap <!-- tree.base, bootstrap -->
+     * @example Bootstrap <!-- bootstrap, tree.base -->
      * <button onclick="append()">Append Node</button>
      * <br/><br/>
      * <div id="tree" data-source="/Locations/Get" data-ui-library="bootstrap"></div>
@@ -1366,7 +1373,7 @@ gj.tree.widget = function ($element, jsConfig) {
      *         tree.addNode({ text: 'New Node' }, parent);
      *     }
      * </script>
-     * @example Prepend <!-- tree.base -->
+     * @example Prepend <!-- materialicons, tree.base -->
      * <button onclick="append()">Append Node</button>
      * <br/><br/>
      * <div id="tree" data-source="/Locations/Get"></div>
@@ -1380,7 +1387,7 @@ gj.tree.widget = function ($element, jsConfig) {
      *         tree.addNode({ text: 'New Node' }, parent, 1);
      *     }
      * </script>
-     * @example Position <!-- tree.base -->
+     * @example Position <!-- materialicons, tree.base -->
      * <button onclick="append()">Append Node</button>
      * <br/><br/>
      * <div id="tree" data-source="/Locations/Get"></div>
@@ -1404,7 +1411,7 @@ gj.tree.widget = function ($element, jsConfig) {
      * @method
      * @param {object} node - The node as jQuery object
      * @return jQuery object
-     * @example Method.Sample <!-- tree.base -->
+     * @example Method.Sample <!-- materialicons, tree.base -->
      * <button onclick="remove()">Remove USA</button>
      * <br/><br/>
      * <div id="tree"></div>
@@ -1426,7 +1433,7 @@ gj.tree.widget = function ($element, jsConfig) {
      * Destroy the tree.
      * @method
      * @return jQuery object
-     * @example Method.Sample <!-- tree.base -->
+     * @example Method.Sample <!-- materialicons, tree.base -->
      * <button onclick="tree.destroy()">Destroy</button>
      * <br/><br/>
      * <div id="tree"></div>
@@ -1446,7 +1453,7 @@ gj.tree.widget = function ($element, jsConfig) {
      * @param {object} node - The node as jQuery object
      * @param {boolean} cascade - Expand all children
      * @return jQuery object
-     * @example Method.Sample <!-- tree.base -->
+     * @example Method.Sample <!-- materialicons, tree.base -->
      * <button onclick="expand()">Expand Asia</button><button onclick="collapse()">Collapse Asia</button>
      * <br/><br/>
      * <div id="tree"></div>
@@ -1463,7 +1470,7 @@ gj.tree.widget = function ($element, jsConfig) {
      *         tree.collapse(node);
      *     }
      * </script>
-     * @example Cascade <!-- tree.base -->
+     * @example Cascade <!-- materialicons, tree.base -->
      * <button onclick="expand()">Expand North America</button>
      * <br/><br/>
      * <div id="tree"></div>
@@ -1487,7 +1494,7 @@ gj.tree.widget = function ($element, jsConfig) {
      * @param {object} node - The node as jQuery object
      * @param {boolean} cascade - Collapse all children
      * @return jQuery object
-     * @example Method.Sample <!-- tree.base -->
+     * @example Method.Sample <!-- materialicons, tree.base -->
      * <button onclick="expand()">Expand Asia</button><button onclick="collapse()">Collapse Asia</button>
      * <br/><br/>
      * <div id="tree"></div>
@@ -1504,7 +1511,7 @@ gj.tree.widget = function ($element, jsConfig) {
      *         tree.collapse(node);
      *     }
      * </script>
-     * @example Cascade <!-- tree.base -->
+     * @example Cascade <!-- materialicons, tree.base -->
      * <button onclick="collapse()">Collapse North America</button>
      * <br/><br>
      * <div id="tree"></div>
@@ -1526,7 +1533,7 @@ gj.tree.widget = function ($element, jsConfig) {
      * Expand all tree nodes
      * @method
      * @return jQuery object
-     * @example Sample <!-- tree.base -->
+     * @example Sample <!-- materialicons, tree.base -->
      * <button onclick="tree.expandAll()">Expand All</button><button onclick="tree.collapseAll()">Collapse All</button>
      * <br/><br/>
      * <div id="tree" data-source="/Locations/Get"></div>
@@ -1542,7 +1549,7 @@ gj.tree.widget = function ($element, jsConfig) {
      * Collapse all tree nodes
      * @method
      * @return jQuery object
-     * @example Sample <!-- tree.base -->
+     * @example Sample <!-- materialicons, tree.base -->
      * <button onclick="tree.expandAll()">Expand All</button><button onclick="tree.collapseAll()">Collapse All</button>
      * <br/><br/>
      * <div id="tree" data-source="/Locations/Get"></div>
@@ -1559,7 +1566,7 @@ gj.tree.widget = function ($element, jsConfig) {
      * @method
      * @param {string|number} id - The id of the record that needs to be returned
      * @return object
-     * @example sample <!-- tree.base -->
+     * @example sample <!-- materialicons, tree.base -->
      * <button id="btnGetData">Get Data</button>
      * <br/><br/>
      * <div id="tree"></div>
@@ -1583,7 +1590,7 @@ gj.tree.widget = function ($element, jsConfig) {
      * @method
      * @param {string} text - The text of the record that needs to be returned
      * @return object
-     * @example sample <!-- tree.base -->
+     * @example sample <!-- materialicons, tree.base -->
      * <button id="btnGetData">Get Data</button>
      * <br/><br/>
      * <div id="tree"></div>
@@ -1606,7 +1613,7 @@ gj.tree.widget = function ($element, jsConfig) {
      * @method
      * @param {string} id - The id of the node that needs to be returned
      * @return jQuery object
-     * @example sample <!-- tree.base -->
+     * @example sample <!-- materialicons, tree.base -->
      * <div id="tree"></div>
      * <script>
      *     var tree = $('#tree').tree({
@@ -1628,7 +1635,7 @@ gj.tree.widget = function ($element, jsConfig) {
      * @method
      * @param {string} text - The text in the node that needs to be returned
      * @return jQuery object
-     * @example sample <!-- tree.base -->
+     * @example sample <!-- materialicons, tree.base -->
      * <div id="tree"></div>
      * <script>
      *     var tree = $('#tree').tree({
@@ -1648,7 +1655,7 @@ gj.tree.widget = function ($element, jsConfig) {
      * Select all tree nodes
      * @method
      * @return jQuery object
-     * @example Sample <!-- tree.base -->
+     * @example Sample <!-- materialicons, tree.base -->
      * <button onclick="tree.selectAll()">Select All</button><button onclick="tree.unselectAll()">Unselect All</button>
      * <br/><br/>
      * <div id="tree" data-source="/Locations/Get"></div>
@@ -1669,7 +1676,7 @@ gj.tree.widget = function ($element, jsConfig) {
      * Unselect all tree nodes
      * @method
      * @return jQuery object
-     * @example Sample <!-- tree.base -->
+     * @example Sample <!-- materialicons, tree.base -->
      * <button onclick="tree.selectAll()">Select All</button><button onclick="tree.unselectAll()">Unselect All</button>
      * <br/><br/>
      * <div id="tree" data-source="/Locations/Get"></div>
@@ -1690,7 +1697,7 @@ gj.tree.widget = function ($element, jsConfig) {
      * Return an array with the ids of the selected nodes.
      * @method
      * @return array
-     * @example Sample <!-- tree.base -->
+     * @example Sample <!-- materialicons, tree.base -->
      * <button id="btnShowSelection">Show Selections</button>
      * <br/><br/>
      * <div id="tree" data-source="/Locations/Get"></div>
@@ -1746,14 +1753,6 @@ gj.tree.plugins.checkboxes = {
             /** Add checkbox for each node, if set to true.
               * @type Boolean
               * @default undefined
-              * @example Base.Theme <!-- checkbox, tree.base -->
-              * <div id="tree"></div>
-              * <script>
-              *     var tree = $('#tree').tree({
-              *         dataSource: '/Locations/Get',
-              *         checkboxes: true
-              *     });
-              * </script>
               * @example Bootstrap <!-- bootstrap, checkbox, tree.base -->
               * <div class="container-fluid">
               *     <h3>Bootstrap Treeview With Checkboxes</h3>
@@ -1766,7 +1765,7 @@ gj.tree.plugins.checkboxes = {
               *         uiLibrary: 'bootstrap'
               *     });
               * </script>
-              * @example Material.Design <!-- materialdesign, checkbox, tree.base -->
+              * @example Material.Design <!-- materialicons, checkbox, tree.base -->
               * <div class="container-fluid">
               *     <h3>Material Design Treeview With Checkboxes</h3>
               *     <div id="tree"></div>
@@ -1784,7 +1783,7 @@ gj.tree.plugins.checkboxes = {
             /** Name of the source field, that indicates if the checkbox is checked.
              * @type string
              * @default 'checked'
-             * @example Custom.Name <!-- checkbox, tree.base -->
+             * @example Custom.Name <!-- materialicons, checkbox, tree.base -->
              * <div id="tree"></div>
              * <script>
              *     var tree = $('#tree').tree({
@@ -1862,7 +1861,7 @@ gj.tree.plugins.checkboxes = {
         /** Get ids of all checked nodes
          * @method
          * @return Array
-         * @example Base.Theme <!-- checkbox, tree.base -->
+         * @example Base.Theme <!-- materialicons, checkbox, tree.base -->
          * <button id="btnGet">Get Checked Nodes</button>
          * <div id="tree"></div>
          * <script>
@@ -1920,14 +1919,6 @@ gj.tree.plugins.dragAndDrop = {
 			/** Enables drag and drop functionality for each node.
               * @type Boolean
               * @default undefined
-              * @example Base.Theme <!-- draggable.base, droppable.base, tree.base -->
-              * <div id="tree"></div>
-              * <script>
-              *     $('#tree').tree({
-              *         dataSource: '/Locations/Get',
-              *         dragAndDrop: true
-              *     });
-              * </script>
               * @example Bootstrap <!-- bootstrap, draggable.base, droppable.base, tree.base -->
               * <div class="container">
               *     <h3>Drag and Drop Tree Nodes</h3>
@@ -1940,7 +1931,7 @@ gj.tree.plugins.dragAndDrop = {
               *         uiLibrary: 'bootstrap'
               *     });
               * </script>
-              * @example Material.Design <!-- materialdesign, draggable.base, droppable.base, tree.base -->
+              * @example Material.Design <!-- materialicons, draggable.base, droppable.base, tree.base -->
               * <h3>Drag and Drop Tree Nodes</h3>
               * <div id="tree"></div>
               * <script>
@@ -2170,7 +2161,7 @@ gj.tree.plugins.dragAndDrop = {
          * @param {string} id - the id of the record
          * @param {object} parentId - the id of the new parend node
          * @param {object} orderNumber - the new order number
-         * @example Event.Sample <!-- draggable.base, droppable.base, tree.base -->
+         * @example Event.Sample <!-- materialicons, draggable.base, droppable.base, tree.base -->
          * <div id="tree" data-source="/Locations/Get" data-drag-and-drop="true"></div>
          * <script>
          *     var tree = $('#tree').tree();

@@ -8,14 +8,6 @@ gj.tree.plugins.checkboxes = {
             /** Add checkbox for each node, if set to true.
               * @type Boolean
               * @default undefined
-              * @example Base.Theme <!-- checkbox, tree.base -->
-              * <div id="tree"></div>
-              * <script>
-              *     var tree = $('#tree').tree({
-              *         dataSource: '/Locations/Get',
-              *         checkboxes: true
-              *     });
-              * </script>
               * @example Bootstrap <!-- bootstrap, checkbox, tree.base -->
               * <div class="container-fluid">
               *     <h3>Bootstrap Treeview With Checkboxes</h3>
@@ -28,7 +20,7 @@ gj.tree.plugins.checkboxes = {
               *         uiLibrary: 'bootstrap'
               *     });
               * </script>
-              * @example Material.Design <!-- materialdesign, checkbox, tree.base -->
+              * @example Material.Design <!-- materialicons, checkbox, tree.base -->
               * <div class="container-fluid">
               *     <h3>Material Design Treeview With Checkboxes</h3>
               *     <div id="tree"></div>
@@ -46,7 +38,7 @@ gj.tree.plugins.checkboxes = {
             /** Name of the source field, that indicates if the checkbox is checked.
              * @type string
              * @default 'checked'
-             * @example Custom.Name <!-- checkbox, tree.base -->
+             * @example Custom.Name <!-- materialicons, checkbox, tree.base -->
              * <div id="tree"></div>
              * <script>
              *     var tree = $('#tree').tree({
@@ -124,7 +116,7 @@ gj.tree.plugins.checkboxes = {
         /** Get ids of all checked nodes
          * @method
          * @return Array
-         * @example Base.Theme <!-- checkbox, tree.base -->
+         * @example Base.Theme <!-- materialicons, checkbox, tree.base -->
          * <button id="btnGet">Get Checked Nodes</button>
          * <div id="tree"></div>
          * <script>

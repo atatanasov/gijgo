@@ -258,8 +258,8 @@ gj.checkbox.config = {
         /** The name of the UI library that is going to be in use. Currently we support only Material Design and Bootstrap. 
          * @additionalinfo The css files for Bootstrap should be manually included to the page if you use bootstrap as uiLibrary.
          * @type string (bootstrap|materialdesign)
-         * @default undefined
-         * @example Bootstrap <!-- bootstrap, checkbox -->
+         * @default 'materialdesign'
+         * @example Bootstrap.3 <!-- bootstrap, checkbox -->
          * <div class="container-fluid" style="margin-top:10px">
          *     <input type="checkbox" id="checkbox"/><br/><br/>
          *     <button onclick="$chkb.state('checked')" class="btn btn-default">Checked</button>
@@ -269,6 +269,18 @@ gj.checkbox.config = {
          * <script>
          *     var $chkb = $('#checkbox').checkbox({
          *         uiLibrary: 'bootstrap'
+         *     });
+         * </script>
+         * @example Bootstrap.4 <!-- materialicons, bootstrap4, checkbox -->
+         * <div class="container-fluid" style="margin-top:10px">
+         *     <input type="checkbox" id="checkbox"/><br/><br/>
+         *     <button onclick="$chkb.state('checked')" class="btn btn-default">Checked</button>
+         *     <button onclick="$chkb.state('unchecked')" class="btn btn-default">Unchecked</button>
+         *     <button onclick="$chkb.state('indeterminate')" class="btn btn-default">Indeterminate</button>
+         * </div>
+         * <script>
+         *     var $chkb = $('#checkbox').checkbox({
+         *         uiLibrary: 'bootstrap4'
          *     });
          * </script>
          * @example Material.Design <!-- materialdesign, checkbox  -->
@@ -288,29 +300,43 @@ gj.checkbox.config = {
          *     });
          * </script>
          */
-        uiLibrary: undefined,
+        uiLibrary: 'materialdesign',
+
+        iconsLibrary: 'materialicons',
 
         style: {
-            wrapperCssClass: undefined,
+            wrapperCssClass: 'gj-checkbox-md',
             inputCssClass: undefined,
-            spanCssClass: undefined
+            spanCssClass: 'material-icons'
         }
         
     },
 
     bootstrap: {
         style: {
-            wrapperCssClass: 'gj-checkbox-bootstrap',
-            inputCssClass: undefined,
-            spanCssClass: undefined
+            wrapperCssClass: 'gj-checkbox-bootstrap'
+        },
+        iconsLibrary: 'glyphicons'
+    },
+
+    bootstrap4: {
+        style: {
+            wrapperCssClass: 'gj-checkbox-bootstrap'
+        },
+        iconsLibrary: 'materialicons'
+    },
+
+    materialicons: {
+        style: {
+            iconsCssClass: 'gj-checkbox-material-icons',
+            spanCssClass: 'material-icons'
         }
     },
 
-    materialdesign: {
+    glyphicons: {
         style: {
-            wrapperCssClass: 'gj-checkbox-md',
-            inputCssClass: undefined,
-            spanCssClass: 'material-icons md-light'
+            iconsCssClass: 'gj-checkbox-glyphicons',
+            spanCssClass: undefined
         }
     }
 };
@@ -338,7 +364,7 @@ gj.checkbox.methods = {
         }
 
         if (data.style.wrapperCssClass) {
-            $wrapper = $('<label class="' + data.style.wrapperCssClass + '"></label>');
+            $wrapper = $('<label class="' + data.style.wrapperCssClass + ' ' + data.style.iconsCssClass + '"></label>');
             if ($chkb.attr('id')) {
                 $wrapper.attr('for', $chkb.attr('id'));
             }
@@ -378,7 +404,7 @@ gj.checkbox.methods = {
     },
 
     toggle: function ($chkb) {
-        if ($chkb.data('state') == 'checked') {
+        if ($chkb.state() == 'checked') {
             $chkb.state('unchecked');
         } else {
             $chkb.state('checked');
@@ -392,6 +418,8 @@ gj.checkbox.methods = {
             $chkb.removeAttr('data-guid');
             $chkb.removeAttr('data-checkbox');
             $chkb.off();
+            $chkb.next('span').remove();
+            $chkb.unwrap();
         }
         return $chkb;
     }
@@ -404,7 +432,7 @@ gj.checkbox.events = {
      * @event stateChange
      * @param {object} e - event data
      * @param {object} state - The new state of the checkbox.
-     * @example sample <!-- checkbox -->
+     * @example sample <!-- materialicons, checkbox -->
      * <input type="checkbox" id="checkbox"/>
      * <script>
      *     $('#checkbox').checkbox({
@@ -428,7 +456,7 @@ gj.checkbox.widget = function ($element, jsConfig) {
      * @method
      * @fires change
      * @return checked|unchecked|indeterminate|jquery
-     * @example sample <!-- checkbox -->
+     * @example sample <!-- materialicons, checkbox -->
      * <button onclick="$chkb.toggle()">toggle</button>
      * <hr/>
      * <input type="checkbox" id="checkbox"/>
@@ -445,7 +473,7 @@ gj.checkbox.widget = function ($element, jsConfig) {
      * @fires change
      * @param {string} value - State of the checkbox. Accept only checked, unchecked or indeterminate as values.
      * @return checked|unchecked|indeterminate|jquery
-     * @example sample <!-- checkbox -->
+     * @example sample <!-- materialicons, checkbox -->
      * <button onclick="$chkb.state('checked')">Set to checked</button>
      * <button onclick="$chkb.state('unchecked')">Set to unchecked</button>
      * <button onclick="$chkb.state('indeterminate')">Set to indeterminate</button>
@@ -463,7 +491,7 @@ gj.checkbox.widget = function ($element, jsConfig) {
     /** Remove checkbox functionality from the element.
      * @method
      * @return jquery element
-     * @example sample <!-- checkbox -->
+     * @example sample <!-- materialicons, checkbox -->
      * <button onclick="$chkb.destroy()">Destroy</button>
      * <input type="checkbox" id="checkbox"/>
      * <script>
