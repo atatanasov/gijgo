@@ -257,7 +257,7 @@ gj.checkbox.config = {
     base: {
         /** The name of the UI library that is going to be in use. Currently we support only Material Design and Bootstrap. 
          * @additionalinfo The css files for Bootstrap should be manually included to the page if you use bootstrap as uiLibrary.
-         * @type string (bootstrap|materialdesign)
+         * @type string (materialdesign|bootstrap|bootstrap4)
          * @default 'materialdesign'
          * @example Bootstrap.3 <!-- bootstrap, checkbox -->
          * <div class="container-fluid" style="margin-top:10px">
@@ -268,7 +268,10 @@ gj.checkbox.config = {
          * </div>
          * <script>
          *     var $chkb = $('#checkbox').checkbox({
-         *         uiLibrary: 'bootstrap'
+         *         uiLibrary: 'bootstrap',
+         *         change: function (e) {
+         *             alert('State: ' + $chkb.state());
+         *         }
          *     });
          * </script>
          * @example Bootstrap.4 <!-- materialicons, bootstrap4, checkbox -->
@@ -283,17 +286,13 @@ gj.checkbox.config = {
          *         uiLibrary: 'bootstrap4'
          *     });
          * </script>
-         * @example Material.Design <!-- materialdesign, checkbox  -->
-         * <div class="mdl-layout" style="margin:10px">
-         *     <div class="mdl-layout__content">
-         *         <input type="checkbox" id="checkbox"/><br/><br/>
-         *         <button onclick="$chkb.state('checked')" class="btn btn-default">Checked</button>
-         *         <button onclick="$chkb.state('unchecked')" class="btn btn-default">Unchecked</button>
-         *         <button onclick="$chkb.state('indeterminate')" class="btn btn-default">Indeterminate</button>
-         *         <button onclick="$chkb.prop('disabled', false)" class="btn btn-default">Enable</button>
-         *         <button onclick="$chkb.prop('disabled', true)" class="btn btn-default">Disable</button>
-         *     </div>
-         * </div>
+         * @example Material.Design <!-- materialicons, checkbox  -->
+         * <input type="checkbox" id="checkbox"/><br/><br/>
+         * <button onclick="$chkb.state('checked')" class="gj-button-md">Checked</button>
+         * <button onclick="$chkb.state('unchecked')" class="gj-button-md">Unchecked</button>
+         * <button onclick="$chkb.state('indeterminate')" class="gj-button-md">Indeterminate</button>
+         * <button onclick="$chkb.prop('disabled', false)" class="gj-button-md">Enable</button>
+         * <button onclick="$chkb.prop('disabled', true)" class="gj-button-md">Disable</button>
          * <script>
          *     var $chkb = $('#checkbox').checkbox({
          *         uiLibrary: 'materialdesign'
@@ -306,7 +305,6 @@ gj.checkbox.config = {
 
         style: {
             wrapperCssClass: 'gj-checkbox-md',
-            inputCssClass: undefined,
             spanCssClass: 'material-icons'
         }
         
@@ -355,13 +353,6 @@ gj.checkbox.methods = {
 
     initialize: function ($chkb) {
         var data = $chkb.data(), $wrapper, $span;
-        $chkb.on('change', function (e) {
-            $chkb.state(this.checked ? 'checked' : 'unchecked');
-        });
-
-        if (data.style.inputCssClass) {
-            $chkb.addClass(data.style.inputCssClass);
-        }
 
         if (data.style.wrapperCssClass) {
             $wrapper = $('<label class="' + data.style.wrapperCssClass + ' ' + data.style.iconsCssClass + '"></label>');
@@ -389,7 +380,7 @@ gj.checkbox.methods = {
                 $chkb.prop('checked', true);
                 $chkb.prop('indeterminate', true);
             }
-            gj.checkbox.events.stateChange($chkb, value);
+            gj.checkbox.events.change($chkb, value);
             return $chkb;
         } else {
             if ($chkb.prop('indeterminate')) {
@@ -429,21 +420,20 @@ gj.checkbox.events = {
     /**
      * Triggered when the state of the checkbox is changed
      *
-     * @event stateChange
+     * @event change
      * @param {object} e - event data
-     * @param {object} state - The new state of the checkbox.
      * @example sample <!-- materialicons, checkbox -->
      * <input type="checkbox" id="checkbox"/>
      * <script>
-     *     $('#checkbox').checkbox({
-     *         stateChange: function (e, state) {
-     *             alert(state);
+     *     var chkb = $('#checkbox').checkbox({
+     *         change: function (e) {
+     *             alert('State: ' + chkb.state());
      *         }
      *     });
      * </script>
      */
-    stateChange: function ($chkb, state) {
-        return $chkb.triggerHandler('stateChange', [state]);
+    change: function ($chkb, state) {
+        return $chkb.triggerHandler('change', [state]);
     }
 };
 

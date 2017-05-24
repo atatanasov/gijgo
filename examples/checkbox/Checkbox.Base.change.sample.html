@@ -9,15 +9,12 @@
   <script src="../../dist/modular/checkbox/js/checkbox.js"></script>
 </head>
 <body>
- <input type="checkbox" id="checkbox"/><br/><br/>
- <button onclick="$chkb.state('checked')" class="gj-button-md">Checked</button>
- <button onclick="$chkb.state('unchecked')" class="gj-button-md">Unchecked</button>
- <button onclick="$chkb.state('indeterminate')" class="gj-button-md">Indeterminate</button>
- <button onclick="$chkb.prop('disabled', false)" class="gj-button-md">Enable</button>
- <button onclick="$chkb.prop('disabled', true)" class="gj-button-md">Disable</button>
+ <input type="checkbox" id="checkbox"/>
  <script>
-     var $chkb = $('#checkbox').checkbox({
-         uiLibrary: 'materialdesign'
+     var chkb = $('#checkbox').checkbox({
+         change: function (e) {
+             alert('State: ' + chkb.state());
+         }
      });
  </script>
 </body>

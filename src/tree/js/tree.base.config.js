@@ -377,7 +377,7 @@ gj.tree.config = {
             expand: '<i class="material-icons">keyboard_arrow_right</i>',
 
             /** Collapse icon definition.
-             * @alias icons.expand
+             * @alias icons.collapse
              * @type String
              * @default '<i class="material-icons">keyboard_arrow_right</i>'
              * @example Plus.Minus.Icons <!-- materialicons, tree.base -->

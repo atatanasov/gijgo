@@ -18,7 +18,10 @@
  </div>
  <script>
      var $chkb = $('#checkbox').checkbox({
-         uiLibrary: 'bootstrap'
+         uiLibrary: 'bootstrap',
+         change: function (e) {
+             alert('State: ' + $chkb.state());
+         }
      });
  </script>
 </body>
