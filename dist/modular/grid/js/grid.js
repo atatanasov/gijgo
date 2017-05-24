@@ -1140,8 +1140,18 @@ gj.grid.config = {
          *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
          *     });
          * </script>
+         * @example localization <!-- grid.base -->
+         * <table id="grid"></table>
+         * <script src="../../dist/modular/grid/js/messages/messages.de-de.js"></script>
+         * <script>
+         *     $('#grid').grid({
+         *         dataSource: { url: '/Players/Get', data: { name: 'not existing name' } },
+         *         locale: 'de-de',
+         *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
+         *     });
+         * </script>
          */
-        notFoundText: 'No records found.',
+        notFoundText: undefined,
 
         /** Width of the grid.
          * @type number
@@ -1774,6 +1784,8 @@ gj.grid.methods = {
         var data = $grid.data(),
             $wrapper = $grid.parent('div[data-role="wrapper"]');
 
+        gj.grid.methods.localization(data);
+
         if ($wrapper.length === 0) {
             $wrapper = $('<div data-role="wrapper" />').addClass(data.style.wrapper); //The css class needs to be added before the wrapping, otherwise doesn't work.
             $grid.wrap($wrapper);
@@ -1811,6 +1823,12 @@ gj.grid.methods = {
         gj.grid.methods.renderHeader($grid);
         gj.grid.methods.appendEmptyRow($grid, '&nbsp;');
         gj.grid.events.initialized($grid);
+    },
+
+    localization: function (data) {
+        if (!data.notFoundText) {
+            data.notFoundText = gj.grid.messages[data.locale].NoRecordsFound;
+        }
     },
 
     renderHeader: function ($grid) {
@@ -4616,7 +4634,7 @@ gj.grid.plugins.pagination = {
             if (data.uiLibrary === 'bootstrap') {
                 gj.grid.plugins.pagination.private.localizationBootstrap(data);
             } else if (data.uiLibrary === 'bootstrap4') {
-                    gj.grid.plugins.pagination.private.localizationBootstrap4(data);
+                gj.grid.plugins.pagination.private.localizationBootstrap4(data);
             } else if (data.uiLibrary === 'materialdesign') {
                 gj.grid.plugins.pagination.private.localizationMaterialDesign(data);
             } else {

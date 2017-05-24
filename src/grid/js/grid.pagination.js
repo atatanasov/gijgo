@@ -293,7 +293,7 @@ gj.grid.plugins.pagination = {
             if (data.uiLibrary === 'bootstrap') {
                 gj.grid.plugins.pagination.private.localizationBootstrap(data);
             } else if (data.uiLibrary === 'bootstrap4') {
-                    gj.grid.plugins.pagination.private.localizationBootstrap4(data);
+                gj.grid.plugins.pagination.private.localizationBootstrap4(data);
             } else if (data.uiLibrary === 'materialdesign') {
                 gj.grid.plugins.pagination.private.localizationMaterialDesign(data);
             } else {

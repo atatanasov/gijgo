@@ -868,8 +868,18 @@ gj.grid.config = {
          *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
          *     });
          * </script>
+         * @example localization <!-- grid.base -->
+         * <table id="grid"></table>
+         * <script src="../../dist/modular/grid/js/messages/messages.de-de.js"></script>
+         * <script>
+         *     $('#grid').grid({
+         *         dataSource: { url: '/Players/Get', data: { name: 'not existing name' } },
+         *         locale: 'de-de',
+         *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
+         *     });
+         * </script>
          */
-        notFoundText: 'No records found.',
+        notFoundText: undefined,
 
         /** Width of the grid.
          * @type number

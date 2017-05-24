@@ -1,0 +1,21 @@
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Example</title>
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <link href="../../dist/modular/grid/css/grid.css" rel="stylesheet" type="text/css">
+  <script src="../../dist/modular/grid/js/grid.js"></script>
+</head>
+<body>
+ <table id="grid"></table>
+ <script src="../../dist/modular/grid/js/messages/messages.de-de.js"></script>
+ <script>
+     $('#grid').grid({
+         dataSource: { url: '/Players/Get', data: { name: 'not existing name' } },
+         locale: 'de-de',
+         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
+     });
+ </script>
+</body>
+</html>

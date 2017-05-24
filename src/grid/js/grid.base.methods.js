@@ -67,6 +67,8 @@ gj.grid.methods = {
         var data = $grid.data(),
             $wrapper = $grid.parent('div[data-role="wrapper"]');
 
+        gj.grid.methods.localization(data);
+
         if ($wrapper.length === 0) {
             $wrapper = $('<div data-role="wrapper" />').addClass(data.style.wrapper); //The css class needs to be added before the wrapping, otherwise doesn't work.
             $grid.wrap($wrapper);
@@ -104,6 +106,12 @@ gj.grid.methods = {
         gj.grid.methods.renderHeader($grid);
         gj.grid.methods.appendEmptyRow($grid, '&nbsp;');
         gj.grid.events.initialized($grid);
+    },
+
+    localization: function (data) {
+        if (!data.notFoundText) {
+            data.notFoundText = gj.grid.messages[data.locale].NoRecordsFound;
+        }
     },
 
     renderHeader: function ($grid) {

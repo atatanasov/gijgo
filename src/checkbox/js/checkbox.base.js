@@ -22,10 +22,7 @@ gj.checkbox.config = {
          * </div>
          * <script>
          *     var $chkb = $('#checkbox').checkbox({
-         *         uiLibrary: 'bootstrap',
-         *         change: function (e) {
-         *             alert('State: ' + $chkb.state());
-         *         }
+         *         uiLibrary: 'bootstrap'
          *     });
          * </script>
          * @example Bootstrap.4 <!-- materialicons, bootstrap4, checkbox -->
