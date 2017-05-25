@@ -82,7 +82,10 @@
     <Content Include="src\editor\css\editor.base.css" />
     <Content Include="src\editor\js\editor.base.js" />
     <Content Include="src\editor\js\header.txt" />
+    <Content Include="src\editor\js\messages\messages.de-de.js" />
     <Content Include="src\editor\js\messages\messages.en-us.js" />
+    <Content Include="src\editor\js\messages\messages.fr-fr.js" />
+    <Content Include="src\editor\js\messages\messages.pt-br.js" />
     <Content Include="src\grid\css\grid.base.css" />
     <Content Include="src\grid\css\grid.columnReorder.css" />
     <Content Include="src\grid\css\grid.pagination.css" />
@@ -148,6 +151,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="README.md" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="src\editor\js\messages\messages.bg-bg.js" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

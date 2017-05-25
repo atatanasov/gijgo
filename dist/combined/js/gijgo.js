@@ -10257,6 +10257,26 @@ gj.editor.config = {
          */
         iconsLibrary: 'materialicons',
 
+        /** The language that needs to be in use.
+         * @type string
+         * @default 'en-us'
+         * @example French <!-- materialicons, editor -->
+         * <script src="../../dist/modular/editor/js/messages/messages.fr-fr.js"></script>
+         * <div id="editor">Hover buttons in the toolbar in order to see localized tooltips</div>
+         * <script>
+         *     $("#editor").editor({
+         *         locale: 'fr-fr'
+         *     });
+         * </script>
+         * @example German <!-- materialicons, editor -->
+         * <script src="../../dist/modular/editor/js/messages/messages.de-de.js"></script>
+         * <div id="editor">Hover <b><u>buttons</u></b> in the toolbar in order to see localized tooltips</div>
+         * <script>
+         *     $("#editor").editor({
+         *         locale: 'de-de'
+         *     });
+         * </script>
+         */
         locale: 'en-us',
 
         buttons: undefined,
@@ -10355,12 +10375,11 @@ gj.editor.methods = {
         }
 
         if ($body.length === 0) {
-            $body = $('<div data-role="body" />');
-            $editor.append($body);
+            $editor.wrapInner('<div data-role="body"></div>');
+            $body = $editor.children('div[data-role="body"]');
         }
 
         $body.attr('contenteditable', true);
-        $body.height(data.height - $toolbar.outerHeight());
 
         $body.on('mouseup keyup mouseout', function () {
             self.updateToolbar($editor, $toolbar);
@@ -10382,6 +10401,8 @@ gj.editor.methods = {
                 $toolbar.append($group);
             }
         }
+
+        $body.height(data.height - $toolbar.outerHeight());
     },
 
     localization: function (data) {

@@ -9,8 +9,9 @@
                     { cwd: 'node_modules/jquery/dist', src: '**/*', dest: 'dist/libraries/jquery', expand: true },
                     { cwd: 'node_modules/bootstrap/dist', src: '**/*', dest: 'dist/libraries/bootstrap', expand: true },
                     { cwd: 'node_modules/jquery-ui/themes/base', src: '**/*', dest: 'dist/libraries/jquery-ui', expand: true },
+                    { cwd: 'src/grid/js/messages', src: '**/*', dest: 'dist/modular/grid/js/messages', expand: true },
                     { cwd: 'src/dialog/js/messages', src: '**/*', dest: 'dist/modular/dialog/js/messages', expand: true },
-                    { cwd: 'src/grid/js/messages', src: '**/*', dest: 'dist/modular/grid/js/messages', expand: true }
+                    { cwd: 'src/editor/js/messages', src: '**/*', dest: 'dist/modular/editor/js/messages', expand: true }
                 ]
             }
         },
