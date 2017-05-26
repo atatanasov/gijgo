@@ -421,13 +421,14 @@ gj.grid.methods = {
     renderDisplayElement: function ($grid, $displayEl, column, record, id, mode) {
         var text, $checkbox;
 
-        if ('checkbox' === column.type) {
+        if ('checkbox' === column.type && gj.checkbox) {
             if ('create' === mode) {
-                $checkbox = $('<input />').attr('type', 'checkbox').val(id);
+                $checkbox = $('<input type="checkbox" />').val(id).prop('checked', record[column.field]);
                 column.role && $checkbox.attr('data-role', column.role);
                 $displayEl.append($checkbox);
+                $checkbox.checkbox({ uiLibrary: $grid.data('uiLibrary') }).prop('disabled', true);
             } else {
-                $displayEl.find('input[type="checkbox"]').val(id).prop('checked', false);
+                $displayEl.find('input[type="checkbox"]').val(id).prop('checked', record[column.field]);
             }
         } else if ('icon' === column.type) {
             if ('create' === mode) {

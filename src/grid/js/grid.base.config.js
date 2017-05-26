@@ -275,9 +275,9 @@ gj.grid.config = {
 
             /** Indicates the type of the column.
              * @alias column.type
-             * @type checkbox|icon
-             * @default undefined
-             * @example sample <!-- grid.base, bootstrap -->
+             * @type text|checkbox|icon
+             * @default 'text'
+             * @example Icon <!-- grid.base, bootstrap -->
              * <table id="grid"></table>
              * <script>
              *     $('#grid').grid({
@@ -298,8 +298,22 @@ gj.grid.config = {
              *         ]
              *     });
              * </script>
+             * @example Checkbox <!-- grid.base, checkbox, bootstrap -->
+             * <table id="grid"></table>
+             * <script>
+             *     $('#grid').grid({
+             *         dataSource: '/Players/Get',
+             *         uiLibrary: 'bootstrap',
+             *         columns: [
+             *             { field: 'ID', width: 34 },
+             *             { field: 'Name', title: 'Player' },
+             *             { field: 'PlaceOfBirth', title: 'Place of Birth' },
+             *             { title: 'Active?', field: 'IsActive', width: 80, type: 'checkbox', align: 'center' }
+             *         ]
+             *     });
+             * </script>
              */
-            type: undefined,
+            type: 'text',
 
             /** The caption that is going to be displayed in the header of the grid.
              * @alias column.title

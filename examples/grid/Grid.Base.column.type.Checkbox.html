@@ -14,17 +14,14 @@
 <body>
  <table id="grid"></table>
  <script>
-     function edit($container, currentValue, record) {
-         $container.append('<input type="text" value="' + currentValue + '"/>');
-     }
      $('#grid').grid({
          dataSource: '/Players/Get',
          uiLibrary: 'bootstrap',
          columns: [
-             { field: 'ID', width: 32 },
-             { field: 'Name', editor: edit },
-             { field: 'PlaceOfBirth', editor: true },
-             { field: 'IsActive', title: 'Active?', type:'checkbox', editor: true, mode: 'edit', width: 80, align: 'center' }
+             { field: 'ID', width: 34 },
+             { field: 'Name', title: 'Player' },
+             { field: 'PlaceOfBirth', title: 'Place of Birth' },
+             { title: 'Active?', field: 'IsActive', width: 80, type: 'checkbox', align: 'center' }
          ]
      });
  </script>

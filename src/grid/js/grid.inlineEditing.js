@@ -46,7 +46,7 @@ gj.grid.plugins.inlineEditing.config = {
              * @alias column.editor
              * @type function|boolean
              * @default undefined
-             * @example sample <!-- grid.base -->
+             * @example sample <!-- grid.base, checkbox, bootstrap -->
              * <table id="grid"></table>
              * <script>
              *     function edit($container, currentValue, record) {
@@ -54,10 +54,12 @@ gj.grid.plugins.inlineEditing.config = {
              *     }
              *     $('#grid').grid({
              *         dataSource: '/Players/Get',
+             *         uiLibrary: 'bootstrap',
              *         columns: [
-             *             { field: 'ID' },
+             *             { field: 'ID', width: 32 },
              *             { field: 'Name', editor: edit },
-             *             { field: 'PlaceOfBirth', editor: true }
+             *             { field: 'PlaceOfBirth', editor: true },
+             *             { field: 'IsActive', title: 'Active?', type:'checkbox', editor: true, mode: 'edit', width: 80, align: 'center' }
              *         ]
              *     });
              * </script>
@@ -301,7 +303,7 @@ gj.grid.plugins.inlineEditing.private = {
     },
 
     editMode: function ($grid, $cell, column, record) {
-        var $displayContainer, $editorContainer, $editorField, value, data = $grid.data();
+        var $displayContainer, $editorContainer, $editorField, $checkbox, value, data = $grid.data();
         if ($cell.attr('data-mode') !== 'edit' && column.editor) {
             if (data.inlineEditing.mode !== 'command') {
                 $('div[data-role="edit"]:visible').parent('td').each(function () {
@@ -314,15 +316,21 @@ gj.grid.plugins.inlineEditing.private = {
                 $editorContainer = $('<div data-role="edit" />');
                 $cell.append($editorContainer);
             }
-            value = record[column.field] || $displayContainer.html();
+            value = record.hasOwnProperty(column.field) ? record[column.field] : $displayContainer.html();
             $editorField = $editorContainer.find('input, select, textarea').first();
             if ($editorField.length) {
                 $editorField.val(value);
             } else {
                 if (typeof (column.editor) === 'function') {
                     column.editor($editorContainer, value, record);
-                } else if (typeof (column.editor) === 'boolean') {
-                    $editorContainer.append('<input type="text" value="' + value + '" class="gj-width-full"/>');
+                } else if (column.editor === true) {
+                    if ('checkbox' === column.type) {
+                        $checkbox = $('<input type="checkbox" />').prop('checked', value);
+                        $editorContainer.append($checkbox);
+                        $checkbox.checkbox({ uiLibrary: $grid.data('uiLibrary') });
+                    } else {
+                        $editorContainer.append('<input type="text" value="' + value + '" class="gj-width-full"/>');
+                    }
                 }
                 $editorField = $editorContainer.find('input, select, textarea').first();
                 if (data.inlineEditing.mode !== 'command') {

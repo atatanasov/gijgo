@@ -2211,9 +2211,9 @@ gj.grid.config = {
 
             /** Indicates the type of the column.
              * @alias column.type
-             * @type checkbox|icon
-             * @default undefined
-             * @example sample <!-- grid.base, bootstrap -->
+             * @type text|checkbox|icon
+             * @default 'text'
+             * @example Icon <!-- grid.base, bootstrap -->
              * <table id="grid"></table>
              * <script>
              *     $('#grid').grid({
@@ -2234,8 +2234,22 @@ gj.grid.config = {
              *         ]
              *     });
              * </script>
+             * @example Checkbox <!-- grid.base, checkbox, bootstrap -->
+             * <table id="grid"></table>
+             * <script>
+             *     $('#grid').grid({
+             *         dataSource: '/Players/Get',
+             *         uiLibrary: 'bootstrap',
+             *         columns: [
+             *             { field: 'ID', width: 34 },
+             *             { field: 'Name', title: 'Player' },
+             *             { field: 'PlaceOfBirth', title: 'Place of Birth' },
+             *             { title: 'Active?', field: 'IsActive', width: 80, type: 'checkbox', align: 'center' }
+             *         ]
+             *     });
+             * </script>
              */
-            type: undefined,
+            type: 'text',
 
             /** The caption that is going to be displayed in the header of the grid.
              * @alias column.title
@@ -3802,13 +3816,14 @@ gj.grid.methods = {
     renderDisplayElement: function ($grid, $displayEl, column, record, id, mode) {
         var text, $checkbox;
 
-        if ('checkbox' === column.type) {
+        if ('checkbox' === column.type && gj.checkbox) {
             if ('create' === mode) {
-                $checkbox = $('<input />').attr('type', 'checkbox').val(id);
+                $checkbox = $('<input type="checkbox" />').val(id).prop('checked', record[column.field]);
                 column.role && $checkbox.attr('data-role', column.role);
                 $displayEl.append($checkbox);
+                $checkbox.checkbox({ uiLibrary: $grid.data('uiLibrary') }).prop('disabled', true);
             } else {
-                $displayEl.find('input[type="checkbox"]').val(id).prop('checked', false);
+                $displayEl.find('input[type="checkbox"]').val(id).prop('checked', record[column.field]);
             }
         } else if ('icon' === column.type) {
             if ('create' === mode) {
@@ -5250,7 +5265,7 @@ gj.grid.plugins.inlineEditing.config = {
              * @alias column.editor
              * @type function|boolean
              * @default undefined
-             * @example sample <!-- grid.base -->
+             * @example sample <!-- grid.base, checkbox, bootstrap -->
              * <table id="grid"></table>
              * <script>
              *     function edit($container, currentValue, record) {
@@ -5258,10 +5273,12 @@ gj.grid.plugins.inlineEditing.config = {
              *     }
              *     $('#grid').grid({
              *         dataSource: '/Players/Get',
+             *         uiLibrary: 'bootstrap',
              *         columns: [
-             *             { field: 'ID' },
+             *             { field: 'ID', width: 32 },
              *             { field: 'Name', editor: edit },
-             *             { field: 'PlaceOfBirth', editor: true }
+             *             { field: 'PlaceOfBirth', editor: true },
+             *             { field: 'IsActive', title: 'Active?', type:'checkbox', editor: true, mode: 'edit', width: 80, align: 'center' }
              *         ]
              *     });
              * </script>
@@ -5505,7 +5522,7 @@ gj.grid.plugins.inlineEditing.private = {
     },
 
     editMode: function ($grid, $cell, column, record) {
-        var $displayContainer, $editorContainer, $editorField, value, data = $grid.data();
+        var $displayContainer, $editorContainer, $editorField, $checkbox, value, data = $grid.data();
         if ($cell.attr('data-mode') !== 'edit' && column.editor) {
             if (data.inlineEditing.mode !== 'command') {
                 $('div[data-role="edit"]:visible').parent('td').each(function () {
@@ -5518,15 +5535,21 @@ gj.grid.plugins.inlineEditing.private = {
                 $editorContainer = $('<div data-role="edit" />');
                 $cell.append($editorContainer);
             }
-            value = record[column.field] || $displayContainer.html();
+            value = record.hasOwnProperty(column.field) ? record[column.field] : $displayContainer.html();
             $editorField = $editorContainer.find('input, select, textarea').first();
             if ($editorField.length) {
                 $editorField.val(value);
             } else {
                 if (typeof (column.editor) === 'function') {
                     column.editor($editorContainer, value, record);
-                } else if (typeof (column.editor) === 'boolean') {
-                    $editorContainer.append('<input type="text" value="' + value + '" class="gj-width-full"/>');
+                } else if (column.editor === true) {
+                    if ('checkbox' === column.type) {
+                        $checkbox = $('<input type="checkbox" />').prop('checked', value);
+                        $editorContainer.append($checkbox);
+                        $checkbox.checkbox({ uiLibrary: $grid.data('uiLibrary') });
+                    } else {
+                        $editorContainer.append('<input type="text" value="' + value + '" class="gj-width-full"/>');
+                    }
                 }
                 $editorField = $editorContainer.find('input, select, textarea').first();
                 if (data.inlineEditing.mode !== 'command') {
