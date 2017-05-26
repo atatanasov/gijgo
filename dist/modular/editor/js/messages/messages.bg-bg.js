@@ -7,10 +7,10 @@
 	listNumbered: 'Номериран Списък',
 	indentDecrease: 'Намаляване на абзаца',
 	indentIncrease: 'Увеличаване на абзаца',
-	alignLeft: '',
-	alignCenter: '',
-	alignRight: '',
-	alignJustify: '',
-	undo: '',
-	redo: ''
+	alignLeft: 'Подравняване в ляво',
+	alignCenter: 'Центриране',
+	alignRight: 'Подравняване в дясно',
+	alignJustify: 'Изравняване',
+	undo: 'Назад',
+	redo: 'Напред'
 };

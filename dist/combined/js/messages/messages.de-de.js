@@ -19,5 +19,22 @@ gj.grid.messages['de-de'] = {
     Delete: 'L&ouml;schen',
     Update: '&Auml;ndern',
     Cancel: 'Abbrechen',
-    NoRecordsFound: 'Es wurden keine Datens&auml;tze gefunden.'
+    NoRecordsFound: 'Es wurden keine Datens&auml;tze gefunden.',
+    Loading: 'Зареждане...'
+};
+gj.editor.messages['de-de'] = {
+    bold: 'Fett',
+    italic: 'Kursiv',
+    strikethrough: 'Durchdringt',
+    underline: 'Unterstrichen',
+    listBulleted: 'Aufz\u00e4hlung',
+    listNumbered: 'Nummerierte Liste',
+    indentDecrease: 'Einzug verkleinern',
+    indentIncrease: 'Einzug vergr\u00f6\u00dfern',
+    alignLeft: 'Linksb\u00fcndig ausrichten',
+    alignCenter: 'Zentriert ausrichten',
+    alignRight: 'Rechtsb\u00fcndig ausrichten',
+    alignJustify: 'Blocksatz',
+    undo: 'R\u00fcckg\u00e4ngig',
+    redo: 'Wiederholen'
 };

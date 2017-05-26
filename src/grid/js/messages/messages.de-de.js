@@ -15,5 +15,6 @@
     Delete: 'L&ouml;schen',
     Update: '&Auml;ndern',
     Cancel: 'Abbrechen',
-    NoRecordsFound: 'Es wurden keine Datens&auml;tze gefunden.'
+    NoRecordsFound: 'Es wurden keine Datens&auml;tze gefunden.',
+    Loading: 'Зареждане...'
 };

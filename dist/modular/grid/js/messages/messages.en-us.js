@@ -22,5 +22,6 @@ gj.grid.messages['en-us'] = {
     Delete: 'Delete',
     Update: 'Update',
     Cancel: 'Cancel',
-    NoRecordsFound: 'No records found.'
+    NoRecordsFound: 'No records found.',
+    Loading: 'Loading...'
 };

@@ -230,7 +230,7 @@ gj.grid.methods = {
             height: height,
             top: top
         });
-        $loading = $('<div data-role="loading-text">Loading...</div>').addClass(data.style.loadingText);
+        $loading = $('<div data-role="loading-text">' + gj.grid.messages[data.locale].Loading + '</div>').addClass(data.style.loadingText);
         $loading.insertAfter($grid);
         $cover.insertAfter($grid);
         $loading.css({

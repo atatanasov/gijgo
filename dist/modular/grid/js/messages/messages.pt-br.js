@@ -15,5 +15,6 @@
     Delete: 'Excluir',
     Update: 'Alterar',
     Cancel: 'Cancelar',
-    NoRecordsFound: 'Nenhum registro encontrado.'
+    NoRecordsFound: 'Nenhum registro encontrado.',
+    Loading: 'Carregando...'
 };

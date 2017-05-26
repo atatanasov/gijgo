@@ -15,5 +15,6 @@
     Delete: 'Effacer',
     Update: 'Mettre à jour',
     Cancel: 'Annuler',
-    NoRecordsFound: 'Aucun enregistrement trouvé.'
+    NoRecordsFound: 'Aucun enregistrement trouvé.',
+    Loading: 'Chargement...'
 };

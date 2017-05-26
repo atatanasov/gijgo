@@ -268,7 +268,8 @@ gj.grid.messages['en-us'] = {
     Delete: 'Delete',
     Update: 'Update',
     Cancel: 'Cancel',
-    NoRecordsFound: 'No records found.'
+    NoRecordsFound: 'No records found.',
+    Loading: 'Loading...'
 };
 /* global window alert jQuery gj */
 /**
@@ -1947,7 +1948,7 @@ gj.grid.methods = {
             height: height,
             top: top
         });
-        $loading = $('<div data-role="loading-text">Loading...</div>').addClass(data.style.loadingText);
+        $loading = $('<div data-role="loading-text">' + gj.grid.messages[data.locale].Loading + '</div>').addClass(data.style.loadingText);
         $loading.insertAfter($grid);
         $cover.insertAfter($grid);
         $loading.css({

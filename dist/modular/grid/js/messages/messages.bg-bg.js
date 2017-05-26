@@ -15,5 +15,6 @@
     Delete: 'Изтриване',
     Update: 'Актуализация',
     Cancel: 'Отказ',
-    NoRecordsFound: 'Няма намерени записи.'
+    NoRecordsFound: 'Няма намерени записи.',
+    Loading: 'Зареждане...'
 };
