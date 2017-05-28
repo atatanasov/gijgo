@@ -10,7 +10,7 @@ gj.grid.plugins.headerFilter = {
                  * @alias column.filterable
                  * @type boolean
                  * @default true
-                 * @example sample <!-- grid.base -->
+                 * @example sample <!-- materialicons, grid -->
                  * <table id="grid"></table>
                  * <script>
                  *     $('#grid').grid({
@@ -30,7 +30,7 @@ gj.grid.plugins.headerFilter = {
             /** If set to true, add filters for each column
              * @type boolean
              * @default object
-             * @example Remote.DataSource <!-- grid.base -->
+             * @example Remote.DataSource <!-- materialicons, grid -->
              * <table id="grid"></table>
              * <script>
              *     $('#grid').grid({
@@ -39,7 +39,7 @@ gj.grid.plugins.headerFilter = {
              *         columns: [ { field: 'ID', width: 36 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
              *     });
              * </script>
-             * @example Local.DataSource <!-- grid.base -->
+             * @example Local.DataSource <!-- materialicons, grid -->
              * <table id="grid"></table>
              * <script>
              *     var data = [
@@ -67,7 +67,7 @@ gj.grid.plugins.headerFilter = {
                  * @alias headerFilter.type
                  * @type (onenterkeypress|onchange)
                  * @default 'onenterkeypress'
-                 * @example OnEnterKeyPress <!-- grid.base -->
+                 * @example OnEnterKeyPress <!-- materialicons, grid -->
                  * <table id="grid"></table>
                  * <script>
                  *     $('#grid').grid({
@@ -78,7 +78,7 @@ gj.grid.plugins.headerFilter = {
                  *         columns: [ { field: 'ID', width: 36 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
                  *     });
                  * </script>
-                 * @example OnChange <!-- grid.base -->
+                 * @example OnChange <!-- materialicons, grid -->
                  * <table id="grid"></table>
                  * <script>
                  *     $('#grid').grid({

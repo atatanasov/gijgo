@@ -370,9 +370,9 @@ gj.editor.config = {
 
         style: {
             wrapper: 'gj-editor-md',
-            buttonsGroup: 'gj-md-button-group',
-            button: 'gj-md-button',
-            buttonActive: 'gj-md-button-active'
+            buttonsGroup: 'gj-button-md-group',
+            button: 'gj-button-md',
+            buttonActive: 'gj-button-md-active'
         }
     },
 
@@ -595,14 +595,14 @@ gj.editor.widget = function ($element, jsConfig) {
      * @method
      * @return string
      * @example Get <!-- editor, materialicons -->
-     * <button class="gj-md-button" onclick="alert($editor.content())">Get Content</button>
+     * <button class="gj-button-md" onclick="alert($editor.content())">Get Content</button>
      * <hr/>
      * <div id="editor"></div>
      * <script>
      *     var $editor = $('#editor').editor();
      * </script>
      * @example Set <!-- editor, materialicons -->
-     * <button class="gj-md-button" onclick="$editor.content('<h1>new value</h1>')">Set Content</button>
+     * <button class="gj-button-md" onclick="$editor.content('<h1>new value</h1>')">Set Content</button>
      * <hr/>
      * <div id="editor"></div>
      * <script>
@@ -617,7 +617,7 @@ gj.editor.widget = function ($element, jsConfig) {
      * @method
      * @return jquery element
      * @example sample <!-- editor, materialicons -->
-     * <button class="gj-md-button" onclick="editor.destroy()">Destroy</button>
+     * <button class="gj-button-md" onclick="editor.destroy()">Destroy</button>
      * <div id="editor"></div>
      * <script>
      *     var editor = $('#editor').editor();

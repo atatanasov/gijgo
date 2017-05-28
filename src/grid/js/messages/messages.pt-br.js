@@ -11,6 +11,7 @@
     Refresh: 'Atualizar',
     Of: 'de',
     DisplayingRecords: 'Mostrando registros',
+    RowsPerPage: 'Linhas por página:',
     Edit: 'Editar',
     Delete: 'Excluir',
     Update: 'Alterar',

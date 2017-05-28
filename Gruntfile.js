@@ -134,9 +134,13 @@
         uglify: {
             options: {},
             combined: {
-                files: {
-                    'dist/combined/js/gijgo.min.js': ['dist/combined/js/gijgo.js']
-                }
+                files: [
+                    { 'dist/combined/js/gijgo.min.js': ['dist/combined/js/gijgo.js'] },
+                    { 'dist/combined/js/messages/messages.bg-bg.min.js': ['dist/combined/js/messages/messages.bg-bg.js'] },
+                    { 'dist/combined/js/messages/messages.de-de.min.js': ['dist/combined/js/messages/messages.de-de.js'] },
+                    { 'dist/combined/js/messages/messages.fr-fr.min.js': ['dist/combined/js/messages/messages.fr-fr.js'] },
+                    { 'dist/combined/js/messages/messages.pt-br.min.js': ['dist/combined/js/messages/messages.pt-br.js'] },
+                ]
             },
             modular: {
                 files: {
@@ -277,7 +281,7 @@ var writer = {
     },
 
     buildHtmlFile: function (record) {
-        return '<html>\r\n' +
+        return '<!DOCTYPE html>\r\n<html>\r\n' +
             writer.analyzeLibs(record.libs) +
             '<body>\r\n' +
             record.text +
@@ -302,10 +306,10 @@ var writer = {
                     case 'bootstrap':
                         if (local) {
                             result += '  <link href="../../dist/libraries/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">\r\n';
-                            result += '  <link href="../../dist/libraries/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet" type="text/css">\r\n';
+                            //result += '  <link href="../../dist/libraries/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet" type="text/css">\r\n';
                         } else {
                             result += '  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">\r\n';
-                            result += '  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">\r\n';
+                            //result += '  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">\r\n';
                         }
                         break;
                     case 'bootstrap4':
@@ -317,23 +321,10 @@ var writer = {
                     case 'materialicons':
                         result += '  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">\r\n';
                         break;
-                    case 'materialdesign':
-                        //result += '  <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>\r\n';
-                        result += '  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">\r\n';
-                        result += '  <link href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css" rel="stylesheet" type="text/css">\r\n';
-                        break;
-                    case 'jqueryui':
-                        if (local) {
-                            result += '  <link href="../../dist/libraries/jquery-ui/jquery-ui.min.css" rel="stylesheet" type="text/css">\r\n';
-                            result += '  <link href="../../dist/libraries/jquery-ui/jquery-ui.theme.min.css" rel="stylesheet" type="text/css">\r\n';
-                        } else {
-                            result += '  <link href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css" rel="stylesheet" type="text/css">\r\n';
-                        }
-                        break;
                     case 'dialog.base':
                         result += '  <link href="../../dist/modular/dialog/css/dialog.css" rel="stylesheet" type="text/css">\r\n';
                         break;
-                    case 'grid.base':
+                    case 'grid':
                         result += '  <link href="../../dist/modular/grid/css/grid.css" rel="stylesheet" type="text/css">\r\n';
                         break;
                     case 'tree.base':
@@ -359,7 +350,7 @@ var writer = {
                     case 'droppable.base':
                         result += '  <script src="../../dist/modular/droppable/js/droppable.js"></script>\r\n';
                         break;
-                    case 'grid.base':
+                    case 'grid':
                         result += '  <script src="../../dist/modular/grid/js/grid.js"></script>\r\n';
                         break;
                     case 'tree.base':

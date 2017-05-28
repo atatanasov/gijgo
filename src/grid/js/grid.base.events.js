@@ -8,7 +8,7 @@ gj.grid.events = {
      * @event beforeEmptyRowInsert
      * @param {object} e - event data
      * @param {object} $row - The empty row as jquery object
-     * @example sample <!-- grid.base -->
+     * @example sample <!-- grid -->
      * <table id="grid"></table>
      * <script>
      *     var grid = $('#grid').grid({
@@ -16,7 +16,7 @@ gj.grid.events = {
      *             url: '/Players/Get',
      *             data: { name: 'not existing data' } //search for not existing data in order to fire the event
      *         },
-     *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
+     *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
      *     });
      *     grid.on('beforeEmptyRowInsert', function (e, $row) {
      *         alert('beforeEmptyRowInsert is fired.');
@@ -33,12 +33,12 @@ gj.grid.events = {
      * @event dataBinding
      * @param {object} e - event data
      * @param {array} records - the list of records
-     * @example sample <!-- grid.base -->
+     * @example sample <!-- grid -->
      * <table id="grid"></table>
      * <script>
      *     var grid = $('#grid').grid({
      *         dataSource: '/Players/Get',
-     *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
+     *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
      *     });
      *     grid.on('dataBinding', function (e, records) {
      *         alert('dataBinding is fired. ' + records.length + ' records will be loaded in the grid.');
@@ -56,12 +56,12 @@ gj.grid.events = {
      * @param {object} e - event data
      * @param {array} records - the list of records
      * @param {number} totalRecords - the number of the all records that can be presented in the grid
-     * @example sample <!-- grid.base -->
+     * @example sample <!-- grid -->
      * <table id="grid"></table>
      * <script>
      *     var grid = $('#grid').grid({
      *         dataSource: '/Players/Get',
-     *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
+     *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
      *     });
      *     grid.on('dataBound', function (e, records, totalRecords) {
      *         alert('dataBound is fired. ' + records.length + ' records are bound to the grid.');
@@ -79,12 +79,12 @@ gj.grid.events = {
      * @param {object} $row - the row presented as jquery object
      * @param {string} id - the id of the record
      * @param {object} record - the data of the row record
-     * @example sample <!-- grid.base -->
+     * @example sample <!-- grid -->
      * <table id="grid"></table>
      * <script>
      *     var grid = $('#grid').grid({
      *         dataSource: '/Players/Get',
-     *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
+     *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
      *     });
      *     grid.on('rowDataBound', function (e, $row, id, record) {
      *         alert('rowDataBound is fired for row with id=' + id + '.');
@@ -104,12 +104,12 @@ gj.grid.events = {
      * @param {string} id - the id of the record
      * @param {object} column - the column configuration data
      * @param {object} record - the data of the row record
-     * @example sample <!-- grid.base -->
+     * @example sample <!-- grid -->
      * <table id="grid"></table>
      * <script>
      *     var grid = $('#grid').grid({
      *         dataSource: '/Players/Get',
-     *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' }, { field: 'Bulgarian', title: 'Is Bulgarian?' } ]
+     *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' }, { field: 'Bulgarian', title: 'Is Bulgarian?' } ]
      *     });
      *     grid.on('cellDataBound', function (e, $displayEl, id, column, record) {
      *         if ('Bulgarian' === column.field) {
@@ -130,12 +130,12 @@ gj.grid.events = {
      * @param {object} $row - the row presented as jquery object
      * @param {string} id - the id of the record
      * @param {object} record - the data of the row record
-     * @example sample <!-- grid.base -->
+     * @example sample <!-- materialicons, checkbox, grid -->
      * <table id="grid"></table>
      * <script>
      *     var grid = $('#grid').grid({
      *         dataSource: '/Players/Get',
-     *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
+     *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
      *         selectionMethod: 'checkbox'
      *     });
      *     grid.on('rowSelect', function (e, $row, id, record) {
@@ -155,12 +155,12 @@ gj.grid.events = {
      * @param {object} $row - the row presented as jquery object
      * @param {string} id - the id of the record
      * @param {object} record - the data of the row record
-     * @example sample <!-- grid.base -->
+     * @example sample <!-- materialicons, checkbox, grid -->
      * <table id="grid"></table>
      * <script>
      *     var grid = $('#grid').grid({
      *         dataSource: '/Players/Get',
-     *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
+     *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
      *         selectionMethod: 'checkbox'
      *     });
      *     grid.on('rowUnselect', function (e, $row, id, record) {
@@ -179,7 +179,7 @@ gj.grid.events = {
      * @param {object} $row - the row presented as jquery object
      * @param {string} id - the id of the record
      * @param {object} record - the data of the row record
-     * @example sample <!-- grid.base -->
+     * @example sample <!-- grid -->
      * <button onclick="grid.removeRow('1')">Remove Row</button><br/>
      * <table id="grid"></table>
      * <script>
@@ -190,7 +190,7 @@ gj.grid.events = {
      *             { 'ID': 2, 'Name': 'Ronaldo Luis Nazario de Lima', 'PlaceOfBirth': 'Rio de Janeiro, Brazil' },
      *             { 'ID': 3, 'Name': 'David Platt', 'PlaceOfBirth': 'Chadderton, Lancashire, England' }
      *         ],
-     *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
+     *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
      *     });
      *     grid.on('rowRemoving', function (e, $row, id, record) {
      *         alert('rowRemoving is fired for row with id=' + id + '.');
@@ -206,14 +206,14 @@ gj.grid.events = {
      *
      * @event destroying
      * @param {object} e - event data
-     * @example sample <!-- grid.base -->
+     * @example sample <!-- grid -->
      * <button id="btnDestroy">Destroy</button>
      * <br/><br/>
      * <table id="grid"></table>
      * <script>
      *     var grid = $('#grid').grid({
      *         dataSource: '/Players/Get',
-     *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
+     *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
      *     });
      *     grid.on('destroying', function (e) {
      *         alert('destroying is fired.');
@@ -233,12 +233,12 @@ gj.grid.events = {
      * @event columnHide
      * @param {object} e - event data
      * @param {object} column - The data about the column that is hidding
-     * @example sample <!-- grid.base -->
+     * @example sample <!-- grid -->
      * <table id="grid"></table>
      * <script>
      *     var grid = $('#grid').grid({
      *         dataSource: '/Players/Get',
-     *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
+     *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
      *     });
      *     grid.on('columnHide', function (e, column) {
      *         alert('The ' + column.field + ' column is hidden.');
@@ -256,12 +256,12 @@ gj.grid.events = {
      * @event columnShow
      * @param {object} e - event data
      * @param {object} column - The data about the column that is showing
-     * @example sample <!-- grid.base -->
+     * @example sample <!-- grid -->
      * <table id="grid"></table>
      * <script>
      *     var grid = $('#grid').grid({
      *         dataSource: '/Players/Get',
-     *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth', hidden: true } ]
+     *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth', hidden: true } ]
      *     });
      *     grid.on('columnShow', function (e, column) {
      *         alert('The ' + column.field + ' column is shown.');
@@ -278,12 +278,12 @@ gj.grid.events = {
      *
      * @event initialized
      * @param {object} e - event data
-     * @example sample <!-- grid.base -->
+     * @example sample <!-- grid -->
      * <table id="grid"></table>
      * <script>
      *     var grid = $('#grid').grid({
      *         dataSource: '/Players/Get',
-     *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth', hidden: true } ],
+     *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth', hidden: true } ],
      *         initialized: function (e) {
      *             alert('The grid is initialized.');
      *         }
@@ -301,7 +301,7 @@ gj.grid.events = {
      * @event dataFiltered
      * @param {object} e - event data
      * @param {object} records - The records after the filtering.
-     * @example sample <!-- grid.base -->
+     * @example sample <!-- grid -->
      * <table id="grid"></table>
      * <script>
      *     var grid, data = [
@@ -314,13 +314,12 @@ gj.grid.events = {
      *     ];
      *     grid = $('#grid').grid({
      *         dataSource: data,
-     *         columns: [ { field: 'ID', width: 34 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
+     *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
      *         dataFiltered: function (e, records) {
      *             records.reverse(); // reverse the data
      *             records.splice(3, 2); // remove 2 elements after the 3rd record
      *         }
      *     });
-     *     grid.on();
      * </script>
      */
     dataFiltered: function ($grid, records) {

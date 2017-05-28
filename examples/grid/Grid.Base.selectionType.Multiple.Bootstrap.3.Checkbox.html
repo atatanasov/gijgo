@@ -1,20 +1,25 @@
+<!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Example</title>
   <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <link href="../../dist/modular/checkbox/css/checkbox.css" rel="stylesheet" type="text/css">
   <link href="../../dist/modular/grid/css/grid.css" rel="stylesheet" type="text/css">
+  <script src="../../dist/modular/checkbox/js/checkbox.js"></script>
   <script src="../../dist/modular/grid/js/grid.js"></script>
 </head>
 <body>
  <table id="grid"></table>
  <script>
      $('#grid').grid({
+         uiLibrary: 'bootstrap',
          dataSource: '/Players/Get',
          selectionType: 'multiple',
          selectionMethod: 'checkbox',
-         columns: [ { field: 'ID', width: 24 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
+         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
      });
  </script>
 </body>

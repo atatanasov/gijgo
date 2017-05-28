@@ -90,7 +90,7 @@ gj.grid.methods = {
             data.columns = [{
                 title: '',
                 field: data.primaryKey || '',
-                width: data.defaultIconColumnWidth,
+                width: data.defaultCheckBoxColumnWidth,
                 align: 'center',
                 type: 'checkbox',
                 role: 'selectRow',
@@ -98,10 +98,15 @@ gj.grid.methods = {
                     click: function (e) {
                         gj.grid.methods.setSelected($grid, e.data.id, $(this).closest('tr'));
                     }
-                }
+                },
+                headerCssClass: 'gj-grid-select-all',
+                stopPropagation: true
             }].concat(data.columns);
         }
-        $grid.append($('<tbody/>'));
+        
+        if ($grid.children('tbody').length === 0) {
+            $grid.append($('<tbody/>'));
+        }
 
         gj.grid.methods.renderHeader($grid);
         gj.grid.methods.appendEmptyRow($grid, '&nbsp;');
@@ -150,6 +155,7 @@ gj.grid.methods = {
                 if ($checkAllBoxes.length === 0) {
                     $checkAllBoxes = $('<input type="checkbox" data-role="selectAll" />');
                     $cell.append($checkAllBoxes);
+                    $checkAllBoxes.checkbox({ uiLibrary: data.uiLibrary });
                 }
                 $checkAllBoxes.off('click').on('click', function () {
                     if (this.checked) {
@@ -306,7 +312,7 @@ gj.grid.methods = {
             gj.grid.methods.autoGenerateColumns($grid, records);
         }
 
-        $tbody = $grid.find('tbody');
+        $tbody = $grid.children('tbody');
         if ('checkbox' === data.selectionMethod && 'multiple' === data.selectionType) {
             $grid.find('thead input[data-role="selectAll"]').prop('checked', false);
         }
@@ -426,7 +432,12 @@ gj.grid.methods = {
                 $checkbox = $('<input type="checkbox" />').val(id).prop('checked', record[column.field]);
                 column.role && $checkbox.attr('data-role', column.role);
                 $displayEl.append($checkbox);
-                $checkbox.checkbox({ uiLibrary: $grid.data('uiLibrary') }).prop('disabled', true);
+                $checkbox.checkbox({ uiLibrary: $grid.data('uiLibrary') });
+                if (column.role == 'selectRow') {
+                    $checkbox.on('click', function () { return false; });
+                } else {
+                    $checkbox.prop('disabled', true);
+                }
             } else {
                 $displayEl.find('input[type="checkbox"]').val(id).prop('checked', record[column.field]);
             }

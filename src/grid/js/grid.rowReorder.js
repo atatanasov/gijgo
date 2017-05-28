@@ -8,7 +8,7 @@ gj.grid.plugins.rowReorder = {
             /** If set to true, enable row reordering with drag and drop.
              * @type boolean
              * @default false
-             * @example Base.Theme.Sample <!-- grid.base, grid.rowReorder, draggable.base, droppable.base -->
+             * @example Base.Theme.Sample <!-- grid, grid.rowReorder, draggable.base, droppable.base -->
              * <p>Drag and Drop rows in order to reorder them.</p>
              * <table id="grid"></table>
              * <script>
@@ -18,7 +18,7 @@ gj.grid.plugins.rowReorder = {
              *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
              *     });
              * </script>
-             * @example Bootstrap.Sample <!-- bootstrap, grid.base, grid.rowReorder, draggable.base, droppable.base -->
+             * @example Bootstrap.Sample <!-- bootstrap, grid, grid.rowReorder, draggable.base, droppable.base -->
              * <p>Drag and Drop rows in order to reorder them.</p>
              * <table id="grid"></table>
              * <script>
@@ -29,17 +29,6 @@ gj.grid.plugins.rowReorder = {
              *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
              *     });
              * </script>
-             * @example JQueryUI.Sample <!-- jqueryui, grid.base, grid.rowReorder, draggable.base, droppable.base -->
-             * <p>Drag and Drop rows in order to reorder them.</p>
-             * <table id="grid"></table>
-             * <script>
-             *     $('#grid').grid({
-             *         dataSource: '/Players/Get',
-             *         rowReorder: true,
-             *         uiLibrary: 'jqueryui',
-             *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
-             *     });
-             * </script>
              */
             rowReorder: false,
 
@@ -47,7 +36,7 @@ gj.grid.plugins.rowReorder = {
              * Accept only field names of columns.
              * @type string
              * @default undefined
-             * @example sample <!-- grid.base, grid.rowReorder, draggable.base, droppable.base -->
+             * @example sample <!-- grid, grid.rowReorder, draggable.base, droppable.base -->
              * <table id="grid"></table>
              * <script>
              *     $('#grid').grid({
@@ -63,7 +52,7 @@ gj.grid.plugins.rowReorder = {
             /** If set, update the value in the field for all records. Accept only field names of columns.
              * @type string
              * @default undefined
-             * @example Visible.OrderNumber <!-- grid.base, grid.rowReorder, draggable.base, droppable.base -->
+             * @example Visible.OrderNumber <!-- grid, grid.rowReorder, draggable.base, droppable.base -->
              * <table id="grid"></table>
              * <script>
              *     var data = [
@@ -78,7 +67,7 @@ gj.grid.plugins.rowReorder = {
              *         columns: [ { field: 'ID', width: 34 }, { field: 'OrderNumber', width:120 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
              *     });
              * </script>
-             * @example Hidden.OrderNumber <!-- grid.base, grid.rowReorder, draggable.base, droppable.base -->
+             * @example Hidden.OrderNumber <!-- grid, grid.rowReorder, draggable.base, droppable.base -->
              * <button onclick="alert(JSON.stringify(grid.getAll()))">Show Data</button>
              * <table id="grid"></table>
              * <script>

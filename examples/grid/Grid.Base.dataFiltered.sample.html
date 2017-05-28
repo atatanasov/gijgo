@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8">
@@ -20,13 +21,12 @@
      ];
      grid = $('#grid').grid({
          dataSource: data,
-         columns: [ { field: 'ID', width: 34 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
+         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
          dataFiltered: function (e, records) {
              records.reverse(); // reverse the data
              records.splice(3, 2); // remove 2 elements after the 3rd record
          }
      });
-     grid.on();
  </script>
 </body>
 </html>

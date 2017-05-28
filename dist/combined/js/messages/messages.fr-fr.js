@@ -15,6 +15,7 @@ gj.grid.messages['fr-fr'] = {
     Refresh: 'Rafraîchir',
     Of: 'de',
     DisplayingRecords: 'Résultats',
+    RowsPerPage: 'Lignes par page:',
     Edit: 'Modifier',
     Delete: 'Effacer',
     Update: 'Mettre à jour',

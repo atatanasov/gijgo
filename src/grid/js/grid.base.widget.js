@@ -12,7 +12,7 @@ gj.grid.widget = function ($grid, jsConfig) {
      * @param {object} params - An object that contains a list with parameters that are going to be send to the server.
      * @fires beforeEmptyRowInsert, dataBinding, dataBound, cellDataBound
      * @return grid
-     * @example sample <!-- grid.base -->
+     * @example sample <!-- grid -->
      * <input type="text" id="txtSearch">
      * <button id="btnSearch">Search</button>
      * <br/><br/>
@@ -20,7 +20,7 @@ gj.grid.widget = function ($grid, jsConfig) {
      * <script>
      *     var grid = $('#grid').grid({
      *         dataSource: '/Players/Get',
-     *         columns: [ { field: 'ID', width: 24 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
+     *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
      *     });
      *     $('#btnSearch').on('click', function () {
      *         grid.reload({ name: $('#txtSearch').val() });
@@ -37,14 +37,14 @@ gj.grid.widget = function ($grid, jsConfig) {
      * @method
      * @param {boolean} showNotFoundText - Indicates if the "Not Found" text is going to show after the clearing of the grid.
      * @return grid
-     * @example sample <!-- grid.base -->
+     * @example sample <!-- materialicons, grid -->
      * <button id="btnClear">Clear</button>
      * <br/><br/>
      * <table id="grid"></table>
      * <script>
      *     var grid = $('#grid').grid({
      *         dataSource: '/Players/Get',
-     *         columns: [ { field: 'ID', width: 24 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
+     *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
      *         pager: { limit: 5 }
      *     });
      *     $('#btnClear').on('click', function () {
@@ -61,9 +61,9 @@ gj.grid.widget = function ($grid, jsConfig) {
      * @method
      * @param {boolean} includeAllRecords - include records that are not visible when you are using local dataSource.
      * @return number
-     * @example Local.DataSource <!-- bootstrap, grid.base, grid.pagination -->
-     * <button onclick="alert(grid.count())">Count Visible Records</button>
-     * <button onclick="alert(grid.count(true))">Count All Records</button>
+     * @example Local.DataSource <!-- bootstrap, grid, grid.pagination -->
+     * <button class="btn btn-default" onclick="alert(grid.count())">Count Visible Records</button>
+     * <button class="btn btn-default" onclick="alert(grid.count(true))">Count All Records</button>
      * <br/><br/>
      * <table id="grid"></table>
      * <script>
@@ -75,12 +75,12 @@ gj.grid.widget = function ($grid, jsConfig) {
      *     ];
      *     grid = $('#grid').grid({
      *         dataSource: data,
-     *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
+     *         columns: [ { field: 'ID', width: 34 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
      *         uiLibrary: 'bootstrap',
      *         pager: { limit: 2, sizes: [2, 5, 10] }
      *     });
      * </script>
-     * @example Remote.DataSource <!-- bootstrap, grid.base, grid.pagination -->
+     * @example Remote.DataSource <!-- bootstrap, grid, grid.pagination -->
      * <button onclick="alert(grid.count())">Count Visible Records</button>
      * <button onclick="alert(grid.count(true))">Count All Records</button>
      * <br/><br/>
@@ -88,7 +88,7 @@ gj.grid.widget = function ($grid, jsConfig) {
      * <script>
      *     var grid = $('#grid').grid({
      *         dataSource: '/Players/Get',
-     *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
+     *         columns: [ { field: 'ID', width: 34 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
      *         uiLibrary: 'bootstrap',
      *         pager: { limit: 2, sizes: [2, 5, 10] }
      *     });
@@ -104,7 +104,7 @@ gj.grid.widget = function ($grid, jsConfig) {
      * @param {object} response - An object that contains the data that needs to be loaded in the grid.
      * @fires beforeEmptyRowInsert, dataBinding, dataBound, cellDataBound
      * @return grid
-     * @example sample <!-- grid.base -->
+     * @example sample <!-- grid -->
      * <table id="grid"></table>
      * <script>
      *     var grid, onSuccessFunc;
@@ -131,16 +131,16 @@ gj.grid.widget = function ($grid, jsConfig) {
      * @param {boolean} keepWrapperTag - If this flag is set to false, the table wrapper tag will be removed from the HTML dom tree.
      * @fires destroying
      * @return void
-     * @example keep.wrapper.and.table <!-- grid.base -->
-     * <button id="btnDestroy">Destroy</button>
-     * <button id="btnCreate">Create</button>
+     * @example keep.wrapper.and.table <!-- grid -->
+     * <button class="gj-button-md" id="btnDestroy">Destroy</button>
+     * <button class="gj-button-md" id="btnCreate">Create</button>
      * <br/><br/>
      * <table id="grid"></table>
      * <script>
      *     var createFunc = function() {
      *         $('#grid').grid({
      *             dataSource: '/Players/Get',
-     *             columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
+     *             columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
      *         });
      *     };
      *     createFunc();
@@ -151,14 +151,14 @@ gj.grid.widget = function ($grid, jsConfig) {
      *         createFunc();
      *     });
      * </script>
-     * @example remove.wrapper.and.table <!-- grid.base -->
-     * <button id="btnRemove">Remove</button>
+     * @example remove.wrapper.and.table <!-- grid -->
+     * <button class="gj-button-md" id="btnRemove">Remove</button>
      * <br/><br/>
      * <table id="grid"></table>
      * <script>
      *     var grid = $('#grid').grid({
      *         dataSource: '/Players/Get',
-     *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
+     *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
      *     });
      *     $('#btnRemove').on('click', function () {
      *         grid.destroy();
@@ -174,7 +174,7 @@ gj.grid.widget = function ($grid, jsConfig) {
      * @method
      * @param {string} id - The id of the row that needs to be selected
      * @return grid
-     * @example sample <!-- grid.base -->
+     * @example sample <!-- grid -->
      * <input type="text" id="txtNumber" value="1" />
      * <button id="btnSelect">Select</button>
      * <br/><br/>
@@ -182,7 +182,7 @@ gj.grid.widget = function ($grid, jsConfig) {
      * <script>
      *     var grid = $('#grid').grid({
      *         dataSource: '/Players/Get',
-     *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
+     *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
      *         selectionMethod: 'checkbox'
      *     });
      *     $('#btnSelect').on('click', function () {
@@ -199,14 +199,14 @@ gj.grid.widget = function ($grid, jsConfig) {
      * If the multiple selection method is one this method is going to return only the id of the first selected record.
      * @method
      * @return string
-     * @example sample <!-- grid.base -->
+     * @example sample <!-- grid -->
      * <button id="btnShowSelection">Show Selection</button>
      * <br/><br/>
      * <table id="grid"></table>
      * <script>
      *     var grid = $('#grid').grid({
      *         dataSource: '/Players/Get',
-     *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
+     *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
      *         selectionMethod: 'checkbox'
      *     });
      *     $('#btnShowSelection').on('click', function () {
@@ -222,14 +222,14 @@ gj.grid.widget = function ($grid, jsConfig) {
      * Return an array with the ids of the selected record.
      * @method
      * @return array
-     * @example sample <!-- grid.base -->
+     * @example sample <!-- grid -->
      * <button id="btnShowSelection">Show Selections</button>
      * <br/><br/>
      * <table id="grid"></table>
      * <script>
      *     var grid = $('#grid').grid({
      *         dataSource: '/Players/Get',
-     *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
+     *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
      *         selectionMethod: 'checkbox',
      *         selectionType: 'multiple'
      *     });
@@ -249,14 +249,14 @@ gj.grid.widget = function ($grid, jsConfig) {
      * Select all records from the grid.
      * @method
      * @return grid
-     * @example sample <!-- grid.base -->
+     * @example sample <!-- grid -->
      * <button id="btnSelectAll">Select All</button>
      * <br/><br/>
      * <table id="grid"></table>
      * <script>
      *     var grid = $('#grid').grid({
      *         dataSource: '/Players/Get',
-     *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
+     *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
      *         selectionMethod: 'checkbox',
      *         selectionType: 'multiple'
      *     });
@@ -273,7 +273,7 @@ gj.grid.widget = function ($grid, jsConfig) {
      * Unselect all records from the grid.
      * @method
      * @return void
-     * @example sample <!-- grid.base -->
+     * @example sample <!-- grid -->
      * <button id="btnSelectAll">Select All</button>
      * <button id="btnUnSelectAll">UnSelect All</button>
      * <br/><br/>
@@ -281,7 +281,7 @@ gj.grid.widget = function ($grid, jsConfig) {
      * <script>
      *     var grid = $('#grid').grid({
      *         dataSource: '/Players/Get',
-     *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
+     *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
      *         selectionMethod: 'checkbox',
      *         selectionType: 'multiple'
      *     });
@@ -302,14 +302,14 @@ gj.grid.widget = function ($grid, jsConfig) {
      * @method
      * @param {string} id - The id of the row that needs to be returned.
      * @return object
-     * @example sample <!-- grid.base -->
+     * @example sample <!-- grid -->
      * <button id="btnGetData">Get Data</button>
      * <br/><br/>
      * <table id="grid"></table>
      * <script>
      *     var grid = $('#grid').grid({
      *         dataSource: '/Players/Get',
-     *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
+     *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
      *         primaryKey: 'ID' //define the name of the column that you want to use as ID here.
      *     });
      *     $('#btnGetData').on('click', function () {
@@ -327,14 +327,14 @@ gj.grid.widget = function ($grid, jsConfig) {
      * @method
      * @param {number} position - The position of the row that needs to be return.
      * @return object
-     * @example sample <!-- grid.base -->
+     * @example sample <!-- grid -->
      * <button id="btnGetData">Get Data</button>
      * <br/><br/>
      * <table id="grid"></table>
      * <script>
      *     var grid = $('#grid').grid({
      *         dataSource: '/Players/Get',
-     *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
+     *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
      *     });
      *     $('#btnGetData').on('click', function () {
      *         var data = grid.get(3);
@@ -351,7 +351,7 @@ gj.grid.widget = function ($grid, jsConfig) {
      * @method
      * @param {boolean} includeAllRecords - include records that are not visible when you are using local dataSource.
      * @return number
-     * @example Local.DataSource <!-- bootstrap, grid.base, grid.pagination -->
+     * @example Local.DataSource <!-- bootstrap, grid, grid.pagination -->
      * <button onclick="alert(JSON.stringify(grid.getAll()))">Get All Visible Records</button>
      * <button onclick="alert(JSON.stringify(grid.getAll(true)))">Get All Records</button>
      * <br/><br/>
@@ -365,12 +365,12 @@ gj.grid.widget = function ($grid, jsConfig) {
      *     ];
      *     grid = $('#grid').grid({
      *         dataSource: data,
-     *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
+     *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
      *         uiLibrary: 'bootstrap',
      *         pager: { limit: 2, sizes: [2, 5, 10] }
      *     });
      * </script>
-     * @example Remote.DataSource <!-- bootstrap, grid.base, grid.pagination -->
+     * @example Remote.DataSource <!-- bootstrap, grid, grid.pagination -->
      * <button onclick="alert(JSON.stringify(grid.getAll()))">Get All Visible Records</button>
      * <button onclick="alert(JSON.stringify(grid.getAll(true)))">Get All Records</button>
      * <br/><br/>
@@ -378,7 +378,7 @@ gj.grid.widget = function ($grid, jsConfig) {
      * <script>
      *     var grid = $('#grid').grid({
      *         dataSource: '/Players/Get',
-     *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
+     *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
      *         uiLibrary: 'bootstrap',
      *         pager: { limit: 2, sizes: [2, 5, 10] }
      *     });
@@ -393,14 +393,14 @@ gj.grid.widget = function ($grid, jsConfig) {
      * @method
      * @param {string} field - The name of the field bound to the column.
      * @return grid
-     * @example sample <!-- grid.base -->
+     * @example sample <!-- grid -->
      * <button id="btnShowColumn">Show Column</button>
      * <br/><br/>
      * <table id="grid"></table>
      * <script>
      *     var grid = $('#grid').grid({
      *         dataSource: '/Players/Get',
-     *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth', hidden: true } ]
+     *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth', hidden: true } ]
      *     });
      *     $('#btnShowColumn').on('click', function () {
      *         grid.showColumn('PlaceOfBirth');
@@ -416,14 +416,14 @@ gj.grid.widget = function ($grid, jsConfig) {
      * @method
      * @param {string} field - The name of the field bound to the column.
      * @return grid
-     * @example sample <!-- grid.base -->
+     * @example sample <!-- grid -->
      * <button id="btnHideColumn">Hide Column</button>
      * <br/><br/>
      * <table id="grid"></table>
      * <script>
      *     var grid = $('#grid').grid({
      *         dataSource: '/Players/Get',
-     *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
+     *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
      *     });
      *     $('#btnHideColumn').on('click', function () {
      *         grid.hideColumn('PlaceOfBirth');
@@ -439,7 +439,7 @@ gj.grid.widget = function ($grid, jsConfig) {
      * @method
      * @param {object} record - Object with data for the new record.
      * @return grid
-     * @example without.pagination <!-- grid.base -->
+     * @example without.pagination <!-- grid -->
      * <button id="btnAdd">Add Row</button>
      * <br/><br/>
      * <table id="grid"></table>
@@ -450,13 +450,13 @@ gj.grid.widget = function ($grid, jsConfig) {
      *             { 'ID': 2, 'Name': 'Ronaldo Luis Nazario de Lima', 'PlaceOfBirth': 'Rio de Janeiro, Brazil' },
      *             { 'ID': 3, 'Name': 'David Platt', 'PlaceOfBirth': 'Chadderton, Lancashire, England' }
      *         ],
-     *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
+     *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
      *     });
      *     $('#btnAdd').on('click', function () {
      *         grid.addRow({ 'ID': grid.count(true) + 1, 'Name': 'Test Player', 'PlaceOfBirth': 'Test City, Test Country' });
      *     });
      * </script>
-     * @example with.pagination <!-- grid.base, grid.pagination -->
+     * @example with.pagination <!-- materialicons, grid -->
      * <button id="btnAdd">Add Row</button>
      * <br/><br/>
      * <table id="grid"></table>
@@ -467,7 +467,7 @@ gj.grid.widget = function ($grid, jsConfig) {
      *             { 'ID': 2, 'Name': 'Ronaldo Luis Nazario de Lima', 'PlaceOfBirth': 'Rio de Janeiro, Brazil' },
      *             { 'ID': 3, 'Name': 'David Platt', 'PlaceOfBirth': 'Chadderton, Lancashire, England' }
      *         ],
-     *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
+     *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
      *         pager: { limit: 2 }
      *     });
      *     $('#btnAdd').on('click', function () {
@@ -485,7 +485,7 @@ gj.grid.widget = function ($grid, jsConfig) {
      * @param {string} id - The id of the row that needs to be updated
      * @param {object} record - Object with data for the new record.
      * @return grid
-     * @example sample <!-- grid.base, grid.pagination -->
+     * @example sample <!-- materialicons, grid -->
      * <table id="grid"></table>
      * <script>
      *     var grid;
@@ -497,7 +497,7 @@ gj.grid.widget = function ($grid, jsConfig) {
      *             { 'ID': 3, 'Name': 'David Platt', 'PlaceOfBirth': 'Chadderton, Lancashire, England' }
      *         ],
      *         columns: [
-     *             { field: 'ID', width: 24 },
+     *             { field: 'ID', width: 56 },
      *             { field: 'Name' },
      *             { field: 'PlaceOfBirth' },
      *             { title: '', width: 50, align: 'center', tmpl: '<u>Edit</u>', events: { 'click': Edit } }
@@ -524,7 +524,7 @@ gj.grid.widget = function ($grid, jsConfig) {
      * @method
      * @param {string} id - Id of the record that needs to be removed.
      * @return grid
-     * @example Without.Pagination <!-- grid.base -->
+     * @example Without.Pagination <!-- grid -->
      * <table id="grid"></table>
      * <script>
      *     var grid;
@@ -541,14 +541,14 @@ gj.grid.widget = function ($grid, jsConfig) {
      *             { 'ID': 3, 'Name': 'David Platt', 'PlaceOfBirth': 'Chadderton, Lancashire, England' }
      *         ],
      *         columns: [
-     *             { field: 'ID' },
+     *             { field: 'ID', width: 56 },
      *             { field: 'Name' },
      *             { field: 'PlaceOfBirth' },
      *             { width: 60, align: 'center', tmpl: '<u class="gj-cursor-pointer">Delete</u>', events: { 'click': Delete } }
      *         ]
      *     });
      * </script>
-     * @example With.Pagination <!-- grid.base, grid.pagination -->
+     * @example With.Pagination <!-- materialicons, grid, grid.pagination -->
      * <table id="grid"></table>
      * <script>
      *     var grid;
@@ -565,7 +565,7 @@ gj.grid.widget = function ($grid, jsConfig) {
      *             { 'ID': 3, 'Name': 'David Platt', 'PlaceOfBirth': 'Chadderton, Lancashire, England' }
      *         ],
      *         columns: [
-     *             { field: 'ID' },
+     *             { field: 'ID', width: 56 },
      *             { field: 'Name' },
      *             { field: 'PlaceOfBirth' },
      *             { width: 60, align: 'center', tmpl: '<u class="gj-cursor-pointer">Delete</u>', events: { 'click': Delete } }

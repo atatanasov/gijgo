@@ -9,26 +9,17 @@ gj.grid.plugins.expandCollapseRows = {
              * Automatically add expand collapse column as a first column in the grid during initialization.
              * @type string
              * @default undefined
-             * @example Base.Theme <!-- grid.base, grid.expandCollapseRows -->
-             * <table id="grid"></table>
-             * <script>
-             *     $('#grid').grid({
-             *         dataSource: '/Players/Get',
-             *         detailTemplate: '<div><b>Place Of Birth:</b> {PlaceOfBirth}</div>',
-             *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'DateOfBirth', type: 'date' } ]
-             *     });
-             * </script>
-             * @example Bootstrap.3 <!-- bootstrap, grid.base, grid.expandCollapseRows -->
+             * @example Bootstrap.3 <!-- bootstrap, grid, grid.expandCollapseRows -->
              * <table id="grid"></table>
              * <script>
              *     $('#grid').grid({
              *         dataSource: '/Players/Get',
              *         uiLibrary: 'bootstrap',
              *         detailTemplate: '<div><b>Place Of Birth:</b> {PlaceOfBirth}</div>',
-             *         columns: [ { field: 'ID', width: 36 }, { field: 'Name' }, { field: 'DateOfBirth', type: 'date' } ]
+             *         columns: [ { field: 'ID', width: 34 }, { field: 'Name' }, { field: 'DateOfBirth', type: 'date' } ]
              *     });
              * </script>
-             * @example Bootstrap.4.Font.Awesome <!-- bootstrap4, fontawesome, grid.base, grid.expandCollapseRows -->
+             * @example Bootstrap.4.Font.Awesome <!-- bootstrap4, fontawesome, grid, grid.expandCollapseRows -->
              * <table id="grid"></table>
              * <script>
              *     $('#grid').grid({
@@ -36,17 +27,17 @@ gj.grid.plugins.expandCollapseRows = {
              *         uiLibrary: 'bootstrap4',
              *         iconsLibrary: 'fontawesome',
              *         detailTemplate: '<div><b>Place Of Birth:</b> {PlaceOfBirth}</div>',
-             *         columns: [ { field: 'ID', width: 36 }, { field: 'Name' }, { field: 'DateOfBirth', type: 'date' } ]
+             *         columns: [ { field: 'ID', width: 34 }, { field: 'Name' }, { field: 'DateOfBirth', type: 'date' } ]
              *     });
              * </script>
-             * @example Material.Design <!-- materialdesign, grid.base -->
+             * @example Material.Design <!-- materialicons, grid -->
              * <table id="grid"></table>
              * <script>
              *     $('#grid').grid({
              *         dataSource: '/Players/Get',
              *         uiLibrary: 'materialdesign',
              *         detailTemplate: '<div style="text-align: left"><b>Place Of Birth:</b> {PlaceOfBirth}</div>',
-             *         columns: [ { field: 'ID', width: 70 }, { field: 'Name' }, { field: 'DateOfBirth', type: 'date' } ]
+             *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'DateOfBirth', type: 'date' } ]
              *     });
              * </script>
              */
@@ -55,7 +46,7 @@ gj.grid.plugins.expandCollapseRows = {
             /** If set try to persist the state of expanded rows.
              * You need to specify primaryKey on the initialization of the grid in order to enable this feature.
              * @default true
-             * @example True <!-- bootstrap, grid.base  -->
+             * @example True <!-- bootstrap, grid  -->
              * <div class="container">
              *     <div class="row">
              *         <div class="col-xs-12">
@@ -178,14 +169,14 @@ gj.grid.plugins.expandCollapseRows = {
          * @param {object} e - event data
          * @param {object} detailWrapper - the detail wrapper as jQuery object 
          * @param {string} id - the id of the record
-         * @example sample <!-- grid.base -->
+         * @example sample <!-- grid -->
          * <table id="grid"></table>
          * <script>
          *     var grid = $('#grid').grid({
          *         primaryKey: 'ID',
          *         dataSource: '/Players/Get',
          *         detailTemplate: '<div></div>',
-         *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'DateOfBirth', type: 'date' } ]
+         *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'DateOfBirth', type: 'date' } ]
          *     });
          *     grid.on('detailExpand', function (e, $detailWrapper, id) {
          *         var record = grid.getById(id);
@@ -204,14 +195,14 @@ gj.grid.plugins.expandCollapseRows = {
          * @param {object} e - event data
          * @param {object} detailWrapper - the detail wrapper as jQuery object 
          * @param {string} id - the id of the record
-         * @example sample <!-- grid.base -->
+         * @example sample <!-- grid -->
          * <table id="grid"></table>
          * <script>
          *     var grid = $('#grid').grid({
          *         primaryKey: 'ID',
          *         dataSource: '/Players/Get',
          *         detailTemplate: '<div></div>',
-         *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'DateOfBirth', type: 'date' } ]
+         *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'DateOfBirth', type: 'date' } ]
          *     });
          *     grid.on('detailExpand', function (e, $detailWrapper, id) {
          *         var record = grid.getById(id);

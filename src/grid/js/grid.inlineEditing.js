@@ -46,7 +46,7 @@ gj.grid.plugins.inlineEditing.config = {
              * @alias column.editor
              * @type function|boolean
              * @default undefined
-             * @example sample <!-- grid.base, checkbox, bootstrap -->
+             * @example sample <!-- grid, checkbox, bootstrap -->
              * <table id="grid"></table>
              * <script>
              *     function edit($container, currentValue, record) {
@@ -70,7 +70,7 @@ gj.grid.plugins.inlineEditing.config = {
              * @alias column.mode
              * @type display|edit
              * @default display
-             * @example sample <!-- grid.base -->
+             * @example sample <!-- grid -->
              * <table id="grid"></table>
              * <script>
              *     $('#grid').grid({
@@ -91,7 +91,7 @@ gj.grid.plugins.inlineEditing.config = {
              * @alias inlineEditing.mode
              * @type click|dblclick|command
              * @default 'click'
-             * @example Double.Click <!-- grid.base -->
+             * @example Double.Click <!-- grid -->
              * <table id="grid"></table>
              * <script>
              *     var grid = $('#grid').grid({
@@ -105,7 +105,7 @@ gj.grid.plugins.inlineEditing.config = {
              *         ]
              *     });
              * </script>
-             * @example Command <!-- grid.base -->
+             * @example Command <!-- materialicons, grid -->
              * <table id="grid"></table>
              * <script>
              *     var grid, data = [
@@ -135,7 +135,7 @@ gj.grid.plugins.inlineEditing.config = {
              * @alias inlineEditing.managementColumn
              * @type Boolean
              * @default true
-             * @example True <!-- grid.base -->
+             * @example True <!-- grid -->
              * <table id="grid"></table>
              * <script>
              *     var grid, data = [
@@ -157,7 +157,7 @@ gj.grid.plugins.inlineEditing.config = {
              *         ]
              *     });
              * </script>
-             * @example False <!-- grid.base -->
+             * @example False <!-- grid -->
              * <table id="grid"></table>
              * <script>
              *     var grid, data = [
@@ -180,7 +180,7 @@ gj.grid.plugins.inlineEditing.config = {
              *         ]
              *     });
              * </script>
-             * @example Bootstrap <!-- bootstrap, grid.base -->
+             * @example Bootstrap <!-- bootstrap, grid -->
              * <table id="grid"></table>
              * <script>
              *     var grid, data = [
@@ -204,31 +204,7 @@ gj.grid.plugins.inlineEditing.config = {
              *         pager: { limit: 3 }
              *     });
              * </script>
-             * @example jQueryUI <!-- grid.base, jqueryui -->
-             * <table id="grid"></table>
-             * <script>
-             *     var grid, data = [
-             *         { 'ID': 1, 'Name': 'Hristo Stoichkov', 'PlaceOfBirth': 'Plovdiv, Bulgaria' },
-             *         { 'ID': 2, 'Name': 'Ronaldo Luís Nazário de Lima', 'PlaceOfBirth': 'Rio de Janeiro, Brazil' },
-             *         { 'ID': 3, 'Name': 'David Platt', 'PlaceOfBirth': 'Chadderton, Lancashire, England' },
-             *         { 'ID': 4, 'Name': 'Manuel Neuer', 'PlaceOfBirth': 'Gelsenkirchen, West Germany' },
-             *         { 'ID': 5, 'Name': 'James Rodríguez', 'PlaceOfBirth': 'Cúcuta, Colombia' },
-             *         { 'ID': 6, 'Name': 'Dimitar Berbatov', 'PlaceOfBirth': 'Blagoevgrad, Bulgaria' }
-             *     ];
-             *     grid = $('#grid').grid({
-             *         dataSource: data,
-             *         primaryKey: 'ID',
-             *         inlineEditing: { mode: 'command' },
-             *         uiLibrary: 'jqueryui',
-             *         columns: [
-             *             { field: 'ID', width: 34 },
-             *             { field: 'Name', editor: true },
-             *             { field: 'PlaceOfBirth', editor: true }
-             *         ],
-             *         pager: { limit: 3 }
-             *     });
-             * </script>
-             * @example Material.Design <!-- materialdesign, grid.base -->
+             * @example Material.Design <!-- materialicons, grid -->
              * <table id="grid"></table>
              * <script>
              *     var grid, data = [
@@ -261,16 +237,6 @@ gj.grid.plugins.inlineEditing.config = {
 
     bootstrap: {
         inlineEditing: {
-            managementColumnConfig: { width: 200, align: 'center', renderer: gj.grid.plugins.inlineEditing.renderers.editManager }
-        }
-    },
-
-    jqueryui: {
-        inlineEditing: {
-            editButton: '<button type="button" class="ui-button ui-widget ui-corner-all"><span class="ui-icon ui-icon-pencil" aria-hidden="true"></span> Edit</button>',
-            deleteButton: '<button type="button" class="ui-button ui-widget ui-corner-all gj-margin-left-10"><span class="ui-icon ui-icon-close" aria-hidden="true"></span> Delete</button>',
-            updateButton: '<button type="button" class="ui-button ui-widget ui-corner-all"><span class="ui-icon ui-icon-check" aria-hidden="true"></span> Update</button>',
-            cancelButton: '<button type="button" class="ui-button ui-widget ui-corner-all gj-margin-left-10"><span class="ui-icon ui-icon-cancel" aria-hidden="true"></span> Cancel</button>',
             managementColumnConfig: { width: 200, align: 'center', renderer: gj.grid.plugins.inlineEditing.renderers.editManager }
         }
     },
@@ -446,7 +412,7 @@ gj.grid.plugins.inlineEditing.public = {
      * Return array with all changes
      * @method
      * @return array
-     * @example sample <!-- grid.base, grid.inlineEditing -->
+     * @example sample <!-- grid, grid.inlineEditing -->
      * <button id="btnGetChanges">Get Changes</button>
      * <br/><br/>
      * <table id="grid"></table>
@@ -470,7 +436,7 @@ gj.grid.plugins.inlineEditing.public = {
      * @method
      * @param {string} id - The id of the row that needs to be edited
      * @return grid
-     * @example Edit.Row <!-- grid.base -->
+     * @example Edit.Row <!-- grid -->
      * <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
      * <table id="grid"></table>
      * <script>
@@ -521,7 +487,7 @@ gj.grid.plugins.inlineEditing.public = {
      * @param {string} id - The id of the row that needs to be updated
      * @return grid
      * @fires rowDataChanged
-     * @example Update.Row <!-- grid.base -->
+     * @example Update.Row <!-- grid -->
      * <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
      * <table id="grid"></table>
      * <script>
@@ -573,7 +539,7 @@ gj.grid.plugins.inlineEditing.public = {
      * @method
      * @param {string} id - The id of the row where you need to undo all changes
      * @return grid
-     * @example Cancel.Row <!-- grid.base -->
+     * @example Cancel.Row <!-- grid -->
      * <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
      * <table id="grid"></table>
      * <script>
@@ -630,12 +596,12 @@ gj.grid.plugins.inlineEditing.events = {
      * @param {object} record - the data of the row record
      * @param {object} oldValue - the old cell value
      * @param {object} newValue - the new cell value
-     * @example sample <!-- grid.base, grid.inlineEditing -->
+     * @example sample <!-- grid -->
      * <table id="grid"></table>
      * <script>
      *     var grid = $('#grid').grid({
      *         dataSource: '/Players/Get',
-     *         columns: [ { field: 'ID' }, { field: 'Name', editor: true }, { field: 'PlaceOfBirth', editor: true } ]
+     *         columns: [ { field: 'ID', width: 56 }, { field: 'Name', editor: true }, { field: 'PlaceOfBirth', editor: true } ]
      *     });
      *     grid.on('cellDataChanged', function (e, $cell, column, record, oldValue, newValue) {
      *         alert('"' + oldValue + '" is changed to "' + newValue + '"');
@@ -653,14 +619,14 @@ gj.grid.plugins.inlineEditing.events = {
      * @param {object} e - event data
      * @param {object} id - the id of the record
      * @param {object} record - the data of the row record
-     * @example sample <!-- grid.base, grid.inlineEditing -->
+     * @example sample <!-- grid -->
      * <table id="grid"></table>
      * <script>
      *     var grid = $('#grid').grid({
      *         primaryKey: 'ID',
      *         dataSource: '/Players/Get',
      *         inlineEditing: { mode: 'command' },
-     *         columns: [ { field: 'ID', width: 30 }, { field: 'Name', editor: true }, { field: 'PlaceOfBirth', editor: true } ]
+     *         columns: [ { field: 'ID', width: 56 }, { field: 'Name', editor: true }, { field: 'PlaceOfBirth', editor: true } ]
      *     });
      *     grid.on('rowDataChanged', function (e, id, record) {
      *         alert('Record with id="' + id + '" is changed to "' + JSON.stringify(record) + '"');

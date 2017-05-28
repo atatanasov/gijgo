@@ -8,7 +8,7 @@ gj.grid.plugins.toolbar = {
             /** Template for the content in the toolbar. Appears in a separate row on top of the grid.
               * @type string
               * @default undefined
-              * @example sample <!-- bootstrap, grid.base, grid.toolbar, grid.pagination -->
+              * @example sample <!-- bootstrap, grid, grid.toolbar, grid.pagination -->
               * <table id="grid"></table>
               * <script>
               *     var grid = $('#grid').grid({
@@ -25,7 +25,7 @@ gj.grid.plugins.toolbar = {
             /** The title of the grid. Appears in a separate row on top of the grid.
               * @type string
               * @default undefined
-              * @example sample <!-- grid.base, grid.toolbar -->
+              * @example sample <!-- grid, grid.toolbar -->
               * <table id="grid"></table>
               * <script>
               *     $('#grid').grid({
@@ -39,12 +39,6 @@ gj.grid.plugins.toolbar = {
 
             style: {
                 toolbar: 'gj-grid-base-toolbar'
-            }
-        },
-
-        jqueryui: {
-            style: {
-                toolbar: 'ui-widget-header ui-state-default gj-grid-ui-toolbar'
             }
         },
 
@@ -96,7 +90,7 @@ gj.grid.plugins.toolbar = {
          * @method
          * @param {object} text - The text of the new grid title.
          * @return string or grid object
-         * @example text <!-- grid.base, grid.toolbar -->
+         * @example text <!-- grid, grid.toolbar -->
          * <button onclick="grid.title('New Title')">Set New Title</button>
          * <button onclick="alert(grid.title())">Get Title</button>
          * <br/><br/>
@@ -108,7 +102,7 @@ gj.grid.plugins.toolbar = {
          *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
          *     });
          * </script>
-         * @example html.template <!-- grid.base, grid.toolbar -->
+         * @example html.template <!-- grid, grid.toolbar -->
          * <button onclick="grid.title('New Title')">Set New Title</button>
          * <button onclick="alert(grid.title())">Get Title</button>
          * <br/><br/>

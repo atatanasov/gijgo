@@ -18,6 +18,7 @@ gj.grid.messages['en-us'] = {
     Refresh: 'Refresh',
     Of: 'of',
     DisplayingRecords: 'Displaying records',
+    RowsPerPage: 'Rows per page:',
     Edit: 'Edit',
     Delete: 'Delete',
     Update: 'Update',

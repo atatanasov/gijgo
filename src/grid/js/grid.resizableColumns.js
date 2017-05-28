@@ -8,7 +8,7 @@ gj.grid.plugins.resizableColumns = {
             /** If set to true, users can resize columns by dragging the edges (resize handles) of their header cells.
              * @type boolean
              * @default false
-             * @example Base.Theme <!-- grid.base, draggable.base -->
+             * @example Base.Theme <!-- grid, draggable.base -->
              * <table id="grid"></table>
              * <script>
              *     var grid = $('#grid').grid({
@@ -17,7 +17,7 @@ gj.grid.plugins.resizableColumns = {
              *         columns: [ { field: 'ID', width: 34 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
              *     });
              * </script>
-             * @example Bootstrap <!-- bootstrap, grid.base, draggable.base -->
+             * @example Bootstrap <!-- bootstrap, grid, draggable.base -->
              * <table id="grid"></table>
              * <script>
              *     var grid = $('#grid').grid({
@@ -27,7 +27,7 @@ gj.grid.plugins.resizableColumns = {
              *         columns: [ { field: 'ID', width: 34 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
              *     });
              * </script>
-             * @example Material.Design <!-- materialdesign, grid.base, draggable.base -->
+             * @example Material.Design <!-- materialicons, grid, draggable.base -->
              * <table id="grid"></table>
              * <script>
              *     var grid = $('#grid').grid({

@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8">
@@ -5,13 +6,12 @@
   <title>Example</title>
   <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
   <link href="../../dist/modular/grid/css/grid.css" rel="stylesheet" type="text/css">
   <script src="../../dist/modular/grid/js/grid.js"></script>
 </head>
 <body>
- <button onclick="alert(grid.count())">Count Visible Records</button>
- <button onclick="alert(grid.count(true))">Count All Records</button>
+ <button class="btn btn-default" onclick="alert(grid.count())">Count Visible Records</button>
+ <button class="btn btn-default" onclick="alert(grid.count(true))">Count All Records</button>
  <br/><br/>
  <table id="grid"></table>
  <script>
@@ -23,7 +23,7 @@
      ];
      grid = $('#grid').grid({
          dataSource: data,
-         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
+         columns: [ { field: 'ID', width: 34 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
          uiLibrary: 'bootstrap',
          pager: { limit: 2, sizes: [2, 5, 10] }
      });

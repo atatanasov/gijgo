@@ -8,6 +8,7 @@
     width: 18px;
     height: 18px;
     position: relative;
+    display: inline;
 }
 
 .gj-checkbox-bootstrap input[type="checkbox"] {

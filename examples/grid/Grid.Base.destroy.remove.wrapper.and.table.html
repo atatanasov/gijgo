@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8">
@@ -8,13 +9,13 @@
   <script src="../../dist/modular/grid/js/grid.js"></script>
 </head>
 <body>
- <button id="btnRemove">Remove</button>
+ <button class="gj-button-md" id="btnRemove">Remove</button>
  <br/><br/>
  <table id="grid"></table>
  <script>
      var grid = $('#grid').grid({
          dataSource: '/Players/Get',
-         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
+         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
      });
      $('#btnRemove').on('click', function () {
          grid.destroy();

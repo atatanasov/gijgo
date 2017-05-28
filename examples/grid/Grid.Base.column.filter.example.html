@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8">
@@ -25,7 +26,7 @@
      grid = $('#grid').grid({
          dataSource: data,
          columns: [
-             { field: 'ID' },
+             { field: 'ID', width: 56 },
              { field: 'Value1' },
              { field: 'Value2', filter: caseSensitiveFilter }
          ]

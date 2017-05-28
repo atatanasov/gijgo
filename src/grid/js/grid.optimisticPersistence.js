@@ -13,7 +13,7 @@ gj.grid.plugins.optimisticPersistence = {
                  * @alias optimisticPersistence.localStorage
                  * @type array
                  * @default undefined
-                 * @example sample <!-- bootstrap, grid.base, grid.pagination, grid.optimisticPersistence  -->
+                 * @example sample <!-- bootstrap, grid  -->
                  * <p>Change the page and/or page size and then refresh the grid.</p>
                  * <table id="grid"></table>
                  * <script>
@@ -35,7 +35,7 @@ gj.grid.plugins.optimisticPersistence = {
                  * @alias optimisticPersistence.sessionStorage
                  * @type array
                  * @default undefined
-                 * @example sample <!-- bootstrap, grid.base, grid.pagination, grid.optimisticPersistence  -->
+                 * @example sample <!-- bootstrap, grid  -->
                  * <p>Change the page and/or page size and then refresh the grid. </p>
                  * <table id="grid"></table>
                  * <script>

@@ -1,10 +1,11 @@
+<!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Example</title>
   <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
-  <link href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">
   <link href="../../dist/modular/grid/css/grid.css" rel="stylesheet" type="text/css">
   <script src="../../dist/modular/grid/js/grid.js"></script>
 </head>
@@ -13,7 +14,6 @@
  <script>
      var grid = $('#grid').grid({
          dataSource: '/Players/Get',
-         uiLibrary: 'jqueryui',
          columns: [ { field: 'ID' }, { field: 'Name', sortable: true }, { field: 'PlaceOfBirth' } ],
          pager: { limit: 2, sizes: [2, 5, 10, 20] }
      });

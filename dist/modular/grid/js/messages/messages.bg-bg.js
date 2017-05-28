@@ -11,6 +11,7 @@
     Refresh: 'Презареждане',
     Of: 'от',
     DisplayingRecords: 'Паказани записи',
+    RowsPerPage: 'Редове на страница:',
     Edit: 'Редактиране',
     Delete: 'Изтриване',
     Update: 'Актуализация',

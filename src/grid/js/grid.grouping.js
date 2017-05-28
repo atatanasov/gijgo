@@ -28,7 +28,7 @@ gj.grid.plugins.grouping = {
                   * @type string
                   * @alias grouping.groupBy
                   * @default undefined
-                  * @example Local.Data <!-- grid.base, grid.grouping -->
+                  * @example Local.Data <!-- materialicons, grid -->
                   * <table id="grid"></table>
                   * <script>
                   *     var grid, data = [
@@ -46,7 +46,7 @@ gj.grid.plugins.grouping = {
                   *         pager: { limit: 5 }
                   *     });
                   * </script>
-                  * @example Remote.Data <!-- grid.base, grid.grouping -->
+                  * @example Remote.Data <!-- materialicons, grid -->
                   * <table id="grid"></table>
                   * <script>
                   *     $('#grid').grid({
@@ -56,12 +56,12 @@ gj.grid.plugins.grouping = {
                   *         pager: { limit: 5 }
                   *     });
                   * </script>
-                  * @example Material.Design <!-- materialdesign, grid.base, grid.grouping -->
+                  * @example Bootstrap <!-- bootstrap, grid -->
                   * <table id="grid"></table>
                   * <script>
                   *     $('#grid').grid({
                   *         dataSource: '/Players/Get',
-                  *         uiLibrary: 'materialdesign',
+                  *         uiLibrary: 'bootstrap',
                   *         grouping: { groupBy: 'Nationality' },
                   *         columns: [ { field: 'Name', sortable: true }, { field: 'PlaceOfBirth' } ],
                   *         pager: { limit: 5 }

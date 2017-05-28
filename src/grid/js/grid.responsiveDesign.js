@@ -9,7 +9,7 @@ gj.grid.plugins.responsiveDesign = {
              * This setting is in use only if the resizeMonitoring setting is set to true.
              * @type number
              * @default 500
-             * @example sample <!-- grid.base, grid.responsiveDesign -->
+             * @example sample <!-- grid, grid.responsiveDesign -->
              * <table id="grid"></table>
              * <script>
              *     var grid = $('#grid').grid({
@@ -30,7 +30,7 @@ gj.grid.plugins.responsiveDesign = {
              * The columns without priority setting are always visible and can't hide in small screen resolutions.
              * @type boolean
              * @default false
-             * @example sample <!-- grid.base, grid.responsiveDesign -->
+             * @example sample <!-- grid, grid.responsiveDesign -->
              * <table id="grid"></table>
              * <script>
              *     $('#grid').grid({
@@ -51,7 +51,7 @@ gj.grid.plugins.responsiveDesign = {
              * You need to set priority and minWidth on the colums, that needs to be hidden in smaller screens.
              * @type boolean
              * @default false
-             * @example Remote.Data.Source <!-- bootstrap, grid.base, grid.expandCollapseRows, grid.responsiveDesign -->
+             * @example Remote.Data.Source <!-- bootstrap, grid, grid.expandCollapseRows, grid.responsiveDesign -->
              * <table id="grid"></table>
              * <script>
              *     $('#grid').grid({
@@ -67,7 +67,7 @@ gj.grid.plugins.responsiveDesign = {
              *         ]
              *     });
              * </script>
-             * @example Local.Data.Source <!-- bootstrap, grid.base, grid.expandCollapseRows, grid.responsiveDesign -->
+             * @example Local.Data.Source <!-- bootstrap, grid, grid.expandCollapseRows, grid.responsiveDesign -->
              * <table id="grid"></table>
              * <script>             
              *     var data = [
@@ -99,7 +99,7 @@ gj.grid.plugins.responsiveDesign = {
                  * @alias column.priority
                  * @type number
                  * @default undefined
-                 * @example sample <!-- grid.base, grid.responsiveDesign -->
+                 * @example sample <!-- grid, grid.responsiveDesign -->
                  * <table id="grid"></table>
                  * <script>
                  *     $('#grid').grid({
@@ -121,7 +121,7 @@ gj.grid.plugins.responsiveDesign = {
                  * @alias column.minWidth
                  * @type number
                  * @default 150
-                 * @example sample <!-- grid.base, grid.responsiveDesign -->
+                 * @example sample <!-- grid, grid.responsiveDesign -->
                  * <table id="grid"></table>
                  * <script>
                  *     $('#grid').grid({
@@ -145,12 +145,6 @@ gj.grid.plugins.responsiveDesign = {
         bootstrap: {
             style: {
                 rowDetailItem: 'col-lg-4'
-            }
-        },
-
-        jqueryui: {
-            style: {
-                rowDetailItem: ''
             }
         }
     },
@@ -223,7 +217,7 @@ gj.grid.plugins.responsiveDesign = {
          * Show column if the space for the grid is expanding and hide columns when the space for the grid is decreasing.
          * @method
          * @return void
-         * @example sample <!-- grid.base, grid.responsiveDesign -->
+         * @example sample <!-- grid, grid.responsiveDesign -->
          * <button onclick="grid.makeResponsive()">Make Responsive</button>
          * <br/><br/>
          * <table id="grid"></table>
@@ -279,7 +273,7 @@ gj.grid.plugins.responsiveDesign = {
          * @param {object} e - event data
          * @param {number} newWidth - The new width
          * @param {number} oldWidth - The old width
-         * @example sample <!-- grid.base, grid.responsiveDesign -->
+         * @example sample <!-- grid, grid.responsiveDesign -->
          * <table id="grid"></table>
          * <script>
          *     var grid = $('#grid').grid({

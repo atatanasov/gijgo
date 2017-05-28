@@ -1,10 +1,11 @@
+<!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Example</title>
   <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
-  <link href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
   <link href="../../dist/modular/grid/css/grid.css" rel="stylesheet" type="text/css">
   <script src="../../dist/modular/grid/js/grid.js"></script>
 </head>
@@ -13,9 +14,9 @@
  <script>
      $('#grid').grid({
          dataSource: '/Players/Get',
-         uiLibrary: 'jqueryui',
+         uiLibrary: 'bootstrap',
          columns: [
-             { field: 'ID' },
+             { field: 'ID', width: 34 },
              {
                field: 'Name',
                events: {
@@ -31,7 +32,7 @@
              },
              { field: 'PlaceOfBirth' },
              {
-               title: '', field: 'Info', width: 20, type: 'icon', icon: 'ui-icon-info',
+               title: '', field: 'Info', width: 34, type: 'icon', icon: 'glyphicon-info-sign',
                events: {
                  'click': function (e) {
                      alert('record with id=' + e.data.id + ' is clicked.'); }

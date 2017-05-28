@@ -11,7 +11,7 @@ gj.grid.config = {
          * If set to array, then the grid is going to use the array as data for rows.
          * @type (string|object|array)
          * @default undefined
-         * @example Remote.JS.Configuration <!-- grid.base -->
+         * @example Remote.JS.Configuration <!-- grid -->
          * <table id="grid"></table>
          * <script>
          *     $('#grid').grid({
@@ -19,11 +19,11 @@ gj.grid.config = {
          *         columns: [ { field: 'Name' }, { field: 'PlaceOfBirth' } ]
          *     });
          * </script>
-         * @example Remote.Html.Configuration <!-- grid.base -->
+         * @example Remote.Html.Configuration <!-- grid -->
          * <table id="grid" data-source="/Players/Get">
          *     <thead>
          *         <tr>
-         *             <th width="24" data-field="ID">#</th>
+         *             <th width="56" data-field="ID">#</th>
          *             <th>Name</th>
          *             <th>PlaceOfBirth</th>
          *         </tr>
@@ -32,7 +32,7 @@ gj.grid.config = {
          * <script>
          *     $('#grid').grid();
          * </script>
-         * @example Local.DataSource <!-- grid.base -->
+         * @example Local.DataSource <!-- grid -->
          * <table id="grid"></table>
          * <script>
          *     var data = [
@@ -42,14 +42,14 @@ gj.grid.config = {
          *     ];
          *     $('#grid').grid({
          *         dataSource: data,
-         *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
+         *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
          *     });
          * </script>
-         * @example Html.DataSource <!-- grid.base -->
+         * @example Html.DataSource <!-- materialicons, grid -->
          * <table id="grid">
          *     <thead>
          *         <tr>
-         *             <th width="24" data-field="ID">#</th>
+         *             <th width="56" data-field="ID">#</th>
          *             <th data-sortable="true">Name</th>
          *             <th data-field="PlaceOfBirth" data-sortable="true">Place Of Birth</th>
          *         </tr>
@@ -75,7 +75,7 @@ gj.grid.config = {
          * <script>
          *     $('#grid').grid({ pager: { limit: 2 }});
          * </script>
-         * @example Remote.Custom.Render <!-- grid.base -->
+         * @example Remote.Custom.Render <!-- grid -->
          * <table id="grid"></table>
          * <script>
          *     var grid, onSuccessFunc = function (response) {
@@ -87,7 +87,7 @@ gj.grid.config = {
          *         columns: [ { field: 'Name' }, { field: 'PlaceOfBirth' } ]
          *     });
          * </script>
-         * @example Remote.Custom.Error <!-- grid.base -->
+         * @example Remote.Custom.Error <!-- grid -->
          * <table id="grid"></table>
          * <script>
          *     var grid, onErrorFunc = function (response) {
@@ -103,12 +103,12 @@ gj.grid.config = {
 
         /** An array that holds the configurations of each column from the grid.
          * @type array
-         * @example JS.Configuration <!-- grid.base -->
+         * @example JS.Configuration <!-- grid -->
          * <table id="grid"></table>
          * <script>
          *     $('#grid').grid({
          *         dataSource: '/Players/Get',
-         *         columns: [ { field: 'ID', width: 30 }, { field: 'Name' }, { field: 'PlaceOfBirth', name: 'Birth Place' } ]
+         *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth', name: 'Birth Place' } ]
          *     });
          * </script>
          */
@@ -116,7 +116,7 @@ gj.grid.config = {
 
         /** Auto generate column for each field in the datasource when set to true.
          * @type array
-         * @example sample <!-- grid.base -->
+         * @example sample <!-- grid -->
          * <table id="grid"></table>
          * <script>
          *     $('#grid').grid({
@@ -129,13 +129,13 @@ gj.grid.config = {
 
         /** An object that holds the default configuration settings of each column from the grid.
          * @type object
-         * @example sample <!-- grid.base -->
+         * @example sample <!-- grid -->
          * <table id="grid"></table>
          * <script>
          *     $('#grid').grid({
          *         dataSource: '/Players/Get',
          *         defaultColumnSettings: { align: 'right' },
-         *         columns: [ { field: 'ID', width: 30 }, { field: 'Name' }, { field: 'PlaceOfBirth', name: 'Birth Place' } ]
+         *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth', name: 'Birth Place' } ]
          *     });
          * </script>
          */
@@ -145,12 +145,12 @@ gj.grid.config = {
              * @alias column.hidden
              * @type boolean
              * @default false
-             * @example sample <!-- grid.base -->
+             * @example sample <!-- grid -->
              * <table id="grid"></table>
              * <script>
              *     $('#grid').grid({
              *         dataSource: '/Players/Get',
-             *         columns: [ { field: 'ID', width: 30 }, { field: 'Name' }, { field: 'PlaceOfBirth', hidden: true } ]
+             *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth', hidden: true } ]
              *     });
              * </script>
              */
@@ -161,13 +161,13 @@ gj.grid.config = {
              * @alias column.width
              * @type number|string
              * @default undefined
-             * @example sample <!-- grid.base -->
+             * @example sample <!-- grid -->
              * <table id="grid"></table>
              * <script>
              *     $('#grid').grid({
              *         dataSource: '/Players/Get',
              *         columns: [
-             *             { field: 'ID', width: 20 },
+             *             { field: 'ID', width: 56 },
              *             { field: 'Name', width: 120 },
              *             { field: 'PlaceOfBirth' }
              *         ]
@@ -181,19 +181,19 @@ gj.grid.config = {
              * @alias column.sortable
              * @type boolean|object
              * @default false
-             * @example Remote.Base.Theme <!-- grid.base -->
+             * @example Remote <!-- materialicons, grid -->
              * <table id="grid"></table>
              * <script>
              *     $('#grid').grid({
              *         dataSource: '/Players/Get',
              *         columns: [
-             *             { field: 'ID', width: 24 },
+             *             { field: 'ID', width: 56 },
              *             { field: 'Name', sortable: true },
              *             { field: 'PlaceOfBirth', sortable: false }
              *         ]
              *     });
              * </script>
-             * @example Local.Custom <!-- grid.base -->
+             * @example Local.Custom <!-- materialicons, grid -->
              * <table id="grid"></table>
              * <script>
              *     var data = [
@@ -218,7 +218,7 @@ gj.grid.config = {
              *         ]
              *     });
              * </script>
-             * @example Remote.Bootstrap.3 <!-- bootstrap, grid.base -->
+             * @example Remote.Bootstrap.3 <!-- bootstrap, grid -->
              * <table id="grid"></table>
              * <script>
              *     $('#grid').grid({
@@ -230,38 +230,25 @@ gj.grid.config = {
              *             { field: 'PlaceOfBirth', sortable: false }
              *         ]
              *     });
-             * @example Remote.Bootstrap.4.Base <!-- bootstrap4, grid.base -->
+             * @example Remote.Bootstrap.4.Material.Icons <!-- materialicons, bootstrap4, grid -->
              * <table id="grid"></table>
              * <script>
              *     $('#grid').grid({
              *         uiLibrary: 'bootstrap4',
              *         dataSource: '/Players/Get',
              *         columns: [
-             *             { field: 'ID', width: 42 },
+             *             { field: 'ID', width: 56 },
              *             { field: 'Name', sortable: true },
              *             { field: 'PlaceOfBirth', sortable: false }
              *         ]
              *     });
              * </script>
-             * @example Remote.Bootstrap.4.FontAwesome <!-- bootstrap4, fontawesome, grid.base -->
+             * @example Remote.Bootstrap.4.FontAwesome <!-- bootstrap4, fontawesome, grid -->
              * <table id="grid"></table>
              * <script>
              *     $('#grid').grid({
              *         uiLibrary: 'bootstrap4',
              *         iconsLibrary: 'fontawesome',
-             *         dataSource: '/Players/Get',
-             *         columns: [
-             *             { field: 'ID', width: 42 },
-             *             { field: 'Name', sortable: true },
-             *             { field: 'PlaceOfBirth', sortable: false }
-             *         ]
-             *     });
-             * </script>
-             * @example Remote.Material.Design <!-- materialdesign, grid.base -->
-             * <table id="grid"></table>
-             * <script>
-             *     $('#grid').grid({
-             *         uiLibrary: 'materialdesign',
              *         dataSource: '/Players/Get',
              *         columns: [
              *             { field: 'ID', width: 42 },
@@ -277,7 +264,7 @@ gj.grid.config = {
              * @alias column.type
              * @type text|checkbox|icon
              * @default 'text'
-             * @example Icon <!-- grid.base, bootstrap -->
+             * @example Icon <!-- grid, bootstrap -->
              * <table id="grid"></table>
              * <script>
              *     $('#grid').grid({
@@ -288,7 +275,7 @@ gj.grid.config = {
              *             { field: 'Name', title: 'Player' },
              *             { field: 'PlaceOfBirth', title: 'Place of Birth' },
              *             {
-             *               title: '', field: 'Info', width: 34, type: 'icon', icon: 'glyphicon-info-sign',
+             *               title: '', field: 'Info', width: 32, type: 'icon', icon: 'glyphicon-info-sign',
              *               events: {
              *                 'click': function (e) {
              *                     alert('record with id=' + e.data.id + ' is clicked.');
@@ -298,7 +285,7 @@ gj.grid.config = {
              *         ]
              *     });
              * </script>
-             * @example Checkbox <!-- grid.base, checkbox, bootstrap -->
+             * @example Checkbox <!-- grid, checkbox, bootstrap -->
              * <table id="grid"></table>
              * <script>
              *     $('#grid').grid({
@@ -319,13 +306,13 @@ gj.grid.config = {
              * @alias column.title
              * @type string
              * @default undefined
-             * @example sample <!-- grid.base -->
+             * @example sample <!-- grid -->
              * <table id="grid"></table>
              * <script>
              *     $('#grid').grid({
              *         dataSource: '/Players/Get',
              *         columns: [
-             *             { field: 'ID', width: 24 },
+             *             { field: 'ID', width: 56 },
              *             { field: 'Name', title: 'Player' },
              *             { field: 'PlaceOfBirth', title: 'Place of Birth' }
              *         ]
@@ -339,13 +326,13 @@ gj.grid.config = {
              * @alias column.field
              * @type string
              * @default undefined
-             * @example sample <!-- grid.base -->
+             * @example sample <!-- grid -->
              * <table id="grid"></table>
              * <script>
              *     $('#grid').grid({
              *         dataSource: '/Players/Get',
              *         columns: [
-             *             { field: 'ID', width: 24 },
+             *             { field: 'ID', width: 56 },
              *             { field: 'Name' },
              *             { field: 'PlaceOfBirth', title: 'Place of Birth' }
              *         ]
@@ -358,13 +345,13 @@ gj.grid.config = {
              * @alias column.align
              * @type left|right|center|justify|initial|inherit
              * @default "left"
-             * @example sample <!-- grid.base -->
+             * @example sample <!-- grid -->
              * <table id="grid"></table>
              * <script>
              *     $('#grid').grid({
              *         dataSource: '/Players/Get',
              *         columns: [
-             *             { field: 'ID', align: 'center' },
+             *             { field: 'ID', width: 56, align: 'center' },
              *             { field: 'Name', align: 'right' },
              *             { field: 'PlaceOfBirth', align: 'left' }
              *         ]
@@ -377,7 +364,7 @@ gj.grid.config = {
              * @alias column.cssClass
              * @type string
              * @default undefined
-             * @example sample <!-- grid.base -->
+             * @example sample <!-- grid -->
              * <table id="grid"></table>
              * <style>
              * .nowrap { white-space: nowrap }
@@ -387,7 +374,7 @@ gj.grid.config = {
              *     $('#grid').grid({
              *         dataSource: '/Players/Get',
              *         columns: [
-             *             { field: 'ID', width: 20 },
+             *             { field: 'ID', width: 56 },
              *             { field: 'Name', width: 100, cssClass: 'nowrap bold' },
              *             { field: 'PlaceOfBirth' }
              *         ]
@@ -400,7 +387,7 @@ gj.grid.config = {
              * @alias column.headerCssClass
              * @type string
              * @default undefined
-             * @example sample <!-- grid.base -->
+             * @example sample <!-- grid -->
              * <table id="grid"></table>
              * <style>
              * .italic { font-style: italic }
@@ -409,7 +396,7 @@ gj.grid.config = {
              *     $('#grid').grid({
              *         dataSource: '/Players/Get',
              *         columns: [
-             *             { field: 'ID', width: 20 },
+             *             { field: 'ID', width: 56 },
              *             { field: 'Name', width: 100, headerCssClass: 'italic' },
              *             { field: 'PlaceOfBirth' }
              *         ]
@@ -422,13 +409,13 @@ gj.grid.config = {
              * @alias column.tooltip
              * @type string
              * @default undefined
-             * @example sample <!-- grid.base -->
+             * @example sample <!-- grid -->
              * <table id="grid"></table>
              * <script>
              *     $('#grid').grid({
              *         dataSource: '/Players/Get',
              *         columns: [
-             *             { field: 'ID', tooltip: 'This is my tooltip 1.' },
+             *             { field: 'ID', width: 56, tooltip: 'This is my tooltip 1.' },
              *             { field: 'Name', tooltip: 'This is my tooltip 2.' },
              *             { field: 'PlaceOfBirth', tooltip: 'This is my tooltip 3.' }
              *         ]
@@ -442,17 +429,17 @@ gj.grid.config = {
              * @alias column.icon
              * @type string
              * @default undefined
-             * @example sample <!-- jqueryui, grid.base -->
+             * @example sample <!-- bootstrap, grid -->
              * <table id="grid"></table>
              * <script>
              *     $('#grid').grid({
              *         dataSource: '/Players/Get',
-             *         uiLibrary: 'jqueryui',
+             *         uiLibrary: 'bootstrap',
              *         columns: [
-             *             { field: 'ID' },
+             *             { field: 'ID', width: 34 },
              *             { field: 'Name' },
              *             { field: 'PlaceOfBirth' },
-             *             { title: '', field: 'Edit', width: 20, type: 'icon', icon: 'ui-icon-pencil', events: { 'click': function (e) { alert('name=' + e.data.record.Name); } } }
+             *             { title: '', field: 'Edit', width: 32, type: 'icon', icon: 'glyphicon-pencil', events: { 'click': function (e) { alert('name=' + e.data.record.Name); } } }
              *         ]
              *     });
              * </script>
@@ -464,14 +451,14 @@ gj.grid.config = {
              * @alias column.events
              * @type object
              * @default undefined
-             * @example javascript.configuration <!-- jqueryui, grid.base -->
+             * @example javascript.configuration <!-- bootstrap, grid -->
              * <table id="grid"></table>
              * <script>
              *     $('#grid').grid({
              *         dataSource: '/Players/Get',
-             *         uiLibrary: 'jqueryui',
+             *         uiLibrary: 'bootstrap',
              *         columns: [
-             *             { field: 'ID' },
+             *             { field: 'ID', width: 34 },
              *             {
              *               field: 'Name',
              *               events: {
@@ -487,7 +474,7 @@ gj.grid.config = {
              *             },
              *             { field: 'PlaceOfBirth' },
              *             {
-             *               title: '', field: 'Info', width: 20, type: 'icon', icon: 'ui-icon-info',
+             *               title: '', field: 'Info', width: 34, type: 'icon', icon: 'glyphicon-info-sign',
              *               events: {
              *                 'click': function (e) {
              *                     alert('record with id=' + e.data.id + ' is clicked.'); }
@@ -496,14 +483,14 @@ gj.grid.config = {
              *         ]
              *     });
              * </script>
-             * @example html.configuration <!-- jqueryui, grid.base -->
-             * <table id="grid" data-source="/Players/Get" data-ui-library="jqueryui">
+             * @example html.configuration <!-- bootstrap, grid -->
+             * <table id="grid" data-source="/Players/Get" data-ui-library="bootstrap">
              *     <thead>
              *         <tr>
-             *             <th data-field="ID" width="24">ID</th>
+             *             <th data-field="ID" width="34">ID</th>
              *             <th data-events="mouseenter: onMouseEnter, mouseleave: onMouseLeave">Name</th>
              *             <th data-field="PlaceOfBirth">Place Of Birth</th>
-             *             <th data-events="click: onClick" data-type="icon" data-icon="ui-icon-info" width="24"></th>
+             *             <th data-events="click: onClick" data-type="icon" data-icon="glyphicon-info-sign" width="32"></th>
              *         </tr>
              *     </thead>
              * </table>
@@ -528,7 +515,7 @@ gj.grid.config = {
              * @alias column.format
              * @type string
              * @default undefined
-             * @example sample <!-- grid.base -->
+             * @example sample <!-- grid -->
              * <table id="grid"></table>
              * <script src="http://stevenlevithan.com/assets/misc/date.format.js"></script>
              * <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.0/moment.min.js"></script>
@@ -536,7 +523,7 @@ gj.grid.config = {
              *     $('#grid').grid({
              *         dataSource: '/Players/Get',
              *         columns: [
-             *             { field: 'ID', width: 24 },
+             *             { field: 'ID', width: 56 },
              *             { field: 'Name' },
              *             { field: 'DateOfBirth', title: 'Date 1', type: 'date', format: 'HH:MM:ss mm/dd/yyyy' },
              *             { field: 'DateOfBirth', title: 'Date 2', 
@@ -562,13 +549,13 @@ gj.grid.config = {
              * @alias column.tmpl
              * @type string
              * @default undefined
-             * @example sample <!-- grid.base -->
+             * @example sample <!-- grid -->
              * <table id="grid"></table>
              * <script>
              *     $('#grid').grid({
              *         dataSource: '/Players/Get',
              *         columns: [
-             *             { field: 'ID' },
+             *             { field: 'ID', width: 56 },
              *             { field: 'Name' },
              *             { title: 'Info', tmpl: '{Name} is born in {PlaceOfBirth}.' }
              *         ]
@@ -581,16 +568,16 @@ gj.grid.config = {
              * @alias column.stopPropagation
              * @type boolean
              * @default false
-             * @example sample <!-- jqueryui, grid.base -->
+             * @example sample <!-- bootstrap, grid -->
              * <table id="grid" data-source="/Players/Get"></table>
              * <script>
              *     $('#grid').grid({
-             *         uiLibrary: 'jqueryui',
+             *         uiLibrary: 'bootstrap',
              *         columns: [
-             *             { field: 'ID' },
+             *             { field: 'ID', width: 34 },
              *             { field: 'Name', events: { 'click': function (e) { alert('name=' + e.data.record.Name); } }  },
              *             { field: 'PlaceOfBirth', stopPropagation: true, events: { 'click': function (e) { alert('name=' + e.data.record.Name); } }   },
-             *             { title: '', field: 'Edit', width: 20, type: 'icon', icon: 'ui-icon-pencil', events: { 'click': function (e) { alert('name=' + e.data.record.Name); } } }
+             *             { title: '', field: 'Edit', width: 32, type: 'icon', icon: 'glyphicon-pencil', events: { 'click': function (e) { alert('name=' + e.data.record.Name); } } }
              *         ]
              *     });
              * </script>
@@ -608,7 +595,7 @@ gj.grid.config = {
              * @param {object} $cell - the current table cell presented as jquery object
              * @param {object} $displayEl - inner div element for display of the cell value presented as jquery object
              * @param {string} id - the id of the record
-             * @example sample <!-- grid.base, jqueryui -->
+             * @example sample <!-- grid -->
              * <table id="grid" data-source="/Players/Get"></table>
              * <script>
              *     var nameRenderer = function (value, record, $cell, $displayEl) { 
@@ -617,9 +604,8 @@ gj.grid.config = {
              *         $displayEl.text(value);
              *     };
              *     $('#grid').grid({
-             *         uiLibrary: 'jqueryui',
              *         columns: [
-             *             { field: 'ID', width: 30 },
+             *             { field: 'ID', width: 56 },
              *             { field: 'Name', renderer: nameRenderer },
              *             { field: 'PlaceOfBirth', renderer: function (value, record) { return record.ID % 2 ? '<b>' + value + '</b>' : '<i>' + value + '</i>'; }  }
              *         ]
@@ -635,7 +621,7 @@ gj.grid.config = {
              * @default undefined
              * @param {string} value - the record field value
              * @param {string} searchStr - the search string
-             * @example example <!-- grid.base -->
+             * @example example <!-- grid -->
              * <input type="text" id="txtValue1" placeholder="Value 1" /> &nbsp;
              * <input type="text" id="txtValue2" placeholder="Value 2" /> &nbsp;
              * <button id="btnSearch">Search</button> <br/><br/>
@@ -653,7 +639,7 @@ gj.grid.config = {
              *     grid = $('#grid').grid({
              *         dataSource: data,
              *         columns: [
-             *             { field: 'ID' },
+             *             { field: 'ID', width: 56 },
              *             { field: 'Value1' },
              *             { field: 'Value2', filter: caseSensitiveFilter }
              *         ]
@@ -703,36 +689,31 @@ gj.grid.config = {
             direction: 'direction'
         },
 
-        /** The name of the UI library that is going to be in use. Currently we support jQuery UI, Bootstrap and Material Design.
-         * @additionalinfo The css files for jQuery UI, Bootstrap or Material Design should be manually included to the page where the grid is in use.
-         * @type (base|jqueryui|bootstrap|bootstrap4|materialdesign)
-         * @default "base"
-         * @example base.theme <!-- grid.base -->
+        /** The name of the UI library that is going to be in use. Currently we support Bootstrap 3, Bootstrap 4 and Material Design.
+         * @additionalinfo The css files for Bootstrap or Material Design should be manually included to the page where the grid is in use.
+         * @type (materialdesign|bootstrap|bootstrap4)
+         * @default 'materialdesign'
+         * @example Material.Design.With.Icons <!-- materialicons, grid -->
          * <table id="grid"></table>
          * <script>
          *     $('#grid').grid({
          *         dataSource: '/Players/Get',
-         *         columns: [
-         *             { field: 'ID', width: 24 },
-         *             { field: 'Name', sortable: true },
-         *             { field: 'PlaceOfBirth' }
-         *         ]
+         *         columns: [ { field: 'ID', width: 56 }, { field: 'Name', sortable: true }, { field: 'PlaceOfBirth' } ],
+         *         pager: { limit: 2, sizes: [2, 5, 10, 20] }
          *     });
          * </script>
-         * @example jqueryui <!-- jqueryui, grid.base -->
+         * @example Material.Design.Without.Icons <!-- materialicons, grid -->
          * <table id="grid"></table>
          * <script>
          *     $('#grid').grid({
          *         dataSource: '/Players/Get',
-         *         uiLibrary: 'jqueryui',
-         *         columns: [
-         *             { field: 'ID' },
-         *             { field: 'Name', sortable: true },
-         *             { field: 'PlaceOfBirth' }
-         *         ]
+         *         uiLibrary: 'materialdesign',
+         *         iconsLibrary: '',
+         *         columns: [ { field: 'ID', width: 56 }, { field: 'Name', sortable: true }, { field: 'PlaceOfBirth' } ],
+         *         pager: { limit: 2, sizes: [2, 5, 10, 20] }
          *     });
          * </script>
-         * @example Bootstrap <!-- bootstrap, grid.base -->
+         * @example Bootstrap.3 <!-- grid, bootstrap -->
          * <table id="grid"></table>
          * <script>
          *     $('#grid').grid({
@@ -746,28 +727,7 @@ gj.grid.config = {
          *         pager: { limit: 2, sizes: [2, 5, 10, 20] }
          *     });
          * </script>
-         * @example Material.Design.With.Icons <!-- materialdesign, grid.base -->
-         * <table id="grid"></table>
-         * <script>
-         *     $('#grid').grid({
-         *         dataSource: '/Players/Get',
-         *         uiLibrary: 'materialdesign',
-         *         columns: [ { field: 'ID', width: 40 }, { field: 'Name', sortable: true }, { field: 'PlaceOfBirth' } ],
-         *         pager: { limit: 2, sizes: [2, 5, 10, 20] }
-         *     });
-         * </script>
-         * @example Material.Design.Without.Icons <!-- materialdesign, grid.base -->
-         * <table id="grid"></table>
-         * <script>
-         *     $('#grid').grid({
-         *         dataSource: '/Players/Get',
-         *         uiLibrary: 'materialdesign',
-         *         iconsLibrary: '',
-         *         columns: [ { field: 'ID', width: 40 }, { field: 'Name', sortable: true }, { field: 'PlaceOfBirth' } ],
-         *         pager: { limit: 2, sizes: [2, 5, 10, 20] }
-         *     });
-         * </script>
-         * @example Bootstrap.4.Font.Awesome <!-- bootstrap4, fontawesome, grid.base -->
+         * @example Bootstrap.4.Font.Awesome <!-- bootstrap4, fontawesome, grid -->
          * <table id="grid"></table>
          * <script>
          *     $('#grid').grid({
@@ -779,49 +739,71 @@ gj.grid.config = {
          *     });
          * </script>
          */
-        uiLibrary: 'base',
+        uiLibrary: 'materialdesign',
 
         /** The name of the icons library that is going to be in use. Currently we support Material Icons, Font Awesome and Glyphicons.
          * @additionalinfo If you use Bootstrap 3 as uiLibrary, then the iconsLibrary is set to Glyphicons by default.<br/>
          * If you use Material Design as uiLibrary, then the iconsLibrary is set to Material Icons by default.<br/>
          * The css files for Material Icons, Font Awesome or Glyphicons should be manually included to the page where the grid is in use.
          * @type (materialicons|fontawesome|glyphicons)
-         * @default undefined
-         * @example base.theme <!-- materialicons, grid.base, grid.pagination -->
+         * @default 'materialicons'
+         * @example Font.Awesome <!-- fontawesome, grid, grid.pagination -->
          * <table id="grid"></table>
          * <script>
          *     $('#grid').grid({
          *         dataSource: '/Players/Get',
-         *         iconsLibrary: 'materialicons',
-         *         columns: [ { field: 'ID', width: 24 }, { field: 'Name', sortable: true }, { field: 'PlaceOfBirth' } ],
+         *         iconsLibrary: 'fontawesome',
+         *         columns: [ { field: 'ID', width: 56 }, { field: 'Name', sortable: true }, { field: 'PlaceOfBirth' } ],
          *         pager: { limit: 5 }
          *     });
          * </script>
          */
-        iconsLibrary: undefined,
+        iconsLibrary: 'materialicons',
 
         /** The type of the row selection.<br/>
          * If the type is set to multiple the user will be able to select more then one row from the grid.
          * @type (single|multiple)
-         * @default "single"
-         * @example Multiple.Checkbox <!-- grid.base -->
+         * @default 'single'
+         * @example Multiple.Material.Design.Checkbox <!-- materialicons, checkbox, grid -->
          * <table id="grid"></table>
          * <script>
          *     $('#grid').grid({
          *         dataSource: '/Players/Get',
          *         selectionType: 'multiple',
          *         selectionMethod: 'checkbox',
-         *         columns: [ { field: 'ID', width: 24 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
+         *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
          *     });
          * </script>
-         * @example Single.Checkbox <!-- grid.base -->
+         * @example Multiple.Bootstrap.3.Checkbox <!-- bootstrap, checkbox, grid -->
+         * <table id="grid"></table>
+         * <script>
+         *     $('#grid').grid({
+         *         uiLibrary: 'bootstrap',
+         *         dataSource: '/Players/Get',
+         *         selectionType: 'multiple',
+         *         selectionMethod: 'checkbox',
+         *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
+         *     });
+         * </script>
+         * @example Multiple.Bootstrap.4.Checkbox <!-- bootstrap4, materialicons, checkbox, grid -->
+         * <table id="grid"></table>
+         * <script>
+         *     $('#grid').grid({
+         *         uiLibrary: 'bootstrap4',
+         *         dataSource: '/Players/Get',
+         *         selectionType: 'multiple',
+         *         selectionMethod: 'checkbox',
+         *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
+         *     });
+         * </script>
+         * @example Single.Checkbox <!-- materialicons, checkbox, grid -->
          * <table id="grid"></table>
          * <script>
          *     $('#grid').grid({
          *         dataSource: '/Players/Get',
          *         selectionType: 'single',
          *         selectionMethod: 'checkbox',
-         *         columns: [ { field: 'ID', width: 24 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
+         *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
          *     });
          * </script>
          */
@@ -832,7 +814,7 @@ gj.grid.config = {
          * If this setting is set to "checkbox" a column with checkboxes will appear as first row of the grid and when the user select a row, then this row will be highlighted and the checkbox selected.
          * @type (basic|checkbox)
          * @default "basic"
-         * @example sample <!-- grid.base -->
+         * @example sample <!-- materialicons, checkbox, grid -->
          * <table id="grid"></table>
          * <script>
          *     $('#grid').grid({
@@ -848,7 +830,7 @@ gj.grid.config = {
         /** When this setting is enabled the content of the grid will be loaded automatically after the creation of the grid.
          * @type boolean
          * @default true
-         * @example disabled <!-- grid.base -->
+         * @example disabled <!-- grid -->
          * <table id="grid"></table>
          * <script>
          *     var grid = $('#grid').grid({
@@ -858,7 +840,7 @@ gj.grid.config = {
          *     });
          *     grid.reload(); //call .reload() explicitly in order to load the data in the grid
          * </script>
-         * @example enabled <!-- grid.base -->
+         * @example enabled <!-- grid -->
          * <table id="grid"></table>
          * <script>
          *     $('#grid').grid({
@@ -873,7 +855,7 @@ gj.grid.config = {
         /** The text that is going to be displayed if the grid is empty.
          * @type string
          * @default "No records found."
-         * @example sample <!-- grid.base -->
+         * @example sample <!-- grid -->
          * <table id="grid"></table>
          * <script>
          *     $('#grid').grid({
@@ -882,7 +864,7 @@ gj.grid.config = {
          *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
          *     });
          * </script>
-         * @example localization <!-- grid.base -->
+         * @example localization <!-- grid -->
          * <table id="grid"></table>
          * <script src="../../dist/modular/grid/js/messages/messages.de-de.js"></script>
          * <script>
@@ -898,13 +880,13 @@ gj.grid.config = {
         /** Width of the grid.
          * @type number
          * @default undefined
-         * @example sample <!-- grid.base -->
+         * @example sample <!-- grid -->
          * <table id="grid"></table>
          * <script>
          *     $('#grid').grid({
          *         dataSource: '/Players/Get',
          *         width: 400,
-         *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
+         *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
          *     });
          * </script>
          */
@@ -919,7 +901,7 @@ gj.grid.config = {
         /** The size of the font in the grid.
          * @type string
          * @default undefined
-         * @example sample <!-- grid.base -->
+         * @example sample <!-- grid -->
          * <table id="grid"></table>
          * <script>
          *     $('#grid').grid({
@@ -937,7 +919,7 @@ gj.grid.config = {
          * If the primaryKey is undefined, we autogenerate id for each record in the table by starting from 1.
          * @type string
          * @default undefined
-         * @example defined <!-- grid.base -->
+         * @example defined <!-- grid -->
          * <table id="grid"></table>
          * <script>
          *     var data = [
@@ -949,14 +931,14 @@ gj.grid.config = {
          *         dataSource: data,
          *         primaryKey: 'ID',
          *         columns: [ 
-         *             { field: 'ID', width: 32 },
+         *             { field: 'ID', width: 70 },
          *             { field: 'Name' },
          *             { field: 'PlaceOfBirth' } ,
-         *             { tmpl: '<a href="#">click me</a>', events: { click: function(e) { alert('Your id is ' + e.data.id); } }, width: 60, stopPropagation: true } 
+         *             { tmpl: '<a href="#">click me</a>', events: { click: function(e) { alert('Your id is ' + e.data.id); } }, width: 100, stopPropagation: true } 
          *         ]
          *     });
          * </script>
-         * @example undefined <!-- grid.base -->
+         * @example undefined <!-- grid -->
          * <table id="grid"></table>
          * <script>
          *     var data = [
@@ -967,10 +949,10 @@ gj.grid.config = {
          *     $('#grid').grid({
          *         dataSource: data,
          *         columns: [ 
-         *             { field: 'ID', width: 32 },
+         *             { field: 'ID', width: 70 },
          *             { field: 'Name' },
          *             { field: 'PlaceOfBirth' } ,
-         *             { tmpl: '<a href="#">click me</a>', events: { click: function(e) { alert('Your id is ' + e.data.id); } }, width: 60, stopPropagation: true } 
+         *             { tmpl: '<a href="#">click me</a>', events: { click: function(e) { alert('Your id is ' + e.data.id); } }, width: 100, stopPropagation: true } 
          *         ]
          *     });
          * </script>
@@ -980,7 +962,7 @@ gj.grid.config = {
         /** The language that needs to be in use.
          * @type string
          * @default 'en-us'
-         * @example French.Bootstrap.Default <!-- bootstrap, grid.base-->
+         * @example French.Bootstrap.Default <!-- bootstrap, grid-->
          * <script src="../../dist/modular/grid/js/messages/messages.fr-fr.js"></script>
          * <table id="grid"></table>
          * <script>
@@ -989,14 +971,14 @@ gj.grid.config = {
          *         uiLibrary: 'bootstrap',
          *         locale: 'fr-fr',
          *         columns: [ 
-         *             { field: 'ID', width: 32 },
+         *             { field: 'ID', width: 34 },
          *             { field: 'Name', title: 'Prénom' },
          *             { field: 'PlaceOfBirth', title: 'Lieu de naissance' }
          *         ],
          *         pager: { limit: 2 }
          *     });
          * </script>
-         * @example French.MaterialDesign.Custom <!-- materialdesign, grid.base-->
+         * @example French.MaterialDesign.Custom <!-- materialicons, grid-->
          * <script src="../../dist/modular/grid/js/messages/messages.fr-fr.js"></script>
          * <table id="grid"></table>
          * <script>
@@ -1006,7 +988,7 @@ gj.grid.config = {
          *         uiLibrary: 'materialdesign',
          *         locale: 'fr-fr',
          *         columns: [ 
-         *             { field: 'ID', width: 32 },
+         *             { field: 'ID', width: 56 },
          *             { field: 'Name', title: 'Prénom' },
          *             { field: 'PlaceOfBirth', title: 'Lieu de naissance' }
          *         ],
@@ -1016,11 +998,12 @@ gj.grid.config = {
          */
         locale: 'en-us',
 
-        defaultIconColumnWidth: 30,
+        defaultIconColumnWidth: 70,
+        defaultCheckBoxColumnWidth: 70,
 
         style: {
             wrapper: 'gj-grid-wrapper',
-            table: 'gj-grid-table gj-grid-base-table',
+            table: 'gj-grid-table gj-grid-md-table',
             loadingCover: 'gj-grid-loading-cover',
             loadingText: 'gj-grid-loading-text',
             header: {
@@ -1029,7 +1012,7 @@ gj.grid.config = {
             },
             content: {
                 rowHover: undefined,
-                rowSelected: 'gj-grid-base-active'
+                rowSelected: 'gj-grid-md-select'
             }
         },
 
@@ -1038,23 +1021,6 @@ gj.grid.config = {
             desc: '▼',
             expand: '+',
             collapse: '-'
-        }
-    },
-
-    jqueryui: {
-        defaultIconColumnWidth: 24,
-        style: {
-            table: 'gj-grid-table ui-widget-content gj-grid-ui-table',
-            header: {
-                cell: 'ui-widget-header ui-state-default gj-grid-ui-thead-th',
-                sortable: 'gj-cursor-pointer',
-                sortAscIcon: 'gj-grid-ui-thead-th-sort-icon ui-icon ui-icon-arrowthick-1-s',
-                sortDescIcon: 'gj-grid-ui-thead-th-sort-icon ui-icon ui-icon-arrowthick-1-n'
-            },
-            content: {
-                rowHover: 'ui-state-hover',
-                rowSelected: 'ui-state-active'
-            }
         }
     },
 
@@ -1070,7 +1036,8 @@ gj.grid.config = {
 
         iconsLibrary: 'glyphicons',
 
-        defaultIconColumnWidth: 34
+        defaultIconColumnWidth: 34,
+        defaultCheckBoxColumnWidth: 36
     },
 
     bootstrap4: {
@@ -1083,20 +1050,8 @@ gj.grid.config = {
             }
         },
 
-        defaultIconColumnWidth: 42
-    },
-
-    materialdesign: {
-        defaultIconColumnWidth: 70,
-        style: {
-            wrapper: 'gj-grid-wrapper',
-            table: 'gj-grid-table mdl-data-table mdl-js-data-table mdl-shadow--2dp',
-            content: {
-                rowHover: '',
-                rowSelected: 'is-selected'
-            }
-        },
-        iconsLibrary: 'materialicons'
+        defaultIconColumnWidth: 42,
+        defaultCheckBoxColumnWidth: 44
     },
 
     materialicons: {

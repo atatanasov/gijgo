@@ -11,10 +11,11 @@
     Refresh: 'Aktualisieren',
     Of: 'von',
     DisplayingRecords: 'Zeige Datens&auml;tze',
+    RowsPerPage: 'Zeilen pro Seite:',
     Edit: 'Editieren',
     Delete: 'L&ouml;schen',
     Update: '&Auml;ndern',
     Cancel: 'Abbrechen',
     NoRecordsFound: 'Es wurden keine Datens&auml;tze gefunden.',
-    Loading: 'Зареждане...'
+    Loading: 'Laden...'
 };

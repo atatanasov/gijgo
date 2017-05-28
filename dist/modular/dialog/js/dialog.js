@@ -314,8 +314,8 @@ gj.dialog.config = {
          *     <div data-role="header"><h4 data-role="title">Dialog</h4></div>
          *     <div data-role="body">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
          *     <div data-role="footer">
-         *         <button onclick="dialog.close()" class="gj-md-button">Ok</button>
-         *         <button onclick="dialog.close()" class="gj-md-button">Cancel</button>
+         *         <button onclick="dialog.close()" class="gj-button-md">Ok</button>
+         *         <button onclick="dialog.close()" class="gj-button-md">Cancel</button>
          *     </div>
          * </div>
          * <script>
@@ -329,8 +329,8 @@ gj.dialog.config = {
          *     <div data-role="header"><h4 data-role="title">Dialog</h4></div>
          *     <div data-role="body">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
          *     <div data-role="footer">
-         *         <button onclick="dialog.close()" class="gj-md-button">Ok</button>
-         *         <button onclick="dialog.close()" class="gj-md-button">Cancel</button>
+         *         <button onclick="dialog.close()" class="gj-button-md">Ok</button>
+         *         <button onclick="dialog.close()" class="gj-button-md">Cancel</button>
          *     </div>
          * </div>
          * <script>
@@ -635,8 +635,8 @@ gj.dialog.config = {
          *     Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
          *   </div>
          *   <div data-role="footer">
-         *     <button class="gj-md-button" onclick="dialog.close()">OK</button>
-         *     <button class="gj-md-button" data-role="close">Cancel</button>
+         *     <button class="gj-button-md" onclick="dialog.close()">OK</button>
+         *     <button class="gj-button-md" data-role="close">Cancel</button>
          *   </div>
          * </div>
          * <script>

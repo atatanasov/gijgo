@@ -1945,8 +1945,8 @@ gj.tree.plugins.dragAndDrop = {
 			dragAndDrop: undefined,
 
 			style: {
-			    dragEl: 'gj-tree-drag-el',
-			    dropAsChildIcon: undefined,
+			    dragEl: 'gj-tree-drag-el gj-tree-mdl-drag-el',
+			    dropAsChildIcon: 'material-icons gj-cursor-pointer gj-mdl-icon-plus',
 			    dropAbove: 'gj-tree-drop-above',
 			    dropBelow: 'gj-tree-drop-below'
 			}
@@ -1956,15 +1956,6 @@ gj.tree.plugins.dragAndDrop = {
 		    style: {
 		        dragEl: 'gj-tree-drag-el gj-tree-bootstrap-drag-el',
 		        dropAsChildIcon: 'glyphicon glyphicon-plus',
-		        dropAbove: 'gj-tree-drop-above',
-		        dropBelow: 'gj-tree-drop-below'
-		    }
-		},
-
-		materialdesign: {
-		    style: {
-		        dragEl: 'gj-tree-drag-el gj-tree-mdl-drag-el',
-		        dropAsChildIcon: 'material-icons gj-cursor-pointer gj-mdl-icon-plus',
 		        dropAbove: 'gj-tree-drop-above',
 		        dropBelow: 'gj-tree-drop-below'
 		    }

@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8">
@@ -12,7 +13,7 @@
  <script>
      var grid = $('#grid').grid({
          dataSource: '/Players/Get',
-         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth', hidden: true } ]
+         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth', hidden: true } ]
      });
      grid.on('columnShow', function (e, column) {
          alert('The ' + column.field + ' column is shown.');

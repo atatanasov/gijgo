@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8">
@@ -12,7 +13,7 @@
  <script>
      var grid = $('#grid').grid({
          dataSource: '/Players/Get',
-         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
+         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
      });
      grid.on('rowDataBound', function (e, $row, id, record) {
          alert('rowDataBound is fired for row with id=' + id + '.');

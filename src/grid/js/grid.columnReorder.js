@@ -8,14 +8,14 @@ gj.grid.plugins.columnReorder = {
             /** If set to true, enable column reordering with drag and drop.
              * @type boolean
              * @default false
-             * @example sample <!-- grid.base, grid.columnReorder, draggable.base, droppable.base -->
+             * @example sample <!-- grid, draggable.base, droppable.base -->
              * <p>Drag and Drop column headers in order to reorder the columns.</p>
              * <table id="grid"></table>
              * <script>
              *     $('#grid').grid({
              *         dataSource: '/Players/Get',
              *         columnReorder: true,
-             *         columns: [ { field: 'ID', width: 36 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
+             *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
              *     });
              * </script>
              */

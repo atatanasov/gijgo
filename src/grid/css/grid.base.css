@@ -43,6 +43,12 @@ TABLE.gj-grid-table .fa {
     padding: 2px;
 }
 
+TABLE.gj-grid-table > tbody > tr > td > div
+{
+    padding: 2px;
+    overflow: hidden;
+}
+
 DIV.gj-grid-wrapper DIV.gj-grid-loading-cover
 {
     background: #BBBBBB;
@@ -78,53 +84,6 @@ TABLE.gj-grid-table .gj-grid-icon
     height: 16px;
 }
 
-/* Base Theme */
-.gj-grid-base-table {
-    border: 1px solid #ddd;
-    font-family: Helvetica,Arial,sans-serif;
-    font-size: 14px;
-}
-
-.gj-grid-base-table thead tr th {
-    background-color: #f5f5f5;
-    border: 1px solid #ddd;
-    padding: 2px 1px 2px 1px;
-}
-
-.gj-grid-base-table tbody tr:hover {
-    background-color: #f5f5f5;
-}
-
-.gj-grid-base-table tbody tr td {
-    border: 1px solid #ddd;
-}
-
-.gj-grid-base-table tbody tr td div[data-role="display"] {
-    padding: 3px;
-}
-
-.gj-grid-base-table thead tr th div {
-    padding: 3px;
-}
-
-div.gj-grid-wrapper div.gj-grid-base-toolbar {
-    background-color: #f5f5f5;
-    padding: 5px;
-    font-weight: bold;
-    border: 1px solid #ddd;
-}
-
-.gj-grid-base-active {
-    background-color: #f5f5f5;
-}
-
-.gj-content {
-    border: 1px solid #999;
-    background-color: #fff;
-    border-radius: 6px;
-    outline: 0;
-}
-
 /* Bootstrap Theme */
 div.gj-grid-wrapper div.gj-grid-bootstrap-toolbar {
     background-color: #f5f5f5;
@@ -142,122 +101,93 @@ table.gj-grid-bootstrap-table thead th [data-role="sorticon"] {
     margin-left: 5px;
 }
 
+table.gj-grid-bootstrap-table thead th [data-role="sorticon"] i.material-icons {
+    position: absolute;
+    font-size: 20px;
+    top: 15px;
+}
+
 table.gj-grid-bootstrap-table tbody tr td div[data-role="display"] {
     padding: 0px;
 }
 
-/* jQuery UI Theme */
-div.gj-grid-wrapper div.gj-grid-ui-toolbar {
-    border-top: 1px solid menutext;
-    border-left: 1px solid menutext;
-    border-right: 1px solid menutext;
-    border-bottom: 0px;
-    padding: 2px;
-    font: 11px Verdana;
-}
-
-TABLE.gj-grid-ui-table {
-    font: 11px Verdana;
-    border-left: 1px solid;
-    border-top: 0px;
-    border-right: 1px solid;
-    border-bottom: 0px;
-    padding: 0px;
-    border-spacing: 0px;
-}
-
-table.gj-grid-ui-table thead tr th.gj-grid-ui-thead-th {
-    height: 20px;
-    padding: 0px;
-    /*cursor: default;*/
-    white-space: normal;
-    vertical-align: middle;
-    border: 1px solid;
-    border-spacing: 0px;
-    border-collapse: collapse;
-    border-color: menutext;
-	text-align: center;
-    -moz-user-select: none;
-    -khtml-user-select: none;
-}
-
-table.gj-grid-ui-table thead tr th:first-child {
-    border-left: 0px;
-}
-
-table.gj-grid-ui-table thead tr th div
-{
-    padding: 2px;
-    vertical-align: middle;
-    display: inline-block;
-}
-
-table.gj-grid-ui-table thead tr th span.gj-grid-ui-thead-th-sort-icon
-{
-    vertical-align: middle;
-    display: inline-block;
-}
-
-table.gj-grid-ui-table tbody tr.ui-state-hover
-{
-    border: 0px;
-}
-
-TABLE.gj-grid-ui-table > tbody > tr > td
-{
-    padding: 0px;
-    border-left: 1px solid;
-    border-top: 0px;
-    border-right: 0px;
-    border-bottom: 1px solid;
-    border-color: menutext;
-}
-
-TABLE.gj-grid-ui-table > tbody > tr > td:first-child
-{
-    border-left: 0px;
-}
-
-TABLE.gj-grid-table > tbody > tr > td > div
-{
-    padding: 2px;
-    overflow: hidden;
-}
-
-
 /* Material Design Theme */
-table.mdl-data-table thead th [data-role="sorticon"] {
+.gj-grid-md-table {
+    position: relative;
+    border: 1px solid rgba(0,0,0,.12);
+    border-collapse: collapse;
+    white-space: nowrap;
+    font-size: 13px;
+    font-family: "Helvetica","Arial",sans-serif;
+    background-color: #fff;
+}
+
+.gj-grid-md-table td:first-of-type, .gj-grid-md-table th:first-of-type {
+    padding-left: 24px;
+}
+
+.gj-grid-md-table th {
+    position: relative;
+    vertical-align: bottom;
+    text-overflow: ellipsis;
+    font-weight: 700;
+    line-height: 24px;
+    letter-spacing: 0;
+    height: 48px;
+    font-size: 12px;
+    color: rgba(0,0,0,.54);
+    padding-bottom: 8px;
+    box-sizing: border-box;
+    padding: 0 18px 12px 18px;
+    text-align: right;
+}
+
+.gj-grid-md-table tbody tr {
+    position: relative;
+    height: 48px;
+    transition-duration: .28s;
+    transition-timing-function: cubic-bezier(.4,0,.2,1);
+    transition-property: background-color;
+}
+
+.gj-grid-md-table tbody tr:hover {
+    background-color: #EEEEEE; /* Gray 200 */
+}
+
+.gj-grid-md-table td {
+    position: relative;
+    height: 48px;
+    border-top: 1px solid rgba(0,0,0,.12);
+    border-bottom: 1px solid rgba(0,0,0,.12);
+    padding: 12px 18px;
+    box-sizing: border-box;
+    text-align: left;
+}
+
+.gj-grid-md-table tbody tr.gj-grid-md-select {
+    background-color: #F5F5F5; /* Grey 100 */
+}
+
+
+table.gj-grid-md-table thead th [data-role="sorticon"] {
     margin-left: 5px;
 }
 
-table.mdl-data-table thead th [data-role="sorticon"] i.material-icons {
+table.gj-grid-md-table thead th [data-role="sorticon"] i.material-icons {
     position: absolute;
     font-size: 18px;
-    top: 16px;
+    top: 13px;
 }
 
-.gj-grid-table .gj-grid-mdl-limit-select {
+table.gj-grid-md-table thead th.gj-grid-select-all {
+    padding-bottom: 3px;
+}
+
+.gj-grid-table .gj-grid-md-limit-select {
     text-align: right;
     display: inline-block;
     width: 50px;
     padding: 0px 5px;
     margin-left: 10px;
     font-size: 13px;
-}
-
-.gj-grid-table .gj-grid-mdl-page {
-    text-align: right;
-    display: inline-block;
-    width: 32px;
-    padding: 0px;
-    font-size: 13px;
-}
-
-.gj-grid-table .gj-grid-mdl-pager-label {
-    padding: 0px 5px;
-    font-size: 13px;
-}
-
-table.mdl-data-table tr td {
-    text-align: left;
 }
