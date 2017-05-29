@@ -2790,9 +2790,9 @@ gj.grid.widget = function ($grid, jsConfig) {
      * @method
      * @param {string} id - The id of the row that needs to be selected
      * @return grid
-     * @example sample <!-- grid -->
+     * @example sample <!-- materialicons, checkbox, grid -->
      * <input type="text" id="txtNumber" value="1" />
-     * <button id="btnSelect">Select</button>
+     * <button id="btnSelect" class="gj-button-md">Select</button>
      * <br/><br/>
      * <table id="grid"></table>
      * <script>
@@ -2815,8 +2815,8 @@ gj.grid.widget = function ($grid, jsConfig) {
      * If the multiple selection method is one this method is going to return only the id of the first selected record.
      * @method
      * @return string
-     * @example sample <!-- grid -->
-     * <button id="btnShowSelection">Show Selection</button>
+     * @example sample <!-- materialicons, checkbox, grid -->
+     * <button id="btnShowSelection" class="gj-button-md">Show Selection</button>
      * <br/><br/>
      * <table id="grid"></table>
      * <script>
@@ -2838,7 +2838,7 @@ gj.grid.widget = function ($grid, jsConfig) {
      * Return an array with the ids of the selected record.
      * @method
      * @return array
-     * @example sample <!-- grid -->
+     * @example sample <!-- materialicons, checkbox, grid -->
      * <button id="btnShowSelection">Show Selections</button>
      * <br/><br/>
      * <table id="grid"></table>
@@ -2865,7 +2865,7 @@ gj.grid.widget = function ($grid, jsConfig) {
      * Select all records from the grid.
      * @method
      * @return grid
-     * @example sample <!-- grid -->
+     * @example sample <!-- materialicons, checkbox, grid -->
      * <button id="btnSelectAll">Select All</button>
      * <br/><br/>
      * <table id="grid"></table>
@@ -2889,7 +2889,7 @@ gj.grid.widget = function ($grid, jsConfig) {
      * Unselect all records from the grid.
      * @method
      * @return void
-     * @example sample <!-- grid -->
+     * @example sample <!-- materialicons, checkbox, grid -->
      * <button id="btnSelectAll">Select All</button>
      * <button id="btnUnSelectAll">UnSelect All</button>
      * <br/><br/>
@@ -2919,7 +2919,7 @@ gj.grid.widget = function ($grid, jsConfig) {
      * @param {string} id - The id of the row that needs to be returned.
      * @return object
      * @example sample <!-- grid -->
-     * <button id="btnGetData">Get Data</button>
+     * <button id="btnGetData" class="gj-button-md">Get Data</button>
      * <br/><br/>
      * <table id="grid"></table>
      * <script>
@@ -2944,7 +2944,7 @@ gj.grid.widget = function ($grid, jsConfig) {
      * @param {number} position - The position of the row that needs to be return.
      * @return object
      * @example sample <!-- grid -->
-     * <button id="btnGetData">Get Data</button>
+     * <button id="btnGetData" class="gj-button-md">Get Data</button>
      * <br/><br/>
      * <table id="grid"></table>
      * <script>
@@ -2968,8 +2968,8 @@ gj.grid.widget = function ($grid, jsConfig) {
      * @param {boolean} includeAllRecords - include records that are not visible when you are using local dataSource.
      * @return number
      * @example Local.DataSource <!-- bootstrap, grid, grid.pagination -->
-     * <button onclick="alert(JSON.stringify(grid.getAll()))">Get All Visible Records</button>
-     * <button onclick="alert(JSON.stringify(grid.getAll(true)))">Get All Records</button>
+     * <button onclick="alert(JSON.stringify(grid.getAll()))" class="btn btn-default">Get All Visible Records</button>
+     * <button onclick="alert(JSON.stringify(grid.getAll(true)))" class="btn btn-default">Get All Records</button>
      * <br/><br/>
      * <table id="grid"></table>
      * <script>
@@ -2987,8 +2987,8 @@ gj.grid.widget = function ($grid, jsConfig) {
      *     });
      * </script>
      * @example Remote.DataSource <!-- bootstrap, grid, grid.pagination -->
-     * <button onclick="alert(JSON.stringify(grid.getAll()))">Get All Visible Records</button>
-     * <button onclick="alert(JSON.stringify(grid.getAll(true)))">Get All Records</button>
+     * <button onclick="alert(JSON.stringify(grid.getAll()))" class="btn btn-default">Get All Visible Records</button>
+     * <button onclick="alert(JSON.stringify(grid.getAll(true)))" class="btn btn-default">Get All Records</button>
      * <br/><br/>
      * <table id="grid"></table>
      * <script>
@@ -3010,7 +3010,7 @@ gj.grid.widget = function ($grid, jsConfig) {
      * @param {string} field - The name of the field bound to the column.
      * @return grid
      * @example sample <!-- grid -->
-     * <button id="btnShowColumn">Show Column</button>
+     * <button id="btnShowColumn" class="gj-button-md">Show Column</button>
      * <br/><br/>
      * <table id="grid"></table>
      * <script>
@@ -3033,7 +3033,7 @@ gj.grid.widget = function ($grid, jsConfig) {
      * @param {string} field - The name of the field bound to the column.
      * @return grid
      * @example sample <!-- grid -->
-     * <button id="btnHideColumn">Hide Column</button>
+     * <button id="btnHideColumn" class="gj-button-md">Hide Column</button>
      * <br/><br/>
      * <table id="grid"></table>
      * <script>
@@ -3056,7 +3056,7 @@ gj.grid.widget = function ($grid, jsConfig) {
      * @param {object} record - Object with data for the new record.
      * @return grid
      * @example without.pagination <!-- grid -->
-     * <button id="btnAdd">Add Row</button>
+     * <button id="btnAdd" class="gj-button-md">Add Row</button>
      * <br/><br/>
      * <table id="grid"></table>
      * <script>
@@ -3073,7 +3073,7 @@ gj.grid.widget = function ($grid, jsConfig) {
      *     });
      * </script>
      * @example with.pagination <!-- materialicons, grid -->
-     * <button id="btnAdd">Add Row</button>
+     * <button id="btnAdd" class="gj-button-md">Add Row</button>
      * <br/><br/>
      * <table id="grid"></table>
      * <script>
@@ -3140,7 +3140,7 @@ gj.grid.widget = function ($grid, jsConfig) {
      * @method
      * @param {string} id - Id of the record that needs to be removed.
      * @return grid
-     * @example Without.Pagination <!-- grid -->
+     * @example Without.Pagination <!-- materialicons, grid -->
      * <table id="grid"></table>
      * <script>
      *     var grid;
@@ -3160,7 +3160,7 @@ gj.grid.widget = function ($grid, jsConfig) {
      *             { field: 'ID', width: 56 },
      *             { field: 'Name' },
      *             { field: 'PlaceOfBirth' },
-     *             { width: 60, align: 'center', tmpl: '<u class="gj-cursor-pointer">Delete</u>', events: { 'click': Delete } }
+     *             { width: 100, align: 'center', tmpl: '<u class="gj-cursor-pointer">Delete</u>', events: { 'click': Delete } }
      *         ]
      *     });
      * </script>
@@ -3184,7 +3184,7 @@ gj.grid.widget = function ($grid, jsConfig) {
      *             { field: 'ID', width: 56 },
      *             { field: 'Name' },
      *             { field: 'PlaceOfBirth' },
-     *             { width: 60, align: 'center', tmpl: '<u class="gj-cursor-pointer">Delete</u>', events: { 'click': Delete } }
+     *             { width: 100, align: 'center', tmpl: '<u class="gj-cursor-pointer">Delete</u>', events: { 'click': Delete } }
      *         ],
      *         pager: { limit: 2 }
      *     });
