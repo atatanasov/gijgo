@@ -1,7 +1,7 @@
 ﻿gj.editor.messages['de-de'] = {
     bold: 'Fett',
     italic: 'Kursiv',
-    strikethrough: 'Durchdringt',
+    strikethrough: 'Durchgestrichen',
     underline: 'Unterstrichen',
     listBulleted: 'Aufz\u00e4hlung',
     listNumbered: 'Nummerierte Liste',

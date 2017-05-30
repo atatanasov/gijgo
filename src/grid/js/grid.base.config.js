@@ -962,14 +962,14 @@ gj.grid.config = {
         /** The language that needs to be in use.
          * @type string
          * @default 'en-us'
-         * @example French.Bootstrap.Default <!-- bootstrap, grid-->
-         * <script src="../../dist/modular/grid/js/messages/messages.fr-fr.js"></script>
+         * @example German.Bootstrap.Default <!-- bootstrap, grid-->
+         * <script src="../../dist/modular/grid/js/messages/messages.de-de.js"></script>
          * <table id="grid"></table>
          * <script>
          *     $('#grid').grid({
          *         dataSource: '/Players/Get',
          *         uiLibrary: 'bootstrap',
-         *         locale: 'fr-fr',
+         *         locale: 'de-de',
          *         columns: [ 
          *             { field: 'ID', width: 34 },
          *             { field: 'Name', title: 'Prénom' },

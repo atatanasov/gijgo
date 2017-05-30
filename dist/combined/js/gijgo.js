@@ -2899,14 +2899,14 @@ gj.grid.config = {
         /** The language that needs to be in use.
          * @type string
          * @default 'en-us'
-         * @example French.Bootstrap.Default <!-- bootstrap, grid-->
-         * <script src="../../dist/modular/grid/js/messages/messages.fr-fr.js"></script>
+         * @example German.Bootstrap.Default <!-- bootstrap, grid-->
+         * <script src="../../dist/modular/grid/js/messages/messages.de-de.js"></script>
          * <table id="grid"></table>
          * <script>
          *     $('#grid').grid({
          *         dataSource: '/Players/Get',
          *         uiLibrary: 'bootstrap',
-         *         locale: 'fr-fr',
+         *         locale: 'de-de',
          *         columns: [ 
          *             { field: 'ID', width: 34 },
          *             { field: 'Name', title: 'Prénom' },
@@ -5632,7 +5632,7 @@ gj.grid.plugins.inlineEditing.public = {
      *         dataSource: '/Players/Get',
      *         inlineEditing: { mode: 'command', managementColumn: false },
      *         columns: [ 
-     *             { field: 'ID', width: 24 },
+     *             { field: 'ID', width: 56 },
      *             { field: 'Name', editor: true }, 
      *             { field: 'PlaceOfBirth', editor: true },
      *             { width: 56, align: 'center', renderer: renderer }

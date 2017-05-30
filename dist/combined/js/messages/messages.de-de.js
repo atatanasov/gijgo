@@ -1,32 +1,32 @@
 gj.dialog.messages['de-de'] = {
-    Close: 'Schlie&szlig;en',
+    Close: 'Schlie\u00dfen',
     DefaultTitle: 'Dialog'
 };
 gj.grid.messages['de-de'] = {
     First: 'Erste',
     Previous: 'Vorherige',
-    Next: 'N&auml;chste',
+    Next: 'N\u00e4chste',
     Last: 'Letzte',
     Page: 'Seite',
     FirstPageTooltip: 'Erste Seite',
     PreviousPageTooltip: 'Vorherige Seite',
-    NextPageTooltip: 'N&auml;chste Seite',
+    NextPageTooltip: 'N\u00e4chste Seite',
     LastPageTooltip: 'Letzte Seite',
     Refresh: 'Aktualisieren',
     Of: 'von',
-    DisplayingRecords: 'Zeige Datens&auml;tze',
+    DisplayingRecords: 'Zeige Datens\u00e4tze',
     RowsPerPage: 'Zeilen pro Seite:',
     Edit: 'Editieren',
-    Delete: 'L&ouml;schen',
-    Update: '&Auml;ndern',
+    Delete: 'L\u00f6schen',
+    Update: 'Aktualisieren',
     Cancel: 'Abbrechen',
-    NoRecordsFound: 'Es wurden keine Datens&auml;tze gefunden.',
+    NoRecordsFound: 'Es wurden keine Datens\u00e4tze gefunden.',
     Loading: 'Laden...'
 };
 gj.editor.messages['de-de'] = {
     bold: 'Fett',
     italic: 'Kursiv',
-    strikethrough: 'Durchdringt',
+    strikethrough: 'Durchgestrichen',
     underline: 'Unterstrichen',
     listBulleted: 'Aufz\u00e4hlung',
     listNumbered: 'Nummerierte Liste',
