@@ -49,15 +49,15 @@ gj.grid.plugins.inlineEditing.config = {
              * @example sample <!-- grid, checkbox, bootstrap -->
              * <table id="grid"></table>
              * <script>
-             *     function edit($container, currentValue, record) {
-             *         $container.append('<input type="text" value="' + currentValue + '"/>');
+             *     function editRenderer($container, currentValue, record) {
+             *         $container.append('<input type="text" value="' + currentValue + '" class="gj-width-full"/>');
              *     }
              *     $('#grid').grid({
              *         dataSource: '/Players/Get',
              *         uiLibrary: 'bootstrap',
              *         columns: [
              *             { field: 'ID', width: 32 },
-             *             { field: 'Name', editor: edit },
+             *             { field: 'Name', editor: editRenderer },
              *             { field: 'PlaceOfBirth', editor: true },
              *             { field: 'IsActive', title: 'Active?', type:'checkbox', editor: true, mode: 'edit', width: 80, align: 'center' }
              *         ]
@@ -76,7 +76,7 @@ gj.grid.plugins.inlineEditing.config = {
              *     $('#grid').grid({
              *         dataSource: '/Players/Get',
              *         columns: [
-             *             { field: 'ID' },
+             *             { field: 'ID', width: 56 },
              *             { field: 'Name', editor: true, mode: 'edit' },
              *             { field: 'PlaceOfBirth', editor: true, mode: 'edit' }
              *         ]
@@ -99,7 +99,7 @@ gj.grid.plugins.inlineEditing.config = {
              *         primaryKey: 'ID',
              *         inlineEditing: { mode: 'dblclick' },
              *         columns: [
-             *             { field: 'ID', width: 34 },
+             *             { field: 'ID', width: 56 },
              *             { field: 'Name', editor: true },
              *             { field: 'PlaceOfBirth', editor: true }
              *         ]
@@ -121,7 +121,7 @@ gj.grid.plugins.inlineEditing.config = {
              *         primaryKey: 'ID',
              *         inlineEditing: { mode: 'command' },
              *         columns: [
-             *             { field: 'ID', width: 34 },
+             *             { field: 'ID', width: 56 },
              *             { field: 'Name', editor: true },
              *             { field: 'PlaceOfBirth', editor: true }
              *         ],
@@ -135,7 +135,7 @@ gj.grid.plugins.inlineEditing.config = {
              * @alias inlineEditing.managementColumn
              * @type Boolean
              * @default true
-             * @example True <!-- grid -->
+             * @example True <!-- materialicons, grid -->
              * <table id="grid"></table>
              * <script>
              *     var grid, data = [
@@ -151,13 +151,13 @@ gj.grid.plugins.inlineEditing.config = {
              *         primaryKey: 'ID',
              *         inlineEditing: { mode: 'command', managementColumn: true },
              *         columns: [
-             *             { field: 'ID', width: 34 },
+             *             { field: 'ID', width: 56 },
              *             { field: 'Name', editor: true },
              *             { field: 'PlaceOfBirth', editor: true }
              *         ]
              *     });
              * </script>
-             * @example False <!-- grid -->
+             * @example False <!-- materialicons, grid -->
              * <table id="grid"></table>
              * <script>
              *     var grid, data = [
@@ -173,10 +173,10 @@ gj.grid.plugins.inlineEditing.config = {
              *         primaryKey: 'ID',
              *         inlineEditing: { mode: 'command', managementColumn: false },
              *         columns: [
-             *             { field: 'ID', width: 34 },
+             *             { field: 'ID', width: 56 },
              *             { field: 'Name', editor: true },
              *             { field: 'PlaceOfBirth', editor: true },
-             *             { width: 100, align: 'center', renderer: gj.grid.plugins.inlineEditing.renderers.editManager }
+             *             { width: 300, align: 'center', renderer: gj.grid.plugins.inlineEditing.renderers.editManager }
              *         ]
              *     });
              * </script>
@@ -204,7 +204,7 @@ gj.grid.plugins.inlineEditing.config = {
              *         pager: { limit: 3 }
              *     });
              * </script>
-             * @example Material.Design <!-- materialicons, grid -->
+             * @example Bootstrap.4 <!-- materialicons, bootstrap4, grid -->
              * <table id="grid"></table>
              * <script>
              *     var grid, data = [
@@ -219,7 +219,7 @@ gj.grid.plugins.inlineEditing.config = {
              *         dataSource: data,
              *         primaryKey: 'ID',
              *         inlineEditing: { mode: 'command' },
-             *         uiLibrary: 'materialdesign',
+             *         uiLibrary: 'bootstrap4',
              *         columns: [
              *             { field: 'ID', width: 34 },
              *             { field: 'Name', editor: true },
@@ -231,7 +231,7 @@ gj.grid.plugins.inlineEditing.config = {
             */
             managementColumn: true,
 
-            managementColumnConfig: { width: 100, align: 'center', renderer: gj.grid.plugins.inlineEditing.renderers.editManager }
+            managementColumnConfig: { width: 300, align: 'center', renderer: gj.grid.plugins.inlineEditing.renderers.editManager }
         }
     },
 
@@ -241,30 +241,25 @@ gj.grid.plugins.inlineEditing.config = {
         }
     },
 
-    materialdesign: {
+    bootstrap4: {
         inlineEditing: {
-            managementColumnConfig: { width: 300, align: 'center', renderer: gj.grid.plugins.inlineEditing.renderers.editManager }
+            managementColumnConfig: { width: 200, align: 'center', renderer: gj.grid.plugins.inlineEditing.renderers.editManager }
         }
     }
 };
 
 gj.grid.plugins.inlineEditing.private = {
     localization: function (data) {
-        if (data.uiLibrary === 'bootstrap') {
+        if (data.uiLibrary === 'bootstrap' || data.uiLibrary === 'bootstrap4') {
             data.inlineEditing.editButton = '<button type="button" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> ' + gj.grid.messages[data.locale].Edit + '</button>';
             data.inlineEditing.deleteButton = '<button type="button" class="btn btn-default btn-sm gj-margin-left-10"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> ' + gj.grid.messages[data.locale].Delete + '</button>';
             data.inlineEditing.updateButton = '<button type="button" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> ' + gj.grid.messages[data.locale].Update + '</button>';
             data.inlineEditing.cancelButton = '<button type="button" class="btn btn-default btn-sm gj-margin-left-10"><span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span> ' + gj.grid.messages[data.locale].Cancel + '</button>';
-        } else if (data.uiLibrary === 'materialdesign') {
-            data.inlineEditing.editButton = '<button class="mdl-button mdl-js-button"><i class="material-icons">mode_edit</i> ' + gj.grid.messages[data.locale].Edit.toUpperCase() + '</button>';
-            data.inlineEditing.deleteButton = '<button class="mdl-button mdl-js-button"><i class="material-icons">delete</i> ' + gj.grid.messages[data.locale].Delete.toUpperCase() + '</button>';
-            data.inlineEditing.updateButton = '<button class="mdl-button mdl-js-button"><i class="material-icons">check_circle</i> ' + gj.grid.messages[data.locale].Update.toUpperCase() + '</button>';
-            data.inlineEditing.cancelButton = '<button class="mdl-button mdl-js-button"><i class="material-icons">cancel</i> ' + gj.grid.messages[data.locale].Cancel.toUpperCase() + '</button>';
         } else {
-            data.inlineEditing.editButton = '<u class="gj-cursor-pointer">' + gj.grid.messages[data.locale].Edit.toLowerCase() + '</u>';
-            data.inlineEditing.deleteButton = '<u class="gj-cursor-pointer gj-margin-left-5">' + gj.grid.messages[data.locale].Delete.toLowerCase() + '</u>';
-            data.inlineEditing.updateButton = '<u class="gj-cursor-pointer">' + gj.grid.messages[data.locale].Update.toLowerCase() + '</u>';
-            data.inlineEditing.cancelButton = '<u class="gj-cursor-pointer gj-margin-left-5">' + gj.grid.messages[data.locale].Cancel.toLowerCase() + '</u>';
+            data.inlineEditing.editButton = '<button class="gj-button-md"><i class="material-icons">mode_edit</i> ' + gj.grid.messages[data.locale].Edit.toUpperCase() + '</button>';
+            data.inlineEditing.deleteButton = '<button class="gj-button-md"><i class="material-icons">delete</i> ' + gj.grid.messages[data.locale].Delete.toUpperCase() + '</button>';
+            data.inlineEditing.updateButton = '<button class="gj-button-md"><i class="material-icons">check_circle</i> ' + gj.grid.messages[data.locale].Update.toUpperCase() + '</button>';
+            data.inlineEditing.cancelButton = '<button class="gj-button-md"><i class="material-icons">cancel</i> ' +gj.grid.messages[data.locale].Cancel.toUpperCase() + '</button>';
         }
     },
 
@@ -413,7 +408,7 @@ gj.grid.plugins.inlineEditing.public = {
      * @method
      * @return array
      * @example sample <!-- grid, grid.inlineEditing -->
-     * <button id="btnGetChanges">Get Changes</button>
+     * <button id="btnGetChanges" class="gj-button-md">Get Changes</button>
      * <br/><br/>
      * <table id="grid"></table>
      * <script>
@@ -461,10 +456,10 @@ gj.grid.plugins.inlineEditing.public = {
      *         dataSource: '/Players/Get',
      *         inlineEditing: { mode: 'command', managementColumn: false },
      *         columns: [ 
-     *             { field: 'ID', width: 24 },
+     *             { field: 'ID', width: 56 },
      *             { field: 'Name', editor: true }, 
      *             { field: 'PlaceOfBirth', editor: true },
-     *             { width: 32, align: 'center', renderer: renderer }
+     *             { width: 56, align: 'center', renderer: renderer }
      *         ]
      *     });
      * </script>

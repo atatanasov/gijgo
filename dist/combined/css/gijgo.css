@@ -345,9 +345,7 @@ TABLE.gj-grid-table > tbody > tr > td {
     overflow: hidden;
 }
 
-TABLE.gj-grid-table DIV[data-role="display"],
-TABLE.gj-grid-table DIV[data-role="display"] DIV 
-{
+TABLE.gj-grid-table DIV[data-role="display"], TABLE.gj-grid-table DIV[data-role="display"] DIV {
 	vertical-align: middle;
 	text-indent: 0;
     display: inline-block;
@@ -634,6 +632,14 @@ span.gj-grid-column-resizer {
 {
     border-right: 2px solid #777;
 }
+table.gj-grid-table div[data-role="edit"] {
+    display: inline;
+}
+
+table.gj-grid-table div[data-role="edit"] label.gj-checkbox-md,
+table.gj-grid-table div[data-role="edit"] label.gj-checkbox-bootstrap {
+    display: inline-block;
+}
 li.gj-tree-item {
     padding: 0px;
 }
@@ -897,7 +903,7 @@ li.gj-tree-md-item [data-role="image"] {
     line-height: 11px;
     font-size: 11px;
     padding: 2px;
-    margin-right: 4px;
+    /*margin-right: 4px;*/
     color: #555555;
     border: 1px solid #CCCCCC;
     border-radius: 3px;

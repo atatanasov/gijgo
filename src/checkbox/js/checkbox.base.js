@@ -56,7 +56,7 @@ gj.checkbox.config = {
 
         style: {
             wrapperCssClass: 'gj-checkbox-md',
-            spanCssClass: 'material-icons'
+            spanCssClass: undefined
         }
         
     },
@@ -85,7 +85,7 @@ gj.checkbox.config = {
     glyphicons: {
         style: {
             iconsCssClass: 'gj-checkbox-glyphicons',
-            spanCssClass: undefined
+            spanCssClass: ''
         }
     }
 };

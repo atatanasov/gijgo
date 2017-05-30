@@ -14,15 +14,15 @@
 <body>
  <table id="grid"></table>
  <script>
-     function edit($container, currentValue, record) {
-         $container.append('<input type="text" value="' + currentValue + '"/>');
+     function editRenderer($container, currentValue, record) {
+         $container.append('<input type="text" value="' + currentValue + '" class="gj-width-full"/>');
      }
      $('#grid').grid({
          dataSource: '/Players/Get',
          uiLibrary: 'bootstrap',
          columns: [
              { field: 'ID', width: 32 },
-             { field: 'Name', editor: edit },
+             { field: 'Name', editor: editRenderer },
              { field: 'PlaceOfBirth', editor: true },
              { field: 'IsActive', title: 'Active?', type:'checkbox', editor: true, mode: 'edit', width: 80, align: 'center' }
          ]

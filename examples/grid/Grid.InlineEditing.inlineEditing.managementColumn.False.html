@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Example</title>
   <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">
   <link href="../../dist/modular/grid/css/grid.css" rel="stylesheet" type="text/css">
   <script src="../../dist/modular/grid/js/grid.js"></script>
 </head>
@@ -24,10 +25,10 @@
          primaryKey: 'ID',
          inlineEditing: { mode: 'command', managementColumn: false },
          columns: [
-             { field: 'ID', width: 34 },
+             { field: 'ID', width: 56 },
              { field: 'Name', editor: true },
              { field: 'PlaceOfBirth', editor: true },
-             { width: 100, align: 'center', renderer: gj.grid.plugins.inlineEditing.renderers.editManager }
+             { width: 300, align: 'center', renderer: gj.grid.plugins.inlineEditing.renderers.editManager }
          ]
      });
  </script>

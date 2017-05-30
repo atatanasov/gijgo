@@ -147,9 +147,7 @@ TABLE.gj-grid-table > tbody > tr > td {
     overflow: hidden;
 }
 
-TABLE.gj-grid-table DIV[data-role="display"],
-TABLE.gj-grid-table DIV[data-role="display"] DIV 
-{
+TABLE.gj-grid-table DIV[data-role="display"], TABLE.gj-grid-table DIV[data-role="display"] DIV {
 	vertical-align: middle;
 	text-indent: 0;
     display: inline-block;
@@ -435,4 +433,12 @@ span.gj-grid-column-resizer {
 .gj-grid-base-table tbody tr td.gj-grid-base-right-border
 {
     border-right: 2px solid #777;
+}
+table.gj-grid-table div[data-role="edit"] {
+    display: inline;
+}
+
+table.gj-grid-table div[data-role="edit"] label.gj-checkbox-md,
+table.gj-grid-table div[data-role="edit"] label.gj-checkbox-bootstrap {
+    display: inline-block;
 }
