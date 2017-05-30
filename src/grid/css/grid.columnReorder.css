@@ -1,10 +1,21 @@
-﻿.gj-grid-base-table thead tr th.gj-grid-base-left-border,
-.gj-grid-base-table tbody tr td.gj-grid-base-left-border
+﻿.gj-grid-md-table thead tr th.gj-grid-left-border,
+.gj-grid-md-table tbody tr td.gj-grid-left-border
 {
     border-left: 2px solid #777;
 }
-.gj-grid-base-table thead tr th.gj-grid-base-right-border,
-.gj-grid-base-table tbody tr td.gj-grid-base-right-border
+.gj-grid-md-table thead tr th.gj-grid-right-border,
+.gj-grid-md-table tbody tr td.gj-grid-right-border
 {
     border-right: 2px solid #777;
+}
+
+.gj-grid-bootstrap-table thead tr th.gj-grid-left-border,
+.gj-grid-bootstrap-table tbody tr td.gj-grid-left-border
+{
+    border-left: 2px solid #ddd;
+}
+.gj-grid-bootstrap-table thead tr th.gj-grid-right-border,
+.gj-grid-bootstrap-table tbody tr td.gj-grid-right-border
+{
+    border-right: 2px solid #ddd;
 }

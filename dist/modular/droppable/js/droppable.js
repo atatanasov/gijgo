@@ -390,8 +390,12 @@ gj.droppable.events = {
      * <script>
      *     $('#draggable').draggable();
      *     $('#droppable').droppable({
-     *         over: function() { $(this).addClass('hover') },
-     *         out: function() { $(this).removeClass('hover') }
+     *         over: function() { 
+     *             $(this).addClass('hover')
+     *         },
+     *         out: function() {
+     *             $(this).removeClass('hover')
+     *         }
      *     });
      * </script>
      */
@@ -465,7 +469,7 @@ gj.droppable.widget = function ($element, jsConfig) {
 
     $.extend($element, self);
     if ('true' !== $element.attr('data-droppable')) {
-        methods.init.apply($element, jsConfig);
+        methods.init.call($element, jsConfig);
     }
 
     return $element;

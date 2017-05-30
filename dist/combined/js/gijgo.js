@@ -1806,8 +1806,12 @@ gj.droppable.events = {
      * <script>
      *     $('#draggable').draggable();
      *     $('#droppable').droppable({
-     *         over: function() { $(this).addClass('hover') },
-     *         out: function() { $(this).removeClass('hover') }
+     *         over: function() { 
+     *             $(this).addClass('hover')
+     *         },
+     *         out: function() {
+     *             $(this).removeClass('hover')
+     *         }
      *     });
      * </script>
      */
@@ -1881,7 +1885,7 @@ gj.droppable.widget = function ($element, jsConfig) {
 
     $.extend($element, self);
     if ('true' !== $element.attr('data-droppable')) {
-        methods.init.apply($element, jsConfig);
+        methods.init.call($element, jsConfig);
     }
 
     return $element;
@@ -7326,7 +7330,7 @@ gj.grid.plugins.columnReorder = {
             /** If set to true, enable column reordering with drag and drop.
              * @type boolean
              * @default false
-             * @example sample <!-- grid, draggable.base, droppable.base -->
+             * @example Material.Design <!-- materialicons, grid, draggable.base, droppable.base -->
              * <p>Drag and Drop column headers in order to reorder the columns.</p>
              * <table id="grid"></table>
              * <script>
@@ -7334,6 +7338,17 @@ gj.grid.plugins.columnReorder = {
              *         dataSource: '/Players/Get',
              *         columnReorder: true,
              *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
+             *     });
+             * </script>
+             * @example Bootstrap <!-- bootstrap, grid, draggable.base, droppable.base -->
+             * <p>Drag and Drop column headers in order to reorder the columns.</p>
+             * <table id="grid"></table>
+             * <script>
+             *     $('#grid').grid({
+             *         dataSource: '/Players/Get',
+             *         uiLibrary: 'bootstrap',
+             *         columnReorder: true,
+             *         columns: [ { field: 'ID', width: 36 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
              *     });
              * </script>
              */
@@ -7398,8 +7413,8 @@ gj.grid.plugins.columnReorder = {
                         targetPosition = gj.grid.methods.getColumnPosition(data.columns, $thTarget.data('field')),
                         sourcePosition = gj.grid.methods.getColumnPosition(data.columns, $thSource.data('field'));
 
-                    $thTarget.removeClass('gj-grid-base-left-border').removeClass('gj-grid-base-right-border');
-                    $thTarget.closest('table').find('tbody tr[data-role="row"] td:nth-child(' + ($thTarget.index() + 1) + ')').removeClass('gj-grid-base-left-border').removeClass('gj-grid-base-right-border');
+                    $thTarget.removeClass('gj-grid-left-border').removeClass('gj-grid-right-border');
+                    $thTarget.closest('table').find('tbody tr[data-role="row"] td:nth-child(' + ($thTarget.index() + 1) + ')').removeClass('gj-grid-left-border').removeClass('gj-grid-right-border');
                     if ($thTarget.droppable('isOver', mousePosition)) {
                         if (targetPosition < sourcePosition) {
                             $thTarget.before($thSource);
@@ -7433,19 +7448,19 @@ gj.grid.plugins.columnReorder = {
                     targetPosition = gj.grid.methods.getColumnPosition(data.columns, $thTarget.data('field')),
                     sourcePosition = gj.grid.methods.getColumnPosition(data.columns, $thSource.data('field'));
                 if (targetPosition < sourcePosition) {
-                    $thTarget.addClass('gj-grid-base-left-border');
-                    $grid.find('tbody tr[data-role="row"] td:nth-child(' + ($thTarget.index() + 1) + ')').addClass('gj-grid-base-left-border');
+                    $thTarget.addClass('gj-grid-left-border');
+                    $grid.find('tbody tr[data-role="row"] td:nth-child(' + ($thTarget.index() + 1) + ')').addClass('gj-grid-left-border');
                 } else {
-                    $thTarget.addClass('gj-grid-base-right-border');
-                    $grid.find('tbody tr[data-role="row"] td:nth-child(' + ($thTarget.index() + 1) + ')').addClass('gj-grid-base-right-border');
+                    $thTarget.addClass('gj-grid-right-border');
+                    $grid.find('tbody tr[data-role="row"] td:nth-child(' + ($thTarget.index() + 1) + ')').addClass('gj-grid-right-border');
                 }
             };
         },
 
         droppableOut: function () {
             var $thTarget = $(this);
-            $thTarget.removeClass('gj-grid-base-left-border').removeClass('gj-grid-base-right-border');
-            $thTarget.closest('table').find('tbody tr[data-role="row"] td:nth-child(' + ($thTarget.index() + 1) + ')').removeClass('gj-grid-base-left-border').removeClass('gj-grid-base-right-border');
+            $thTarget.removeClass('gj-grid-left-border').removeClass('gj-grid-right-border');
+            $thTarget.closest('table').find('tbody tr[data-role="row"] td:nth-child(' + ($thTarget.index() + 1) + ')').removeClass('gj-grid-left-border').removeClass('gj-grid-right-border');
         }
     },
 

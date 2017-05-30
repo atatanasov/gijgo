@@ -19,8 +19,12 @@
  <script>
      $('#draggable').draggable();
      $('#droppable').droppable({
-         over: function() { $(this).addClass('hover') },
-         out: function() { $(this).removeClass('hover') }
+         over: function() {
+             $(this).addClass('hover')
+         },
+         out: function() {
+             $(this).removeClass('hover')
+         }
      });
  </script>
 </body>
