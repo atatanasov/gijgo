@@ -130,17 +130,19 @@ gj.grid.plugins.expandCollapseRows = {
     'public': {
         //TODO: add documentation
         collapseAll: function () {
-            var $grid = this;
+            var $grid = this,
+                position = gj.grid.methods.getColumnPositionByRole($grid, 'expander');
             $grid.find('tbody tr[data-role="row"]').each(function () {
-                gj.grid.plugins.expandCollapseRows.private.detailCollapse($grid, $(this).find('td').first());
+                gj.grid.plugins.expandCollapseRows.private.detailCollapse($grid, $(this).find('td:eq(' + position + ')'));
             });
         },
 
         //TODO: add documentation
         expandAll: function () {
-            var $grid = this;
+            var $grid = this,
+                position = gj.grid.methods.getColumnPositionByRole($grid, 'expander');
             $grid.find('tbody tr[data-role="row"]').each(function () {
-                gj.grid.plugins.expandCollapseRows.private.detailExpand($grid, $(this).find('td').first());
+                gj.grid.plugins.expandCollapseRows.private.detailExpand($grid, $(this).find('td:eq(' + position + ')'));
             });
         },
 
@@ -151,7 +153,7 @@ gj.grid.plugins.expandCollapseRows = {
                 content = $detailWrapper.html(),
                 record = $grid.get($contentRow.data('position'));
 
-            if (record) {
+            if (record && content) {
                 $detailWrapper.html().replace(/\{(.+?)\}/g, function ($0, $1) {
                     var column = gj.grid.methods.getColumnInfo($grid, $1);
                     content = content.replace($0, gj.grid.methods.formatText(record[$1], column));
@@ -233,6 +235,7 @@ gj.grid.plugins.expandCollapseRows = {
                 stopPropagation: true,
                 cssClass: 'gj-cursor-pointer gj-unselectable',
                 tmpl: data.icons.expand,
+                role: 'expander',
                 events: {
                     'click': function (e) {
                         var $cell = $(this), methods = gj.grid.plugins.expandCollapseRows.private;

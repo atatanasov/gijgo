@@ -87,7 +87,7 @@ gj.grid.methods = {
         }
         $grid.addClass(data.style.table);
         if ('checkbox' === data.selectionMethod) {
-            data.columns = [{
+            data.columns.splice(gj.grid.methods.getColumnPositionNotInRole($grid), 0, {
                 title: '',
                 field: data.primaryKey || '',
                 width: data.defaultCheckBoxColumnWidth,
@@ -101,7 +101,7 @@ gj.grid.methods = {
                 },
                 headerCssClass: 'gj-grid-select-all',
                 stopPropagation: true
-            }].concat(data.columns);
+            });
         }
         
         if ($grid.children('tbody').length === 0) {
@@ -429,7 +429,7 @@ gj.grid.methods = {
 
         if ('checkbox' === column.type && gj.checkbox) {
             if ('create' === mode) {
-                $checkbox = $('<input type="checkbox" />').val(id).prop('checked', record[column.field]);
+                $checkbox = $('<input type="checkbox" />').val(id).prop('checked', (record[column.field] ? true : false));
                 column.role && $checkbox.attr('data-role', column.role);
                 $displayEl.append($checkbox);
                 $checkbox.checkbox({ uiLibrary: $grid.data('uiLibrary') });
@@ -439,7 +439,7 @@ gj.grid.methods = {
                     $checkbox.prop('disabled', true);
                 }
             } else {
-                $displayEl.find('input[type="checkbox"]').val(id).prop('checked', record[column.field]);
+                $displayEl.find('input[type="checkbox"]').val(id).prop('checked', (record[column.field] ? true : false));
             }
         } else if ('icon' === column.type) {
             if ('create' === mode) {
@@ -924,5 +924,27 @@ gj.grid.methods = {
 
     count: function ($grid, includeAllRecords) {
         return includeAllRecords ? $grid.data().totalRecords : $grid.getAll().length;
+    },
+
+    getColumnPositionByRole: function ($grid, role) {
+        var i, result, columns = $grid.data('columns');
+        for (i = 0; i < columns.length; i++) {
+            if (columns[i].role === role) {
+                result = i;
+                break;
+            }
+        }
+        return result;
+    },
+
+    getColumnPositionNotInRole: function ($grid) {
+        var i, result = 0, columns = $grid.data('columns');
+        for (i = 0; i < columns.length; i++) {
+            if (!columns[i].role) {
+                result = i;
+                break;
+            }
+        }
+        return result;
     }
 };
