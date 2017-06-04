@@ -1018,9 +1018,7 @@ gj.grid.config = {
 
         icons: {
             asc: '▲',
-            desc: '▼',
-            expand: '+',
-            collapse: '-'
+            desc: '▼'
         }
     },
 
@@ -1057,27 +1055,21 @@ gj.grid.config = {
     materialicons: {
         icons: {
             asc: '<i class="material-icons">arrow_upward</i>',
-            desc: '<i class="material-icons">arrow_downward</i>',
-            expand: '<i class="material-icons">add</i>',
-            collapse: '<i class="material-icons">remove</i>'
+            desc: '<i class="material-icons">arrow_downward</i>'
         }
     },
 
     fontawesome: {
         icons: {
             asc: '<i class="fa fa-sort-amount-asc" aria-hidden="true"></i>',
-            desc: '<i class="fa fa-sort-amount-desc" aria-hidden="true"></i>',
-            expand: '<i class="fa fa-plus" aria-hidden="true"></i>',
-            collapse: '<i class="fa fa-minus" aria-hidden="true"></i>'
+            desc: '<i class="fa fa-sort-amount-desc" aria-hidden="true"></i>'
         }
     },
 
     glyphicons: {
         icons: {
             asc: '<span class="glyphicon glyphicon-sort-by-alphabet" />',
-            desc: '<span class="glyphicon glyphicon-sort-by-alphabet-alt" />',
-            expand: '<span class="glyphicon glyphicon-plus" />',
-            collapse: '<span class="glyphicon glyphicon-minus" />'
+            desc: '<span class="glyphicon glyphicon-sort-by-alphabet-alt" />'
         }
     }
 };

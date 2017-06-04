@@ -2959,9 +2959,7 @@ gj.grid.config = {
 
         icons: {
             asc: '▲',
-            desc: '▼',
-            expand: '+',
-            collapse: '-'
+            desc: '▼'
         }
     },
 
@@ -2998,27 +2996,21 @@ gj.grid.config = {
     materialicons: {
         icons: {
             asc: '<i class="material-icons">arrow_upward</i>',
-            desc: '<i class="material-icons">arrow_downward</i>',
-            expand: '<i class="material-icons">add</i>',
-            collapse: '<i class="material-icons">remove</i>'
+            desc: '<i class="material-icons">arrow_downward</i>'
         }
     },
 
     fontawesome: {
         icons: {
             asc: '<i class="fa fa-sort-amount-asc" aria-hidden="true"></i>',
-            desc: '<i class="fa fa-sort-amount-desc" aria-hidden="true"></i>',
-            expand: '<i class="fa fa-plus" aria-hidden="true"></i>',
-            collapse: '<i class="fa fa-minus" aria-hidden="true"></i>'
+            desc: '<i class="fa fa-sort-amount-desc" aria-hidden="true"></i>'
         }
     },
 
     glyphicons: {
         icons: {
             asc: '<span class="glyphicon glyphicon-sort-by-alphabet" />',
-            desc: '<span class="glyphicon glyphicon-sort-by-alphabet-alt" />',
-            expand: '<span class="glyphicon glyphicon-plus" />',
-            collapse: '<span class="glyphicon glyphicon-minus" />'
+            desc: '<span class="glyphicon glyphicon-sort-by-alphabet-alt" />'
         }
     }
 };
@@ -4926,6 +4918,16 @@ gj.grid.plugins.expandCollapseRows = {
              * Automatically add expand collapse column as a first column in the grid during initialization.
              * @type string
              * @default undefined
+             * @example Material.Design <!-- materialicons, grid, grid.expandCollapseRows -->
+             * <table id="grid"></table>
+             * <script>
+             *     $('#grid').grid({
+             *         dataSource: '/Players/Get',
+             *         uiLibrary: 'materialdesign',
+             *         detailTemplate: '<div style="text-align: left"><b>Place Of Birth:</b> {PlaceOfBirth}</div>',
+             *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'DateOfBirth', type: 'date' } ]
+             *     });
+             * </script>
              * @example Bootstrap.3 <!-- bootstrap, grid, grid.expandCollapseRows -->
              * <table id="grid"></table>
              * <script>
@@ -4945,16 +4947,6 @@ gj.grid.plugins.expandCollapseRows = {
              *         iconsLibrary: 'fontawesome',
              *         detailTemplate: '<div><b>Place Of Birth:</b> {PlaceOfBirth}</div>',
              *         columns: [ { field: 'ID', width: 34 }, { field: 'Name' }, { field: 'DateOfBirth', type: 'date' } ]
-             *     });
-             * </script>
-             * @example Material.Design <!-- materialicons, grid -->
-             * <table id="grid"></table>
-             * <script>
-             *     $('#grid').grid({
-             *         dataSource: '/Players/Get',
-             *         uiLibrary: 'materialdesign',
-             *         detailTemplate: '<div style="text-align: left"><b>Place Of Birth:</b> {PlaceOfBirth}</div>',
-             *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'DateOfBirth', type: 'date' } ]
              *     });
              * </script>
              */
@@ -4984,7 +4976,65 @@ gj.grid.plugins.expandCollapseRows = {
              *     });
              * </script>
              */
-            keepExpandedRows: true
+            keepExpandedRows: true,
+
+            icons: {
+                /** Expand row icon definition.
+                 * @alias icons.expandRow
+                 * @type String
+                 * @default '<i class="material-icons">keyboard_arrow_right</i>'
+                 * @example Plus.Minus.Icons <!-- materialicons, grid -->
+                 * <table id="grid"></table>
+                 * <script>
+                 *     $('#grid').grid({
+                 *         primaryKey: 'ID',
+                 *         dataSource: '/Players/Get',
+                 *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' } ],
+                 *         detailTemplate: '<div><b>Place Of Birth:</b> {PlaceOfBirth}</div>',
+                 *         icons: {
+                 *             expandRow: '<i class="material-icons">add</i>',
+                 *             collapseRow: '<i class="material-icons">remove</i>'
+                 *         }
+                 *     });
+                 * </script>
+                 */
+                expandRow: '<i class="material-icons">keyboard_arrow_right</i>',
+
+                /** Collapse row icon definition.
+                 * @alias icons.collapseRow
+                 * @type String
+                 * @default '<i class="material-icons">keyboard_arrow_down</i>'
+                 * @example Plus.Minus.Icons <!-- materialicons, grid -->
+                 * <table id="grid"></table>
+                 * <script>
+                 *     $('#grid').grid({
+                 *         primaryKey: 'ID',
+                 *         dataSource: '/Players/Get',
+                 *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' } ],
+                 *         detailTemplate: '<div><b>Place Of Birth:</b> {PlaceOfBirth}</div>',
+                 *         icons: {
+                 *             expandRow: '<i class="material-icons">add</i>',
+                 *             collapseRow: '<i class="material-icons">remove</i>'
+                 *         }
+                 *     });
+                 * </script>
+                 */
+                collapseRow: '<i class="material-icons">keyboard_arrow_down</i>'
+            }
+        },
+
+        fontawesome: {
+            icons: {
+                expandRow: '<i class="fa fa-angle-right" aria-hidden="true"></i>',
+                collapseRow: '<i class="fa fa-angle-down" aria-hidden="true"></i>'
+            }
+        },
+
+        glyphicons: {
+            icons: {
+                expandRow: '<span class="glyphicon glyphicon-chevron-right" />',
+                collapseRow: '<span class="glyphicon glyphicon-chevron-down" />'
+            }
         }
     },
 
@@ -5001,7 +5051,7 @@ gj.grid.plugins.expandCollapseRows = {
 
             $detailsRow.append($detailsCell.append($detailsWrapper.append($contentRow.data('details'))));
             $detailsRow.insertAfter($contentRow);
-            $cell.children('div[data-role="display"]').empty().append(data.icons.collapse);
+            $cell.children('div[data-role="display"]').empty().append(data.icons.collapseRow);
             $grid.updateDetails($contentRow);
             gj.grid.plugins.expandCollapseRows.events.detailExpand($grid, $detailsRow.find('td>div'), id);
         },
@@ -5012,7 +5062,7 @@ gj.grid.plugins.expandCollapseRows = {
                 data = $grid.data(),
                 id = gj.grid.methods.getId($contentRow, data.primaryKey, $contentRow.data('position'));
             $detailsRow.remove();
-            $cell.children('div[data-role="display"]').empty().append(data.icons.expand);
+            $cell.children('div[data-role="display"]').empty().append(data.icons.expandRow);
             gj.grid.plugins.expandCollapseRows.events.detailCollapse($grid, $detailsRow.find('td>div'), id);
         },
 
@@ -5088,7 +5138,7 @@ gj.grid.plugins.expandCollapseRows = {
          * @param {object} e - event data
          * @param {object} detailWrapper - the detail wrapper as jQuery object 
          * @param {string} id - the id of the record
-         * @example sample <!-- grid -->
+         * @example sample <!-- materialicons, grid -->
          * <table id="grid"></table>
          * <script>
          *     var grid = $('#grid').grid({
@@ -5114,7 +5164,7 @@ gj.grid.plugins.expandCollapseRows = {
          * @param {object} e - event data
          * @param {object} detailWrapper - the detail wrapper as jQuery object 
          * @param {string} id - the id of the record
-         * @example sample <!-- grid -->
+         * @example sample <!-- materialicons, grid -->
          * <table id="grid"></table>
          * <script>
          *     var grid = $('#grid').grid({
@@ -5151,7 +5201,7 @@ gj.grid.plugins.expandCollapseRows = {
                 align: 'center',
                 stopPropagation: true,
                 cssClass: 'gj-cursor-pointer gj-unselectable',
-                tmpl: data.icons.expand,
+                tmpl: data.icons.expandRow,
                 role: 'expander',
                 events: {
                     'click': function (e) {
@@ -5187,12 +5237,13 @@ gj.grid.plugins.expandCollapseRows = {
                 $grid.collapseAll();
             });
             $grid.on('dataBound', function () {
-                var i, $cell, $row, data = $grid.data();
+                var i, $cell, $row, position, data = $grid.data();
                 if (data.keepExpandedRows && $.isArray(data.expandedRows)) {
                     for (i = 0; i < data.expandedRows.length; i++) {
                         $row = gj.grid.methods.getRowById($grid, data.expandedRows[i]);
                         if ($row && $row.length) {
-                            $cell = $row.children('td').first(); //TODO: use data-role for selection
+                            position = gj.grid.methods.getColumnPositionByRole($grid, 'expander');
+                            $cell = $row.children('td:eq(' + position + ')');
                             if ($cell && $cell.length) {
                                 gj.grid.plugins.expandCollapseRows.private.detailExpand($grid, $cell);
                             }
@@ -7715,12 +7766,25 @@ gj.grid.plugins.grouping = {
                   *         pager: { limit: 5 }
                   *     });
                   * </script>
-                  * @example Bootstrap <!-- bootstrap, grid -->
+                  * @example Bootstrap.3 <!-- bootstrap, grid -->
                   * <table id="grid"></table>
                   * <script>
                   *     $('#grid').grid({
                   *         dataSource: '/Players/Get',
                   *         uiLibrary: 'bootstrap',
+                  *         grouping: { groupBy: 'Nationality' },
+                  *         columns: [ { field: 'Name', sortable: true }, { field: 'DateOfBirth', type: 'date' } ],
+                  *         pager: { limit: 5 },
+                  *         detailTemplate: '<div><b>Place Of Birth:</b> {PlaceOfBirth}</div>'
+                  *     });
+                  * </script>
+                  * @example Bootstrap.4 <!-- bootstrap4, fontawesome, grid -->
+                  * <table id="grid"></table>
+                  * <script>
+                  *     $('#grid').grid({
+                  *         dataSource: '/Players/Get',
+                  *         uiLibrary: 'bootstrap4',
+                  *         iconsLibrary: 'fontawesome',
                   *         grouping: { groupBy: 'Nationality' },
                   *         columns: [ { field: 'Name', sortable: true }, { field: 'PlaceOfBirth' } ],
                   *         pager: { limit: 5 }
@@ -7730,6 +7794,64 @@ gj.grid.plugins.grouping = {
                 groupBy: undefined,
 
                 direction: 'asc'
+            },
+
+            icons: {
+                /** Expand row icon definition.
+                 * @alias icons.expandGroup
+                 * @type String
+                 * @default '<i class="material-icons">add</i>'
+                 * @example Right.Down.Icons <!-- materialicons, grid -->
+                 * <table id="grid"></table>
+                 * <script>
+                 *     $('#grid').grid({
+                 *         primaryKey: 'ID',
+                 *         dataSource: '/Players/Get',
+                 *         columns: [ { field: 'Name', sortable: true }, { field: 'PlaceOfBirth' } ],
+                 *         grouping: { groupBy: 'Nationality' },
+                 *         icons: {
+                 *             expandGroup: '<i class="material-icons">keyboard_arrow_right</i>',
+                 *             collapseGroup: '<i class="material-icons">keyboard_arrow_down</i>'
+                 *         }
+                 *     });
+                 * </script>
+                 */
+                expandGroup: '<i class="material-icons">add</i>',
+
+                /** Collapse row icon definition.
+                 * @alias icons.collapseGroup
+                 * @type String
+                 * @default '<i class="material-icons">remove</i>'
+                 * @example Right.Down.Icons <!-- materialicons, grid -->
+                 * <table id="grid"></table>
+                 * <script>
+                 *     $('#grid').grid({
+                 *         primaryKey: 'ID',
+                 *         dataSource: '/Players/Get',
+                 *         columns: [ { field: 'Name', sortable: true }, { field: 'PlaceOfBirth' } ],
+                 *         grouping: { groupBy: 'Nationality' },
+                 *         icons: {
+                 *             expandGroup: '<i class="material-icons">keyboard_arrow_right</i>',
+                 *             collapseGroup: '<i class="material-icons">keyboard_arrow_down</i>'
+                 *         }
+                 *     });
+                 * </script>
+                 */
+                collapseGroup: '<i class="material-icons">remove</i>'
+            }
+        },
+
+        fontawesome: {
+            icons: {
+                expandGroup: '<i class="fa fa-plus" aria-hidden="true"></i>',
+                collapseGroup: '<i class="fa fa-minus" aria-hidden="true"></i>'
+            }
+        },
+
+        glyphicons: {
+            icons: {
+                expandGroup: '<span class="glyphicon glyphicon-plus" />',
+                collapseGroup: '<span class="glyphicon glyphicon-minus" />'
             }
         }
     },
@@ -7745,7 +7867,7 @@ gj.grid.plugins.grouping = {
                         $groupRow = $('<tr data-role="group" />'),
                         $expandCollapseCell = $('<td class="gj-text-align-center gj-unselectable gj-cursor-pointer" />');
 
-                    $expandCollapseCell.append('<div data-role="display">' + data.icons.collapse + '</div>');
+                    $expandCollapseCell.append('<div data-role="display">' + data.icons.collapseGroup + '</div>');
                     $expandCollapseCell.on('click', gj.grid.plugins.grouping.private.createExpandCollapseHandler(data));
                     $groupRow.append($expandCollapseCell);
                     $groupRow.append('<td colspan="' + colspan + '"><div data-role="display">' + data.grouping.groupBy + ': ' + record[data.grouping.groupBy] + '</div></td>');
@@ -7771,10 +7893,10 @@ gj.grid.plugins.grouping = {
                     $groupRow = $cell.closest('tr');
                 if ($groupRow.next(':visible').data('role') === 'row') {
                     $groupRow.nextUntil('[data-role="group"]').hide();
-                    $display.empty().append(data.icons.expand);
+                    $display.empty().append(data.icons.expandGroup);
                 } else {
                     $groupRow.nextUntil('[data-role="group"]').show();
-                    $display.empty().append(data.icons.collapse);
+                    $display.empty().append(data.icons.collapseGroup);
                 }
             };
         }

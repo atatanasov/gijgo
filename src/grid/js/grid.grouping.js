@@ -56,12 +56,25 @@ gj.grid.plugins.grouping = {
                   *         pager: { limit: 5 }
                   *     });
                   * </script>
-                  * @example Bootstrap <!-- bootstrap, grid -->
+                  * @example Bootstrap.3 <!-- bootstrap, grid -->
                   * <table id="grid"></table>
                   * <script>
                   *     $('#grid').grid({
                   *         dataSource: '/Players/Get',
                   *         uiLibrary: 'bootstrap',
+                  *         grouping: { groupBy: 'Nationality' },
+                  *         columns: [ { field: 'Name', sortable: true }, { field: 'DateOfBirth', type: 'date' } ],
+                  *         pager: { limit: 5 },
+                  *         detailTemplate: '<div><b>Place Of Birth:</b> {PlaceOfBirth}</div>'
+                  *     });
+                  * </script>
+                  * @example Bootstrap.4 <!-- bootstrap4, fontawesome, grid -->
+                  * <table id="grid"></table>
+                  * <script>
+                  *     $('#grid').grid({
+                  *         dataSource: '/Players/Get',
+                  *         uiLibrary: 'bootstrap4',
+                  *         iconsLibrary: 'fontawesome',
                   *         grouping: { groupBy: 'Nationality' },
                   *         columns: [ { field: 'Name', sortable: true }, { field: 'PlaceOfBirth' } ],
                   *         pager: { limit: 5 }
@@ -71,6 +84,64 @@ gj.grid.plugins.grouping = {
                 groupBy: undefined,
 
                 direction: 'asc'
+            },
+
+            icons: {
+                /** Expand row icon definition.
+                 * @alias icons.expandGroup
+                 * @type String
+                 * @default '<i class="material-icons">add</i>'
+                 * @example Right.Down.Icons <!-- materialicons, grid -->
+                 * <table id="grid"></table>
+                 * <script>
+                 *     $('#grid').grid({
+                 *         primaryKey: 'ID',
+                 *         dataSource: '/Players/Get',
+                 *         columns: [ { field: 'Name', sortable: true }, { field: 'PlaceOfBirth' } ],
+                 *         grouping: { groupBy: 'Nationality' },
+                 *         icons: {
+                 *             expandGroup: '<i class="material-icons">keyboard_arrow_right</i>',
+                 *             collapseGroup: '<i class="material-icons">keyboard_arrow_down</i>'
+                 *         }
+                 *     });
+                 * </script>
+                 */
+                expandGroup: '<i class="material-icons">add</i>',
+
+                /** Collapse row icon definition.
+                 * @alias icons.collapseGroup
+                 * @type String
+                 * @default '<i class="material-icons">remove</i>'
+                 * @example Right.Down.Icons <!-- materialicons, grid -->
+                 * <table id="grid"></table>
+                 * <script>
+                 *     $('#grid').grid({
+                 *         primaryKey: 'ID',
+                 *         dataSource: '/Players/Get',
+                 *         columns: [ { field: 'Name', sortable: true }, { field: 'PlaceOfBirth' } ],
+                 *         grouping: { groupBy: 'Nationality' },
+                 *         icons: {
+                 *             expandGroup: '<i class="material-icons">keyboard_arrow_right</i>',
+                 *             collapseGroup: '<i class="material-icons">keyboard_arrow_down</i>'
+                 *         }
+                 *     });
+                 * </script>
+                 */
+                collapseGroup: '<i class="material-icons">remove</i>'
+            }
+        },
+
+        fontawesome: {
+            icons: {
+                expandGroup: '<i class="fa fa-plus" aria-hidden="true"></i>',
+                collapseGroup: '<i class="fa fa-minus" aria-hidden="true"></i>'
+            }
+        },
+
+        glyphicons: {
+            icons: {
+                expandGroup: '<span class="glyphicon glyphicon-plus" />',
+                collapseGroup: '<span class="glyphicon glyphicon-minus" />'
             }
         }
     },
@@ -86,7 +157,7 @@ gj.grid.plugins.grouping = {
                         $groupRow = $('<tr data-role="group" />'),
                         $expandCollapseCell = $('<td class="gj-text-align-center gj-unselectable gj-cursor-pointer" />');
 
-                    $expandCollapseCell.append('<div data-role="display">' + data.icons.collapse + '</div>');
+                    $expandCollapseCell.append('<div data-role="display">' + data.icons.collapseGroup + '</div>');
                     $expandCollapseCell.on('click', gj.grid.plugins.grouping.private.createExpandCollapseHandler(data));
                     $groupRow.append($expandCollapseCell);
                     $groupRow.append('<td colspan="' + colspan + '"><div data-role="display">' + data.grouping.groupBy + ': ' + record[data.grouping.groupBy] + '</div></td>');
@@ -112,10 +183,10 @@ gj.grid.plugins.grouping = {
                     $groupRow = $cell.closest('tr');
                 if ($groupRow.next(':visible').data('role') === 'row') {
                     $groupRow.nextUntil('[data-role="group"]').hide();
-                    $display.empty().append(data.icons.expand);
+                    $display.empty().append(data.icons.expandGroup);
                 } else {
                     $groupRow.nextUntil('[data-role="group"]').show();
-                    $display.empty().append(data.icons.collapse);
+                    $display.empty().append(data.icons.collapseGroup);
                 }
             };
         }

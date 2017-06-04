@@ -12,15 +12,15 @@
 <body>
  <table id="grid"></table>
  <script>
-     var grid = $('#grid').grid({
+     $('#grid').grid({
          primaryKey: 'ID',
          dataSource: '/Players/Get',
-         detailTemplate: '<div></div>',
-         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'DateOfBirth', type: 'date' } ]
-     });
-     grid.on('detailExpand', function (e, $detailWrapper, id) {
-         var record = grid.getById(id);
-         $detailWrapper.empty().append('<b>Place Of Birth:</b> ' + record.PlaceOfBirth);
+         columns: [ { field: 'Name', sortable: true }, { field: 'PlaceOfBirth' } ],
+         grouping: { groupBy: 'Nationality' },
+         icons: {
+             expandGroup: '<i class="material-icons">keyboard_arrow_right</i>',
+             collapseGroup: '<i class="material-icons">keyboard_arrow_down</i>'
+         }
      });
  </script>
 </body>
