@@ -14,10 +14,12 @@
  <script>
      $('#grid').grid({
          dataSource: '/Players/Get',
-         headerFilter: {
-             type: 'onchange'
-         },
-         columns: [ { field: 'ID', width: 56, filterable: false }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
+         headerFilter: true,
+         columns: [
+             { field: 'ID', width: 56, filterable: false },
+             { field: 'Name', filterable: true },
+             { field: 'PlaceOfBirth' }
+         ]
      });
  </script>
 </body>

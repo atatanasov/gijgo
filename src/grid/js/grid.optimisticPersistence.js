@@ -21,7 +21,7 @@ gj.grid.plugins.optimisticPersistence = {
                  *         guid: '58d47231-ac7b-e6d2-ddba-5e0195b31f2e',
                  *         uiLibrary: 'bootstrap',
                  *         dataSource: '/Players/Get',
-                 *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
+                 *         columns: [ { field: 'ID', width: 36 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
                  *         optimisticPersistence: { localStorage: ["page", "limit"] },
                  *         pager: { limit: 2, sizes: [2, 5, 10, 20] }
                  *     });
@@ -43,7 +43,7 @@ gj.grid.plugins.optimisticPersistence = {
                  *         guid: '58d47231-ac7b-e6d2-ddba-5e0195b31f2f',
                  *         uiLibrary: 'bootstrap',
                  *         dataSource: '/Players/Get',
-                 *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
+                 *         columns: [ { field: 'ID', width: 36 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
                  *         optimisticPersistence: { sessionStorage: ["page", "limit"] },
                  *         pager: { limit: 2, sizes: [2, 5, 10, 20] }
                  *     });

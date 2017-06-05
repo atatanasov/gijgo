@@ -47,7 +47,7 @@ gj.grid.plugins.pagination = {
                  *     ];
                  *     grid = $('#grid').grid({
                  *         dataSource: data,
-                 *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
+                 *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
                  *         pager: { limit: 2 }
                  *     });
                  * </script>
@@ -56,7 +56,7 @@ gj.grid.plugins.pagination = {
                  * <script>
                  *     var grid = $('#grid').grid({
                  *         dataSource: '/Players/Get',
-                 *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
+                 *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
                  *         pager: { limit: 2 }
                  *     });
                  * </script>

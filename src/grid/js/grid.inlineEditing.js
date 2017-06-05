@@ -68,8 +68,8 @@ gj.grid.plugins.inlineEditing.config = {
 
             /** Provides a way to specify a display mode for the column.
              * @alias column.mode
-             * @type display|edit
-             * @default display
+             * @type readEdit|editOnly|readOnly
+             * @default readEdit
              * @example sample <!-- grid -->
              * <table id="grid"></table>
              * <script>
@@ -77,13 +77,13 @@ gj.grid.plugins.inlineEditing.config = {
              *         dataSource: '/Players/Get',
              *         columns: [
              *             { field: 'ID', width: 56 },
-             *             { field: 'Name', editor: true, mode: 'edit' },
-             *             { field: 'PlaceOfBirth', editor: true, mode: 'edit' }
+             *             { field: 'Name', editor: true, mode: 'editOnly' },
+             *             { field: 'PlaceOfBirth', editor: true, mode: 'readOnly' }
              *         ]
              *     });
              * </script>
              */
-            mode: 'display'
+            mode: 'readEdit'
         },
         inlineEditing: {
 
@@ -266,7 +266,7 @@ gj.grid.plugins.inlineEditing.private = {
     editMode: function ($grid, $cell, column, record) {
         var $displayContainer, $editorContainer, $editorField, $checkbox, value, data = $grid.data();
         if ($cell.attr('data-mode') !== 'edit' && column.editor) {
-            if (data.inlineEditing.mode !== 'command') {
+            if (data.inlineEditing.mode !== 'command' && column.mode !== 'editOnly') {
                 $('div[data-role="edit"]:visible').parent('td').each(function () {
                     $(this).find('input, select, textarea').triggerHandler('blur');
                 });
@@ -294,7 +294,7 @@ gj.grid.plugins.inlineEditing.private = {
                     }
                 }
                 $editorField = $editorContainer.find('input, select, textarea').first();
-                if (data.inlineEditing.mode !== 'command') {
+                if (data.inlineEditing.mode !== 'command' && column.mode !== 'editOnly') {
                     $editorField.on('blur', function (e) {
                         gj.grid.plugins.inlineEditing.private.displayMode($grid, $cell, column);
                     });
@@ -344,16 +344,18 @@ gj.grid.plugins.inlineEditing.private = {
             oldValue = record[column.field];
             if (cancel !== true && newValue !== oldValue) {
                 record[column.field] = newValue;
-                gj.grid.methods.renderDisplayElement($grid, $displayContainer, column, record, gj.grid.methods.getId(record, $grid.data('primaryKey'), position), 'update');
-                if ($cell.find('span.gj-dirty').length === 0) {
-                    if ($cell.css('padding-top') !== '0px') {
-                        style += 'margin-top: -' + $cell.css('padding-top') + ';';
+                if (column.mode !== 'editOnly') {
+                    gj.grid.methods.renderDisplayElement($grid, $displayContainer, column, record, gj.grid.methods.getId(record, $grid.data('primaryKey'), position), 'update');
+                    if ($cell.find('span.gj-dirty').length === 0) {
+                        if ($cell.css('padding-top') !== '0px') {
+                            style += 'margin-top: -' + $cell.css('padding-top') + ';';
+                        }
+                        if ($cell.css('padding-left') !== '0px') {
+                            style += 'margin-left: -' + $cell.css('padding-left') + ';';
+                        }
+                        style = style ? ' style="' + style + '"' : '';
+                        $cell.prepend($('<span class="gj-dirty"' + style + '></span>'));
                     }
-                    if ($cell.css('padding-left') !== '0px') {
-                        style += 'margin-left: -' + $cell.css('padding-left') + ';';
-                    }
-                    style = style ? ' style="' + style + '"' : '';
-                    $cell.prepend($('<span class="gj-dirty"' + style + '></span>'));
                 }
                 gj.grid.plugins.inlineEditing.events.cellDataChanged($grid, $cell, column, record, oldValue, newValue);
                 gj.grid.plugins.inlineEditing.private.updateChanges($grid, column, record, newValue);
@@ -507,10 +509,10 @@ gj.grid.plugins.inlineEditing.public = {
      *         dataSource: '/Players/Get',
      *         inlineEditing: { mode: 'command', managementColumn: false },
      *         columns: [ 
-     *             { field: 'ID', width: 24 },
+     *             { field: 'ID', width: 56 },
      *             { field: 'Name', editor: true }, 
      *             { field: 'PlaceOfBirth', editor: true },
-     *             { width: 32, align: 'center', renderer: renderer }
+     *             { width: 56, align: 'center', renderer: renderer }
      *         ]
      *     });
      * </script>
@@ -559,10 +561,10 @@ gj.grid.plugins.inlineEditing.public = {
      *         dataSource: '/Players/Get',
      *         inlineEditing: { mode: 'command', managementColumn: false },
      *         columns: [ 
-     *             { field: 'ID', width: 24 },
+     *             { field: 'ID', width: 56 },
      *             { field: 'Name', editor: true }, 
      *             { field: 'PlaceOfBirth', editor: true },
-     *             { width: 32, align: 'center', renderer: renderer }
+     *             { width: 56, align: 'center', renderer: renderer }
      *         ]
      *     });
      * </script>
@@ -614,7 +616,7 @@ gj.grid.plugins.inlineEditing.events = {
      * @param {object} e - event data
      * @param {object} id - the id of the record
      * @param {object} record - the data of the row record
-     * @example sample <!-- grid -->
+     * @example sample <!-- materialicons, grid -->
      * <table id="grid"></table>
      * <script>
      *     var grid = $('#grid').grid({
@@ -649,11 +651,12 @@ gj.grid.plugins.inlineEditing.configure = function ($grid, fullConfig, clientCon
     } else {
         $grid.on('cellDataBound', function (e, $displayEl, id, column, record) {
             if (column.editor) {
-                $displayEl.parent('td').on(data.inlineEditing.mode === 'dblclick' ? 'dblclick' : 'click', function () {
+                if (column.mode === 'editOnly') {
                     gj.grid.plugins.inlineEditing.private.editMode($grid, $displayEl.parent(), column, record);
-                });
-                if (column.mode === 'edit') {
-                    gj.grid.plugins.inlineEditing.private.editMode($grid, $displayEl.parent(), column, record);
+                } else {
+                    $displayEl.parent('td').on(data.inlineEditing.mode === 'dblclick' ? 'dblclick' : 'click', function () {
+                        gj.grid.plugins.inlineEditing.private.editMode($grid, $displayEl.parent(), column, record);
+                    });
                 }
             }
         });

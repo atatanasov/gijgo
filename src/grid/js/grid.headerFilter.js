@@ -10,14 +10,28 @@ gj.grid.plugins.headerFilter = {
                  * @alias column.filterable
                  * @type boolean
                  * @default true
-                 * @example sample <!-- materialicons, grid -->
+                 * @example Material.Design <!-- materialicons, grid -->
                  * <table id="grid"></table>
                  * <script>
                  *     $('#grid').grid({
                  *         dataSource: '/Players/Get',
                  *         headerFilter: true,
                  *         columns: [
-                 *             { field: 'ID', width: 36, filterable: false },
+                 *             { field: 'ID', width: 56, filterable: false },
+                 *             { field: 'Name', filterable: true },
+                 *             { field: 'PlaceOfBirth' }
+                 *         ]
+                 *     });
+                 * </script>
+                 * @example Bootstrap.3 <!-- bootstrap, grid -->
+                 * <table id="grid"></table>
+                 * <script>
+                 *     $('#grid').grid({
+                 *         dataSource: '/Players/Get',
+                 *         headerFilter: true,
+                 *         uiLibrary: 'bootstrap',
+                 *         columns: [
+                 *             { field: 'ID', width: 56, filterable: false },
                  *             { field: 'Name', filterable: true },
                  *             { field: 'PlaceOfBirth' }
                  *         ]
@@ -36,7 +50,7 @@ gj.grid.plugins.headerFilter = {
              *     $('#grid').grid({
              *         dataSource: '/Players/Get',
              *         headerFilter: true,
-             *         columns: [ { field: 'ID', width: 36 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
+             *         columns: [ { field: 'ID', width: 56, filterable: false }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
              *     });
              * </script>
              * @example Local.DataSource <!-- materialicons, grid -->
@@ -54,7 +68,7 @@ gj.grid.plugins.headerFilter = {
              *         dataSource: data,
              *         headerFilter: true,
              *         columns: [ 
-             *             { field: 'ID', width: 36 }, 
+             *             { field: 'ID', width: 56, filterable: false }, 
              *             { field: 'Name' }, 
              *             { field: 'PlaceOfBirth' } 
              *         ],
@@ -75,7 +89,7 @@ gj.grid.plugins.headerFilter = {
                  *         headerFilter: {
                  *             type: 'onenterkeypress'
                  *         },
-                 *         columns: [ { field: 'ID', width: 36 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
+                 *         columns: [ { field: 'ID', width: 56, filterable: false }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
                  *     });
                  * </script>
                  * @example OnChange <!-- materialicons, grid -->
@@ -86,7 +100,7 @@ gj.grid.plugins.headerFilter = {
                  *         headerFilter: {
                  *             type: 'onchange'
                  *         },
-                 *         columns: [ { field: 'ID', width: 36 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
+                 *         columns: [ { field: 'ID', width: 56, filterable: false }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
                  *     });
                  * </script>
                  */

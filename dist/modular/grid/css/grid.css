@@ -73,7 +73,7 @@
     padding: 0 16px;
     display: inline-block;
     font-family: "Roboto","Helvetica","Arial",sans-serif;
-    font-size: 14px;
+    font-size: 1rem;
     font-weight: 500;
     text-transform: uppercase;
     letter-spacing: 0;
@@ -84,8 +84,20 @@
     cursor: pointer;
     text-decoration: none;
     text-align: center;
-    line-height: 50%; /*36px*/
+    line-height: 36px;
     vertical-align: middle;
+
+    overflow: hidden;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.gj-button-md .material-icons {
+    vertical-align: middle;
+    font-size: 1.3rem;
+    margin-right: 4px;    
 }
 
 .gj-button-md-active {
@@ -452,4 +464,7 @@ table.gj-grid-table div[data-role="edit"] {
 table.gj-grid-table div[data-role="edit"] label.gj-checkbox-md,
 table.gj-grid-table div[data-role="edit"] label.gj-checkbox-bootstrap {
     display: inline-block;
+}
+.gj-grid-md-table thead tr[data-role="filter"] th {
+    border-top: 1px solid rgba(0,0,0,.12);
 }

@@ -88,6 +88,7 @@
     <Content Include="src\editor\js\messages\messages.pt-br.js" />
     <Content Include="src\grid\css\grid.base.css" />
     <Content Include="src\grid\css\grid.columnReorder.css" />
+    <Content Include="src\grid\css\grid.headerFilter.css" />
     <Content Include="src\grid\css\grid.inlineEditing.css" />
     <Content Include="src\grid\css\grid.pagination.css" />
     <Content Include="src\grid\css\grid.resizableColumns.css" />
