@@ -15,7 +15,7 @@
      var grid = $('#grid').grid({
          dataSource: '/Players/Get',
          uiLibrary: 'bootstrap',
-         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
+         columns: [ { field: 'ID', width: 36 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
          pager: { limit: 2, sizes: [2, 5, 10, 20] }
      });
      grid.on('pageSizeChange', function (e, newSize) {

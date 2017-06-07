@@ -73,7 +73,7 @@ DIV.gj-grid-wrapper DIV.gj-grid-loading-text
     vertical-align: top;
 }
 
-TABLE.gj-grid-table .gj-grid-icon
+table.gj-grid-table .gj-grid-icon
 {
     margin: 0 2px;
     cursor: pointer;
@@ -83,13 +83,6 @@ TABLE.gj-grid-table .gj-grid-icon
 }
 
 /* Bootstrap Theme */
-div.gj-grid-wrapper div.gj-grid-bootstrap-toolbar {
-    background-color: #f5f5f5;
-    padding: 8px;
-    font-weight: bold;
-    border: 1px solid #ddd;
-}
-
 table.gj-grid-bootstrap-table thead th {
     background-color: #f5f5f5;
     vertical-align:middle;

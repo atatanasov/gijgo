@@ -6098,26 +6098,22 @@ gj.grid.plugins.pagination = {
                  * @type array
                  * @default undefined
                  * @example Bootstrap.3 <!-- bootstrap, grid, grid.pagination  -->
-                 * <div class="container">
-                 *     <table id="grid"></table>
-                 * </div>
+                 * <table id="grid"></table>
                  * <script>
                  *     var grid = $('#grid').grid({
                  *         dataSource: '/Players/Get',
                  *         uiLibrary: 'bootstrap',
-                 *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
+                 *         columns: [ { field: 'ID', width: 36 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
                  *         pager: { limit: 2, sizes: [2, 5, 10, 20] }
                  *     });
                  * </script>
                  * @example Material.Design <!-- materialicons, grid, grid.pagination  -->
-                 * <div class="container">
-                 *     <table id="grid"></table>
-                 * </div>
+                 * <table id="grid"></table>
                  * <script>
                  *     var grid = $('#grid').grid({
                  *         dataSource: '/Players/Get',
                  *         uiLibrary: 'materialdesign',
-                 *         columns: [ { field: 'ID', width: 70 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
+                 *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
                  *         pager: { limit: 2, sizes: [2, 5, 10, 20] }
                  *     });
                  * </script>
@@ -6136,7 +6132,7 @@ gj.grid.plugins.pagination = {
                  * <script>
                  *     var grid = $('#grid').grid({
                  *         dataSource: '/Players/Get',
-                 *         columns: [ { field: 'ID', width: 24 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
+                 *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
                  *         style: {
                  *             pager: {
                  *                 stateDisabled: 'icon-disabled'
@@ -6149,7 +6145,7 @@ gj.grid.plugins.pagination = {
                  *                 $('<div title="First" data-role="page-first" class="gj-grid-icon fa fa-fast-backward" aria-hidden="true"></div>'),
                  *                 $('<div title="Previous" data-role="page-previous" class="gj-grid-icon fa fa-backward" aria-hidden="true"></div>'),
                  *                 $('<div> Page </div>'),
-                 *                 $('<div></div>').append($('<input type="text" data-role="page-number" style="margin: 0 5px;" value="0">')),
+                 *                 $('<div></div>').append($('<input type="text" data-role="page-number" style="margin: 0 5px; width: 34px;" value="0">')),
                  *                 $('<div>of&nbsp;</div>'),
                  *                 $('<div data-role="page-label-last" style="margin-right: 5px;">0</div>'),
                  *                 $('<div title="Next" data-role="page-next" class="gj-grid-icon fa fa-forward" aria-hidden="true"></div>'),
@@ -6555,7 +6551,7 @@ gj.grid.plugins.pagination = {
          *     var grid = $('#grid').grid({
          *         dataSource: '/Players/Get',
          *         uiLibrary: 'bootstrap',
-         *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
+         *         columns: [ { field: 'ID', width: 36 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
          *         pager: { limit: 2, sizes: [2, 5, 10, 20] }
          *     });
          *     grid.on('pageSizeChange', function (e, newSize) {
@@ -6578,7 +6574,7 @@ gj.grid.plugins.pagination = {
          * <script>
          *     var grid = $('#grid').grid({
          *         dataSource: '/Players/Get',
-         *         columns: [ { field: 'ID' }, { field: 'Name', sortable: true }, { field: 'PlaceOfBirth' } ],
+         *         columns: [ { field: 'ID', width: 56 }, { field: 'Name', sortable: true }, { field: 'PlaceOfBirth' } ],
          *         pager: { limit: 2, sizes: [2, 5, 10, 20] }
          *     });
          *     grid.on('pageChanging', function (e, newPage) {
@@ -6624,14 +6620,15 @@ gj.grid.plugins.responsiveDesign = {
              * This setting is in use only if the resizeMonitoring setting is set to true.
              * @type number
              * @default 500
-             * @example sample <!-- grid, grid.responsiveDesign -->
+             * @example sample <!-- materialicons, grid, grid.responsiveDesign -->
+             * <p>Change browser window size in order to fire resize event.</p>
              * <table id="grid"></table>
              * <script>
              *     var grid = $('#grid').grid({
              *         dataSource: '/Players/Get',
              *         responsive: true,
              *         resizeCheckInterval: 2000, //check if the grid is resized on each 2 second
-             *         columns: [ { field: 'ID', width: 20 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
+             *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
              *     });
              *     grid.on('resize', function () {
              *         alert('resize is fired.');
@@ -6646,6 +6643,7 @@ gj.grid.plugins.responsiveDesign = {
              * @type boolean
              * @default false
              * @example sample <!-- grid, grid.responsiveDesign -->
+             * <p>Resize browser window in order to see his responsive behaviour.</p>
              * <table id="grid"></table>
              * <script>
              *     $('#grid').grid({
@@ -6653,8 +6651,8 @@ gj.grid.plugins.responsiveDesign = {
              *         responsive: true,
              *         columns: [
              *             { field: 'Name' },
-             *             { field: 'PlaceOfBirth', minWidth: 140, priority: 1 },
-             *             { field: 'DateOfBirth', minWidth: 160, priority: 2, type: 'date' }
+             *             { field: 'PlaceOfBirth', minWidth: 340, priority: 1 },
+             *             { field: 'DateOfBirth', minWidth: 360, priority: 2, type: 'date' }
              *         ]
              *     });
              * </script>
@@ -6735,7 +6733,7 @@ gj.grid.plugins.responsiveDesign = {
                  * This setting is working only when the responsive setting is set to true and the column priority setting is set.
                  * @alias column.minWidth
                  * @type number
-                 * @default 150
+                 * @default 250
                  * @example sample <!-- grid, grid.responsiveDesign -->
                  * <table id="grid"></table>
                  * <script>
@@ -6744,13 +6742,13 @@ gj.grid.plugins.responsiveDesign = {
                  *         responsive: true,
                  *         columns: [
                  *             { field: 'Name' },
-                 *             { field: 'PlaceOfBirth', minWidth: 140, priority: 1 },
-                 *             { field: 'DateOfBirth', minWidth: 160, priority: 2, type: 'date' }
+                 *             { field: 'PlaceOfBirth', minWidth: 240, priority: 1 },
+                 *             { field: 'DateOfBirth', minWidth: 260, priority: 2, type: 'date' }
                  *         ]
                  *     });
                  * </script>
                  */
-                minWidth: 150
+                minWidth: 250
             },
             style: {
                 rowDetailItem: ''
@@ -6833,7 +6831,7 @@ gj.grid.plugins.responsiveDesign = {
          * @method
          * @return void
          * @example sample <!-- grid, grid.responsiveDesign -->
-         * <button onclick="grid.makeResponsive()">Make Responsive</button>
+         * <button onclick="grid.makeResponsive()" class="gj-button-md">Make Responsive</button>
          * <br/><br/>
          * <table id="grid"></table>
          * <script>
@@ -6841,7 +6839,7 @@ gj.grid.plugins.responsiveDesign = {
          *         dataSource: '/Players/Get',
          *         responsive: false,
          *         columns: [
-         *             { field: 'ID', width: 20 },
+         *             { field: 'ID', width: 56 },
          *             { field: 'Name', minWidth: 320, priority: 1 },
          *             { field: 'PlaceOfBirth', minWidth: 320, priority: 2 }
          *         ]
@@ -6894,7 +6892,7 @@ gj.grid.plugins.responsiveDesign = {
          *     var grid = $('#grid').grid({
          *         dataSource: '/Players/Get',
          *         responsive: true,
-         *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
+         *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
          *     });
          *     grid.on('resize', function (e, newWidth, oldWidth) {
          *         alert('resize is fired.');
@@ -6973,11 +6971,31 @@ gj.grid.plugins.toolbar = {
             /** The title of the grid. Appears in a separate row on top of the grid.
               * @type string
               * @default undefined
-              * @example sample <!-- grid, grid.toolbar -->
+              * @example Material.Design <!-- materialicons, grid, grid.toolbar -->
               * <table id="grid"></table>
               * <script>
               *     $('#grid').grid({
               *         dataSource: '/Players/Get',
+              *         title: 'Players',
+              *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
+              *     });
+              * </script>
+              * @example Bootstrap.3 <!-- bootstrap, grid, grid.toolbar -->
+              * <table id="grid"></table>
+              * <script>
+              *     $('#grid').grid({
+              *         dataSource: '/Players/Get',
+              *         uiLibrary: 'bootstrap',
+              *         title: 'Players',
+              *         columns: [ { field: 'ID', width: 34 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
+              *     });
+              * </script>
+              * @example Bootstrap.4 <!-- bootstrap4, grid, grid.toolbar -->
+              * <table id="grid"></table>
+              * <script>
+              *     $('#grid').grid({
+              *         dataSource: '/Players/Get',
+              *         uiLibrary: 'bootstrap4',
               *         title: 'Players',
               *         columns: [ { field: 'ID', width: 34 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
               *     });
@@ -6986,13 +7004,19 @@ gj.grid.plugins.toolbar = {
             title: undefined,
 
             style: {
-                toolbar: 'gj-grid-base-toolbar'
+                toolbar: 'gj-grid-md-toolbar'
             }
         },
 
         bootstrap: {
             style: {
                 toolbar: 'gj-grid-bootstrap-toolbar'
+            }
+        },
+
+        bootstrap4: {
+            style: {
+                toolbar: 'gj-grid-bootstrap-4-toolbar'
             }
         }
     },
@@ -7038,7 +7062,7 @@ gj.grid.plugins.toolbar = {
          * @method
          * @param {object} text - The text of the new grid title.
          * @return string or grid object
-         * @example text <!-- grid, grid.toolbar -->
+         * @example text <!-- materialicons, grid, grid.toolbar -->
          * <button onclick="grid.title('New Title')">Set New Title</button>
          * <button onclick="alert(grid.title())">Get Title</button>
          * <br/><br/>
@@ -7047,10 +7071,10 @@ gj.grid.plugins.toolbar = {
          *     var grid = $('#grid').grid({
          *         dataSource: '/Players/Get',
          *         title: 'Initial Grid Title',
-         *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
+         *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
          *     });
          * </script>
-         * @example html.template <!-- grid, grid.toolbar -->
+         * @example html.template <!-- materialicons, grid, grid.toolbar -->
          * <button onclick="grid.title('New Title')">Set New Title</button>
          * <button onclick="alert(grid.title())">Get Title</button>
          * <br/><br/>
@@ -7059,7 +7083,7 @@ gj.grid.plugins.toolbar = {
          *     var grid = $('#grid').grid({
          *         dataSource: '/Players/Get',
          *         toolbarTemplate: '<div data-role="title">Initial Grid Title</div>',
-         *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
+         *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
          *     });
          * </script>
          */
@@ -7092,13 +7116,13 @@ gj.grid.plugins.resizableColumns = {
             /** If set to true, users can resize columns by dragging the edges (resize handles) of their header cells.
              * @type boolean
              * @default false
-             * @example Base.Theme <!-- grid, draggable.base -->
+             * @example Material.Design <!-- materialicons, grid, draggable.base -->
              * <table id="grid"></table>
              * <script>
              *     var grid = $('#grid').grid({
              *         dataSource: '/Players/Get',
              *         resizableColumns: true,
-             *         columns: [ { field: 'ID', width: 34 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
+             *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
              *     });
              * </script>
              * @example Bootstrap <!-- bootstrap, grid, draggable.base -->
@@ -7108,16 +7132,6 @@ gj.grid.plugins.resizableColumns = {
              *         dataSource: '/Players/Get',
              *         resizableColumns: true,
              *         uiLibrary: 'bootstrap',
-             *         columns: [ { field: 'ID', width: 34 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
-             *     });
-             * </script>
-             * @example Material.Design <!-- materialicons, grid, draggable.base -->
-             * <table id="grid"></table>
-             * <script>
-             *     var grid = $('#grid').grid({
-             *         dataSource: '/Players/Get',
-             *         resizableColumns: true,
-             *         uiLibrary: 'materialdesign',
              *         columns: [ { field: 'ID', width: 34 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
              *     });
              * </script>
@@ -7195,17 +7209,17 @@ gj.grid.plugins.rowReorder = {
             /** If set to true, enable row reordering with drag and drop.
              * @type boolean
              * @default false
-             * @example Base.Theme.Sample <!-- grid, grid.rowReorder, draggable.base, droppable.base -->
+             * @example Material.Design <!-- materialicons, grid, grid.rowReorder, draggable.base, droppable.base -->
              * <p>Drag and Drop rows in order to reorder them.</p>
              * <table id="grid"></table>
              * <script>
              *     $('#grid').grid({
              *         dataSource: '/Players/Get',
              *         rowReorder: true,
-             *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
+             *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
              *     });
              * </script>
-             * @example Bootstrap.Sample <!-- bootstrap, grid, grid.rowReorder, draggable.base, droppable.base -->
+             * @example Bootstrap.3 <!-- bootstrap, grid, grid.rowReorder, draggable.base, droppable.base -->
              * <p>Drag and Drop rows in order to reorder them.</p>
              * <table id="grid"></table>
              * <script>
@@ -7213,7 +7227,18 @@ gj.grid.plugins.rowReorder = {
              *         dataSource: '/Players/Get',
              *         rowReorder: true,
              *         uiLibrary: 'bootstrap',
-             *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
+             *         columns: [ { field: 'ID', width: 36 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
+             *     });
+             * </script>
+             * @example Bootstrap.4 <!-- bootstrap4, grid, grid.rowReorder, draggable.base, droppable.base -->
+             * <p>Drag and Drop rows in order to reorder them.</p>
+             * <table id="grid"></table>
+             * <script>
+             *     $('#grid').grid({
+             *         dataSource: '/Players/Get',
+             *         rowReorder: true,
+             *         uiLibrary: 'bootstrap4',
+             *         columns: [ { field: 'ID', width: 36 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
              *     });
              * </script>
              */
@@ -7223,14 +7248,14 @@ gj.grid.plugins.rowReorder = {
              * Accept only field names of columns.
              * @type string
              * @default undefined
-             * @example sample <!-- grid, grid.rowReorder, draggable.base, droppable.base -->
+             * @example sample <!-- materialicons, grid, grid.rowReorder, draggable.base, droppable.base -->
              * <table id="grid"></table>
              * <script>
              *     $('#grid').grid({
              *         dataSource: '/Players/Get',
              *         rowReorder: true,
              *         rowReorderColumn: 'ID',
-             *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
+             *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
              *     });
              * </script>
              */
@@ -7251,7 +7276,7 @@ gj.grid.plugins.rowReorder = {
              *         dataSource: data,
              *         rowReorder: true,
              *         orderNumberField: 'OrderNumber',
-             *         columns: [ { field: 'ID', width: 34 }, { field: 'OrderNumber', width:120 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
+             *         columns: [ { field: 'ID', width: 56 }, { field: 'OrderNumber', width:120 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
              *     });
              * </script>
              * @example Hidden.OrderNumber <!-- grid, grid.rowReorder, draggable.base, droppable.base -->
@@ -7267,7 +7292,7 @@ gj.grid.plugins.rowReorder = {
              *         dataSource: data,
              *         rowReorder: true,
              *         orderNumberField: 'OrderNumber',
-             *         columns: [ { field: 'ID', width: 34 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
+             *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
              *     });
              * </script>
              */
@@ -7299,11 +7324,17 @@ gj.grid.plugins.rowReorder = {
 
         createRowMouseDownHandler: function ($grid, $trSource) {
             return function (e) {
-                var $dragEl = $grid.clone();
+                var $dragEl = $grid.clone(), columns = $grid.data('columns'), i, $cells;
                 $('body').append($dragEl);
                 $dragEl.attr('data-role', 'draggable-clone').css('cursor', 'move');
                 $dragEl.children('thead').remove().children('tfoot').remove();
                 $dragEl.find('tbody tr:not([data-position="' + $trSource.data('position') + '"])').remove();
+                $cells = $dragEl.find('tbody tr td');
+                for (i = 0; i < $cells.length; i++) {
+                    if (columns[i].width) {
+                        $cells[i].setAttribute('width', columns[i].width);
+                    }
+                }
                 $dragEl.draggable({
                     stop: gj.grid.plugins.rowReorder.private.createDragStopHandler($grid, $trSource)
                 });

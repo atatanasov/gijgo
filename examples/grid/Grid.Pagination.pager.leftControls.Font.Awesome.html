@@ -17,7 +17,7 @@
  <script>
      var grid = $('#grid').grid({
          dataSource: '/Players/Get',
-         columns: [ { field: 'ID', width: 24 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
+         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
          style: {
              pager: {
                  stateDisabled: 'icon-disabled'
@@ -30,7 +30,7 @@
                  $('<div title="First" data-role="page-first" class="gj-grid-icon fa fa-fast-backward" aria-hidden="true"></div>'),
                  $('<div title="Previous" data-role="page-previous" class="gj-grid-icon fa fa-backward" aria-hidden="true"></div>'),
                  $('<div> Page </div>'),
-                 $('<div></div>').append($('<input type="text" data-role="page-number" style="margin: 0 5px;" value="0">')),
+                 $('<div></div>').append($('<input type="text" data-role="page-number" style="margin: 0 5px; width: 34px;" value="0">')),
                  $('<div>of&nbsp;</div>'),
                  $('<div data-role="page-label-last" style="margin-right: 5px;">0</div>'),
                  $('<div title="Next" data-role="page-next" class="gj-grid-icon fa fa-forward" aria-hidden="true"></div>'),

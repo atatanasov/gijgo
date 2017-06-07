@@ -5,16 +5,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Example</title>
   <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">
   <link href="../../dist/modular/grid/css/grid.css" rel="stylesheet" type="text/css">
   <script src="../../dist/modular/grid/js/grid.js"></script>
+  <script src="../../dist/modular/draggable/js/draggable.js"></script>
+  <script src="../../dist/modular/droppable/js/droppable.js"></script>
 </head>
 <body>
+ <p>Drag and Drop rows in order to reorder them.</p>
  <table id="grid"></table>
  <script>
      $('#grid').grid({
          dataSource: '/Players/Get',
-         title: 'Players',
-         columns: [ { field: 'ID', width: 34 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
+         rowReorder: true,
+         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
      });
  </script>
 </body>

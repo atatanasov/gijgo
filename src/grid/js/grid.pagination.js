@@ -69,26 +69,22 @@ gj.grid.plugins.pagination = {
                  * @type array
                  * @default undefined
                  * @example Bootstrap.3 <!-- bootstrap, grid, grid.pagination  -->
-                 * <div class="container">
-                 *     <table id="grid"></table>
-                 * </div>
+                 * <table id="grid"></table>
                  * <script>
                  *     var grid = $('#grid').grid({
                  *         dataSource: '/Players/Get',
                  *         uiLibrary: 'bootstrap',
-                 *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
+                 *         columns: [ { field: 'ID', width: 36 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
                  *         pager: { limit: 2, sizes: [2, 5, 10, 20] }
                  *     });
                  * </script>
                  * @example Material.Design <!-- materialicons, grid, grid.pagination  -->
-                 * <div class="container">
-                 *     <table id="grid"></table>
-                 * </div>
+                 * <table id="grid"></table>
                  * <script>
                  *     var grid = $('#grid').grid({
                  *         dataSource: '/Players/Get',
                  *         uiLibrary: 'materialdesign',
-                 *         columns: [ { field: 'ID', width: 70 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
+                 *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
                  *         pager: { limit: 2, sizes: [2, 5, 10, 20] }
                  *     });
                  * </script>
@@ -107,7 +103,7 @@ gj.grid.plugins.pagination = {
                  * <script>
                  *     var grid = $('#grid').grid({
                  *         dataSource: '/Players/Get',
-                 *         columns: [ { field: 'ID', width: 24 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
+                 *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
                  *         style: {
                  *             pager: {
                  *                 stateDisabled: 'icon-disabled'
@@ -120,7 +116,7 @@ gj.grid.plugins.pagination = {
                  *                 $('<div title="First" data-role="page-first" class="gj-grid-icon fa fa-fast-backward" aria-hidden="true"></div>'),
                  *                 $('<div title="Previous" data-role="page-previous" class="gj-grid-icon fa fa-backward" aria-hidden="true"></div>'),
                  *                 $('<div> Page </div>'),
-                 *                 $('<div></div>').append($('<input type="text" data-role="page-number" style="margin: 0 5px;" value="0">')),
+                 *                 $('<div></div>').append($('<input type="text" data-role="page-number" style="margin: 0 5px; width: 34px;" value="0">')),
                  *                 $('<div>of&nbsp;</div>'),
                  *                 $('<div data-role="page-label-last" style="margin-right: 5px;">0</div>'),
                  *                 $('<div title="Next" data-role="page-next" class="gj-grid-icon fa fa-forward" aria-hidden="true"></div>'),
@@ -526,7 +522,7 @@ gj.grid.plugins.pagination = {
          *     var grid = $('#grid').grid({
          *         dataSource: '/Players/Get',
          *         uiLibrary: 'bootstrap',
-         *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
+         *         columns: [ { field: 'ID', width: 36 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
          *         pager: { limit: 2, sizes: [2, 5, 10, 20] }
          *     });
          *     grid.on('pageSizeChange', function (e, newSize) {
@@ -549,7 +545,7 @@ gj.grid.plugins.pagination = {
          * <script>
          *     var grid = $('#grid').grid({
          *         dataSource: '/Players/Get',
-         *         columns: [ { field: 'ID' }, { field: 'Name', sortable: true }, { field: 'PlaceOfBirth' } ],
+         *         columns: [ { field: 'ID', width: 56 }, { field: 'Name', sortable: true }, { field: 'PlaceOfBirth' } ],
          *         pager: { limit: 2, sizes: [2, 5, 10, 20] }
          *     });
          *     grid.on('pageChanging', function (e, newPage) {

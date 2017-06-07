@@ -8,17 +8,17 @@ gj.grid.plugins.rowReorder = {
             /** If set to true, enable row reordering with drag and drop.
              * @type boolean
              * @default false
-             * @example Base.Theme.Sample <!-- grid, grid.rowReorder, draggable.base, droppable.base -->
+             * @example Material.Design <!-- materialicons, grid, grid.rowReorder, draggable.base, droppable.base -->
              * <p>Drag and Drop rows in order to reorder them.</p>
              * <table id="grid"></table>
              * <script>
              *     $('#grid').grid({
              *         dataSource: '/Players/Get',
              *         rowReorder: true,
-             *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
+             *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
              *     });
              * </script>
-             * @example Bootstrap.Sample <!-- bootstrap, grid, grid.rowReorder, draggable.base, droppable.base -->
+             * @example Bootstrap.3 <!-- bootstrap, grid, grid.rowReorder, draggable.base, droppable.base -->
              * <p>Drag and Drop rows in order to reorder them.</p>
              * <table id="grid"></table>
              * <script>
@@ -26,7 +26,18 @@ gj.grid.plugins.rowReorder = {
              *         dataSource: '/Players/Get',
              *         rowReorder: true,
              *         uiLibrary: 'bootstrap',
-             *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
+             *         columns: [ { field: 'ID', width: 36 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
+             *     });
+             * </script>
+             * @example Bootstrap.4 <!-- bootstrap4, grid, grid.rowReorder, draggable.base, droppable.base -->
+             * <p>Drag and Drop rows in order to reorder them.</p>
+             * <table id="grid"></table>
+             * <script>
+             *     $('#grid').grid({
+             *         dataSource: '/Players/Get',
+             *         rowReorder: true,
+             *         uiLibrary: 'bootstrap4',
+             *         columns: [ { field: 'ID', width: 36 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
              *     });
              * </script>
              */
@@ -36,14 +47,14 @@ gj.grid.plugins.rowReorder = {
              * Accept only field names of columns.
              * @type string
              * @default undefined
-             * @example sample <!-- grid, grid.rowReorder, draggable.base, droppable.base -->
+             * @example sample <!-- materialicons, grid, grid.rowReorder, draggable.base, droppable.base -->
              * <table id="grid"></table>
              * <script>
              *     $('#grid').grid({
              *         dataSource: '/Players/Get',
              *         rowReorder: true,
              *         rowReorderColumn: 'ID',
-             *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
+             *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
              *     });
              * </script>
              */
@@ -64,7 +75,7 @@ gj.grid.plugins.rowReorder = {
              *         dataSource: data,
              *         rowReorder: true,
              *         orderNumberField: 'OrderNumber',
-             *         columns: [ { field: 'ID', width: 34 }, { field: 'OrderNumber', width:120 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
+             *         columns: [ { field: 'ID', width: 56 }, { field: 'OrderNumber', width:120 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
              *     });
              * </script>
              * @example Hidden.OrderNumber <!-- grid, grid.rowReorder, draggable.base, droppable.base -->
@@ -80,7 +91,7 @@ gj.grid.plugins.rowReorder = {
              *         dataSource: data,
              *         rowReorder: true,
              *         orderNumberField: 'OrderNumber',
-             *         columns: [ { field: 'ID', width: 34 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
+             *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
              *     });
              * </script>
              */
@@ -112,11 +123,17 @@ gj.grid.plugins.rowReorder = {
 
         createRowMouseDownHandler: function ($grid, $trSource) {
             return function (e) {
-                var $dragEl = $grid.clone();
+                var $dragEl = $grid.clone(), columns = $grid.data('columns'), i, $cells;
                 $('body').append($dragEl);
                 $dragEl.attr('data-role', 'draggable-clone').css('cursor', 'move');
                 $dragEl.children('thead').remove().children('tfoot').remove();
                 $dragEl.find('tbody tr:not([data-position="' + $trSource.data('position') + '"])').remove();
+                $cells = $dragEl.find('tbody tr td');
+                for (i = 0; i < $cells.length; i++) {
+                    if (columns[i].width) {
+                        $cells[i].setAttribute('width', columns[i].width);
+                    }
+                }
                 $dragEl.draggable({
                     stop: gj.grid.plugins.rowReorder.private.createDragStopHandler($grid, $trSource)
                 });

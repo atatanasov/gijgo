@@ -94,6 +94,7 @@
     <Content Include="src\grid\css\grid.resizableColumns.css" />
     <Content Include="src\grid\css\grid.responsiveDesign.css" />
     <Content Include="src\grid\css\grid.rowReorder.css" />
+    <Content Include="src\grid\css\grid.toolbar.css" />
     <Content Include="src\grid\js\grid.base.methods.js" />
     <Content Include="src\grid\js\grid.columnReorder.js" />
     <Content Include="src\grid\js\grid.expandCollapseRows.js" />

@@ -9,7 +9,7 @@
   <script src="../../dist/modular/grid/js/grid.js"></script>
 </head>
 <body>
- <button onclick="grid.makeResponsive()">Make Responsive</button>
+ <button onclick="grid.makeResponsive()" class="gj-button-md">Make Responsive</button>
  <br/><br/>
  <table id="grid"></table>
  <script>
@@ -17,7 +17,7 @@
          dataSource: '/Players/Get',
          responsive: false,
          columns: [
-             { field: 'ID', width: 20 },
+             { field: 'ID', width: 56 },
              { field: 'Name', minWidth: 320, priority: 1 },
              { field: 'PlaceOfBirth', minWidth: 320, priority: 2 }
          ]

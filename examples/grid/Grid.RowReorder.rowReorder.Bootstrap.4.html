@@ -6,19 +6,20 @@
   <title>Example</title>
   <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
-  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
-  <link href="../../dist/modular/tree/css/tree.css" rel="stylesheet" type="text/css">
-  <script src="../../dist/modular/tree/js/tree.js"></script>
+  <link href="../../dist/modular/grid/css/grid.css" rel="stylesheet" type="text/css">
+  <script src="../../dist/modular/grid/js/grid.js"></script>
+  <script src="../../dist/modular/draggable/js/draggable.js"></script>
+  <script src="../../dist/modular/droppable/js/droppable.js"></script>
 </head>
 <body>
- <div id="tree"></div>
+ <p>Drag and Drop rows in order to reorder them.</p>
+ <table id="grid"></table>
  <script>
-     $('#tree').tree({
-         dataSource: '/Locations/Get',
-         width: 500,
+     $('#grid').grid({
+         dataSource: '/Players/Get',
+         rowReorder: true,
          uiLibrary: 'bootstrap4',
-         iconsLibrary: 'fontawesome',
-         border: false
+         columns: [ { field: 'ID', width: 36 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
      });
  </script>
 </body>

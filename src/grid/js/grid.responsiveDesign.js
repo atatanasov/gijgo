@@ -9,14 +9,15 @@ gj.grid.plugins.responsiveDesign = {
              * This setting is in use only if the resizeMonitoring setting is set to true.
              * @type number
              * @default 500
-             * @example sample <!-- grid, grid.responsiveDesign -->
+             * @example sample <!-- materialicons, grid, grid.responsiveDesign -->
+             * <p>Change browser window size in order to fire resize event.</p>
              * <table id="grid"></table>
              * <script>
              *     var grid = $('#grid').grid({
              *         dataSource: '/Players/Get',
              *         responsive: true,
              *         resizeCheckInterval: 2000, //check if the grid is resized on each 2 second
-             *         columns: [ { field: 'ID', width: 20 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
+             *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
              *     });
              *     grid.on('resize', function () {
              *         alert('resize is fired.');
@@ -31,6 +32,7 @@ gj.grid.plugins.responsiveDesign = {
              * @type boolean
              * @default false
              * @example sample <!-- grid, grid.responsiveDesign -->
+             * <p>Resize browser window in order to see his responsive behaviour.</p>
              * <table id="grid"></table>
              * <script>
              *     $('#grid').grid({
@@ -38,8 +40,8 @@ gj.grid.plugins.responsiveDesign = {
              *         responsive: true,
              *         columns: [
              *             { field: 'Name' },
-             *             { field: 'PlaceOfBirth', minWidth: 140, priority: 1 },
-             *             { field: 'DateOfBirth', minWidth: 160, priority: 2, type: 'date' }
+             *             { field: 'PlaceOfBirth', minWidth: 340, priority: 1 },
+             *             { field: 'DateOfBirth', minWidth: 360, priority: 2, type: 'date' }
              *         ]
              *     });
              * </script>
@@ -120,7 +122,7 @@ gj.grid.plugins.responsiveDesign = {
                  * This setting is working only when the responsive setting is set to true and the column priority setting is set.
                  * @alias column.minWidth
                  * @type number
-                 * @default 150
+                 * @default 250
                  * @example sample <!-- grid, grid.responsiveDesign -->
                  * <table id="grid"></table>
                  * <script>
@@ -129,13 +131,13 @@ gj.grid.plugins.responsiveDesign = {
                  *         responsive: true,
                  *         columns: [
                  *             { field: 'Name' },
-                 *             { field: 'PlaceOfBirth', minWidth: 140, priority: 1 },
-                 *             { field: 'DateOfBirth', minWidth: 160, priority: 2, type: 'date' }
+                 *             { field: 'PlaceOfBirth', minWidth: 240, priority: 1 },
+                 *             { field: 'DateOfBirth', minWidth: 260, priority: 2, type: 'date' }
                  *         ]
                  *     });
                  * </script>
                  */
-                minWidth: 150
+                minWidth: 250
             },
             style: {
                 rowDetailItem: ''
@@ -218,7 +220,7 @@ gj.grid.plugins.responsiveDesign = {
          * @method
          * @return void
          * @example sample <!-- grid, grid.responsiveDesign -->
-         * <button onclick="grid.makeResponsive()">Make Responsive</button>
+         * <button onclick="grid.makeResponsive()" class="gj-button-md">Make Responsive</button>
          * <br/><br/>
          * <table id="grid"></table>
          * <script>
@@ -226,7 +228,7 @@ gj.grid.plugins.responsiveDesign = {
          *         dataSource: '/Players/Get',
          *         responsive: false,
          *         columns: [
-         *             { field: 'ID', width: 20 },
+         *             { field: 'ID', width: 56 },
          *             { field: 'Name', minWidth: 320, priority: 1 },
          *             { field: 'PlaceOfBirth', minWidth: 320, priority: 2 }
          *         ]
@@ -279,7 +281,7 @@ gj.grid.plugins.responsiveDesign = {
          *     var grid = $('#grid').grid({
          *         dataSource: '/Players/Get',
          *         responsive: true,
-         *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
+         *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
          *     });
          *     grid.on('resize', function (e, newWidth, oldWidth) {
          *         alert('resize is fired.');

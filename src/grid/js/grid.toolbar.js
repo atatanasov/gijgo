@@ -25,11 +25,31 @@ gj.grid.plugins.toolbar = {
             /** The title of the grid. Appears in a separate row on top of the grid.
               * @type string
               * @default undefined
-              * @example sample <!-- grid, grid.toolbar -->
+              * @example Material.Design <!-- materialicons, grid, grid.toolbar -->
               * <table id="grid"></table>
               * <script>
               *     $('#grid').grid({
               *         dataSource: '/Players/Get',
+              *         title: 'Players',
+              *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
+              *     });
+              * </script>
+              * @example Bootstrap.3 <!-- bootstrap, grid, grid.toolbar -->
+              * <table id="grid"></table>
+              * <script>
+              *     $('#grid').grid({
+              *         dataSource: '/Players/Get',
+              *         uiLibrary: 'bootstrap',
+              *         title: 'Players',
+              *         columns: [ { field: 'ID', width: 34 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
+              *     });
+              * </script>
+              * @example Bootstrap.4 <!-- bootstrap4, grid, grid.toolbar -->
+              * <table id="grid"></table>
+              * <script>
+              *     $('#grid').grid({
+              *         dataSource: '/Players/Get',
+              *         uiLibrary: 'bootstrap4',
               *         title: 'Players',
               *         columns: [ { field: 'ID', width: 34 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
               *     });
@@ -38,13 +58,19 @@ gj.grid.plugins.toolbar = {
             title: undefined,
 
             style: {
-                toolbar: 'gj-grid-base-toolbar'
+                toolbar: 'gj-grid-md-toolbar'
             }
         },
 
         bootstrap: {
             style: {
                 toolbar: 'gj-grid-bootstrap-toolbar'
+            }
+        },
+
+        bootstrap4: {
+            style: {
+                toolbar: 'gj-grid-bootstrap-4-toolbar'
             }
         }
     },
@@ -90,28 +116,28 @@ gj.grid.plugins.toolbar = {
          * @method
          * @param {object} text - The text of the new grid title.
          * @return string or grid object
-         * @example text <!-- grid, grid.toolbar -->
-         * <button onclick="grid.title('New Title')">Set New Title</button>
-         * <button onclick="alert(grid.title())">Get Title</button>
+         * @example text <!-- materialicons, grid, grid.toolbar -->
+         * <button onclick="grid.title('New Title')" class="gj-button-md">Set New Title</button>
+         * <button onclick="alert(grid.title())" class="gj-button-md">Get Title</button>
          * <br/><br/>
          * <table id="grid"></table>
          * <script>
          *     var grid = $('#grid').grid({
          *         dataSource: '/Players/Get',
          *         title: 'Initial Grid Title',
-         *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
+         *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
          *     });
          * </script>
-         * @example html.template <!-- grid, grid.toolbar -->
-         * <button onclick="grid.title('New Title')">Set New Title</button>
-         * <button onclick="alert(grid.title())">Get Title</button>
+         * @example html.template <!-- materialicons, grid, grid.toolbar -->
+         * <button onclick="grid.title('New Title')" class="gj-button-md">Set New Title</button>
+         * <button onclick="alert(grid.title())" class="gj-button-md">Get Title</button>
          * <br/><br/>
          * <table id="grid"></table>
          * <script>
          *     var grid = $('#grid').grid({
          *         dataSource: '/Players/Get',
          *         toolbarTemplate: '<div data-role="title">Initial Grid Title</div>',
-         *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
+         *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
          *     });
          * </script>
          */

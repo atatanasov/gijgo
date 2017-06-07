@@ -9,6 +9,7 @@
   <script src="../../dist/modular/grid/js/grid.js"></script>
 </head>
 <body>
+ <p>Resize browser window in order to see his responsive behaviour.</p>
  <table id="grid"></table>
  <script>
      $('#grid').grid({
@@ -16,8 +17,8 @@
          responsive: true,
          columns: [
              { field: 'Name' },
-             { field: 'PlaceOfBirth', minWidth: 140, priority: 1 },
-             { field: 'DateOfBirth', minWidth: 160, priority: 2, type: 'date' }
+             { field: 'PlaceOfBirth', minWidth: 340, priority: 1 },
+             { field: 'DateOfBirth', minWidth: 360, priority: 2, type: 'date' }
          ]
      });
  </script>
