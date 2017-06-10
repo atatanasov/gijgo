@@ -53,14 +53,6 @@
 }
 
 /** Material Design */
-.gj-button-md:hover {
-    background-color: rgba(158,158,158,.2);
-}
-
-.gj-button-md:disabled {
-    color: rgba(0,0,0,.26);
-}
-
 .gj-button-md {
     background: 0 0;
     border: none;
@@ -94,6 +86,14 @@
     user-select: none;
 }
 
+.gj-button-md:hover {
+    background-color: rgba(158,158,158,.2);
+}
+
+.gj-button-md:disabled {
+    color: rgba(0,0,0,.26);
+}
+
 .gj-button-md .material-icons {
     vertical-align: middle;
     font-size: 1.3rem;
@@ -112,7 +112,7 @@
     margin-right: 0px;    
 }
 
-.gj-button-md-active {
+.gj-button-md.active {
     background-color: rgba(158,158,158,.4);
 }
 
@@ -120,6 +120,25 @@
     position: relative;
     display: inline-block;
     vertical-align: middle;
+}
+
+.gj-textbox-md {
+    border: none;
+    border-bottom: 1px solid rgba(0,0,0,.12);
+    display: block;
+    font-size: 16px;
+    font-family: "Helvetica","Arial",sans-serif;
+    margin: 0;
+    padding: 4px 0;
+    width: 100%;
+    background: 0 0;
+    text-align: left;
+    color: inherit;
+}
+
+.gj-textbox-md:focus {
+    border-bottom: 2px solid rgba(158,158,158,.4);
+    outline: none;
 }
 
 .gj-md-spacer-24 {

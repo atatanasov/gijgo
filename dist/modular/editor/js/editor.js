@@ -372,7 +372,7 @@ gj.editor.config = {
             wrapper: 'gj-editor-md',
             buttonsGroup: 'gj-button-md-group',
             button: 'gj-button-md',
-            buttonActive: 'gj-button-md-active'
+            buttonActive: 'active'
         }
     },
 

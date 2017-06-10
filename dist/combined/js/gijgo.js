@@ -3810,7 +3810,7 @@ gj.grid.methods = {
             if (!column.tooltip && text) {
                 $displayEl.attr('title', text);
             }
-            $displayEl.text(text);
+            $displayEl.html(text);
         }
         if (column.tooltip && 'create' === mode) {
             $displayEl.attr('title', column.tooltip);
@@ -4234,6 +4234,9 @@ gj.grid.methods = {
         data.records.push(record);
         if ($.isArray(data.dataSource)) {
             data.dataSource.push(record);
+        }
+        if (data.totalRecords === 1) {
+            $grid.children('tbody').empty();
         }
         if (gj.grid.methods.isLastRecordVisible($grid)) {
             gj.grid.methods.renderRow($grid, null, record, $grid.count() - 1);
@@ -4736,7 +4739,7 @@ gj.grid.widget = function ($grid, jsConfig) {
      * @method
      * @param {object} record - Object with data for the new record.
      * @return grid
-     * @example without.pagination <!-- grid -->
+     * @example without.pagination <!-- materialicons, grid -->
      * <button id="btnAdd" class="gj-button-md">Add Row</button>
      * <br/><br/>
      * <table id="grid"></table>
@@ -4759,12 +4762,18 @@ gj.grid.widget = function ($grid, jsConfig) {
      * <table id="grid"></table>
      * <script>
      *     var grid = $('#grid').grid({
+     *         primaryKey: 'ID',
      *         dataSource: [
      *             { 'ID': 1, 'Name': 'Hristo Stoichkov', 'PlaceOfBirth': 'Plovdiv, Bulgaria' },
      *             { 'ID': 2, 'Name': 'Ronaldo Luis Nazario de Lima', 'PlaceOfBirth': 'Rio de Janeiro, Brazil' },
      *             { 'ID': 3, 'Name': 'David Platt', 'PlaceOfBirth': 'Chadderton, Lancashire, England' }
      *         ],
-     *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
+     *         columns: [ 
+     *             { field: 'ID', width: 56 },
+     *             { field: 'Name' },
+     *             { field: 'PlaceOfBirth' },
+     *             { width: 70, align: 'center', tmpl: '<i class="material-icons">delete</i>', events: { 'click': function(e) { grid.removeRow(e.data.id); } } }
+     *         ],
      *         pager: { limit: 2 }
      *     });
      *     $('#btnAdd').on('click', function () {
@@ -7063,8 +7072,8 @@ gj.grid.plugins.toolbar = {
          * @param {object} text - The text of the new grid title.
          * @return string or grid object
          * @example text <!-- materialicons, grid, grid.toolbar -->
-         * <button onclick="grid.title('New Title')">Set New Title</button>
-         * <button onclick="alert(grid.title())">Get Title</button>
+         * <button onclick="grid.title('New Title')" class="gj-button-md">Set New Title</button>
+         * <button onclick="alert(grid.title())" class="gj-button-md">Get Title</button>
          * <br/><br/>
          * <table id="grid"></table>
          * <script>
@@ -7075,8 +7084,8 @@ gj.grid.plugins.toolbar = {
          *     });
          * </script>
          * @example html.template <!-- materialicons, grid, grid.toolbar -->
-         * <button onclick="grid.title('New Title')">Set New Title</button>
-         * <button onclick="alert(grid.title())">Get Title</button>
+         * <button onclick="grid.title('New Title')" class="gj-button-md">Set New Title</button>
+         * <button onclick="alert(grid.title())" class="gj-button-md">Get Title</button>
          * <br/><br/>
          * <table id="grid"></table>
          * <script>
@@ -9536,7 +9545,7 @@ gj.tree.plugins.checkboxes = {
                 $expander = $node.find('> [data-role="wrapper"] > [data-role="expander"]'),
                 $checkbox = $('<input type="checkbox"/>'),
                 $wrapper = $('<span data-role="checkbox"></span>').append($checkbox);
-            $checkbox = $checkbox.checkbox({ uiLibrary: data.uiLibrary });
+            $checkbox = $checkbox.checkbox({ uiLibrary: data.uiLibrary, iconsLibrary: data.iconsLibrary });
             if (record[data.checkedField]) {
                 $checkbox.state('checked');
             }
@@ -10318,7 +10327,7 @@ gj.editor.config = {
             wrapper: 'gj-editor-md',
             buttonsGroup: 'gj-button-md-group',
             button: 'gj-button-md',
-            buttonActive: 'gj-button-md-active'
+            buttonActive: 'active'
         }
     },
 

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Example</title>
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">
+  <link href="../../dist/modular/tree/css/tree.css" rel="stylesheet" type="text/css">
+  <script src="../../dist/modular/tree/js/tree.js"></script>
+</head>
+<body>
+ <div id="tree" data-source="/Locations/Get"></div>
+ <script>
+     var tree = $('#tree').tree();
+     tree.on('collapse', function (e, node, id) {
+         alert('collapse is fired.');
+     });
+ </script>
+</body>
+</html>

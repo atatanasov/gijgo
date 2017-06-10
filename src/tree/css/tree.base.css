@@ -16,14 +16,12 @@ li.gj-tree-item [data-role="spacer"] {
     vertical-align:middle;
     text-align:center;
     cursor: pointer;
-    width: 10px;
 }
 
 li.gj-tree-item [data-role="checkbox"] {
     display: table-cell;
     vertical-align:middle;
     text-align:center;
-    width: 20px;
 }
 
 li.gj-tree-item [data-role="image"] {
@@ -71,25 +69,17 @@ ul.gj-tree-bootstrap-list li [data-role="wrapper"] {
     padding: 0px 10px;
 }
 
-.gj-tree-bootstrap-3 ul.gj-tree-bootstrap-list li [data-role="checkbox"] {
+ul.gj-tree-bootstrap-list li [data-role="checkbox"] {
     width: 24px;
-    padding-top: 4px;
-}
-
-.gj-tree-bootstrap-4 ul.gj-tree-bootstrap-list li [data-role="checkbox"] {
-    width: 24px;
+    padding: 3px;
 }
 
 ul.gj-tree-bootstrap-list li [data-role="image"] {
     width: 24px;
 }
 
-.gj-tree-bootstrap-3 ul.gj-tree-bootstrap-list li [data-role="display"] {
-    padding: 12px 0px 8px 5px;
-}
-
-.gj-tree-bootstrap-4 ul.gj-tree-bootstrap-list li [data-role="display"] {
-    padding: 8px 0px 8px 5px;
+ul.gj-tree-bootstrap-list li [data-role="display"] {
+    padding: 8px 0px 8px 4px;
 }
 
 .list-group-item.active ul li, .list-group-item.active:focus ul li, .list-group-item.active:hover ul li {

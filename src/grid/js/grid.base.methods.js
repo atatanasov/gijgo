@@ -464,7 +464,7 @@ gj.grid.methods = {
             if (!column.tooltip && text) {
                 $displayEl.attr('title', text);
             }
-            $displayEl.text(text);
+            $displayEl.html(text);
         }
         if (column.tooltip && 'create' === mode) {
             $displayEl.attr('title', column.tooltip);
@@ -888,6 +888,9 @@ gj.grid.methods = {
         data.records.push(record);
         if ($.isArray(data.dataSource)) {
             data.dataSource.push(record);
+        }
+        if (data.totalRecords === 1) {
+            $grid.children('tbody').empty();
         }
         if (gj.grid.methods.isLastRecordVisible($grid)) {
             gj.grid.methods.renderRow($grid, null, record, $grid.count() - 1);

@@ -1803,7 +1803,7 @@ gj.tree.plugins.checkboxes = {
                 $expander = $node.find('> [data-role="wrapper"] > [data-role="expander"]'),
                 $checkbox = $('<input type="checkbox"/>'),
                 $wrapper = $('<span data-role="checkbox"></span>').append($checkbox);
-            $checkbox = $checkbox.checkbox({ uiLibrary: data.uiLibrary });
+            $checkbox = $checkbox.checkbox({ uiLibrary: data.uiLibrary, iconsLibrary: data.iconsLibrary });
             if (record[data.checkedField]) {
                 $checkbox.state('checked');
             }

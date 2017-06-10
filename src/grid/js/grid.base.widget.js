@@ -439,7 +439,7 @@ gj.grid.widget = function ($grid, jsConfig) {
      * @method
      * @param {object} record - Object with data for the new record.
      * @return grid
-     * @example without.pagination <!-- grid -->
+     * @example without.pagination <!-- materialicons, grid -->
      * <button id="btnAdd" class="gj-button-md">Add Row</button>
      * <br/><br/>
      * <table id="grid"></table>
@@ -462,12 +462,18 @@ gj.grid.widget = function ($grid, jsConfig) {
      * <table id="grid"></table>
      * <script>
      *     var grid = $('#grid').grid({
+     *         primaryKey: 'ID',
      *         dataSource: [
      *             { 'ID': 1, 'Name': 'Hristo Stoichkov', 'PlaceOfBirth': 'Plovdiv, Bulgaria' },
      *             { 'ID': 2, 'Name': 'Ronaldo Luis Nazario de Lima', 'PlaceOfBirth': 'Rio de Janeiro, Brazil' },
      *             { 'ID': 3, 'Name': 'David Platt', 'PlaceOfBirth': 'Chadderton, Lancashire, England' }
      *         ],
-     *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
+     *         columns: [ 
+     *             { field: 'ID', width: 56 },
+     *             { field: 'Name' },
+     *             { field: 'PlaceOfBirth' },
+     *             { width: 70, align: 'center', tmpl: '<i class="material-icons">delete</i>', events: { 'click': function(e) { grid.removeRow(e.data.id); } } }
+     *         ],
      *         pager: { limit: 2 }
      *     });
      *     $('#btnAdd').on('click', function () {
