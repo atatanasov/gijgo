@@ -143,7 +143,6 @@
 }
 
 /* Bootstrap and Material Design */
-
 .gj-checkbox-bootstrap.gj-checkbox-material-icons input[type="checkbox"]:checked + span:after {    
     font-size: 11px;
 }

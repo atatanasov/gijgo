@@ -224,6 +224,10 @@ ul.gj-tree-bootstrap-list li [data-role="wrapper"] {
     padding: 0px 10px;
 }
 
+ul.gj-tree-bootstrap-list li [data-role="expander"].gj-tree-material-icons-expander {
+    padding-top: 6px;
+}
+
 ul.gj-tree-bootstrap-list li [data-role="checkbox"] {
     width: 24px;
     padding: 3px;

@@ -714,7 +714,7 @@ gj.grid.config = {
          *     });
          * </script>
          * @example Bootstrap.3 <!-- grid, bootstrap -->
-         * <table id="grid"></table>
+         * <div class="container"><table id="grid"></table></div>
          * <script>
          *     $('#grid').grid({
          *         dataSource: '/Players/Get',

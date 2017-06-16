@@ -989,7 +989,7 @@ gj.tree.methods = {
         }
 
         if (data.imageCssClassField && nodeData.data[data.imageCssClassField]) {
-            $('<span data-role="image" class="' + nodeData.data[data.imageCssClassField] + '"></span>').insertBefore($display);
+            $('<span data-role="image"><span class="' + nodeData.data[data.imageCssClassField] + '"></span></span>').insertBefore($display);
         } else if (data.imageUrlField && nodeData.data[data.imageUrlField]) {
             $span = $('<span data-role="image"></span>');
             $span.insertBefore($display);
@@ -997,9 +997,8 @@ gj.tree.methods = {
             $img.attr('width', $span.width()).attr('height', $span.height());
             $span.append($img);
         } else if (data.imageHtmlField && nodeData.data[data.imageHtmlField]) {
-            $img = $(nodeData.data[data.imageHtmlField]);
-            $img.attr('data-role', 'image');
-            $img.insertBefore($display);
+            $span = $('<span data-role="image">' + nodeData.data[data.imageHtmlField] + '</span>');
+            $span.insertBefore($display);
         }
 
         gj.tree.events.nodeDataBound($tree, $node, nodeData.id, nodeData.data);

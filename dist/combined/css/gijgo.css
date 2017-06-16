@@ -713,6 +713,52 @@ div.gj-grid-wrapper div.gj-grid-md-toolbar {
     padding: 0 18px 0px 18px;
     line-height: 56px;
 }
+table.gj-grid-scrollable tbody {
+    overflow-y: auto;
+    overflow-x: hidden;
+    display: block;
+}
+
+/* Material Design */
+table.gj-grid-md-table.gj-grid-scrollable {
+    border-bottom: 0px;
+}
+
+table.gj-grid-md-table.gj-grid-scrollable tbody {
+    border-right: 1px solid rgba(0,0,0,.12);
+    border-bottom: 1px solid rgba(0,0,0,.12);
+}
+
+table.gj-grid-md-table.gj-grid-scrollable tfoot {
+    border-bottom: 1px solid rgba(0,0,0,.12);
+}
+
+/* Bootstrap 3 */
+table.gj-grid-bootstrap-table.gj-grid-scrollable {
+    border-bottom: 0px;
+}
+
+table.gj-grid-bootstrap-table.gj-grid-scrollable tbody {
+    border-right: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+}
+
+table.gj-grid-bootstrap-table.gj-grid-scrollable tbody tr[data-role="row"]:first-child td {
+    border-top: 0px;
+}
+
+table.gj-grid-bootstrap-table.gj-grid-scrollable tbody tr[data-role="row"] td:first-child {
+    border-left: 0px;
+}
+
+table.gj-grid-bootstrap-table.gj-grid-scrollable tbody tr[data-role="row"] td:last-child {
+    border-right: 0px;
+}
+
+table.gj-grid-bootstrap-table.gj-grid-scrollable tfoot {
+    border-bottom: 1px solid #ddd;
+}
+
 li.gj-tree-item {
     padding: 0px;
 }
@@ -782,6 +828,10 @@ ul.gj-tree-bootstrap-list li.gj-tree-item ul li.gj-tree-item:last-child {
 
 ul.gj-tree-bootstrap-list li [data-role="wrapper"] {
     padding: 0px 10px;
+}
+
+ul.gj-tree-bootstrap-list li [data-role="expander"].gj-tree-material-icons-expander {
+    padding-top: 6px;
 }
 
 ul.gj-tree-bootstrap-list li [data-role="checkbox"] {
@@ -1084,7 +1134,6 @@ li.gj-tree-md-item [data-role="image"] {
 }
 
 /* Bootstrap and Material Design */
-
 .gj-checkbox-bootstrap.gj-checkbox-material-icons input[type="checkbox"]:checked + span:after {    
     font-size: 11px;
 }
