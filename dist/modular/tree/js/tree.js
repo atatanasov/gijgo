@@ -511,7 +511,7 @@ gj.tree.config = {
          *         border: false
          *     });
          * </script>
-         * @example Bootstrap.4.False <!-- bootstrap4, fontawesome, tree.base -->
+         * @example Bootstrap.4.True <!-- bootstrap4, fontawesome, tree.base -->
          * <div id="tree"></div>
          * <script>
          *     $('#tree').tree({
@@ -519,7 +519,7 @@ gj.tree.config = {
          *         width: 500,
          *         uiLibrary: 'bootstrap4',
          *         iconsLibrary: 'fontawesome',
-         *         border: false
+         *         border: true
          *     });
          * </script>
          */

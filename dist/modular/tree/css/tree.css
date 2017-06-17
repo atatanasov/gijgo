@@ -183,7 +183,6 @@ li.gj-tree-item [data-role="image"] {
     display: table-cell;
     vertical-align:middle;
     text-align:center;
-    width: 22px;
 }
 
 li.gj-tree-item [data-role="display"] {
@@ -235,6 +234,7 @@ ul.gj-tree-bootstrap-list li [data-role="checkbox"] {
 
 ul.gj-tree-bootstrap-list li [data-role="image"] {
     width: 24px;
+    height: 24px;
 }
 
 ul.gj-tree-bootstrap-list li [data-role="display"] {
@@ -330,7 +330,6 @@ li.gj-tree-md-item [data-role="image"] {
 }
 
 [data-type="tree"] ul li [data-role="expander"].gj-tree-material-icons-expander {
-    height: 24px;
     width: 24px;
 }
 
@@ -340,6 +339,11 @@ li.gj-tree-md-item [data-role="image"] {
 
 [data-type="tree"] ul li [data-role="expander"].gj-tree-glyphicons-expander {
     width: 24px;
+}
+
+[data-type="tree"] ul li [data-role="expander"].gj-tree-glyphicons-expander .glyphicon {
+    top: 4px;
+    height: 24px;
 }
 .gj-tree-drop-above {    
     border-top: 1px solid #000;
