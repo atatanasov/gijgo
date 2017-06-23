@@ -10,6 +10,7 @@ They are designed to saves you time and scales with your development process.
 1. [Tree](http://gijgo.com/tree)
 1. [Dialog](http://gijgo.com/dialog)
 1. [Editor](http://gijgo.com/editor)
+1. [Checkbox](http://gijgo.com/checkbox)
 1. [Draggable](http://gijgo.com/draggable)
 1. [Droppable](http://gijgo.com/droppable)
 
@@ -21,3 +22,4 @@ They are designed to saves you time and scales with your development process.
 1. [Bootstrap 4 Treeview](http://gijgo.com/tree/demos/bootstrap-4-treeview)
 1. [Bootstrap Modal Resizable](http://gijgo.com/dialog/demos/bootstrap-modal-resizable)
 1. [Bootstrap WYSIWYG](http://gijgo.com/editor/example/bootstrap-wysiwyg)
+1. [Bootstrap Checkbox](http://gijgo.com/checkbox/example/bootstrap)
