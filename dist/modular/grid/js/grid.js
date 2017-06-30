@@ -63,12 +63,11 @@ gj.widget = function () {
 gj.widget.prototype.init = function (jsConfig, type) {
     var option, clientConfig, fullConfig;
 
+    this.attr('data-type', type);
     clientConfig = $.extend(true, {}, this.getHTMLConfig() || {});
     $.extend(true, clientConfig, jsConfig || {});
     fullConfig = this.getConfig(clientConfig, type);
-
     this.attr('data-guid', fullConfig.guid);
-
     this.data(fullConfig);
 
     // Initialize events configured as options
@@ -967,7 +966,7 @@ gj.grid.config = {
          * @additionalinfo The css files for Bootstrap or Material Design should be manually included to the page where the grid is in use.
          * @type (materialdesign|bootstrap|bootstrap4)
          * @default 'materialdesign'
-         * @example Material.Design.With.Icons <!-- materialicons, grid -->
+         * @example Material.Design.With.Icons <!-- materialicons, dropdown, grid -->
          * <table id="grid"></table>
          * <script>
          *     $('#grid').grid({
@@ -987,7 +986,7 @@ gj.grid.config = {
          *         pager: { limit: 2, sizes: [2, 5, 10, 20] }
          *     });
          * </script>
-         * @example Bootstrap.3 <!-- grid, bootstrap -->
+         * @example Bootstrap.3 <!-- grid, dropdown, bootstrap -->
          * <div class="container"><table id="grid"></table></div>
          * <script>
          *     $('#grid').grid({
@@ -1001,7 +1000,7 @@ gj.grid.config = {
          *         pager: { limit: 2, sizes: [2, 5, 10, 20] }
          *     });
          * </script>
-         * @example Bootstrap.4.Font.Awesome <!-- bootstrap4, fontawesome, grid -->
+         * @example Bootstrap.4.Font.Awesome <!-- bootstrap4, fontawesome, dropdown, grid -->
          * <table id="grid"></table>
          * <script>
          *     $('#grid').grid({
@@ -1681,7 +1680,6 @@ gj.grid.events = {
 gj.grid.methods = {
 
     init: function (jsConfig) {
-        this.attr('data-type', 'grid');
         gj.widget.prototype.init.call(this, jsConfig, 'grid');
 
         gj.grid.methods.initialize(this);
@@ -4633,13 +4631,13 @@ gj.grid.plugins.pagination = {
                     $('<button type="button" class="btn btn-default btn-sm">' + (data.icons.first || msg.First) + '</button>').attr('title', msg.FirstPageTooltip).attr('data-role', 'page-first'),
                     $('<button type="button" class="btn btn-default btn-sm">' + (data.icons.previous || msg.Previous) + '</button>').attr('title', msg.PreviousPageTooltip).attr('data-role', 'page-previous'),
                     $('<div>' + msg.Page + '</div>'),
-                    $('<div></div>').append($('<input data-role="page-number" class="form-control input-sm" style="width: 40px; text-align: right;" type="text" value="0">')),
+                    $('<input data-role="page-number" class="form-control input-sm" type="text" value="0">'),
                     $('<div>' + msg.Of + '</div>'),
                     $('<div data-role="page-label-last">0</div>'),
                     $('<button type="button" class="btn btn-default btn-sm">' + (data.icons.next || msg.Next) + '</button>').attr('title', msg.NextPageTooltip).attr('data-role', 'page-next'),
                     $('<button type="button" class="btn btn-default btn-sm">' + (data.icons.last || msg.Last) + '</button>').attr('title', msg.LastPageTooltip).attr('data-role', 'page-last'),
                     $('<button type="button" class="btn btn-default btn-sm">' + (data.icons.refresh || msg.Refresh) + '</button>').attr('title', msg.Refresh).attr('data-role', 'page-refresh'),
-                    $('<div></div>').append($('<select data-role="page-size" class="form-control input-sm"></select></div>'))
+                    $('<select data-role="page-size" class="form-control input-sm" width="60"></select>')
                 ];
             }
             if (typeof (data.pager.rightControls) === 'undefined') {
@@ -4661,13 +4659,13 @@ gj.grid.plugins.pagination = {
                     $('<button class="btn btn-default btn-sm gj-cursor-pointer">' + (data.icons.first || msg.First) + '</button>').attr('title', msg.FirstPageTooltip).attr('data-role', 'page-first'),
                     $('<button class="btn btn-default btn-sm gj-cursor-pointer">' + (data.icons.previous || msg.Previous) + '</button>').attr('title', msg.PreviousPageTooltip).attr('data-role', 'page-previous'),
                     $('<div>' + msg.Page + '</div>'),
-                    $('<div></div>').append($('<input data-role="page-number" class="form-control form-control-sm" style="width: 40px; text-align: right;" type="text" value="0">')),
+                    $('<input data-role="page-number" class="form-control form-control-sm" type="text" value="0">'),
                     $('<div>' + msg.Of + '</div>'),
                     $('<div data-role="page-label-last">0</div>'),
                     $('<button class="btn btn-default btn-sm gj-cursor-pointer">' + (data.icons.next || msg.Next) + '</button>').attr('title', msg.NextPageTooltip).attr('data-role', 'page-next'),
                     $('<button class="btn btn-default btn-sm gj-cursor-pointer">' + (data.icons.last || msg.Last) + '</button>').attr('title', msg.LastPageTooltip).attr('data-role', 'page-last'),
                     $('<button class="btn btn-default btn-sm gj-cursor-pointer">' + (data.icons.refresh || msg.Refresh) + '</button>').attr('title', msg.Refresh).attr('data-role', 'page-refresh'),
-                    $('<div></div>').append($('<select data-role="page-size" class="form-control form-control-sm"></select></div>'))
+                    $('<select data-role="page-size" class="form-control input-sm" width="60"></select>')
                 ];
             }
             if (typeof (data.pager.rightControls) === 'undefined') {
@@ -4690,7 +4688,7 @@ gj.grid.plugins.pagination = {
             if (typeof (data.pager.rightControls) === 'undefined') {
                 data.pager.rightControls = [
                     $('<span class="">' + msg.RowsPerPage + '</span>'),
-                    $('<select data-role="page-size" class="gj-grid-md-limit-select"></select></div>'),
+                    $('<select data-role="page-size" class="gj-grid-md-limit-select" width="52"></select></div>'),
                     $('<span class="gj-md-spacer-32">&nbsp;</span>'),
                     $('<span data-role="record-first" class="">0</span>'),
                     $('<span class="">-</span>'),
@@ -4721,6 +4719,15 @@ gj.grid.plugins.pagination = {
                             gj.grid.plugins.pagination.events.pageSizeChange($grid, newSize);
                         });
                         $control.val(data.params[data.paramNames.limit]);
+                        if ($.fn.dropdown) {
+                            $control.dropdown({
+                                uiLibrary: data.uiLibrary,
+                                iconsLibrary: data.iconsLibrary,
+                                style: {
+                                    presenter: 'btn btn-default btn-sm'
+                                }
+                            });
+                        }
                     } else {
                         $control.hide();
                     }
@@ -6380,8 +6387,8 @@ gj.grid.plugins.fixedHeader = {
              *         pager: { limit: 5 }
              *     });
              * </script>
-             * @example Bootstrap.4 <!-- bootstrap4, grid -->
-             * <table id="grid"></table>
+             * @example Bootstrap.4 <!-- materialicons, bootstrap4, grid -->
+             * <div class="container"><table id="grid"></table></div>
              * <script>
              *     $('#grid').grid({
              *         uiLibrary: 'bootstrap4',

@@ -693,7 +693,7 @@ gj.grid.config = {
          * @additionalinfo The css files for Bootstrap or Material Design should be manually included to the page where the grid is in use.
          * @type (materialdesign|bootstrap|bootstrap4)
          * @default 'materialdesign'
-         * @example Material.Design.With.Icons <!-- materialicons, grid -->
+         * @example Material.Design.With.Icons <!-- materialicons, dropdown, grid -->
          * <table id="grid"></table>
          * <script>
          *     $('#grid').grid({
@@ -713,7 +713,7 @@ gj.grid.config = {
          *         pager: { limit: 2, sizes: [2, 5, 10, 20] }
          *     });
          * </script>
-         * @example Bootstrap.3 <!-- grid, bootstrap -->
+         * @example Bootstrap.3 <!-- grid, dropdown, bootstrap -->
          * <div class="container"><table id="grid"></table></div>
          * <script>
          *     $('#grid').grid({
@@ -727,7 +727,7 @@ gj.grid.config = {
          *         pager: { limit: 2, sizes: [2, 5, 10, 20] }
          *     });
          * </script>
-         * @example Bootstrap.4.Font.Awesome <!-- bootstrap4, fontawesome, grid -->
+         * @example Bootstrap.4.Font.Awesome <!-- bootstrap4, fontawesome, dropdown, grid -->
          * <table id="grid"></table>
          * <script>
          *     $('#grid').grid({

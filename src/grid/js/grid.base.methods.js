@@ -2,7 +2,6 @@
 gj.grid.methods = {
 
     init: function (jsConfig) {
-        this.attr('data-type', 'grid');
         gj.widget.prototype.init.call(this, jsConfig, 'grid');
 
         gj.grid.methods.initialize(this);

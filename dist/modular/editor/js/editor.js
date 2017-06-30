@@ -63,12 +63,11 @@ gj.widget = function () {
 gj.widget.prototype.init = function (jsConfig, type) {
     var option, clientConfig, fullConfig;
 
+    this.attr('data-type', type);
     clientConfig = $.extend(true, {}, this.getHTMLConfig() || {});
     $.extend(true, clientConfig, jsConfig || {});
     fullConfig = this.getConfig(clientConfig, type);
-
     this.attr('data-guid', fullConfig.guid);
-
     this.data(fullConfig);
 
     // Initialize events configured as options
@@ -586,18 +585,18 @@ gj.editor.events = {
     }
 };
 
-
 gj.editor.widget = function ($element, jsConfig) {
     var self = this,
         methods = gj.editor.methods;
 
     /** Get or set html content in the body.
      * @method
+     * @param {string} html - The html content that needs to be set.
      * @return string
      * @example Get <!-- editor, materialicons -->
      * <button class="gj-button-md" onclick="alert($editor.content())">Get Content</button>
      * <hr/>
-     * <div id="editor"></div>
+     * <div id="editor">My <b>content</b>.</div>
      * <script>
      *     var $editor = $('#editor').editor();
      * </script>

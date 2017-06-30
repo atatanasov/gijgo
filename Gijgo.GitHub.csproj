@@ -77,6 +77,9 @@
     <Content Include="src\dialog\js\messages\messages.pt-br.js" />
     <Content Include="src\draggable\js\draggable.base.js" />
     <Content Include="src\draggable\js\header.txt" />
+    <Content Include="src\dropdown\css\dropdown.base.css" />
+    <Content Include="src\dropdown\js\dropdown.base.js" />
+    <Content Include="src\dropdown\js\header.txt" />
     <Content Include="src\droppable\js\droppable.base.js" />
     <Content Include="src\droppable\js\header.txt" />
     <Content Include="src\editor\css\editor.base.css" />

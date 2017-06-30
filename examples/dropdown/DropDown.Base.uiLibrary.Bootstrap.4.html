@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Example</title>
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+  <link href="../../dist/modular/dropdown/css/dropdown.css" rel="stylesheet" type="text/css">
+  <script src="../../dist/modular/dropdown/js/dropdown.js"></script>
+</head>
+<body style="padding: 10px;">
+ <select id="dropdown">
+     <option value="1">One</option>
+     <option value="2">Two</option>
+     <option value="3">Three</option>
+ </select>
+ <script>
+     $('#dropdown').dropdown({ uiLibrary: 'bootstrap4' });
+ </script>
+</body>
+</html>

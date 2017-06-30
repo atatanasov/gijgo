@@ -63,12 +63,11 @@ gj.widget = function () {
 gj.widget.prototype.init = function (jsConfig, type) {
     var option, clientConfig, fullConfig;
 
+    this.attr('data-type', type);
     clientConfig = $.extend(true, {}, this.getHTMLConfig() || {});
     $.extend(true, clientConfig, jsConfig || {});
     fullConfig = this.getConfig(clientConfig, type);
-
     this.attr('data-guid', fullConfig.guid);
-
     this.data(fullConfig);
 
     // Initialize events configured as options
@@ -596,9 +595,9 @@ gj.tree.config = {
 
         style: {
             wrapper: 'gj-unselectable',
-            list: 'gj-tree-md-list',
-            item: 'gj-tree-item gj-tree-md-item',
-            active: 'gj-tree-md-active',
+            list: 'gj-list gj-list-md',
+            item: undefined,
+            active: 'gj-list-md-active',
             leafIcon: undefined,
             border: 'gj-tree-md-border'
         },
@@ -646,8 +645,8 @@ gj.tree.config = {
         indentation: 24,
         style: {
             wrapper: 'gj-unselectable gj-tree-bootstrap-3',
-            list: 'gj-tree-bootstrap-list list-group',
-            item: 'gj-tree-item list-group-item',
+            list: 'gj-list gj-list-bootstrap list-group',
+            item: 'list-group-item',
             active: 'active',
             border: 'gj-tree-bootstrap-border'
         },
@@ -658,8 +657,8 @@ gj.tree.config = {
         indentation: 24,
         style: {
             wrapper: 'gj-unselectable gj-tree-bootstrap-4',
-            list: 'gj-tree-bootstrap-list list-group',
-            item: 'gj-tree-item list-group-item',
+            list: 'gj-list gj-list-bootstrap list-group',
+            item: 'list-group-item',
             active: 'active',
             border: 'gj-tree-bootstrap-border'
         }
@@ -741,7 +740,7 @@ gj.tree.events = {
     },
 
     /**
-     * Event fires after the loading of the data in the grid.
+     * Event fires after the loading of the data in the tree.
      * @event dataBound
      * @param {object} e - event data
      * @example sample <!-- materialicons, tree.base -->
@@ -880,7 +879,6 @@ gj.tree.events = {
 gj.tree.methods = {
 
     init: function (jsConfig) {
-        this.attr('data-type', 'tree');
         gj.widget.prototype.init.call(this, jsConfig, 'tree');
 
         gj.tree.methods.initialize.call(this);

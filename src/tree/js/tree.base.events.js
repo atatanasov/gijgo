@@ -47,7 +47,7 @@ gj.tree.events = {
     },
 
     /**
-     * Event fires after the loading of the data in the grid.
+     * Event fires after the loading of the data in the tree.
      * @event dataBound
      * @param {object} e - event data
      * @example sample <!-- materialicons, tree.base -->

@@ -24,7 +24,8 @@
                     { src: ['src/grid/js/*.js'], dest: 'examples/grid/' },
                     { src: ['src/tree/js/*.js'], dest: 'examples/tree/' },
                     { src: ['src/checkbox/js/*.js'], dest: 'examples/checkbox/' },
-                    { src: ['src/editor/js/*.js'], dest: 'examples/editor/' }
+                    { src: ['src/editor/js/*.js'], dest: 'examples/editor/' },
+                    { src: ['src/dropdown/js/*.js'], dest: 'examples/dropdown/' }
                 ]
             }
         },
@@ -75,6 +76,12 @@
                     'dist/modular/editor/css/editor.code.css': ['src/editor/css/editor.base.css']
                 }
             },
+            dropdown: {
+                files: {
+                    'dist/modular/dropdown/js/dropdown.code.js': ['src/dropdown/js/dropdown.base.js'],
+                    'dist/modular/dropdown/css/dropdown.code.css': ['src/dropdown/css/dropdown.base.css']
+                }
+            },
             final: {
                 files: {
                     'dist/modular/draggable/js/draggable.js': ['src/draggable/js/header.txt', 'src/widget.js', 'dist/modular/draggable/js/draggable.code.js'],
@@ -89,9 +96,11 @@
                     'dist/modular/checkbox/css/checkbox.css': ['src/widget.css', 'dist/modular/checkbox/css/checkbox.code.css'],
                     'dist/modular/editor/js/editor.js': ['src/editor/js/header.txt', 'src/widget.js', 'dist/modular/editor/js/editor.code.js'],
                     'dist/modular/editor/css/editor.css': ['src/widget.css', 'dist/modular/editor/css/editor.code.css'],
+                    'dist/modular/dropdown/js/dropdown.js': ['src/dropdown/js/header.txt', 'src/widget.js', 'dist/modular/dropdown/js/dropdown.code.js'],
+                    'dist/modular/dropdown/css/dropdown.css': ['src/widget.css', 'dist/modular/dropdown/css/dropdown.code.css'],
                     
-                    'dist/combined/js/gijgo.js': ['src/header.txt', 'src/widget.js', 'dist/modular/dialog/js/dialog.code.js', 'dist/modular/draggable/js/draggable.code.js', 'dist/modular/droppable/js/droppable.code.js', 'dist/modular/grid/js/grid.code.js', 'dist/modular/tree/js/tree.code.js', 'dist/modular/checkbox/js/checkbox.code.js', 'dist/modular/editor/js/editor.code.js'],
-                    'dist/combined/css/gijgo.css': ['src/widget.css', 'dist/modular/dialog/css/dialog.code.css', 'dist/modular/grid/css/grid.code.css', 'dist/modular/tree/css/tree.code.css', 'dist/modular/checkbox/css/checkbox.code.css', 'dist/modular/editor/css/editor.code.css'],
+                    'dist/combined/js/gijgo.js': ['src/header.txt', 'src/widget.js', 'dist/modular/dialog/js/dialog.code.js', 'dist/modular/draggable/js/draggable.code.js', 'dist/modular/droppable/js/droppable.code.js', 'dist/modular/grid/js/grid.code.js', 'dist/modular/tree/js/tree.code.js', 'dist/modular/checkbox/js/checkbox.code.js', 'dist/modular/editor/js/editor.code.js', 'dist/modular/dropdown/js/dropdown.code.js'],
+                    'dist/combined/css/gijgo.css': ['src/widget.css', 'dist/modular/dialog/css/dialog.code.css', 'dist/modular/grid/css/grid.code.css', 'dist/modular/tree/css/tree.code.css', 'dist/modular/checkbox/css/checkbox.code.css', 'dist/modular/editor/css/editor.code.css', 'dist/modular/dropdown/css/dropdown.code.css'],
                     'dist/combined/js/messages/messages.bg-bg.js': ['src/dialog/js/messages/messages.bg-bg.js', 'src/grid/js/messages/messages.bg-bg.js', 'src/editor/js/messages/messages.bg-bg.js'],
                     'dist/combined/js/messages/messages.fr-fr.js': ['src/dialog/js/messages/messages.fr-fr.js', 'src/grid/js/messages/messages.fr-fr.js', 'src/editor/js/messages/messages.fr-fr.js'],
                     'dist/combined/js/messages/messages.de-de.js': ['src/dialog/js/messages/messages.de-de.js', 'src/grid/js/messages/messages.de-de.js', 'src/editor/js/messages/messages.de-de.js'],
@@ -151,7 +160,8 @@
                     'dist/modular/checkbox/js/checkbox.min.js': ['dist/modular/checkbox/js/checkbox.js'],
                     'dist/modular/editor/js/editor.min.js': ['dist/modular/editor/js/editor.js'],
                     'dist/modular/grid/js/grid.min.js': ['dist/modular/grid/js/grid.js'],
-                    'dist/modular/tree/js/tree.min.js': ['dist/modular/tree/js/tree.js']
+                    'dist/modular/tree/js/tree.min.js': ['dist/modular/tree/js/tree.js'],
+                    'dist/modular/dropdown/js/dropdown.min.js': ['dist/modular/dropdown/js/dropdown.js']
                 }
             }
         },
@@ -163,7 +173,8 @@
                     { expand: true, cwd: 'dist/modular/editor/css', src: ['editor.css'], dest: 'dist/modular/editor/css', ext: '.min.css' },
                     { expand: true, cwd: 'dist/modular/checkbox/css', src: ['checkbox.css'], dest: 'dist/modular/checkbox/css', ext: '.min.css' },
                     { expand: true, cwd: 'dist/modular/tree/css', src: ['tree.css'], dest: 'dist/modular/tree/css', ext: '.min.css' },
-                    { expand: true, cwd: 'dist/modular/grid/css', src: ['grid.css'], dest: 'dist/modular/grid/css', ext: '.min.css' }
+                    { expand: true, cwd: 'dist/modular/grid/css', src: ['grid.css'], dest: 'dist/modular/grid/css', ext: '.min.css' },
+                    { expand: true, cwd: 'dist/modular/dropdown/css', src: ['dropdown.css'], dest: 'dist/modular/dropdown/css', ext: '.min.css' }
                 ]
             }
         },
@@ -284,7 +295,7 @@ var writer = {
     buildHtmlFile: function (record) {
         return '<!DOCTYPE html>\r\n<html>\r\n' +
             writer.analyzeLibs(record.libs) +
-            '<body>\r\n' +
+            '<body style="padding: 6px;">\r\n' +
             record.text +
             '</body>\r\n</html>';
     },
@@ -307,10 +318,8 @@ var writer = {
                     case 'bootstrap':
                         if (local) {
                             result += '  <link href="../../dist/libraries/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">\r\n';
-                            //result += '  <link href="../../dist/libraries/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet" type="text/css">\r\n';
                         } else {
                             result += '  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">\r\n';
-                            //result += '  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">\r\n';
                         }
                         break;
                     case 'bootstrap4':
@@ -337,6 +346,9 @@ var writer = {
                     case 'editor':
                         result += '  <link href="../../dist/modular/editor/css/editor.css" rel="stylesheet" type="text/css">\r\n';
                         break;
+                    case 'dropdown':
+                        result += '  <link href="../../dist/modular/dropdown/css/dropdown.css" rel="stylesheet" type="text/css">\r\n';
+                        break;
                 }
             }
             for (i = 0; i < names.length; i++) {
@@ -362,6 +374,9 @@ var writer = {
                         break;
                     case 'editor':
                         result += '  <script src="../../dist/modular/editor/js/editor.js"></script>\r\n';
+                        break;
+                    case 'dropdown':
+                        result += '  <script src="../../dist/modular/dropdown/js/dropdown.js"></script>\r\n';
                         break;
                 }
             }

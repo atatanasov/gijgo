@@ -153,91 +153,55 @@
     display: inline-block;
 }
 
-li.gj-tree-item {
-    padding: 0px;
-}
-
-li.gj-tree-item div[data-role="wrapper"] {
+/* List */
+ul.gj-list li [data-role="wrapper"] {
     display: table;
     width: 100%;
 }
 
-li.gj-tree-item [data-role="spacer"] {
-    display: table-cell;
-}
-
-[data-type="tree"] ul li [data-role="expander"] {
+ul.gj-list li [data-role="checkbox"] {
     display: table-cell;
     vertical-align:middle;
     text-align:center;
+}
+
+ul.gj-list li [data-role="image"] {
+    display: table-cell;
+    vertical-align:middle;
+    text-align:center;
+}
+
+ul.gj-list li [data-role="display"] {
+    display: table-cell;
+    vertical-align:middle;
     cursor: pointer;
 }
 
-li.gj-tree-item [data-role="checkbox"] {
-    display: table-cell;
-    vertical-align:middle;
-    text-align:center;
-}
-
-li.gj-tree-item [data-role="image"] {
-    display: table-cell;
-    vertical-align:middle;
-    text-align:center;
-}
-
-li.gj-tree-item [data-role="display"] {
-    display: table-cell;
-    vertical-align:middle;
-    cursor: pointer;
-    padding: 2px 4px;
-}
-
-/* Bootstrap 3 Theme */
-ul.gj-tree-bootstrap-list {
+/* List - Bootstrap */
+ul.gj-list-bootstrap {
     padding-left: 0px;
     margin-bottom: 0px;
 }
 
-li ul.gj-tree-bootstrap-list {
-    padding-left: 0px;
-    width: 100%;
+ul.gj-list-bootstrap li {
+    padding: 0px;
 }
 
-ul.gj-tree-bootstrap-list li.gj-tree-item ul li.gj-tree-item {
-    border-left: 0px;
-    border-right: 0px;
-}
-
-ul.gj-tree-bootstrap-list li.gj-tree-item ul li.gj-tree-item:first-child {
-    border-top-left-radius: 0px;
-    border-top-right-radius: 0px;
-}
-
-ul.gj-tree-bootstrap-list li.gj-tree-item ul li.gj-tree-item:last-child {
-    border-bottom: 0px;
-    border-bottom-left-radius: 0px;
-    border-bottom-right-radius: 0px;
-}
-
-ul.gj-tree-bootstrap-list li [data-role="wrapper"] {
+ul.gj-list-bootstrap li [data-role="wrapper"] {
     padding: 0px 10px;
 }
 
-ul.gj-tree-bootstrap-list li [data-role="expander"].gj-tree-material-icons-expander {
-    padding-top: 6px;
-}
-
-ul.gj-tree-bootstrap-list li [data-role="checkbox"] {
+ul.gj-list-bootstrap li [data-role="checkbox"] {
     width: 24px;
     padding: 3px;
 }
 
-ul.gj-tree-bootstrap-list li [data-role="image"] {
+ul.gj-list-bootstrap li [data-role="image"] {
     width: 24px;
     height: 24px;
 }
 
-ul.gj-tree-bootstrap-list li [data-role="display"] {
+ul.gj-list-bootstrap li [data-role="display"] {
     padding: 8px 0px 8px 4px;
 }
 
@@ -246,17 +210,8 @@ ul.gj-tree-bootstrap-list li [data-role="display"] {
     color:initial;
 }
 
-/* BEGIN: Bootstrap With Border */
-ul.gj-tree-bootstrap-list li.gj-tree-item {
-    border: 0px;
-}
-.gj-tree-bootstrap-border ul.gj-tree-bootstrap-list li.gj-tree-item {
-    border: 1px solid #ddd;
-}
-/* END: Bootstrap With Border */
-
-/* Material Design Theme */
-.gj-tree-md-list {
+/* List - Material Design */
+ul.gj-list-md {
     padding: 0px;
     list-style: none;
     list-style-type: none;
@@ -264,7 +219,7 @@ ul.gj-tree-bootstrap-list li.gj-tree-item {
     letter-spacing: 0;
 }
 
-.gj-tree-md-item {
+ul.gj-list-md li {
     display: list-item;
     list-style-type: none;
     padding: 0px;
@@ -289,44 +244,38 @@ ul.gj-tree-bootstrap-list li.gj-tree-item {
     flex-wrap: nowrap;
 }
 
-li.gj-tree-item.gj-tree-md-item [data-role="display"] {
-    padding: 8px 0px 8px 5px;
+ul.gj-list-md li [data-role="checkbox"] {
+    height: 24px;
+    width: 24px;
+}
 
+ul.gj-list-md li [data-role="image"] {
+    height: 24px;
+    width: 24px;
+}
+
+ul.gj-list-md li [data-role="display"] {
+    padding: 8px 0px 8px 5px;
     order: 0;
     flex-grow: 2;
     text-decoration: none;
     box-sizing: border-box;
     align-items: center;
+    text-align: left;
 }
 
-/* BEGIN: Material Design With Border */
-.gj-tree-md-border .gj-tree-md-item {
-    border: 1px solid rgba(0,0,0,.87);
-    margin-bottom: -1px;
-}
-
-.gj-tree-md-border ul.gj-tree-md-list li.gj-tree-item ul li.gj-tree-item {
-    border-left: 0px;
-    border-right: 0px;
-}
-
-.gj-tree-md-border ul.gj-tree-md-list li.gj-tree-item ul li.gj-tree-item:last-child {
-    border-bottom: 0px;
-}
-/* END: Material Design With Border */
-
-li.gj-tree-md-item [data-role="checkbox"] {
-    height: 24px;
-    width: 24px;
-}
-
-li.gj-tree-md-item [data-role="image"] {
-    height: 24px;
-    width: 24px;
-}
-
-.gj-tree-md-active {
+.gj-list-md-active {
     background: #E8EAF6;
+}
+ul.gj-list li [data-role="spacer"] {
+    display: table-cell;
+}
+
+ul.gj-list li [data-role="expander"] {
+    display: table-cell;
+    vertical-align:middle;
+    text-align:center;
+    cursor: pointer;
 }
 
 [data-type="tree"] ul li [data-role="expander"].gj-tree-material-icons-expander {
@@ -344,6 +293,54 @@ li.gj-tree-md-item [data-role="image"] {
 [data-type="tree"] ul li [data-role="expander"].gj-tree-glyphicons-expander .glyphicon {
     top: 4px;
     height: 24px;
+}
+
+/* Bootstrap Theme */
+ul.gj-list-bootstrap li {
+    border: 0px;
+}
+
+.gj-tree-bootstrap-border ul.gj-list-bootstrap li {
+    border: 1px solid #ddd;
+}
+
+.gj-tree-bootstrap-border ul.gj-list-bootstrap li ul.gj-list-bootstrap li {
+    border-left: 0px;
+    border-right: 0px;
+}
+
+.gj-tree-bootstrap-border ul.gj-list-bootstrap li ul.gj-list-bootstrap li:first-child {
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+}
+
+.gj-tree-bootstrap-border ul.gj-list-bootstrap li ul.gj-list-bootstrap li:last-child {
+    border-bottom: 0px;
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+}
+
+.gj-tree-bootstrap-4 ul.gj-list-bootstrap li ul.gj-list-bootstrap {
+    width: 100%;
+}
+
+ul.gj-list-bootstrap li [data-role="expander"].gj-tree-material-icons-expander {
+    padding-top: 6px;
+}
+
+/* Material Design Theme */
+.gj-tree-md-border ul.gj-list-md li {
+    border: 1px solid rgba(0,0,0,.87);
+    margin-bottom: -1px;
+}
+
+.gj-tree-md-border ul.gj-list-md li ul.gj-list-md li {
+    border-left: 0px;
+    border-right: 0px;
+}
+
+.gj-tree-md-border ul.gj-list-md li ul.gj-list-md li:last-child {
+    border-bottom: 0px;
 }
 .gj-tree-drop-above {    
     border-top: 1px solid #000;

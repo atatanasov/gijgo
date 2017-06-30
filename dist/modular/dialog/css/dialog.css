@@ -153,6 +153,120 @@
     display: inline-block;
 }
 
+/* List */
+ul.gj-list li [data-role="wrapper"] {
+    display: table;
+    width: 100%;
+}
+
+ul.gj-list li [data-role="checkbox"] {
+    display: table-cell;
+    vertical-align:middle;
+    text-align:center;
+}
+
+ul.gj-list li [data-role="image"] {
+    display: table-cell;
+    vertical-align:middle;
+    text-align:center;
+}
+
+ul.gj-list li [data-role="display"] {
+    display: table-cell;
+    vertical-align:middle;
+    cursor: pointer;
+}
+
+/* List - Bootstrap */
+ul.gj-list-bootstrap {
+    padding-left: 0px;
+    margin-bottom: 0px;
+}
+
+ul.gj-list-bootstrap li {
+    padding: 0px;
+}
+
+ul.gj-list-bootstrap li [data-role="wrapper"] {
+    padding: 0px 10px;
+}
+
+ul.gj-list-bootstrap li [data-role="checkbox"] {
+    width: 24px;
+    padding: 3px;
+}
+
+ul.gj-list-bootstrap li [data-role="image"] {
+    width: 24px;
+    height: 24px;
+}
+
+ul.gj-list-bootstrap li [data-role="display"] {
+    padding: 8px 0px 8px 4px;
+}
+
+.list-group-item.active ul li, .list-group-item.active:focus ul li, .list-group-item.active:hover ul li {
+    text-shadow: none;
+    color:initial;
+}
+
+/* List - Material Design */
+ul.gj-list-md {
+    padding: 0px;
+    list-style: none;
+    list-style-type: none;
+    line-height: 24px;
+    letter-spacing: 0;
+}
+
+ul.gj-list-md li {
+    display: list-item;
+    list-style-type: none;
+    padding: 0px;
+    min-height: unset;
+    box-sizing: border-box;
+    align-items: center;
+    cursor: default;
+    overflow: hidden;
+
+    font-family: "Roboto","Helvetica","Arial",sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    letter-spacing: .04em;
+    line-height: 1;
+    color: rgba(0,0,0,.87);
+    
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -webkit-flex-wrap: nowrap;
+    -ms-flex-wrap: nowrap;
+    flex-wrap: nowrap;
+}
+
+ul.gj-list-md li [data-role="checkbox"] {
+    height: 24px;
+    width: 24px;
+}
+
+ul.gj-list-md li [data-role="image"] {
+    height: 24px;
+    width: 24px;
+}
+
+ul.gj-list-md li [data-role="display"] {
+    padding: 8px 0px 8px 5px;
+    order: 0;
+    flex-grow: 2;
+    text-decoration: none;
+    box-sizing: border-box;
+    align-items: center;
+    text-align: left;
+}
+
+.gj-list-md-active {
+    background: #E8EAF6;
+}
 .gj-draggable {
     cursor: move;
 }

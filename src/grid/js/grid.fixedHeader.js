@@ -59,8 +59,8 @@ gj.grid.plugins.fixedHeader = {
              *         pager: { limit: 5 }
              *     });
              * </script>
-             * @example Bootstrap.4 <!-- bootstrap4, grid -->
-             * <table id="grid"></table>
+             * @example Bootstrap.4 <!-- materialicons, bootstrap4, grid -->
+             * <div class="container"><table id="grid"></table></div>
              * <script>
              *     $('#grid').grid({
              *         uiLibrary: 'bootstrap4',
