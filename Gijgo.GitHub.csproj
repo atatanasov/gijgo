@@ -66,6 +66,9 @@
     <Content Include="src\checkbox\css\checkbox.base.css" />
     <Content Include="src\checkbox\js\checkbox.base.js" />
     <Content Include="src\checkbox\js\header.txt" />
+    <Content Include="src\datepicker\css\datepicker.base.css" />
+    <Content Include="src\datepicker\js\datepicker.base.js" />
+    <Content Include="src\datepicker\js\header.txt" />
     <Content Include="src\dialog\css\dialog.base.css" />
     <Content Include="src\dialog\js\dialog.base.events.js" />
     <Content Include="src\dialog\js\dialog.base.widget.js" />

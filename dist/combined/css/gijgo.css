@@ -1239,96 +1239,74 @@ ul.gj-list-bootstrap li [data-role="expander"].gj-tree-material-icons-expander {
 .gj-editor-bootstrap blockquote {
     font-size: 14px;
 }
-.gj-dropdown {
+.gj-datepicker {
     position: relative;
 }
 
-.gj-dropdown ul[role="list"] {
-    margin: 0px;
-}
-
-.gj-dropdown [role="presenter"] {
-    display: table;
+.gj-datepicker [role="calendar"] table tr[role="month-manager"] th {
     cursor: pointer;
-    width: 100%;
-    outline: none;
 }
 
-.gj-dropdown [role="presenter"] [role="display"] {
-    display: table-cell;
-    text-align: left;
+.gj-datepicker [role="calendar"] table tr[role="month-manager"] th div[role="month"] {
+    width: 200px;
+    text-align: center;
 }
 
-.gj-dropdown [role="presenter"] [role="expander"] {
-    display: table-cell;
-    vertical-align:middle;
-    text-align:center;
-}
 
 /* Material Design */
-.gj-dropdown-md [role="presenter"] {
+.gj-datepicker-md {
     font-family: "Roboto","Helvetica","Arial",sans-serif;
     font-size: 16px;
     font-weight: 400;
     letter-spacing: .04em;
     line-height: 1;
     color: rgba(0,0,0,.87);
-
-    padding: 0px;
-    border: 0px;
-    background: transparent;
 }
 
-.gj-dropdown-md [role="presenter"] [role="display"] {
-    padding: 8px 0px 8px 5px;
-    width: 100%;
+.gj-datepicker-md [role="calendar-icon"] {
+    cursor: pointer;
+    position: absolute;
+    right: 0px;
+    top: 0px;
 }
 
-.gj-dropdown-md [role="presenter"] [role="expander"] {
-    width: 24px;
+.gj-datepicker-md [role="calendar"] table tr[role="month-manager"] th div {
+    line-height: 24px;
     height: 24px;
 }
 
-.gj-dropdown-md ul[role="list"] {
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    background-color: #f5f5f5;
-    color: #000;
+.gj-datepicker-md [role="calendar"] table tr td div,
+.gj-datepicker-md [role="calendar"] table tr th div {
+    display: block;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    font-size: 13px;
+    text-align: center;
+    vertical-align: middle;
 }
 
-.gj-dropdown-md ul[role="list"] li:hover, .gj-dropdown-md ul[role="list"] li.active {
-    background-color: #eee;
+.gj-datepicker-md [role="calendar"] table tr td div {
+    cursor: pointer;
+}
+
+.gj-datepicker-md [role="calendar"] table tr td div:hover {
+    background: #EEEEEE;
+    border-radius: 50%;
+}
+
+.gj-datepicker-md [role="calendar"] table tr td[type="today"] div {
+    color: #EEEEEE;
+    font-weight: bold;
+}
+
+.gj-datepicker-md [role="calendar"] table tr td[type="other-month"] div {
+    color: #BDBDBD;
 }
 
 /* Bootstrap */
-.gj-dropdown-bootstrap [role="presenter"] [role="display"] {
+.gj-datepicker-bootstrap {
     padding-right: 5px;
     width: 100%;
-}
 
-.gj-dropdown-bootstrap [role="presenter"] [role="expander"] {
-    padding-left: 5px;
-}
-
-.gj-dropdown-bootstrap ul.gj-list-bootstrap {
-    margin-top: 2px;
-}
-
-.gj-dropdown-bootstrap-3 [role="presenter"] [role="expander"].gj-dropdown-expander-mi .material-icons {
-    top: 5px;
-    right: 10px;
-    position: absolute;
-}
-
-.gj-dropdown-bootstrap-4 [role="presenter"] [role="expander"].gj-dropdown-expander-mi .material-icons {
-    top: 7px;
-    right: 10px;
-    position: absolute;
-}
-
-.gj-dropdown-bootstrap ul[role="list"] {
-    position: absolute;
-    top: 32px;
-    left: 0px;
 }

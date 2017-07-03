@@ -1,0 +1,71 @@
+﻿.gj-datepicker {
+    position: relative;
+}
+
+.gj-datepicker [role="calendar"] table tr[role="month-manager"] th {
+    cursor: pointer;
+}
+
+.gj-datepicker [role="calendar"] table tr[role="month-manager"] th div[role="month"] {
+    width: 200px;
+    text-align: center;
+}
+
+
+/* Material Design */
+.gj-datepicker-md {
+    font-family: "Roboto","Helvetica","Arial",sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    letter-spacing: .04em;
+    line-height: 1;
+    color: rgba(0,0,0,.87);
+}
+
+.gj-datepicker-md [role="calendar-icon"] {
+    cursor: pointer;
+    position: absolute;
+    right: 0px;
+    top: 0px;
+}
+
+.gj-datepicker-md [role="calendar"] table tr[role="month-manager"] th div {
+    line-height: 24px;
+    height: 24px;
+}
+
+.gj-datepicker-md [role="calendar"] table tr td div,
+.gj-datepicker-md [role="calendar"] table tr th div {
+    display: block;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    font-size: 13px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.gj-datepicker-md [role="calendar"] table tr td div {
+    cursor: pointer;
+}
+
+.gj-datepicker-md [role="calendar"] table tr td div:hover {
+    background: #EEEEEE;
+    border-radius: 50%;
+}
+
+.gj-datepicker-md [role="calendar"] table tr td[type="today"] div {
+    color: #EEEEEE;
+    font-weight: bold;
+}
+
+.gj-datepicker-md [role="calendar"] table tr td[type="other-month"] div {
+    color: #BDBDBD;
+}
+
+/* Bootstrap */
+.gj-datepicker-bootstrap {
+    padding-right: 5px;
+    width: 100%;
+
+}

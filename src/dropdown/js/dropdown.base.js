@@ -45,7 +45,7 @@ gj.dropdown.config = {
         optionsDisplay: 'materialDesign',
 
         /** The name of the UI library that is going to be in use.
-         * @additionalinfo The css files for Bootstrap or Material Design Lite should be manually included if you use those as UI Library.
+         * @additionalinfo The css file for bootstrap should be manually included if you use bootstrap.
          * @type (materialdesign|bootstrap|bootstrap4)
          * @default materialdesign
          * @example MaterialDesign <!-- materialicons, dropdown -->
@@ -210,7 +210,7 @@ gj.dropdown.methods = {
     },
 
     initialize: function ($dropdown) {
-        var self = this, $item,
+        var $item,
             data = $dropdown.data(),
             $wrapper = $dropdown.parent('div[role="wrapper"]'),
             $display = $('<span role="display"></span>'),

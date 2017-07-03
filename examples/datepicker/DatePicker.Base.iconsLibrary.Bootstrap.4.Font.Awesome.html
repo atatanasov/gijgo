@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Example</title>
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+  <link href="../../dist/modular/datepicker/css/datepicker.css" rel="stylesheet" type="text/css">
+  <script src="../../dist/modular/datepicker/js/datepicker.js"></script>
+</head>
+<body style="padding: 6px;">
+ <select id="datepicker"></select>
+ <script>
+     var datepicker = $('#datepicker').datepicker({
+         dataSource: '/Locations/Get',
+         uiLibrary: 'bootstrap4',
+         iconsLibrary: 'fontawesome',
+         dataValueField: 'id'
+     });
+ </script>
+</body>
+</html>

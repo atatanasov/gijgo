@@ -67,7 +67,7 @@ gj.grid.plugins.pagination = {
                  * When this setting is set, then a drop down with the options for each page size is visualized in the pager.
                  * @alias pager.sizes
                  * @type array
-                 * @default undefined
+                 * @default [5, 10, 20, 100]
                  * @example Bootstrap.3 <!-- bootstrap, grid, grid.pagination  -->
                  * <table id="grid"></table>
                  * <script>
@@ -89,7 +89,7 @@ gj.grid.plugins.pagination = {
                  *     });
                  * </script>
                  */
-                sizes: undefined,
+                sizes: [5, 10, 20, 100],
 
                 /** Array that contains a list with jquery objects that are going to be used on the left side of the pager.
                  * @alias pager.leftControls

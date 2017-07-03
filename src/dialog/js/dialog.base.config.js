@@ -347,8 +347,8 @@ gj.dialog.config = {
          */
         title: undefined,
 
-        /** The name of the UI library that is going to be in use. Currently we support Material Design and Bootstrap. 
-         * @additionalinfo The css files for Material Design Lite or Bootstrap should be manually included to the page where the dialog is in use.
+        /** The name of the UI library that is going to be in use. Currently we support Material Design and Bootstrap.
+         * @additionalinfo The css file for bootstrap should be manually included if you use bootstrap.
          * @type string (bootstrap|materialdesign)
          * @default undefined
          * @example Bootstrap.3 <!-- draggable.base, dialog.base, bootstrap -->

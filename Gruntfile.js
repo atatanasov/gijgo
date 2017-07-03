@@ -25,7 +25,8 @@
                     { src: ['src/tree/js/*.js'], dest: 'examples/tree/' },
                     { src: ['src/checkbox/js/*.js'], dest: 'examples/checkbox/' },
                     { src: ['src/editor/js/*.js'], dest: 'examples/editor/' },
-                    { src: ['src/dropdown/js/*.js'], dest: 'examples/dropdown/' }
+                    { src: ['src/dropdown/js/*.js'], dest: 'examples/dropdown/' },
+                    { src: ['src/datepicker/js/*.js'], dest: 'examples/datepicker/' }
                 ]
             }
         },
@@ -82,6 +83,12 @@
                     'dist/modular/dropdown/css/dropdown.code.css': ['src/dropdown/css/dropdown.base.css']
                 }
             },
+            datepicker: {
+                files: {
+                    'dist/modular/datepicker/js/datepicker.code.js': ['src/datepicker/js/datepicker.base.js'],
+                    'dist/modular/datepicker/css/datepicker.code.css': ['src/datepicker/css/datepicker.base.css']
+                }
+            },
             final: {
                 files: {
                     'dist/modular/draggable/js/draggable.js': ['src/draggable/js/header.txt', 'src/widget.js', 'dist/modular/draggable/js/draggable.code.js'],
@@ -98,9 +105,11 @@
                     'dist/modular/editor/css/editor.css': ['src/widget.css', 'dist/modular/editor/css/editor.code.css'],
                     'dist/modular/dropdown/js/dropdown.js': ['src/dropdown/js/header.txt', 'src/widget.js', 'dist/modular/dropdown/js/dropdown.code.js'],
                     'dist/modular/dropdown/css/dropdown.css': ['src/widget.css', 'dist/modular/dropdown/css/dropdown.code.css'],
+                    'dist/modular/datepicker/js/datepicker.js': ['src/datepicker/js/header.txt', 'src/widget.js', 'dist/modular/datepicker/js/datepicker.code.js'],
+                    'dist/modular/datepicker/css/datepicker.css': ['src/widget.css', 'dist/modular/datepicker/css/datepicker.code.css'],
                     
-                    'dist/combined/js/gijgo.js': ['src/header.txt', 'src/widget.js', 'dist/modular/dialog/js/dialog.code.js', 'dist/modular/draggable/js/draggable.code.js', 'dist/modular/droppable/js/droppable.code.js', 'dist/modular/grid/js/grid.code.js', 'dist/modular/tree/js/tree.code.js', 'dist/modular/checkbox/js/checkbox.code.js', 'dist/modular/editor/js/editor.code.js', 'dist/modular/dropdown/js/dropdown.code.js'],
-                    'dist/combined/css/gijgo.css': ['src/widget.css', 'dist/modular/dialog/css/dialog.code.css', 'dist/modular/grid/css/grid.code.css', 'dist/modular/tree/css/tree.code.css', 'dist/modular/checkbox/css/checkbox.code.css', 'dist/modular/editor/css/editor.code.css', 'dist/modular/dropdown/css/dropdown.code.css'],
+                    'dist/combined/js/gijgo.js': ['src/header.txt', 'src/widget.js', 'dist/modular/dialog/js/dialog.code.js', 'dist/modular/draggable/js/draggable.code.js', 'dist/modular/droppable/js/droppable.code.js', 'dist/modular/grid/js/grid.code.js', 'dist/modular/tree/js/tree.code.js', 'dist/modular/checkbox/js/checkbox.code.js', 'dist/modular/editor/js/editor.code.js', 'dist/modular/dropdown/js/dropdown.code.js', 'dist/modular/datepicker/js/datepicker.code.js'],
+                    'dist/combined/css/gijgo.css': ['src/widget.css', 'dist/modular/dialog/css/dialog.code.css', 'dist/modular/grid/css/grid.code.css', 'dist/modular/tree/css/tree.code.css', 'dist/modular/checkbox/css/checkbox.code.css', 'dist/modular/editor/css/editor.code.css', 'dist/modular/datepicker/css/datepicker.code.css'],
                     'dist/combined/js/messages/messages.bg-bg.js': ['src/dialog/js/messages/messages.bg-bg.js', 'src/grid/js/messages/messages.bg-bg.js', 'src/editor/js/messages/messages.bg-bg.js'],
                     'dist/combined/js/messages/messages.fr-fr.js': ['src/dialog/js/messages/messages.fr-fr.js', 'src/grid/js/messages/messages.fr-fr.js', 'src/editor/js/messages/messages.fr-fr.js'],
                     'dist/combined/js/messages/messages.de-de.js': ['src/dialog/js/messages/messages.de-de.js', 'src/grid/js/messages/messages.de-de.js', 'src/editor/js/messages/messages.de-de.js'],
@@ -161,7 +170,8 @@
                     'dist/modular/editor/js/editor.min.js': ['dist/modular/editor/js/editor.js'],
                     'dist/modular/grid/js/grid.min.js': ['dist/modular/grid/js/grid.js'],
                     'dist/modular/tree/js/tree.min.js': ['dist/modular/tree/js/tree.js'],
-                    'dist/modular/dropdown/js/dropdown.min.js': ['dist/modular/dropdown/js/dropdown.js']
+                    'dist/modular/dropdown/js/dropdown.min.js': ['dist/modular/dropdown/js/dropdown.js'],
+                    'dist/modular/datepicker/js/datepicker.min.js': ['dist/modular/datepicker/js/datepicker.js']
                 }
             }
         },
@@ -174,7 +184,8 @@
                     { expand: true, cwd: 'dist/modular/checkbox/css', src: ['checkbox.css'], dest: 'dist/modular/checkbox/css', ext: '.min.css' },
                     { expand: true, cwd: 'dist/modular/tree/css', src: ['tree.css'], dest: 'dist/modular/tree/css', ext: '.min.css' },
                     { expand: true, cwd: 'dist/modular/grid/css', src: ['grid.css'], dest: 'dist/modular/grid/css', ext: '.min.css' },
-                    { expand: true, cwd: 'dist/modular/dropdown/css', src: ['dropdown.css'], dest: 'dist/modular/dropdown/css', ext: '.min.css' }
+                    { expand: true, cwd: 'dist/modular/dropdown/css', src: ['dropdown.css'], dest: 'dist/modular/dropdown/css', ext: '.min.css' },
+                    { expand: true, cwd: 'dist/modular/datepicker/css', src: ['datepicker.css'], dest: 'dist/modular/datepicker/css', ext: '.min.css' }
                 ]
             }
         },
@@ -349,6 +360,9 @@ var writer = {
                     case 'dropdown':
                         result += '  <link href="../../dist/modular/dropdown/css/dropdown.css" rel="stylesheet" type="text/css">\r\n';
                         break;
+                    case 'datepicker':
+                        result += '  <link href="../../dist/modular/datepicker/css/datepicker.css" rel="stylesheet" type="text/css">\r\n';
+                        break;
                 }
             }
             for (i = 0; i < names.length; i++) {
@@ -377,6 +391,9 @@ var writer = {
                         break;
                     case 'dropdown':
                         result += '  <script src="../../dist/modular/dropdown/js/dropdown.js"></script>\r\n';
+                        break;
+                    case 'datepicker':
+                        result += '  <script src="../../dist/modular/datepicker/js/datepicker.js"></script>\r\n';
                         break;
                 }
             }

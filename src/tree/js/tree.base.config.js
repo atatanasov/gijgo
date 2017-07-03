@@ -280,7 +280,7 @@ gj.tree.config = {
         border: false,
 
         /** The name of the UI library that is going to be in use.
-         * @additionalinfo The css files for Bootstrap or Material Design Lite should be manually included if you use those as UI Library.
+         * @additionalinfo The css file for bootstrap should be manually included if you use bootstrap.
          * @type (materialdesign|bootstrap|bootstrap4)
          * @default materialdesign
          * @example MaterialDesign <!-- materialicons, tree.base, checkbox -->
