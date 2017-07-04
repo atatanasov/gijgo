@@ -10,11 +10,13 @@
   <script src="../../dist/modular/datepicker/js/datepicker.js"></script>
 </head>
 <body style="padding: 6px;">
- <input id="datepicker" width="312" />
+ <input id="datepicker" />
  <script>
-    var datepicker = $('#datepicker').datepicker({
-        uiLibrary: 'materialdesign'
-    });
+     var datepicker = $('#datepicker').datepicker({
+         format: function(date) {
+             return date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
+         }
+     });
  </script>
 </body>
 </html>

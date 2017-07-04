@@ -10,11 +10,14 @@
   <script src="../../dist/modular/datepicker/js/datepicker.js"></script>
 </head>
 <body style="padding: 6px;">
- <input id="datepicker" width="312" />
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js" integrity="sha256-1hjUhpc44NwiNg8OwMu2QzJXhD8kcj+sJA3aCQZoUjg=" crossorigin="anonymous"></script>
+ <input id="datepicker" />
  <script>
-    var datepicker = $('#datepicker').datepicker({
-        uiLibrary: 'materialdesign'
-    });
+     var datepicker = $('#datepicker').datepicker({
+         format: function(date) {
+             return moment(date).format('YYYY-MM-DD');
+         }
+     });
  </script>
 </body>
 </html>

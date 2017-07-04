@@ -2,6 +2,10 @@
     position: relative;
 }
 
+.gj-datepicker [role="calendar"] {
+    position: absolute;
+}
+
 .gj-datepicker [role="calendar"] table tr[role="month-manager"] th {
     cursor: pointer;
 }
@@ -29,9 +33,14 @@
     top: 0px;
 }
 
-.gj-datepicker-md [role="calendar"] table tr[role="month-manager"] th div {
-    line-height: 24px;
-    height: 24px;
+.gj-datepicker-md [role="calendar"] {
+    border: 1px solid #E0E0E0;
+}
+
+.gj-datepicker-md [role="calendar"] table tr[role="month-manager"] th div i.material-icons {
+    position: absolute;
+    top: 8px;
+    left: 8px;
 }
 
 .gj-datepicker-md [role="calendar"] table tr td div,
@@ -43,6 +52,7 @@
     font-size: 13px;
     text-align: center;
     vertical-align: middle;
+    position: relative;
 }
 
 .gj-datepicker-md [role="calendar"] table tr td div {
@@ -55,8 +65,13 @@
 }
 
 .gj-datepicker-md [role="calendar"] table tr td[type="today"] div {
-    color: #EEEEEE;
-    font-weight: bold;
+    color: #1976D2;
+}
+
+.gj-datepicker-md [role="calendar"] table tr td[type="selected"] div {
+    color: #FFFFFF;
+    background: #1976D2;
+    border-radius: 50%;
 }
 
 .gj-datepicker-md [role="calendar"] table tr td[type="other-month"] div {
