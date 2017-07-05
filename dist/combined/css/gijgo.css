@@ -1320,8 +1320,13 @@ ul.gj-list-bootstrap li [data-role="expander"].gj-tree-material-icons-expander {
 }
 
 /* Bootstrap */
-.gj-datepicker-bootstrap {
-    padding-right: 5px;
-    width: 100%;
-
+.gj-datepicker-bootstrap [role="calendar"] table tr td div,
+.gj-datepicker-bootstrap [role="calendar"] table tr th div {
+    display: block;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    vertical-align: middle;
+    position: relative;
 }

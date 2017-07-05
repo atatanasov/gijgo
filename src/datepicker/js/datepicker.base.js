@@ -146,16 +146,12 @@ gj.datepicker.config = {
     },
 
     bootstrap: {
-        indentation: 24,
         style: {
-            wrapper: 'gj-datepicker gj-datepicker-bootstrap gj-datepicker-bootstrap-3 gj-unselectable',
-            presenter: 'btn btn-default',
-            list: 'gj-list gj-list-bootstrap list-group',
-            item: 'list-group-item',
-            active: 'active'
+            wrapper: 'gj-datepicker gj-datepicker-bootstrap gj-unselectable',
+            input: 'form-control'
         },
         iconsLibrary: 'glyphicons',
-        optionsDisplay: 'standard'
+        showOtherMonths: true
     },
 
     bootstrap4: {
@@ -170,28 +166,19 @@ gj.datepicker.config = {
         optionsDisplay: 'standard'
     },
 
-    materialicons: {
-        indentation: 24,
-        style: {
-            expander: 'gj-datepicker-expander-mi'
-        }
-    },
+    materialicons: {},
 
     fontawesome: {
         icons: {
-            datepicker: '<i class="fa fa-calendar" aria-hidden="true"></i>'
-        },
-        style: {
-            expander: 'gj-datepicker-expander-fa'
+            calendar: '<i class="fa fa-calendar" aria-hidden="true"></i>'
         }
     },
 
     glyphicons: {
         icons: {
-            datepicker: '<span class="glyphicon glyphicon-calendar"></span>'
-        },
-        style: {
-            expander: 'gj-datepicker-expander-glyphicons'
+            calendar: '<span class="glyphicon glyphicon-calendar"></span>',
+            previousMonth: '<span class="glyphicon glyphicon-chevron-left"></span>',
+            nextMonth: '<span class="glyphicon glyphicon-chevron-right"></span>'
         }
     }
 };
@@ -267,13 +254,13 @@ gj.datepicker.methods = {
     },
 
     renderCalendar: function ($datepicker) {
-        var weekDay, day, month, year, daysInMonth, total, firstDayPosition, i, now, prevMonth, nextMonth, $cell, $day,
+        var weekDay, selectedDay, day, month, year, daysInMonth, total, firstDayPosition, i, now, prevMonth, nextMonth, $cell, $day,
             data = $datepicker.data(),
             $calendar = $datepicker.parent().children('[role="calendar"]'),
             $table = $calendar.children('table'),
             $tbody = $table.children('tbody');
         
-        day = parseInt($datepicker.attr('day'), 10);
+        selectedDay = new Date($datepicker.attr('day'));
         month = parseInt($datepicker.attr('month'), 10);
         year = parseInt($datepicker.attr('year'), 10);
 
@@ -293,12 +280,17 @@ gj.datepicker.methods = {
         $row = $('<tr />');
         prevMonth = gj.datepicker.methods.getPrevMonth(month, year);
         for (i = 1; i <= firstDayPosition; i++) {
-            $cell = $('<td type="other-month" />');
-            $day = $('<div>' + (daysInMonth[prevMonth.month] - firstDayPosition + i) + '</div>');
+            day = (daysInMonth[prevMonth.month] - firstDayPosition + i);
+            if (prevMonth.year === selectedDay.getFullYear() && prevMonth.month === selectedDay.getMonth() && day === selectedDay.getDate()) {
+                $cell = $('<td type="selected" />');
+            } else {
+                $cell = $('<td type="other-month" />');
+            }
+            $day = $('<div>' + day + '</div>');
             if (data.showOtherMonths) {
                 $cell.append($day);
-                if (selectOtherMonths) {
-                    $day.on('click', gj.datepicker.methods.select($datepicker, $calendar, i, prevMonth.month, prevMonth.year));
+                if (data.selectOtherMonths) {
+                    $day.on('click', gj.datepicker.methods.select($datepicker, $calendar, day, prevMonth.month, prevMonth.year));
                 }
             }
             $row.append($cell);
@@ -313,7 +305,7 @@ gj.datepicker.methods = {
             }
             $day = $('<div>' + i + '</div>');
             $day.on('click', gj.datepicker.methods.select($datepicker, $calendar, i, month, year));
-            if (day === i) {
+            if (year === selectedDay.getFullYear() && month === selectedDay.getMonth() && i === selectedDay.getDate()) {
                 $cell = $('<td type="selected" />');
             } else if (year === now.getFullYear() && month === now.getMonth() && i === now.getDate()) {
                 $cell = $('<td type="today" />');
@@ -331,11 +323,15 @@ gj.datepicker.methods = {
 
         nextMonth = gj.datepicker.methods.getNextMonth(month, year);
         for (i = 1; weekDay != 0; i++) {
-            $cell = $('<td type="other-month" />');
+            if (nextMonth.year === selectedDay.getFullYear() && nextMonth.month === selectedDay.getMonth() && i === selectedDay.getDate()) {
+                $cell = $('<td type="selected" />');
+            } else {
+                $cell = $('<td type="other-month" />');
+            }
             if (data.showOtherMonths) {
                 $day = $('<div>' + i + '</div>');
                 $cell.append($day);
-                if (selectOtherMonths) {
+                if (data.selectOtherMonths) {
                     $day.on('click', gj.datepicker.methods.select($datepicker, $calendar, i, nextMonth.month, nextMonth.year));
                 }
             }
@@ -397,7 +393,7 @@ gj.datepicker.methods = {
             date = new Date(year + '-' + (month + 1) + '-' + day);
             value = data.format ? data.format(date) : date.toLocaleDateString();
             $datepicker.val(value);
-            $datepicker.attr('day', day);
+            $datepicker.attr('day', year + '-' + (month + 1) + '-' + day);
             $datepicker.attr('month', month);
             $datepicker.attr('year', year);
             $calendar.hide();
