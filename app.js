@@ -42,14 +42,14 @@ server.get('/Players/Get', function (req, res) {
         data = result;
     }
 
-    if (params.sortBy && params.direction) {
-        if (params.direction === 'asc') {
+    if (params.sortBy) {
+        if (params.direction === 'desc') {
             data.sort(function compare(a, b) {
-                return ((a[params.sortBy] < b[params.sortBy]) ? -1 : ((a[params.sortBy] > b[params.sortBy]) ? 1 : 0));
+                return ((a[params.sortBy] > b[params.sortBy]) ? -1 : ((a[params.sortBy] < b[params.sortBy]) ? 1 : 0));
             });
         } else {
             data.sort(function compare(a, b) {
-                return ((a[params.sortBy] > b[params.sortBy]) ? -1 : ((a[params.sortBy] < b[params.sortBy]) ? 1 : 0));
+                return ((a[params.sortBy] < b[params.sortBy]) ? -1 : ((a[params.sortBy] > b[params.sortBy]) ? 1 : 0));
             });
         }
     }

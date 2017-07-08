@@ -306,14 +306,14 @@ gj.datepicker.config = {
          *    });
          * </script>
          * @example Bootstrap.3 <!-- bootstrap, datepicker -->
-         * <input id="datepicker" width="250" />
+         * <input id="datepicker" width="270" />
          * <script>
          *     $('#datepicker').datepicker({ uiLibrary: 'bootstrap' });
          * </script>
-         * @example Bootstrap.4 <!-- materialicons, bootstrap4, datepicker -->
-         * <input id="datepicker" width="250" />
+         * @example Bootstrap.4 <!-- fontawesome, bootstrap4, datepicker -->
+         * <input id="datepicker" width="276" />
          * <script>
-         *     $('#datepicker').datepicker({ uiLibrary: 'bootstrap4' });
+         *     $('#datepicker').datepicker({ uiLibrary: 'bootstrap4', iconsLibrary: 'fontawesome' });
          * </script>
          */
         uiLibrary: 'materialdesign',
@@ -392,7 +392,7 @@ gj.datepicker.config = {
 
     bootstrap: {
         style: {
-            wrapper: 'gj-datepicker gj-datepicker-bootstrap gj-unselectable',
+            wrapper: 'gj-datepicker gj-datepicker-bootstrap gj-unselectable input-group',
             input: 'form-control'
         },
         iconsLibrary: 'glyphicons',
@@ -400,28 +400,26 @@ gj.datepicker.config = {
     },
 
     bootstrap4: {
-        indentation: 24,
         style: {
-            wrapper: 'gj-datepicker gj-datepicker-bootstrap gj-datepicker-bootstrap-4 gj-unselectable',
-            presenter: 'btn btn-secondary',
-            list: 'gj-list gj-list-bootstrap list-group',
-            item: 'list-group-item',
-            active: 'active'
+            wrapper: 'gj-datepicker gj-datepicker-bootstrap gj-unselectable input-group',
+            input: 'form-control'
         },
-        optionsDisplay: 'standard'
+        showOtherMonths: true
     },
 
     materialicons: {},
 
     fontawesome: {
         icons: {
-            calendar: '<i class="fa fa-calendar" aria-hidden="true"></i>'
+            calendar: '<span class="input-group-addon"><i class="fa fa-calendar" aria-hidden="true"></i></span>',
+            previousMonth: '<i class="fa fa-chevron-left" aria-hidden="true"></i>',
+            nextMonth: '<i class="fa fa-chevron-right" aria-hidden="true"></i>'
         }
     },
 
     glyphicons: {
         icons: {
-            calendar: '<span class="glyphicon glyphicon-calendar"></span>',
+            calendar: '<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>',
             previousMonth: '<span class="glyphicon glyphicon-chevron-left"></span>',
             nextMonth: '<span class="glyphicon glyphicon-chevron-right"></span>'
         }
@@ -439,7 +437,7 @@ gj.datepicker.methods = {
     initialize: function ($datepicker) {
         var data = $datepicker.data(),
             $wrapper = $datepicker.parent('div[role="wrapper"]'),
-            $rightIcon = $(data.icons.calendar).attr('role', 'calendar-icon'),
+            $rightIcon = $(data.icons.calendar).attr('role', 'right-icon'),
             $calendar;
 
         if ($wrapper.length === 0) {
@@ -454,11 +452,15 @@ gj.datepicker.methods = {
             $wrapper.css('width', data.width);
         }
 
-        $datepicker.addClass(data.style.input);
+        $datepicker.addClass(data.style.input).attr('role', 'input');
 
         $rightIcon.on('click', function () {
-            gj.datepicker.methods.renderCalendar($datepicker);
-            gj.datepicker.methods.open($datepicker);
+            if ($datepicker.parent().children('[role="calendar"]').is(':visible')) {
+                gj.datepicker.methods.close($datepicker);
+            } else {
+                gj.datepicker.methods.renderCalendar($datepicker);
+                gj.datepicker.methods.open($datepicker);
+            }
         });
 
         $wrapper.append($rightIcon);
@@ -652,6 +654,12 @@ gj.datepicker.methods = {
         $calendar.css('left', '0px').css('top', $datepicker.outerHeight(true) + 3);
         $calendar.show();
         gj.datepicker.events.open($datepicker);
+    },
+
+    close: function ($datepicker) {
+        var $calendar = $datepicker.parent().children('[role="calendar"]');
+        $calendar.hide();
+        gj.datepicker.events.close($datepicker);
     },
 
     destroy: function ($datepicker) {

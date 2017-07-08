@@ -402,7 +402,7 @@ gj.grid.config = {
 
         /** An object that holds the default configuration settings of each column from the grid.
          * @type object
-         * @example sample <!-- grid -->
+         * @example sample <!-- materialicons, grid -->
          * <table id="grid"></table>
          * <script>
          *     $('#grid').grid({
@@ -418,12 +418,16 @@ gj.grid.config = {
              * @alias column.hidden
              * @type boolean
              * @default false
-             * @example sample <!-- grid -->
+             * @example sample <!-- materialicons, grid -->
              * <table id="grid"></table>
              * <script>
              *     $('#grid').grid({
              *         dataSource: '/Players/Get',
-             *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth', hidden: true } ]
+             *         columns: [
+             *            { field: 'ID', width: 56 },
+             *            { field: 'Name' },
+             *            { field: 'PlaceOfBirth', hidden: true }
+             *        ]
              *     });
              * </script>
              */
@@ -1876,7 +1880,7 @@ gj.grid.methods = {
         $grid.find('thead tr th [data-role="sorticon"]').remove();
         
         if (sortBy) {
-            position = gj.grid.methods.getColumnPosition($grid.data('columns'), sortBy);
+            position = gj.grid.methods.getColumnPosition(data.columns, sortBy);
             $cell = $grid.find('thead tr th:eq(' + position + ')');
             $sortIcon = $('<div data-role="sorticon" class="gj-unselectable" />').append(('desc' === direction) ? data.icons.desc : data.icons.asc);
             $cell.append($sortIcon);

@@ -1241,6 +1241,17 @@ ul.gj-list-bootstrap li [data-role="expander"].gj-tree-material-icons-expander {
 }
 .gj-datepicker {
     position: relative;
+    display: table;
+}
+
+.gj-datepicker [role="input"] {
+    display: table-cell;
+    width: 100%;
+}
+
+.gj-datepicker [role="right-icon"] {
+    cursor: pointer;
+    display: table-cell;
 }
 
 .gj-datepicker [role="calendar"] {
@@ -1256,6 +1267,10 @@ ul.gj-list-bootstrap li [data-role="expander"].gj-tree-material-icons-expander {
     text-align: center;
 }
 
+.gj-datepicker [role="calendar"] table tr td div {
+    cursor: pointer;
+}
+
 
 /* Material Design */
 .gj-datepicker-md {
@@ -1267,7 +1282,7 @@ ul.gj-list-bootstrap li [data-role="expander"].gj-tree-material-icons-expander {
     color: rgba(0,0,0,.87);
 }
 
-.gj-datepicker-md [role="calendar-icon"] {
+.gj-datepicker-md [role="right-icon"] {
     cursor: pointer;
     position: absolute;
     right: 0px;
@@ -1296,10 +1311,6 @@ ul.gj-list-bootstrap li [data-role="expander"].gj-tree-material-icons-expander {
     position: relative;
 }
 
-.gj-datepicker-md [role="calendar"] table tr td div {
-    cursor: pointer;
-}
-
 .gj-datepicker-md [role="calendar"] table tr td div:hover {
     background: #EEEEEE;
     border-radius: 50%;
@@ -1320,6 +1331,21 @@ ul.gj-list-bootstrap li [data-role="expander"].gj-tree-material-icons-expander {
 }
 
 /* Bootstrap */
+
+.gj-datepicker-bootstrap span[role="right-icon"].input-group-addon {
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+    border-left: 0px;
+}
+
+.gj-datepicker-bootstrap [role="calendar"] {
+    border: 1px solid rgba(0,0,0,0.15);
+    border-radius: 4px;
+    padding: 4px;
+}
+
 .gj-datepicker-bootstrap [role="calendar"] table tr td div,
 .gj-datepicker-bootstrap [role="calendar"] table tr th div {
     display: block;
@@ -1329,4 +1355,20 @@ ul.gj-list-bootstrap li [data-role="expander"].gj-tree-material-icons-expander {
     text-align: center;
     vertical-align: middle;
     position: relative;
+}
+
+.gj-datepicker-bootstrap [role="calendar"] table tr td[type="today"] div {
+    color: #204d74;
+    font-weight: bold;
+}
+
+.gj-datepicker-bootstrap [role="calendar"] table tr td[type="selected"] div  {
+    color: #fff;
+    background-color: #204d74;
+    border-color: #122b40;
+    border-radius: 4px;
+}
+
+.gj-datepicker-bootstrap [role="calendar"] table tr td[type="other-month"] div {
+    color: #777;
 }
