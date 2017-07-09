@@ -433,7 +433,7 @@ gj.datepicker.config = {
 
         icons: {
             /** datepicker icon definition.
-             * @alias icons.calendar
+             * @alias icons.rightIcon
              * @type String
              * @default '<i class="material-icons">arrow_drop_down</i>'
              * @example Custom.Material.Icon <!-- materialicons, datepicker -->
@@ -441,7 +441,7 @@ gj.datepicker.config = {
              * <script>
              *     $('#datepicker').datepicker({
              *         icons: { 
-             *             calendar: '<i class="material-icons">date_range</i>'
+             *             rightIcon: '<i class="material-icons">date_range</i>'
              *         }
              *     });
              * </script>
@@ -451,12 +451,12 @@ gj.datepicker.config = {
              *     $('#datepicker').datepicker({
              *         uiLibrary: 'bootstrap',
              *         icons: { 
-             *             calendar: '<span class="glyphicon glyphicon-chevron-down" />'
+             *             rightIcon: '<span class="glyphicon glyphicon-chevron-down" />'
              *         }
              *     });
              * </script>
              */
-            calendar: '<i class="material-icons">event</i>',
+            rightIcon: '<i class="material-icons">event</i>',
 
             previousMonth: '<i class="material-icons">keyboard_arrow_left</i>',
             nextMonth: '<i class="material-icons">keyboard_arrow_right</i>'
@@ -491,7 +491,7 @@ gj.datepicker.config = {
 
     fontawesome: {
         icons: {
-            calendar: '<span class="input-group-addon"><i class="fa fa-calendar" aria-hidden="true"></i></span>',
+            rightIcon: '<span class="input-group-addon"><i class="fa fa-calendar" aria-hidden="true"></i></span>',
             previousMonth: '<i class="fa fa-chevron-left" aria-hidden="true"></i>',
             nextMonth: '<i class="fa fa-chevron-right" aria-hidden="true"></i>'
         }
@@ -499,7 +499,7 @@ gj.datepicker.config = {
 
     glyphicons: {
         icons: {
-            calendar: '<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>',
+            rightIcon: '<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>',
             previousMonth: '<span class="glyphicon glyphicon-chevron-left"></span>',
             nextMonth: '<span class="glyphicon glyphicon-chevron-right"></span>'
         }
@@ -517,7 +517,7 @@ gj.datepicker.methods = {
     initialize: function ($datepicker) {
         var data = $datepicker.data(),
             $wrapper = $datepicker.parent('div[role="wrapper"]'),
-            $rightIcon = $(data.icons.calendar).attr('role', 'right-icon'),
+            $rightIcon = $(data.icons.rightIcon).attr('role', 'right-icon'),
             $calendar;
 
         if ($wrapper.length === 0) {
