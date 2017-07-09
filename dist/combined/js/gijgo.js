@@ -11311,13 +11311,101 @@ gj.datepicker.config = {
 
         weekDays: ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
 
+        /** Whether to display dates in other months at the start or end of the current month.
+         * @additionalinfo Set to true by default for Bootstrap.
+         * @type Boolean
+         * @default false
+         * @example True <!-- materialicons, datepicker -->
+         * <input id="datepicker" width="312" />
+         * <script>
+         *    var datepicker = $('#datepicker').datepicker({ 
+         *        showOtherMonths: true
+         *    });
+         * </script>
+         * @example False <!-- materialicons, datepicker -->
+         * <input id="datepicker" width="312" />
+         * <script>
+         *     $('#datepicker').datepicker({ 
+         *         showOtherMonths: false
+         *     });
+         * </script>
+         */
         showOtherMonths: false,
 
+        /** Whether days in other months shown before or after the current month are selectable.
+         * This only applies if the <a href="showOtherMonths" target="_blank">showOtherMonths</a> option is set to true.
+         * @type Boolean
+         * @default true
+         * @example True <!-- materialicons, datepicker -->
+         * <input id="datepicker" width="312" />
+         * <script>
+         *    var datepicker = $('#datepicker').datepicker({
+         *        showOtherMonths: true,
+         *        selectOtherMonths: true
+         *    });
+         * </script>
+         * @example False <!-- materialicons, datepicker -->
+         * <input id="datepicker" width="312" />
+         * <script>
+         *     $('#datepicker').datepicker({ 
+         *        showOtherMonths: true,
+         *        selectOtherMonths: false
+         *     });
+         * </script>
+         */
         selectOtherMonths: true,
 
-        min: undefined,
+        /** The minimum selectable date. When not set, there is no minimum
+         * @type Date|String|Function
+         * @default undefined
+         * @example Today <!-- materialicons, datepicker -->
+         * <input id="datepicker" width="312" />
+         * <script>
+         *    var today, datepicker;
+         *    today = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
+         *    datepicker = $('#datepicker').datepicker({
+         *        minDate: today
+         *    });
+         * </script>
+         * @example Yesterday <!-- materialicons, datepicker -->
+         * <input id="datepicker" width="312" />
+         * <script>
+         *     $('#datepicker').datepicker({ 
+         *        minDate: function() {
+         *            var date = new Date();
+         *            date.setDate(date.getDate()-1);
+         *            return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+         *        }
+         *     });
+         * </script>
+         */
+        minDate: undefined,
 
-        max: undefined,
+        /** The maximum selectable date. When not set, there is no maximum
+         * @type Date|String|Function
+         * @default undefined
+         * @example Today <!-- materialicons, datepicker -->
+         * <input id="datepicker" width="312" />
+         * <script>
+         *    var today, datepicker;
+         *    today = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
+         *    datepicker = $('#datepicker').datepicker({
+         *        maxDate: today
+         *    });
+         * </script>
+         * @example Tomorrow <!-- materialicons, datepicker -->
+         * <input id="datepicker" width="312" />
+         * <script>
+         *     $('#datepicker').datepicker({ 
+         *        maxDate: function() {
+         *            var date = new Date();
+         *            date.setDate(date.getDate()+1);
+         *            return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+         *        }
+         *     });
+         * </script>
+         */
+        maxDate: undefined,
 
         /** Specifies the format, which is used to format the value of the DatePicker displayed in the input.
          * @additionalinfo If the format is not define we use <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toLocaleDateString" target="_blank">Date.prototype.toLocaleDateString()</a> in order to format the date.
@@ -11548,7 +11636,9 @@ gj.datepicker.methods = {
             data = $datepicker.data(),
             $calendar = $datepicker.parent().children('[role="calendar"]'),
             $table = $calendar.children('table'),
-            $tbody = $table.children('tbody');
+            $tbody = $table.children('tbody'),
+            minDate = gj.datepicker.methods.getMinDate(data),
+            maxDate = gj.datepicker.methods.getMaxDate(data);
         
         selectedDay = new Date($datepicker.attr('day'));
         month = parseInt($datepicker.attr('month'), 10);
@@ -11579,8 +11669,11 @@ gj.datepicker.methods = {
             $day = $('<div>' + day + '</div>');
             if (data.showOtherMonths) {
                 $cell.append($day);
-                if (data.selectOtherMonths) {
+                if (data.selectOtherMonths && gj.datepicker.methods.isSelectable(minDate, maxDate, prevMonth.year, prevMonth.month, day)) {
+                    $cell.addClass('gj-cursor-pointer');
                     $day.on('click', gj.datepicker.methods.select($datepicker, $calendar, day, prevMonth.month, prevMonth.year));
+                } else {
+                    $cell.addClass('disabled');
                 }
             }
             $row.append($cell);
@@ -11593,14 +11686,19 @@ gj.datepicker.methods = {
             if (weekDay == 0) {
                 $row = $('<tr>');
             }
-            $day = $('<div>' + i + '</div>');
-            $day.on('click', gj.datepicker.methods.select($datepicker, $calendar, i, month, year));
             if (year === selectedDay.getFullYear() && month === selectedDay.getMonth() && i === selectedDay.getDate()) {
                 $cell = $('<td type="selected" />');
             } else if (year === now.getFullYear() && month === now.getMonth() && i === now.getDate()) {
                 $cell = $('<td type="today" />');
             } else {
                 $cell = $('<td type="current-month" />');
+            }
+            $day = $('<div>' + i + '</div>');
+            if (gj.datepicker.methods.isSelectable(minDate, maxDate, year, month, i)) {
+                $cell.addClass('gj-cursor-pointer');
+                $day.on('click', gj.datepicker.methods.select($datepicker, $calendar, i, month, year));
+            } else {
+                $cell.addClass('disabled');
             }
             $cell.append($day);
             $row.append($cell);
@@ -11621,8 +11719,11 @@ gj.datepicker.methods = {
             if (data.showOtherMonths) {
                 $day = $('<div>' + i + '</div>');
                 $cell.append($day);
-                if (data.selectOtherMonths) {
+                if (data.selectOtherMonths && gj.datepicker.methods.isSelectable(minDate, maxDate, nextMonth.year, nextMonth.month, i)) {
+                    $cell.addClass('gj-cursor-pointer');
                     $day.on('click', gj.datepicker.methods.select($datepicker, $calendar, i, nextMonth.month, nextMonth.year));
+                } else {
+                    $cell.addClass('disabled');
                 }
             }
             $row.append($cell);
@@ -11632,6 +11733,43 @@ gj.datepicker.methods = {
                 weekDay = 0;
             }
         }
+    },
+
+    getMinDate: function (data) {
+        var minDate;
+        if (data.minDate) {
+            if (typeof (data.minDate) === 'string') {
+                minDate = new Date(data.minDate);
+            } else if (typeof (data.minDate) === 'function') {
+                minDate = data.minDate();
+            } else if (typeof data.minDate.getMonth === 'function') {
+                minDate = data.minDate;
+            }
+        }
+        return minDate;
+    },
+
+    getMaxDate: function (data) {
+        var maxDate;
+        if (data.maxDate) {
+            if (typeof data.maxDate === 'string') {
+                maxDate = new Date(data.maxDate);
+            } else if (typeof data.maxDate === 'function') {
+                maxDate = data.maxDate();
+            } else if (typeof data.maxDate.getMonth === 'function') {
+                maxDate = data.maxDate;
+            }
+        }
+        return maxDate;
+    },
+
+    isSelectable: function (minDate, maxDate, year, month, day) {
+        var result = false,
+            date = new Date(year, month, day);
+        if ((!minDate || minDate <= date) && (!maxDate || maxDate >= date)) {
+            result = true;
+        }
+        return result;
     },
 
     getPrevMonth: function (month, year) {

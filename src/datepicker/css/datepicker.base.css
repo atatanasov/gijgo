@@ -26,10 +26,6 @@
     text-align: center;
 }
 
-.gj-datepicker [role="calendar"] table tr td div {
-    cursor: pointer;
-}
-
 
 /* Material Design */
 .gj-datepicker-md {
@@ -70,7 +66,7 @@
     position: relative;
 }
 
-.gj-datepicker-md [role="calendar"] table tr td div:hover {
+.gj-datepicker-md [role="calendar"] table tr td.gj-cursor-pointer div:hover {
     background: #EEEEEE;
     border-radius: 50%;
 }
@@ -85,7 +81,8 @@
     border-radius: 50%;
 }
 
-.gj-datepicker-md [role="calendar"] table tr td[type="other-month"] div {
+.gj-datepicker-md [role="calendar"] table tr td[type="other-month"] div,
+.gj-datepicker-md [role="calendar"] table tr td.disabled div {
     color: #BDBDBD;
 }
 

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Example</title>
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">
+  <link href="../../dist/modular/datepicker/css/datepicker.css" rel="stylesheet" type="text/css">
+  <script src="../../dist/modular/datepicker/js/datepicker.js"></script>
+</head>
+<body style="padding: 6px;">
+ <input id="datepicker" width="312" />
+ <script>
+     $('#datepicker').datepicker({
+        minDate: function() {
+            var date = new Date();
+            date.setDate(date.getDate()-1);
+            return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+        }
+     });
+ </script>
+</body>
+</html>
