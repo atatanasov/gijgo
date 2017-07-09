@@ -325,23 +325,19 @@ gj.datepicker.config = {
          * @type (materialicons|fontawesome|glyphicons)
          * @default 'materialicons'
          * @example Bootstrap.Material.Icons <!-- bootstrap, materialicons, datepicker -->
-         * <select id="datepicker"></select>
+         * <input id="datepicker" width="276" />
          * <script>
-         *     var datepicker = $('#datepicker').datepicker({
-         *         dataSource: '/Locations/Get',
+         *     $('#datepicker').datepicker({
          *         uiLibrary: 'bootstrap',
-         *         iconsLibrary: 'materialicons',
-         *         dataValueField: 'id'
+         *         iconsLibrary: 'materialicons'
          *     });
          * </script>
          * @example Bootstrap.4.Font.Awesome <!-- bootstrap4, fontawesome, datepicker -->
-         * <select id="datepicker"></select>
+         * <input id="datepicker" width="276" />
          * <script>
-         *     var datepicker = $('#datepicker').datepicker({
-         *         dataSource: '/Locations/Get',
+         *     $('#datepicker').datepicker({
          *         uiLibrary: 'bootstrap4',
-         *         iconsLibrary: 'fontawesome',
-         *         dataValueField: 'id'
+         *         iconsLibrary: 'fontawesome'
          *     });
          * </script>
          */
@@ -353,22 +349,18 @@ gj.datepicker.config = {
              * @type String
              * @default '<i class="material-icons">arrow_drop_down</i>'
              * @example Custom.Material.Icon <!-- materialicons, datepicker -->
-             * <select id="datepicker"></select>
+             * <input id="datepicker" />
              * <script>
-             *     var datepicker = $('#datepicker').datepicker({
-             *         dataSource: '/Locations/Get',
-             *         dataValueField: 'id',
+             *     $('#datepicker').datepicker({
              *         icons: { 
              *             calendar: '<i class="material-icons">date_range</i>'
              *         }
              *     });
              * </script>
              * @example Custom.Glyphicon.Icon <!-- bootstrap, datepicker -->
-             * <select id="datepicker"></select>
+             * <input id="datepicker" />
              * <script>
-             *     var datepicker = $('#datepicker').datepicker({
-             *         dataSource: '/Locations/Get',
-             *         dataValueField: 'id',
+             *     $('#datepicker').datepicker({
              *         uiLibrary: 'bootstrap',
              *         icons: { 
              *             calendar: '<span class="glyphicon glyphicon-chevron-down" />'
@@ -456,10 +448,10 @@ gj.datepicker.methods = {
 
         $rightIcon.on('click', function () {
             if ($datepicker.parent().children('[role="calendar"]').is(':visible')) {
-                gj.datepicker.methods.close($datepicker);
+                gj.datepicker.methods.hide($datepicker);
             } else {
                 gj.datepicker.methods.renderCalendar($datepicker);
-                gj.datepicker.methods.open($datepicker);
+                gj.datepicker.methods.show($datepicker);
             }
         });
 
@@ -640,37 +632,54 @@ gj.datepicker.methods = {
             date = new Date(year + '-' + (month + 1) + '-' + day);
             value = data.format ? data.format(date) : date.toLocaleDateString();
             $datepicker.val(value);
+            gj.datepicker.events.change($datepicker);
             $datepicker.attr('day', year + '-' + (month + 1) + '-' + day);
             $datepicker.attr('month', month);
             $datepicker.attr('year', year);
-            $calendar.hide();
+            gj.datepicker.methods.hide($datepicker);
+            return $datepicker;
         };
     },
 
-    open: function ($datepicker) {
+    show: function ($datepicker) {
         var data = $datepicker.data(),
             $calendar = $datepicker.parent().children('[role="calendar"]');
 
         $calendar.css('left', '0px').css('top', $datepicker.outerHeight(true) + 3);
         $calendar.show();
-        gj.datepicker.events.open($datepicker);
+        gj.datepicker.events.show($datepicker);
     },
 
-    close: function ($datepicker) {
+    hide: function ($datepicker) {
         var $calendar = $datepicker.parent().children('[role="calendar"]');
         $calendar.hide();
-        gj.datepicker.events.close($datepicker);
+        gj.datepicker.events.hide($datepicker);
+    },
+
+    value: function ($datepicker, value) {
+        var $calendar, date;
+        if (typeof (value) === "undefined") {
+            return $datepicker.val();
+        } else {
+            date = new Date(value);
+            $calendar = $datepicker.parent().children('[role="calendar"]');
+            return gj.datepicker.methods.select($datepicker, $calendar, date.getDate(), date.getMonth(), date.getFullYear())();
+        }
     },
 
     destroy: function ($datepicker) {
-        var data = $datepicker.data();
+        var data = $datepicker.data(),
+            $parent = $datepicker.parent();
         if (data) {
             $datepicker.off();
             $datepicker.removeData();
             $datepicker.removeAttr('data-type').removeAttr('data-guid').removeAttr('data-datepicker');
             $datepicker.removeClass();
+            $parent.children('[role="calendar"]').remove();
+            $parent.children('[role="right-icon"]').remove();
+            $datepicker.unwrap();
         }
-        return $tree;
+        return $datepicker;
     }
 };
 
@@ -681,11 +690,7 @@ gj.datepicker.events = {
      * @event change
      * @param {object} e - event data
      * @example sample <!-- datepicker, materialicons -->
-     * <select id="datepicker">
-     *     <option value="1">One</option>
-     *     <option value="2" selected>Two</option>
-     *     <option value="3">Three</option>
-     * </select>
+     * <input id="datepicker" />
      * <script>
      *     $('#datepicker').datepicker({
      *         change: function (e) {
@@ -699,29 +704,39 @@ gj.datepicker.events = {
     },
 
     /**
-     * Event fires after the loading of the data in the datepicker.
-     * @event dataBound
+     * Event fires when the datepicker is opened.
+     * @event show
      * @param {object} e - event data
      * @example sample <!-- datepicker, materialicons -->
-     * <select id="datepicker">
-     *     <option value="1">One</option>
-     *     <option value="2" selected>Two</option>
-     *     <option value="3">Three</option>
-     * </select>
+     * <input id="datepicker" />
      * <script>
      *     $('#datepicker').datepicker({
-     *         dataBound: function (e) {
-     *             alert('dataBound is fired.');
+     *         show: function (e) {
+     *             alert('show is fired.');
      *         }
      *     });
      * </script>
      */
-    open: function ($datepicker) {
-        return $datepicker.triggerHandler('dataBound');
+    show: function ($datepicker) {
+        return $datepicker.triggerHandler('show');
     },
 
-    close: function ($datepicker) {
-        return $datepicker.triggerHandler('dataBound');
+    /**
+     * Event fires when the datepicker is closed.
+     * @event hide
+     * @param {object} e - event data
+     * @example sample <!-- datepicker, materialicons -->
+     * <input id="datepicker" />
+     * <script>
+     *     $('#datepicker').datepicker({
+     *         hide: function (e) {
+     *             alert('hide is fired.');
+     *         }
+     *     });
+     * </script>
+     */
+    hide: function ($datepicker) {
+        return $datepicker.triggerHandler('hide');
     }
 };
 
@@ -736,32 +751,20 @@ gj.datepicker.widget = function ($element, jsConfig) {
      * @example Get <!-- datepicker, materialicons -->
      * <button class="gj-button-md" onclick="alert($datepicker.value())">Get Content</button>
      * <hr/>
-     * <select id="datepicker">
-     *     <option value="1">One</option>
-     *     <option value="2" selected>Two</option>
-     *     <option value="3">Three</option>
-     * </select>
+     * <input id="datepicker" />
      * <script>
      *     var $datepicker = $('#datepicker').datepicker();
      * </script>
      * @example Set <!-- datepicker, materialicons -->
-     * <button class="gj-button-md" onclick="$datepicker.value('3')">Set Value</button>
+     * <button class="gj-button-md" onclick="$datepicker.value('2017-08-01')">Set Value</button>
      * <hr/>
-     * <select id="datepicker">
-     *     <option value="1">One</option>
-     *     <option value="2" selected>Two</option>
-     *     <option value="3">Three</option>
-     * </select>
+     * <input id="datepicker" />
      * <script>
      *     var $datepicker = $('#datepicker').datepicker();
      * </script>
      */
-    self.open = function (value) {
+    self.value = function (value) {
         return methods.value(this, value);
-    };
-
-    self.close = function () {
-        return methods.enable(this);
     };
 
     /** Remove datepicker functionality from the element.
@@ -769,11 +772,7 @@ gj.datepicker.widget = function ($element, jsConfig) {
      * @return jquery element
      * @example sample <!-- datepicker, materialicons -->
      * <button class="gj-button-md" onclick="datepicker.destroy()">Destroy</button>
-     * <select id="datepicker">
-     *     <option value="1">One</option>
-     *     <option value="2" selected>Two</option>
-     *     <option value="3">Three</option>
-     * </select>
+     * <input id="datepicker" />
      * <script>
      *     var datepicker = $('#datepicker').datepicker();
      * </script>

@@ -11,13 +11,11 @@
   <script src="../../dist/modular/datepicker/js/datepicker.js"></script>
 </head>
 <body style="padding: 6px;">
- <select id="datepicker"></select>
+ <input id="datepicker" width="276" />
  <script>
-     var datepicker = $('#datepicker').datepicker({
-         dataSource: '/Locations/Get',
+     $('#datepicker').datepicker({
          uiLibrary: 'bootstrap',
-         iconsLibrary: 'materialicons',
-         dataValueField: 'id'
+         iconsLibrary: 'materialicons'
      });
  </script>
 </body>
