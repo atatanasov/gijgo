@@ -221,14 +221,16 @@ gj.datepicker.config = {
 
         style: {
             wrapper: 'gj-datepicker gj-datepicker-md gj-unselectable',
-            input: 'gj-textbox-md'
+            input: 'gj-textbox-md',
+            calendar: 'gj-calendar gj-calendar-md'
         }
     },
 
     bootstrap: {
         style: {
             wrapper: 'gj-datepicker gj-datepicker-bootstrap gj-unselectable input-group',
-            input: 'form-control'
+            input: 'form-control',
+            calendar: 'gj-calendar gj-calendar-bootstrap'
         },
         iconsLibrary: 'glyphicons',
         showOtherMonths: true
@@ -237,7 +239,8 @@ gj.datepicker.config = {
     bootstrap4: {
         style: {
             wrapper: 'gj-datepicker gj-datepicker-bootstrap gj-unselectable input-group',
-            input: 'form-control'
+            input: 'form-control',
+            calendar: 'gj-calendar gj-calendar-bootstrap'
         },
         showOtherMonths: true
     },
@@ -273,6 +276,7 @@ gj.datepicker.methods = {
         var data = $datepicker.data(),
             $wrapper = $datepicker.parent('div[role="wrapper"]'),
             $rightIcon = $(data.icons.rightIcon).attr('role', 'right-icon'),
+            ctrlClick = false,
             $calendar;
 
         if ($wrapper.length === 0) {
@@ -289,8 +293,19 @@ gj.datepicker.methods = {
 
         $datepicker.addClass(data.style.input).attr('role', 'input');
 
-        $rightIcon.on('click', function () {
-            if ($datepicker.parent().children('[role="calendar"]').is(':visible')) {
+        //$rightIcon.on('mousedown', function (e) {
+        //    ctrlClick = true;
+        //});
+
+        //$datepicker.on('blur', function (e) {
+        //    if (ctrlClick) {
+        //        e.stopImmediatePropagation();
+        //        ctrlClick = false;
+        //    }
+        //});
+
+        $rightIcon.on('click', function (e) {
+            if ($('body').children('[role="calendar"][guid="' + $datepicker.attr('data-guid') + '"]').is(':visible')) {
                 gj.datepicker.methods.hide($datepicker);
             } else {
                 gj.datepicker.methods.renderCalendar($datepicker);
@@ -300,17 +315,23 @@ gj.datepicker.methods = {
 
         $wrapper.append($rightIcon);
 
-        $calendar = gj.datepicker.methods.createCalendar($datepicker);
-        $wrapper.append($calendar);
+        gj.datepicker.methods.createCalendar($datepicker);
 
     },
 
     createCalendar: function ($datepicker) {
-        var date = new Date(),
-            data = $datepicker.data(),
-            $calendar = $('<div role="calendar" />'),
+        var date, data = $datepicker.data(),
+            value = $datepicker.val(),
+            $calendar = $('<div role="calendar" />').addClass(data.style.calendar).attr('guid', $datepicker.attr('data-guid')),
             $table = $('<table/>'),
             $thead = $('<thead/>');
+        
+        date = new Date(value);
+        if (date && isNaN(date.getTime())) {
+            date = new Date();
+        } else {
+            $datepicker.attr('day', date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate());
+        }
 
         $datepicker.attr('month', date.getMonth());
         $datepicker.attr('year', date.getFullYear());
@@ -332,13 +353,14 @@ gj.datepicker.methods = {
         $calendar.append($table);
         $calendar.hide();
 
+        $('body').append($calendar);
         return $calendar;
     },
 
     renderCalendar: function ($datepicker) {
         var weekDay, selectedDay, day, month, year, daysInMonth, total, firstDayPosition, i, now, prevMonth, nextMonth, $cell, $day,
             data = $datepicker.data(),
-            $calendar = $datepicker.parent().children('[role="calendar"]'),
+            $calendar = $('body').children('[role="calendar"][guid="' + $datepicker.attr('data-guid') + '"]'),
             $table = $calendar.children('table'),
             $tbody = $table.children('tbody'),
             minDate = gj.datepicker.methods.getMinDate(data),
@@ -536,15 +558,17 @@ gj.datepicker.methods = {
 
     show: function ($datepicker) {
         var data = $datepicker.data(),
-            $calendar = $datepicker.parent().children('[role="calendar"]');
+            offset = $datepicker.offset(),
+            $calendar = $('body').children('[role="calendar"][guid="' + $datepicker.attr('data-guid') + '"]');
 
-        $calendar.css('left', '0px').css('top', $datepicker.outerHeight(true) + 3);
+        $calendar.css('left', offset.left).css('top', offset.top + $datepicker.outerHeight(true) + 3);
         $calendar.show();
+        $datepicker.focus();
         gj.datepicker.events.show($datepicker);
     },
 
     hide: function ($datepicker) {
-        var $calendar = $datepicker.parent().children('[role="calendar"]');
+        var $calendar = $('body').children('[role="calendar"][guid="' + $datepicker.attr('data-guid') + '"]');
         $calendar.hide();
         gj.datepicker.events.hide($datepicker);
     },
@@ -555,7 +579,7 @@ gj.datepicker.methods = {
             return $datepicker.val();
         } else {
             date = new Date(value);
-            $calendar = $datepicker.parent().children('[role="calendar"]');
+            $calendar = $('body').children('[role="calendar"][guid="' + $datepicker.attr('data-guid') + '"]');
             return gj.datepicker.methods.select($datepicker, $calendar, date.getDate(), date.getMonth(), date.getFullYear())();
         }
     },
@@ -565,10 +589,10 @@ gj.datepicker.methods = {
             $parent = $datepicker.parent();
         if (data) {
             $datepicker.off();
+            $('body').children('[role="calendar"][guid="' + $datepicker.attr('data-guid') + '"]').remove();
             $datepicker.removeData();
             $datepicker.removeAttr('data-type').removeAttr('data-guid').removeAttr('data-datepicker');
             $datepicker.removeClass();
-            $parent.children('[role="calendar"]').remove();
             $parent.children('[role="right-icon"]').remove();
             $datepicker.unwrap();
         }

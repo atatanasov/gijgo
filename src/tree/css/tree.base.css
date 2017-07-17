@@ -27,7 +27,7 @@ ul.gj-list li [data-role="expander"] {
 }
 
 /* Bootstrap Theme */
-ul.gj-list-bootstrap li {
+[data-type="tree"] ul.gj-list-bootstrap li {
     border: 0px;
 }
 

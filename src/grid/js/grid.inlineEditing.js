@@ -63,6 +63,24 @@ gj.grid.plugins.inlineEditing.config = {
              *         ]
              *     });
              * </script>
+             * @example Date.And.Dropdown <!-- materialicons, grid, datepicker, dropdown, checkbox -->
+             * <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.0/moment.min.js"></script>
+             * <table id="grid"></table>
+             * <script>
+             *     $('#grid').grid({
+             *         dataSource: '/Players/Get',
+             *         columns: [
+             *             { field: 'Name', editor: true },
+             *             { field: 'Nationality', editor: {}, type: 'dropdown' },
+             *             { field: 'DateOfBirth', editor: {}, type: 'date',
+             *               renderer: function (value) {
+             *                   return moment(value).format('MM/DD/YYYY');
+             *               }
+             *             },
+             *             { field: 'IsActive', title: 'Active?', type:'checkbox', editor: true, mode: 'edit', width: 80, align: 'center' }
+             *         ]
+             *     });
+             * </script>
              */
             editor: undefined,
 
@@ -264,7 +282,7 @@ gj.grid.plugins.inlineEditing.private = {
     },
 
     editMode: function ($grid, $cell, column, record) {
-        var $displayContainer, $editorContainer, $editorField, $checkbox, value, data = $grid.data();
+        var $displayContainer, $editorContainer, $editorField, value, data = $grid.data();
         if ($cell.attr('data-mode') !== 'edit' && column.editor) {
             if (data.inlineEditing.mode !== 'command' && column.mode !== 'editOnly') {
                 $('div[data-role="edit"]:visible').parent('td').each(function () {
@@ -284,11 +302,15 @@ gj.grid.plugins.inlineEditing.private = {
             } else {
                 if (typeof (column.editor) === 'function') {
                     column.editor($editorContainer, value, record);
-                } else if (column.editor === true) {
+                } else {
                     if ('checkbox' === column.type) {
-                        $checkbox = $('<input type="checkbox" />').prop('checked', value);
-                        $editorContainer.append($checkbox);
-                        $checkbox.checkbox({ uiLibrary: $grid.data('uiLibrary') });
+                        $editorField = $('<input type="checkbox" />').prop('checked', value);
+                        $editorContainer.append($editorField);
+                        $editorField.checkbox({ uiLibrary: data.uiLibrary });
+                    } else if ('date' === column.type) {
+                        $editorField = $('<input type="text" value="' + $displayContainer.html() + '" width="100%"/>');
+                        $editorContainer.append($editorField);
+                        $editorField.datepicker({ uiLibrary: data.uiLibrary });
                     } else {
                         $editorContainer.append('<input type="text" value="' + value + '" class="gj-width-full"/>');
                     }

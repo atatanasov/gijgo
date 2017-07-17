@@ -194,14 +194,16 @@ gj.grid.methods = {
             style = data.style.header,
             sortBy = data.params[data.paramNames.sortBy],
             direction = data.params[data.paramNames.direction];
-        
+
         $grid.find('thead tr th [data-role="sorticon"]').remove();
-        
+
         if (sortBy) {
-            position = gj.grid.methods.getColumnPosition(data.columns, sortBy);
-            $cell = $grid.find('thead tr th:eq(' + position + ')');
-            $sortIcon = $('<div data-role="sorticon" class="gj-unselectable" />').append(('desc' === direction) ? data.icons.desc : data.icons.asc);
-            $cell.append($sortIcon);
+            position = gj.grid.methods.getColumnPosition($grid.data('columns'), sortBy);
+            if (position > -1) {
+                $cell = $grid.find('thead tr th:eq(' + position + ')');
+                $sortIcon = $('<div data-role="sorticon" class="gj-unselectable" />').append(('desc' === direction) ? data.icons.desc : data.icons.asc);
+                $cell.append($sortIcon);
+            }
         }
     },
 

@@ -631,14 +631,14 @@ span.gj-grid-column-resizer {
 {
     border-right: 2px solid #ddd;
 }
-table.gj-grid-table div[data-role="edit"] {
+/*table.gj-grid-table div[data-role="edit"] {
     display: inline;
 }
 
 table.gj-grid-table div[data-role="edit"] label.gj-checkbox-md,
 table.gj-grid-table div[data-role="edit"] label.gj-checkbox-bootstrap {
     display: inline-block;
-}
+}*/
 .gj-grid-md-table thead tr[data-role="filter"] th {
     border-top: 1px solid rgba(0,0,0,.12);
 }

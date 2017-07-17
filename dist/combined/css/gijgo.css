@@ -829,14 +829,14 @@ span.gj-grid-column-resizer {
 {
     border-right: 2px solid #ddd;
 }
-table.gj-grid-table div[data-role="edit"] {
+/*table.gj-grid-table div[data-role="edit"] {
     display: inline;
 }
 
 table.gj-grid-table div[data-role="edit"] label.gj-checkbox-md,
 table.gj-grid-table div[data-role="edit"] label.gj-checkbox-bootstrap {
     display: inline-block;
-}
+}*/
 .gj-grid-md-table thead tr[data-role="filter"] th {
     border-top: 1px solid rgba(0,0,0,.12);
 }
@@ -945,7 +945,7 @@ ul.gj-list li [data-role="expander"] {
 }
 
 /* Bootstrap Theme */
-ul.gj-list-bootstrap li {
+[data-type="tree"] ul.gj-list-bootstrap li {
     border: 0px;
 }
 
@@ -1239,6 +1239,99 @@ ul.gj-list-bootstrap li [data-role="expander"].gj-tree-material-icons-expander {
 .gj-editor-bootstrap blockquote {
     font-size: 14px;
 }
+.gj-dropdown {
+    position: relative;
+}
+
+.gj-dropdown ul[role="list"] {
+    margin: 0px;
+}
+
+.gj-dropdown [role="presenter"] {
+    display: table;
+    cursor: pointer;
+    width: 100%;
+    outline: none;
+}
+
+.gj-dropdown [role="presenter"] [role="display"] {
+    display: table-cell;
+    text-align: left;
+}
+
+.gj-dropdown [role="presenter"] [role="expander"] {
+    display: table-cell;
+    vertical-align:middle;
+    text-align:center;
+}
+
+/* Material Design */
+.gj-dropdown-md [role="presenter"] {
+    font-family: "Roboto","Helvetica","Arial",sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    letter-spacing: .04em;
+    line-height: 1;
+    color: rgba(0,0,0,.87);
+
+    padding: 0px;
+    border: 0px;
+    background: transparent;
+}
+
+.gj-dropdown-md [role="presenter"] [role="display"] {
+    padding: 8px 0px 8px 5px;
+    width: 100%;
+}
+
+.gj-dropdown-md [role="presenter"] [role="expander"] {
+    width: 24px;
+    height: 24px;
+}
+
+.gj-dropdown-md ul[role="list"] {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    background-color: #f5f5f5;
+    color: #000;
+}
+
+.gj-dropdown-md ul[role="list"] li:hover, .gj-dropdown-md ul[role="list"] li.active {
+    background-color: #eee;
+}
+
+/* Bootstrap */
+.gj-dropdown-bootstrap [role="presenter"] [role="display"] {
+    padding-right: 5px;
+    width: 100%;
+}
+
+.gj-dropdown-bootstrap [role="presenter"] [role="expander"] {
+    padding-left: 5px;
+}
+
+.gj-dropdown-bootstrap ul.gj-list-bootstrap {
+    margin-top: 2px;
+}
+
+.gj-dropdown-bootstrap-3 [role="presenter"] [role="expander"].gj-dropdown-expander-mi .material-icons {
+    top: 5px;
+    right: 10px;
+    position: absolute;
+}
+
+.gj-dropdown-bootstrap-4 [role="presenter"] [role="expander"].gj-dropdown-expander-mi .material-icons {
+    top: 7px;
+    right: 10px;
+    position: absolute;
+}
+
+.gj-dropdown-bootstrap ul[role="list"] {
+    position: absolute;
+    top: 32px;
+    left: 0px;
+}
 .gj-datepicker {
     position: relative;
     display: table;
@@ -1254,15 +1347,15 @@ ul.gj-list-bootstrap li [data-role="expander"].gj-tree-material-icons-expander {
     display: table-cell;
 }
 
-.gj-datepicker [role="calendar"] {
+.gj-calendar {
     position: absolute;
 }
 
-.gj-datepicker [role="calendar"] table tr[role="month-manager"] th {
+.gj-calendar table tr[role="month-manager"] th {
     cursor: pointer;
 }
 
-.gj-datepicker [role="calendar"] table tr[role="month-manager"] th div[role="month"] {
+.gj-calendar table tr[role="month-manager"] th div[role="month"] {
     width: 200px;
     text-align: center;
 }
@@ -1278,6 +1371,16 @@ ul.gj-list-bootstrap li [data-role="expander"].gj-tree-material-icons-expander {
     color: rgba(0,0,0,.87);
 }
 
+.gj-calendar-md {
+    font-family: "Roboto","Helvetica","Arial",sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    letter-spacing: .04em;
+    line-height: 1;
+    color: rgba(0,0,0,.87);
+    background-color: #FFFFFF;
+}
+
 .gj-datepicker-md [role="right-icon"] {
     cursor: pointer;
     position: absolute;
@@ -1285,18 +1388,18 @@ ul.gj-list-bootstrap li [data-role="expander"].gj-tree-material-icons-expander {
     top: 0px;
 }
 
-.gj-datepicker-md [role="calendar"] {
+.gj-calendar-md {
     border: 1px solid #E0E0E0;
 }
 
-.gj-datepicker-md [role="calendar"] table tr[role="month-manager"] th div i.material-icons {
+.gj-calendar-md table tr[role="month-manager"] th div i.material-icons {
     position: absolute;
     top: 8px;
     left: 8px;
 }
 
-.gj-datepicker-md [role="calendar"] table tr td div,
-.gj-datepicker-md [role="calendar"] table tr th div {
+.gj-calendar-md table tr td div,
+.gj-calendar-md table tr th div {
     display: block;
     width: 40px;
     height: 40px;
@@ -1307,23 +1410,23 @@ ul.gj-list-bootstrap li [data-role="expander"].gj-tree-material-icons-expander {
     position: relative;
 }
 
-.gj-datepicker-md [role="calendar"] table tr td.gj-cursor-pointer div:hover {
+.gj-calendar-md table tr td.gj-cursor-pointer div:hover {
     background: #EEEEEE;
     border-radius: 50%;
 }
 
-.gj-datepicker-md [role="calendar"] table tr td[type="today"] div {
+.gj-calendar-md table tr td[type="today"] div {
     color: #1976D2;
 }
 
-.gj-datepicker-md [role="calendar"] table tr td[type="selected"] div {
+.gj-calendar-md table tr td[type="selected"] div {
     color: #FFFFFF;
     background: #1976D2;
     border-radius: 50%;
 }
 
-.gj-datepicker-md [role="calendar"] table tr td[type="other-month"] div,
-.gj-datepicker-md [role="calendar"] table tr td.disabled div {
+.gj-calendar-md table tr td[type="other-month"] div,
+.gj-calendar-md table tr td.disabled div {
     color: #BDBDBD;
 }
 
@@ -1337,14 +1440,15 @@ ul.gj-list-bootstrap li [data-role="expander"].gj-tree-material-icons-expander {
     border-left: 0px;
 }
 
-.gj-datepicker-bootstrap [role="calendar"] {
+.gj-calendar-bootstrap {
     border: 1px solid rgba(0,0,0,0.15);
     border-radius: 4px;
     padding: 4px;
+    background-color: #FFFFFF;
 }
 
-.gj-datepicker-bootstrap [role="calendar"] table tr td div,
-.gj-datepicker-bootstrap [role="calendar"] table tr th div {
+.gj-calendar-bootstrap table tr td div,
+.gj-calendar-bootstrap table tr th div {
     display: block;
     width: 30px;
     height: 30px;
@@ -1354,18 +1458,18 @@ ul.gj-list-bootstrap li [data-role="expander"].gj-tree-material-icons-expander {
     position: relative;
 }
 
-.gj-datepicker-bootstrap [role="calendar"] table tr td[type="today"] div {
+.gj-calendar-bootstrap table tr td[type="today"] div {
     color: #204d74;
     font-weight: bold;
 }
 
-.gj-datepicker-bootstrap [role="calendar"] table tr td[type="selected"] div  {
+.gj-calendar-bootstrap table tr td[type="selected"] div  {
     color: #fff;
     background-color: #204d74;
     border-color: #122b40;
     border-radius: 4px;
 }
 
-.gj-datepicker-bootstrap [role="calendar"] table tr td[type="other-month"] div {
+.gj-calendar-bootstrap table tr td[type="other-month"] div {
     color: #777;
 }
