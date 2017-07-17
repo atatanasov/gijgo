@@ -6444,30 +6444,31 @@ gj.grid.plugins.fixedHeader = {
                 $thead = $grid.children('thead'),
                 bodyHeight = data.height - $thead.outerHeight() - ($grid.children('tfoot').outerHeight() || 0);
             $grid.addClass('gj-grid-scrollable');
-            $tbody.width($thead.width() - 1);
+            $tbody.css('width', $thead.outerWidth());
             $tbody.height(bodyHeight);
         },
 
         refresh: function ($grid) {
             var i, $theadCell,
                 data = $grid.data(),
+                $tbody = $grid.children('tbody'),
+                $thead = $grid.children('thead'),
                 $tbodyCells = $grid.find('tbody tr[data-role="row"] td'),
                 $theadCells = $grid.find('thead tr[data-role="caption"] th');
 
-            for (i = 0; i < $theadCells.length - 1; i++) {
-                $theadCell = $($theadCells[i]);
-                $($tbodyCells[i]).width($theadCell.width());
+            if ($grid.children('tbody').height() < gj.grid.plugins.fixedHeader.private.getRowsHeight($grid)) {
+                $tbody.css('width', $thead.outerWidth() + gj.grid.plugins.fixedHeader.private.getScrollBarWidth() + (navigator.userAgent.toLowerCase().indexOf('firefox') > -1 ? 1 : 0));
+            } else {
+                $tbody.css('width', $thead.outerWidth());
             }
 
-            $theadCell = $($theadCells[i]);
-            if ($grid.children('tbody').height() < gj.grid.plugins.fixedHeader.private.getRowsHeight($grid)) {
-                $($tbodyCells[i]).width($theadCell.width() - gj.grid.plugins.fixedHeader.private.getScrollBarWidth());
-            } else {
-                $($tbodyCells[i]).width($theadCell.width());
+            for (i = 0; i < $theadCells.length; i++) {
+                $theadCell = $($theadCells[i]);
+                $($tbodyCells[i]).attr('width', $theadCell.outerWidth());
             }
         },
 
-        getRowsHeight: function($grid) {
+        getRowsHeight: function ($grid) {
             var total = 0;
             $grid.find('tbody tr').each(function () {
                 total += $(this).height();
@@ -6475,7 +6476,7 @@ gj.grid.plugins.fixedHeader = {
             return total;
         },
 
-        getScrollBarWidth: function() {
+        getScrollBarWidth: function () {
             var inner = document.createElement('p');
             inner.style.width = "100%";
             inner.style.height = "200px";
@@ -6488,15 +6489,15 @@ gj.grid.plugins.fixedHeader = {
             outer.style.width = "200px";
             outer.style.height = "150px";
             outer.style.overflow = "hidden";
-            outer.appendChild (inner);
+            outer.appendChild(inner);
 
-            document.body.appendChild (outer);
+            document.body.appendChild(outer);
             var w1 = inner.offsetWidth;
             outer.style.overflow = 'scroll';
             var w2 = inner.offsetWidth;
             if (w1 == w2) w2 = outer.clientWidth;
 
-            document.body.removeChild (outer);
+            document.body.removeChild(outer);
 
             return (w1 - w2);
         }
@@ -6516,6 +6517,9 @@ gj.grid.plugins.fixedHeader = {
                 gj.grid.plugins.fixedHeader.private.init($grid);
             });
             $grid.on('dataBound', function () {
+                gj.grid.plugins.fixedHeader.private.refresh($grid);
+            });
+            $grid.on('resize', function () {
                 gj.grid.plugins.fixedHeader.private.refresh($grid);
             });
         }
