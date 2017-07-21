@@ -5340,9 +5340,9 @@ gj.grid.plugins.inlineEditing.config = {
              *         columns: [
              *             { field: 'Name', editor: true },
              *             { field: 'Nationality', editor: {}, type: 'dropdown' },
-             *             { field: 'DateOfBirth', editor: {}, type: 'date',
-             *               renderer: function (value) {
-             *                   return moment(value).format('MM/DD/YYYY');
+             *             { field: 'DateOfBirth', editor: {}, type: 'date', format: 'MM/DD/YYYY',
+             *               renderer: function (value, record, column) {
+             *                   return moment(value, column.format).format(column.format);
              *               }
              *             },
              *             { field: 'IsActive', title: 'Active?', type:'checkbox', editor: true, mode: 'edit', width: 80, align: 'center' }
@@ -5552,11 +5552,7 @@ gj.grid.plugins.inlineEditing.private = {
     editMode: function ($grid, $cell, column, record) {
         var $displayContainer, $editorContainer, $editorField, value, data = $grid.data();
         if ($cell.attr('data-mode') !== 'edit' && column.editor) {
-            if (data.inlineEditing.mode !== 'command' && column.mode !== 'editOnly') {
-                $('div[data-role="edit"]:visible').parent('td').each(function () {
-                    $(this).find('input, select, textarea').triggerHandler('blur');
-                });
-            }
+            gj.grid.plugins.inlineEditing.private.updateOtherCells($grid, column.mode);
             $displayContainer = $cell.find('div[data-role="display"]').hide();
             $editorContainer = $cell.find('div[data-role="edit"]').show();
             if ($editorContainer.length === 0) {
@@ -5585,9 +5581,9 @@ gj.grid.plugins.inlineEditing.private = {
                 }
                 $editorField = $editorContainer.find('input, select, textarea').first();
                 if (data.inlineEditing.mode !== 'command' && column.mode !== 'editOnly') {
-                    $editorField.on('blur', function (e) {
-                        gj.grid.plugins.inlineEditing.private.displayMode($grid, $cell, column);
-                    });
+                    //$editorField.on('blur', function (e) {
+                    //    gj.grid.plugins.inlineEditing.private.displayMode($grid, $cell, column);
+                    //});
                     $editorField.on('keypress', function (e) {
                         if (e.which === 13) {
                             gj.grid.plugins.inlineEditing.private.displayMode($grid, $cell, column);
@@ -5653,6 +5649,17 @@ gj.grid.plugins.inlineEditing.private = {
             $editorContainer.hide();
             $displayContainer.show();
             $cell.attr('data-mode', 'display');
+        }
+    },
+
+    updateOtherCells: function($grid, mode) {
+        var data = $grid.data();
+        if (data.inlineEditing.mode !== 'command' && mode !== 'editOnly') {
+            $grid.find('div[data-role="edit"]:visible').parent('td').each(function () {
+                var $cell = $(this),
+                    column = data.columns[$cell.index()];
+                gj.grid.plugins.inlineEditing.private.displayMode($grid, $cell, column);
+            });
         }
     },
 
@@ -9735,7 +9742,7 @@ gj.tree.plugins.checkboxes = {
              *     var tree = $('#tree').tree({
              *         checkboxes: true,
              *         checkedField: 'checkedFieldName',
-             *         dataSource: [ { text: 'foo', checkedFieldName: false, children: [ { text: 'bar', checkedFieldName: true }, { text: 'bar2', checkedFieldName: false } ] }, { text: 'foo2'} ]
+             *         dataSource: [ { text: 'foo', checkedFieldName: false, children: [ { text: 'bar', checkedFieldName: true }, { text: 'bar2', checkedFieldName: false } ] }, { text: 'foo2', children: [ { text: 'bar2' } ] } ]
              *     });
              * </script>
              */
@@ -9794,7 +9801,7 @@ gj.tree.plugins.checkboxes = {
 
         updateChildrenState: function ($node, state) {
             var $childrenCheckboxes = $node.find('ul li [data-role="wrapper"] [data-role="checkbox"] input[type="checkbox"]');
-            if ($childrenCheckboxes.length > 1) {
+            if ($childrenCheckboxes.length > 0) {
                 $.each($childrenCheckboxes, function () {
                     $(this).checkbox('state', state);
                 });

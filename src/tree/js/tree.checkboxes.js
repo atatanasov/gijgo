@@ -44,7 +44,7 @@ gj.tree.plugins.checkboxes = {
              *     var tree = $('#tree').tree({
              *         checkboxes: true,
              *         checkedField: 'checkedFieldName',
-             *         dataSource: [ { text: 'foo', checkedFieldName: false, children: [ { text: 'bar', checkedFieldName: true }, { text: 'bar2', checkedFieldName: false } ] }, { text: 'foo2'} ]
+             *         dataSource: [ { text: 'foo', checkedFieldName: false, children: [ { text: 'bar', checkedFieldName: true }, { text: 'bar2', checkedFieldName: false } ] }, { text: 'foo2', children: [ { text: 'bar2' } ] } ]
              *     });
              * </script>
              */
@@ -103,7 +103,7 @@ gj.tree.plugins.checkboxes = {
 
         updateChildrenState: function ($node, state) {
             var $childrenCheckboxes = $node.find('ul li [data-role="wrapper"] [data-role="checkbox"] input[type="checkbox"]');
-            if ($childrenCheckboxes.length > 1) {
+            if ($childrenCheckboxes.length > 0) {
                 $.each($childrenCheckboxes, function () {
                     $(this).checkbox('state', state);
                 });
