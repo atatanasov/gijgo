@@ -2721,11 +2721,12 @@ gj.grid.config = {
          * <table id="grid"></table>
          * <script>
          *     $('#grid').grid({
+         *         primaryKey: 'ID',
          *         uiLibrary: 'bootstrap',
          *         dataSource: '/Players/Get',
          *         selectionType: 'multiple',
          *         selectionMethod: 'checkbox',
-         *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
+         *         columns: [ { field: 'ID', width: 32 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
          *     });
          * </script>
          * @example Multiple.Bootstrap.4.Checkbox <!-- bootstrap4, materialicons, checkbox, grid -->
@@ -3778,11 +3779,11 @@ gj.grid.methods = {
 
         if ('checkbox' === column.type && gj.checkbox) {
             if ('create' === mode) {
-                $checkbox = $('<input type="checkbox" />').val(id).prop('checked', (record[column.field] ? true : false));
+                $checkbox = $('<input type="checkbox" />').val(id).prop('checked', (record[column.field] && column.role !== 'selectRow' ? true : false));
                 column.role && $checkbox.attr('data-role', column.role);
                 $displayEl.append($checkbox);
                 $checkbox.checkbox({ uiLibrary: $grid.data('uiLibrary') });
-                if (column.role == 'selectRow') {
+                if (column.role === 'selectRow') {
                     $checkbox.on('click', function () { return false; });
                 } else {
                     $checkbox.prop('disabled', true);
@@ -9806,6 +9807,13 @@ gj.tree.plugins.checkboxes = {
                     $(this).checkbox('state', state);
                 });
             }
+        },
+
+        update: function ($tree, $node, state) {
+            var checkbox = $node.find('>[data-role="checkbox"] input[type="checkbox"]');
+            $(checkbox).checkbox('state', state);
+            gj.tree.plugins.checkboxes.private.updateChildrenState($node, state);
+            gj.tree.plugins.checkboxes.private.updateParentState($node, state);
         }
     },
 
@@ -9838,6 +9846,62 @@ gj.tree.plugins.checkboxes = {
                 }
             });
             return result;
+        },
+
+        /**
+         * Check all tree nodes
+         * @method
+         * @return jQuery object
+         * @example Sample <!-- materialicons, checkbox, tree.base -->
+         * <button onclick="tree.checkAll()">Check All</button><button onclick="tree.uncheckAll()">Uncheck All</button>
+         * <br/><br/>
+         * <div id="tree" data-source="/Locations/Get"></div>
+         * <script>
+         *     var tree = $('#tree').tree({
+         *         checkboxes: true
+         *     });
+         *     tree.on('dataBound', function() {
+         *         tree.expandAll();
+         *     });
+         * </script>
+         */
+        checkAll: function () {
+            var $checkboxes = this.find('li [data-role="checkbox"] input[type="checkbox"]');
+            $.each($checkboxes, function () {
+                $(this).checkbox('state', 'checked');
+            });
+        },
+
+        /**
+         * Uncheck all tree nodes
+         * @method
+         * @return jQuery object
+         * @example Sample <!-- materialicons, checkbox, tree.base -->
+         * <button onclick="tree.checkAll()">Check All</button><button onclick="tree.uncheckAll()">Uncheck All</button>
+         * <br/><br/>
+         * <div id="tree" data-source="/Locations/Get"></div>
+         * <script>
+         *     var tree = $('#tree').tree({
+         *         checkboxes: true
+         *     });
+         *     tree.on('dataBound', function() {
+         *         tree.expandAll();
+         *     });
+         * </script>
+         */
+        uncheckAll: function () {
+            var $checkboxes = this.find('li [data-role="checkbox"] input[type="checkbox"]');
+            $.each($checkboxes, function () {
+                $(this).checkbox('state', 'unchecked');
+            });
+        },
+
+        check: function ($node) {
+            gj.tree.plugins.checkboxes.private.update(this, $node, 'checked');
+        },
+
+        uncheck: function ($node) {
+            gj.tree.plugins.checkboxes.private.update(this, $node, 'unchecked');
         }
     },
 

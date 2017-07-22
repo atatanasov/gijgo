@@ -430,11 +430,11 @@ gj.grid.methods = {
 
         if ('checkbox' === column.type && gj.checkbox) {
             if ('create' === mode) {
-                $checkbox = $('<input type="checkbox" />').val(id).prop('checked', (record[column.field] ? true : false));
+                $checkbox = $('<input type="checkbox" />').val(id).prop('checked', (record[column.field] && column.role !== 'selectRow' ? true : false));
                 column.role && $checkbox.attr('data-role', column.role);
                 $displayEl.append($checkbox);
                 $checkbox.checkbox({ uiLibrary: $grid.data('uiLibrary') });
-                if (column.role == 'selectRow') {
+                if (column.role === 'selectRow') {
                     $checkbox.on('click', function () { return false; });
                 } else {
                     $checkbox.prop('disabled', true);
