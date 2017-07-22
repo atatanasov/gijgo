@@ -49,6 +49,36 @@ gj.tree.plugins.checkboxes = {
              * </script>
              */
             checkedField: 'checked',
+
+            /** This setting enable cascade check and uncheck of children
+             * @type boolean
+             * @default true
+             * @example False <!-- materialicons, checkbox, tree.base -->
+             * <div id="tree"></div>
+             * <script>
+             *     var tree = $('#tree').tree({
+             *         checkboxes: true,
+             *         dataSource: '/Locations/Get',
+             *         cascadeCheck: false
+             *     });
+             *     tree.on('dataBound', function() {
+             *         tree.expandAll();
+             *     });
+             * </script>
+             * @example True <!-- materialicons, checkbox, tree.base -->
+             * <div id="tree"></div>
+             * <script>
+             *     var tree = $('#tree').tree({
+             *         checkboxes: true,
+             *         dataSource: '/Locations/Get',
+             *         cascadeCheck: true
+             *     });
+             *     tree.on('dataBound', function() {
+             *         tree.expandAll();
+             *     });
+             * </script>
+             */
+            cascadeCheck: true,
         }
     },
 
@@ -65,8 +95,10 @@ gj.tree.plugins.checkboxes = {
             $checkbox.on('click', function (e) {
                 var $node = $checkbox.closest('li'),
                     state = $checkbox.state();
-                gj.tree.plugins.checkboxes.private.updateChildrenState($node, state);
-                gj.tree.plugins.checkboxes.private.updateParentState($node, state);
+                if (data.cascadeCheck) {
+                    gj.tree.plugins.checkboxes.private.updateChildrenState($node, state);
+                    gj.tree.plugins.checkboxes.private.updateParentState($node, state);
+                }
             });
             $expander.after($wrapper);
         },
@@ -111,10 +143,12 @@ gj.tree.plugins.checkboxes = {
         },
 
         update: function ($tree, $node, state) {
-            var checkbox = $node.find('>[data-role="checkbox"] input[type="checkbox"]');
+            var checkbox = $node.find('[data-role="checkbox"] input[type="checkbox"]').first();
             $(checkbox).checkbox('state', state);
-            gj.tree.plugins.checkboxes.private.updateChildrenState($node, state);
-            gj.tree.plugins.checkboxes.private.updateParentState($node, state);
+            if (data.cascadeCheck) {
+                gj.tree.plugins.checkboxes.private.updateChildrenState($node, state);
+                gj.tree.plugins.checkboxes.private.updateParentState($node, state);
+            }
         }
     },
 
@@ -152,7 +186,7 @@ gj.tree.plugins.checkboxes = {
         /**
          * Check all tree nodes
          * @method
-         * @return jQuery object
+         * @return tree as jQuery object
          * @example Sample <!-- materialicons, checkbox, tree.base -->
          * <button onclick="tree.checkAll()">Check All</button><button onclick="tree.uncheckAll()">Uncheck All</button>
          * <br/><br/>
@@ -171,12 +205,13 @@ gj.tree.plugins.checkboxes = {
             $.each($checkboxes, function () {
                 $(this).checkbox('state', 'checked');
             });
+            return this;
         },
 
         /**
          * Uncheck all tree nodes
          * @method
-         * @return jQuery object
+         * @return tree as jQuery object
          * @example Sample <!-- materialicons, checkbox, tree.base -->
          * <button onclick="tree.checkAll()">Check All</button><button onclick="tree.uncheckAll()">Uncheck All</button>
          * <br/><br/>
@@ -195,20 +230,60 @@ gj.tree.plugins.checkboxes = {
             $.each($checkboxes, function () {
                 $(this).checkbox('state', 'unchecked');
             });
+            return this;
         },
 
+        /**
+         * Check tree node.
+         * @method
+         * @param {object} node - The node as jQuery object
+         * @return tree as jQuery object
+         * @example Sample <!-- materialicons, checkbox, tree.base -->
+         * <button onclick="tree.check(tree.getNodeByText('China'))">Check China</button>
+         * <br/><br/>
+         * <div id="tree" data-source="/Locations/Get"></div>
+         * <script>
+         *     var tree = $('#tree').tree({
+         *         checkboxes: true
+         *     });
+         *     tree.on('dataBound', function() {
+         *         tree.expandAll();
+         *     });
+         * </script>
+         */
         check: function ($node) {
             gj.tree.plugins.checkboxes.private.update(this, $node, 'checked');
+            return this;
         },
 
+        /**
+         * Uncheck tree node.
+         * @method
+         * @param {object} node - The node as jQuery object
+         * @return tree as jQuery object
+         * @example Sample <!-- materialicons, checkbox, tree.base -->
+         * <button onclick="tree.uncheck(tree.getNodeByText('China'))">UnCheck China</button>
+         * <br/><br/>
+         * <div id="tree" data-source="/Locations/Get"></div>
+         * <script>
+         *     var tree = $('#tree').tree({
+         *         checkboxes: true
+         *     });
+         *     tree.on('dataBound', function() {
+         *         tree.expandAll();
+         *         tree.check(tree.getNodeByText('China'));
+         *     });
+         * </script>
+         */
         uncheck: function ($node) {
             gj.tree.plugins.checkboxes.private.update(this, $node, 'unchecked');
+            return this;
         }
     },
 
     configure: function ($tree) {
-        $.extend(true, $tree, gj.tree.plugins.checkboxes.public);
-        if ($tree.data('checkboxes')) {
+        if ($tree.data('checkboxes') && gj.checkbox) {
+            $.extend(true, $tree, gj.tree.plugins.checkboxes.public);
             $tree.on('nodeDataBound', function (e, $node, id, record) {
                 gj.tree.plugins.checkboxes.private.nodeDataBound($tree, $node, id, record);
             });

@@ -798,7 +798,7 @@ gj.grid.config = {
          *         dataSource: '/Players/Get',
          *         selectionType: 'multiple',
          *         selectionMethod: 'checkbox',
-         *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
+         *         columns: [ { field: 'ID', width: 34 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
          *     });
          * </script>
          * @example Single.Checkbox <!-- materialicons, checkbox, grid -->
