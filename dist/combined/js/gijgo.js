@@ -280,7 +280,7 @@ gj.core = {
             result = new Date(value);
         } else if (value.indexOf('/Date(') > -1) {
             result = new Date(parseInt(value.substr(6), 10));
-        } else {
+        } else if (value) {
             dateParts = value.split(/[\s,-\.//\:]+/);
             formatParts = format.split(/[\s,-\.//\:]+/);
             for (i = 0; i < formatParts.length; i++) {
@@ -11695,7 +11695,7 @@ gj.datepicker.config = {
          *     });
          * </script>
          */
-        format: undefined,
+        format: 'mm/dd/yyyy',
 
         /** The name of the UI library that is going to be in use.
          * @additionalinfo The css file for bootstrap should be manually included if you use bootstrap.
@@ -11876,7 +11876,7 @@ gj.datepicker.methods = {
             $thead = $('<thead/>');
         
         date = gj.core.parseDate(value, data.format);
-        if (date && isNaN(date.getTime())) {
+        if (!date || isNaN(date.getTime())) {
             date = new Date();
         } else {
             $datepicker.attr('day', date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate());

@@ -27,7 +27,7 @@ gj.datepicker.config = {
 
         /** The maximum selectable date. When not set, there is no maximum         */        maxDate: undefined,
 
-        /** Specifies the format, which is used to format the value of the DatePicker displayed in the input.         */        format: undefined,
+        /** Specifies the format, which is used to format the value of the DatePicker displayed in the input.         */        format: 'mm/dd/yyyy',
 
         /** The name of the UI library that is going to be in use.         */        uiLibrary: 'materialdesign',
 
@@ -139,7 +139,7 @@ gj.datepicker.methods = {
             $thead = $('<thead/>');
         
         date = gj.core.parseDate(value, data.format);
-        if (date && isNaN(date.getTime())) {
+        if (!date || isNaN(date.getTime())) {
             date = new Date();
         } else {
             $datepicker.attr('day', date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate());

@@ -273,7 +273,7 @@ gj.core = {
             result = new Date(value);
         } else if (value.indexOf('/Date(') > -1) {
             result = new Date(parseInt(value.substr(6), 10));
-        } else {
+        } else if (value) {
             dateParts = value.split(/[\s,-\.//\:]+/);
             formatParts = format.split(/[\s,-\.//\:]+/);
             for (i = 0; i < formatParts.length; i++) {
