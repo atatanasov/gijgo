@@ -64,7 +64,6 @@ gj.grid.plugins.inlineEditing.config = {
              *     });
              * </script>
              * @example Date.And.Dropdown <!-- materialicons, grid, datepicker, dropdown, checkbox -->
-             * <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.0/moment.min.js"></script>
              * <table id="grid"></table>
              * <script>
              *     $('#grid').grid({
@@ -72,11 +71,7 @@ gj.grid.plugins.inlineEditing.config = {
              *         columns: [
              *             { field: 'Name', editor: true },
              *             { field: 'Nationality', editor: {}, type: 'dropdown' },
-             *             { field: 'DateOfBirth', editor: {}, type: 'date', format: 'MM/DD/YYYY',
-             *               renderer: function (value, record, column) {
-             *                   return moment(value, column.format).format(column.format);
-             *               }
-             *             },
+             *             { field: 'DateOfBirth', editor: {}, type: 'date', format: 'mm/dd/yyyy' },
              *             { field: 'IsActive', title: 'Active?', type:'checkbox', editor: true, mode: 'edit', width: 80, align: 'center' }
              *         ]
              *     });

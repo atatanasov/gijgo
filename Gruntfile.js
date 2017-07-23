@@ -8,10 +8,7 @@
                 files: [
                     { cwd: 'node_modules/jquery/dist', src: '**/*', dest: 'dist/libraries/jquery', expand: true },
                     { cwd: 'node_modules/bootstrap/dist', src: '**/*', dest: 'dist/libraries/bootstrap', expand: true },
-                    { cwd: 'node_modules/jquery-ui/themes/base', src: '**/*', dest: 'dist/libraries/jquery-ui', expand: true },
-                    { cwd: 'src/grid/js/messages', src: '**/*', dest: 'dist/modular/grid/js/messages', expand: true },
-                    { cwd: 'src/dialog/js/messages', src: '**/*', dest: 'dist/modular/dialog/js/messages', expand: true },
-                    { cwd: 'src/editor/js/messages', src: '**/*', dest: 'dist/modular/editor/js/messages', expand: true }
+                    { cwd: 'node_modules/jquery-ui/themes/base', src: '**/*', dest: 'dist/libraries/jquery-ui', expand: true }
                 ]
             }
         },
@@ -26,90 +23,93 @@
                     { src: ['src/checkbox/js/*.js'], dest: 'examples/checkbox/' },
                     { src: ['src/editor/js/*.js'], dest: 'examples/editor/' },
                     { src: ['src/dropdown/js/*.js'], dest: 'examples/dropdown/' },
-                    { src: ['src/datepicker/js/*.js'], dest: 'examples/datepicker/' }
+                    { src: ['src/datepicker/js/*.js'], dest: 'examples/datepicker/' },
+                    { src: ['src/core.js'], dest: 'examples/core/' }
                 ]
             }
         },
         concat: {
             dialog: {
                 files : {
-                    'dist/modular/dialog/js/dialog.code.js': ['src/dialog/js/messages/messages.en-us.js', 'src/dialog/js/dialog.base.config.js', 'src/dialog/js/dialog.base.events.js', 'src/dialog/js/dialog.base.methods.js', 'src/dialog/js/dialog.base.widget.js'],
-                    'dist/modular/dialog/css/dialog.code.css': ['src/dialog/css/dialog.base.css']
+                    'dist/modular/js/dialog.code.js': ['src/dialog/js/messages/messages.en-us.js', 'src/dialog/js/dialog.base.config.js', 'src/dialog/js/dialog.base.events.js', 'src/dialog/js/dialog.base.methods.js', 'src/dialog/js/dialog.base.widget.js'],
+                    'dist/modular/css/dialog.code.css': ['src/dialog/css/dialog.base.css']
                 }
             },
             draggable: {
                 files: {
-                    'dist/modular/draggable/js/draggable.code.js': ['src/draggable/js/draggable.base.js']
+                    'dist/modular/js/draggable.code.js': ['src/draggable/js/draggable.base.js']
                 }
             },
             droppable: {
                 files: {
-                    'dist/modular/droppable/js/droppable.code.js': ['src/droppable/js/droppable.base.js']
+                    'dist/modular/js/droppable.code.js': ['src/droppable/js/droppable.base.js']
                 }
             },
             grid: {
                 files: {
-                    'dist/modular/grid/js/grid.code.js': ['src/grid/js/messages/messages.en-us.js', 'src/grid/js/grid.base.config.js', 'src/grid/js/grid.base.events.js', 'src/grid/js/grid.base.methods.js', 'src/grid/js/grid.base.widget.js',
+                    'dist/modular/js/grid.code.js': ['src/grid/js/messages/messages.en-us.js', 'src/grid/js/grid.base.config.js', 'src/grid/js/grid.base.events.js', 'src/grid/js/grid.base.methods.js', 'src/grid/js/grid.base.widget.js',
                         'src/grid/js/grid.expandCollapseRows.js', 'src/grid/js/grid.inlineEditing.js', 'src/grid/js/grid.optimisticPersistence.js', 'src/grid/js/grid.pagination.js',
                         'src/grid/js/grid.responsiveDesign.js', 'src/grid/js/grid.toolbar.js', 'src/grid/js/grid.resizableColumns.js', 'src/grid/js/grid.rowReorder.js',
                         'src/grid/js/grid.columnReorder.js', 'src/grid/js/grid.headerFilter.js', 'src/grid/js/grid.grouping.js', 'src/grid/js/grid.fixedHeader.js'],
 
-                    'dist/modular/grid/css/grid.code.css': ['src/grid/css/grid.base.css', 'src/grid/css/grid.responsiveDesign.css', 'src/grid/css/grid.pagination.css',
+                    'dist/modular/css/grid.code.css': ['src/grid/css/grid.base.css', 'src/grid/css/grid.responsiveDesign.css', 'src/grid/css/grid.pagination.css',
                         'src/grid/css/grid.resizableColumns.css', 'src/grid/css/grid.rowReorder.css', 'src/grid/css/grid.columnReorder.css', 'src/grid/css/grid.inlineEditing.css',
                         'src/grid/css/grid.headerFilter.css', 'src/grid/css/grid.toolbar.css', 'src/grid/css/grid.fixedHeader.css']
                 }
             },
             tree: {
                 files: {
-                    'dist/modular/tree/js/tree.code.js': ['src/tree/js/tree.base.config.js', 'src/tree/js/tree.base.events.js', 'src/tree/js/tree.base.methods.js', 'src/tree/js/tree.base.widget.js', 'src/tree/js/tree.checkboxes.js', 'src/tree/js/tree.dragAndDrop.js'],
-                    'dist/modular/tree/css/tree.code.css': ['src/tree/css/tree.base.css', 'src/tree/css/tree.dragAndDrop.css']
+                    'dist/modular/js/tree.code.js': ['src/tree/js/tree.base.config.js', 'src/tree/js/tree.base.events.js', 'src/tree/js/tree.base.methods.js', 'src/tree/js/tree.base.widget.js', 'src/tree/js/tree.checkboxes.js', 'src/tree/js/tree.dragAndDrop.js'],
+                    'dist/modular/css/tree.code.css': ['src/tree/css/tree.base.css', 'src/tree/css/tree.dragAndDrop.css']
                 }
             },
             checkbox: {
                 files: {
-                    'dist/modular/checkbox/js/checkbox.code.js': ['src/checkbox/js/checkbox.base.js'],
-                    'dist/modular/checkbox/css/checkbox.code.css': ['src/checkbox/css/checkbox.base.css']
+                    'dist/modular/js/checkbox.code.js': ['src/checkbox/js/checkbox.base.js'],
+                    'dist/modular/css/checkbox.code.css': ['src/checkbox/css/checkbox.base.css']
                 }
             },
             editor: {
                 files: {
-                    'dist/modular/editor/js/editor.code.js': ['src/editor/js/messages/messages.en-us.js', 'src/editor/js/editor.base.js'],
-                    'dist/modular/editor/css/editor.code.css': ['src/editor/css/editor.base.css']
+                    'dist/modular/js/editor.code.js': ['src/editor/js/messages/messages.en-us.js', 'src/editor/js/editor.base.js'],
+                    'dist/modular/css/editor.code.css': ['src/editor/css/editor.base.css']
                 }
             },
             dropdown: {
                 files: {
-                    'dist/modular/dropdown/js/dropdown.code.js': ['src/dropdown/js/dropdown.base.js'],
-                    'dist/modular/dropdown/css/dropdown.code.css': ['src/dropdown/css/dropdown.base.css']
+                    'dist/modular/js/dropdown.code.js': ['src/dropdown/js/dropdown.base.js'],
+                    'dist/modular/css/dropdown.code.css': ['src/dropdown/css/dropdown.base.css']
                 }
             },
             datepicker: {
                 files: {
-                    'dist/modular/datepicker/js/datepicker.code.js': ['src/datepicker/js/datepicker.base.js'],
-                    'dist/modular/datepicker/css/datepicker.code.css': ['src/datepicker/css/datepicker.base.css']
+                    'dist/modular/js/datepicker.code.js': ['src/datepicker/js/datepicker.base.js'],
+                    'dist/modular/css/datepicker.code.css': ['src/datepicker/css/datepicker.base.css']
                 }
             },
             final: {
                 files: {
-                    'dist/modular/draggable/js/draggable.js': ['src/draggable/js/header.txt', 'src/widget.js', 'dist/modular/draggable/js/draggable.code.js'],
-                    'dist/modular/droppable/js/droppable.js': ['src/droppable/js/header.txt', 'src/widget.js', 'dist/modular/droppable/js/droppable.code.js'],
-                    'dist/modular/dialog/js/dialog.js': ['src/dialog/js/header.txt', 'src/widget.js', 'dist/modular/dialog/js/dialog.code.js'],
-                    'dist/modular/dialog/css/dialog.css': ['src/widget.css', 'dist/modular/dialog/css/dialog.code.css'],
-                    'dist/modular/grid/js/grid.js': ['src/grid/js/header.txt', 'src/widget.js', 'dist/modular/grid/js/grid.code.js'],
-                    'dist/modular/grid/css/grid.css': ['src/widget.css', 'dist/modular/grid/css/grid.code.css'],
-                    'dist/modular/tree/js/tree.js': ['src/tree/js/header.txt', 'src/widget.js', 'dist/modular/tree/js/tree.code.js'],
-                    'dist/modular/tree/css/tree.css': ['src/widget.css', 'dist/modular/tree/css/tree.code.css'],
-                    'dist/modular/checkbox/js/checkbox.js': ['src/checkbox/js/header.txt', 'src/widget.js', 'dist/modular/checkbox/js/checkbox.code.js'],
-                    'dist/modular/checkbox/css/checkbox.css': ['src/widget.css', 'dist/modular/checkbox/css/checkbox.code.css'],
-                    'dist/modular/editor/js/editor.js': ['src/editor/js/header.txt', 'src/widget.js', 'dist/modular/editor/js/editor.code.js'],
-                    'dist/modular/editor/css/editor.css': ['src/widget.css', 'dist/modular/editor/css/editor.code.css'],
-                    'dist/modular/dropdown/js/dropdown.js': ['src/dropdown/js/header.txt', 'src/widget.js', 'dist/modular/dropdown/js/dropdown.code.js'],
-                    'dist/modular/dropdown/css/dropdown.css': ['src/widget.css', 'dist/modular/dropdown/css/dropdown.code.css'],
-                    'dist/modular/datepicker/js/datepicker.js': ['src/datepicker/js/header.txt', 'src/widget.js', 'dist/modular/datepicker/js/datepicker.code.js'],
-                    'dist/modular/datepicker/css/datepicker.css': ['src/widget.css', 'dist/modular/datepicker/css/datepicker.code.css'],
+                    'dist/modular/js/core.js': ['src/header.txt', 'src/core.js'],
+                    'dist/modular/css/core.css': ['src/core.css'],
+                    'dist/modular/js/draggable.js': ['src/draggable/js/header.txt', 'dist/modular/js/draggable.code.js'],
+                    'dist/modular/js/droppable.js': ['src/droppable/js/header.txt', 'dist/modular/js/droppable.code.js'],
+                    'dist/modular/js/dialog.js': ['src/dialog/js/header.txt', 'dist/modular/js/dialog.code.js', 'src/dialog/js/messages/messages.bg-bg.js', 'src/dialog/js/messages/messages.fr-fr.js', 'src/dialog/js/messages/messages.de-de.js', 'src/dialog/js/messages/messages.pt-br.js'],
+                    'dist/modular/css/dialog.css': ['dist/modular/css/dialog.code.css'],
+                    'dist/modular/js/grid.js': ['src/grid/js/header.txt', 'dist/modular/js/grid.code.js', 'src/grid/js/messages/messages.bg-bg.js', 'src/grid/js/messages/messages.fr-fr.js', 'src/grid/js/messages/messages.de-de.js', 'src/grid/js/messages/messages.pt-br.js'],
+                    'dist/modular/css/grid.css': ['dist/modular/css/grid.code.css'],
+                    'dist/modular/js/tree.js': ['src/tree/js/header.txt', 'dist/modular/js/tree.code.js'],
+                    'dist/modular/css/tree.css': ['dist/modular/css/tree.code.css'],
+                    'dist/modular/js/checkbox.js': ['src/checkbox/js/header.txt', 'dist/modular/js/checkbox.code.js'],
+                    'dist/modular/css/checkbox.css': ['dist/modular/css/checkbox.code.css'],
+                    'dist/modular/js/editor.js': ['src/editor/js/header.txt', 'dist/modular/js/editor.code.js', 'src/editor/js/messages/messages.bg-bg.js', 'src/editor/js/messages/messages.fr-fr.js', 'src/editor/js/messages/messages.de-de.js', 'src/editor/js/messages/messages.pt-br.js'],
+                    'dist/modular/css/editor.css': ['dist/modular/css/editor.code.css'],
+                    'dist/modular/js/dropdown.js': ['src/dropdown/js/header.txt', 'dist/modular/js/dropdown.code.js'],
+                    'dist/modular/css/dropdown.css': ['dist/modular/css/dropdown.code.css'],
+                    'dist/modular/js/datepicker.js': ['src/datepicker/js/header.txt', 'dist/modular/js/datepicker.code.js'],
+                    'dist/modular/css/datepicker.css': ['dist/modular/css/datepicker.code.css'],
                     
-                    'dist/combined/js/gijgo.js': ['src/header.txt', 'src/widget.js', 'dist/modular/dialog/js/dialog.code.js', 'dist/modular/draggable/js/draggable.code.js', 'dist/modular/droppable/js/droppable.code.js', 'dist/modular/grid/js/grid.code.js', 'dist/modular/tree/js/tree.code.js', 'dist/modular/checkbox/js/checkbox.code.js', 'dist/modular/editor/js/editor.code.js', 'dist/modular/dropdown/js/dropdown.code.js', 'dist/modular/datepicker/js/datepicker.code.js'],
-                    'dist/combined/css/gijgo.css': ['src/widget.css', 'dist/modular/dialog/css/dialog.code.css', 'dist/modular/grid/css/grid.code.css', 'dist/modular/tree/css/tree.code.css', 'dist/modular/checkbox/css/checkbox.code.css', 'dist/modular/editor/css/editor.code.css', 'dist/modular/dropdown/css/dropdown.code.css', 'dist/modular/datepicker/css/datepicker.code.css'],
+                    'dist/combined/js/gijgo.js': ['src/header.txt', 'src/core.js', 'dist/modular/js/dialog.code.js', 'dist/modular/js/draggable.code.js', 'dist/modular/js/droppable.code.js', 'dist/modular/js/grid.code.js', 'dist/modular/js/tree.code.js', 'dist/modular/js/checkbox.code.js', 'dist/modular/js/editor.code.js', 'dist/modular/js/dropdown.code.js', 'dist/modular/js/datepicker.code.js'],
+                    'dist/combined/css/gijgo.css': ['src/core.css', 'dist/modular/css/dialog.code.css', 'dist/modular/css/grid.code.css', 'dist/modular/css/tree.code.css', 'dist/modular/css/checkbox.code.css', 'dist/modular/css/editor.code.css', 'dist/modular/css/dropdown.code.css', 'dist/modular/css/datepicker.code.css'],
                     'dist/combined/js/messages/messages.bg-bg.js': ['src/dialog/js/messages/messages.bg-bg.js', 'src/grid/js/messages/messages.bg-bg.js', 'src/editor/js/messages/messages.bg-bg.js'],
                     'dist/combined/js/messages/messages.fr-fr.js': ['src/dialog/js/messages/messages.fr-fr.js', 'src/grid/js/messages/messages.fr-fr.js', 'src/editor/js/messages/messages.fr-fr.js'],
                     'dist/combined/js/messages/messages.de-de.js': ['src/dialog/js/messages/messages.de-de.js', 'src/grid/js/messages/messages.de-de.js', 'src/editor/js/messages/messages.de-de.js'],
@@ -117,7 +117,7 @@
                 }
             }
         },
-        clean: ['dist/modular/**/js/*.code.js', 'dist/modular/**/css/*.code.css'],
+        clean: ['dist/modular/js/*.code.js', 'dist/modular/css/*.code.css'],
         replace: {
             minifyComments: {
                 src: ['dist/modular/*/*.js', 'dist/combined/*.js'], // source files array (supports minimatch)
@@ -163,15 +163,16 @@
             },
             modular: {
                 files: {
-                    'dist/modular/draggable/js/draggable.min.js': ['dist/modular/draggable/js/draggable.js'],
-                    'dist/modular/droppable/js/droppable.min.js': ['dist/modular/droppable/js/droppable.js'],
-                    'dist/modular/dialog/js/dialog.min.js': ['dist/modular/dialog/js/dialog.js'],
-                    'dist/modular/checkbox/js/checkbox.min.js': ['dist/modular/checkbox/js/checkbox.js'],
-                    'dist/modular/editor/js/editor.min.js': ['dist/modular/editor/js/editor.js'],
-                    'dist/modular/grid/js/grid.min.js': ['dist/modular/grid/js/grid.js'],
-                    'dist/modular/tree/js/tree.min.js': ['dist/modular/tree/js/tree.js'],
-                    'dist/modular/dropdown/js/dropdown.min.js': ['dist/modular/dropdown/js/dropdown.js'],
-                    'dist/modular/datepicker/js/datepicker.min.js': ['dist/modular/datepicker/js/datepicker.js']
+                    'dist/modular/js/core.min.js': ['dist/modular/js/core.js'],
+                    'dist/modular/js/draggable.min.js': ['dist/modular/js/draggable.js'],
+                    'dist/modular/js/droppable.min.js': ['dist/modular/js/droppable.js'],
+                    'dist/modular/js/dialog.min.js': ['dist/modular/js/dialog.js'],
+                    'dist/modular/js/checkbox.min.js': ['dist/modular/js/checkbox.js'],
+                    'dist/modular/js/editor.min.js': ['dist/modular/js/editor.js'],
+                    'dist/modular/js/grid.min.js': ['dist/modular/js/grid.js'],
+                    'dist/modular/js/tree.min.js': ['dist/modular/js/tree.js'],
+                    'dist/modular/js/dropdown.min.js': ['dist/modular/js/dropdown.js'],
+                    'dist/modular/js/datepicker.min.js': ['dist/modular/js/datepicker.js']
                 }
             }
         },
@@ -179,18 +180,18 @@
             target: {
                 files: [
                     { expand: true, cwd: 'dist/combined/css', src: ['*.css', '!*.min.css'], dest: 'dist/combined/css', ext: '.min.css' },
-                    { expand: true, cwd: 'dist/modular/dialog/css', src: ['dialog.css'], dest: 'dist/modular/dialog/css', ext: '.min.css' },
-                    { expand: true, cwd: 'dist/modular/editor/css', src: ['editor.css'], dest: 'dist/modular/editor/css', ext: '.min.css' },
-                    { expand: true, cwd: 'dist/modular/checkbox/css', src: ['checkbox.css'], dest: 'dist/modular/checkbox/css', ext: '.min.css' },
-                    { expand: true, cwd: 'dist/modular/tree/css', src: ['tree.css'], dest: 'dist/modular/tree/css', ext: '.min.css' },
-                    { expand: true, cwd: 'dist/modular/grid/css', src: ['grid.css'], dest: 'dist/modular/grid/css', ext: '.min.css' },
-                    { expand: true, cwd: 'dist/modular/dropdown/css', src: ['dropdown.css'], dest: 'dist/modular/dropdown/css', ext: '.min.css' },
-                    { expand: true, cwd: 'dist/modular/datepicker/css', src: ['datepicker.css'], dest: 'dist/modular/datepicker/css', ext: '.min.css' }
+                    { expand: true, cwd: 'dist/modular/css', src: ['dialog.css'], dest: 'dist/modular/css', ext: '.min.css' },
+                    { expand: true, cwd: 'dist/modular/css', src: ['editor.css'], dest: 'dist/modular/css', ext: '.min.css' },
+                    { expand: true, cwd: 'dist/modular/css', src: ['checkbox.css'], dest: 'dist/modular/css', ext: '.min.css' },
+                    { expand: true, cwd: 'dist/modular/css', src: ['tree.css'], dest: 'dist/modular/css', ext: '.min.css' },
+                    { expand: true, cwd: 'dist/modular/css', src: ['grid.css'], dest: 'dist/modular/css', ext: '.min.css' },
+                    { expand: true, cwd: 'dist/modular/css', src: ['dropdown.css'], dest: 'dist/modular/css', ext: '.min.css' },
+                    { expand: true, cwd: 'dist/modular/css', src: ['datepicker.css'], dest: 'dist/modular/css', ext: '.min.css' }
                 ]
             }
         },
         watch: {
-            files: ['src/**/*.js', 'src/**/*.css'],
+            files: ['src/**/*.js', 'src/**/*.css', 'src/**/*.txt'],
             tasks: ['copy', 'extractExamples', 'concat', 'clean', 'replace', 'uglify', 'cssmin']
         }
     });
@@ -321,6 +322,8 @@ var writer = {
         } else {
             result += '  <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>\r\n';
         }
+        result += '  <script src="../../dist/modular/js/core.js" type="text/javascript"></script>\r\n';
+        result += '  <link href="../../dist/modular/css/core.css" rel="stylesheet" type="text/css">\r\n';
         if (libs) {
             names = libs.replace('<!--', '').replace('-->', '').trim().split(',');
             for (i = 0; i < names.length; i++) {
@@ -343,25 +346,25 @@ var writer = {
                         result += '  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">\r\n';
                         break;
                     case 'dialog.base':
-                        result += '  <link href="../../dist/modular/dialog/css/dialog.css" rel="stylesheet" type="text/css">\r\n';
+                        result += '  <link href="../../dist/modular/css/dialog.css" rel="stylesheet" type="text/css">\r\n';
                         break;
                     case 'grid':
-                        result += '  <link href="../../dist/modular/grid/css/grid.css" rel="stylesheet" type="text/css">\r\n';
+                        result += '  <link href="../../dist/modular/css/grid.css" rel="stylesheet" type="text/css">\r\n';
                         break;
                     case 'tree.base':
-                        result += '  <link href="../../dist/modular/tree/css/tree.css" rel="stylesheet" type="text/css">\r\n';
+                        result += '  <link href="../../dist/modular/css/tree.css" rel="stylesheet" type="text/css">\r\n';
                         break;
                     case 'checkbox':
-                        result += '  <link href="../../dist/modular/checkbox/css/checkbox.css" rel="stylesheet" type="text/css">\r\n';
+                        result += '  <link href="../../dist/modular/css/checkbox.css" rel="stylesheet" type="text/css">\r\n';
                         break;
                     case 'editor':
-                        result += '  <link href="../../dist/modular/editor/css/editor.css" rel="stylesheet" type="text/css">\r\n';
+                        result += '  <link href="../../dist/modular/css/editor.css" rel="stylesheet" type="text/css">\r\n';
                         break;
                     case 'dropdown':
-                        result += '  <link href="../../dist/modular/dropdown/css/dropdown.css" rel="stylesheet" type="text/css">\r\n';
+                        result += '  <link href="../../dist/modular/css/dropdown.css" rel="stylesheet" type="text/css">\r\n';
                         break;
                     case 'datepicker':
-                        result += '  <link href="../../dist/modular/datepicker/css/datepicker.css" rel="stylesheet" type="text/css">\r\n';
+                        result += '  <link href="../../dist/modular/css/datepicker.css" rel="stylesheet" type="text/css">\r\n';
                         break;
                 }
             }
@@ -369,31 +372,31 @@ var writer = {
                 //include js files
                 switch (names[i].trim()) {
                     case 'dialog.base':
-                        result += '  <script src="../../dist/modular/dialog/js/dialog.js"></script>\r\n';
+                        result += '  <script src="../../dist/modular/js/dialog.js"></script>\r\n';
                         break;
                     case 'draggable.base':
-                        result += '  <script src="../../dist/modular/draggable/js/draggable.js"></script>\r\n';
+                        result += '  <script src="../../dist/modular/js/draggable.js"></script>\r\n';
                         break;
                     case 'droppable.base':
-                        result += '  <script src="../../dist/modular/droppable/js/droppable.js"></script>\r\n';
+                        result += '  <script src="../../dist/modular/js/droppable.js"></script>\r\n';
                         break;
                     case 'grid':
-                        result += '  <script src="../../dist/modular/grid/js/grid.js"></script>\r\n';
+                        result += '  <script src="../../dist/modular/js/grid.js"></script>\r\n';
                         break;
                     case 'tree.base':
-                        result += '  <script src="../../dist/modular/tree/js/tree.js"></script>\r\n';
+                        result += '  <script src="../../dist/modular/js/tree.js"></script>\r\n';
                         break;
                     case 'checkbox':
-                        result += '  <script src="../../dist/modular/checkbox/js/checkbox.js"></script>\r\n';
+                        result += '  <script src="../../dist/modular/js/checkbox.js"></script>\r\n';
                         break;
                     case 'editor':
-                        result += '  <script src="../../dist/modular/editor/js/editor.js"></script>\r\n';
+                        result += '  <script src="../../dist/modular/js/editor.js"></script>\r\n';
                         break;
                     case 'dropdown':
-                        result += '  <script src="../../dist/modular/dropdown/js/dropdown.js"></script>\r\n';
+                        result += '  <script src="../../dist/modular/js/dropdown.js"></script>\r\n';
                         break;
                     case 'datepicker':
-                        result += '  <script src="../../dist/modular/datepicker/js/datepicker.js"></script>\r\n';
+                        result += '  <script src="../../dist/modular/js/datepicker.js"></script>\r\n';
                         break;
                 }
             }

@@ -112,26 +112,14 @@ gj.datepicker.config = {
         maxDate: undefined,
 
         /** Specifies the format, which is used to format the value of the DatePicker displayed in the input.
-         * @additionalinfo If the format is not define we use <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toLocaleDateString" target="_blank">Date.prototype.toLocaleDateString()</a> in order to format the date.
-         * @type Function
-         * @default undefined
-         * @example Moment.JS <!-- materialicons, datepicker -->
-         * <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js" integrity="sha256-1hjUhpc44NwiNg8OwMu2QzJXhD8kcj+sJA3aCQZoUjg=" crossorigin="anonymous"></script>
-         * <input id="datepicker" />
+         * @additionalinfo 
+         * @type String
+         * @default 'mm/dd/yyyy'
+         * @example Sample <!-- materialicons, datepicker -->
+         * <input id="datepicker" value="2017-25-07" />
          * <script>
          *     var datepicker = $('#datepicker').datepicker({
-         *         format: function(date) {
-         *             return moment(date).format('YYYY-MM-DD');
-         *         }
-         *     });
-         * </script>
-         * @example Custom <!-- materialicons, datepicker -->
-         * <input id="datepicker" />
-         * <script>
-         *     var datepicker = $('#datepicker').datepicker({
-         *         format: function(date) {
-         *             return date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
-         *         }
+         *         format: 'yyyy-dd-mm'
          *     });
          * </script>
          */
@@ -293,17 +281,6 @@ gj.datepicker.methods = {
 
         $datepicker.addClass(data.style.input).attr('role', 'input');
 
-        //$rightIcon.on('mousedown', function (e) {
-        //    ctrlClick = true;
-        //});
-
-        //$datepicker.on('blur', function (e) {
-        //    if (ctrlClick) {
-        //        e.stopImmediatePropagation();
-        //        ctrlClick = false;
-        //    }
-        //});
-
         $rightIcon.on('click', function (e) {
             if ($('body').children('[role="calendar"][guid="' + $datepicker.attr('data-guid') + '"]').is(':visible')) {
                 gj.datepicker.methods.hide($datepicker);
@@ -326,7 +303,7 @@ gj.datepicker.methods = {
             $table = $('<table/>'),
             $thead = $('<thead/>');
         
-        date = new Date(value);
+        date = gj.core.parseDate(value, data.format);
         if (date && isNaN(date.getTime())) {
             date = new Date();
         } else {
@@ -545,7 +522,7 @@ gj.datepicker.methods = {
             var date, value,
                 data = $datepicker.data();
             date = new Date(year + '-' + (month + 1) + '-' + day);
-            value = data.format ? data.format(date) : date.toLocaleDateString();
+            value = gj.core.formatDate(date, data.format);
             $datepicker.val(value);
             gj.datepicker.events.change($datepicker);
             $datepicker.attr('day', year + '-' + (month + 1) + '-' + day);

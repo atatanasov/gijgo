@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Example</title>
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="../../dist/modular/js/core.js" type="text/javascript"></script>
+  <link href="../../dist/modular/css/core.css" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">
+  <link href="../../dist/modular/css/datepicker.css" rel="stylesheet" type="text/css">
+  <script src="../../dist/modular/js/datepicker.js"></script>
+</head>
+<body style="padding: 6px;">
+ <input id="datepicker" value="2017-25-07" />
+ <script>
+     var datepicker = $('#datepicker').datepicker({
+         format: 'yyyy-dd-mm'
+     });
+ </script>
+</body>
+</html>

@@ -514,15 +514,13 @@ gj.grid.config = {
             events: undefined,
 
             /** Format the date when the type of the column is date.
-             * This configuration setting is going to work only if you have implementation of format method for the Date object.
-             * You can use external libraries like http://blog.stevenlevithan.com/archives/date-time-format for that.
+             * @additionalinfo <b>d</b> - Day of the month as digits; no leading zero for single-digit days.<br/>
+             * <b>dd</b> - Day of the month as digits; leading zero for single-digit days.
              * @alias column.format
              * @type string
-             * @default undefined
+             * @default 'mm/dd/yyyy'
              * @example sample <!-- grid -->
              * <table id="grid"></table>
-             * <script src="http://stevenlevithan.com/assets/misc/date.format.js"></script>
-             * <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.0/moment.min.js"></script>
              * <script>
              *     $('#grid').grid({
              *         dataSource: '/Players/Get',
@@ -530,16 +528,12 @@ gj.grid.config = {
              *             { field: 'ID', width: 56 },
              *             { field: 'Name' },
              *             { field: 'DateOfBirth', title: 'Date 1', type: 'date', format: 'HH:MM:ss mm/dd/yyyy' },
-             *             { field: 'DateOfBirth', title: 'Date 2', 
-             *               renderer: function (value) { 
-             *                   return moment(value).format('MM-DD-YYYY');
-             *               }
-             *             }
+             *             { field: 'DateOfBirth', title: 'Date 2', type: 'date' }
              *         ]
              *     });
              * </script>
              */
-            format: undefined,
+            format: 'mm/dd/yyyy',
 
             /** Number of decimal digits after the decimal point.
              * @alias column.decimalDigits

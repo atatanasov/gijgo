@@ -473,27 +473,11 @@ gj.grid.methods = {
     },
 
     formatText: function (text, column) {
-        var dt, day, month, parts;
         if (text && column.type) {
             switch (column.type) {
-            case 'date':
-                if (text.indexOf('/Date(') > -1) {
-                    dt = new Date(parseInt(text.substr(6), 10));
-                } else {
-                    parts = text.match(/(\d+)/g);
-                    // new Date(year, month, date, hours, minutes, seconds);
-                    dt = new Date(parts[0], parts[1] - 1, parts[2], parts[3], parts[4], parts[5]); // months are 0-based
-                }
-
-                if (dt.format && column.format) {
-                    text = dt.format(column.format); //using 3rd party plugin "Date Format 1.2.3 by (c) 2007-2009 Steven Levithan <stevenlevithan.com>"
-                } else {
-                    day = dt.getDate().toString().length === 2 ? dt.getDate() : '0' + dt.getDate();
-                    month = (dt.getMonth() + 1).toString();
-                    month = month.length === 2 ? month : '0' + month;
-                    text = month + '/' + day + '/' + dt.getFullYear();
-                }
-                break;
+                case 'date':
+                    text = gj.core.formatDate(gj.core.parseDate(text, column.format), column.format);
+                    break;
             }
         } else {
             text = (typeof (text) === 'undefined' || text === null) ? '' : text.toString();

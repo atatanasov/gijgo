@@ -210,7 +210,7 @@ gj.documentManager = {
         } else if (!gj.documentManager.events[eventName][widgetId]) {
             gj.documentManager.events[eventName].push({ widgetId: widgetId, callback: callback });
         } else {
-            throw "Event " + eventName + " for widget with guid='" + widgetId + "' is already attached.";
+            throw 'Event ' + eventName + ' for widget with guid="' + widgetId + '" is already attached.';
         }
     },
 
@@ -241,6 +241,135 @@ gj.documentManager = {
         if (!success) {
             throw 'The "' + eventName + '" for widget with guid="' + widgetId + '" can\'t be removed.';
         }
+    }
+};
+
+/**
+  * @widget Core
+  * @plugin Base
+  */
+gj.core = {
+    /** 
+     * @method
+     * @example String.1
+     * <div id="date"></div>
+     * <script>
+     *     $('#date').text(gj.core.parseDate('02/03/17', 'mm/dd/yy'));
+     * </script>
+     * @example String.2
+     * <div id="date"></div>
+     * <script>
+     *     $('#date').text(gj.core.parseDate('2017 2.3', 'yyyy m.d'));
+     * </script>
+     * @example ASP.NET.JSON.Date
+     * <div id="date"></div>
+     * <script>
+     *     $('#date').text(gj.core.parseDate("\/Date(349653600000)\/"));
+     * </script>
+     * @example UNIX.Timestamp
+     * <div id="date"></div>
+     * <script>
+     *     $('#date').text(gj.core.parseDate(349653600000));
+     * </script>
+
+     */
+    parseDate: function (value, format) {
+        var i, date, month, year, dateParts, formatParts, result;
+
+        if (/^\d+$/.test(value)) {
+            result = new Date(value);
+        } else if (value.indexOf('/Date(') > -1) {
+            result = new Date(parseInt(value.substr(6), 10));
+        } else {
+            dateParts = value.split(/[\s,-\.//\:]+/);
+            formatParts = format.split(/[\s,-\.//\:]+/);
+            for (i = 0; i < formatParts.length; i++) {
+                if (['d', 'dd'].indexOf(formatParts[i]) > -1) {
+                    date = parseInt(dateParts[i], 10);
+                } else if (['m', 'mm'].indexOf(formatParts[i]) > -1) {
+                    month = parseInt(dateParts[i], 10);
+                } else if (['yy', 'yyyy'].indexOf(formatParts[i]) > -1) {
+                    year = parseInt(dateParts[i], 10);
+                    if (formatParts[i] === 'yy') {
+                        year += 2000;
+                    }
+                }
+            }
+            result = new Date(year, month - 1, date);
+        }
+
+        return result;
+    },
+
+    /** 
+     * @method
+     * @example Sample.1
+     * <div id="date"></div>
+     * <script>
+     *     $('#date').text(gj.core.formatDate(new Date(2017, 1, 3), 'mm/dd/yy'));
+     * </script>
+     * @example Sample.2
+     * <div id="date"></div>
+     * <script>
+     *     $('#date').text(gj.core.formatDate(new Date(2017, 1, 3), 'yyyy m.d'));
+     * </script>
+     */
+    formatDate: function (date, format) {
+        var result = '', separator,
+            formatParts = format.split(/[\s,-\.//\:]+/),
+            separators = format.replace(/[sdmyHDMY]/g, ''),
+            pad = function (val, len) {
+                val = String(val);
+                len = len || 2;
+                while (val.length < len) {
+                    val = '0' + val;
+                }
+                return val;
+            };
+
+        for (i = 0; i < formatParts.length; i++) {
+            separator = (separators[i] || '');
+            switch (formatParts[i]) {
+                case 's':
+                    result += date.getSeconds() + separator;
+                    break;
+                case 'ss':
+                    result += pad(date.getSeconds()) + separator;
+                    break;
+                case 'M':
+                    result += date.getMinutes() + separator;
+                    break;
+                case 'MM':
+                    result += pad(date.getMinutes()) + separator;
+                    break;
+                case 'H':
+                    result += date.getHours() + separator;
+                    break;
+                case 'HH':
+                    result += pad(date.getHours()) + separator;
+                    break;
+                case 'd':
+                    result += date.getDate() + separator;
+                    break;
+                case 'dd' :
+                    result += pad(date.getDate()) + separator;
+                    break;
+                case 'm' :
+                    result += (date.getMonth() + 1) + separator;
+                    break;
+                case 'mm' :
+                    result += pad(date.getMonth() + 1) + separator;
+                    break;
+                case 'yy' :
+                    result += date.getFullYear().toString().substr(2) + separator;
+                    break;
+                case 'yyyy':
+                    result += date.getFullYear() + separator;
+                    break;
+            }
+        }
+
+        return result;
     }
 };
 if (typeof (gj.dialog) === 'undefined') {
@@ -2453,15 +2582,13 @@ gj.grid.config = {
             events: undefined,
 
             /** Format the date when the type of the column is date.
-             * This configuration setting is going to work only if you have implementation of format method for the Date object.
-             * You can use external libraries like http://blog.stevenlevithan.com/archives/date-time-format for that.
+             * @additionalinfo <b>d</b> - Day of the month as digits; no leading zero for single-digit days.<br/>
+             * <b>dd</b> - Day of the month as digits; leading zero for single-digit days.
              * @alias column.format
              * @type string
-             * @default undefined
+             * @default 'mm/dd/yyyy'
              * @example sample <!-- grid -->
              * <table id="grid"></table>
-             * <script src="http://stevenlevithan.com/assets/misc/date.format.js"></script>
-             * <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.0/moment.min.js"></script>
              * <script>
              *     $('#grid').grid({
              *         dataSource: '/Players/Get',
@@ -2469,16 +2596,12 @@ gj.grid.config = {
              *             { field: 'ID', width: 56 },
              *             { field: 'Name' },
              *             { field: 'DateOfBirth', title: 'Date 1', type: 'date', format: 'HH:MM:ss mm/dd/yyyy' },
-             *             { field: 'DateOfBirth', title: 'Date 2', 
-             *               renderer: function (value) { 
-             *                   return moment(value).format('MM-DD-YYYY');
-             *               }
-             *             }
+             *             { field: 'DateOfBirth', title: 'Date 2', type: 'date' }
              *         ]
              *     });
              * </script>
              */
-            format: undefined,
+            format: 'mm/dd/yyyy',
 
             /** Number of decimal digits after the decimal point.
              * @alias column.decimalDigits
@@ -3822,27 +3945,11 @@ gj.grid.methods = {
     },
 
     formatText: function (text, column) {
-        var dt, day, month, parts;
         if (text && column.type) {
             switch (column.type) {
-            case 'date':
-                if (text.indexOf('/Date(') > -1) {
-                    dt = new Date(parseInt(text.substr(6), 10));
-                } else {
-                    parts = text.match(/(\d+)/g);
-                    // new Date(year, month, date, hours, minutes, seconds);
-                    dt = new Date(parts[0], parts[1] - 1, parts[2], parts[3], parts[4], parts[5]); // months are 0-based
-                }
-
-                if (dt.format && column.format) {
-                    text = dt.format(column.format); //using 3rd party plugin "Date Format 1.2.3 by (c) 2007-2009 Steven Levithan <stevenlevithan.com>"
-                } else {
-                    day = dt.getDate().toString().length === 2 ? dt.getDate() : '0' + dt.getDate();
-                    month = (dt.getMonth() + 1).toString();
-                    month = month.length === 2 ? month : '0' + month;
-                    text = month + '/' + day + '/' + dt.getFullYear();
-                }
-                break;
+                case 'date':
+                    text = gj.core.formatDate(gj.core.parseDate(text, column.format), column.format);
+                    break;
             }
         } else {
             text = (typeof (text) === 'undefined' || text === null) ? '' : text.toString();
@@ -5333,7 +5440,6 @@ gj.grid.plugins.inlineEditing.config = {
              *     });
              * </script>
              * @example Date.And.Dropdown <!-- materialicons, grid, datepicker, dropdown, checkbox -->
-             * <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.0/moment.min.js"></script>
              * <table id="grid"></table>
              * <script>
              *     $('#grid').grid({
@@ -5341,11 +5447,7 @@ gj.grid.plugins.inlineEditing.config = {
              *         columns: [
              *             { field: 'Name', editor: true },
              *             { field: 'Nationality', editor: {}, type: 'dropdown' },
-             *             { field: 'DateOfBirth', editor: {}, type: 'date', format: 'MM/DD/YYYY',
-             *               renderer: function (value, record, column) {
-             *                   return moment(value, column.format).format(column.format);
-             *               }
-             *             },
+             *             { field: 'DateOfBirth', editor: {}, type: 'date', format: 'mm/dd/yyyy' },
              *             { field: 'IsActive', title: 'Active?', type:'checkbox', editor: true, mode: 'edit', width: 80, align: 'center' }
              *         ]
              *     });
@@ -11582,26 +11684,14 @@ gj.datepicker.config = {
         maxDate: undefined,
 
         /** Specifies the format, which is used to format the value of the DatePicker displayed in the input.
-         * @additionalinfo If the format is not define we use <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toLocaleDateString" target="_blank">Date.prototype.toLocaleDateString()</a> in order to format the date.
-         * @type Function
-         * @default undefined
-         * @example Moment.JS <!-- materialicons, datepicker -->
-         * <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js" integrity="sha256-1hjUhpc44NwiNg8OwMu2QzJXhD8kcj+sJA3aCQZoUjg=" crossorigin="anonymous"></script>
-         * <input id="datepicker" />
+         * @additionalinfo 
+         * @type String
+         * @default 'mm/dd/yyyy'
+         * @example Sample <!-- materialicons, datepicker -->
+         * <input id="datepicker" value="2017-25-07" />
          * <script>
          *     var datepicker = $('#datepicker').datepicker({
-         *         format: function(date) {
-         *             return moment(date).format('YYYY-MM-DD');
-         *         }
-         *     });
-         * </script>
-         * @example Custom <!-- materialicons, datepicker -->
-         * <input id="datepicker" />
-         * <script>
-         *     var datepicker = $('#datepicker').datepicker({
-         *         format: function(date) {
-         *             return date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
-         *         }
+         *         format: 'yyyy-dd-mm'
          *     });
          * </script>
          */
@@ -11763,17 +11853,6 @@ gj.datepicker.methods = {
 
         $datepicker.addClass(data.style.input).attr('role', 'input');
 
-        //$rightIcon.on('mousedown', function (e) {
-        //    ctrlClick = true;
-        //});
-
-        //$datepicker.on('blur', function (e) {
-        //    if (ctrlClick) {
-        //        e.stopImmediatePropagation();
-        //        ctrlClick = false;
-        //    }
-        //});
-
         $rightIcon.on('click', function (e) {
             if ($('body').children('[role="calendar"][guid="' + $datepicker.attr('data-guid') + '"]').is(':visible')) {
                 gj.datepicker.methods.hide($datepicker);
@@ -11796,7 +11875,7 @@ gj.datepicker.methods = {
             $table = $('<table/>'),
             $thead = $('<thead/>');
         
-        date = new Date(value);
+        date = gj.core.parseDate(value, data.format);
         if (date && isNaN(date.getTime())) {
             date = new Date();
         } else {
@@ -12015,7 +12094,7 @@ gj.datepicker.methods = {
             var date, value,
                 data = $datepicker.data();
             date = new Date(year + '-' + (month + 1) + '-' + day);
-            value = data.format ? data.format(date) : date.toLocaleDateString();
+            value = gj.core.formatDate(date, data.format);
             $datepicker.val(value);
             gj.datepicker.events.change($datepicker);
             $datepicker.attr('day', year + '-' + (month + 1) + '-' + day);
