@@ -88,7 +88,6 @@ gj.grid.methods = {
         if ('checkbox' === data.selectionMethod) {
             data.columns.splice(gj.grid.methods.getColumnPositionNotInRole($grid), 0, {
                 title: '',
-                field: data.primaryKey || '',
                 width: data.defaultCheckBoxColumnWidth,
                 align: 'center',
                 type: 'checkbox',
@@ -430,7 +429,7 @@ gj.grid.methods = {
 
         if ('checkbox' === column.type && gj.checkbox) {
             if ('create' === mode) {
-                $checkbox = $('<input type="checkbox" />').val(id).prop('checked', (record[column.field] && column.role !== 'selectRow' ? true : false));
+                $checkbox = $('<input type="checkbox" />').val(id).prop('checked', (record[column.field] ? true : false));
                 column.role && $checkbox.attr('data-role', column.role);
                 $displayEl.append($checkbox);
                 $checkbox.checkbox({ uiLibrary: $grid.data('uiLibrary') });
@@ -603,12 +602,14 @@ gj.grid.methods = {
     },
 
     getSelections: function ($grid) {
-        var result = [], position, record, $selections = gj.grid.methods.getSelectedRows($grid);
+        var result = [], position, record,
+            data = $grid.data(),
+            $selections = gj.grid.methods.getSelectedRows($grid);
         if (0 < $selections.length) {
             $selections.each(function () {
                 position = $(this).data('position');
                 record = $grid.get(position);
-                result.push(gj.grid.methods.getId(record, $grid.data().primaryKey, position));
+                result.push(gj.grid.methods.getId(record, data.primaryKey, position));
             });
         }
         return result;

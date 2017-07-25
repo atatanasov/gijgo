@@ -220,24 +220,54 @@ gj.grid.widget = function ($grid, jsConfig) {
 
     /**
      * Return an array with the ids of the selected record.
+     * @additionalinfo Specify primaryKey if you want to use field from the dataSource as identificator for selection.
      * @method
      * @return array
-     * @example sample <!-- materialicons, checkbox, grid -->
-     * <button id="btnShowSelection">Show Selections</button>
+     * @example With.Primary.Ket <!-- materialicons, checkbox, grid, dropdown -->
+     * <button id="btnShowSelection" class="gj-button-md">Show Selections</button>
      * <br/><br/>
      * <table id="grid"></table>
      * <script>
-     *     var grid = $('#grid').grid({
-     *         dataSource: '/Players/Get',
-     *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
+     *     var grid, data = [
+     *         { 'ID': 101, 'Name': 'Hristo Stoichkov', 'PlaceOfBirth': 'Plovdiv, Bulgaria' },
+     *         { 'ID': 102, 'Name': 'Ronaldo Luis Nazario de Lima', 'PlaceOfBirth': 'Rio de Janeiro, Brazil' },
+     *         { 'ID': 103, 'Name': 'David Platt', 'PlaceOfBirth': 'Chadderton, Lancashire, England' },
+     *         { 'ID': 104, 'Name': 'Manuel Neuer', 'PlaceOfBirth': 'Gelsenkirchen, West Germany' }
+     *     ];
+     *     grid = $('#grid').grid({
+     *         dataSource: data,
+     *         primaryKey: 'ID',
+     *         columns: [ { field: 'ID', width: 70 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
      *         selectionMethod: 'checkbox',
-     *         selectionType: 'multiple'
+     *         selectionType: 'multiple',
+     *         pager: { limit: 2, sizes: [2, 5, 10] }
      *     });
      *     $('#btnShowSelection').on('click', function () {
      *         var selections = grid.getSelections();
-     *         $.each(selections, function() {
-     *             alert(this);
-     *         });
+     *         alert(selections.join());
+     *     });
+     * </script>
+     * @example Without.Primary.Ket <!-- materialicons, checkbox, grid, dropdown -->
+     * <button id="btnShowSelection" class="gj-button-md">Show Selections</button>
+     * <br/><br/>
+     * <table id="grid"></table>
+     * <script>
+     *     var grid, data = [
+     *         { 'ID': 101, 'Name': 'Hristo Stoichkov', 'PlaceOfBirth': 'Plovdiv, Bulgaria' },
+     *         { 'ID': 102, 'Name': 'Ronaldo Luis Nazario de Lima', 'PlaceOfBirth': 'Rio de Janeiro, Brazil' },
+     *         { 'ID': 103, 'Name': 'David Platt', 'PlaceOfBirth': 'Chadderton, Lancashire, England' },
+     *         { 'ID': 104, 'Name': 'Manuel Neuer', 'PlaceOfBirth': 'Gelsenkirchen, West Germany' }
+     *     ];
+     *     grid = $('#grid').grid({
+     *         dataSource: data,
+     *         columns: [ { field: 'ID', width: 70 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
+     *         selectionMethod: 'checkbox',
+     *         selectionType: 'multiple',
+     *         pager: { limit: 2, sizes: [2, 5, 10] }
+     *     });
+     *     $('#btnShowSelection').on('click', function () {
+     *         var selections = grid.getSelections();
+     *         alert(selections.join());
      *     });
      * </script>
      */

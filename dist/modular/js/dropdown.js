@@ -37,7 +37,7 @@ gj.dropdown.config = {
 
         style: {
             wrapper: 'gj-dropdown gj-dropdown-md gj-unselectable',
-            list: 'gj-list gj-list-md',
+            list: 'gj-list gj-list-md gj-dropdown-list-md',
             active: 'gj-list-md-active'
         }
     },
@@ -47,7 +47,7 @@ gj.dropdown.config = {
         style: {
             wrapper: 'gj-dropdown gj-dropdown-bootstrap gj-dropdown-bootstrap-3 gj-unselectable',
             presenter: 'btn btn-default',
-            list: 'gj-list gj-list-bootstrap list-group',
+            list: 'gj-list gj-list-bootstrap gj-dropdown-list-bootstrap list-group',
             item: 'list-group-item',
             active: 'active'
         },
@@ -60,7 +60,7 @@ gj.dropdown.config = {
         style: {
             wrapper: 'gj-dropdown gj-dropdown-bootstrap gj-dropdown-bootstrap-4 gj-unselectable',
             presenter: 'btn btn-secondary',
-            list: 'gj-list gj-list-bootstrap list-group',
+            list: 'gj-list gj-list-bootstrap gj-dropdown-list-bootstrap list-group',
             item: 'list-group-item',
             active: 'active'
         },
@@ -108,7 +108,7 @@ gj.dropdown.methods = {
             $display = $('<span role="display"></span>'),
             $expander = $('<span role="expander">' + data.icons.dropdown + '</span>').addClass(data.style.expander),
             $presenter = $('<button role="presenter"></button>').addClass(data.style.presenter),
-            $list = $('<ul role="list" class="' + data.style.list + '"></ul>');
+            $list = $('<ul role="list" class="' + data.style.list + '"></ul>').attr('guid', $dropdown.attr('data-guid'));
 
         if ($wrapper.length === 0) {
             $wrapper = $('<div role="wrapper" />').addClass(data.style.wrapper); // The css class needs to be added before the wrapping, otherwise doesn't work.
@@ -118,13 +118,13 @@ gj.dropdown.methods = {
         }
 
         $presenter.on('click', function (e) {
+            var offset;
             if ($list.is(':visible')) {
                 $list.hide();
             } else {
-                if (data.optionsDisplay === 'standard') {
-                    $list.css('top', $presenter.outerHeight() + 2);
-                }
+                gj.dropdown.methods.setListPosition($presenter, $list, data);
                 $list.show();
+                gj.dropdown.methods.setListPosition($presenter, $list, data);
             }
         });
         $presenter.on('blur', function (e) {
@@ -136,10 +136,20 @@ gj.dropdown.methods = {
 
         $dropdown.hide();
         $dropdown.after($presenter);
-        $presenter.after($list);
+        $('body').append($list);
         $list.hide();
 
         $dropdown.reload();
+    },
+
+    setListPosition: function ($presenter, $list, data) {
+        var offset = $presenter.offset();
+        $list.css('left', offset.left).css('width', $presenter.outerWidth(true));
+        if (data.optionsDisplay === 'standard') {
+            $list.css('top', offset.top + $presenter.outerHeight(true) + 2);
+        } else {
+            $list.css('top', offset.top);
+        }
     },
 
     useHtmlDataSource: function ($dropdown, data) {
@@ -165,7 +175,7 @@ gj.dropdown.methods = {
             selected = false,
             data = $dropdown.data(),
             $parent = $dropdown.parent(),
-            $list = $parent.children('[role="list"]'),
+            $list = $('body').children('[role="list"][guid="' + $dropdown.attr('data-guid') + '"]'),
             $presenter = $parent.children('[role="presenter"]'),
             $expander = $parent.find('[role="expander"]');
 
@@ -208,7 +218,7 @@ gj.dropdown.methods = {
 
     select: function ($dropdown, value) {
         var data = $dropdown.data(),
-            $list = $dropdown.parent().children('ul[role="list"]'),
+            $list = $('body').children('[role="list"][guid="' + $dropdown.attr('data-guid') + '"]'),
             $item = $list.children('li[value="' + value + '"]'),
             record = gj.dropdown.methods.getRecordByValue($dropdown, value);
         $list.children('li').removeClass(data.style.active);

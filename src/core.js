@@ -306,11 +306,21 @@ gj.core = {
      * <script>
      *     $('#date').text(gj.core.formatDate(new Date(2017, 1, 3), 'yyyy m.d'));
      * </script>
+     * @example Sample.3
+     * <div id="date"></div>
+     * <script>
+     *     $('#date').text(gj.core.formatDate(new Date(2017, 1, 3, 20, 43, 53), 'hh:MM:ss tt mm/dd/yyyy'));
+     * </script>
+     * @example Sample.4
+     * <div id="date"></div>
+     * <script>
+     *     $('#date').text(gj.core.formatDate(new Date(2017, 1, 3, 20, 43, 53), 'hh:MM TT'));
+     * </script>
      */
     formatDate: function (date, format) {
-        var result = '', separator,
+        var result = '', separator, tmp,
             formatParts = format.split(/[\s,-\.//\:]+/),
-            separators = format.replace(/[sdmyHDMY]/g, ''),
+            separators = format.replace(/[shtdmyHTDMY]/g, ''),
             pad = function (val, len) {
                 val = String(val);
                 len = len || 2;
@@ -340,6 +350,20 @@ gj.core = {
                     break;
                 case 'HH':
                     result += pad(date.getHours()) + separator;
+                    break;
+                case 'h':
+                    tmp = date.getHours() > 12 ? date.getHours() % 12 : date.getHours();
+                    result += tmp + separator;
+                    break;
+                case 'hh':
+                    tmp = date.getHours() > 12 ? date.getHours() % 12 : date.getHours();
+                    result += pad(tmp) + separator;
+                    break;
+                case 'tt':
+                    result += (date.getHours() >= 12 ? 'pm' : 'am') + separator;
+                    break;
+                case 'TT':
+                    result += (date.getHours() >= 12 ? 'PM' : 'AM') + separator;
                     break;
                 case 'd':
                     result += date.getDate() + separator;

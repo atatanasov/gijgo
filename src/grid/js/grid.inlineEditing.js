@@ -66,12 +66,13 @@ gj.grid.plugins.inlineEditing.config = {
              * @example Date.And.Dropdown <!-- materialicons, grid, datepicker, dropdown, checkbox -->
              * <table id="grid"></table>
              * <script>
+             *     var countries = [ { value: "Bulgaria", text: "Bulgaria" }, { value: "Brazil", text: "Brazil" }, { value: "England", text: "England" }, { value: "Germany", text: "Germany" } ];
              *     $('#grid').grid({
              *         dataSource: '/Players/Get',
              *         columns: [
              *             { field: 'Name', editor: true },
-             *             { field: 'Nationality', editor: {}, type: 'dropdown' },
-             *             { field: 'DateOfBirth', editor: {}, type: 'date', format: 'mm/dd/yyyy' },
+             *             { field: 'Nationality', editor: {}, type: 'dropdown', editor: { dataSource: countries } },
+             *             { field: 'DateOfBirth', editor: {}, type: 'date' },
              *             { field: 'IsActive', title: 'Active?', type:'checkbox', editor: true, mode: 'edit', width: 80, align: 'center' }
              *         ]
              *     });
@@ -277,7 +278,7 @@ gj.grid.plugins.inlineEditing.private = {
     },
 
     editMode: function ($grid, $cell, column, record) {
-        var $displayContainer, $editorContainer, $editorField, value, data = $grid.data();
+        var $displayContainer, $editorContainer, $editorField, value, config, data = $grid.data();
         if ($cell.attr('data-mode') !== 'edit' && column.editor) {
             gj.grid.plugins.inlineEditing.private.updateOtherCells($grid, column.mode);
             $displayContainer = $cell.find('div[data-role="display"]').hide();
@@ -302,6 +303,13 @@ gj.grid.plugins.inlineEditing.private = {
                         $editorField = $('<input type="text" value="' + $displayContainer.html() + '" width="100%"/>');
                         $editorContainer.append($editorField);
                         $editorField.datepicker({ uiLibrary: data.uiLibrary });
+                    } else if ('dropdown' === column.type) {
+                        $editorField = $('<select type="text" width="100%"/>');
+                        $editorContainer.append($editorField);
+                        config = typeof (column.editor) === "object" ? column.editor : {};
+                        config.uiLibrary = data.uiLibrary;
+                        $editorField.dropdown(config);
+                        $editorField.val($displayContainer.html());
                     } else {
                         $editorContainer.append('<input type="text" value="' + value + '" class="gj-width-full"/>');
                     }

@@ -98,9 +98,7 @@ gj.datepicker.methods = {
     initialize: function ($datepicker) {
         var data = $datepicker.data(),
             $wrapper = $datepicker.parent('div[role="wrapper"]'),
-            $rightIcon = $(data.icons.rightIcon).attr('role', 'right-icon'),
-            ctrlClick = false,
-            $calendar;
+            $rightIcon = $(data.icons.rightIcon).attr('role', 'right-icon');
 
         if ($wrapper.length === 0) {
             $wrapper = $('<div role="wrapper" />').addClass(data.style.wrapper); // The css class needs to be added before the wrapping, otherwise doesn't work.

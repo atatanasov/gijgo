@@ -112,7 +112,12 @@ gj.datepicker.config = {
         maxDate: undefined,
 
         /** Specifies the format, which is used to format the value of the DatePicker displayed in the input.
-         * @additionalinfo 
+         * @additionalinfo <b>d</b> - Day of the month as digits; no leading zero for single-digit days.<br/>
+         * <b>dd</b> - Day of the month as digits; leading zero for single-digit days.<br/>
+         * <b>m</b> - Month as digits; no leading zero for single-digit months.<br/>
+         * <b>mm</b> - Month as digits; leading zero for single-digit months.<br/>
+         * <b>yy</b> - Year as last two digits; leading zero for years less than 10.<br/>
+         * <b>yyyy</b> - Year represented by four digits.<br/>
          * @type String
          * @default 'mm/dd/yyyy'
          * @example Sample <!-- materialicons, datepicker -->
@@ -263,9 +268,7 @@ gj.datepicker.methods = {
     initialize: function ($datepicker) {
         var data = $datepicker.data(),
             $wrapper = $datepicker.parent('div[role="wrapper"]'),
-            $rightIcon = $(data.icons.rightIcon).attr('role', 'right-icon'),
-            ctrlClick = false,
-            $calendar;
+            $rightIcon = $(data.icons.rightIcon).attr('role', 'right-icon');
 
         if ($wrapper.length === 0) {
             $wrapper = $('<div role="wrapper" />').addClass(data.style.wrapper); // The css class needs to be added before the wrapping, otherwise doesn't work.

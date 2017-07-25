@@ -1243,10 +1243,6 @@ ul.gj-list-bootstrap li [data-role="expander"].gj-tree-material-icons-expander {
     position: relative;
 }
 
-.gj-dropdown ul[role="list"] {
-    margin: 0px;
-}
-
 .gj-dropdown [role="presenter"] {
     display: table;
     cursor: pointer;
@@ -1289,15 +1285,16 @@ ul.gj-list-bootstrap li [data-role="expander"].gj-tree-material-icons-expander {
     height: 24px;
 }
 
-.gj-dropdown-md ul[role="list"] {
+.gj-dropdown-list-md {
     position: absolute;
     top: 0px;
     left: 0px;
     background-color: #f5f5f5;
     color: #000;
+    margin: 0px;
 }
 
-.gj-dropdown-md ul[role="list"] li:hover, .gj-dropdown-md ul[role="list"] li.active {
+.gj-dropdown-list-md li:hover, .gj-dropdown-list-md li.active {
     background-color: #eee;
 }
 
@@ -1327,10 +1324,11 @@ ul.gj-list-bootstrap li [data-role="expander"].gj-tree-material-icons-expander {
     position: absolute;
 }
 
-.gj-dropdown-bootstrap ul[role="list"] {
+.gj-dropdown-list-bootstrap {
     position: absolute;
     top: 32px;
     left: 0px;
+    margin: 0px;
 }
 .gj-datepicker {
     position: relative;

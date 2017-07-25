@@ -313,11 +313,21 @@ gj.core = {
      * <script>
      *     $('#date').text(gj.core.formatDate(new Date(2017, 1, 3), 'yyyy m.d'));
      * </script>
+     * @example Sample.3
+     * <div id="date"></div>
+     * <script>
+     *     $('#date').text(gj.core.formatDate(new Date(2017, 1, 3, 20, 43, 53), 'hh:MM:ss tt mm/dd/yyyy'));
+     * </script>
+     * @example Sample.4
+     * <div id="date"></div>
+     * <script>
+     *     $('#date').text(gj.core.formatDate(new Date(2017, 1, 3, 20, 43, 53), 'hh:MM TT'));
+     * </script>
      */
     formatDate: function (date, format) {
-        var result = '', separator,
+        var result = '', separator, tmp,
             formatParts = format.split(/[\s,-\.//\:]+/),
-            separators = format.replace(/[sdmyHDMY]/g, ''),
+            separators = format.replace(/[shtdmyHTDMY]/g, ''),
             pad = function (val, len) {
                 val = String(val);
                 len = len || 2;
@@ -347,6 +357,20 @@ gj.core = {
                     break;
                 case 'HH':
                     result += pad(date.getHours()) + separator;
+                    break;
+                case 'h':
+                    tmp = date.getHours() > 12 ? date.getHours() % 12 : date.getHours();
+                    result += tmp + separator;
+                    break;
+                case 'hh':
+                    tmp = date.getHours() > 12 ? date.getHours() % 12 : date.getHours();
+                    result += pad(tmp) + separator;
+                    break;
+                case 'tt':
+                    result += (date.getHours() >= 12 ? 'pm' : 'am') + separator;
+                    break;
+                case 'TT':
+                    result += (date.getHours() >= 12 ? 'PM' : 'AM') + separator;
                     break;
                 case 'd':
                     result += date.getDate() + separator;
@@ -2583,7 +2607,21 @@ gj.grid.config = {
 
             /** Format the date when the type of the column is date.
              * @additionalinfo <b>d</b> - Day of the month as digits; no leading zero for single-digit days.<br/>
-             * <b>dd</b> - Day of the month as digits; leading zero for single-digit days.
+             * <b>dd</b> - Day of the month as digits; leading zero for single-digit days.<br/>
+             * <b>m</b> - Month as digits; no leading zero for single-digit months.<br/>
+             * <b>mm</b> - Month as digits; leading zero for single-digit months.<br/>
+             * <b>yy</b> - Year as last two digits; leading zero for years less than 10.<br/>
+             * <b>yyyy</b> - Year represented by four digits.<br/>
+             * <b>s</b> - Seconds; no leading zero for single-digit seconds.<br/>
+             * <b>ss</b> - Seconds; leading zero for single-digit seconds.<br/>
+             * <b>M</b> - Minutes; no leading zero for single-digit minutes. Uppercase MM to avoid conflict with months.<br/>
+             * <b>MM</b> - Minutes; leading zero for single-digit minutes. Uppercase MM to avoid conflict with months.<br/>
+             * <b>H</b> - Hours; no leading zero for single-digit hours (24-hour clock).<br/>
+             * <b>HH</b> - Hours; leading zero for single-digit hours (24-hour clock).<br/>
+             * <b>h</b> - Hours; no leading zero for single-digit hours (12-hour clock).<br/>
+             * <b>hh</b> - Hours; leading zero for single-digit hours (12-hour clock).<br/>
+             * <b>tt</b> - Lowercase, two-character time marker string: am or pm.<br/>
+             * <b>TT</b> - Uppercase, two-character time marker string: AM or PM.<br/>
              * @alias column.format
              * @type string
              * @default 'mm/dd/yyyy'
@@ -3560,7 +3598,6 @@ gj.grid.methods = {
         if ('checkbox' === data.selectionMethod) {
             data.columns.splice(gj.grid.methods.getColumnPositionNotInRole($grid), 0, {
                 title: '',
-                field: data.primaryKey || '',
                 width: data.defaultCheckBoxColumnWidth,
                 align: 'center',
                 type: 'checkbox',
@@ -3902,7 +3939,7 @@ gj.grid.methods = {
 
         if ('checkbox' === column.type && gj.checkbox) {
             if ('create' === mode) {
-                $checkbox = $('<input type="checkbox" />').val(id).prop('checked', (record[column.field] && column.role !== 'selectRow' ? true : false));
+                $checkbox = $('<input type="checkbox" />').val(id).prop('checked', (record[column.field] ? true : false));
                 column.role && $checkbox.attr('data-role', column.role);
                 $displayEl.append($checkbox);
                 $checkbox.checkbox({ uiLibrary: $grid.data('uiLibrary') });
@@ -4075,12 +4112,14 @@ gj.grid.methods = {
     },
 
     getSelections: function ($grid) {
-        var result = [], position, record, $selections = gj.grid.methods.getSelectedRows($grid);
+        var result = [], position, record,
+            data = $grid.data(),
+            $selections = gj.grid.methods.getSelectedRows($grid);
         if (0 < $selections.length) {
             $selections.each(function () {
                 position = $(this).data('position');
                 record = $grid.get(position);
-                result.push(gj.grid.methods.getId(record, $grid.data().primaryKey, position));
+                result.push(gj.grid.methods.getId(record, data.primaryKey, position));
             });
         }
         return result;
@@ -4631,24 +4670,54 @@ gj.grid.widget = function ($grid, jsConfig) {
 
     /**
      * Return an array with the ids of the selected record.
+     * @additionalinfo Specify primaryKey if you want to use field from the dataSource as identificator for selection.
      * @method
      * @return array
-     * @example sample <!-- materialicons, checkbox, grid -->
-     * <button id="btnShowSelection">Show Selections</button>
+     * @example With.Primary.Ket <!-- materialicons, checkbox, grid, dropdown -->
+     * <button id="btnShowSelection" class="gj-button-md">Show Selections</button>
      * <br/><br/>
      * <table id="grid"></table>
      * <script>
-     *     var grid = $('#grid').grid({
-     *         dataSource: '/Players/Get',
-     *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
+     *     var grid, data = [
+     *         { 'ID': 101, 'Name': 'Hristo Stoichkov', 'PlaceOfBirth': 'Plovdiv, Bulgaria' },
+     *         { 'ID': 102, 'Name': 'Ronaldo Luis Nazario de Lima', 'PlaceOfBirth': 'Rio de Janeiro, Brazil' },
+     *         { 'ID': 103, 'Name': 'David Platt', 'PlaceOfBirth': 'Chadderton, Lancashire, England' },
+     *         { 'ID': 104, 'Name': 'Manuel Neuer', 'PlaceOfBirth': 'Gelsenkirchen, West Germany' }
+     *     ];
+     *     grid = $('#grid').grid({
+     *         dataSource: data,
+     *         primaryKey: 'ID',
+     *         columns: [ { field: 'ID', width: 70 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
      *         selectionMethod: 'checkbox',
-     *         selectionType: 'multiple'
+     *         selectionType: 'multiple',
+     *         pager: { limit: 2, sizes: [2, 5, 10] }
      *     });
      *     $('#btnShowSelection').on('click', function () {
      *         var selections = grid.getSelections();
-     *         $.each(selections, function() {
-     *             alert(this);
-     *         });
+     *         alert(selections.join());
+     *     });
+     * </script>
+     * @example Without.Primary.Ket <!-- materialicons, checkbox, grid, dropdown -->
+     * <button id="btnShowSelection" class="gj-button-md">Show Selections</button>
+     * <br/><br/>
+     * <table id="grid"></table>
+     * <script>
+     *     var grid, data = [
+     *         { 'ID': 101, 'Name': 'Hristo Stoichkov', 'PlaceOfBirth': 'Plovdiv, Bulgaria' },
+     *         { 'ID': 102, 'Name': 'Ronaldo Luis Nazario de Lima', 'PlaceOfBirth': 'Rio de Janeiro, Brazil' },
+     *         { 'ID': 103, 'Name': 'David Platt', 'PlaceOfBirth': 'Chadderton, Lancashire, England' },
+     *         { 'ID': 104, 'Name': 'Manuel Neuer', 'PlaceOfBirth': 'Gelsenkirchen, West Germany' }
+     *     ];
+     *     grid = $('#grid').grid({
+     *         dataSource: data,
+     *         columns: [ { field: 'ID', width: 70 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
+     *         selectionMethod: 'checkbox',
+     *         selectionType: 'multiple',
+     *         pager: { limit: 2, sizes: [2, 5, 10] }
+     *     });
+     *     $('#btnShowSelection').on('click', function () {
+     *         var selections = grid.getSelections();
+     *         alert(selections.join());
      *     });
      * </script>
      */
@@ -5442,12 +5511,13 @@ gj.grid.plugins.inlineEditing.config = {
              * @example Date.And.Dropdown <!-- materialicons, grid, datepicker, dropdown, checkbox -->
              * <table id="grid"></table>
              * <script>
+             *     var countries = [ { value: "Bulgaria", text: "Bulgaria" }, { value: "Brazil", text: "Brazil" }, { value: "England", text: "England" }, { value: "Germany", text: "Germany" } ];
              *     $('#grid').grid({
              *         dataSource: '/Players/Get',
              *         columns: [
              *             { field: 'Name', editor: true },
-             *             { field: 'Nationality', editor: {}, type: 'dropdown' },
-             *             { field: 'DateOfBirth', editor: {}, type: 'date', format: 'mm/dd/yyyy' },
+             *             { field: 'Nationality', editor: {}, type: 'dropdown', editor: { dataSource: countries } },
+             *             { field: 'DateOfBirth', editor: {}, type: 'date' },
              *             { field: 'IsActive', title: 'Active?', type:'checkbox', editor: true, mode: 'edit', width: 80, align: 'center' }
              *         ]
              *     });
@@ -5653,7 +5723,7 @@ gj.grid.plugins.inlineEditing.private = {
     },
 
     editMode: function ($grid, $cell, column, record) {
-        var $displayContainer, $editorContainer, $editorField, value, data = $grid.data();
+        var $displayContainer, $editorContainer, $editorField, value, config, data = $grid.data();
         if ($cell.attr('data-mode') !== 'edit' && column.editor) {
             gj.grid.plugins.inlineEditing.private.updateOtherCells($grid, column.mode);
             $displayContainer = $cell.find('div[data-role="display"]').hide();
@@ -5678,6 +5748,13 @@ gj.grid.plugins.inlineEditing.private = {
                         $editorField = $('<input type="text" value="' + $displayContainer.html() + '" width="100%"/>');
                         $editorContainer.append($editorField);
                         $editorField.datepicker({ uiLibrary: data.uiLibrary });
+                    } else if ('dropdown' === column.type) {
+                        $editorField = $('<select type="text" width="100%"/>');
+                        $editorContainer.append($editorField);
+                        config = typeof (column.editor) === "object" ? column.editor : {};
+                        config.uiLibrary = data.uiLibrary;
+                        $editorField.dropdown(config);
+                        $editorField.val($displayContainer.html());
                     } else {
                         $editorContainer.append('<input type="text" value="' + value + '" class="gj-width-full"/>');
                     }
@@ -11209,7 +11286,7 @@ gj.dropdown.config = {
 
         style: {
             wrapper: 'gj-dropdown gj-dropdown-md gj-unselectable',
-            list: 'gj-list gj-list-md',
+            list: 'gj-list gj-list-md gj-dropdown-list-md',
             active: 'gj-list-md-active'
         }
     },
@@ -11219,7 +11296,7 @@ gj.dropdown.config = {
         style: {
             wrapper: 'gj-dropdown gj-dropdown-bootstrap gj-dropdown-bootstrap-3 gj-unselectable',
             presenter: 'btn btn-default',
-            list: 'gj-list gj-list-bootstrap list-group',
+            list: 'gj-list gj-list-bootstrap gj-dropdown-list-bootstrap list-group',
             item: 'list-group-item',
             active: 'active'
         },
@@ -11232,7 +11309,7 @@ gj.dropdown.config = {
         style: {
             wrapper: 'gj-dropdown gj-dropdown-bootstrap gj-dropdown-bootstrap-4 gj-unselectable',
             presenter: 'btn btn-secondary',
-            list: 'gj-list gj-list-bootstrap list-group',
+            list: 'gj-list gj-list-bootstrap gj-dropdown-list-bootstrap list-group',
             item: 'list-group-item',
             active: 'active'
         },
@@ -11280,7 +11357,7 @@ gj.dropdown.methods = {
             $display = $('<span role="display"></span>'),
             $expander = $('<span role="expander">' + data.icons.dropdown + '</span>').addClass(data.style.expander),
             $presenter = $('<button role="presenter"></button>').addClass(data.style.presenter),
-            $list = $('<ul role="list" class="' + data.style.list + '"></ul>');
+            $list = $('<ul role="list" class="' + data.style.list + '"></ul>').attr('guid', $dropdown.attr('data-guid'));
 
         if ($wrapper.length === 0) {
             $wrapper = $('<div role="wrapper" />').addClass(data.style.wrapper); // The css class needs to be added before the wrapping, otherwise doesn't work.
@@ -11290,13 +11367,13 @@ gj.dropdown.methods = {
         }
 
         $presenter.on('click', function (e) {
+            var offset;
             if ($list.is(':visible')) {
                 $list.hide();
             } else {
-                if (data.optionsDisplay === 'standard') {
-                    $list.css('top', $presenter.outerHeight() + 2);
-                }
+                gj.dropdown.methods.setListPosition($presenter, $list, data);
                 $list.show();
+                gj.dropdown.methods.setListPosition($presenter, $list, data);
             }
         });
         $presenter.on('blur', function (e) {
@@ -11308,10 +11385,20 @@ gj.dropdown.methods = {
 
         $dropdown.hide();
         $dropdown.after($presenter);
-        $presenter.after($list);
+        $('body').append($list);
         $list.hide();
 
         $dropdown.reload();
+    },
+
+    setListPosition: function ($presenter, $list, data) {
+        var offset = $presenter.offset();
+        $list.css('left', offset.left).css('width', $presenter.outerWidth(true));
+        if (data.optionsDisplay === 'standard') {
+            $list.css('top', offset.top + $presenter.outerHeight(true) + 2);
+        } else {
+            $list.css('top', offset.top);
+        }
     },
 
     useHtmlDataSource: function ($dropdown, data) {
@@ -11337,7 +11424,7 @@ gj.dropdown.methods = {
             selected = false,
             data = $dropdown.data(),
             $parent = $dropdown.parent(),
-            $list = $parent.children('[role="list"]'),
+            $list = $('body').children('[role="list"][guid="' + $dropdown.attr('data-guid') + '"]'),
             $presenter = $parent.children('[role="presenter"]'),
             $expander = $parent.find('[role="expander"]');
 
@@ -11380,7 +11467,7 @@ gj.dropdown.methods = {
 
     select: function ($dropdown, value) {
         var data = $dropdown.data(),
-            $list = $dropdown.parent().children('ul[role="list"]'),
+            $list = $('body').children('[role="list"][guid="' + $dropdown.attr('data-guid') + '"]'),
             $item = $list.children('li[value="' + value + '"]'),
             record = gj.dropdown.methods.getRecordByValue($dropdown, value);
         $list.children('li').removeClass(data.style.active);
@@ -11684,7 +11771,12 @@ gj.datepicker.config = {
         maxDate: undefined,
 
         /** Specifies the format, which is used to format the value of the DatePicker displayed in the input.
-         * @additionalinfo 
+         * @additionalinfo <b>d</b> - Day of the month as digits; no leading zero for single-digit days.<br/>
+         * <b>dd</b> - Day of the month as digits; leading zero for single-digit days.<br/>
+         * <b>m</b> - Month as digits; no leading zero for single-digit months.<br/>
+         * <b>mm</b> - Month as digits; leading zero for single-digit months.<br/>
+         * <b>yy</b> - Year as last two digits; leading zero for years less than 10.<br/>
+         * <b>yyyy</b> - Year represented by four digits.<br/>
          * @type String
          * @default 'mm/dd/yyyy'
          * @example Sample <!-- materialicons, datepicker -->
@@ -11835,9 +11927,7 @@ gj.datepicker.methods = {
     initialize: function ($datepicker) {
         var data = $datepicker.data(),
             $wrapper = $datepicker.parent('div[role="wrapper"]'),
-            $rightIcon = $(data.icons.rightIcon).attr('role', 'right-icon'),
-            ctrlClick = false,
-            $calendar;
+            $rightIcon = $(data.icons.rightIcon).attr('role', 'right-icon');
 
         if ($wrapper.length === 0) {
             $wrapper = $('<div role="wrapper" />').addClass(data.style.wrapper); // The css class needs to be added before the wrapping, otherwise doesn't work.

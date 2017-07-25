@@ -515,7 +515,21 @@ gj.grid.config = {
 
             /** Format the date when the type of the column is date.
              * @additionalinfo <b>d</b> - Day of the month as digits; no leading zero for single-digit days.<br/>
-             * <b>dd</b> - Day of the month as digits; leading zero for single-digit days.
+             * <b>dd</b> - Day of the month as digits; leading zero for single-digit days.<br/>
+             * <b>m</b> - Month as digits; no leading zero for single-digit months.<br/>
+             * <b>mm</b> - Month as digits; leading zero for single-digit months.<br/>
+             * <b>yy</b> - Year as last two digits; leading zero for years less than 10.<br/>
+             * <b>yyyy</b> - Year represented by four digits.<br/>
+             * <b>s</b> - Seconds; no leading zero for single-digit seconds.<br/>
+             * <b>ss</b> - Seconds; leading zero for single-digit seconds.<br/>
+             * <b>M</b> - Minutes; no leading zero for single-digit minutes. Uppercase MM to avoid conflict with months.<br/>
+             * <b>MM</b> - Minutes; leading zero for single-digit minutes. Uppercase MM to avoid conflict with months.<br/>
+             * <b>H</b> - Hours; no leading zero for single-digit hours (24-hour clock).<br/>
+             * <b>HH</b> - Hours; leading zero for single-digit hours (24-hour clock).<br/>
+             * <b>h</b> - Hours; no leading zero for single-digit hours (12-hour clock).<br/>
+             * <b>hh</b> - Hours; leading zero for single-digit hours (12-hour clock).<br/>
+             * <b>tt</b> - Lowercase, two-character time marker string: am or pm.<br/>
+             * <b>TT</b> - Uppercase, two-character time marker string: AM or PM.<br/>
              * @alias column.format
              * @type string
              * @default 'mm/dd/yyyy'
