@@ -1669,8 +1669,7 @@ gj.grid.plugins.inlineEditing.private = {
                         $editorContainer.append($editorField);
                         config = typeof (column.editor) === "object" ? column.editor : {};
                         config.uiLibrary = data.uiLibrary;
-                        $editorField.dropdown(config);
-                        $editorField.val($displayContainer.html());
+                        $editorField.dropdown(config).value($displayContainer.html());
                     } else {
                         $editorContainer.append('<input type="text" value="' + value + '" class="gj-width-full"/>');
                     }

@@ -35,14 +35,14 @@
 }
 
 .gj-dropdown-md [role="presenter"] [role="display"] {
-    padding: 8px 0px 8px 5px;
+    padding: 8px 0px;
     width: 100%;
 }
 
-.gj-dropdown-md [role="presenter"] [role="expander"] {
+/*.gj-dropdown-md [role="presenter"] [role="expander"] {
     width: 24px;
     height: 24px;
-}
+}*/
 
 .gj-dropdown-list-md {
     position: absolute;

@@ -41,8 +41,7 @@ TABLE.gj-grid-table .fa {
     padding: 2px;
 }
 
-TABLE.gj-grid-table > tbody > tr > td > div
-{
+TABLE.gj-grid-table > tbody > tr > td > div {
     padding: 2px;
     overflow: hidden;
 }
@@ -109,7 +108,7 @@ table.gj-grid-bootstrap-table tbody tr td div[data-role="display"] {
     border-collapse: collapse;
     white-space: nowrap;
     font-size: 13px;
-    font-family: "Helvetica","Arial",sans-serif;
+    font-family: "Roboto","Helvetica","Arial",sans-serif;
     background-color: #fff;
 }
 

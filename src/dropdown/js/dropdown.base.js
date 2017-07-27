@@ -292,20 +292,23 @@ gj.dropdown.methods = {
 
         if (response && response.length) {
             $.each(response, function () {
-                var record = this, $item, $option;
+                var value = typeof this === 'string' ? this : this[data.dataValueField],
+                    text = typeof this === 'string' ? this : this[data.dataTextField],
+                    selected = typeof this !== 'string' && this[data.dataSelectedField] ? this[data.dataSelectedField].toString().toLowerCase() === 'true' : false,
+                    $item, $option;
 
-                $item = $('<li value="' + record[data.dataValueField] + '"><div data-role="wrapper"><span data-role="display">' + record[data.dataTextField] + '</span></div></li>');
+                $item = $('<li value="' + value + '"><div data-role="wrapper"><span data-role="display">' + text + '</span></div></li>');
                 $item.addClass(data.style.item);
                 $item.on('click', function (e) {
-                    gj.dropdown.methods.select($dropdown, record[data.dataValueField]);
+                    gj.dropdown.methods.select($dropdown, value);
                 });
                 $list.append($item);
 
-                $option = $('<option value="' + record[data.dataValueField] + '">' + record[data.dataTextField] + '</option>');
+                $option = $('<option value="' + value + '">' + text + '</option>');
                 $dropdown.append($option);
 
-                if (record[data.dataSelectedField]) {
-                    gj.dropdown.methods.select($dropdown, record[data.dataValueField]);
+                if (selected) {
+                    gj.dropdown.methods.select($dropdown, value);
                     selected = true;
                 }
             });

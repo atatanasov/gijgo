@@ -1,8 +1,14 @@
-﻿/*table.gj-grid-table div[data-role="edit"] {
-    display: inline;
+﻿
+.gj-grid-table tbody .gj-dropdown-md [role="presenter"] {
+    font-size: 13px;
 }
 
-table.gj-grid-table div[data-role="edit"] label.gj-checkbox-md,
-table.gj-grid-table div[data-role="edit"] label.gj-checkbox-bootstrap {
-    display: inline-block;
-}*/
+.gj-grid-table tbody .gj-dropdown-md [role="presenter"] [role="display"] {
+    padding: 0px;
+}
+
+.gj-grid-table tbody .gj-dropdown-md [role="presenter"] [role="expander"] .material-icons {
+    position: absolute;
+    top: -6px;
+    right: 0px;
+}

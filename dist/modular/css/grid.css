@@ -41,8 +41,7 @@ TABLE.gj-grid-table .fa {
     padding: 2px;
 }
 
-TABLE.gj-grid-table > tbody > tr > td > div
-{
+TABLE.gj-grid-table > tbody > tr > td > div {
     padding: 2px;
     overflow: hidden;
 }
@@ -109,7 +108,7 @@ table.gj-grid-bootstrap-table tbody tr td div[data-role="display"] {
     border-collapse: collapse;
     white-space: nowrap;
     font-size: 13px;
-    font-family: "Helvetica","Arial",sans-serif;
+    font-family: "Roboto","Helvetica","Arial",sans-serif;
     background-color: #fff;
 }
 
@@ -370,6 +369,20 @@ table.gj-grid-table div[data-role="edit"] label.gj-checkbox-md,
 table.gj-grid-table div[data-role="edit"] label.gj-checkbox-bootstrap {
     display: inline-block;
 }*/
+
+.gj-grid-table tbody .gj-dropdown-md [role="presenter"] {
+    font-size: 13px;
+}
+
+.gj-grid-table tbody .gj-dropdown-md [role="presenter"] [role="display"] {
+    padding: 0px;
+}
+
+.gj-grid-table tbody .gj-dropdown-md [role="presenter"] [role="expander"] .material-icons {
+    position: absolute;
+    top: -6px;
+    right: 0px;
+}
 .gj-grid-md-table thead tr[data-role="filter"] th {
     border-top: 1px solid rgba(0,0,0,.12);
 }

@@ -66,7 +66,7 @@ gj.grid.plugins.inlineEditing.config = {
              * @example Date.And.Dropdown <!-- materialicons, grid, datepicker, dropdown, checkbox -->
              * <table id="grid"></table>
              * <script>
-             *     var countries = [ { value: "Bulgaria", text: "Bulgaria" }, { value: "Brazil", text: "Brazil" }, { value: "England", text: "England" }, { value: "Germany", text: "Germany" } ];
+             *     var countries = [ "Bulgaria", "Brazil", "England", "Germany", "Colombia", "Poland" ];
              *     $('#grid').grid({
              *         dataSource: '/Players/Get',
              *         columns: [
@@ -308,8 +308,7 @@ gj.grid.plugins.inlineEditing.private = {
                         $editorContainer.append($editorField);
                         config = typeof (column.editor) === "object" ? column.editor : {};
                         config.uiLibrary = data.uiLibrary;
-                        $editorField.dropdown(config);
-                        $editorField.val($displayContainer.html());
+                        $editorField.dropdown(config).value($displayContainer.html());
                     } else {
                         $editorContainer.append('<input type="text" value="' + value + '" class="gj-width-full"/>');
                     }

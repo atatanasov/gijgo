@@ -5511,7 +5511,7 @@ gj.grid.plugins.inlineEditing.config = {
              * @example Date.And.Dropdown <!-- materialicons, grid, datepicker, dropdown, checkbox -->
              * <table id="grid"></table>
              * <script>
-             *     var countries = [ { value: "Bulgaria", text: "Bulgaria" }, { value: "Brazil", text: "Brazil" }, { value: "England", text: "England" }, { value: "Germany", text: "Germany" } ];
+             *     var countries = [ "Bulgaria", "Brazil", "England", "Germany", "Colombia", "Poland" ];
              *     $('#grid').grid({
              *         dataSource: '/Players/Get',
              *         columns: [
@@ -5753,8 +5753,7 @@ gj.grid.plugins.inlineEditing.private = {
                         $editorContainer.append($editorField);
                         config = typeof (column.editor) === "object" ? column.editor : {};
                         config.uiLibrary = data.uiLibrary;
-                        $editorField.dropdown(config);
-                        $editorField.val($displayContainer.html());
+                        $editorField.dropdown(config).value($displayContainer.html());
                     } else {
                         $editorContainer.append('<input type="text" value="' + value + '" class="gj-width-full"/>');
                     }
@@ -11367,7 +11366,6 @@ gj.dropdown.methods = {
         }
 
         $presenter.on('click', function (e) {
-            var offset;
             if ($list.is(':visible')) {
                 $list.hide();
             } else {
@@ -11434,20 +11432,23 @@ gj.dropdown.methods = {
 
         if (response && response.length) {
             $.each(response, function () {
-                var record = this, $item, $option;
+                var value = typeof this === 'string' ? this : this[data.dataValueField],
+                    text = typeof this === 'string' ? this : this[data.dataTextField],
+                    selected = typeof this !== 'string' && this[data.dataSelectedField] ? this[data.dataSelectedField].toString().toLowerCase() === 'true' : false,
+                    $item, $option;
 
-                $item = $('<li value="' + record[data.dataValueField] + '"><div data-role="wrapper"><span data-role="display">' + record[data.dataTextField] + '</span></div></li>');
+                $item = $('<li value="' + value + '"><div data-role="wrapper"><span data-role="display">' + text + '</span></div></li>');
                 $item.addClass(data.style.item);
                 $item.on('click', function (e) {
-                    gj.dropdown.methods.select($dropdown, record[data.dataValueField]);
+                    gj.dropdown.methods.select($dropdown, value);
                 });
                 $list.append($item);
 
-                $option = $('<option value="' + record[data.dataValueField] + '">' + record[data.dataTextField] + '</option>');
+                $option = $('<option value="' + value + '">' + text + '</option>');
                 $dropdown.append($option);
 
-                if (record[data.dataSelectedField]) {
-                    gj.dropdown.methods.select($dropdown, record[data.dataValueField]);
+                if (selected) {
+                    gj.dropdown.methods.select($dropdown, value);
                     selected = true;
                 }
             });
