@@ -1667,8 +1667,9 @@ gj.grid.plugins.inlineEditing.private = {
                     } else if ('dropdown' === column.type) {
                         $editorField = $('<select type="text" width="100%"/>');
                         $editorContainer.append($editorField);
-                        config = typeof (column.editor) === "object" ? column.editor : {};
+                        config = typeof column.editor === "object" ? column.editor : {};
                         config.uiLibrary = data.uiLibrary;
+                        config.fontSize = $grid.css('font-size');
                         $editorField.dropdown(config).value($displayContainer.html());
                     } else {
                         $editorContainer.append('<input type="text" value="' + value + '" class="gj-width-full"/>');

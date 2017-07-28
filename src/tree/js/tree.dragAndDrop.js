@@ -235,7 +235,7 @@ gj.tree.plugins.dragAndDrop = {
 
 	events: {
 	    /**
-         * Event fires when the data is bound to node.
+         * Event fires when the node is dropped.
          * @event nodeDrop
          * @param {object} e - event data
          * @param {string} id - the id of the record

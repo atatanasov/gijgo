@@ -63,11 +63,26 @@ gj.grid.plugins.inlineEditing.config = {
              *         ]
              *     });
              * </script>
-             * @example Date.And.Dropdown <!-- materialicons, grid, datepicker, dropdown, checkbox -->
+             * @example Date.And.Dropdown.Material <!-- materialicons, grid, datepicker, dropdown, checkbox -->
              * <table id="grid"></table>
              * <script>
              *     var countries = [ "Bulgaria", "Brazil", "England", "Germany", "Colombia", "Poland" ];
              *     $('#grid').grid({
+             *         dataSource: '/Players/Get',
+             *         columns: [
+             *             { field: 'Name', editor: true },
+             *             { field: 'Nationality', editor: {}, type: 'dropdown', editor: { dataSource: countries } },
+             *             { field: 'DateOfBirth', editor: {}, type: 'date' },
+             *             { field: 'IsActive', title: 'Active?', type:'checkbox', editor: true, mode: 'edit', width: 80, align: 'center' }
+             *         ]
+             *     });
+             * </script>
+             * @example Date.And.Dropdown.Bootstrap <!-- bootstrap, grid, datepicker, dropdown, checkbox -->
+             * <table id="grid"></table>
+             * <script>
+             *     var countries = [ "Bulgaria", "Brazil", "England", "Germany", "Colombia", "Poland" ];
+             *     $('#grid').grid({
+             *         uiLibrary: 'bootstrap',
              *         dataSource: '/Players/Get',
              *         columns: [
              *             { field: 'Name', editor: true },
@@ -306,8 +321,9 @@ gj.grid.plugins.inlineEditing.private = {
                     } else if ('dropdown' === column.type) {
                         $editorField = $('<select type="text" width="100%"/>');
                         $editorContainer.append($editorField);
-                        config = typeof (column.editor) === "object" ? column.editor : {};
+                        config = typeof column.editor === "object" ? column.editor : {};
                         config.uiLibrary = data.uiLibrary;
+                        config.fontSize = $grid.css('font-size');
                         $editorField.dropdown(config).value($displayContainer.html());
                     } else {
                         $editorContainer.append('<input type="text" value="' + value + '" class="gj-width-full"/>');

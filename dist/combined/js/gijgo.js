@@ -5508,11 +5508,26 @@ gj.grid.plugins.inlineEditing.config = {
              *         ]
              *     });
              * </script>
-             * @example Date.And.Dropdown <!-- materialicons, grid, datepicker, dropdown, checkbox -->
+             * @example Date.And.Dropdown.Material <!-- materialicons, grid, datepicker, dropdown, checkbox -->
              * <table id="grid"></table>
              * <script>
              *     var countries = [ "Bulgaria", "Brazil", "England", "Germany", "Colombia", "Poland" ];
              *     $('#grid').grid({
+             *         dataSource: '/Players/Get',
+             *         columns: [
+             *             { field: 'Name', editor: true },
+             *             { field: 'Nationality', editor: {}, type: 'dropdown', editor: { dataSource: countries } },
+             *             { field: 'DateOfBirth', editor: {}, type: 'date' },
+             *             { field: 'IsActive', title: 'Active?', type:'checkbox', editor: true, mode: 'edit', width: 80, align: 'center' }
+             *         ]
+             *     });
+             * </script>
+             * @example Date.And.Dropdown.Bootstrap <!-- bootstrap, grid, datepicker, dropdown, checkbox -->
+             * <table id="grid"></table>
+             * <script>
+             *     var countries = [ "Bulgaria", "Brazil", "England", "Germany", "Colombia", "Poland" ];
+             *     $('#grid').grid({
+             *         uiLibrary: 'bootstrap',
              *         dataSource: '/Players/Get',
              *         columns: [
              *             { field: 'Name', editor: true },
@@ -5751,8 +5766,9 @@ gj.grid.plugins.inlineEditing.private = {
                     } else if ('dropdown' === column.type) {
                         $editorField = $('<select type="text" width="100%"/>');
                         $editorContainer.append($editorField);
-                        config = typeof (column.editor) === "object" ? column.editor : {};
+                        config = typeof column.editor === "object" ? column.editor : {};
                         config.uiLibrary = data.uiLibrary;
+                        config.fontSize = $grid.css('font-size');
                         $editorField.dropdown(config).value($displayContainer.html());
                     } else {
                         $editorContainer.append('<input type="text" value="' + value + '" class="gj-width-full"/>');
@@ -9965,7 +9981,13 @@ gj.tree.plugins.checkboxes = {
                 $expander = $node.find('> [data-role="wrapper"] > [data-role="expander"]'),
                 $checkbox = $('<input type="checkbox"/>'),
                 $wrapper = $('<span data-role="checkbox"></span>').append($checkbox);
-            $checkbox = $checkbox.checkbox({ uiLibrary: data.uiLibrary, iconsLibrary: data.iconsLibrary });
+            $checkbox = $checkbox.checkbox({
+                uiLibrary: data.uiLibrary,
+                iconsLibrary: data.iconsLibrary,
+                change: function (e, state) {
+                    gj.tree.plugins.checkboxes.events.checkboxChange($tree, $node, record, $checkbox.state());
+                }
+            });
             if (record[data.checkedField]) {
                 $checkbox.state('checked');
             }
@@ -10155,6 +10177,28 @@ gj.tree.plugins.checkboxes = {
         uncheck: function ($node) {
             gj.tree.plugins.checkboxes.private.update(this, $node, 'unchecked');
             return this;
+        }
+    },
+
+    events: {
+        /**
+         * Event fires when the checkbox status is changed.
+         * @event checkboxChange
+         * @param {object} e - event data
+         * @param {object} $node - the node object as jQuery element
+         * @param {object} record - the record data
+         * @param {string} state - the new state of the checkbox
+         * @example Event.Sample <!-- materialicons, checkbox, tree.base -->
+         * <div id="tree" data-source="/Locations/Get" data-checkboxes="true"></div>
+         * <script>
+         *     var tree = $('#tree').tree();
+         *     tree.on('checkboxChange', function (e, $node, record, state) {
+         *         alert('The new state of record ' + record.text + ' is ' + state);
+         *     });
+         * </script>
+         */
+        checkboxChange: function ($tree, $node, record, state) {
+            return $tree.triggerHandler('checkboxChange', [$node, record, state]);
         }
     },
 
@@ -10416,7 +10460,7 @@ gj.tree.plugins.dragAndDrop = {
 
 	events: {
 	    /**
-         * Event fires when the data is bound to node.
+         * Event fires when the node is dropped.
          * @event nodeDrop
          * @param {object} e - event data
          * @param {string} id - the id of the record
@@ -11182,7 +11226,9 @@ gj.dropdown.config = {
 
         dataSelectedField: 'selected',
 
-        optionsDisplay: 'materialDesign',
+        optionsDisplay: 'materialdesign',
+
+        fontSize: undefined,
 
         /** The name of the UI library that is going to be in use.
          * @additionalinfo The css file for bootstrap should be manually included if you use bootstrap.
@@ -11365,6 +11411,10 @@ gj.dropdown.methods = {
             $wrapper.addClass(data.style.wrapper);
         }
 
+        if (data.fontSize) {
+            $presenter.css('font-size', data.fontSize);
+        }
+
         $presenter.on('click', function (e) {
             if ($list.is(':visible')) {
                 $list.hide();
@@ -11414,7 +11464,19 @@ gj.dropdown.methods = {
     },
 
     filter: function ($dropdown) {
-        return $dropdown.data().dataSource;
+        var i, record, data = $dropdown.data();
+        if (!data.dataSource)
+        {
+            data.dataSource = [];
+        } else if (typeof data.dataSource[0] === 'string') {
+            for (i = 0; i < data.dataSource.length; i++) {
+                record = {};
+                record[data.dataValueField] = data.dataSource[i];
+                record[data.dataTextField] = data.dataSource[i];
+                data.dataSource[i] = record;
+            }
+        }
+        return data.dataSource;
     },
 
     render: function ($dropdown, response) {
@@ -11432,9 +11494,9 @@ gj.dropdown.methods = {
 
         if (response && response.length) {
             $.each(response, function () {
-                var value = typeof this === 'string' ? this : this[data.dataValueField],
-                    text = typeof this === 'string' ? this : this[data.dataTextField],
-                    selected = typeof this !== 'string' && this[data.dataSelectedField] ? this[data.dataSelectedField].toString().toLowerCase() === 'true' : false,
+                var value = this[data.dataValueField],
+                    text = this[data.dataTextField],
+                    selected = this[data.dataSelectedField] && this[data.dataSelectedField].toString().toLowerCase() === 'true',
                     $item, $option;
 
                 $item = $('<li value="' + value + '"><div data-role="wrapper"><span data-role="display">' + text + '</span></div></li>');
@@ -11460,6 +11522,10 @@ gj.dropdown.methods = {
         width = data.width ? data.width : ($list.width() + $expander.outerWidth() + 10);
         $parent.css('width', width);
         $list.css('width', width);
+
+        if (data.fontSize) {
+            $list.children('li').css('font-size', data.fontSize);
+        }
 
         gj.dropdown.events.dataBound($dropdown);
 

@@ -23,7 +23,9 @@ gj.dropdown.config = {
 
         dataSelectedField: 'selected',
 
-        optionsDisplay: 'materialDesign',
+        optionsDisplay: 'materialdesign',
+
+        fontSize: undefined,
 
         /** The name of the UI library that is going to be in use.         */        uiLibrary: 'materialdesign',
 
@@ -117,6 +119,10 @@ gj.dropdown.methods = {
             $wrapper.addClass(data.style.wrapper);
         }
 
+        if (data.fontSize) {
+            $presenter.css('font-size', data.fontSize);
+        }
+
         $presenter.on('click', function (e) {
             if ($list.is(':visible')) {
                 $list.hide();
@@ -166,7 +172,19 @@ gj.dropdown.methods = {
     },
 
     filter: function ($dropdown) {
-        return $dropdown.data().dataSource;
+        var i, record, data = $dropdown.data();
+        if (!data.dataSource)
+        {
+            data.dataSource = [];
+        } else if (typeof data.dataSource[0] === 'string') {
+            for (i = 0; i < data.dataSource.length; i++) {
+                record = {};
+                record[data.dataValueField] = data.dataSource[i];
+                record[data.dataTextField] = data.dataSource[i];
+                data.dataSource[i] = record;
+            }
+        }
+        return data.dataSource;
     },
 
     render: function ($dropdown, response) {
@@ -184,9 +202,9 @@ gj.dropdown.methods = {
 
         if (response && response.length) {
             $.each(response, function () {
-                var value = typeof this === 'string' ? this : this[data.dataValueField],
-                    text = typeof this === 'string' ? this : this[data.dataTextField],
-                    selected = typeof this !== 'string' && this[data.dataSelectedField] ? this[data.dataSelectedField].toString().toLowerCase() === 'true' : false,
+                var value = this[data.dataValueField],
+                    text = this[data.dataTextField],
+                    selected = this[data.dataSelectedField] && this[data.dataSelectedField].toString().toLowerCase() === 'true',
                     $item, $option;
 
                 $item = $('<li value="' + value + '"><div data-role="wrapper"><span data-role="display">' + text + '</span></div></li>');
@@ -212,6 +230,10 @@ gj.dropdown.methods = {
         width = data.width ? data.width : ($list.width() + $expander.outerWidth() + 10);
         $parent.css('width', width);
         $list.css('width', width);
+
+        if (data.fontSize) {
+            $list.children('li').css('font-size', data.fontSize);
+        }
 
         gj.dropdown.events.dataBound($dropdown);
 

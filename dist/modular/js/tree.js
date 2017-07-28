@@ -689,7 +689,13 @@ gj.tree.widget.constructor = gj.tree.widget;
                 $expander = $node.find('> [data-role="wrapper"] > [data-role="expander"]'),
                 $checkbox = $('<input type="checkbox"/>'),
                 $wrapper = $('<span data-role="checkbox"></span>').append($checkbox);
-            $checkbox = $checkbox.checkbox({ uiLibrary: data.uiLibrary, iconsLibrary: data.iconsLibrary });
+            $checkbox = $checkbox.checkbox({
+                uiLibrary: data.uiLibrary,
+                iconsLibrary: data.iconsLibrary,
+                change: function (e, state) {
+                    gj.tree.plugins.checkboxes.events.checkboxChange($tree, $node, record, $checkbox.state());
+                }
+            });
             if (record[data.checkedField]) {
                 $checkbox.state('checked');
             }
@@ -795,6 +801,13 @@ gj.tree.widget.constructor = gj.tree.widget;
          * Uncheck tree node.         */        uncheck: function ($node) {
             gj.tree.plugins.checkboxes.private.update(this, $node, 'unchecked');
             return this;
+        }
+    },
+
+    events: {
+        /**
+         * Event fires when the checkbox status is changed.         */        checkboxChange: function ($tree, $node, record, state) {
+            return $tree.triggerHandler('checkboxChange', [$node, record, state]);
         }
     },
 
@@ -1026,7 +1039,7 @@ gj.tree.widget.constructor = gj.tree.widget;
 
 	events: {
 	    /**
-         * Event fires when the data is bound to node.         */	    nodeDrop: function ($tree, id, parentId, orderNumber) {
+         * Event fires when the node is dropped.         */	    nodeDrop: function ($tree, id, parentId, orderNumber) {
 	        return $tree.triggerHandler('nodeDrop', [id, parentId, orderNumber]);
         }
     },

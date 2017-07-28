@@ -88,7 +88,13 @@ gj.tree.plugins.checkboxes = {
                 $expander = $node.find('> [data-role="wrapper"] > [data-role="expander"]'),
                 $checkbox = $('<input type="checkbox"/>'),
                 $wrapper = $('<span data-role="checkbox"></span>').append($checkbox);
-            $checkbox = $checkbox.checkbox({ uiLibrary: data.uiLibrary, iconsLibrary: data.iconsLibrary });
+            $checkbox = $checkbox.checkbox({
+                uiLibrary: data.uiLibrary,
+                iconsLibrary: data.iconsLibrary,
+                change: function (e, state) {
+                    gj.tree.plugins.checkboxes.events.checkboxChange($tree, $node, record, $checkbox.state());
+                }
+            });
             if (record[data.checkedField]) {
                 $checkbox.state('checked');
             }
@@ -278,6 +284,28 @@ gj.tree.plugins.checkboxes = {
         uncheck: function ($node) {
             gj.tree.plugins.checkboxes.private.update(this, $node, 'unchecked');
             return this;
+        }
+    },
+
+    events: {
+        /**
+         * Event fires when the checkbox status is changed.
+         * @event checkboxChange
+         * @param {object} e - event data
+         * @param {object} $node - the node object as jQuery element
+         * @param {object} record - the record data
+         * @param {string} state - the new state of the checkbox
+         * @example Event.Sample <!-- materialicons, checkbox, tree.base -->
+         * <div id="tree" data-source="/Locations/Get" data-checkboxes="true"></div>
+         * <script>
+         *     var tree = $('#tree').tree();
+         *     tree.on('checkboxChange', function (e, $node, record, state) {
+         *         alert('The new state of record ' + record.text + ' is ' + state);
+         *     });
+         * </script>
+         */
+        checkboxChange: function ($tree, $node, record, state) {
+            return $tree.triggerHandler('checkboxChange', [$node, record, state]);
         }
     },
 

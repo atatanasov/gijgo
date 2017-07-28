@@ -1,9 +1,4 @@
-﻿
-.gj-grid-table tbody .gj-dropdown-md [role="presenter"] {
-    font-size: 13px;
-}
-
-.gj-grid-table tbody .gj-dropdown-md [role="presenter"] [role="display"] {
+﻿.gj-grid-table tbody .gj-dropdown-md [role="presenter"] [role="display"] {
     padding: 0px;
 }
 
@@ -11,4 +6,17 @@
     position: absolute;
     top: -6px;
     right: 0px;
+}
+
+.gj-grid-bootstrap-table tbody tr td[data-mode="edit"] {
+    padding: 0px;
+}
+
+.gj-grid-bootstrap-table tbody tr td[data-mode="edit"] [data-role="edit"] {
+    padding: 0px;
+    line-height: 31px;
+}
+
+.gj-grid-bootstrap-table tbody tr td[data-mode="edit"] .gj-dropdown-bootstrap [role="presenter"] {
+    line-height: 24px;
 }
