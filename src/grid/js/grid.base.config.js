@@ -1038,9 +1038,9 @@ gj.grid.config = {
     bootstrap: {
         style: {
             wrapper: 'gj-grid-wrapper',
-            table: 'gj-grid gj-grid-bootstrap table table-bordered table-hover',
+            table: 'gj-grid gj-grid-bootstrap gj-grid-bootstrap-3 table table-bordered table-hover',
             content: {
-                rowHover: '',
+                rowHover: undefined,
                 rowSelected: 'active'
             }
         },
@@ -1054,9 +1054,9 @@ gj.grid.config = {
     bootstrap4: {
         style: {
             wrapper: 'gj-grid-wrapper',
-            table: 'gj-grid gj-grid-bootstrap table table-bordered table-hover',
+            table: 'gj-grid gj-grid-bootstrap gj-grid-bootstrap-4 table table-bordered table-hover',
             content: {
-                rowHover: '',
+                rowHover: undefined,
                 rowSelected: 'active'
             }
         },

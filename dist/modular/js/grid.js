@@ -154,9 +154,9 @@ gj.grid.messages['en-us'] = {
     bootstrap: {
         style: {
             wrapper: 'gj-grid-wrapper',
-            table: 'gj-grid gj-grid-bootstrap table table-bordered table-hover',
+            table: 'gj-grid gj-grid-bootstrap gj-grid-bootstrap-3 table table-bordered table-hover',
             content: {
-                rowHover: '',
+                rowHover: undefined,
                 rowSelected: 'active'
             }
         },
@@ -170,9 +170,9 @@ gj.grid.messages['en-us'] = {
     bootstrap4: {
         style: {
             wrapper: 'gj-grid-wrapper',
-            table: 'gj-grid gj-grid-bootstrap table table-bordered table-hover',
+            table: 'gj-grid gj-grid-bootstrap gj-grid-bootstrap-4 table table-bordered table-hover',
             content: {
-                rowHover: '',
+                rowHover: undefined,
                 rowSelected: 'active'
             }
         },
@@ -1675,19 +1675,15 @@ gj.grid.plugins.inlineEditing.private = {
                         config.fontSize = $grid.css('font-size');
                         $editorField.dropdown(config).value($displayContainer.html());
                     } else {
-                        $editorContainer.append('<input type="text" value="' + value + '" class="gj-width-full"/>');
+                        $editorField = $('<input type="text" value="' + value + '" class="gj-width-full"/>');
+                        if (data.uiLibrary === 'materialdesign') {
+                            $editorField.addClass('gj-textbox-md').css('font-size', $grid.css('font-size'));
+                        }
+                        $editorContainer.append($editorField);
                     }
                 }
                 $editorField = $editorContainer.find('input, select, textarea').first();
                 if (data.inlineEditing.mode !== 'command' && column.mode !== 'editOnly') {
-                    gj.documentManager.subscribeForEvent('click', $grid.data('guid'), function (e) {
-                        var mouseX = $grid.mouseX(e), mouseY = $grid.mouseY(e),
-                            offset = $grid.offset();
-                        if ((mouseX < offset.left || mouseX > (offset.left + $grid.width()))
-                         || (mouseY < offset.top || mouseY > (offset.top + $grid.height()))) {
-                            gj.grid.plugins.inlineEditing.private.displayMode($grid, $cell, column);
-                        }
-                    });
                     $editorField.on('keyup', function (e) {
                         if (e.keyCode === 13 || e.keyCode === 27) {
                             gj.grid.plugins.inlineEditing.private.displayMode($grid, $cell, column);
@@ -1746,7 +1742,6 @@ gj.grid.plugins.inlineEditing.private = {
             $editorContainer.hide();
             $displayContainer.show();
             $cell.attr('data-mode', 'display');
-            gj.documentManager.unsubscribeForEvent('click', $grid.data('guid'));
         }
     },
 

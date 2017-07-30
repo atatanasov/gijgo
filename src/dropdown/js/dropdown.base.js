@@ -77,7 +77,7 @@ gj.dropdown.config = {
          *     <option value="3">Three</option>
          * </select>
          * <script>
-         *     $('#dropdown').dropdown({ uiLibrary: 'bootstrap4' });
+         *     $('#dropdown').dropdown({ uiLibrary: 'bootstrap4', width: 300 });
          * </script>
          */
         uiLibrary: 'materialdesign',
