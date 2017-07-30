@@ -752,7 +752,7 @@ gj.tree.widget.constructor = gj.tree.widget;
         update: function ($tree, $node, state) {
             var checkbox = $node.find('[data-role="checkbox"] input[type="checkbox"]').first();
             $(checkbox).checkbox('state', state);
-            if (data.cascadeCheck) {
+            if ($tree.data().cascadeCheck) {
                 gj.tree.plugins.checkboxes.private.updateChildrenState($node, state);
                 gj.tree.plugins.checkboxes.private.updateParentState($node, state);
             }
@@ -806,7 +806,7 @@ gj.tree.widget.constructor = gj.tree.widget;
 
     events: {
         /**
-         * Event fires when the checkbox status is changed.         */        checkboxChange: function ($tree, $node, record, state) {
+         * Event fires when the checkbox state is changed.         */        checkboxChange: function ($tree, $node, record, state) {
             return $tree.triggerHandler('checkboxChange', [$node, record, state]);
         }
     },
