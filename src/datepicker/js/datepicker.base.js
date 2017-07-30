@@ -210,7 +210,7 @@ gj.datepicker.config = {
             nextMonth: '<i class="material-icons">keyboard_arrow_right</i>'
         },
 
-        indentation: 24,
+        fontSize: undefined,
 
         style: {
             wrapper: 'gj-datepicker gj-datepicker-md gj-unselectable',
@@ -278,11 +278,11 @@ gj.datepicker.methods = {
         }
         $wrapper = $datepicker.parent('div[role="wrapper"]');
 
-        if (data.width) {
-            $wrapper.css('width', data.width);
-        }
+        data.width && $wrapper.css('width', data.width);
 
         $datepicker.addClass(data.style.input).attr('role', 'input');
+
+        data.fontSize && $datepicker.css('font-size', data.fontSize);
 
         $rightIcon.on('click', function (e) {
             if ($('body').children('[role="calendar"][guid="' + $datepicker.attr('data-guid') + '"]').is(':visible')) {
@@ -306,6 +306,8 @@ gj.datepicker.methods = {
             $table = $('<table/>'),
             $thead = $('<thead/>');
         
+        data.fontSize && $calendar.css('font-size', data.fontSize);
+
         date = gj.core.parseDate(value, data.format);
         if (!date || isNaN(date.getTime())) {
             date = new Date();

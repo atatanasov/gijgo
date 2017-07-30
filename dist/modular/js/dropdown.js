@@ -35,8 +35,6 @@ gj.dropdown.config = {
             /** DropDown icon definition.             */            dropdown: '<i class="material-icons">arrow_drop_down</i>'
         },
 
-        indentation: 24,
-
         style: {
             wrapper: 'gj-dropdown gj-dropdown-md gj-unselectable',
             list: 'gj-list gj-list-md gj-dropdown-list-md',
@@ -45,7 +43,6 @@ gj.dropdown.config = {
     },
 
     bootstrap: {
-        indentation: 24,
         style: {
             wrapper: 'gj-dropdown gj-dropdown-bootstrap gj-dropdown-bootstrap-3 gj-unselectable',
             presenter: 'btn btn-default',
@@ -58,7 +55,6 @@ gj.dropdown.config = {
     },
 
     bootstrap4: {
-        indentation: 24,
         style: {
             wrapper: 'gj-dropdown gj-dropdown-bootstrap gj-dropdown-bootstrap-4 gj-unselectable',
             presenter: 'btn btn-secondary',
@@ -70,7 +66,6 @@ gj.dropdown.config = {
     },
 
     materialicons: {
-        indentation: 24,
         style: {
             expander: 'gj-dropdown-expander-mi'
         }

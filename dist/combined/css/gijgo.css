@@ -831,6 +831,10 @@ span.gj-grid-column-resizer {
 }
 
 /* Material Design */
+.gj-grid-md-table tbody tr td[data-mode="edit"] {
+    padding: 0px 18px;
+}
+
 .gj-grid-table tbody .gj-dropdown-md [role="presenter"] [role="display"] {
     padding: 0px;
 }
@@ -874,6 +878,12 @@ span.gj-grid-column-resizer {
 .gj-grid-bootstrap-table tbody tr td[data-mode="edit"] .gj-datepicker-bootstrap [role="right-icon"] {
     border:0px;
     border-radius: 0px;
+}
+
+.gj-grid-bootstrap-table tbody tr td[data-mode="edit"] .gj-checkbox-bootstrap {
+    display: inline-block;
+    padding-top: 8px;
+    height: 32px;
 }
 .gj-grid-md-table thead tr[data-role="filter"] th {
     border-top: 1px solid rgba(0,0,0,.12);

@@ -1661,9 +1661,12 @@ gj.grid.plugins.inlineEditing.private = {
                         $editorContainer.append($editorField);
                         $editorField.checkbox({ uiLibrary: data.uiLibrary });
                     } else if ('date' === column.type) {
-                        $editorField = $('<input type="text" value="' + $displayContainer.html() + '" width="100%"/>');
+                        $editorField = $('<input type="text" width="100%"/>');
                         $editorContainer.append($editorField);
-                        $editorField.datepicker({ uiLibrary: data.uiLibrary });
+                        config = typeof column.editor === "object" ? column.editor : {};
+                        config.uiLibrary = data.uiLibrary;
+                        config.fontSize = $grid.css('font-size');
+                        $editorField.datepicker(config).value($displayContainer.html());
                     } else if ('dropdown' === column.type) {
                         $editorField = $('<select type="text" width="100%"/>');
                         $editorContainer.append($editorField);
@@ -1677,11 +1680,16 @@ gj.grid.plugins.inlineEditing.private = {
                 }
                 $editorField = $editorContainer.find('input, select, textarea').first();
                 if (data.inlineEditing.mode !== 'command' && column.mode !== 'editOnly') {
-                    //$editorField.on('blur', function (e) {
-                    //    gj.grid.plugins.inlineEditing.private.displayMode($grid, $cell, column);
-                    //});
-                    $editorField.on('keypress', function (e) {
-                        if (e.which === 13) {
+                    gj.documentManager.subscribeForEvent('click', $grid.data('guid'), function (e) {
+                        var mouseX = $grid.mouseX(e), mouseY = $grid.mouseY(e),
+                            offset = $grid.offset();
+                        if ((mouseX < offset.left || mouseX > (offset.left + $grid.width()))
+                         || (mouseY < offset.top || mouseY > (offset.top + $grid.height()))) {
+                            gj.grid.plugins.inlineEditing.private.displayMode($grid, $cell, column);
+                        }
+                    });
+                    $editorField.on('keyup', function (e) {
+                        if (e.keyCode === 13 || e.keyCode === 27) {
                             gj.grid.plugins.inlineEditing.private.displayMode($grid, $cell, column);
                         }
                     });
@@ -1717,7 +1725,7 @@ gj.grid.plugins.inlineEditing.private = {
 
     displayMode: function ($grid, $cell, column, cancel) {
         var $editorContainer, $displayContainer, newValue, oldValue, record, position, style = '';
-        if ($cell.attr('data-mode') === 'edit') {
+        if ($cell.attr('data-mode') === 'edit' && column.mode !== 'editOnly') {
             $editorContainer = $cell.find('div[data-role="edit"]');
             $displayContainer = $cell.find('div[data-role="display"]');
             newValue = $editorContainer.find('input, select, textarea').first().val();
@@ -1729,14 +1737,7 @@ gj.grid.plugins.inlineEditing.private = {
                 if (column.mode !== 'editOnly') {
                     gj.grid.methods.renderDisplayElement($grid, $displayContainer, column, record, gj.grid.methods.getId(record, $grid.data('primaryKey'), position), 'update');
                     if ($cell.find('span.gj-dirty').length === 0) {
-                        if ($cell.css('padding-top') !== '0px') {
-                            style += 'margin-top: -' + $cell.css('padding-top') + ';';
-                        }
-                        if ($cell.css('padding-left') !== '0px') {
-                            style += 'margin-left: -' + $cell.css('padding-left') + ';';
-                        }
-                        style = style ? ' style="' + style + '"' : '';
-                        $cell.prepend($('<span class="gj-dirty"' + style + '></span>'));
+                        $cell.prepend($('<span class="gj-dirty" />'));
                     }
                 }
                 gj.grid.plugins.inlineEditing.events.cellDataChanged($grid, $cell, column, record, oldValue, newValue);
@@ -1745,6 +1746,7 @@ gj.grid.plugins.inlineEditing.private = {
             $editorContainer.hide();
             $displayContainer.show();
             $cell.attr('data-mode', 'display');
+            gj.documentManager.unsubscribeForEvent('click', $grid.data('guid'));
         }
     },
 
