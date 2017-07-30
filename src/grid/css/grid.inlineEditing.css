@@ -1,4 +1,17 @@
-﻿.gj-grid-table tbody .gj-dropdown-md [role="presenter"] [role="display"] {
+﻿.gj-dirty {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    border-style: solid;
+    border-width: 3px;
+    border-color: #f00 transparent transparent #f00;
+    padding: 0;
+    overflow: hidden;
+    vertical-align: top;
+}
+
+/* Material Design */
+.gj-grid-table tbody .gj-dropdown-md [role="presenter"] [role="display"] {
     padding: 0px;
 }
 
@@ -8,15 +21,37 @@
     right: 0px;
 }
 
+/* Bootstrap */
 .gj-grid-bootstrap-table tbody tr td[data-mode="edit"] {
     padding: 0px;
 }
 
 .gj-grid-bootstrap-table tbody tr td[data-mode="edit"] [data-role="edit"] {
     padding: 0px;
-    line-height: 31px;
+}
+
+.gj-grid-bootstrap-table tbody tr td[data-mode="edit"] [data-role="edit"] input[type="text"] {
+    height: 37px;
 }
 
 .gj-grid-bootstrap-table tbody tr td[data-mode="edit"] .gj-dropdown-bootstrap [role="presenter"] {
-    line-height: 24px;
+    border: 0px;
+    border-radius: 0px;
+    height: 37px;
+    padding-left: 8px;
+}
+
+.gj-grid-bootstrap-table tbody tr td[data-mode="edit"] .gj-datepicker-bootstrap {
+    height: 37px;
+}
+
+.gj-grid-bootstrap-table tbody tr td[data-mode="edit"] .gj-datepicker-bootstrap [role="input"] {
+    height: 37px;
+    border:0px;
+    border-radius: 0px;
+}
+
+.gj-grid-bootstrap-table tbody tr td[data-mode="edit"] .gj-datepicker-bootstrap [role="right-icon"] {
+    border:0px;
+    border-radius: 0px;
 }

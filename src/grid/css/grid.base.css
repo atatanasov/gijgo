@@ -2,6 +2,7 @@
     margin: auto;
     position: relative;
     clear:both;
+    z-index: 1;
 }
 
 TABLE.gj-grid-table {
@@ -26,6 +27,7 @@ TABLE.gj-grid-table THEAD TH [data-role="sorticon"] {
 TABLE.gj-grid-table > thead > tr > th,
 TABLE.gj-grid-table > tbody > tr > td {
     overflow: hidden;
+    position: relative;
 }
 
 TABLE.gj-grid-table DIV[data-role="display"], TABLE.gj-grid-table DIV[data-role="display"] > DIV {
@@ -58,18 +60,6 @@ DIV.gj-grid-wrapper DIV.gj-grid-loading-text
 {
     position: absolute;
     font-weight: bold;
-}
-
-.gj-dirty {
-    position: absolute;
-    width: 0;
-    height: 0;
-    border-style: solid;
-    border-width: 3px;
-    border-color: #f00 transparent transparent #f00;
-    padding: 0;
-    overflow: hidden;
-    vertical-align: top;
 }
 
 table.gj-grid-table .gj-grid-icon

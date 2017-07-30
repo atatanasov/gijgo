@@ -51,6 +51,7 @@
     background-color: #f5f5f5;
     color: #000;
     margin: 0px;
+    z-index: 2;
 }
 
 .gj-dropdown-list-md li:hover, .gj-dropdown-list-md li.active {
@@ -65,10 +66,6 @@
 
 .gj-dropdown-bootstrap [role="presenter"] [role="expander"] {
     padding-left: 5px;
-}
-
-.gj-dropdown-bootstrap ul.gj-list-bootstrap {
-    margin-top: 2px;
 }
 
 .gj-dropdown-bootstrap-3 [role="presenter"] [role="expander"].gj-dropdown-expander-mi .material-icons {
@@ -88,4 +85,5 @@
     top: 32px;
     left: 0px;
     margin: 0px;
+    z-index: 2;
 }
