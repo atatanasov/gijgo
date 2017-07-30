@@ -5,32 +5,32 @@
     z-index: 1;
 }
 
-TABLE.gj-grid-table {
+TABLE.gj-grid {
     margin: auto;    
     border-collapse: collapse;
     width: 100%;
     table-layout: fixed;
 }
 
-TABLE.gj-grid-table THEAD TH [data-role="selectAll"] {
+TABLE.gj-grid THEAD TH [data-role="selectAll"] {
     margin: auto;
 }
 
-TABLE.gj-grid-table THEAD TH [data-role="title"] {
+TABLE.gj-grid THEAD TH [data-role="title"] {
     display: inline-block;
 }
 
-TABLE.gj-grid-table THEAD TH [data-role="sorticon"] {
+TABLE.gj-grid THEAD TH [data-role="sorticon"] {
     display: inline-block;
 }
 
-TABLE.gj-grid-table > thead > tr > th,
-TABLE.gj-grid-table > tbody > tr > td {
+TABLE.gj-grid > thead > tr > th,
+TABLE.gj-grid > tbody > tr > td {
     overflow: hidden;
     position: relative;
 }
 
-TABLE.gj-grid-table DIV[data-role="display"], TABLE.gj-grid-table DIV[data-role="display"] > DIV {
+TABLE.gj-grid DIV[data-role="display"], TABLE.gj-grid DIV[data-role="display"] > DIV {
 	vertical-align: middle;
 	text-indent: 0;
     display: inline-block;
@@ -39,11 +39,11 @@ TABLE.gj-grid-table DIV[data-role="display"], TABLE.gj-grid-table DIV[data-role=
     word-break: break-word;
 }
 
-TABLE.gj-grid-table .fa {
+TABLE.gj-grid .fa {
     padding: 2px;
 }
 
-TABLE.gj-grid-table > tbody > tr > td > div {
+TABLE.gj-grid > tbody > tr > td > div {
     padding: 2px;
     overflow: hidden;
 }
@@ -62,7 +62,7 @@ DIV.gj-grid-wrapper DIV.gj-grid-loading-text
     font-weight: bold;
 }
 
-table.gj-grid-table .gj-grid-icon
+table.gj-grid .gj-grid-icon
 {
     margin: 0 2px;
     cursor: pointer;
@@ -72,27 +72,27 @@ table.gj-grid-table .gj-grid-icon
 }
 
 /* Bootstrap Theme */
-table.gj-grid-bootstrap-table thead th {
+table.gj-grid-bootstrap thead th {
     background-color: #f5f5f5;
     vertical-align:middle;
 }
 
-table.gj-grid-bootstrap-table thead th [data-role="sorticon"] {
+table.gj-grid-bootstrap thead th [data-role="sorticon"] {
     margin-left: 5px;
 }
 
-table.gj-grid-bootstrap-table thead th [data-role="sorticon"] i.material-icons {
+table.gj-grid-bootstrap thead th [data-role="sorticon"] i.material-icons {
     position: absolute;
     font-size: 20px;
     top: 15px;
 }
 
-table.gj-grid-bootstrap-table tbody tr td div[data-role="display"] {
+table.gj-grid-bootstrap tbody tr td div[data-role="display"] {
     padding: 0px;
 }
 
 /* Material Design Theme */
-.gj-grid-md-table {
+.gj-grid-md {
     position: relative;
     border: 1px solid rgba(0,0,0,.12);
     border-collapse: collapse;
@@ -102,11 +102,11 @@ table.gj-grid-bootstrap-table tbody tr td div[data-role="display"] {
     background-color: #fff;
 }
 
-.gj-grid-md-table td:first-of-type, .gj-grid-md-table th:first-of-type {
+.gj-grid-md td:first-of-type, .gj-grid-md th:first-of-type {
     padding-left: 24px;
 }
 
-.gj-grid-md-table th {
+.gj-grid-md th {
     position: relative;
     vertical-align: bottom;
     text-overflow: ellipsis;
@@ -122,7 +122,7 @@ table.gj-grid-bootstrap-table tbody tr td div[data-role="display"] {
     text-align: right;
 }
 
-.gj-grid-md-table tbody tr {
+.gj-grid-md tbody tr {
     position: relative;
     height: 48px;
     transition-duration: .28s;
@@ -130,11 +130,11 @@ table.gj-grid-bootstrap-table tbody tr td div[data-role="display"] {
     transition-property: background-color;
 }
 
-.gj-grid-md-table tbody tr:hover {
+.gj-grid-md tbody tr:hover {
     background-color: #EEEEEE; /* Gray 200 */
 }
 
-.gj-grid-md-table td {
+.gj-grid-md td {
     position: relative;
     height: 48px;
     border-top: 1px solid rgba(0,0,0,.12);
@@ -144,26 +144,26 @@ table.gj-grid-bootstrap-table tbody tr td div[data-role="display"] {
     text-align: left;
 }
 
-.gj-grid-md-table tbody tr.gj-grid-md-select {
+.gj-grid-md tbody tr.gj-grid-md-select {
     background-color: #F5F5F5; /* Grey 100 */
 }
 
 
-table.gj-grid-md-table thead th [data-role="sorticon"] {
+table.gj-grid-md thead th [data-role="sorticon"] {
     margin-left: 5px;
 }
 
-table.gj-grid-md-table thead th [data-role="sorticon"] i.material-icons {
+table.gj-grid-md thead th [data-role="sorticon"] i.material-icons {
     position: absolute;
     font-size: 18px;
     top: 13px;
 }
 
-table.gj-grid-md-table thead th.gj-grid-select-all {
+table.gj-grid-md thead th.gj-grid-select-all {
     padding-bottom: 3px;
 }
 
-.gj-grid-table .gj-grid-md-limit-select {
+.gj-grid .gj-grid-md-limit-select {
     text-align: right;
     display: inline-block;
     width: 50px;

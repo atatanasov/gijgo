@@ -3108,7 +3108,7 @@ gj.grid.config = {
 
         style: {
             wrapper: 'gj-grid-wrapper',
-            table: 'gj-grid-table gj-grid-md-table',
+            table: 'gj-grid gj-grid-md',
             loadingCover: 'gj-grid-loading-cover',
             loadingText: 'gj-grid-loading-text',
             header: {
@@ -3130,7 +3130,7 @@ gj.grid.config = {
     bootstrap: {
         style: {
             wrapper: 'gj-grid-wrapper',
-            table: 'gj-grid-table gj-grid-bootstrap-table table table-bordered table-hover',
+            table: 'gj-grid gj-grid-bootstrap table table-bordered table-hover',
             content: {
                 rowHover: '',
                 rowSelected: 'active'
@@ -3146,7 +3146,7 @@ gj.grid.config = {
     bootstrap4: {
         style: {
             wrapper: 'gj-grid-wrapper',
-            table: 'gj-grid-table gj-grid-bootstrap-table table table-bordered table-hover',
+            table: 'gj-grid gj-grid-bootstrap table table-bordered table-hover',
             content: {
                 rowHover: '',
                 rowSelected: 'active'
