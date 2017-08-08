@@ -248,26 +248,32 @@ gj.documentManager = {
     /**      */    parseDate: function (value, format) {
         var i, date, month, year, dateParts, formatParts, result;
 
-        if (/^\d+$/.test(value)) {
-            result = new Date(value);
-        } else if (value.indexOf('/Date(') > -1) {
-            result = new Date(parseInt(value.substr(6), 10));
-        } else if (value) {
-            dateParts = value.split(/[\s,-\.//\:]+/);
-            formatParts = format.split(/[\s,-\.//\:]+/);
-            for (i = 0; i < formatParts.length; i++) {
-                if (['d', 'dd'].indexOf(formatParts[i]) > -1) {
-                    date = parseInt(dateParts[i], 10);
-                } else if (['m', 'mm'].indexOf(formatParts[i]) > -1) {
-                    month = parseInt(dateParts[i], 10);
-                } else if (['yy', 'yyyy'].indexOf(formatParts[i]) > -1) {
-                    year = parseInt(dateParts[i], 10);
-                    if (formatParts[i] === 'yy') {
-                        year += 2000;
+        if (value && typeof value === 'string') {
+            if (/^\d+$/.test(value)) {
+                result = new Date(value);
+            } else if (value.indexOf('/Date(') > -1) {
+                result = new Date(parseInt(value.substr(6), 10));
+            } else if (value) {
+                dateParts = value.split(/[\s,-\.//\:]+/);
+                formatParts = format.split(/[\s,-\.//\:]+/);
+                for (i = 0; i < formatParts.length; i++) {
+                    if (['d', 'dd'].indexOf(formatParts[i]) > -1) {
+                        date = parseInt(dateParts[i], 10);
+                    } else if (['m', 'mm'].indexOf(formatParts[i]) > -1) {
+                        month = parseInt(dateParts[i], 10);
+                    } else if (['yy', 'yyyy'].indexOf(formatParts[i]) > -1) {
+                        year = parseInt(dateParts[i], 10);
+                        if (formatParts[i] === 'yy') {
+                            year += 2000;
+                        }
                     }
                 }
+                result = new Date(year, month - 1, date);
             }
-            result = new Date(year, month - 1, date);
+        } else if (typeof value === 'number') {
+            result = new Date(value);
+        } else if (value instanceof Date) {
+            result = value;
         }
 
         return result;

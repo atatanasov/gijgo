@@ -37,7 +37,7 @@ gj.datepicker.config = {
         showOtherMonths: false,
 
         /** Whether days in other months shown before or after the current month are selectable.
-         * This only applies if the <a href="showOtherMonths" target="_blank">showOtherMonths</a> option is set to true.
+         * This only applies if the showOtherMonths option is set to true.
          * @type Boolean
          * @default true
          * @example True <!-- materialicons, datepicker -->
@@ -566,9 +566,14 @@ gj.datepicker.methods = {
         if (typeof (value) === "undefined") {
             return $datepicker.val();
         } else {
-            date = new Date(value);
-            $calendar = $('body').children('[role="calendar"][guid="' + $datepicker.attr('data-guid') + '"]');
-            return gj.datepicker.methods.select($datepicker, $calendar, date.getDate(), date.getMonth(), date.getFullYear())();
+            date = gj.core.parseDate(value, $datepicker.data().format);
+            if (date) {
+                $calendar = $('body').children('[role="calendar"][guid="' + $datepicker.attr('data-guid') + '"]');
+                gj.datepicker.methods.select($datepicker, $calendar, date.getDate(), date.getMonth(), date.getFullYear())();
+            } else {
+                $datepicker.val('');
+            }            
+            return $datepicker;
         }
     },
 
@@ -661,7 +666,7 @@ gj.datepicker.widget = function ($element, jsConfig) {
      *     var $datepicker = $('#datepicker').datepicker();
      * </script>
      * @example Set <!-- datepicker, materialicons -->
-     * <button class="gj-button-md" onclick="$datepicker.value('2017-08-01')">Set Value</button>
+     * <button class="gj-button-md" onclick="$datepicker.value('08/01/2017')">Set Value</button>
      * <hr/>
      * <input id="datepicker" />
      * <script>

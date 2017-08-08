@@ -7,7 +7,7 @@
     display: block;
     -ms-touch-action: none;
     touch-action: none;
-    z-index: 90;
+    z-index: 3;
 }
 
 .gj-resizable-n {
@@ -73,7 +73,7 @@
     right: 0;
     bottom: 0;
     left: 0;
-    z-index: 1040;
+    z-index: 2;
     display: none;
     overflow: hidden;
     -webkit-overflow-scrolling: touch;

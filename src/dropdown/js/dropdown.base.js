@@ -30,17 +30,53 @@ gj.dropdown.config = {
          * <script>
          *     $('#dropdown').dropdown({
          *         dataSource: '/Locations/Get',
-         *         dataValueField: 'id'
+         *         valueField: 'id'
          *     });
          * </script>
          */
         dataSource: undefined,
 
-        dataTextField: 'text',
+        /** Text field name.
+         * @type string
+         * @default 'text'
+         * @example sample <!-- materialicons, dropdown -->
+         * <select id="dropdown"></select>
+         * <script>
+         *     $('#dropdown').dropdown({
+         *         textField: 'newTextField',
+         *         dataSource: [ { value: 1, newTextField: 'One' }, { value: 2, newTextField: 'Two' }, { value: 3, newTextField: 'Three' } ]
+         *     });
+         * </script>
+         */
+        textField: 'text',
 
-        dataValueField: 'value',
+        /** Value field name.
+         * @type string
+         * @default 'text'
+         * @example sample <!-- materialicons, dropdown -->
+         * <select id="dropdown"></select>
+         * <script>
+         *     $('#dropdown').dropdown({
+         *         valueField: 'newValueField',
+         *         dataSource: [ { newValueField: 1, text: 'One' }, { newValueField: 2, text: 'Two' }, { newValueField: 3, text: 'Three' } ]
+         *     });
+         * </script>
+         */
+        valueField: 'value',
 
-        dataSelectedField: 'selected',
+        /** Selected field name.
+         * @type string
+         * @default 'text'
+         * @example sample <!-- materialicons, dropdown -->
+         * <select id="dropdown"></select>
+         * <script>
+         *     $('#dropdown').dropdown({
+         *         selectedField: 'newSelectedField',
+         *         dataSource: [ { value: 1, text: 'One' }, { value: 2, text: 'Two', newSelectedField: true }, { value: 3, text: 'Three' } ]
+         *     });
+         * </script>
+         */
+        selectedField: 'selected',
 
         optionsDisplay: 'materialdesign',
 
@@ -95,7 +131,7 @@ gj.dropdown.config = {
          *         dataSource: '/Locations/Get',
          *         uiLibrary: 'bootstrap',
          *         iconsLibrary: 'materialicons',
-         *         dataValueField: 'id'
+         *         valueField: 'id'
          *     });
          * </script>
          * @example Bootstrap.4.Font.Awesome <!-- bootstrap4, fontawesome, dropdown -->
@@ -105,7 +141,7 @@ gj.dropdown.config = {
          *         dataSource: '/Locations/Get',
          *         uiLibrary: 'bootstrap4',
          *         iconsLibrary: 'fontawesome',
-         *         dataValueField: 'id'
+         *         valueField: 'id'
          *     });
          * </script>
          */
@@ -121,7 +157,7 @@ gj.dropdown.config = {
              * <script>
              *     var dropdown = $('#dropdown').dropdown({
              *         dataSource: '/Locations/Get',
-             *         dataValueField: 'id',
+             *         valueField: 'id',
              *         icons: { 
              *             dropdown: '<i class="material-icons">keyboard_arrow_down</i>'
              *         }
@@ -132,7 +168,7 @@ gj.dropdown.config = {
              * <script>
              *     var dropdown = $('#dropdown').dropdown({
              *         dataSource: '/Locations/Get',
-             *         dataValueField: 'id',
+             *         valueField: 'id',
              *         uiLibrary: 'bootstrap',
              *         icons: { 
              *             dropdown: '<span class="glyphicon glyphicon-triangle-bottom" />'
@@ -266,9 +302,9 @@ gj.dropdown.methods = {
         for (i = 0; i < $options.length; i++) {
             $option = $($options[i]);
             record = {};
-            record[data.dataValueField] = $option.val();
-            record[data.dataTextField] = $option.html();
-            record[data.dataSelectedField] = $option.prop('selected');
+            record[data.valueField] = $option.val();
+            record[data.textField] = $option.html();
+            record[data.selectedField] = $option.prop('selected');
             dataSource.push(record);
         }
         data.dataSource = dataSource;
@@ -282,8 +318,8 @@ gj.dropdown.methods = {
         } else if (typeof data.dataSource[0] === 'string') {
             for (i = 0; i < data.dataSource.length; i++) {
                 record = {};
-                record[data.dataValueField] = data.dataSource[i];
-                record[data.dataTextField] = data.dataSource[i];
+                record[data.valueField] = data.dataSource[i];
+                record[data.textField] = data.dataSource[i];
                 data.dataSource[i] = record;
             }
         }
@@ -292,7 +328,7 @@ gj.dropdown.methods = {
 
     render: function ($dropdown, response) {
         var width,
-            selected = false,
+            selectedInd = false,
             data = $dropdown.data(),
             $parent = $dropdown.parent(),
             $list = $('body').children('[role="list"][guid="' + $dropdown.attr('data-guid') + '"]'),
@@ -305,9 +341,9 @@ gj.dropdown.methods = {
 
         if (response && response.length) {
             $.each(response, function () {
-                var value = this[data.dataValueField],
-                    text = this[data.dataTextField],
-                    selected = this[data.dataSelectedField] && this[data.dataSelectedField].toString().toLowerCase() === 'true',
+                var value = this[data.valueField],
+                    text = this[data.textField],
+                    selected = this[data.selectedField] && this[data.selectedField].toString().toLowerCase() === 'true',
                     $item, $option;
 
                 $item = $('<li value="' + value + '"><div data-role="wrapper"><span data-role="display">' + text + '</span></div></li>');
@@ -322,11 +358,11 @@ gj.dropdown.methods = {
 
                 if (selected) {
                     gj.dropdown.methods.select($dropdown, value);
-                    selected = true;
+                    selectedInd = true;
                 }
             });
-            if (selected === false) {
-                gj.dropdown.methods.select($dropdown, response[0][data.dataValueField]);
+            if (selectedInd === false) {
+                gj.dropdown.methods.select($dropdown, response[0][data.valueField]);
             }
         }
 
@@ -351,7 +387,7 @@ gj.dropdown.methods = {
         $list.children('li').removeClass(data.style.active);
         $item.addClass(data.style.active);
         $dropdown.val(value);
-        $dropdown.next('[role="presenter"]').find('[role="display"]').html(record[data.dataTextField]);
+        $dropdown.next('[role="presenter"]').find('[role="display"]').html(record[data.textField]);
         gj.dropdown.events.change($dropdown);
         $list.hide();
         return $dropdown;
@@ -362,7 +398,7 @@ gj.dropdown.methods = {
             i, result = undefined;
 
         for (i = 0; i < data.records.length; i++) {
-            if (data.records[i][data.dataValueField] === value) {
+            if (data.records[i][data.valueField] === value) {
                 result = data.records[i];
                 break;
             }

@@ -71,8 +71,8 @@ gj.grid.plugins.inlineEditing.config = {
              *         dataSource: '/Players/Get',
              *         columns: [
              *             { field: 'Name', editor: true },
-             *             { field: 'Nationality', editor: {}, type: 'dropdown', editor: { dataSource: countries } },
-             *             { field: 'DateOfBirth', editor: {}, type: 'date' },
+             *             { field: 'Nationality', type: 'dropdown', editor: { dataSource: countries } },
+             *             { field: 'DateOfBirth', type: 'date', editor: true },
              *             { field: 'IsActive', title: 'Active?', type:'checkbox', editor: true, mode: 'editOnly', width: 80, align: 'center' }
              *         ]
              *     });
@@ -86,8 +86,8 @@ gj.grid.plugins.inlineEditing.config = {
              *         dataSource: '/Players/Get',
              *         columns: [
              *             { field: 'Name', editor: true },
-             *             { field: 'Nationality', editor: {}, type: 'dropdown', editor: { dataSource: countries } },
-             *             { field: 'DateOfBirth', editor: {}, type: 'date' },
+             *             { field: 'Nationality', type: 'dropdown', editor: { dataSource: countries } },
+             *             { field: 'DateOfBirth', type: 'date', editor: true },
              *             { field: 'IsActive', title: 'Active?', type:'checkbox', editor: true, mode: 'editOnly', width: 80, align: 'center' }
              *         ]
              *     });
@@ -101,8 +101,8 @@ gj.grid.plugins.inlineEditing.config = {
              *         dataSource: '/Players/Get',
              *         columns: [
              *             { field: 'Name', editor: true },
-             *             { field: 'Nationality', editor: {}, type: 'dropdown', editor: { dataSource: countries } },
-             *             { field: 'DateOfBirth', editor: {}, type: 'date' },
+             *             { field: 'Nationality', type: 'dropdown', editor: { dataSource: countries } },
+             *             { field: 'DateOfBirth', type: 'date', editor: true },
              *             { field: 'IsActive', title: 'Active?', type:'checkbox', editor: true, mode: 'editOnly', width: 80, align: 'center' }
              *         ]
              *     });
@@ -179,16 +179,16 @@ gj.grid.plugins.inlineEditing.config = {
              * @alias inlineEditing.managementColumn
              * @type Boolean
              * @default true
-             * @example True <!-- materialicons, grid -->
+             * @example True <!-- materialicons, grid, checkbox -->
              * <table id="grid"></table>
              * <script>
              *     var grid, data = [
-             *         { 'ID': 1, 'Name': 'Hristo Stoichkov', 'PlaceOfBirth': 'Plovdiv, Bulgaria' },
-             *         { 'ID': 2, 'Name': 'Ronaldo Luís Nazário de Lima', 'PlaceOfBirth': 'Rio de Janeiro, Brazil' },
-             *         { 'ID': 3, 'Name': 'David Platt', 'PlaceOfBirth': 'Chadderton, Lancashire, England' },
-             *         { 'ID': 4, 'Name': 'Manuel Neuer', 'PlaceOfBirth': 'Gelsenkirchen, West Germany' },
-             *         { 'ID': 5, 'Name': 'James Rodríguez', 'PlaceOfBirth': 'Cúcuta, Colombia' },
-             *         { 'ID': 6, 'Name': 'Dimitar Berbatov', 'PlaceOfBirth': 'Blagoevgrad, Bulgaria' }
+             *         { 'ID': 1, 'Name': 'Hristo Stoichkov', 'PlaceOfBirth': 'Plovdiv, Bulgaria', IsActive: false },
+             *         { 'ID': 2, 'Name': 'Ronaldo Luís Nazário de Lima', 'PlaceOfBirth': 'Rio de Janeiro, Brazil', IsActive: false },
+             *         { 'ID': 3, 'Name': 'David Platt', 'PlaceOfBirth': 'Chadderton, Lancashire, England', IsActive: false },
+             *         { 'ID': 4, 'Name': 'Manuel Neuer', 'PlaceOfBirth': 'Gelsenkirchen, West Germany', IsActive: true },
+             *         { 'ID': 5, 'Name': 'James Rodríguez', 'PlaceOfBirth': 'Cúcuta, Colombia', IsActive: true },
+             *         { 'ID': 6, 'Name': 'Dimitar Berbatov', 'PlaceOfBirth': 'Blagoevgrad, Bulgaria', IsActive: false }
              *     ];
              *     grid = $('#grid').grid({
              *         dataSource: data,
@@ -197,7 +197,8 @@ gj.grid.plugins.inlineEditing.config = {
              *         columns: [
              *             { field: 'ID', width: 56 },
              *             { field: 'Name', editor: true },
-             *             { field: 'PlaceOfBirth', editor: true }
+             *             { field: 'PlaceOfBirth', editor: true },
+             *             { field: 'IsActive', title: 'Active?', type: 'checkbox', editor: true, width: 100, align: 'center' }
              *         ]
              *     });
              * </script>
@@ -275,19 +276,19 @@ gj.grid.plugins.inlineEditing.config = {
             */
             managementColumn: true,
 
-            managementColumnConfig: { width: 300, align: 'center', renderer: gj.grid.plugins.inlineEditing.renderers.editManager }
+            managementColumnConfig: { width: 300, align: 'center', renderer: gj.grid.plugins.inlineEditing.renderers.editManager, cssClass: 'gj-grid-management-column' }
         }
     },
 
     bootstrap: {
         inlineEditing: {
-            managementColumnConfig: { width: 200, align: 'center', renderer: gj.grid.plugins.inlineEditing.renderers.editManager }
+            managementColumnConfig: { width: 200, align: 'center', renderer: gj.grid.plugins.inlineEditing.renderers.editManager, cssClass: 'gj-grid-management-column' }
         }
     },
 
     bootstrap4: {
         inlineEditing: {
-            managementColumnConfig: { width: 200, align: 'center', renderer: gj.grid.plugins.inlineEditing.renderers.editManager }
+            managementColumnConfig: { width: 200, align: 'center', renderer: gj.grid.plugins.inlineEditing.renderers.editManager, cssClass: 'gj-grid-management-column' }
         }
     }
 };
@@ -317,10 +318,10 @@ gj.grid.plugins.inlineEditing.private = {
                 $editorContainer = $('<div data-role="edit" />');
                 $cell.append($editorContainer);
             }
-            value = record.hasOwnProperty(column.field) ? record[column.field] : $displayContainer.html();
+            value = column.type === 'checkbox' ? record[column.field] : $displayContainer.html();
             $editorField = $editorContainer.find('input, select, textarea').first();
             if ($editorField.length) {
-                $editorField.val(value);
+                column.type === 'checkbox' ? $editorField.prop('checked', value) : $editorField.val(value);
             } else {
                 if (typeof (column.editor) === 'function') {
                     column.editor($editorContainer, value, record);
@@ -389,16 +390,17 @@ gj.grid.plugins.inlineEditing.private = {
     },
 
     displayMode: function ($grid, $cell, column, cancel) {
-        var $editorContainer, $displayContainer, newValue, oldValue, record, position, style = '';
+        var $editorContainer, $displayContainer, $ele, newValue, oldValue, record, position, style = '';
         if ($cell.attr('data-mode') === 'edit' && column.mode !== 'editOnly') {
             $editorContainer = $cell.find('div[data-role="edit"]');
             $displayContainer = $cell.find('div[data-role="display"]');
-            newValue = $editorContainer.find('input, select, textarea').first().val();
+            $ele = $editorContainer.find('input, select, textarea').first();
+            newValue = column.type === 'checkbox' ? $ele.prop('checked') : $ele.val();
             position = $cell.parent().data('position');
             record = $grid.get(position);
-            oldValue = record[column.field];
+            oldValue = column.type === 'checkbox' ? record[column.field] : $displayContainer.html();
             if (cancel !== true && newValue !== oldValue) {
-                record[column.field] = newValue;
+                record[column.field] = column.type === 'date' ? gj.core.parseDate(newValue, column.format) : newValue;
                 if (column.mode !== 'editOnly') {
                     gj.grid.methods.renderDisplayElement($grid, $displayContainer, column, record, gj.grid.methods.getId(record, $grid.data('primaryKey'), position), 'update');
                     if ($cell.find('span.gj-dirty').length === 0) {

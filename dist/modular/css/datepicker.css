@@ -15,7 +15,7 @@
 
 .gj-calendar {
     position: absolute;
-    z-index: 2;
+    z-index: 4;
 }
 
 .gj-calendar table tr[role="month-manager"] th {

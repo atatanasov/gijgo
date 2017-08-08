@@ -276,7 +276,7 @@ ul.gj-list-md li [data-role="display"] {
     display: block;
     -ms-touch-action: none;
     touch-action: none;
-    z-index: 90;
+    z-index: 3;
 }
 
 .gj-resizable-n {
@@ -342,7 +342,7 @@ ul.gj-list-md li [data-role="display"] {
     right: 0;
     bottom: 0;
     left: 0;
-    z-index: 1040;
+    z-index: 2;
     display: none;
     overflow: hidden;
     -webkit-overflow-scrolling: touch;
@@ -831,6 +831,10 @@ span.gj-grid-column-resizer {
 }
 
 /* Material Design */
+.gj-grid-md tbody tr td.gj-grid-management-column {
+    padding: 3px;
+}
+
 .gj-grid-md tbody tr td[data-mode="edit"] {
     padding: 0px 18px;
 }
@@ -855,6 +859,10 @@ span.gj-grid-column-resizer {
 }
 
 /* Bootstrap 3 */
+.gj-grid-bootstrap-3 tbody tr td.gj-grid-management-column {
+    padding: 3px;
+}
+
 .gj-grid-bootstrap-3 tbody tr td[data-mode="edit"] [data-role="edit"] input[type="text"] {
     height: 37px;
     padding: 8px;
@@ -889,6 +897,10 @@ span.gj-grid-column-resizer {
 }
 
 /* Bootstrap 4 */
+.gj-grid-bootstrap-4 tbody tr td.gj-grid-management-column {
+    padding: 11px;
+}
+
 .gj-grid-bootstrap-4 tbody tr td[data-mode="edit"] [data-role="edit"] input[type="text"] {
     height: 50px;
     padding-left: 12px;
@@ -1298,6 +1310,7 @@ ul.gj-list-bootstrap li [data-role="expander"].gj-tree-material-icons-expander {
 
 .gj-editor-md div[data-role="body"] {
     border: 1px solid rgba(158,158,158,.2);
+    outline: 0px solid transparent;
 }
 
 .gj-editor-md p {
@@ -1325,6 +1338,7 @@ ul.gj-list-bootstrap li [data-role="expander"].gj-tree-material-icons-expander {
 
 .gj-editor-bootstrap div[data-role="body"] {
     border: 1px solid #eceeef;
+    outline: 0px solid transparent;
 }
 
 .gj-editor-bootstrap p {
@@ -1388,7 +1402,7 @@ ul.gj-list-bootstrap li [data-role="expander"].gj-tree-material-icons-expander {
     background-color: #f5f5f5;
     color: #000;
     margin: 0px;
-    z-index: 2;
+    z-index: 4;
 }
 
 .gj-dropdown-list-md li:hover, .gj-dropdown-list-md li.active {
@@ -1422,7 +1436,7 @@ ul.gj-list-bootstrap li [data-role="expander"].gj-tree-material-icons-expander {
     top: 32px;
     left: 0px;
     margin: 0px;
-    z-index: 2;
+    z-index: 4;
 }
 .gj-datepicker {
     position: relative;
@@ -1441,7 +1455,7 @@ ul.gj-list-bootstrap li [data-role="expander"].gj-tree-material-icons-expander {
 
 .gj-calendar {
     position: absolute;
-    z-index: 2;
+    z-index: 4;
 }
 
 .gj-calendar table tr[role="month-manager"] th {

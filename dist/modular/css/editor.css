@@ -15,6 +15,7 @@
 
 .gj-editor-md div[data-role="body"] {
     border: 1px solid rgba(158,158,158,.2);
+    outline: 0px solid transparent;
 }
 
 .gj-editor-md p {
@@ -42,6 +43,7 @@
 
 .gj-editor-bootstrap div[data-role="body"] {
     border: 1px solid #eceeef;
+    outline: 0px solid transparent;
 }
 
 .gj-editor-bootstrap p {

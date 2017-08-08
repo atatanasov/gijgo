@@ -364,6 +364,10 @@ span.gj-grid-column-resizer {
 }
 
 /* Material Design */
+.gj-grid-md tbody tr td.gj-grid-management-column {
+    padding: 3px;
+}
+
 .gj-grid-md tbody tr td[data-mode="edit"] {
     padding: 0px 18px;
 }
@@ -388,6 +392,10 @@ span.gj-grid-column-resizer {
 }
 
 /* Bootstrap 3 */
+.gj-grid-bootstrap-3 tbody tr td.gj-grid-management-column {
+    padding: 3px;
+}
+
 .gj-grid-bootstrap-3 tbody tr td[data-mode="edit"] [data-role="edit"] input[type="text"] {
     height: 37px;
     padding: 8px;
@@ -422,6 +430,10 @@ span.gj-grid-column-resizer {
 }
 
 /* Bootstrap 4 */
+.gj-grid-bootstrap-4 tbody tr td.gj-grid-management-column {
+    padding: 11px;
+}
+
 .gj-grid-bootstrap-4 tbody tr td[data-mode="edit"] [data-role="edit"] input[type="text"] {
     height: 50px;
     padding-left: 12px;

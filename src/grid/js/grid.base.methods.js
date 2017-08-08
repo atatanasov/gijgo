@@ -460,11 +460,11 @@ gj.grid.methods = {
                 $displayEl.html(text);
             }
         } else {
-            text = gj.grid.methods.formatText(record[column.field], column);
-            if (!column.tooltip && text) {
-                $displayEl.attr('title', text);
+            record[column.field] = gj.grid.methods.formatText(record[column.field], column);
+            if (!column.tooltip && record[column.field]) {
+                $displayEl.attr('title', record[column.field]);
             }
-            $displayEl.html(text);
+            $displayEl.html(record[column.field]);
         }
         if (column.tooltip && 'create' === mode) {
             $displayEl.attr('title', column.tooltip);
@@ -472,12 +472,8 @@ gj.grid.methods = {
     },
 
     formatText: function (text, column) {
-        if (text && column.type) {
-            switch (column.type) {
-                case 'date':
-                    text = gj.core.formatDate(gj.core.parseDate(text, column.format), column.format);
-                    break;
-            }
+        if (text && column.type === 'date') {
+            text = gj.core.formatDate(gj.core.parseDate(text, column.format), column.format);
         } else {
             text = (typeof (text) === 'undefined' || text === null) ? '' : text.toString();
         }

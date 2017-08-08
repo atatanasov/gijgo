@@ -21,7 +21,7 @@ gj.datepicker.config = {
         /** Whether to display dates in other months at the start or end of the current month.         */        showOtherMonths: false,
 
         /** Whether days in other months shown before or after the current month are selectable.
-         * This only applies if the <a href="showOtherMonths" target="_blank">showOtherMonths</a> option is set to true.         */        selectOtherMonths: true,
+         * This only applies if the showOtherMonths option is set to true.         */        selectOtherMonths: true,
 
         /** The minimum selectable date. When not set, there is no minimum         */        minDate: undefined,
 
@@ -391,9 +391,14 @@ gj.datepicker.methods = {
         if (typeof (value) === "undefined") {
             return $datepicker.val();
         } else {
-            date = new Date(value);
-            $calendar = $('body').children('[role="calendar"][guid="' + $datepicker.attr('data-guid') + '"]');
-            return gj.datepicker.methods.select($datepicker, $calendar, date.getDate(), date.getMonth(), date.getFullYear())();
+            date = gj.core.parseDate(value, $datepicker.data().format);
+            if (date) {
+                $calendar = $('body').children('[role="calendar"][guid="' + $datepicker.attr('data-guid') + '"]');
+                gj.datepicker.methods.select($datepicker, $calendar, date.getDate(), date.getMonth(), date.getFullYear())();
+            } else {
+                $datepicker.val('');
+            }            
+            return $datepicker;
         }
     },
 

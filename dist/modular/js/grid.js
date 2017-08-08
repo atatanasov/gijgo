@@ -742,11 +742,11 @@ gj.grid.methods = {
                 $displayEl.html(text);
             }
         } else {
-            text = gj.grid.methods.formatText(record[column.field], column);
-            if (!column.tooltip && text) {
-                $displayEl.attr('title', text);
+            record[column.field] = gj.grid.methods.formatText(record[column.field], column);
+            if (!column.tooltip && record[column.field]) {
+                $displayEl.attr('title', record[column.field]);
             }
-            $displayEl.html(text);
+            $displayEl.html(record[column.field]);
         }
         if (column.tooltip && 'create' === mode) {
             $displayEl.attr('title', column.tooltip);
@@ -754,12 +754,8 @@ gj.grid.methods = {
     },
 
     formatText: function (text, column) {
-        if (text && column.type) {
-            switch (column.type) {
-                case 'date':
-                    text = gj.core.formatDate(gj.core.parseDate(text, column.format), column.format);
-                    break;
-            }
+        if (text && column.type === 'date') {
+            text = gj.core.formatDate(gj.core.parseDate(text, column.format), column.format);
         } else {
             text = (typeof (text) === 'undefined' || text === null) ? '' : text.toString();
         }
@@ -1606,19 +1602,19 @@ gj.grid.plugins.inlineEditing.config = {
                 
             /** If set to true, add column with buttons for edit, delete, update and cancel at the end of the grid.            */            managementColumn: true,
 
-            managementColumnConfig: { width: 300, align: 'center', renderer: gj.grid.plugins.inlineEditing.renderers.editManager }
+            managementColumnConfig: { width: 300, align: 'center', renderer: gj.grid.plugins.inlineEditing.renderers.editManager, cssClass: 'gj-grid-management-column' }
         }
     },
 
     bootstrap: {
         inlineEditing: {
-            managementColumnConfig: { width: 200, align: 'center', renderer: gj.grid.plugins.inlineEditing.renderers.editManager }
+            managementColumnConfig: { width: 200, align: 'center', renderer: gj.grid.plugins.inlineEditing.renderers.editManager, cssClass: 'gj-grid-management-column' }
         }
     },
 
     bootstrap4: {
         inlineEditing: {
-            managementColumnConfig: { width: 200, align: 'center', renderer: gj.grid.plugins.inlineEditing.renderers.editManager }
+            managementColumnConfig: { width: 200, align: 'center', renderer: gj.grid.plugins.inlineEditing.renderers.editManager, cssClass: 'gj-grid-management-column' }
         }
     }
 };
@@ -1648,10 +1644,10 @@ gj.grid.plugins.inlineEditing.private = {
                 $editorContainer = $('<div data-role="edit" />');
                 $cell.append($editorContainer);
             }
-            value = record.hasOwnProperty(column.field) ? record[column.field] : $displayContainer.html();
+            value = column.type === 'checkbox' ? record[column.field] : $displayContainer.html();
             $editorField = $editorContainer.find('input, select, textarea').first();
             if ($editorField.length) {
-                $editorField.val(value);
+                column.type === 'checkbox' ? $editorField.prop('checked', value) : $editorField.val(value);
             } else {
                 if (typeof (column.editor) === 'function') {
                     column.editor($editorContainer, value, record);
@@ -1720,16 +1716,17 @@ gj.grid.plugins.inlineEditing.private = {
     },
 
     displayMode: function ($grid, $cell, column, cancel) {
-        var $editorContainer, $displayContainer, newValue, oldValue, record, position, style = '';
+        var $editorContainer, $displayContainer, $ele, newValue, oldValue, record, position, style = '';
         if ($cell.attr('data-mode') === 'edit' && column.mode !== 'editOnly') {
             $editorContainer = $cell.find('div[data-role="edit"]');
             $displayContainer = $cell.find('div[data-role="display"]');
-            newValue = $editorContainer.find('input, select, textarea').first().val();
+            $ele = $editorContainer.find('input, select, textarea').first();
+            newValue = column.type === 'checkbox' ? $ele.prop('checked') : $ele.val();
             position = $cell.parent().data('position');
             record = $grid.get(position);
-            oldValue = record[column.field];
+            oldValue = column.type === 'checkbox' ? record[column.field] : $displayContainer.html();
             if (cancel !== true && newValue !== oldValue) {
-                record[column.field] = newValue;
+                record[column.field] = column.type === 'date' ? gj.core.parseDate(newValue, column.format) : newValue;
                 if (column.mode !== 'editOnly') {
                     gj.grid.methods.renderDisplayElement($grid, $displayContainer, column, record, gj.grid.methods.getId(record, $grid.data('primaryKey'), position), 'update');
                     if ($cell.find('span.gj-dirty').length === 0) {

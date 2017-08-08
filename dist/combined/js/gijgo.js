@@ -276,26 +276,32 @@ gj.core = {
     parseDate: function (value, format) {
         var i, date, month, year, dateParts, formatParts, result;
 
-        if (/^\d+$/.test(value)) {
-            result = new Date(value);
-        } else if (value.indexOf('/Date(') > -1) {
-            result = new Date(parseInt(value.substr(6), 10));
-        } else if (value) {
-            dateParts = value.split(/[\s,-\.//\:]+/);
-            formatParts = format.split(/[\s,-\.//\:]+/);
-            for (i = 0; i < formatParts.length; i++) {
-                if (['d', 'dd'].indexOf(formatParts[i]) > -1) {
-                    date = parseInt(dateParts[i], 10);
-                } else if (['m', 'mm'].indexOf(formatParts[i]) > -1) {
-                    month = parseInt(dateParts[i], 10);
-                } else if (['yy', 'yyyy'].indexOf(formatParts[i]) > -1) {
-                    year = parseInt(dateParts[i], 10);
-                    if (formatParts[i] === 'yy') {
-                        year += 2000;
+        if (value && typeof value === 'string') {
+            if (/^\d+$/.test(value)) {
+                result = new Date(value);
+            } else if (value.indexOf('/Date(') > -1) {
+                result = new Date(parseInt(value.substr(6), 10));
+            } else if (value) {
+                dateParts = value.split(/[\s,-\.//\:]+/);
+                formatParts = format.split(/[\s,-\.//\:]+/);
+                for (i = 0; i < formatParts.length; i++) {
+                    if (['d', 'dd'].indexOf(formatParts[i]) > -1) {
+                        date = parseInt(dateParts[i], 10);
+                    } else if (['m', 'mm'].indexOf(formatParts[i]) > -1) {
+                        month = parseInt(dateParts[i], 10);
+                    } else if (['yy', 'yyyy'].indexOf(formatParts[i]) > -1) {
+                        year = parseInt(dateParts[i], 10);
+                        if (formatParts[i] === 'yy') {
+                            year += 2000;
+                        }
                     }
                 }
+                result = new Date(year, month - 1, date);
             }
-            result = new Date(year, month - 1, date);
+        } else if (typeof value === 'number') {
+            result = new Date(value);
+        } else if (value instanceof Date) {
+            result = value;
         }
 
         return result;
@@ -3970,11 +3976,11 @@ gj.grid.methods = {
                 $displayEl.html(text);
             }
         } else {
-            text = gj.grid.methods.formatText(record[column.field], column);
-            if (!column.tooltip && text) {
-                $displayEl.attr('title', text);
+            record[column.field] = gj.grid.methods.formatText(record[column.field], column);
+            if (!column.tooltip && record[column.field]) {
+                $displayEl.attr('title', record[column.field]);
             }
-            $displayEl.html(text);
+            $displayEl.html(record[column.field]);
         }
         if (column.tooltip && 'create' === mode) {
             $displayEl.attr('title', column.tooltip);
@@ -3982,12 +3988,8 @@ gj.grid.methods = {
     },
 
     formatText: function (text, column) {
-        if (text && column.type) {
-            switch (column.type) {
-                case 'date':
-                    text = gj.core.formatDate(gj.core.parseDate(text, column.format), column.format);
-                    break;
-            }
+        if (text && column.type === 'date') {
+            text = gj.core.formatDate(gj.core.parseDate(text, column.format), column.format);
         } else {
             text = (typeof (text) === 'undefined' || text === null) ? '' : text.toString();
         }
@@ -5516,8 +5518,8 @@ gj.grid.plugins.inlineEditing.config = {
              *         dataSource: '/Players/Get',
              *         columns: [
              *             { field: 'Name', editor: true },
-             *             { field: 'Nationality', editor: {}, type: 'dropdown', editor: { dataSource: countries } },
-             *             { field: 'DateOfBirth', editor: {}, type: 'date' },
+             *             { field: 'Nationality', type: 'dropdown', editor: { dataSource: countries } },
+             *             { field: 'DateOfBirth', type: 'date', editor: true },
              *             { field: 'IsActive', title: 'Active?', type:'checkbox', editor: true, mode: 'editOnly', width: 80, align: 'center' }
              *         ]
              *     });
@@ -5531,8 +5533,8 @@ gj.grid.plugins.inlineEditing.config = {
              *         dataSource: '/Players/Get',
              *         columns: [
              *             { field: 'Name', editor: true },
-             *             { field: 'Nationality', editor: {}, type: 'dropdown', editor: { dataSource: countries } },
-             *             { field: 'DateOfBirth', editor: {}, type: 'date' },
+             *             { field: 'Nationality', type: 'dropdown', editor: { dataSource: countries } },
+             *             { field: 'DateOfBirth', type: 'date', editor: true },
              *             { field: 'IsActive', title: 'Active?', type:'checkbox', editor: true, mode: 'editOnly', width: 80, align: 'center' }
              *         ]
              *     });
@@ -5546,8 +5548,8 @@ gj.grid.plugins.inlineEditing.config = {
              *         dataSource: '/Players/Get',
              *         columns: [
              *             { field: 'Name', editor: true },
-             *             { field: 'Nationality', editor: {}, type: 'dropdown', editor: { dataSource: countries } },
-             *             { field: 'DateOfBirth', editor: {}, type: 'date' },
+             *             { field: 'Nationality', type: 'dropdown', editor: { dataSource: countries } },
+             *             { field: 'DateOfBirth', type: 'date', editor: true },
              *             { field: 'IsActive', title: 'Active?', type:'checkbox', editor: true, mode: 'editOnly', width: 80, align: 'center' }
              *         ]
              *     });
@@ -5624,16 +5626,16 @@ gj.grid.plugins.inlineEditing.config = {
              * @alias inlineEditing.managementColumn
              * @type Boolean
              * @default true
-             * @example True <!-- materialicons, grid -->
+             * @example True <!-- materialicons, grid, checkbox -->
              * <table id="grid"></table>
              * <script>
              *     var grid, data = [
-             *         { 'ID': 1, 'Name': 'Hristo Stoichkov', 'PlaceOfBirth': 'Plovdiv, Bulgaria' },
-             *         { 'ID': 2, 'Name': 'Ronaldo Luís Nazário de Lima', 'PlaceOfBirth': 'Rio de Janeiro, Brazil' },
-             *         { 'ID': 3, 'Name': 'David Platt', 'PlaceOfBirth': 'Chadderton, Lancashire, England' },
-             *         { 'ID': 4, 'Name': 'Manuel Neuer', 'PlaceOfBirth': 'Gelsenkirchen, West Germany' },
-             *         { 'ID': 5, 'Name': 'James Rodríguez', 'PlaceOfBirth': 'Cúcuta, Colombia' },
-             *         { 'ID': 6, 'Name': 'Dimitar Berbatov', 'PlaceOfBirth': 'Blagoevgrad, Bulgaria' }
+             *         { 'ID': 1, 'Name': 'Hristo Stoichkov', 'PlaceOfBirth': 'Plovdiv, Bulgaria', IsActive: false },
+             *         { 'ID': 2, 'Name': 'Ronaldo Luís Nazário de Lima', 'PlaceOfBirth': 'Rio de Janeiro, Brazil', IsActive: false },
+             *         { 'ID': 3, 'Name': 'David Platt', 'PlaceOfBirth': 'Chadderton, Lancashire, England', IsActive: false },
+             *         { 'ID': 4, 'Name': 'Manuel Neuer', 'PlaceOfBirth': 'Gelsenkirchen, West Germany', IsActive: true },
+             *         { 'ID': 5, 'Name': 'James Rodríguez', 'PlaceOfBirth': 'Cúcuta, Colombia', IsActive: true },
+             *         { 'ID': 6, 'Name': 'Dimitar Berbatov', 'PlaceOfBirth': 'Blagoevgrad, Bulgaria', IsActive: false }
              *     ];
              *     grid = $('#grid').grid({
              *         dataSource: data,
@@ -5642,7 +5644,8 @@ gj.grid.plugins.inlineEditing.config = {
              *         columns: [
              *             { field: 'ID', width: 56 },
              *             { field: 'Name', editor: true },
-             *             { field: 'PlaceOfBirth', editor: true }
+             *             { field: 'PlaceOfBirth', editor: true },
+             *             { field: 'IsActive', title: 'Active?', type: 'checkbox', editor: true, width: 100, align: 'center' }
              *         ]
              *     });
              * </script>
@@ -5720,19 +5723,19 @@ gj.grid.plugins.inlineEditing.config = {
             */
             managementColumn: true,
 
-            managementColumnConfig: { width: 300, align: 'center', renderer: gj.grid.plugins.inlineEditing.renderers.editManager }
+            managementColumnConfig: { width: 300, align: 'center', renderer: gj.grid.plugins.inlineEditing.renderers.editManager, cssClass: 'gj-grid-management-column' }
         }
     },
 
     bootstrap: {
         inlineEditing: {
-            managementColumnConfig: { width: 200, align: 'center', renderer: gj.grid.plugins.inlineEditing.renderers.editManager }
+            managementColumnConfig: { width: 200, align: 'center', renderer: gj.grid.plugins.inlineEditing.renderers.editManager, cssClass: 'gj-grid-management-column' }
         }
     },
 
     bootstrap4: {
         inlineEditing: {
-            managementColumnConfig: { width: 200, align: 'center', renderer: gj.grid.plugins.inlineEditing.renderers.editManager }
+            managementColumnConfig: { width: 200, align: 'center', renderer: gj.grid.plugins.inlineEditing.renderers.editManager, cssClass: 'gj-grid-management-column' }
         }
     }
 };
@@ -5762,10 +5765,10 @@ gj.grid.plugins.inlineEditing.private = {
                 $editorContainer = $('<div data-role="edit" />');
                 $cell.append($editorContainer);
             }
-            value = record.hasOwnProperty(column.field) ? record[column.field] : $displayContainer.html();
+            value = column.type === 'checkbox' ? record[column.field] : $displayContainer.html();
             $editorField = $editorContainer.find('input, select, textarea').first();
             if ($editorField.length) {
-                $editorField.val(value);
+                column.type === 'checkbox' ? $editorField.prop('checked', value) : $editorField.val(value);
             } else {
                 if (typeof (column.editor) === 'function') {
                     column.editor($editorContainer, value, record);
@@ -5834,16 +5837,17 @@ gj.grid.plugins.inlineEditing.private = {
     },
 
     displayMode: function ($grid, $cell, column, cancel) {
-        var $editorContainer, $displayContainer, newValue, oldValue, record, position, style = '';
+        var $editorContainer, $displayContainer, $ele, newValue, oldValue, record, position, style = '';
         if ($cell.attr('data-mode') === 'edit' && column.mode !== 'editOnly') {
             $editorContainer = $cell.find('div[data-role="edit"]');
             $displayContainer = $cell.find('div[data-role="display"]');
-            newValue = $editorContainer.find('input, select, textarea').first().val();
+            $ele = $editorContainer.find('input, select, textarea').first();
+            newValue = column.type === 'checkbox' ? $ele.prop('checked') : $ele.val();
             position = $cell.parent().data('position');
             record = $grid.get(position);
-            oldValue = record[column.field];
+            oldValue = column.type === 'checkbox' ? record[column.field] : $displayContainer.html();
             if (cancel !== true && newValue !== oldValue) {
-                record[column.field] = newValue;
+                record[column.field] = column.type === 'date' ? gj.core.parseDate(newValue, column.format) : newValue;
                 if (column.mode !== 'editOnly') {
                     gj.grid.methods.renderDisplayElement($grid, $displayContainer, column, record, gj.grid.methods.getId(record, $grid.data('primaryKey'), position), 'update');
                     if ($cell.find('span.gj-dirty').length === 0) {
@@ -11226,17 +11230,53 @@ gj.dropdown.config = {
          * <script>
          *     $('#dropdown').dropdown({
          *         dataSource: '/Locations/Get',
-         *         dataValueField: 'id'
+         *         valueField: 'id'
          *     });
          * </script>
          */
         dataSource: undefined,
 
-        dataTextField: 'text',
+        /** Text field name.
+         * @type string
+         * @default 'text'
+         * @example sample <!-- materialicons, dropdown -->
+         * <select id="dropdown"></select>
+         * <script>
+         *     $('#dropdown').dropdown({
+         *         textField: 'newTextField',
+         *         dataSource: [ { value: 1, newTextField: 'One' }, { value: 2, newTextField: 'Two' }, { value: 3, newTextField: 'Three' } ]
+         *     });
+         * </script>
+         */
+        textField: 'text',
 
-        dataValueField: 'value',
+        /** Value field name.
+         * @type string
+         * @default 'text'
+         * @example sample <!-- materialicons, dropdown -->
+         * <select id="dropdown"></select>
+         * <script>
+         *     $('#dropdown').dropdown({
+         *         valueField: 'newValueField',
+         *         dataSource: [ { newValueField: 1, text: 'One' }, { newValueField: 2, text: 'Two' }, { newValueField: 3, text: 'Three' } ]
+         *     });
+         * </script>
+         */
+        valueField: 'value',
 
-        dataSelectedField: 'selected',
+        /** Selected field name.
+         * @type string
+         * @default 'text'
+         * @example sample <!-- materialicons, dropdown -->
+         * <select id="dropdown"></select>
+         * <script>
+         *     $('#dropdown').dropdown({
+         *         selectedField: 'newSelectedField',
+         *         dataSource: [ { value: 1, text: 'One' }, { value: 2, text: 'Two', newSelectedField: true }, { value: 3, text: 'Three' } ]
+         *     });
+         * </script>
+         */
+        selectedField: 'selected',
 
         optionsDisplay: 'materialdesign',
 
@@ -11291,7 +11331,7 @@ gj.dropdown.config = {
          *         dataSource: '/Locations/Get',
          *         uiLibrary: 'bootstrap',
          *         iconsLibrary: 'materialicons',
-         *         dataValueField: 'id'
+         *         valueField: 'id'
          *     });
          * </script>
          * @example Bootstrap.4.Font.Awesome <!-- bootstrap4, fontawesome, dropdown -->
@@ -11301,7 +11341,7 @@ gj.dropdown.config = {
          *         dataSource: '/Locations/Get',
          *         uiLibrary: 'bootstrap4',
          *         iconsLibrary: 'fontawesome',
-         *         dataValueField: 'id'
+         *         valueField: 'id'
          *     });
          * </script>
          */
@@ -11317,7 +11357,7 @@ gj.dropdown.config = {
              * <script>
              *     var dropdown = $('#dropdown').dropdown({
              *         dataSource: '/Locations/Get',
-             *         dataValueField: 'id',
+             *         valueField: 'id',
              *         icons: { 
              *             dropdown: '<i class="material-icons">keyboard_arrow_down</i>'
              *         }
@@ -11328,7 +11368,7 @@ gj.dropdown.config = {
              * <script>
              *     var dropdown = $('#dropdown').dropdown({
              *         dataSource: '/Locations/Get',
-             *         dataValueField: 'id',
+             *         valueField: 'id',
              *         uiLibrary: 'bootstrap',
              *         icons: { 
              *             dropdown: '<span class="glyphicon glyphicon-triangle-bottom" />'
@@ -11462,9 +11502,9 @@ gj.dropdown.methods = {
         for (i = 0; i < $options.length; i++) {
             $option = $($options[i]);
             record = {};
-            record[data.dataValueField] = $option.val();
-            record[data.dataTextField] = $option.html();
-            record[data.dataSelectedField] = $option.prop('selected');
+            record[data.valueField] = $option.val();
+            record[data.textField] = $option.html();
+            record[data.selectedField] = $option.prop('selected');
             dataSource.push(record);
         }
         data.dataSource = dataSource;
@@ -11478,8 +11518,8 @@ gj.dropdown.methods = {
         } else if (typeof data.dataSource[0] === 'string') {
             for (i = 0; i < data.dataSource.length; i++) {
                 record = {};
-                record[data.dataValueField] = data.dataSource[i];
-                record[data.dataTextField] = data.dataSource[i];
+                record[data.valueField] = data.dataSource[i];
+                record[data.textField] = data.dataSource[i];
                 data.dataSource[i] = record;
             }
         }
@@ -11488,7 +11528,7 @@ gj.dropdown.methods = {
 
     render: function ($dropdown, response) {
         var width,
-            selected = false,
+            selectedInd = false,
             data = $dropdown.data(),
             $parent = $dropdown.parent(),
             $list = $('body').children('[role="list"][guid="' + $dropdown.attr('data-guid') + '"]'),
@@ -11501,9 +11541,9 @@ gj.dropdown.methods = {
 
         if (response && response.length) {
             $.each(response, function () {
-                var value = this[data.dataValueField],
-                    text = this[data.dataTextField],
-                    selected = this[data.dataSelectedField] && this[data.dataSelectedField].toString().toLowerCase() === 'true',
+                var value = this[data.valueField],
+                    text = this[data.textField],
+                    selected = this[data.selectedField] && this[data.selectedField].toString().toLowerCase() === 'true',
                     $item, $option;
 
                 $item = $('<li value="' + value + '"><div data-role="wrapper"><span data-role="display">' + text + '</span></div></li>');
@@ -11518,11 +11558,11 @@ gj.dropdown.methods = {
 
                 if (selected) {
                     gj.dropdown.methods.select($dropdown, value);
-                    selected = true;
+                    selectedInd = true;
                 }
             });
-            if (selected === false) {
-                gj.dropdown.methods.select($dropdown, response[0][data.dataValueField]);
+            if (selectedInd === false) {
+                gj.dropdown.methods.select($dropdown, response[0][data.valueField]);
             }
         }
 
@@ -11547,7 +11587,7 @@ gj.dropdown.methods = {
         $list.children('li').removeClass(data.style.active);
         $item.addClass(data.style.active);
         $dropdown.val(value);
-        $dropdown.next('[role="presenter"]').find('[role="display"]').html(record[data.dataTextField]);
+        $dropdown.next('[role="presenter"]').find('[role="display"]').html(record[data.textField]);
         gj.dropdown.events.change($dropdown);
         $list.hide();
         return $dropdown;
@@ -11558,7 +11598,7 @@ gj.dropdown.methods = {
             i, result = undefined;
 
         for (i = 0; i < data.records.length; i++) {
-            if (data.records[i][data.dataValueField] === value) {
+            if (data.records[i][data.valueField] === value) {
                 result = data.records[i];
                 break;
             }
@@ -11770,7 +11810,7 @@ gj.datepicker.config = {
         showOtherMonths: false,
 
         /** Whether days in other months shown before or after the current month are selectable.
-         * This only applies if the <a href="showOtherMonths" target="_blank">showOtherMonths</a> option is set to true.
+         * This only applies if the showOtherMonths option is set to true.
          * @type Boolean
          * @default true
          * @example True <!-- materialicons, datepicker -->
@@ -12299,9 +12339,14 @@ gj.datepicker.methods = {
         if (typeof (value) === "undefined") {
             return $datepicker.val();
         } else {
-            date = new Date(value);
-            $calendar = $('body').children('[role="calendar"][guid="' + $datepicker.attr('data-guid') + '"]');
-            return gj.datepicker.methods.select($datepicker, $calendar, date.getDate(), date.getMonth(), date.getFullYear())();
+            date = gj.core.parseDate(value, $datepicker.data().format);
+            if (date) {
+                $calendar = $('body').children('[role="calendar"][guid="' + $datepicker.attr('data-guid') + '"]');
+                gj.datepicker.methods.select($datepicker, $calendar, date.getDate(), date.getMonth(), date.getFullYear())();
+            } else {
+                $datepicker.val('');
+            }            
+            return $datepicker;
         }
     },
 
@@ -12394,7 +12439,7 @@ gj.datepicker.widget = function ($element, jsConfig) {
      *     var $datepicker = $('#datepicker').datepicker();
      * </script>
      * @example Set <!-- datepicker, materialicons -->
-     * <button class="gj-button-md" onclick="$datepicker.value('2017-08-01')">Set Value</button>
+     * <button class="gj-button-md" onclick="$datepicker.value('08/01/2017')">Set Value</button>
      * <hr/>
      * <input id="datepicker" />
      * <script>
