@@ -180,6 +180,7 @@
             target: {
                 files: [
                     { expand: true, cwd: 'dist/combined/css', src: ['*.css', '!*.min.css'], dest: 'dist/combined/css', ext: '.min.css' },
+                    { expand: true, cwd: 'dist/modular/css', src: ['core.css'], dest: 'dist/modular/css', ext: '.min.css' },
                     { expand: true, cwd: 'dist/modular/css', src: ['dialog.css'], dest: 'dist/modular/css', ext: '.min.css' },
                     { expand: true, cwd: 'dist/modular/css', src: ['editor.css'], dest: 'dist/modular/css', ext: '.min.css' },
                     { expand: true, cwd: 'dist/modular/css', src: ['checkbox.css'], dest: 'dist/modular/css', ext: '.min.css' },
