@@ -1,5 +1,5 @@
 /*
- * Gijgo DropDown v1.5.0
+ * Gijgo DropDown v1.5.1
  * http://gijgo.com/dropdown
  *
  * Copyright 2014, 2017 gijgo.com
@@ -206,6 +206,7 @@ gj.dropdown.methods = {
                 $item.addClass(data.style.item);
                 $item.on('click', function (e) {
                     gj.dropdown.methods.select($dropdown, value);
+                    gj.dropdown.events.change($dropdown);
                 });
                 $list.append($item);
 
@@ -244,7 +245,6 @@ gj.dropdown.methods = {
         $item.addClass(data.style.active);
         $dropdown.val(value);
         $dropdown.next('[role="presenter"]').find('[role="display"]').html(record[data.textField]);
-        gj.dropdown.events.change($dropdown);
         $list.hide();
         return $dropdown;
     },
@@ -267,7 +267,9 @@ gj.dropdown.methods = {
         if (typeof (value) === "undefined") {
             return $dropdown.val();
         } else {
-            return gj.dropdown.methods.select($dropdown, value);
+            gj.dropdown.methods.select($dropdown, value);
+            gj.dropdown.events.change($dropdown);
+            return $dropdown;
         }
     },
 
