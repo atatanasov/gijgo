@@ -23,6 +23,8 @@ gj.datepicker.config = {
         /** Whether days in other months shown before or after the current month are selectable.
          * This only applies if the showOtherMonths option is set to true.         */        selectOtherMonths: true,
 
+        /** The width of the datepicker.         */        width: undefined,
+
         /** The minimum selectable date. When not set, there is no minimum         */        minDate: undefined,
 
         /** The maximum selectable date. When not set, there is no maximum         */        maxDate: undefined,

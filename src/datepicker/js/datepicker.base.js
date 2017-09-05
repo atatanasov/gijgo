@@ -43,7 +43,7 @@ gj.datepicker.config = {
          * @example True <!-- materialicons, datepicker -->
          * <input id="datepicker" width="312" />
          * <script>
-         *    var datepicker = $('#datepicker').datepicker({
+         *    $('#datepicker').datepicker({
          *        showOtherMonths: true,
          *        selectOtherMonths: true
          *    });
@@ -58,6 +58,22 @@ gj.datepicker.config = {
          * </script>
          */
         selectOtherMonths: true,
+
+        /** The width of the datepicker.
+         * @type number
+         * @default undefined
+         * @example JS.Config <!-- materialicons, datepicker -->
+         * <input id="datepicker" />
+         * <script>
+         *    $('#datepicker').datepicker({ width: 312 });
+         * </script>
+         * @example HTML.Config <!-- materialicons, datepicker -->
+         * <input id="datepicker" width="312" />
+         * <script>
+         *    $('#datepicker').datepicker();
+         * </script>
+         */
+        width: undefined,
 
         /** The minimum selectable date. When not set, there is no minimum
          * @type Date|String|Function

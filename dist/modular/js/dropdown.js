@@ -23,6 +23,8 @@ gj.dropdown.config = {
 
         /** Selected field name.         */        selectedField: 'selected',
 
+        /** The width of the dropdown.         */        width: undefined,
+
         optionsDisplay: 'materialdesign',
 
         fontSize: undefined,
@@ -183,13 +185,13 @@ gj.dropdown.methods = {
     },
 
     render: function ($dropdown, response) {
-        var width,
-            selectedInd = false,
+        var selectedInd = false,
             data = $dropdown.data(),
             $parent = $dropdown.parent(),
             $list = $('body').children('[role="list"][guid="' + $dropdown.attr('data-guid') + '"]'),
             $presenter = $parent.children('[role="presenter"]'),
-            $expander = $parent.find('[role="expander"]');
+            $expander = $presenter.children('[role="expander"]'),
+            $display = $presenter.children('[role="display"]');
 
         $dropdown.data('records', response);
         $dropdown.empty();
@@ -223,9 +225,12 @@ gj.dropdown.methods = {
             }
         }
 
-        width = data.width ? data.width : ($list.width() + $expander.outerWidth() + 10);
-        $parent.css('width', width);
-        $list.css('width', width);
+        if (data.width) {
+            $parent.css('width', data.width);
+            $list.css('width', data.width);
+            $presenter.css('width', data.width);
+            $display.css('width', data.width - $expander.outerWidth(true));
+        }
 
         if (data.fontSize) {
             $list.children('li').css('font-size', data.fontSize);

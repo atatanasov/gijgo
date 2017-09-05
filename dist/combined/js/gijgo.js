@@ -11226,7 +11226,7 @@ gj.dropdown.config = {
          *     });
          * </script>
          * @example Remote.DataSource <!-- materialicons, dropdown -->
-         * <select id="dropdown"></select>
+         * <select id="dropdown" width="200"></select>
          * <script>
          *     $('#dropdown').dropdown({
          *         dataSource: '/Locations/Get',
@@ -11252,7 +11252,7 @@ gj.dropdown.config = {
 
         /** Value field name.
          * @type string
-         * @default 'text'
+         * @default 'value'
          * @example sample <!-- materialicons, dropdown -->
          * <select id="dropdown"></select>
          * <script>
@@ -11266,7 +11266,7 @@ gj.dropdown.config = {
 
         /** Selected field name.
          * @type string
-         * @default 'text'
+         * @default 'selected'
          * @example sample <!-- materialicons, dropdown -->
          * <select id="dropdown"></select>
          * <script>
@@ -11277,6 +11277,30 @@ gj.dropdown.config = {
          * </script>
          */
         selectedField: 'selected',
+
+        /** The width of the dropdown.
+         * @type number
+         * @default undefined
+         * @example JS.Config <!-- materialicons, dropdown -->
+         * <select id="dropdown">
+         *     <option value="1">One</option>
+         *     <option value="2">Two</option>
+         *     <option value="3">Three</option>
+         * </select>
+         * <script>
+         *     $('#dropdown').dropdown({ width: 200 });
+         * </script>
+         * @example HTML.Config <!-- materialicons, dropdown -->
+         * <select id="dropdown" width="200">
+         *     <option value="1">One</option>
+         *     <option value="2">Two</option>
+         *     <option value="3">Three</option>
+         * </select>
+         * <script>
+         *     $('#dropdown').dropdown();
+         * </script>
+         */
+        width: undefined,
 
         optionsDisplay: 'materialdesign',
 
@@ -11325,7 +11349,7 @@ gj.dropdown.config = {
          * @type (materialicons|fontawesome|glyphicons)
          * @default 'materialicons'
          * @example Bootstrap.Material.Icons <!-- bootstrap, materialicons, dropdown -->
-         * <select id="dropdown"></select>
+         * <select id="dropdown" width="200"></select>
          * <script>
          *     var dropdown = $('#dropdown').dropdown({
          *         dataSource: '/Locations/Get',
@@ -11335,7 +11359,7 @@ gj.dropdown.config = {
          *     });
          * </script>
          * @example Bootstrap.4.Font.Awesome <!-- bootstrap4, fontawesome, dropdown -->
-         * <select id="dropdown"></select>
+         * <select id="dropdown" width="200"></select>
          * <script>
          *     var dropdown = $('#dropdown').dropdown({
          *         dataSource: '/Locations/Get',
@@ -11358,6 +11382,7 @@ gj.dropdown.config = {
              *     var dropdown = $('#dropdown').dropdown({
              *         dataSource: '/Locations/Get',
              *         valueField: 'id',
+             *         width: 200,
              *         icons: { 
              *             dropdown: '<i class="material-icons">keyboard_arrow_down</i>'
              *         }
@@ -11370,6 +11395,7 @@ gj.dropdown.config = {
              *         dataSource: '/Locations/Get',
              *         valueField: 'id',
              *         uiLibrary: 'bootstrap',
+             *         width: 200,
              *         icons: { 
              *             dropdown: '<span class="glyphicon glyphicon-triangle-bottom" />'
              *         }
@@ -11527,13 +11553,13 @@ gj.dropdown.methods = {
     },
 
     render: function ($dropdown, response) {
-        var width,
-            selectedInd = false,
+        var selectedInd = false,
             data = $dropdown.data(),
             $parent = $dropdown.parent(),
             $list = $('body').children('[role="list"][guid="' + $dropdown.attr('data-guid') + '"]'),
             $presenter = $parent.children('[role="presenter"]'),
-            $expander = $parent.find('[role="expander"]');
+            $expander = $presenter.children('[role="expander"]'),
+            $display = $presenter.children('[role="display"]');
 
         $dropdown.data('records', response);
         $dropdown.empty();
@@ -11567,9 +11593,12 @@ gj.dropdown.methods = {
             }
         }
 
-        width = data.width ? data.width : ($list.width() + $expander.outerWidth() + 10);
-        $parent.css('width', width);
-        $list.css('width', width);
+        if (data.width) {
+            $parent.css('width', data.width);
+            $list.css('width', data.width);
+            $presenter.css('width', data.width);
+            $display.css('width', data.width - $expander.outerWidth(true));
+        }
 
         if (data.fontSize) {
             $list.children('li').css('font-size', data.fontSize);
@@ -11693,7 +11722,7 @@ gj.dropdown.widget = function ($element, jsConfig) {
      * @param {string} value - The value that needs to be selected.
      * @return string
      * @example Get <!-- dropdown, materialicons -->
-     * <button class="gj-button-md" onclick="alert($dropdown.value())">Get Content</button>
+     * <button class="gj-button-md" onclick="alert($dropdown.value())">Get Value</button>
      * <hr/>
      * <select id="dropdown">
      *     <option value="1">One</option>
@@ -11818,7 +11847,7 @@ gj.datepicker.config = {
          * @example True <!-- materialicons, datepicker -->
          * <input id="datepicker" width="312" />
          * <script>
-         *    var datepicker = $('#datepicker').datepicker({
+         *    $('#datepicker').datepicker({
          *        showOtherMonths: true,
          *        selectOtherMonths: true
          *    });
@@ -11833,6 +11862,22 @@ gj.datepicker.config = {
          * </script>
          */
         selectOtherMonths: true,
+
+        /** The width of the datepicker.
+         * @type number
+         * @default undefined
+         * @example JS.Config <!-- materialicons, datepicker -->
+         * <input id="datepicker" />
+         * <script>
+         *    $('#datepicker').datepicker({ width: 312 });
+         * </script>
+         * @example HTML.Config <!-- materialicons, datepicker -->
+         * <input id="datepicker" width="312" />
+         * <script>
+         *    $('#datepicker').datepicker();
+         * </script>
+         */
+        width: undefined,
 
         /** The minimum selectable date. When not set, there is no minimum
          * @type Date|String|Function
