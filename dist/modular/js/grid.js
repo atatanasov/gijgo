@@ -1494,7 +1494,6 @@ gj.grid.widget.prototype.getHTMLConfig = gj.grid.methods.getHTMLConfig;
         if (typeof (data.detailTemplate) !== 'undefined') {
             column = {
                 title: '',
-                field: data.primaryKey,
                 width: data.defaultIconColumnWidth,
                 align: 'center',
                 stopPropagation: true,
@@ -3141,7 +3140,6 @@ gj.grid.plugins.inlineEditing.configure = function ($grid, fullConfig, clientCon
         if (data.grouping && data.grouping.groupBy) {
             column = {
                 title: '',
-                field: '',
                 width: data.defaultIconColumnWidth,
                 align: 'center',
                 stopPropagation: true,

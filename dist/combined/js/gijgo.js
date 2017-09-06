@@ -5387,7 +5387,6 @@ gj.grid.plugins.expandCollapseRows = {
         if (typeof (data.detailTemplate) !== 'undefined') {
             column = {
                 title: '',
-                field: data.primaryKey,
                 width: data.defaultIconColumnWidth,
                 align: 'center',
                 stopPropagation: true,
@@ -8219,7 +8218,6 @@ gj.grid.plugins.grouping = {
         if (data.grouping && data.grouping.groupBy) {
             column = {
                 title: '',
-                field: '',
                 width: data.defaultIconColumnWidth,
                 align: 'center',
                 stopPropagation: true,

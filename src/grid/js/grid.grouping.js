@@ -200,7 +200,6 @@ gj.grid.plugins.grouping = {
         if (data.grouping && data.grouping.groupBy) {
             column = {
                 title: '',
-                field: '',
                 width: data.defaultIconColumnWidth,
                 align: 'center',
                 stopPropagation: true,
