@@ -2182,6 +2182,7 @@ gj.grid.plugins.inlineEditing.configure = function ($grid, fullConfig, clientCon
                             $control.dropdown({
                                 uiLibrary: data.uiLibrary,
                                 iconsLibrary: data.iconsLibrary,
+                                fontSize: $control.css('font-size'),
                                 style: {
                                     presenter: 'btn btn-default btn-sm'
                                 }

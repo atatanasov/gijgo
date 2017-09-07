@@ -145,7 +145,7 @@ gj.datepicker.methods = {
         if (!date || isNaN(date.getTime())) {
             date = new Date();
         } else {
-            $datepicker.attr('day', date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate());
+            $datepicker.attr('day', date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate());
         }
 
         $datepicker.attr('month', date.getMonth());
@@ -181,7 +181,8 @@ gj.datepicker.methods = {
             minDate = gj.datepicker.methods.getMinDate(data),
             maxDate = gj.datepicker.methods.getMaxDate(data);
         
-        selectedDay = new Date($datepicker.attr('day'));
+        selectedDay = $datepicker.attr('day').split('-');
+        selectedDay = new Date(selectedDay[0], selectedDay[1], selectedDay[2]);
         month = parseInt($datepicker.attr('month'), 10);
         year = parseInt($datepicker.attr('year'), 10);
 
@@ -193,7 +194,7 @@ gj.datepicker.methods = {
         }
         total = daysInMonth[month];
 
-        firstDayPosition = new Date(year + '-' + (month + 1) + '-01').getDay();
+        firstDayPosition = new Date(year, month, 1).getDay();
 
         $tbody.empty();
 
@@ -314,13 +315,13 @@ gj.datepicker.methods = {
     },
 
     getPrevMonth: function (month, year) {
-        date = new Date(year + '-' + (month + 1) + '-01');
+        date = new Date(year, month, 1);
         date.setMonth(date.getMonth() - 1);
         return { month: date.getMonth(), year: date.getFullYear() };
     },
 
     getNextMonth: function (month, year) {
-        date = new Date(year + '-' + (month + 1) + '-01');
+        date = new Date(year, month, 1);
         date.setMonth(date.getMonth() + 1);
         return { month: date.getMonth(), year: date.getFullYear() };
     },
@@ -359,11 +360,11 @@ gj.datepicker.methods = {
         return function (e) {
             var date, value,
                 data = $datepicker.data();
-            date = new Date(year + '-' + (month + 1) + '-' + day);
+            date = new Date(year, month, day);
             value = gj.core.formatDate(date, data.format);
             $datepicker.val(value);
             gj.datepicker.events.change($datepicker);
-            $datepicker.attr('day', year + '-' + (month + 1) + '-' + day);
+            $datepicker.attr('day', year + '-' + month + '-' + day);
             $datepicker.attr('month', month);
             $datepicker.attr('year', year);
             gj.datepicker.methods.hide($datepicker);

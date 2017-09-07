@@ -57,7 +57,7 @@
     background: 0 0;
     border: none;
     border-radius: 2px;
-    color: #000;
+    color: rgba(0,0,0,.54);
     position: relative;
     height: 36px;
     margin: 0;
@@ -92,6 +92,7 @@
 
 .gj-button-md:disabled {
     color: rgba(0,0,0,.26);
+    background: 0 0;
 }
 
 .gj-button-md .material-icons {
@@ -491,7 +492,11 @@ TABLE.gj-grid THEAD TH [data-role="sorticon"] {
     display: inline-block;
 }
 
-TABLE.gj-grid > thead > tr > th,
+TABLE.gj-grid > thead > tr > th {
+    overflow: hidden;
+    /*position: relative;*/
+}
+
 TABLE.gj-grid > tbody > tr > td {
     overflow: hidden;
     position: relative;
@@ -629,15 +634,6 @@ table.gj-grid-md thead th [data-role="sorticon"] i.material-icons {
 table.gj-grid-md thead th.gj-grid-select-all {
     padding-bottom: 3px;
 }
-
-.gj-grid .gj-grid-md-limit-select {
-    text-align: right;
-    display: inline-block;
-    width: 50px;
-    padding: 0px 5px;
-    margin-left: 10px;
-    font-size: 13px;
-}
 /* Hide all prioritized columns by default */
 @media only all {
 	th.display-1120,
@@ -704,30 +700,33 @@ table.gj-grid-md thead th.gj-grid-select-all {
     padding-right: 14px;
 }
 
-.gj-grid-md tfoot tr th .gj-button-md {
-    height: 24px;
-}
-
-.gj-grid-md tfoot tr th .gj-grid-mdl-pager-label {
+.gj-grid-md tfoot tr[data-role="pager"] .gj-grid-mdl-pager-label {
     padding-left: 5px;
     padding-right: 5px;
 }
 
-.gj-grid-md tfoot tr[data-role="pager"] th .gj-dropdown-md {
+.gj-grid-md tfoot tr[data-role="pager"] .gj-dropdown-md {
     margin-left: 12px;
 }
 
-.gj-grid-md tfoot tr[data-role="pager"] th .gj-dropdown-md [role="presenter"] {
+.gj-grid-md tfoot tr[data-role="pager"] .gj-dropdown-md [role="presenter"] {
     font-size: 12px;
     font-weight: bold;
     color: rgba(0,0,0,.54);
 }
 
-.gj-grid-md tfoot tr[data-role="pager"] th .gj-dropdown-md [role="presenter"] [role="display"] {
+.gj-grid-md tfoot tr[data-role="pager"] .gj-dropdown-md [role="presenter"] [role="display"] {
     text-align: right;
 }
 
-.gj-grid-md tfoot tr[data-role="pager"] th .gj-dropdown-md [role="list"] li {
+/*.gj-grid-md tfoot tr[data-role="pager"] .gj-dropdown-md [role="list"] li {
+    font-size: 12px;
+    font-weight: bold;
+    color: rgba(0,0,0,.54);
+}*/
+
+.gj-grid-md tfoot tr[data-role="pager"] .gj-grid-md-limit-select {
+    margin-left: 10px;
     font-size: 12px;
     font-weight: bold;
     color: rgba(0,0,0,.54);
@@ -1351,6 +1350,7 @@ ul.gj-list-bootstrap li [data-role="expander"].gj-tree-material-icons-expander {
 }
 .gj-dropdown {
     position: relative;
+    border-collapse: separate;
 }
 
 .gj-dropdown [role="presenter"] {
@@ -1446,6 +1446,10 @@ ul.gj-list-bootstrap li [data-role="expander"].gj-tree-material-icons-expander {
 .gj-datepicker [role="input"] {
     display: table-cell;
     width: 100%;
+}
+
+.gj-datepicker [role="input"]::-ms-clear {
+    display: none;
 }
 
 .gj-datepicker [role="right-icon"] {

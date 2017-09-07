@@ -57,7 +57,7 @@
     background: 0 0;
     border: none;
     border-radius: 2px;
-    color: #000;
+    color: rgba(0,0,0,.54);
     position: relative;
     height: 36px;
     margin: 0;
@@ -92,6 +92,7 @@
 
 .gj-button-md:disabled {
     color: rgba(0,0,0,.26);
+    background: 0 0;
 }
 
 .gj-button-md .material-icons {

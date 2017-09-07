@@ -36,7 +36,7 @@ gj.grid.plugins.pagination = {
                  * @alias pager.limit
                  * @type number
                  * @default 10
-                 * @example local.data <!-- materialicons, grid -->
+                 * @example local.data <!-- materialicons, grid, dropdown -->
                  * <table id="grid"></table>
                  * <script>
                  *     var data, grid;
@@ -48,16 +48,16 @@ gj.grid.plugins.pagination = {
                  *     grid = $('#grid').grid({
                  *         dataSource: data,
                  *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
-                 *         pager: { limit: 2 }
+                 *         pager: { limit: 2, sizes: [2, 5, 10, 100] }
                  *     });
                  * </script>
-                 * @example remote.data <!-- materialicons, grid -->
+                 * @example remote.data <!-- materialicons, grid, dropdown -->
                  * <table id="grid"></table>
                  * <script>
                  *     var grid = $('#grid').grid({
                  *         dataSource: '/Players/Get',
                  *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
-                 *         pager: { limit: 2 }
+                 *         pager: { limit: 2, sizes: [2, 5, 10, 100] }
                  *     });
                  * </script>
                  */
@@ -68,7 +68,7 @@ gj.grid.plugins.pagination = {
                  * @alias pager.sizes
                  * @type array
                  * @default [5, 10, 20, 100]
-                 * @example Bootstrap.3 <!-- bootstrap, grid, grid.pagination  -->
+                 * @example Bootstrap.3 <!-- bootstrap, grid, grid.pagination, dropdown  -->
                  * <table id="grid"></table>
                  * <script>
                  *     var grid = $('#grid').grid({
@@ -78,7 +78,7 @@ gj.grid.plugins.pagination = {
                  *         pager: { limit: 2, sizes: [2, 5, 10, 20] }
                  *     });
                  * </script>
-                 * @example Material.Design <!-- materialicons, grid, grid.pagination  -->
+                 * @example Material.Design <!-- materialicons, grid, grid.pagination, dropdown  -->
                  * <table id="grid"></table>
                  * <script>
                  *     var grid = $('#grid').grid({
@@ -354,6 +354,7 @@ gj.grid.plugins.pagination = {
                             $control.dropdown({
                                 uiLibrary: data.uiLibrary,
                                 iconsLibrary: data.iconsLibrary,
+                                fontSize: $control.css('font-size'),
                                 style: {
                                     presenter: 'btn btn-default btn-sm'
                                 }

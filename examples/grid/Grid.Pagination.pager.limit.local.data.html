@@ -9,7 +9,9 @@
   <link href="../../dist/modular/css/core.css" rel="stylesheet" type="text/css">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">
   <link href="../../dist/modular/css/grid.css" rel="stylesheet" type="text/css">
+  <link href="../../dist/modular/css/dropdown.css" rel="stylesheet" type="text/css">
   <script src="../../dist/modular/js/grid.js"></script>
+  <script src="../../dist/modular/js/dropdown.js"></script>
 </head>
 <body style="padding: 6px;">
  <table id="grid"></table>
@@ -23,7 +25,7 @@
      grid = $('#grid').grid({
          dataSource: data,
          columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
-         pager: { limit: 2 }
+         pager: { limit: 2, sizes: [2, 5, 10, 100] }
      });
  </script>
 </body>

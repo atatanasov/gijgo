@@ -3,30 +3,33 @@
     padding-right: 14px;
 }
 
-.gj-grid-md tfoot tr th .gj-button-md {
-    height: 24px;
-}
-
-.gj-grid-md tfoot tr th .gj-grid-mdl-pager-label {
+.gj-grid-md tfoot tr[data-role="pager"] .gj-grid-mdl-pager-label {
     padding-left: 5px;
     padding-right: 5px;
 }
 
-.gj-grid-md tfoot tr[data-role="pager"] th .gj-dropdown-md {
+.gj-grid-md tfoot tr[data-role="pager"] .gj-dropdown-md {
     margin-left: 12px;
 }
 
-.gj-grid-md tfoot tr[data-role="pager"] th .gj-dropdown-md [role="presenter"] {
+.gj-grid-md tfoot tr[data-role="pager"] .gj-dropdown-md [role="presenter"] {
     font-size: 12px;
     font-weight: bold;
     color: rgba(0,0,0,.54);
 }
 
-.gj-grid-md tfoot tr[data-role="pager"] th .gj-dropdown-md [role="presenter"] [role="display"] {
+.gj-grid-md tfoot tr[data-role="pager"] .gj-dropdown-md [role="presenter"] [role="display"] {
     text-align: right;
 }
 
-.gj-grid-md tfoot tr[data-role="pager"] th .gj-dropdown-md [role="list"] li {
+/*.gj-grid-md tfoot tr[data-role="pager"] .gj-dropdown-md [role="list"] li {
+    font-size: 12px;
+    font-weight: bold;
+    color: rgba(0,0,0,.54);
+}*/
+
+.gj-grid-md tfoot tr[data-role="pager"] .gj-grid-md-limit-select {
+    margin-left: 10px;
     font-size: 12px;
     font-weight: bold;
     color: rgba(0,0,0,.54);

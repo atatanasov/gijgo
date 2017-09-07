@@ -8,6 +8,10 @@
     width: 100%;
 }
 
+.gj-datepicker [role="input"]::-ms-clear {
+    display: none;
+}
+
 .gj-datepicker [role="right-icon"] {
     cursor: pointer;
     display: table-cell;

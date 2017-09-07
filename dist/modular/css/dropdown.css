@@ -1,5 +1,6 @@
 .gj-dropdown {
     position: relative;
+    border-collapse: separate;
 }
 
 .gj-dropdown [role="presenter"] {
