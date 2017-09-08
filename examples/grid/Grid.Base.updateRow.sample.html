@@ -28,7 +28,7 @@
              { field: 'PlaceOfBirth' },
              { title: '', width: 50, align: 'center', tmpl: '<u>Edit</u>', events: { 'click': Edit } }
          ],
-         pager: { limit: 2 }
+         pager: { limit: 2, sizes: [2, 5, 10, 20] }
      });
      function Edit(e) {
          grid.updateRow(e.data.id, { 'ID': e.data.id, 'Name': 'Ronaldo', 'PlaceOfBirth': 'Rio, Brazil' });

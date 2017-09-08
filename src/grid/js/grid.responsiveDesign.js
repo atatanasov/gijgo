@@ -88,7 +88,7 @@ gj.grid.plugins.responsiveDesign = {
              *             { field: 'Name', minWidth: 320, priority: 1 },
              *             { field: 'PlaceOfBirth', minWidth: 320, priority: 2 }
              *         ],
-             *         pager: { limit: 2 }
+             *         pager: { limit: 2, sizes: [2, 5, 10, 20] }
              *     });
              * </script>
              */

@@ -225,7 +225,7 @@ gj.grid.plugins.inlineEditing.config = {
              *         ]
              *     });
              * </script>
-             * @example Bootstrap <!-- bootstrap, grid -->
+             * @example Bootstrap <!-- bootstrap, grid, dropdown -->
              * <table id="grid"></table>
              * <script>
              *     var grid, data = [
@@ -246,10 +246,10 @@ gj.grid.plugins.inlineEditing.config = {
              *             { field: 'Name', editor: true },
              *             { field: 'PlaceOfBirth', editor: true }
              *         ],
-             *         pager: { limit: 3 }
+             *         pager: { limit: 3, sizes: [3, 5, 10, 20] }
              *     });
              * </script>
-             * @example Bootstrap.4 <!-- materialicons, bootstrap4, grid -->
+             * @example Bootstrap.4 <!-- materialicons, bootstrap4, grid, dropdown -->
              * <table id="grid"></table>
              * <script>
              *     var grid, data = [
@@ -270,7 +270,7 @@ gj.grid.plugins.inlineEditing.config = {
              *             { field: 'Name', editor: true },
              *             { field: 'PlaceOfBirth', editor: true }
              *         ],
-             *         pager: { limit: 3 }
+             *         pager: { limit: 3, sizes: [3, 5, 10, 20] }
              *     });
              * </script>
             */

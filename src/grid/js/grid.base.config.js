@@ -73,7 +73,7 @@ gj.grid.config = {
          *     </tbody>
          * </table>
          * <script>
-         *     $('#grid').grid({ pager: { limit: 2 }});
+         *     $('#grid').grid({ pager: { limit: 2, sizes: [2, 5, 10, 20] }});
          * </script>
          * @example Remote.Custom.Render <!-- grid -->
          * <table id="grid"></table>
@@ -988,7 +988,7 @@ gj.grid.config = {
          *             { field: 'Name', title: 'Prénom' },
          *             { field: 'PlaceOfBirth', title: 'Lieu de naissance' }
          *         ],
-         *         pager: { limit: 2 }
+         *         pager: { limit: 5 }
          *     });
          * </script>
          * @example French.MaterialDesign.Custom <!-- materialicons, grid-->
@@ -1005,7 +1005,7 @@ gj.grid.config = {
          *             { field: 'Name', title: 'Prénom' },
          *             { field: 'PlaceOfBirth', title: 'Lieu de naissance' }
          *         ],
-         *         pager: { limit: 2 }
+         *         pager: { limit: 5 }
          *     });
          * </script>
          */

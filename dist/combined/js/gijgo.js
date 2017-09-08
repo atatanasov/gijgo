@@ -2177,7 +2177,7 @@ gj.grid.config = {
          *     </tbody>
          * </table>
          * <script>
-         *     $('#grid').grid({ pager: { limit: 2 }});
+         *     $('#grid').grid({ pager: { limit: 2, sizes: [2, 5, 10, 20] }});
          * </script>
          * @example Remote.Custom.Render <!-- grid -->
          * <table id="grid"></table>
@@ -3092,7 +3092,7 @@ gj.grid.config = {
          *             { field: 'Name', title: 'Prénom' },
          *             { field: 'PlaceOfBirth', title: 'Lieu de naissance' }
          *         ],
-         *         pager: { limit: 2 }
+         *         pager: { limit: 5 }
          *     });
          * </script>
          * @example French.MaterialDesign.Custom <!-- materialicons, grid-->
@@ -3109,7 +3109,7 @@ gj.grid.config = {
          *             { field: 'Name', title: 'Prénom' },
          *             { field: 'PlaceOfBirth', title: 'Lieu de naissance' }
          *         ],
-         *         pager: { limit: 2 }
+         *         pager: { limit: 5 }
          *     });
          * </script>
          */
@@ -4535,7 +4535,7 @@ gj.grid.widget = function ($grid, jsConfig) {
      *         dataSource: data,
      *         columns: [ { field: 'ID', width: 34 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
      *         uiLibrary: 'bootstrap',
-     *         pager: { limit: 2, sizes: [2, 5, 10] }
+     *         pager: { limit: 2, sizes: [2, 5, 10, 20] }
      *     });
      * </script>
      * @example Remote.DataSource <!-- bootstrap, grid, grid.pagination -->
@@ -4548,7 +4548,7 @@ gj.grid.widget = function ($grid, jsConfig) {
      *         dataSource: '/Players/Get',
      *         columns: [ { field: 'ID', width: 34 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
      *         uiLibrary: 'bootstrap',
-     *         pager: { limit: 2, sizes: [2, 5, 10] }
+     *         pager: { limit: 2, sizes: [2, 5, 10, 20] }
      *     });
      * </script>
      */
@@ -4698,7 +4698,7 @@ gj.grid.widget = function ($grid, jsConfig) {
      *         columns: [ { field: 'ID', width: 70 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
      *         selectionMethod: 'checkbox',
      *         selectionType: 'multiple',
-     *         pager: { limit: 2, sizes: [2, 5, 10] }
+     *         pager: { limit: 2, sizes: [2, 5, 10, 20] }
      *     });
      *     $('#btnShowSelection').on('click', function () {
      *         var selections = grid.getSelections();
@@ -4721,7 +4721,7 @@ gj.grid.widget = function ($grid, jsConfig) {
      *         columns: [ { field: 'ID', width: 70 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
      *         selectionMethod: 'checkbox',
      *         selectionType: 'multiple',
-     *         pager: { limit: 2, sizes: [2, 5, 10] }
+     *         pager: { limit: 2, sizes: [2, 5, 10, 20] }
      *     });
      *     $('#btnShowSelection').on('click', function () {
      *         var selections = grid.getSelections();
@@ -4855,7 +4855,7 @@ gj.grid.widget = function ($grid, jsConfig) {
      *         dataSource: data,
      *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
      *         uiLibrary: 'bootstrap',
-     *         pager: { limit: 2, sizes: [2, 5, 10] }
+     *         pager: { limit: 2, sizes: [2, 5, 10, 20] }
      *     });
      * </script>
      * @example Remote.DataSource <!-- bootstrap, grid, grid.pagination -->
@@ -4868,7 +4868,7 @@ gj.grid.widget = function ($grid, jsConfig) {
      *         dataSource: '/Players/Get',
      *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
      *         uiLibrary: 'bootstrap',
-     *         pager: { limit: 2, sizes: [2, 5, 10] }
+     *         pager: { limit: 2, sizes: [2, 5, 10, 20] }
      *     });
      * </script>
      */
@@ -4962,7 +4962,7 @@ gj.grid.widget = function ($grid, jsConfig) {
      *             { field: 'PlaceOfBirth' },
      *             { width: 70, align: 'center', tmpl: '<i class="material-icons">delete</i>', events: { 'click': function(e) { grid.removeRow(e.data.id); } } }
      *         ],
-     *         pager: { limit: 2 }
+     *         pager: { limit: 2, sizes: [2, 5, 10, 20] }
      *     });
      *     $('#btnAdd').on('click', function () {
      *         grid.addRow({ 'ID': grid.count(true) + 1, 'Name': 'Test Player', 'PlaceOfBirth': 'Test City, Test Country' });
@@ -4996,7 +4996,7 @@ gj.grid.widget = function ($grid, jsConfig) {
      *             { field: 'PlaceOfBirth' },
      *             { title: '', width: 50, align: 'center', tmpl: '<u>Edit</u>', events: { 'click': Edit } }
      *         ],
-     *         pager: { limit: 2 }
+     *         pager: { limit: 2, sizes: [2, 5, 10, 20] }
      *     });
      *     function Edit(e) {
      *         grid.updateRow(e.data.id, { 'ID': e.data.id, 'Name': 'Ronaldo', 'PlaceOfBirth': 'Rio, Brazil' });
@@ -5064,7 +5064,7 @@ gj.grid.widget = function ($grid, jsConfig) {
      *             { field: 'PlaceOfBirth' },
      *             { width: 100, align: 'center', tmpl: '<u class="gj-cursor-pointer">Delete</u>', events: { 'click': Delete } }
      *         ],
-     *         pager: { limit: 2 }
+     *         pager: { limit: 2, sizes: [2, 5, 10, 20] }
      *     });
      * </script>
      */
@@ -5679,7 +5679,7 @@ gj.grid.plugins.inlineEditing.config = {
              *         ]
              *     });
              * </script>
-             * @example Bootstrap <!-- bootstrap, grid -->
+             * @example Bootstrap <!-- bootstrap, grid, dropdown -->
              * <table id="grid"></table>
              * <script>
              *     var grid, data = [
@@ -5700,10 +5700,10 @@ gj.grid.plugins.inlineEditing.config = {
              *             { field: 'Name', editor: true },
              *             { field: 'PlaceOfBirth', editor: true }
              *         ],
-             *         pager: { limit: 3 }
+             *         pager: { limit: 3, sizes: [3, 5, 10, 20] }
              *     });
              * </script>
-             * @example Bootstrap.4 <!-- materialicons, bootstrap4, grid -->
+             * @example Bootstrap.4 <!-- materialicons, bootstrap4, grid, dropdown -->
              * <table id="grid"></table>
              * <script>
              *     var grid, data = [
@@ -5724,7 +5724,7 @@ gj.grid.plugins.inlineEditing.config = {
              *             { field: 'Name', editor: true },
              *             { field: 'PlaceOfBirth', editor: true }
              *         ],
-             *         pager: { limit: 3 }
+             *         pager: { limit: 3, sizes: [3, 5, 10, 20] }
              *     });
              * </script>
             */
@@ -6968,7 +6968,7 @@ gj.grid.plugins.responsiveDesign = {
              *             { field: 'Name', minWidth: 320, priority: 1 },
              *             { field: 'PlaceOfBirth', minWidth: 320, priority: 2 }
              *         ],
-             *         pager: { limit: 2 }
+             *         pager: { limit: 2, sizes: [2, 5, 10, 20] }
              *     });
              * </script>
              */
@@ -11610,7 +11610,7 @@ gj.dropdown.methods = {
             $parent.css('width', data.width);
             $list.css('width', data.width);
             $presenter.css('width', data.width);
-            $display.css('width', data.width - $expander.outerWidth(true));
+            $display.css('width', $presenter.outerWidth(true) - $expander.outerWidth(true));
         }
 
         if (data.fontSize) {

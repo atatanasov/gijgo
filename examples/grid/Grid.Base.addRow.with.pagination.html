@@ -29,7 +29,7 @@
              { field: 'PlaceOfBirth' },
              { width: 70, align: 'center', tmpl: '<i class="material-icons">delete</i>', events: { 'click': function(e) { grid.removeRow(e.data.id); } } }
          ],
-         pager: { limit: 2 }
+         pager: { limit: 2, sizes: [2, 5, 10, 20] }
      });
      $('#btnAdd').on('click', function () {
          grid.addRow({ 'ID': grid.count(true) + 1, 'Name': 'Test Player', 'PlaceOfBirth': 'Test City, Test Country' });

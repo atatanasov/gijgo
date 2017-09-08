@@ -10,7 +10,9 @@
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
   <link href="../../dist/modular/css/grid.css" rel="stylesheet" type="text/css">
+  <link href="../../dist/modular/css/dropdown.css" rel="stylesheet" type="text/css">
   <script src="../../dist/modular/js/grid.js"></script>
+  <script src="../../dist/modular/js/dropdown.js"></script>
 </head>
 <body style="padding: 6px;">
  <table id="grid"></table>
@@ -33,7 +35,7 @@
              { field: 'Name', editor: true },
              { field: 'PlaceOfBirth', editor: true }
          ],
-         pager: { limit: 3 }
+         pager: { limit: 3, sizes: [3, 5, 10, 20] }
      });
  </script>
 </body>

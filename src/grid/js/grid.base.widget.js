@@ -77,7 +77,7 @@ gj.grid.widget = function ($grid, jsConfig) {
      *         dataSource: data,
      *         columns: [ { field: 'ID', width: 34 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
      *         uiLibrary: 'bootstrap',
-     *         pager: { limit: 2, sizes: [2, 5, 10] }
+     *         pager: { limit: 2, sizes: [2, 5, 10, 20] }
      *     });
      * </script>
      * @example Remote.DataSource <!-- bootstrap, grid, grid.pagination -->
@@ -90,7 +90,7 @@ gj.grid.widget = function ($grid, jsConfig) {
      *         dataSource: '/Players/Get',
      *         columns: [ { field: 'ID', width: 34 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
      *         uiLibrary: 'bootstrap',
-     *         pager: { limit: 2, sizes: [2, 5, 10] }
+     *         pager: { limit: 2, sizes: [2, 5, 10, 20] }
      *     });
      * </script>
      */
@@ -240,7 +240,7 @@ gj.grid.widget = function ($grid, jsConfig) {
      *         columns: [ { field: 'ID', width: 70 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
      *         selectionMethod: 'checkbox',
      *         selectionType: 'multiple',
-     *         pager: { limit: 2, sizes: [2, 5, 10] }
+     *         pager: { limit: 2, sizes: [2, 5, 10, 20] }
      *     });
      *     $('#btnShowSelection').on('click', function () {
      *         var selections = grid.getSelections();
@@ -263,7 +263,7 @@ gj.grid.widget = function ($grid, jsConfig) {
      *         columns: [ { field: 'ID', width: 70 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
      *         selectionMethod: 'checkbox',
      *         selectionType: 'multiple',
-     *         pager: { limit: 2, sizes: [2, 5, 10] }
+     *         pager: { limit: 2, sizes: [2, 5, 10, 20] }
      *     });
      *     $('#btnShowSelection').on('click', function () {
      *         var selections = grid.getSelections();
@@ -397,7 +397,7 @@ gj.grid.widget = function ($grid, jsConfig) {
      *         dataSource: data,
      *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
      *         uiLibrary: 'bootstrap',
-     *         pager: { limit: 2, sizes: [2, 5, 10] }
+     *         pager: { limit: 2, sizes: [2, 5, 10, 20] }
      *     });
      * </script>
      * @example Remote.DataSource <!-- bootstrap, grid, grid.pagination -->
@@ -410,7 +410,7 @@ gj.grid.widget = function ($grid, jsConfig) {
      *         dataSource: '/Players/Get',
      *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
      *         uiLibrary: 'bootstrap',
-     *         pager: { limit: 2, sizes: [2, 5, 10] }
+     *         pager: { limit: 2, sizes: [2, 5, 10, 20] }
      *     });
      * </script>
      */
@@ -504,7 +504,7 @@ gj.grid.widget = function ($grid, jsConfig) {
      *             { field: 'PlaceOfBirth' },
      *             { width: 70, align: 'center', tmpl: '<i class="material-icons">delete</i>', events: { 'click': function(e) { grid.removeRow(e.data.id); } } }
      *         ],
-     *         pager: { limit: 2 }
+     *         pager: { limit: 2, sizes: [2, 5, 10, 20] }
      *     });
      *     $('#btnAdd').on('click', function () {
      *         grid.addRow({ 'ID': grid.count(true) + 1, 'Name': 'Test Player', 'PlaceOfBirth': 'Test City, Test Country' });
@@ -538,7 +538,7 @@ gj.grid.widget = function ($grid, jsConfig) {
      *             { field: 'PlaceOfBirth' },
      *             { title: '', width: 50, align: 'center', tmpl: '<u>Edit</u>', events: { 'click': Edit } }
      *         ],
-     *         pager: { limit: 2 }
+     *         pager: { limit: 2, sizes: [2, 5, 10, 20] }
      *     });
      *     function Edit(e) {
      *         grid.updateRow(e.data.id, { 'ID': e.data.id, 'Name': 'Ronaldo', 'PlaceOfBirth': 'Rio, Brazil' });
@@ -606,7 +606,7 @@ gj.grid.widget = function ($grid, jsConfig) {
      *             { field: 'PlaceOfBirth' },
      *             { width: 100, align: 'center', tmpl: '<u class="gj-cursor-pointer">Delete</u>', events: { 'click': Delete } }
      *         ],
-     *         pager: { limit: 2 }
+     *         pager: { limit: 2, sizes: [2, 5, 10, 20] }
      *     });
      * </script>
      */

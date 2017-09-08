@@ -229,7 +229,7 @@ gj.dropdown.methods = {
             $parent.css('width', data.width);
             $list.css('width', data.width);
             $presenter.css('width', data.width);
-            $display.css('width', data.width - $expander.outerWidth(true));
+            $display.css('width', $presenter.outerWidth(true) - $expander.outerWidth(true));
         }
 
         if (data.fontSize) {
