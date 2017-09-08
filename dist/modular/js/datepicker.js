@@ -180,9 +180,14 @@ gj.datepicker.methods = {
             $tbody = $table.children('tbody'),
             minDate = gj.datepicker.methods.getMinDate(data),
             maxDate = gj.datepicker.methods.getMaxDate(data);
-        
-        selectedDay = $datepicker.attr('day').split('-');
-        selectedDay = new Date(selectedDay[0], selectedDay[1], selectedDay[2]);
+            
+        if ($datepicker.attr('day'))
+        {
+            selectedDay = $datepicker.attr('day').split('-');
+            selectedDay = new Date(selectedDay[0], selectedDay[1], selectedDay[2]);
+        } else {
+            selectedDay = new Date(undefined);
+        }
         month = parseInt($datepicker.attr('month'), 10);
         year = parseInt($datepicker.attr('year'), 10);
 
@@ -463,19 +468,21 @@ gj.datepicker.widget.prototype = new gj.widget();
 gj.datepicker.widget.constructor = gj.datepicker.widget;
 
 (function ($) {
-    $.fn.datepicker = function (method) {
-        var $widget;
-        if (this && this.length) {
-            if (typeof method === 'object' || !method) {
-                return new gj.datepicker.widget(this, method);
-            } else {
-                $widget = new gj.datepicker.widget(this, null);
-                if ($widget[method]) {
-                    return $widget[method].apply(this, Array.prototype.slice.call(arguments, 1));
+    if (typeof ($.fn.datepicker) === "undefined") {
+        $.fn.datepicker = function (method) {
+            var $widget;
+            if (this && this.length) {
+                if (typeof method === 'object' || !method) {
+                    return new gj.datepicker.widget(this, method);
                 } else {
-                    throw 'Method ' + method + ' does not exist.';
+                    $widget = new gj.datepicker.widget(this, null);
+                    if ($widget[method]) {
+                        return $widget[method].apply(this, Array.prototype.slice.call(arguments, 1));
+                    } else {
+                        throw 'Method ' + method + ' does not exist.';
+                    }
                 }
             }
-        }
-    };
+        };
+    }
 })(jQuery);

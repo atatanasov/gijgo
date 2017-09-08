@@ -136,19 +136,21 @@ gj.droppable.widget.prototype = new gj.widget();
 gj.droppable.widget.constructor = gj.droppable.widget;
 
 (function ($) {
-    $.fn.droppable = function (method) {
-        var $widget;
-        if (this && this.length) {
-            if (typeof method === 'object' || !method) {
-                return new gj.droppable.widget(this, method);
-            } else {
-                $widget = new gj.droppable.widget(this, null);
-                if ($widget[method]) {
-                    return $widget[method].apply(this, Array.prototype.slice.call(arguments, 1));
+    if (typeof ($.fn.droppable) === "undefined") {
+        $.fn.droppable = function (method) {
+            var $widget;
+            if (this && this.length) {
+                if (typeof method === 'object' || !method) {
+                    return new gj.droppable.widget(this, method);
                 } else {
-                    throw 'Method ' + method + ' does not exist.';
+                    $widget = new gj.droppable.widget(this, null);
+                    if ($widget[method]) {
+                        return $widget[method].apply(this, Array.prototype.slice.call(arguments, 1));
+                    } else {
+                        throw 'Method ' + method + ' does not exist.';
+                    }
                 }
             }
-        }
-    };
+        };
+    }
 })(jQuery);

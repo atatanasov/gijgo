@@ -586,19 +586,21 @@ gj.dropdown.widget.prototype = new gj.widget();
 gj.dropdown.widget.constructor = gj.dropdown.widget;
 
 (function ($) {
-    $.fn.dropdown = function (method) {
-        var $widget;
-        if (this && this.length) {
-            if (typeof method === 'object' || !method) {
-                return new gj.dropdown.widget(this, method);
-            } else {
-                $widget = new gj.dropdown.widget(this, null);
-                if ($widget[method]) {
-                    return $widget[method].apply(this, Array.prototype.slice.call(arguments, 1));
+    if (typeof ($.fn.dropdown) === "undefined") {
+        $.fn.dropdown = function (method) {
+            var $widget;
+            if (this && this.length) {
+                if (typeof method === 'object' || !method) {
+                    return new gj.dropdown.widget(this, method);
                 } else {
-                    throw 'Method ' + method + ' does not exist.';
+                    $widget = new gj.dropdown.widget(this, null);
+                    if ($widget[method]) {
+                        return $widget[method].apply(this, Array.prototype.slice.call(arguments, 1));
+                    } else {
+                        throw 'Method ' + method + ' does not exist.';
+                    }
                 }
             }
-        }
-    };
+        };
+    }
 })(jQuery);

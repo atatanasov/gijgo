@@ -1520,21 +1520,23 @@ gj.dialog.widget.constructor = gj.dialog.widget;
 gj.dialog.widget.prototype.getHTMLConfig = gj.dialog.methods.getHTMLConfig;
 
 (function ($) {
-    $.fn.dialog = function (method) {
-        var $widget;        
-        if (this && this.length) {
-            if (typeof method === 'object' || !method) {
-                return new gj.dialog.widget(this, method);
-            } else {
-                $widget = new gj.dialog.widget(this, null);
-                if ($widget[method]) {
-                    return $widget[method].apply(this, Array.prototype.slice.call(arguments, 1));
+    if (typeof ($.fn.dialog) === "undefined") {
+        $.fn.dialog = function (method) {
+            var $widget;
+            if (this && this.length) {
+                if (typeof method === 'object' || !method) {
+                    return new gj.dialog.widget(this, method);
                 } else {
-                    throw 'Method ' + method + ' does not exist.';
+                    $widget = new gj.dialog.widget(this, null);
+                    if ($widget[method]) {
+                        return $widget[method].apply(this, Array.prototype.slice.call(arguments, 1));
+                    } else {
+                        throw 'Method ' + method + ' does not exist.';
+                    }
                 }
             }
-        }
-    };
+        };
+    }
 })(jQuery);
 /* global window alert jQuery */
 /** 
@@ -1801,21 +1803,23 @@ gj.draggable.widget.prototype = new gj.widget();
 gj.draggable.widget.constructor = gj.draggable.widget;
 
 (function ($) {
-    $.fn.draggable = function (method) {
-        var $widget;        
-        if (this && this.length) {
-            if (typeof method === 'object' || !method) {
-                return new gj.draggable.widget(this, method);
-            } else {
-                $widget = new gj.draggable.widget(this, null);
-                if ($widget[method]) {
-                    return $widget[method].apply(this, Array.prototype.slice.call(arguments, 1));
+    if (typeof ($.fn.draggable) === "undefined") {
+        $.fn.draggable = function (method) {
+            var $widget;
+            if (this && this.length) {
+                if (typeof method === 'object' || !method) {
+                    return new gj.draggable.widget(this, method);
                 } else {
-                    throw 'Method ' + method + ' does not exist.';
+                    $widget = new gj.draggable.widget(this, null);
+                    if ($widget[method]) {
+                        return $widget[method].apply(this, Array.prototype.slice.call(arguments, 1));
+                    } else {
+                        throw 'Method ' + method + ' does not exist.';
+                    }
                 }
             }
-        }
-    };
+        };
+    }
 })(jQuery);
 /* global window alert jQuery */
 /** 
@@ -2052,21 +2056,23 @@ gj.droppable.widget.prototype = new gj.widget();
 gj.droppable.widget.constructor = gj.droppable.widget;
 
 (function ($) {
-    $.fn.droppable = function (method) {
-        var $widget;
-        if (this && this.length) {
-            if (typeof method === 'object' || !method) {
-                return new gj.droppable.widget(this, method);
-            } else {
-                $widget = new gj.droppable.widget(this, null);
-                if ($widget[method]) {
-                    return $widget[method].apply(this, Array.prototype.slice.call(arguments, 1));
+    if (typeof ($.fn.droppable) === "undefined") {
+        $.fn.droppable = function (method) {
+            var $widget;
+            if (this && this.length) {
+                if (typeof method === 'object' || !method) {
+                    return new gj.droppable.widget(this, method);
                 } else {
-                    throw 'Method ' + method + ' does not exist.';
+                    $widget = new gj.droppable.widget(this, null);
+                    if ($widget[method]) {
+                        return $widget[method].apply(this, Array.prototype.slice.call(arguments, 1));
+                    } else {
+                        throw 'Method ' + method + ' does not exist.';
+                    }
                 }
             }
-        }
-    };
+        };
+    }
 })(jQuery);
 if (typeof (gj.grid) === 'undefined') {
     gj.grid = {
@@ -5081,21 +5087,23 @@ gj.grid.widget.prototype.getConfig = gj.grid.methods.getConfig;
 gj.grid.widget.prototype.getHTMLConfig = gj.grid.methods.getHTMLConfig;
 
 (function ($) {
-    $.fn.grid = function (method) {
-        var $widget;
-        if (this && this.length) {
-            if (typeof method === 'object' || !method) {
-                return new gj.grid.widget(this, method);
-            } else {
-                $widget = new gj.grid.widget(this, null);
-                if ($widget[method]) {
-                    return $widget[method].apply(this, Array.prototype.slice.call(arguments, 1));
+    if (typeof ($.fn.grid) === "undefined") {
+        $.fn.grid = function (method) {
+            var $widget;
+            if (this && this.length) {
+                if (typeof method === 'object' || !method) {
+                    return new gj.grid.widget(this, method);
                 } else {
-                    throw 'Method ' + method + ' does not exist.';
+                    $widget = new gj.grid.widget(this, null);
+                    if ($widget[method]) {
+                        return $widget[method].apply(this, Array.prototype.slice.call(arguments, 1));
+                    } else {
+                        throw 'Method ' + method + ' does not exist.';
+                    }
                 }
             }
-        }
-    };
+        };
+    }
 })(jQuery);
 
 /** 
@@ -9890,21 +9898,23 @@ gj.tree.widget.prototype = new gj.widget();
 gj.tree.widget.constructor = gj.tree.widget;
 
 (function ($) {
-    $.fn.tree = function (method) {
-        var $widget;        
-        if (this && this.length) {
-            if (typeof method === 'object' || !method) {
-                return new gj.tree.widget(this, method);
-            } else {
-                $widget = new gj.tree.widget(this, null);
-                if ($widget[method]) {
-                    return $widget[method].apply(this, Array.prototype.slice.call(arguments, 1));
+    if (typeof ($.fn.tree) === "undefined") {
+        $.fn.tree = function (method) {
+            var $widget;
+            if (this && this.length) {
+                if (typeof method === 'object' || !method) {
+                    return new gj.tree.widget(this, method);
                 } else {
-                    throw 'Method ' + method + ' does not exist.';
+                    $widget = new gj.tree.widget(this, null);
+                    if ($widget[method]) {
+                        return $widget[method].apply(this, Array.prototype.slice.call(arguments, 1));
+                    } else {
+                        throw 'Method ' + method + ' does not exist.';
+                    }
                 }
             }
-        }
-    };
+        };
+    }
 })(jQuery);
 /** 
  * @widget Tree 
@@ -10770,21 +10780,23 @@ gj.checkbox.widget.prototype = new gj.widget();
 gj.checkbox.widget.constructor = gj.checkbox.widget;
 
 (function ($) {
-    $.fn.checkbox = function (method) {
-        var $widget;
-        if (this && this.length) {
-            if (typeof method === 'object' || !method) {
-                return new gj.checkbox.widget(this, method);
-            } else {
-                $widget = new gj.checkbox.widget(this, null);
-                if ($widget[method]) {
-                    return $widget[method].apply(this, Array.prototype.slice.call(arguments, 1));
+    if (typeof ($.fn.checkbox) === "undefined") {
+        $.fn.checkbox = function (method) {
+            var $widget;
+            if (this && this.length) {
+                if (typeof method === 'object' || !method) {
+                    return new gj.checkbox.widget(this, method);
                 } else {
-                    throw 'Method ' + method + ' does not exist.';
+                    $widget = new gj.checkbox.widget(this, null);
+                    if ($widget[method]) {
+                        return $widget[method].apply(this, Array.prototype.slice.call(arguments, 1));
+                    } else {
+                        throw 'Method ' + method + ' does not exist.';
+                    }
                 }
             }
-        }
-    };
+        };
+    }
 })(jQuery);
 if (typeof (gj.editor) === 'undefined') {
     gj.editor = {
@@ -11181,21 +11193,23 @@ gj.editor.widget.prototype = new gj.widget();
 gj.editor.widget.constructor = gj.editor.widget;
 
 (function ($) {
-    $.fn.editor = function (method) {
-        var $widget;
-        if (this && this.length) {
-            if (typeof method === 'object' || !method) {
-                return new gj.editor.widget(this, method);
-            } else {
-                $widget = new gj.editor.widget(this, null);
-                if ($widget[method]) {
-                    return $widget[method].apply(this, Array.prototype.slice.call(arguments, 1));
+    if (typeof ($.fn.editor) === "undefined") {
+        $.fn.editor = function (method) {
+            var $widget;
+            if (this && this.length) {
+                if (typeof method === 'object' || !method) {
+                    return new gj.editor.widget(this, method);
                 } else {
-                    throw 'Method ' + method + ' does not exist.';
+                    $widget = new gj.editor.widget(this, null);
+                    if ($widget[method]) {
+                        return $widget[method].apply(this, Array.prototype.slice.call(arguments, 1));
+                    } else {
+                        throw 'Method ' + method + ' does not exist.';
+                    }
                 }
             }
-        }
-    };
+        };
+    }
 })(jQuery);
 /* global window alert jQuery gj */
 /**
@@ -11785,21 +11799,23 @@ gj.dropdown.widget.prototype = new gj.widget();
 gj.dropdown.widget.constructor = gj.dropdown.widget;
 
 (function ($) {
-    $.fn.dropdown = function (method) {
-        var $widget;
-        if (this && this.length) {
-            if (typeof method === 'object' || !method) {
-                return new gj.dropdown.widget(this, method);
-            } else {
-                $widget = new gj.dropdown.widget(this, null);
-                if ($widget[method]) {
-                    return $widget[method].apply(this, Array.prototype.slice.call(arguments, 1));
+    if (typeof ($.fn.dropdown) === "undefined") {
+        $.fn.dropdown = function (method) {
+            var $widget;
+            if (this && this.length) {
+                if (typeof method === 'object' || !method) {
+                    return new gj.dropdown.widget(this, method);
                 } else {
-                    throw 'Method ' + method + ' does not exist.';
+                    $widget = new gj.dropdown.widget(this, null);
+                    if ($widget[method]) {
+                        return $widget[method].apply(this, Array.prototype.slice.call(arguments, 1));
+                    } else {
+                        throw 'Method ' + method + ' does not exist.';
+                    }
                 }
             }
-        }
-    };
+        };
+    }
 })(jQuery);
 /* global window alert jQuery gj */
 /**
@@ -12172,9 +12188,14 @@ gj.datepicker.methods = {
             $tbody = $table.children('tbody'),
             minDate = gj.datepicker.methods.getMinDate(data),
             maxDate = gj.datepicker.methods.getMaxDate(data);
-        
-        selectedDay = $datepicker.attr('day').split('-');
-        selectedDay = new Date(selectedDay[0], selectedDay[1], selectedDay[2]);
+            
+        if ($datepicker.attr('day'))
+        {
+            selectedDay = $datepicker.attr('day').split('-');
+            selectedDay = new Date(selectedDay[0], selectedDay[1], selectedDay[2]);
+        } else {
+            selectedDay = new Date(undefined);
+        }
         month = parseInt($datepicker.attr('month'), 10);
         year = parseInt($datepicker.attr('year'), 10);
 
@@ -12523,19 +12544,21 @@ gj.datepicker.widget.prototype = new gj.widget();
 gj.datepicker.widget.constructor = gj.datepicker.widget;
 
 (function ($) {
-    $.fn.datepicker = function (method) {
-        var $widget;
-        if (this && this.length) {
-            if (typeof method === 'object' || !method) {
-                return new gj.datepicker.widget(this, method);
-            } else {
-                $widget = new gj.datepicker.widget(this, null);
-                if ($widget[method]) {
-                    return $widget[method].apply(this, Array.prototype.slice.call(arguments, 1));
+    if (typeof ($.fn.datepicker) === "undefined") {
+        $.fn.datepicker = function (method) {
+            var $widget;
+            if (this && this.length) {
+                if (typeof method === 'object' || !method) {
+                    return new gj.datepicker.widget(this, method);
                 } else {
-                    throw 'Method ' + method + ' does not exist.';
+                    $widget = new gj.datepicker.widget(this, null);
+                    if ($widget[method]) {
+                        return $widget[method].apply(this, Array.prototype.slice.call(arguments, 1));
+                    } else {
+                        throw 'Method ' + method + ' does not exist.';
+                    }
                 }
             }
-        }
-    };
+        };
+    }
 })(jQuery);

@@ -1332,21 +1332,23 @@ gj.grid.widget.prototype.getConfig = gj.grid.methods.getConfig;
 gj.grid.widget.prototype.getHTMLConfig = gj.grid.methods.getHTMLConfig;
 
 (function ($) {
-    $.fn.grid = function (method) {
-        var $widget;
-        if (this && this.length) {
-            if (typeof method === 'object' || !method) {
-                return new gj.grid.widget(this, method);
-            } else {
-                $widget = new gj.grid.widget(this, null);
-                if ($widget[method]) {
-                    return $widget[method].apply(this, Array.prototype.slice.call(arguments, 1));
+    if (typeof ($.fn.grid) === "undefined") {
+        $.fn.grid = function (method) {
+            var $widget;
+            if (this && this.length) {
+                if (typeof method === 'object' || !method) {
+                    return new gj.grid.widget(this, method);
                 } else {
-                    throw 'Method ' + method + ' does not exist.';
+                    $widget = new gj.grid.widget(this, null);
+                    if ($widget[method]) {
+                        return $widget[method].apply(this, Array.prototype.slice.call(arguments, 1));
+                    } else {
+                        throw 'Method ' + method + ' does not exist.';
+                    }
                 }
             }
-        }
-    };
+        };
+    }
 })(jQuery);
 
 /**  */gj.grid.plugins.expandCollapseRows = {
