@@ -349,5 +349,9 @@ gj.documentManager = {
         }
 
         return result;
+    },
+
+    isIE: function () {
+        return !!navigator.userAgent.match(/Trident/g) || !!navigator.userAgent.match(/MSIE/g);
     }
 };

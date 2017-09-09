@@ -400,6 +400,10 @@ gj.core = {
         }
 
         return result;
+    },
+
+    isIE: function () {
+        return !!navigator.userAgent.match(/Trident/g) || !!navigator.userAgent.match(/MSIE/g);
     }
 };
 if (typeof (gj.dialog) === 'undefined') {
@@ -6506,9 +6510,6 @@ gj.grid.plugins.pagination = {
 
                 $leftPanel = $('<div data-role="display" />').css({ 'float': 'left' });
                 $rightPanel = $('<div data-role="display" />').css({ 'float': 'right' });
-                if (/msie/.test(navigator.userAgent.toLowerCase())) {
-                    $rightPanel.css({ 'padding-top': '3px' });
-                }
 
                 $cell.append($leftPanel).append($rightPanel);
 
@@ -8367,7 +8368,7 @@ gj.grid.plugins.fixedHeader = {
         },
 
         refresh: function ($grid) {
-            var i, $theadCell,
+            var i, width,
                 data = $grid.data(),
                 $tbody = $grid.children('tbody'),
                 $thead = $grid.children('thead'),
@@ -8381,8 +8382,11 @@ gj.grid.plugins.fixedHeader = {
             }
 
             for (i = 0; i < $theadCells.length; i++) {
-                $theadCell = $($theadCells[i]);
-                $($tbodyCells[i]).attr('width', $theadCell.outerWidth());
+                width = $($theadCells[i]).outerWidth();
+                if (i === 0 && gj.core.isIE()) {
+                    width = width - 1;
+                }
+                $($tbodyCells[i]).attr('width', width);
             }
         },
 

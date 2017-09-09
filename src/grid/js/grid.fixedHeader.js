@@ -93,7 +93,7 @@ gj.grid.plugins.fixedHeader = {
         },
 
         refresh: function ($grid) {
-            var i, $theadCell,
+            var i, width,
                 data = $grid.data(),
                 $tbody = $grid.children('tbody'),
                 $thead = $grid.children('thead'),
@@ -107,8 +107,11 @@ gj.grid.plugins.fixedHeader = {
             }
 
             for (i = 0; i < $theadCells.length; i++) {
-                $theadCell = $($theadCells[i]);
-                $($tbodyCells[i]).attr('width', $theadCell.outerWidth());
+                width = $($theadCells[i]).outerWidth();
+                if (i === 0 && gj.core.isIE()) {
+                    width = width - 1;
+                }
+                $($tbodyCells[i]).attr('width', width);
             }
         },
 
