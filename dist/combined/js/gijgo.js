@@ -7404,6 +7404,16 @@ gj.grid.plugins.resizableColumns = {
              *         columns: [ { field: 'ID', width: 34 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
              *     });
              * </script>
+             * @example Bootstrap.4 <!-- bootstrap4, grid, draggable.base -->
+             * <table id="grid"></table>
+             * <script>
+             *     var grid = $('#grid').grid({
+             *         dataSource: '/Players/Get',
+             *         resizableColumns: true,
+             *         uiLibrary: 'bootstrap4',
+             *         columns: [ { field: 'ID', width: 42 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
+             *     });
+             * </script>
              */
             resizableColumns: false
         }
@@ -7593,7 +7603,10 @@ gj.grid.plugins.rowReorder = {
 
         createRowMouseDownHandler: function ($grid, $trSource) {
             return function (e) {
-                var $dragEl = $grid.clone(), columns = $grid.data('columns'), i, $cells;
+                var $dragEl = $grid.clone(),
+                    columns = $grid.data('columns'),
+                    i, $cells;
+                $grid.addClass('gj-unselectable');
                 $('body').append($dragEl);
                 $dragEl.attr('data-role', 'draggable-clone').css('cursor', 'move');
                 $dragEl.children('thead').remove().children('tfoot').remove();
@@ -7608,7 +7621,7 @@ gj.grid.plugins.rowReorder = {
                     stop: gj.grid.plugins.rowReorder.private.createDragStopHandler($grid, $trSource)
                 });
                 $dragEl.css({ 
-                    position: 'absolute', top: $trSource.offset().top, left: $trSource.offset().left, width: $trSource.width()
+                    position: 'absolute', top: $trSource.offset().top, left: $trSource.offset().left, width: $trSource.width(), zIndex: 1
                 });
                 if ($trSource.attr('data-droppable') === 'true') {
                     $trSource.droppable('destroy');
@@ -7630,6 +7643,7 @@ gj.grid.plugins.rowReorder = {
         createDragStopHandler: function ($grid, $trSource) {
             return function (e, mousePosition) {
                 $('table[data-role="draggable-clone"]').draggable('destroy').remove();
+                $grid.removeClass('gj-unselectable');
                 $trSource.siblings('tr[data-role="row"]').each(function () {
                     var $trTarget = $(this),
                         targetPosition = $trTarget.data('position'),
@@ -7660,8 +7674,8 @@ gj.grid.plugins.rowReorder = {
                             }
                         }
                     }
-                    $trTarget.removeClass('gj-grid-base-top-border');
-                    $trTarget.removeClass('gj-grid-base-bottom-border');
+                    $trTarget.removeClass('gj-grid-top-border');
+                    $trTarget.removeClass('gj-grid-bottom-border');
                     $trTarget.droppable('destroy');
                 });
             }
@@ -7673,16 +7687,16 @@ gj.grid.plugins.rowReorder = {
                     targetPosition = $trTarget.data('position'),
                     sourcePosition = $trSource.data('position');
                 if (targetPosition < sourcePosition) {
-                    $trTarget.addClass('gj-grid-base-top-border');
+                    $trTarget.addClass('gj-grid-top-border');
                 } else {
-                    $trTarget.addClass('gj-grid-base-bottom-border');
+                    $trTarget.addClass('gj-grid-bottom-border');
                 }
             };
         },
 
         droppableOut: function () {
-            $(this).removeClass('gj-grid-base-top-border');
-            $(this).removeClass('gj-grid-base-bottom-border');
+            $(this).removeClass('gj-grid-top-border');
+            $(this).removeClass('gj-grid-bottom-border');
         }
     },
 
@@ -7730,6 +7744,17 @@ gj.grid.plugins.columnReorder = {
              *         columns: [ { field: 'ID', width: 36 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
              *     });
              * </script>
+             * @example Bootstrap.4 <!-- bootstrap4, grid, draggable.base, droppable.base -->
+             * <p>Drag and Drop column headers in order to reorder the columns.</p>
+             * <table id="grid"></table>
+             * <script>
+             *     $('#grid').grid({
+             *         dataSource: '/Players/Get',
+             *         uiLibrary: 'bootstrap4',
+             *         columnReorder: true,
+             *         columns: [ { field: 'ID', width: 48 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
+             *     });
+             * </script>
              */
             columnReorder: false,
 
@@ -7754,6 +7779,7 @@ gj.grid.plugins.columnReorder = {
             return function (e) {
                 var $dragEl = $grid.clone(),
                     srcIndex = $thSource.index();
+                $grid.addClass('gj-unselectable');
                 $('body').append($dragEl);
                 $dragEl.attr('data-role', 'draggable-clone').css('cursor', 'move');
                 $dragEl.find('thead tr th:eq(' + srcIndex + ')').siblings().remove();
@@ -7764,7 +7790,7 @@ gj.grid.plugins.columnReorder = {
                     stop: gj.grid.plugins.columnReorder.private.createDragStopHandler($grid, $thSource)
                 });
                 $dragEl.css({
-                    position: 'absolute', top: $thSource.offset().top, left: $thSource.offset().left, width: $thSource.width()
+                    position: 'absolute', top: $thSource.offset().top, left: $thSource.offset().left, width: $thSource.width(), zIndex: 1
                 });
                 if ($thSource.attr('data-droppable') === 'true') {
                     $thSource.droppable('destroy');
@@ -7786,6 +7812,7 @@ gj.grid.plugins.columnReorder = {
         createDragStopHandler: function ($grid, $thSource) {
             return function (e, mousePosition) {
                 $('table[data-role="draggable-clone"]').draggable('destroy').remove();
+                $grid.removeClass('gj-unselectable');
                 $thSource.siblings('th').each(function () {
                     var $thTarget = $(this),
                         data = $grid.data(),

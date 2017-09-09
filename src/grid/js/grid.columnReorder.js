@@ -29,6 +29,17 @@ gj.grid.plugins.columnReorder = {
              *         columns: [ { field: 'ID', width: 36 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
              *     });
              * </script>
+             * @example Bootstrap.4 <!-- bootstrap4, grid, draggable.base, droppable.base -->
+             * <p>Drag and Drop column headers in order to reorder the columns.</p>
+             * <table id="grid"></table>
+             * <script>
+             *     $('#grid').grid({
+             *         dataSource: '/Players/Get',
+             *         uiLibrary: 'bootstrap4',
+             *         columnReorder: true,
+             *         columns: [ { field: 'ID', width: 48 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
+             *     });
+             * </script>
              */
             columnReorder: false,
 
@@ -53,6 +64,7 @@ gj.grid.plugins.columnReorder = {
             return function (e) {
                 var $dragEl = $grid.clone(),
                     srcIndex = $thSource.index();
+                $grid.addClass('gj-unselectable');
                 $('body').append($dragEl);
                 $dragEl.attr('data-role', 'draggable-clone').css('cursor', 'move');
                 $dragEl.find('thead tr th:eq(' + srcIndex + ')').siblings().remove();
@@ -63,7 +75,7 @@ gj.grid.plugins.columnReorder = {
                     stop: gj.grid.plugins.columnReorder.private.createDragStopHandler($grid, $thSource)
                 });
                 $dragEl.css({
-                    position: 'absolute', top: $thSource.offset().top, left: $thSource.offset().left, width: $thSource.width()
+                    position: 'absolute', top: $thSource.offset().top, left: $thSource.offset().left, width: $thSource.width(), zIndex: 1
                 });
                 if ($thSource.attr('data-droppable') === 'true') {
                     $thSource.droppable('destroy');
@@ -85,6 +97,7 @@ gj.grid.plugins.columnReorder = {
         createDragStopHandler: function ($grid, $thSource) {
             return function (e, mousePosition) {
                 $('table[data-role="draggable-clone"]').draggable('destroy').remove();
+                $grid.removeClass('gj-unselectable');
                 $thSource.siblings('th').each(function () {
                     var $thTarget = $(this),
                         data = $grid.data(),
