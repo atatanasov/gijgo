@@ -1,5 +1,5 @@
 /*
- * Gijgo Tree v1.5.1
+ * Gijgo Tree v1.6.0
  * http://gijgo.com/tree
  *
  * Copyright 2014, 2017 gijgo.com
@@ -65,7 +65,6 @@ gj.tree.config = {
     },
 
     bootstrap: {
-        indentation: 24,
         style: {
             wrapper: 'gj-unselectable gj-tree-bootstrap-3',
             list: 'gj-list gj-list-bootstrap list-group',
@@ -77,7 +76,6 @@ gj.tree.config = {
     },
 
     bootstrap4: {
-        indentation: 24,
         style: {
             wrapper: 'gj-unselectable gj-tree-bootstrap-4',
             list: 'gj-list gj-list-bootstrap list-group',
@@ -88,7 +86,6 @@ gj.tree.config = {
     },
 
     materialicons: {
-        indentation: 24,
         style: {
             expander: 'gj-tree-material-icons-expander'
         }

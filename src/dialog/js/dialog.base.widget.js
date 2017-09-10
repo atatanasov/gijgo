@@ -68,6 +68,23 @@ gj.dialog.widget = function ($element, jsConfig) {
     }
 
     /**
+     * Gets or set the content of a dialog. Supports chaining when used as a setter.
+     * @method
+     * @param {String} content - The content of the Dialog.
+     * @return String|Dialog
+     * @example sample <!-- draggable.base, dialog.base, bootstrap -->
+     * <div id="dialog">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
+     * <button onclick="alert(dialog.content())" class="btn btn-default">Get Content</button>
+     * <button onclick="dialog.content('New Test Content Value')" class="btn btn-default">Set Content</button>
+     * <script>
+     *     var dialog = $('#dialog').dialog({ uiLibrary: 'bootstrap' });
+     * </script>
+     */
+    self.content = function (content) {
+        return methods.content(this, content);
+    }
+
+    /**
      * Destroy the dialog.
      * @method
      * @param {boolean} keepHtml - If this flag is set to false, the dialog html markup will be removed from the HTML dom tree.

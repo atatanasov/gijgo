@@ -1,5 +1,5 @@
 /*
- * Gijgo JavaScript Library v1.5.1
+ * Gijgo JavaScript Library v1.6.0
  * http://gijgo.com/
  *
  * Copyright 2014, 2017 gijgo.com
@@ -1385,6 +1385,15 @@ gj.dialog.methods = {
         return $dialog.is(':visible');
     },
 
+    content: function ($dialog, html) {
+        var $body = $dialog.children('div[data-role="body"]');
+        if (typeof (html) === "undefined") {
+            return $body.html();
+        } else {
+            return $body.html(html);
+        }
+    },
+
     destroy: function ($dialog, keepHtml) {
         var data = $dialog.data();
         if (data) {
@@ -1474,6 +1483,23 @@ gj.dialog.widget = function ($element, jsConfig) {
      */
     self.isOpen = function () {
         return methods.isOpen(this);
+    }
+
+    /**
+     * Gets or set the content of a dialog. Supports chaining when used as a setter.
+     * @method
+     * @param {String} content - The content of the Dialog.
+     * @return String|Dialog
+     * @example sample <!-- draggable.base, dialog.base, bootstrap -->
+     * <div id="dialog">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
+     * <button onclick="alert(dialog.content())" class="btn btn-default">Get Content</button>
+     * <button onclick="dialog.content('New Test Content Value')" class="btn btn-default">Set Content</button>
+     * <script>
+     *     var dialog = $('#dialog').dialog({ uiLibrary: 'bootstrap' });
+     * </script>
+     */
+    self.content = function (content) {
+        return methods.content(this, content);
     }
 
     /**
@@ -8847,7 +8873,6 @@ gj.tree.config = {
     },
 
     bootstrap: {
-        indentation: 24,
         style: {
             wrapper: 'gj-unselectable gj-tree-bootstrap-3',
             list: 'gj-list gj-list-bootstrap list-group',
@@ -8859,7 +8884,6 @@ gj.tree.config = {
     },
 
     bootstrap4: {
-        indentation: 24,
         style: {
             wrapper: 'gj-unselectable gj-tree-bootstrap-4',
             list: 'gj-list gj-list-bootstrap list-group',
@@ -8870,7 +8894,6 @@ gj.tree.config = {
     },
 
     materialicons: {
-        indentation: 24,
         style: {
             expander: 'gj-tree-material-icons-expander'
         }

@@ -260,6 +260,15 @@
         return $dialog.is(':visible');
     },
 
+    content: function ($dialog, html) {
+        var $body = $dialog.children('div[data-role="body"]');
+        if (typeof (html) === "undefined") {
+            return $body.html();
+        } else {
+            return $body.html(html);
+        }
+    },
+
     destroy: function ($dialog, keepHtml) {
         var data = $dialog.data();
         if (data) {

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Example</title>
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="../../dist/modular/js/core.js" type="text/javascript"></script>
+  <link href="../../dist/modular/css/core.css" rel="stylesheet" type="text/css">
+  <link href="../../dist/modular/css/dialog.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <script src="../../dist/modular/js/draggable.js"></script>
+  <script src="../../dist/modular/js/dialog.js"></script>
+</head>
+<body style="padding: 6px;">
+ <div id="dialog">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
+ <button onclick="alert(dialog.content())" class="btn btn-default">Get Content</button>
+ <button onclick="dialog.content('New Test Content Value')" class="btn btn-default">Set Content</button>
+ <script>
+     var dialog = $('#dialog').dialog({ uiLibrary: 'bootstrap' });
+ </script>
+</body>
+</html>

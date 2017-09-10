@@ -1,5 +1,5 @@
 /*
- * Gijgo Dialog v1.5.1
+ * Gijgo Dialog v1.6.0
  * http://gijgo.com/dialog
  *
  * Copyright 2014, 2017 gijgo.com
@@ -408,6 +408,15 @@ gj.dialog.methods = {
         return $dialog.is(':visible');
     },
 
+    content: function ($dialog, html) {
+        var $body = $dialog.children('div[data-role="body"]');
+        if (typeof (html) === "undefined") {
+            return $body.html();
+        } else {
+            return $body.html(html);
+        }
+    },
+
     destroy: function ($dialog, keepHtml) {
         var data = $dialog.data();
         if (data) {
@@ -447,6 +456,11 @@ gj.dialog.methods = {
     /**
      * Check if the dialog is currently open.     */    self.isOpen = function () {
         return methods.isOpen(this);
+    }
+
+    /**
+     * Gets or set the content of a dialog. Supports chaining when used as a setter.     */    self.content = function (content) {
+        return methods.content(this, content);
     }
 
     /**

@@ -1,6 +1,6 @@
 {
   "name": "gijgo",
-  "version": "1.5.1",
+  "version": "1.6.0",
   "description": "Gijgo is a set of free open source javascript controls distributed under MIT License with built-in support for Bootstrap and Material Design",
   "main": [
     "./dist/combined/js/gijgo.js",
