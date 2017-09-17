@@ -142,6 +142,60 @@ gj.tree.events = {
     },
 
     /**
+     * Event fires on enable of tree node.
+     * @event enable
+     * @param {object} e - event data
+     * @param {object} node - the node as jquery object
+     * @example Event.Sample <!-- materialicons, tree.base -->
+     * <button onclick="tree.enable(northAmerica, false)">Enable North America</button>
+     * <button onclick="tree.disable(northAmerica, false)">Disable North America</button>
+     * <br/><br/>
+     * <div id="tree" data-source="/Locations/Get"></div>
+     * <script>
+     *     var tree, northAmerica;
+     *     tree = $('#tree').tree({
+     *         primaryKey: 'ID',
+     *         dataBound: function () {
+     *             northAmerica = tree.getNodeByText('North America');
+     *         }
+     *     });
+     *     tree.on('enable', function (e, node) {
+     *         alert(node.text() + ' is enabled.');
+     *     });
+     * </script>
+     */
+    enable: function ($tree, $node) {
+        return $tree.triggerHandler('enable', [$node]);
+    },
+
+    /**
+     * Event fires on disable of tree node.
+     * @event disable
+     * @param {object} e - event data
+     * @param {object} node - the node as jquery object
+     * @example Event.Sample <!-- materialicons, tree.base -->
+     * <button onclick="tree.enable(northAmerica, false)">Enable North America</button>
+     * <button onclick="tree.disable(northAmerica, false)">Disable North America</button>
+     * <br/><br/>
+     * <div id="tree" data-source="/Locations/Get"></div>
+     * <script>
+     *     var tree, northAmerica;
+     *     tree = $('#tree').tree({
+     *         primaryKey: 'ID',
+     *         dataBound: function () {
+     *             northAmerica = tree.getNodeByText('North America');
+     *         }
+     *     });
+     *     tree.on('disable', function (e, node) {
+     *         alert(node.text() + ' is disabled.');
+     *     });
+     * </script>
+     */
+    disable: function ($tree, $node) {
+        return $tree.triggerHandler('disable', [$node]);
+    },
+
+    /**
      * Event fires before tree destroy
      * @event destroying
      * @param {object} e - event data

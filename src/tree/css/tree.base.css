@@ -11,6 +11,7 @@ ul.gj-list li [data-role="expander"] {
 
 [data-type="tree"] ul li [data-role="expander"].gj-tree-material-icons-expander {
     width: 24px;
+    color: #616161; /* Gray 700 */
 }
 
 [data-type="tree"] ul li [data-role="expander"].gj-tree-font-awesome-expander {
@@ -60,6 +61,10 @@ ul.gj-list-bootstrap li [data-role="expander"].gj-tree-material-icons-expander {
 }
 
 /* Material Design Theme */
+ul.gj-list-md li.disabled>[data-role="wrapper"]>[data-role="expander"] {
+    color: #9E9E9E; /* Gray 500 */
+}
+
 .gj-tree-md-border ul.gj-list-md li {
     border: 1px solid rgba(0,0,0,.87);
     margin-bottom: -1px;

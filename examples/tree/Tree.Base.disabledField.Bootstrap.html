@@ -9,20 +9,21 @@
   <link href="../../dist/modular/css/core.css" rel="stylesheet" type="text/css">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
   <link href="../../dist/modular/css/checkbox.css" rel="stylesheet" type="text/css">
+  <link href="../../dist/modular/css/tree.css" rel="stylesheet" type="text/css">
   <script src="../../dist/modular/js/checkbox.js"></script>
+  <script src="../../dist/modular/js/tree.js"></script>
 </head>
 <body style="padding: 6px;">
- <div class="container-fluid" style="margin-top:10px">
-     <input type="checkbox" id="checkbox"/><br/><br/>
-     <button onclick="$chkb.state('checked')" class="btn btn-default">Checked</button>
-     <button onclick="$chkb.state('unchecked')" class="btn btn-default">Unchecked</button>
-     <button onclick="$chkb.state('indeterminate')" class="btn btn-default">Indeterminate</button>
-     <button onclick="$chkb.prop('disabled', false)" class="btn btn-default">Enable</button>
-     <button onclick="$chkb.prop('disabled', true)" class="btn btn-default">Disable</button>
- </div>
+ <div id="tree"></div>
  <script>
-     var $chkb = $('#checkbox').checkbox({
-         uiLibrary: 'bootstrap'
+     var tree = $('#tree').tree({
+         uiLibrary: 'bootstrap',
+         checkboxes: true,
+         dataSource: [ { text: 'foo', children: [
+                 { text: 'bar', disabled: true, children: [ { text: 'sub-bar' } ] },
+                 { text: 'bar2', disabled: false }
+             ] }
+         ]
      });
  </script>
 </body>

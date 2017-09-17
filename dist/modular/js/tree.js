@@ -34,6 +34,8 @@ gj.tree.config = {
 
         /** Image url field name.         */        imageUrlField: 'imageUrl',
 
+        /** Disabled field name. Assume that the item is not disabled if not set.         */        disabledField: 'disabled',
+
         /** Image html field name.         */        imageHtmlField: 'imageHtml',
 
         /** Width of the tree.         */        width: undefined,
@@ -149,6 +151,16 @@ gj.tree.config = {
     },
 
     /**
+     * Event fires on enable of tree node.     */    enable: function ($tree, $node) {
+        return $tree.triggerHandler('enable', [$node]);
+    },
+
+    /**
+     * Event fires on disable of tree node.     */    disable: function ($tree, $node) {
+        return $tree.triggerHandler('disable', [$node]);
+    },
+
+    /**
      * Event fires before tree destroy     */    destroying: function ($tree) {
         return $tree.triggerHandler('destroying');
     },
@@ -238,16 +250,19 @@ gj.tree.methods = {
             $node = $('<li data-id="' + nodeData.id + '" data-role="node" />').addClass(data.style.item),
             $wrapper = $('<div data-role="wrapper" />'),
             $expander = $('<span data-role="expander" data-mode="close"></span>').addClass(data.style.expander),
-            $display = $('<span data-role="display">' + nodeData.data[data.textField] + '</span>');
+            $display = $('<span data-role="display">' + nodeData.data[data.textField] + '</span>'),
+            disabled = typeof(nodeData.data[data.disabledField]) !== 'undefined' && nodeData.data[data.disabledField].toString().toLowerCase() === 'true';
 
         if (data.indentation) {
             $wrapper.append('<span data-role="spacer" style="width: ' + (data.indentation * (level - 1)) + 'px;"></span>');
         }
 
-        $expander.on('click', gj.tree.methods.expanderClickHandler($tree));
+        if (disabled) {
+        } else {
+            $expander.on('click', gj.tree.methods.expanderClickHandler($tree));
+            $display.on('click', gj.tree.methods.displayClickHandler($tree));
+        }
         $wrapper.append($expander);
-
-        $display.on('click', gj.tree.methods.displayClickHandler($tree));
         $wrapper.append($display);
         $node.append($wrapper);
 
@@ -544,6 +559,68 @@ gj.tree.methods = {
         }
     },
 
+    enable: function($tree, $node, cascade) {
+        var i, $children;
+        if (typeof ($node) === 'undefined') {
+            $children = $tree.find('ul>li');
+            for (i = 0; i < $children.length; i++) {
+                gj.tree.methods.enableNode($tree, $($children[i]), true);
+            }
+        } else {
+            gj.tree.methods.enableNode($tree, $node, cascade);
+        }
+        return $tree;
+    },
+
+    enableNode: function ($tree, $node, cascade) {
+        var i, $children,
+            $expander = $node.find('>[data-role="wrapper"]>[data-role="expander"]'),
+            $display = $node.find('>[data-role="wrapper"]>[data-role="display"]'),
+            cascade = typeof (cascade) === 'undefined' ? true : cascade;
+
+        $node.removeClass('disabled');
+        $expander.on('click', gj.tree.methods.expanderClickHandler($tree));
+        $display.on('click', gj.tree.methods.displayClickHandler($tree));
+        gj.tree.events.enable($tree, $node);
+        if (cascade) {
+            $children = $node.find('ul>li');
+            for (i = 0; i < $children.length; i++) {
+                gj.tree.methods.enableNode($tree, $($children[i]), cascade);
+            }
+        }
+    },
+
+    disable: function ($tree, $node, cascade) {
+        var i, $children;
+        if (typeof ($node) === 'undefined') {
+            $children = $tree.find('ul>li');
+            for (i = 0; i < $children.length; i++) {
+                gj.tree.methods.disableNode($tree, $($children[i]), true);
+            }
+        } else {
+            gj.tree.methods.disableNode($tree, $node, cascade);
+        }
+        return $tree;
+    },
+
+    disableNode: function ($tree, $node, cascade) {
+        var i, $children,
+            $expander = $node.find('>[data-role="wrapper"]>[data-role="expander"]'),
+            $display = $node.find('>[data-role="wrapper"]>[data-role="display"]'),
+            cascade = typeof (cascade) === 'undefined' ? true : cascade;
+
+        $node.addClass('disabled');
+        $expander.off('click');
+        $display.off('click');
+        gj.tree.events.disable($tree, $node);
+        if (cascade) {
+            $children = $node.find('ul>li');
+            for (i = 0; i < $children.length; i++) {
+                gj.tree.methods.disableNode($tree, $($children[i]), cascade);
+            }
+        }
+    },
+
     destroy: function ($tree) {
         var data = $tree.data();
         if (data) {
@@ -641,6 +718,16 @@ gj.tree.methods = {
         return methods.getSelections(this.children('ul'));
     };
 
+    /**
+     * Enable node from the tree. Enable all tree nodes if the node is not set.     */    self.enable = function ($node, cascade) {
+        return methods.enable(this, $node, cascade);
+    };
+
+    /**
+     * Disable node from the tree. Disable all tree nodes if the node is not set.     */    self.disable = function ($node, cascade) {
+        return methods.disable(this, $node, cascade);
+    };
+
     $.extend($element, self);
     if ('tree' !== $element.attr('data-type')) {
         methods.init.call($element, jsConfig);
@@ -683,11 +770,24 @@ gj.tree.widget.constructor = gj.tree.widget;
     },
 
     private: {
+        dataBound: function ($tree) {
+            var $nodes = $tree.find('li[data-role="node"]');
+            $.each($nodes, function () {
+                var $node = $(this),
+                    state = $node.find('[data-role="checkbox"] input[type="checkbox"]').checkbox('state');
+                if (state === 'checked') {
+                    gj.tree.plugins.checkboxes.private.updateChildrenState($node, state);
+                    gj.tree.plugins.checkboxes.private.updateParentState($node, state);
+                }
+            });
+        },
+
         nodeDataBound: function ($tree, $node, id, record) {
             var data = $tree.data(),
                 $expander = $node.find('> [data-role="wrapper"] > [data-role="expander"]'),
                 $checkbox = $('<input type="checkbox"/>'),
-                $wrapper = $('<span data-role="checkbox"></span>').append($checkbox);
+                $wrapper = $('<span data-role="checkbox"></span>').append($checkbox),
+                disabled = typeof (record[data.disabledField]) !== 'undefined' && record[data.disabledField].toString().toLowerCase() === 'true';
             $checkbox = $checkbox.checkbox({
                 uiLibrary: data.uiLibrary,
                 iconsLibrary: data.iconsLibrary,
@@ -695,9 +795,8 @@ gj.tree.widget.constructor = gj.tree.widget;
                     gj.tree.plugins.checkboxes.events.checkboxChange($tree, $node, record, $checkbox.state());
                 }
             });
-            if (record[data.checkedField]) {
-                $checkbox.state('checked');
-            }
+            disabled && $checkbox.prop('disabled', true);
+            record[data.checkedField] && $checkbox.state('checked');
             $checkbox.on('click', function (e) {
                 var $node = $checkbox.closest('li'),
                     state = $checkbox.state();
@@ -817,15 +916,13 @@ gj.tree.widget.constructor = gj.tree.widget;
                 gj.tree.plugins.checkboxes.private.nodeDataBound($tree, $node, id, record);
             });
             $tree.on('dataBound', function () {
-                $nodes = $tree.find('li[data-role="node"]');
-                $.each($nodes, function () {
-                    var $node = $(this),
-                        state = $node.find('[data-role="checkbox"] input[type="checkbox"]').checkbox('state');
-                    if (state === 'checked') {
-                        gj.tree.plugins.checkboxes.private.updateChildrenState($node, state);
-                        gj.tree.plugins.checkboxes.private.updateParentState($node, state);
-                    }
-                });
+                gj.tree.plugins.checkboxes.private.dataBound($tree);
+            });
+            $tree.on('enable', function (e, $node) {
+                $node.find('>[data-role="wrapper"]>[data-role="checkbox"] input[type="checkbox"]').prop('disabled', false);
+            });
+            $tree.on('disable', function (e, $node) {
+                $node.find('>[data-role="wrapper"]>[data-role="checkbox"] input[type="checkbox"]').prop('disabled', true);
             });
         }
     }

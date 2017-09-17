@@ -182,6 +182,63 @@ gj.tree.config = {
          */
         imageUrlField: 'imageUrl',
 
+        /** Disabled field name. Assume that the item is not disabled if not set.
+         * @type string
+         * @default 'disabled'
+         * @example Default.Value <!-- materialicons, checkbox, tree.base -->
+         * <div id="tree"></div>
+         * <script>
+         *     var tree = $('#tree').tree({
+         *         checkboxes: true,
+         *         dataSource: [ { text: 'foo', children: [
+         *                 { text: 'bar', disabled: true, children: [ { text: 'sub-bar' } ] },
+         *                 { text: 'bar2', disabled: false }
+         *             ] }
+         *         ]
+         *     });
+         * </script>
+         * @example Custom.Value <!-- materialicons, checkbox, tree.base -->
+         * <div id="tree"></div>
+         * <script>
+         *     var tree = $('#tree').tree({
+         *         checkboxes: true,
+         *         disabledField: 'disabledState',
+         *         dataSource: [ { text: 'foo', children: [
+         *                 { text: 'bar', disabledState: true, children: [ { text: 'sub-bar' } ] },
+         *                 { text: 'bar2', disabledState: false }
+         *             ] }
+         *         ]
+         *     });
+         * </script>
+         * @example Bootstrap <!-- bootstrap, checkbox, tree.base -->
+         * <div id="tree"></div>
+         * <script>
+         *     var tree = $('#tree').tree({
+         *         uiLibrary: 'bootstrap',
+         *         checkboxes: true,
+         *         dataSource: [ { text: 'foo', children: [
+         *                 { text: 'bar', disabled: true, children: [ { text: 'sub-bar' } ] },
+         *                 { text: 'bar2', disabled: false }
+         *             ] }
+         *         ]
+         *     });
+         * </script>
+         * @example Bootstrap.4 <!-- bootstrap4, materialicons, checkbox, tree.base -->
+         * <div id="tree"></div>
+         * <script>
+         *     var tree = $('#tree').tree({
+         *         uiLibrary: 'bootstrap4',
+         *         checkboxes: true,
+         *         dataSource: [ { text: 'foo', children: [
+         *                 { text: 'bar', disabled: true, children: [ { text: 'sub-bar' } ] },
+         *                 { text: 'bar2', disabled: false }
+         *             ] }
+         *         ]
+         *     });
+         * </script>
+         */
+        disabledField: 'disabled',
+
         /** Image html field name.
          * @type string
          * @default 'imageHtml'

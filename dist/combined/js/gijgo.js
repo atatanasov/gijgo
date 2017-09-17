@@ -8658,6 +8658,63 @@ gj.tree.config = {
          */
         imageUrlField: 'imageUrl',
 
+        /** Disabled field name. Assume that the item is not disabled if not set.
+         * @type string
+         * @default 'disabled'
+         * @example Default.Value <!-- materialicons, checkbox, tree.base -->
+         * <div id="tree"></div>
+         * <script>
+         *     var tree = $('#tree').tree({
+         *         checkboxes: true,
+         *         dataSource: [ { text: 'foo', children: [
+         *                 { text: 'bar', disabled: true, children: [ { text: 'sub-bar' } ] },
+         *                 { text: 'bar2', disabled: false }
+         *             ] }
+         *         ]
+         *     });
+         * </script>
+         * @example Custom.Value <!-- materialicons, checkbox, tree.base -->
+         * <div id="tree"></div>
+         * <script>
+         *     var tree = $('#tree').tree({
+         *         checkboxes: true,
+         *         disabledField: 'disabledState',
+         *         dataSource: [ { text: 'foo', children: [
+         *                 { text: 'bar', disabledState: true, children: [ { text: 'sub-bar' } ] },
+         *                 { text: 'bar2', disabledState: false }
+         *             ] }
+         *         ]
+         *     });
+         * </script>
+         * @example Bootstrap <!-- bootstrap, checkbox, tree.base -->
+         * <div id="tree"></div>
+         * <script>
+         *     var tree = $('#tree').tree({
+         *         uiLibrary: 'bootstrap',
+         *         checkboxes: true,
+         *         dataSource: [ { text: 'foo', children: [
+         *                 { text: 'bar', disabled: true, children: [ { text: 'sub-bar' } ] },
+         *                 { text: 'bar2', disabled: false }
+         *             ] }
+         *         ]
+         *     });
+         * </script>
+         * @example Bootstrap.4 <!-- bootstrap4, materialicons, checkbox, tree.base -->
+         * <div id="tree"></div>
+         * <script>
+         *     var tree = $('#tree').tree({
+         *         uiLibrary: 'bootstrap4',
+         *         checkboxes: true,
+         *         dataSource: [ { text: 'foo', children: [
+         *                 { text: 'bar', disabled: true, children: [ { text: 'sub-bar' } ] },
+         *                 { text: 'bar2', disabled: false }
+         *             ] }
+         *         ]
+         *     });
+         * </script>
+         */
+        disabledField: 'disabled',
+
         /** Image html field name.
          * @type string
          * @default 'imageHtml'
@@ -9063,6 +9120,60 @@ gj.tree.events = {
     },
 
     /**
+     * Event fires on enable of tree node.
+     * @event enable
+     * @param {object} e - event data
+     * @param {object} node - the node as jquery object
+     * @example Event.Sample <!-- materialicons, tree.base -->
+     * <button onclick="tree.enable(northAmerica, false)">Enable North America</button>
+     * <button onclick="tree.disable(northAmerica, false)">Disable North America</button>
+     * <br/><br/>
+     * <div id="tree" data-source="/Locations/Get"></div>
+     * <script>
+     *     var tree, northAmerica;
+     *     tree = $('#tree').tree({
+     *         primaryKey: 'ID',
+     *         dataBound: function () {
+     *             northAmerica = tree.getNodeByText('North America');
+     *         }
+     *     });
+     *     tree.on('enable', function (e, node) {
+     *         alert(node.text() + ' is enabled.');
+     *     });
+     * </script>
+     */
+    enable: function ($tree, $node) {
+        return $tree.triggerHandler('enable', [$node]);
+    },
+
+    /**
+     * Event fires on disable of tree node.
+     * @event disable
+     * @param {object} e - event data
+     * @param {object} node - the node as jquery object
+     * @example Event.Sample <!-- materialicons, tree.base -->
+     * <button onclick="tree.enable(northAmerica, false)">Enable North America</button>
+     * <button onclick="tree.disable(northAmerica, false)">Disable North America</button>
+     * <br/><br/>
+     * <div id="tree" data-source="/Locations/Get"></div>
+     * <script>
+     *     var tree, northAmerica;
+     *     tree = $('#tree').tree({
+     *         primaryKey: 'ID',
+     *         dataBound: function () {
+     *             northAmerica = tree.getNodeByText('North America');
+     *         }
+     *     });
+     *     tree.on('disable', function (e, node) {
+     *         alert(node.text() + ' is enabled.');
+     *     });
+     * </script>
+     */
+    disable: function ($tree, $node) {
+        return $tree.triggerHandler('disable', [$node]);
+    },
+
+    /**
      * Event fires before tree destroy
      * @event destroying
      * @param {object} e - event data
@@ -9183,16 +9294,19 @@ gj.tree.methods = {
             $node = $('<li data-id="' + nodeData.id + '" data-role="node" />').addClass(data.style.item),
             $wrapper = $('<div data-role="wrapper" />'),
             $expander = $('<span data-role="expander" data-mode="close"></span>').addClass(data.style.expander),
-            $display = $('<span data-role="display">' + nodeData.data[data.textField] + '</span>');
+            $display = $('<span data-role="display">' + nodeData.data[data.textField] + '</span>'),
+            disabled = typeof(nodeData.data[data.disabledField]) !== 'undefined' && nodeData.data[data.disabledField].toString().toLowerCase() === 'true';
 
         if (data.indentation) {
             $wrapper.append('<span data-role="spacer" style="width: ' + (data.indentation * (level - 1)) + 'px;"></span>');
         }
 
-        $expander.on('click', gj.tree.methods.expanderClickHandler($tree));
+        if (disabled) {
+        } else {
+            $expander.on('click', gj.tree.methods.expanderClickHandler($tree));
+            $display.on('click', gj.tree.methods.displayClickHandler($tree));
+        }
         $wrapper.append($expander);
-
-        $display.on('click', gj.tree.methods.displayClickHandler($tree));
         $wrapper.append($display);
         $node.append($wrapper);
 
@@ -9485,6 +9599,68 @@ gj.tree.methods = {
                 break;
             } else if (records[i].children && records[i].children.length) {
                 gj.tree.methods.removeDataById($tree, id, records[i].children);
+            }
+        }
+    },
+
+    enable: function($tree, $node, cascade) {
+        var i, $children;
+        if (typeof ($node) === 'undefined') {
+            $children = $tree.find('ul>li');
+            for (i = 0; i < $children.length; i++) {
+                gj.tree.methods.enableNode($tree, $($children[i]), true);
+            }
+        } else {
+            gj.tree.methods.enableNode($tree, $node, cascade);
+        }
+        return $tree;
+    },
+
+    enableNode: function ($tree, $node, cascade) {
+        var i, $children,
+            $expander = $node.find('>[data-role="wrapper"]>[data-role="expander"]'),
+            $display = $node.find('>[data-role="wrapper"]>[data-role="display"]'),
+            cascade = typeof (cascade) === 'undefined' ? true : cascade;
+
+        $node.removeClass('disabled');
+        $expander.on('click', gj.tree.methods.expanderClickHandler($tree));
+        $display.on('click', gj.tree.methods.displayClickHandler($tree));
+        gj.tree.events.enable($tree, $node);
+        if (cascade) {
+            $children = $node.find('ul>li');
+            for (i = 0; i < $children.length; i++) {
+                gj.tree.methods.enableNode($tree, $($children[i]), cascade);
+            }
+        }
+    },
+
+    disable: function ($tree, $node, cascade) {
+        var i, $children;
+        if (typeof ($node) === 'undefined') {
+            $children = $tree.find('ul>li');
+            for (i = 0; i < $children.length; i++) {
+                gj.tree.methods.disableNode($tree, $($children[i]), true);
+            }
+        } else {
+            gj.tree.methods.disableNode($tree, $node, cascade);
+        }
+        return $tree;
+    },
+
+    disableNode: function ($tree, $node, cascade) {
+        var i, $children,
+            $expander = $node.find('>[data-role="wrapper"]>[data-role="expander"]'),
+            $display = $node.find('>[data-role="wrapper"]>[data-role="display"]'),
+            cascade = typeof (cascade) === 'undefined' ? true : cascade;
+
+        $node.addClass('disabled');
+        $expander.off('click');
+        $display.off('click');
+        gj.tree.events.disable($tree, $node);
+        if (cascade) {
+            $children = $node.find('ul>li');
+            for (i = 0; i < $children.length; i++) {
+                gj.tree.methods.disableNode($tree, $($children[i]), cascade);
             }
         }
     },
@@ -9940,6 +10116,82 @@ gj.tree.widget = function ($element, jsConfig) {
         return methods.getSelections(this.children('ul'));
     };
 
+    /**
+     * Enable node from the tree. Enable all tree nodes if the node is not set.
+     * @method
+     * @param {Object} node - The node as jquery object.
+     * @param {Boolean} cascade - Enable all children. Set to true by default.
+     * @return jQuery Object
+     * @example Sample <!-- materialicons, checkbox, tree.base -->
+     * <button onclick="tree.enable(northAmerica)">Enable North America (Cascade)</button>
+     * <button onclick="tree.disable(northAmerica)">Disable North America (Cascade)</button>
+     * <button onclick="tree.enable(northAmerica, false)">Enable North America (Non-Cascade)</button>
+     * <button onclick="tree.disable(northAmerica, false)">Disable North America (Non-Cascade)</button>
+     * <br/><br/>
+     * <div id="tree" data-source="/Locations/Get"></div>
+     * <script>
+     *     var tree, northAmerica;
+     *     tree = $('#tree').tree({
+     *         checkboxes: true,
+     *         primaryKey: 'ID',
+     *         dataBound: function () {
+     *             northAmerica = tree.getNodeByText('North America');
+     *         }
+     *     });
+     * </script>
+     * @example Enable.Disable.All <!-- materialicons, checkbox, tree.base -->
+     * <button onclick="tree.enable()">Enable All</button>
+     * <button onclick="tree.disable()">Disable All</button>
+     * <br/><br/>
+     * <div id="tree" data-source="/Locations/Get"></div>
+     * <script>
+     *     var tree = $('#tree').tree({
+     *         checkboxes: true
+     *     });
+     * </script>
+     */
+    self.enable = function ($node, cascade) {
+        return methods.enable(this, $node, cascade);
+    };
+
+    /**
+     * Disable node from the tree. Disable all tree nodes if the node is not set.
+     * @method
+     * @param {Object} node - The node as jquery object.
+     * @param {Boolean} cascade - Disable all children. Set to true by default.
+     * @return jQuery Object
+     * @example Sample <!-- materialicons, checkbox, tree.base -->
+     * <button onclick="tree.enable(northAmerica)">Enable North America (Cascade)</button>
+     * <button onclick="tree.disable(northAmerica)">Disable North America (Cascade)</button>
+     * <button onclick="tree.enable(northAmerica, false)">Enable North America (Non-Cascade)</button>
+     * <button onclick="tree.disable(northAmerica, false)">Disable North America (Non-Cascade)</button>
+     * <br/><br/>
+     * <div id="tree" data-source="/Locations/Get"></div>
+     * <script>
+     *     var tree, northAmerica;
+     *     tree = $('#tree').tree({
+     *         checkboxes: true,
+     *         primaryKey: 'ID',
+     *         dataBound: function () {
+     *             northAmerica = tree.getNodeByText('North America');
+     *         }
+     *     });
+     * </script>
+     * @example Enable.Disable.All <!-- materialicons, checkbox, tree.base -->
+     * <button onclick="tree.enable()">Enable All</button>
+     * <button onclick="tree.disable()">Disable All</button>
+     * <br/><br/>
+     * <div id="tree" data-source="/Locations/Get"></div>
+     * <script>
+     *     var tree = $('#tree').tree({
+     *         checkboxes: true
+     *     });
+     * </script>
+     */
+    self.disable = function ($node, cascade) {
+        return methods.disable(this, $node, cascade);
+    };
+
     $.extend($element, self);
     if ('tree' !== $element.attr('data-type')) {
         methods.init.call($element, jsConfig);
@@ -10055,11 +10307,24 @@ gj.tree.plugins.checkboxes = {
     },
 
     private: {
+        dataBound: function ($tree) {
+            var $nodes = $tree.find('li[data-role="node"]');
+            $.each($nodes, function () {
+                var $node = $(this),
+                    state = $node.find('[data-role="checkbox"] input[type="checkbox"]').checkbox('state');
+                if (state === 'checked') {
+                    gj.tree.plugins.checkboxes.private.updateChildrenState($node, state);
+                    gj.tree.plugins.checkboxes.private.updateParentState($node, state);
+                }
+            });
+        },
+
         nodeDataBound: function ($tree, $node, id, record) {
             var data = $tree.data(),
                 $expander = $node.find('> [data-role="wrapper"] > [data-role="expander"]'),
                 $checkbox = $('<input type="checkbox"/>'),
-                $wrapper = $('<span data-role="checkbox"></span>').append($checkbox);
+                $wrapper = $('<span data-role="checkbox"></span>').append($checkbox),
+                disabled = typeof (record[data.disabledField]) !== 'undefined' && record[data.disabledField].toString().toLowerCase() === 'true';
             $checkbox = $checkbox.checkbox({
                 uiLibrary: data.uiLibrary,
                 iconsLibrary: data.iconsLibrary,
@@ -10067,9 +10332,8 @@ gj.tree.plugins.checkboxes = {
                     gj.tree.plugins.checkboxes.events.checkboxChange($tree, $node, record, $checkbox.state());
                 }
             });
-            if (record[data.checkedField]) {
-                $checkbox.state('checked');
-            }
+            disabled && $checkbox.prop('disabled', true);
+            record[data.checkedField] && $checkbox.state('checked');
             $checkbox.on('click', function (e) {
                 var $node = $checkbox.closest('li'),
                     state = $checkbox.state();
@@ -10288,15 +10552,13 @@ gj.tree.plugins.checkboxes = {
                 gj.tree.plugins.checkboxes.private.nodeDataBound($tree, $node, id, record);
             });
             $tree.on('dataBound', function () {
-                $nodes = $tree.find('li[data-role="node"]');
-                $.each($nodes, function () {
-                    var $node = $(this),
-                        state = $node.find('[data-role="checkbox"] input[type="checkbox"]').checkbox('state');
-                    if (state === 'checked') {
-                        gj.tree.plugins.checkboxes.private.updateChildrenState($node, state);
-                        gj.tree.plugins.checkboxes.private.updateParentState($node, state);
-                    }
-                });
+                gj.tree.plugins.checkboxes.private.dataBound($tree);
+            });
+            $tree.on('enable', function (e, $node) {
+                $node.find('>[data-role="wrapper"]>[data-role="checkbox"] input[type="checkbox"]').prop('disabled', false);
+            });
+            $tree.on('disable', function (e, $node) {
+                $node.find('>[data-role="wrapper"]>[data-role="checkbox"] input[type="checkbox"]').prop('disabled', true);
             });
         }
     }
@@ -10598,6 +10860,8 @@ gj.checkbox.config = {
          *     <button onclick="$chkb.state('checked')" class="btn btn-default">Checked</button>
          *     <button onclick="$chkb.state('unchecked')" class="btn btn-default">Unchecked</button>
          *     <button onclick="$chkb.state('indeterminate')" class="btn btn-default">Indeterminate</button>
+         *     <button onclick="$chkb.prop('disabled', false)" class="btn btn-default">Enable</button>
+         *     <button onclick="$chkb.prop('disabled', true)" class="btn btn-default">Disable</button>
          * </div>
          * <script>
          *     var $chkb = $('#checkbox').checkbox({
@@ -10610,6 +10874,8 @@ gj.checkbox.config = {
          *     <button onclick="$chkb.state('checked')" class="btn btn-default">Checked</button>
          *     <button onclick="$chkb.state('unchecked')" class="btn btn-default">Unchecked</button>
          *     <button onclick="$chkb.state('indeterminate')" class="btn btn-default">Indeterminate</button>
+         *     <button onclick="$chkb.prop('disabled', false)" class="btn btn-default">Enable</button>
+         *     <button onclick="$chkb.prop('disabled', true)" class="btn btn-default">Disable</button>
          * </div>
          * <script>
          *     var $chkb = $('#checkbox').checkbox({

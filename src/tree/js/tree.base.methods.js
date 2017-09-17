@@ -78,16 +78,19 @@ gj.tree.methods = {
             $node = $('<li data-id="' + nodeData.id + '" data-role="node" />').addClass(data.style.item),
             $wrapper = $('<div data-role="wrapper" />'),
             $expander = $('<span data-role="expander" data-mode="close"></span>').addClass(data.style.expander),
-            $display = $('<span data-role="display">' + nodeData.data[data.textField] + '</span>');
+            $display = $('<span data-role="display">' + nodeData.data[data.textField] + '</span>'),
+            disabled = typeof(nodeData.data[data.disabledField]) !== 'undefined' && nodeData.data[data.disabledField].toString().toLowerCase() === 'true';
 
         if (data.indentation) {
             $wrapper.append('<span data-role="spacer" style="width: ' + (data.indentation * (level - 1)) + 'px;"></span>');
         }
 
-        $expander.on('click', gj.tree.methods.expanderClickHandler($tree));
+        if (disabled) {
+        } else {
+            $expander.on('click', gj.tree.methods.expanderClickHandler($tree));
+            $display.on('click', gj.tree.methods.displayClickHandler($tree));
+        }
         $wrapper.append($expander);
-
-        $display.on('click', gj.tree.methods.displayClickHandler($tree));
         $wrapper.append($display);
         $node.append($wrapper);
 
@@ -380,6 +383,68 @@ gj.tree.methods = {
                 break;
             } else if (records[i].children && records[i].children.length) {
                 gj.tree.methods.removeDataById($tree, id, records[i].children);
+            }
+        }
+    },
+
+    enable: function($tree, $node, cascade) {
+        var i, $children;
+        if (typeof ($node) === 'undefined') {
+            $children = $tree.find('ul>li');
+            for (i = 0; i < $children.length; i++) {
+                gj.tree.methods.enableNode($tree, $($children[i]), true);
+            }
+        } else {
+            gj.tree.methods.enableNode($tree, $node, cascade);
+        }
+        return $tree;
+    },
+
+    enableNode: function ($tree, $node, cascade) {
+        var i, $children,
+            $expander = $node.find('>[data-role="wrapper"]>[data-role="expander"]'),
+            $display = $node.find('>[data-role="wrapper"]>[data-role="display"]'),
+            cascade = typeof (cascade) === 'undefined' ? true : cascade;
+
+        $node.removeClass('disabled');
+        $expander.on('click', gj.tree.methods.expanderClickHandler($tree));
+        $display.on('click', gj.tree.methods.displayClickHandler($tree));
+        gj.tree.events.enable($tree, $node);
+        if (cascade) {
+            $children = $node.find('ul>li');
+            for (i = 0; i < $children.length; i++) {
+                gj.tree.methods.enableNode($tree, $($children[i]), cascade);
+            }
+        }
+    },
+
+    disable: function ($tree, $node, cascade) {
+        var i, $children;
+        if (typeof ($node) === 'undefined') {
+            $children = $tree.find('ul>li');
+            for (i = 0; i < $children.length; i++) {
+                gj.tree.methods.disableNode($tree, $($children[i]), true);
+            }
+        } else {
+            gj.tree.methods.disableNode($tree, $node, cascade);
+        }
+        return $tree;
+    },
+
+    disableNode: function ($tree, $node, cascade) {
+        var i, $children,
+            $expander = $node.find('>[data-role="wrapper"]>[data-role="expander"]'),
+            $display = $node.find('>[data-role="wrapper"]>[data-role="display"]'),
+            cascade = typeof (cascade) === 'undefined' ? true : cascade;
+
+        $node.addClass('disabled');
+        $expander.off('click');
+        $display.off('click');
+        gj.tree.events.disable($tree, $node);
+        if (cascade) {
+            $children = $node.find('ul>li');
+            for (i = 0; i < $children.length; i++) {
+                gj.tree.methods.disableNode($tree, $($children[i]), cascade);
             }
         }
     },

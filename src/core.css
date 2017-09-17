@@ -235,7 +235,6 @@ ul.gj-list-md li {
     font-weight: 400;
     letter-spacing: .04em;
     line-height: 1;
-    color: rgba(0,0,0,.87);
     
     -webkit-flex-direction: row;
     -ms-flex-direction: row;
@@ -263,6 +262,11 @@ ul.gj-list-md li [data-role="display"] {
     box-sizing: border-box;
     align-items: center;
     text-align: left;
+    color: rgba(0,0,0,.87);
+}
+
+ul.gj-list-md li.disabled>[data-role="wrapper"]>[data-role="display"] {
+    color: #9E9E9E; /* Gray 500 */
 }
 
 .gj-list-md-active {

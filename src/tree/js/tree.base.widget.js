@@ -436,6 +436,82 @@ gj.tree.widget = function ($element, jsConfig) {
         return methods.getSelections(this.children('ul'));
     };
 
+    /**
+     * Enable node from the tree. Enable all tree nodes if the node is not set.
+     * @method
+     * @param {Object} node - The node as jquery object.
+     * @param {Boolean} cascade - Enable all children. Set to true by default.
+     * @return jQuery Object
+     * @example Sample <!-- materialicons, checkbox, tree.base -->
+     * <button onclick="tree.enable(northAmerica)">Enable North America (Cascade)</button>
+     * <button onclick="tree.disable(northAmerica)">Disable North America (Cascade)</button>
+     * <button onclick="tree.enable(northAmerica, false)">Enable North America (Non-Cascade)</button>
+     * <button onclick="tree.disable(northAmerica, false)">Disable North America (Non-Cascade)</button>
+     * <br/><br/>
+     * <div id="tree" data-source="/Locations/Get"></div>
+     * <script>
+     *     var tree, northAmerica;
+     *     tree = $('#tree').tree({
+     *         checkboxes: true,
+     *         primaryKey: 'ID',
+     *         dataBound: function () {
+     *             northAmerica = tree.getNodeByText('North America');
+     *         }
+     *     });
+     * </script>
+     * @example Enable.Disable.All <!-- materialicons, checkbox, tree.base -->
+     * <button onclick="tree.enable()">Enable All</button>
+     * <button onclick="tree.disable()">Disable All</button>
+     * <br/><br/>
+     * <div id="tree" data-source="/Locations/Get"></div>
+     * <script>
+     *     var tree = $('#tree').tree({
+     *         checkboxes: true
+     *     });
+     * </script>
+     */
+    self.enable = function ($node, cascade) {
+        return methods.enable(this, $node, cascade);
+    };
+
+    /**
+     * Disable node from the tree. Disable all tree nodes if the node is not set.
+     * @method
+     * @param {Object} node - The node as jquery object.
+     * @param {Boolean} cascade - Disable all children. Set to true by default.
+     * @return jQuery Object
+     * @example Sample <!-- materialicons, checkbox, tree.base -->
+     * <button onclick="tree.enable(northAmerica)">Enable North America (Cascade)</button>
+     * <button onclick="tree.disable(northAmerica)">Disable North America (Cascade)</button>
+     * <button onclick="tree.enable(northAmerica, false)">Enable North America (Non-Cascade)</button>
+     * <button onclick="tree.disable(northAmerica, false)">Disable North America (Non-Cascade)</button>
+     * <br/><br/>
+     * <div id="tree" data-source="/Locations/Get"></div>
+     * <script>
+     *     var tree, northAmerica;
+     *     tree = $('#tree').tree({
+     *         checkboxes: true,
+     *         primaryKey: 'ID',
+     *         dataBound: function () {
+     *             northAmerica = tree.getNodeByText('North America');
+     *         }
+     *     });
+     * </script>
+     * @example Enable.Disable.All <!-- materialicons, checkbox, tree.base -->
+     * <button onclick="tree.enable()">Enable All</button>
+     * <button onclick="tree.disable()">Disable All</button>
+     * <br/><br/>
+     * <div id="tree" data-source="/Locations/Get"></div>
+     * <script>
+     *     var tree = $('#tree').tree({
+     *         checkboxes: true
+     *     });
+     * </script>
+     */
+    self.disable = function ($node, cascade) {
+        return methods.disable(this, $node, cascade);
+    };
+
     $.extend($element, self);
     if ('tree' !== $element.attr('data-type')) {
         methods.init.call($element, jsConfig);

@@ -83,11 +83,24 @@ gj.tree.plugins.checkboxes = {
     },
 
     private: {
+        dataBound: function ($tree) {
+            var $nodes = $tree.find('li[data-role="node"]');
+            $.each($nodes, function () {
+                var $node = $(this),
+                    state = $node.find('[data-role="checkbox"] input[type="checkbox"]').checkbox('state');
+                if (state === 'checked') {
+                    gj.tree.plugins.checkboxes.private.updateChildrenState($node, state);
+                    gj.tree.plugins.checkboxes.private.updateParentState($node, state);
+                }
+            });
+        },
+
         nodeDataBound: function ($tree, $node, id, record) {
             var data = $tree.data(),
                 $expander = $node.find('> [data-role="wrapper"] > [data-role="expander"]'),
                 $checkbox = $('<input type="checkbox"/>'),
-                $wrapper = $('<span data-role="checkbox"></span>').append($checkbox);
+                $wrapper = $('<span data-role="checkbox"></span>').append($checkbox),
+                disabled = typeof (record[data.disabledField]) !== 'undefined' && record[data.disabledField].toString().toLowerCase() === 'true';
             $checkbox = $checkbox.checkbox({
                 uiLibrary: data.uiLibrary,
                 iconsLibrary: data.iconsLibrary,
@@ -95,9 +108,8 @@ gj.tree.plugins.checkboxes = {
                     gj.tree.plugins.checkboxes.events.checkboxChange($tree, $node, record, $checkbox.state());
                 }
             });
-            if (record[data.checkedField]) {
-                $checkbox.state('checked');
-            }
+            disabled && $checkbox.prop('disabled', true);
+            record[data.checkedField] && $checkbox.state('checked');
             $checkbox.on('click', function (e) {
                 var $node = $checkbox.closest('li'),
                     state = $checkbox.state();
@@ -316,15 +328,13 @@ gj.tree.plugins.checkboxes = {
                 gj.tree.plugins.checkboxes.private.nodeDataBound($tree, $node, id, record);
             });
             $tree.on('dataBound', function () {
-                $nodes = $tree.find('li[data-role="node"]');
-                $.each($nodes, function () {
-                    var $node = $(this),
-                        state = $node.find('[data-role="checkbox"] input[type="checkbox"]').checkbox('state');
-                    if (state === 'checked') {
-                        gj.tree.plugins.checkboxes.private.updateChildrenState($node, state);
-                        gj.tree.plugins.checkboxes.private.updateParentState($node, state);
-                    }
-                });
+                gj.tree.plugins.checkboxes.private.dataBound($tree);
+            });
+            $tree.on('enable', function (e, $node) {
+                $node.find('>[data-role="wrapper"]>[data-role="checkbox"] input[type="checkbox"]').prop('disabled', false);
+            });
+            $tree.on('disable', function (e, $node) {
+                $node.find('>[data-role="wrapper"]>[data-role="checkbox"] input[type="checkbox"]').prop('disabled', true);
             });
         }
     }
