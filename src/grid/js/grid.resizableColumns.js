@@ -52,22 +52,20 @@ gj.grid.plugins.resizableColumns = {
                     $wrapper = $('<div class="gj-grid-column-resizer-wrapper" />');
                     marginRight = parseInt($column.css('padding-right'), 10) + 3;
                     $resizer = $('<span class="gj-grid-column-resizer" />').css('margin-right', '-' + marginRight + 'px');
-                    if ($.fn.draggable) {
-                        $resizer.draggable({
-                            start: function () {
-                                $grid.addClass('gj-unselectable');
-                                $grid.addClass('gj-grid-resize-cursor');
-                            },
-                            stop: function () {
-                                $grid.removeClass('gj-unselectable');
-                                $grid.removeClass('gj-grid-resize-cursor');
-                                this.style.removeProperty('top');
-                                this.style.removeProperty('left');
-                                this.style.removeProperty('position');
-                            },
-                            drag: gj.grid.plugins.resizableColumns.private.createResizeHandle($grid, $column, config.columns[i])
-                        });
-                    }
+                    $resizer.draggable({
+                        start: function () {
+                            $grid.addClass('gj-unselectable');
+                            $grid.addClass('gj-grid-resize-cursor');
+                        },
+                        stop: function () {
+                            $grid.removeClass('gj-unselectable');
+                            $grid.removeClass('gj-grid-resize-cursor');
+                            this.style.removeProperty('top');
+                            this.style.removeProperty('left');
+                            this.style.removeProperty('position');
+                        },
+                        drag: gj.grid.plugins.resizableColumns.private.createResizeHandle($grid, $column, config.columns[i])
+                    });
                     $column.append($wrapper.append($resizer));
                 }
             }
@@ -93,7 +91,7 @@ gj.grid.plugins.resizableColumns = {
 
     configure: function ($grid, fullConfig, clientConfig) {
         $.extend(true, $grid, gj.grid.plugins.resizableColumns.public);
-        if (fullConfig.resizableColumns) {
+        if (fullConfig.resizableColumns && $.fn.draggable) {
             $grid.on('initialized', function () {
                 gj.grid.plugins.resizableColumns.private.init($grid, fullConfig);
             });

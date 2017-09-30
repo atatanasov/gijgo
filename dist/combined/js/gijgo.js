@@ -2691,7 +2691,7 @@ gj.grid.config = {
             decimalDigits: undefined,
 
             /** Template for the content in the column.
-             * Use curly brackets "{}" to wrap the names of data source columns from server response.
+             * Use curly brackets '{}' to wrap the names of data source columns from server response.
              * @alias column.tmpl
              * @type string
              * @default undefined
@@ -3670,7 +3670,7 @@ gj.grid.methods = {
     },
 
     renderHeader: function ($grid) {
-        var data, columns, style, $thead, $row, $cell, i, $checkAllBoxes;
+        var data, columns, style, $thead, $row, $cell, $title, i, $checkAllBoxes;
 
         data = $grid.data();
         columns = data.columns;
@@ -3695,10 +3695,6 @@ gj.grid.methods = {
                 $cell.addClass(columns[i].headerCssClass);
             }
             $cell.css('text-align', columns[i].align || 'left');
-            if (columns[i].sortable) {
-                $cell.addClass(style.sortable);
-                $cell.on('click', gj.grid.methods.createSortHandler($grid, $cell, columns[i]));
-            }
             if ('checkbox' === data.selectionMethod && 'multiple' === data.selectionType &&
                 'checkbox' === columns[i].type && 'selectRow' === columns[i].role) {
                 $checkAllBoxes = $cell.find('input[data-role="selectAll"]');
@@ -3715,7 +3711,12 @@ gj.grid.methods = {
                     }
                 });
             } else {
-                $cell.append($('<div data-role="title"/>').html(typeof (columns[i].title) === 'undefined' ? columns[i].field : columns[i].title));
+                $title = $('<div data-role="title"/>').html(typeof (columns[i].title) === 'undefined' ? columns[i].field : columns[i].title);
+                $cell.append($title);
+                if (columns[i].sortable) {
+                    $title.addClass(style.sortable);
+                    $title.on('click', gj.grid.methods.createSortHandler($grid, columns[i]));
+                }
             }
             if (columns[i].hidden) {
                 $cell.hide();
@@ -3726,7 +3727,7 @@ gj.grid.methods = {
         $thead.empty().append($row);
     },
 
-    createSortHandler: function ($grid, $cell, column) {
+    createSortHandler: function ($grid, column) {
         return function () {
             var data, params = {};
             if ($grid.count() > 0) {
@@ -3740,9 +3741,8 @@ gj.grid.methods = {
     },
 
     updateHeader: function ($grid) {
-        var $sortIcon,
+        var $sortIcon, $cellTitle,
             data = $grid.data(),
-            style = data.style.header,
             sortBy = data.params[data.paramNames.sortBy],
             direction = data.params[data.paramNames.direction];
 
@@ -3751,9 +3751,9 @@ gj.grid.methods = {
         if (sortBy) {
             position = gj.grid.methods.getColumnPosition($grid.data('columns'), sortBy);
             if (position > -1) {
-                $cell = $grid.find('thead tr th:eq(' + position + ')');
+                $cellTitle = $grid.find('thead tr th:eq(' + position + ') div[data-role="title"]');
                 $sortIcon = $('<div data-role="sorticon" class="gj-unselectable" />').append(('desc' === direction) ? data.icons.desc : data.icons.asc);
-                $cell.append($sortIcon);
+                $cellTitle.after($sortIcon);
             }
         }
     },
@@ -7456,22 +7456,20 @@ gj.grid.plugins.resizableColumns = {
                     $wrapper = $('<div class="gj-grid-column-resizer-wrapper" />');
                     marginRight = parseInt($column.css('padding-right'), 10) + 3;
                     $resizer = $('<span class="gj-grid-column-resizer" />').css('margin-right', '-' + marginRight + 'px');
-                    if ($.fn.draggable) {
-                        $resizer.draggable({
-                            start: function () {
-                                $grid.addClass('gj-unselectable');
-                                $grid.addClass('gj-grid-resize-cursor');
-                            },
-                            stop: function () {
-                                $grid.removeClass('gj-unselectable');
-                                $grid.removeClass('gj-grid-resize-cursor');
-                                this.style.removeProperty('top');
-                                this.style.removeProperty('left');
-                                this.style.removeProperty('position');
-                            },
-                            drag: gj.grid.plugins.resizableColumns.private.createResizeHandle($grid, $column, config.columns[i])
-                        });
-                    }
+                    $resizer.draggable({
+                        start: function () {
+                            $grid.addClass('gj-unselectable');
+                            $grid.addClass('gj-grid-resize-cursor');
+                        },
+                        stop: function () {
+                            $grid.removeClass('gj-unselectable');
+                            $grid.removeClass('gj-grid-resize-cursor');
+                            this.style.removeProperty('top');
+                            this.style.removeProperty('left');
+                            this.style.removeProperty('position');
+                        },
+                        drag: gj.grid.plugins.resizableColumns.private.createResizeHandle($grid, $column, config.columns[i])
+                    });
                     $column.append($wrapper.append($resizer));
                 }
             }
@@ -7497,7 +7495,7 @@ gj.grid.plugins.resizableColumns = {
 
     configure: function ($grid, fullConfig, clientConfig) {
         $.extend(true, $grid, gj.grid.plugins.resizableColumns.public);
-        if (fullConfig.resizableColumns) {
+        if (fullConfig.resizableColumns && $.fn.draggable) {
             $grid.on('initialized', function () {
                 gj.grid.plugins.resizableColumns.private.init($grid, fullConfig);
             });
@@ -9165,7 +9163,7 @@ gj.tree.events = {
      *         }
      *     });
      *     tree.on('disable', function (e, node) {
-     *         alert(node.text() + ' is enabled.');
+     *         alert(node.text() + ' is disabled.');
      *     });
      * </script>
      */
@@ -9302,6 +9300,7 @@ gj.tree.methods = {
         }
 
         if (disabled) {
+            gj.tree.methods.disableNode($tree, $node);
         } else {
             $expander.on('click', gj.tree.methods.expanderClickHandler($tree));
             $display.on('click', gj.tree.methods.displayClickHandler($tree));

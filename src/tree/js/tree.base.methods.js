@@ -86,6 +86,7 @@ gj.tree.methods = {
         }
 
         if (disabled) {
+            gj.tree.methods.disableNode($tree, $node);
         } else {
             $expander.on('click', gj.tree.methods.expanderClickHandler($tree));
             $display.on('click', gj.tree.methods.displayClickHandler($tree));

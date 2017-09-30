@@ -118,7 +118,7 @@ gj.grid.methods = {
     },
 
     renderHeader: function ($grid) {
-        var data, columns, style, $thead, $row, $cell, i, $checkAllBoxes;
+        var data, columns, style, $thead, $row, $cell, $title, i, $checkAllBoxes;
 
         data = $grid.data();
         columns = data.columns;
@@ -143,10 +143,6 @@ gj.grid.methods = {
                 $cell.addClass(columns[i].headerCssClass);
             }
             $cell.css('text-align', columns[i].align || 'left');
-            if (columns[i].sortable) {
-                $cell.addClass(style.sortable);
-                $cell.on('click', gj.grid.methods.createSortHandler($grid, $cell, columns[i]));
-            }
             if ('checkbox' === data.selectionMethod && 'multiple' === data.selectionType &&
                 'checkbox' === columns[i].type && 'selectRow' === columns[i].role) {
                 $checkAllBoxes = $cell.find('input[data-role="selectAll"]');
@@ -163,7 +159,12 @@ gj.grid.methods = {
                     }
                 });
             } else {
-                $cell.append($('<div data-role="title"/>').html(typeof (columns[i].title) === 'undefined' ? columns[i].field : columns[i].title));
+                $title = $('<div data-role="title"/>').html(typeof (columns[i].title) === 'undefined' ? columns[i].field : columns[i].title);
+                $cell.append($title);
+                if (columns[i].sortable) {
+                    $title.addClass(style.sortable);
+                    $title.on('click', gj.grid.methods.createSortHandler($grid, columns[i]));
+                }
             }
             if (columns[i].hidden) {
                 $cell.hide();
@@ -174,7 +175,7 @@ gj.grid.methods = {
         $thead.empty().append($row);
     },
 
-    createSortHandler: function ($grid, $cell, column) {
+    createSortHandler: function ($grid, column) {
         return function () {
             var data, params = {};
             if ($grid.count() > 0) {
@@ -188,9 +189,8 @@ gj.grid.methods = {
     },
 
     updateHeader: function ($grid) {
-        var $sortIcon,
+        var $sortIcon, $cellTitle,
             data = $grid.data(),
-            style = data.style.header,
             sortBy = data.params[data.paramNames.sortBy],
             direction = data.params[data.paramNames.direction];
 
@@ -199,9 +199,9 @@ gj.grid.methods = {
         if (sortBy) {
             position = gj.grid.methods.getColumnPosition($grid.data('columns'), sortBy);
             if (position > -1) {
-                $cell = $grid.find('thead tr th:eq(' + position + ')');
+                $cellTitle = $grid.find('thead tr th:eq(' + position + ') div[data-role="title"]');
                 $sortIcon = $('<div data-role="sorticon" class="gj-unselectable" />').append(('desc' === direction) ? data.icons.desc : data.icons.asc);
-                $cell.append($sortIcon);
+                $cellTitle.after($sortIcon);
             }
         }
     },

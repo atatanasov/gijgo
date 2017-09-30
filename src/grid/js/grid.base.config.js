@@ -557,7 +557,7 @@ gj.grid.config = {
             decimalDigits: undefined,
 
             /** Template for the content in the column.
-             * Use curly brackets "{}" to wrap the names of data source columns from server response.
+             * Use curly brackets '{}' to wrap the names of data source columns from server response.
              * @alias column.tmpl
              * @type string
              * @default undefined
