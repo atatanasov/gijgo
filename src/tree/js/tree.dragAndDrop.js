@@ -265,7 +265,7 @@ gj.tree.plugins.dragAndDrop = {
 
 	configure: function ($tree) {
 		$.extend(true, $tree, gj.tree.plugins.dragAndDrop.public);
-		if ($tree.data('dragAndDrop') && $.fn.draggable && $.fn.droppable) {
+		if ($tree.data('dragAndDrop') && gj.draggable && gj.droppable) {
 			$tree.on('nodeDataBound', function (e, $node) {
 				gj.tree.plugins.dragAndDrop.private.nodeDataBound($tree, $node);
 			});

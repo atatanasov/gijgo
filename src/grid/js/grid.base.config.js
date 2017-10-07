@@ -3,6 +3,12 @@
   * @widget Grid
   * @plugin Base
   */
+if (typeof (gj.grid) === 'undefined') {
+    gj.grid = {
+        plugins: {}
+    };
+}
+
 gj.grid.config = {
     base: {
         /** The data source for the grid.

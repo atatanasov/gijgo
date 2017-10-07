@@ -725,21 +725,19 @@ gj.datepicker.widget.prototype = new gj.widget();
 gj.datepicker.widget.constructor = gj.datepicker.widget;
 
 (function ($) {
-    if (typeof ($.fn.datepicker) === "undefined") {
-        $.fn.datepicker = function (method) {
-            var $widget;
-            if (this && this.length) {
-                if (typeof method === 'object' || !method) {
-                    return new gj.datepicker.widget(this, method);
+    $.fn.datepicker = function (method) {
+        var $widget;
+        if (this && this.length) {
+            if (typeof method === 'object' || !method) {
+                return new gj.datepicker.widget(this, method);
+            } else {
+                $widget = new gj.datepicker.widget(this, null);
+                if ($widget[method]) {
+                    return $widget[method].apply(this, Array.prototype.slice.call(arguments, 1));
                 } else {
-                    $widget = new gj.datepicker.widget(this, null);
-                    if ($widget[method]) {
-                        return $widget[method].apply(this, Array.prototype.slice.call(arguments, 1));
-                    } else {
-                        throw 'Method ' + method + ' does not exist.';
-                    }
+                    throw 'Method ' + method + ' does not exist.';
                 }
             }
-        };
-    }
+        }
+    };
 })(jQuery);

@@ -34,7 +34,13 @@ gj.grid.messages['en-us'] = {
     Loading: 'Loading...'
 };
 /* global window alert jQuery gj */
-/**  */gj.grid.config = {
+/**  */if (typeof (gj.grid) === 'undefined') {
+    gj.grid = {
+        plugins: {}
+    };
+}
+
+gj.grid.config = {
     base: {
         /** The data source for the grid.         */        dataSource: undefined,
 
@@ -1332,23 +1338,21 @@ gj.grid.widget.prototype.getConfig = gj.grid.methods.getConfig;
 gj.grid.widget.prototype.getHTMLConfig = gj.grid.methods.getHTMLConfig;
 
 (function ($) {
-    if (typeof ($.fn.grid) === "undefined") {
-        $.fn.grid = function (method) {
-            var $widget;
-            if (this && this.length) {
-                if (typeof method === 'object' || !method) {
-                    return new gj.grid.widget(this, method);
+    $.fn.grid = function (method) {
+        var $widget;
+        if (this && this.length) {
+            if (typeof method === 'object' || !method) {
+                return new gj.grid.widget(this, method);
+            } else {
+                $widget = new gj.grid.widget(this, null);
+                if ($widget[method]) {
+                    return $widget[method].apply(this, Array.prototype.slice.call(arguments, 1));
                 } else {
-                    $widget = new gj.grid.widget(this, null);
-                    if ($widget[method]) {
-                        return $widget[method].apply(this, Array.prototype.slice.call(arguments, 1));
-                    } else {
-                        throw 'Method ' + method + ' does not exist.';
-                    }
+                    throw 'Method ' + method + ' does not exist.';
                 }
             }
-        };
-    }
+        }
+    };
 })(jQuery);
 
 /**  */gj.grid.plugins.expandCollapseRows = {
@@ -1653,24 +1657,27 @@ gj.grid.plugins.inlineEditing.private = {
                 if (typeof (column.editor) === 'function') {
                     column.editor($editorContainer, value, record);
                 } else {
-                    if ('checkbox' === column.type) {
+                    config = typeof column.editor === "object" ? column.editor : {};
+                    config.uiLibrary = data.uiLibrary;
+                    config.fontSize = $grid.css('font-size');
+                    if ('checkbox' === column.type && gj.checkbox) {
                         $editorField = $('<input type="checkbox" />').prop('checked', value);
                         $editorContainer.append($editorField);
-                        $editorField.checkbox({ uiLibrary: data.uiLibrary });
-                    } else if ('date' === column.type) {
+                        $editorField.checkbox(config);
+                    } else if ('date' === column.type && gj.datepicker) {
                         $editorField = $('<input type="text" width="100%"/>');
                         $editorContainer.append($editorField);
-                        config = typeof column.editor === "object" ? column.editor : {};
-                        config.uiLibrary = data.uiLibrary;
-                        config.fontSize = $grid.css('font-size');
-                        $editorField.datepicker(config).value($displayContainer.html());
-                    } else if ('dropdown' === column.type) {
+                        $editorField = $editorField.datepicker(config);
+                        if ($editorField.value) {
+                            $editorField.value($displayContainer.html());
+                        }
+                    } else if ('dropdown' === column.type && gj.dropdown) {
                         $editorField = $('<select type="text" width="100%"/>');
                         $editorContainer.append($editorField);
-                        config = typeof column.editor === "object" ? column.editor : {};
-                        config.uiLibrary = data.uiLibrary;
-                        config.fontSize = $grid.css('font-size');
-                        $editorField.dropdown(config).value($displayContainer.html());
+                        $editorField = $editorField.dropdown(config);
+                        if ($editorField.value) {
+                            $editorField.value($displayContainer.html());
+                        }
                     } else {
                         $editorField = $('<input type="text" value="' + value + '" class="gj-width-full"/>');
                         if (data.uiLibrary === 'materialdesign') {
@@ -1679,8 +1686,8 @@ gj.grid.plugins.inlineEditing.private = {
                         $editorContainer.append($editorField);
                     }
                 }
-                $editorField = $editorContainer.find('input, select, textarea').first();
                 if (data.inlineEditing.mode !== 'command' && column.mode !== 'editOnly') {
+                    $editorField = $editorContainer.find('input, select, textarea').first();
                     $editorField.on('keyup', function (e) {
                         if (e.keyCode === 13 || e.keyCode === 27) {
                             gj.grid.plugins.inlineEditing.private.displayMode($grid, $cell, column);
@@ -2177,7 +2184,7 @@ gj.grid.plugins.inlineEditing.configure = function ($grid, fullConfig, clientCon
                             gj.grid.plugins.pagination.events.pageSizeChange($grid, newSize);
                         });
                         $control.val(data.params[data.paramNames.limit]);
-                        if ($.fn.dropdown) {
+                        if (gj.dropdown) {
                             $control.dropdown({
                                 uiLibrary: data.uiLibrary,
                                 iconsLibrary: data.iconsLibrary,
@@ -2696,7 +2703,7 @@ gj.grid.plugins.inlineEditing.configure = function ($grid, fullConfig, clientCon
 
     configure: function ($grid, fullConfig, clientConfig) {
         $.extend(true, $grid, gj.grid.plugins.resizableColumns.public);
-        if (fullConfig.resizableColumns && $.fn.draggable) {
+        if (fullConfig.resizableColumns && gj.draggable) {
             $grid.on('initialized', function () {
                 gj.grid.plugins.resizableColumns.private.init($grid, fullConfig);
             });
@@ -2842,7 +2849,7 @@ gj.grid.plugins.inlineEditing.configure = function ($grid, fullConfig, clientCon
 
     configure: function ($grid, fullConfig, clientConfig) {
         $.extend(true, $grid, gj.grid.plugins.rowReorder.public);
-        if (fullConfig.rowReorder && $.fn.draggable && $.fn.droppable) {
+        if (fullConfig.rowReorder && gj.draggable && gj.droppable) {
             $grid.on('dataBound', function () {
                 gj.grid.plugins.rowReorder.private.init($grid);
             });

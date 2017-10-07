@@ -91,7 +91,7 @@ gj.grid.plugins.resizableColumns = {
 
     configure: function ($grid, fullConfig, clientConfig) {
         $.extend(true, $grid, gj.grid.plugins.resizableColumns.public);
-        if (fullConfig.resizableColumns && $.fn.draggable) {
+        if (fullConfig.resizableColumns && gj.draggable) {
             $grid.on('initialized', function () {
                 gj.grid.plugins.resizableColumns.private.init($grid, fullConfig);
             });

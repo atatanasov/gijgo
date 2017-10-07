@@ -7,7 +7,9 @@
  */
 /* global window alert jQuery */
 /**  */if (typeof (gj.draggable) === 'undefined') {
-    gj.draggable = {};
+    gj.draggable = {
+        plugins: {}
+    };
 }
 
 gj.draggable.config = {
@@ -147,21 +149,19 @@ gj.draggable.widget.prototype = new gj.widget();
 gj.draggable.widget.constructor = gj.draggable.widget;
 
 (function ($) {
-    if (typeof ($.fn.draggable) === "undefined") {
-        $.fn.draggable = function (method) {
-            var $widget;
-            if (this && this.length) {
-                if (typeof method === 'object' || !method) {
-                    return new gj.draggable.widget(this, method);
+    $.fn.draggable = function (method) {
+        var $widget;
+        if (this && this.length) {
+            if (typeof method === 'object' || !method) {
+                return new gj.draggable.widget(this, method);
+            } else {
+                $widget = new gj.draggable.widget(this, null);
+                if ($widget[method]) {
+                    return $widget[method].apply(this, Array.prototype.slice.call(arguments, 1));
                 } else {
-                    $widget = new gj.draggable.widget(this, null);
-                    if ($widget[method]) {
-                        return $widget[method].apply(this, Array.prototype.slice.call(arguments, 1));
-                    } else {
-                        throw 'Method ' + method + ' does not exist.';
-                    }
+                    throw 'Method ' + method + ' does not exist.';
                 }
             }
-        };
-    }
+        }
+    };
 })(jQuery);

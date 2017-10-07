@@ -741,23 +741,21 @@ gj.tree.widget.prototype = new gj.widget();
 gj.tree.widget.constructor = gj.tree.widget;
 
 (function ($) {
-    if (typeof ($.fn.tree) === "undefined") {
-        $.fn.tree = function (method) {
-            var $widget;
-            if (this && this.length) {
-                if (typeof method === 'object' || !method) {
-                    return new gj.tree.widget(this, method);
+    $.fn.tree = function (method) {
+        var $widget;
+        if (this && this.length) {
+            if (typeof method === 'object' || !method) {
+                return new gj.tree.widget(this, method);
+            } else {
+                $widget = new gj.tree.widget(this, null);
+                if ($widget[method]) {
+                    return $widget[method].apply(this, Array.prototype.slice.call(arguments, 1));
                 } else {
-                    $widget = new gj.tree.widget(this, null);
-                    if ($widget[method]) {
-                        return $widget[method].apply(this, Array.prototype.slice.call(arguments, 1));
-                    } else {
-                        throw 'Method ' + method + ' does not exist.';
-                    }
+                    throw 'Method ' + method + ' does not exist.';
                 }
             }
-        };
-    }
+        }
+    };
 })(jQuery);
 /**  */gj.tree.plugins.checkboxes = {
     config: {
@@ -1143,7 +1141,7 @@ gj.tree.widget.constructor = gj.tree.widget;
 
 	configure: function ($tree) {
 		$.extend(true, $tree, gj.tree.plugins.dragAndDrop.public);
-		if ($tree.data('dragAndDrop') && $.fn.draggable && $.fn.droppable) {
+		if ($tree.data('dragAndDrop') && gj.draggable && gj.droppable) {
 			$tree.on('nodeDataBound', function (e, $node) {
 				gj.tree.plugins.dragAndDrop.private.nodeDataBound($tree, $node);
 			});

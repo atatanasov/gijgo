@@ -629,21 +629,19 @@ gj.grid.widget.prototype.getConfig = gj.grid.methods.getConfig;
 gj.grid.widget.prototype.getHTMLConfig = gj.grid.methods.getHTMLConfig;
 
 (function ($) {
-    if (typeof ($.fn.grid) === "undefined") {
-        $.fn.grid = function (method) {
-            var $widget;
-            if (this && this.length) {
-                if (typeof method === 'object' || !method) {
-                    return new gj.grid.widget(this, method);
+    $.fn.grid = function (method) {
+        var $widget;
+        if (this && this.length) {
+            if (typeof method === 'object' || !method) {
+                return new gj.grid.widget(this, method);
+            } else {
+                $widget = new gj.grid.widget(this, null);
+                if ($widget[method]) {
+                    return $widget[method].apply(this, Array.prototype.slice.call(arguments, 1));
                 } else {
-                    $widget = new gj.grid.widget(this, null);
-                    if ($widget[method]) {
-                        return $widget[method].apply(this, Array.prototype.slice.call(arguments, 1));
-                    } else {
-                        throw 'Method ' + method + ' does not exist.';
-                    }
+                    throw 'Method ' + method + ' does not exist.';
                 }
             }
-        };
-    }
+        }
+    };
 })(jQuery);

@@ -10,19 +10,21 @@
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">
   <link href="../../dist/modular/css/grid.css" rel="stylesheet" type="text/css">
   <link href="../../dist/modular/css/checkbox.css" rel="stylesheet" type="text/css">
+  <link href="../../dist/modular/css/datepicker.css" rel="stylesheet" type="text/css">
   <script src="../../dist/modular/js/grid.js"></script>
   <script src="../../dist/modular/js/checkbox.js"></script>
+  <script src="../../dist/modular/js/datepicker.js"></script>
 </head>
 <body style="padding: 6px;">
  <table id="grid"></table>
  <script>
      var grid, data = [
-         { 'ID': 1, 'Name': 'Hristo Stoichkov', 'PlaceOfBirth': 'Plovdiv, Bulgaria', IsActive: false },
-         { 'ID': 2, 'Name': 'Ronaldo Luís Nazário de Lima', 'PlaceOfBirth': 'Rio de Janeiro, Brazil', IsActive: false },
-         { 'ID': 3, 'Name': 'David Platt', 'PlaceOfBirth': 'Chadderton, Lancashire, England', IsActive: false },
-         { 'ID': 4, 'Name': 'Manuel Neuer', 'PlaceOfBirth': 'Gelsenkirchen, West Germany', IsActive: true },
-         { 'ID': 5, 'Name': 'James Rodríguez', 'PlaceOfBirth': 'Cúcuta, Colombia', IsActive: true },
-         { 'ID': 6, 'Name': 'Dimitar Berbatov', 'PlaceOfBirth': 'Blagoevgrad, Bulgaria', IsActive: false }
+         { 'ID': 1, 'Name': 'Hristo Stoichkov', 'PlaceOfBirth': 'Plovdiv, Bulgaria', 'DateOfBirth': '\/Date(-122954400000)\/', IsActive: false },
+         { 'ID': 2, 'Name': 'Ronaldo Luís Nazário de Lima', 'PlaceOfBirth': 'Rio de Janeiro, Brazil', 'DateOfBirth': '\/Date(211842000000)\/', IsActive: false },
+         { 'ID': 3, 'Name': 'David Platt', 'PlaceOfBirth': 'Chadderton, Lancashire, England', 'DateOfBirth': '\/Date(-112417200000)\/', IsActive: false },
+         { 'ID': 4, 'Name': 'Manuel Neuer', 'PlaceOfBirth': 'Gelsenkirchen, West Germany', 'DateOfBirth': '\/Date(512258400000)\/', IsActive: true },
+         { 'ID': 5, 'Name': 'James Rodríguez', 'PlaceOfBirth': 'Cúcuta, Colombia', 'DateOfBirth': '\/Date(679266000000)\/', IsActive: true },
+         { 'ID': 6, 'Name': 'Dimitar Berbatov', 'PlaceOfBirth': 'Blagoevgrad, Bulgaria', 'DateOfBirth': '\/Date(349653600000)\/', IsActive: false }
      ];
      grid = $('#grid').grid({
          dataSource: data,
@@ -32,6 +34,7 @@
              { field: 'ID', width: 56 },
              { field: 'Name', editor: true },
              { field: 'PlaceOfBirth', editor: true },
+             { field: 'DateOfBirth', type: 'date', editor: true },
              { field: 'IsActive', title: 'Active?', type: 'checkbox', editor: true, width: 100, align: 'center' }
          ]
      });

@@ -179,16 +179,16 @@ gj.grid.plugins.inlineEditing.config = {
              * @alias inlineEditing.managementColumn
              * @type Boolean
              * @default true
-             * @example True <!-- materialicons, grid, checkbox -->
+             * @example True <!-- materialicons, grid, checkbox, datepicker -->
              * <table id="grid"></table>
              * <script>
              *     var grid, data = [
-             *         { 'ID': 1, 'Name': 'Hristo Stoichkov', 'PlaceOfBirth': 'Plovdiv, Bulgaria', IsActive: false },
-             *         { 'ID': 2, 'Name': 'Ronaldo Luís Nazário de Lima', 'PlaceOfBirth': 'Rio de Janeiro, Brazil', IsActive: false },
-             *         { 'ID': 3, 'Name': 'David Platt', 'PlaceOfBirth': 'Chadderton, Lancashire, England', IsActive: false },
-             *         { 'ID': 4, 'Name': 'Manuel Neuer', 'PlaceOfBirth': 'Gelsenkirchen, West Germany', IsActive: true },
-             *         { 'ID': 5, 'Name': 'James Rodríguez', 'PlaceOfBirth': 'Cúcuta, Colombia', IsActive: true },
-             *         { 'ID': 6, 'Name': 'Dimitar Berbatov', 'PlaceOfBirth': 'Blagoevgrad, Bulgaria', IsActive: false }
+             *         { 'ID': 1, 'Name': 'Hristo Stoichkov', 'PlaceOfBirth': 'Plovdiv, Bulgaria', 'DateOfBirth': '\/Date(-122954400000)\/', IsActive: false },
+             *         { 'ID': 2, 'Name': 'Ronaldo Luís Nazário de Lima', 'PlaceOfBirth': 'Rio de Janeiro, Brazil', 'DateOfBirth': '\/Date(211842000000)\/', IsActive: false },
+             *         { 'ID': 3, 'Name': 'David Platt', 'PlaceOfBirth': 'Chadderton, Lancashire, England', 'DateOfBirth': '\/Date(-112417200000)\/', IsActive: false },
+             *         { 'ID': 4, 'Name': 'Manuel Neuer', 'PlaceOfBirth': 'Gelsenkirchen, West Germany', 'DateOfBirth': '\/Date(512258400000)\/', IsActive: true },
+             *         { 'ID': 5, 'Name': 'James Rodríguez', 'PlaceOfBirth': 'Cúcuta, Colombia', 'DateOfBirth': '\/Date(679266000000)\/', IsActive: true },
+             *         { 'ID': 6, 'Name': 'Dimitar Berbatov', 'PlaceOfBirth': 'Blagoevgrad, Bulgaria', 'DateOfBirth': '\/Date(349653600000)\/', IsActive: false }
              *     ];
              *     grid = $('#grid').grid({
              *         dataSource: data,
@@ -198,6 +198,7 @@ gj.grid.plugins.inlineEditing.config = {
              *             { field: 'ID', width: 56 },
              *             { field: 'Name', editor: true },
              *             { field: 'PlaceOfBirth', editor: true },
+             *             { field: 'DateOfBirth', type: 'date', editor: true },
              *             { field: 'IsActive', title: 'Active?', type: 'checkbox', editor: true, width: 100, align: 'center' }
              *         ]
              *     });
@@ -326,24 +327,27 @@ gj.grid.plugins.inlineEditing.private = {
                 if (typeof (column.editor) === 'function') {
                     column.editor($editorContainer, value, record);
                 } else {
-                    if ('checkbox' === column.type) {
+                    config = typeof column.editor === "object" ? column.editor : {};
+                    config.uiLibrary = data.uiLibrary;
+                    config.fontSize = $grid.css('font-size');
+                    if ('checkbox' === column.type && gj.checkbox) {
                         $editorField = $('<input type="checkbox" />').prop('checked', value);
                         $editorContainer.append($editorField);
-                        $editorField.checkbox({ uiLibrary: data.uiLibrary });
-                    } else if ('date' === column.type) {
+                        $editorField.checkbox(config);
+                    } else if ('date' === column.type && gj.datepicker) {
                         $editorField = $('<input type="text" width="100%"/>');
                         $editorContainer.append($editorField);
-                        config = typeof column.editor === "object" ? column.editor : {};
-                        config.uiLibrary = data.uiLibrary;
-                        config.fontSize = $grid.css('font-size');
-                        $editorField.datepicker(config).value($displayContainer.html());
-                    } else if ('dropdown' === column.type) {
+                        $editorField = $editorField.datepicker(config);
+                        if ($editorField.value) {
+                            $editorField.value($displayContainer.html());
+                        }
+                    } else if ('dropdown' === column.type && gj.dropdown) {
                         $editorField = $('<select type="text" width="100%"/>');
                         $editorContainer.append($editorField);
-                        config = typeof column.editor === "object" ? column.editor : {};
-                        config.uiLibrary = data.uiLibrary;
-                        config.fontSize = $grid.css('font-size');
-                        $editorField.dropdown(config).value($displayContainer.html());
+                        $editorField = $editorField.dropdown(config);
+                        if ($editorField.value) {
+                            $editorField.value($displayContainer.html());
+                        }
                     } else {
                         $editorField = $('<input type="text" value="' + value + '" class="gj-width-full"/>');
                         if (data.uiLibrary === 'materialdesign') {
@@ -352,8 +356,8 @@ gj.grid.plugins.inlineEditing.private = {
                         $editorContainer.append($editorField);
                     }
                 }
-                $editorField = $editorContainer.find('input, select, textarea').first();
                 if (data.inlineEditing.mode !== 'command' && column.mode !== 'editOnly') {
+                    $editorField = $editorContainer.find('input, select, textarea').first();
                     $editorField.on('keyup', function (e) {
                         if (e.keyCode === 13 || e.keyCode === 27) {
                             gj.grid.plugins.inlineEditing.private.displayMode($grid, $cell, column);

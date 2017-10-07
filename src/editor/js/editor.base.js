@@ -3,6 +3,12 @@
  * @widget Editor 
  * @plugin Base
  */
+if (typeof (gj.editor) === 'undefined') {
+    gj.editor = {
+        plugins: {}
+    };
+}
+
 gj.editor.config = {
     base: {
 
@@ -370,21 +376,19 @@ gj.editor.widget.prototype = new gj.widget();
 gj.editor.widget.constructor = gj.editor.widget;
 
 (function ($) {
-    if (typeof ($.fn.editor) === "undefined") {
-        $.fn.editor = function (method) {
-            var $widget;
-            if (this && this.length) {
-                if (typeof method === 'object' || !method) {
-                    return new gj.editor.widget(this, method);
+    $.fn.editor = function (method) {
+        var $widget;
+        if (this && this.length) {
+            if (typeof method === 'object' || !method) {
+                return new gj.editor.widget(this, method);
+            } else {
+                $widget = new gj.editor.widget(this, null);
+                if ($widget[method]) {
+                    return $widget[method].apply(this, Array.prototype.slice.call(arguments, 1));
                 } else {
-                    $widget = new gj.editor.widget(this, null);
-                    if ($widget[method]) {
-                        return $widget[method].apply(this, Array.prototype.slice.call(arguments, 1));
-                    } else {
-                        throw 'Method ' + method + ' does not exist.';
-                    }
+                    throw 'Method ' + method + ' does not exist.';
                 }
             }
-        };
-    }
+        }
+    };
 })(jQuery);

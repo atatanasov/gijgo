@@ -4,7 +4,9 @@
  * @plugin Base
  */
 if (typeof (gj.checkbox) === 'undefined') {
-    gj.checkbox = {};
+    gj.checkbox = {
+        plugins: {}
+    };
 }
 
 gj.checkbox.config = {
@@ -259,21 +261,19 @@ gj.checkbox.widget.prototype = new gj.widget();
 gj.checkbox.widget.constructor = gj.checkbox.widget;
 
 (function ($) {
-    if (typeof ($.fn.checkbox) === "undefined") {
-        $.fn.checkbox = function (method) {
-            var $widget;
-            if (this && this.length) {
-                if (typeof method === 'object' || !method) {
-                    return new gj.checkbox.widget(this, method);
+    $.fn.checkbox = function (method) {
+        var $widget;
+        if (this && this.length) {
+            if (typeof method === 'object' || !method) {
+                return new gj.checkbox.widget(this, method);
+            } else {
+                $widget = new gj.checkbox.widget(this, null);
+                if ($widget[method]) {
+                    return $widget[method].apply(this, Array.prototype.slice.call(arguments, 1));
                 } else {
-                    $widget = new gj.checkbox.widget(this, null);
-                    if ($widget[method]) {
-                        return $widget[method].apply(this, Array.prototype.slice.call(arguments, 1));
-                    } else {
-                        throw 'Method ' + method + ' does not exist.';
-                    }
+                    throw 'Method ' + method + ' does not exist.';
                 }
             }
-        };
-    }
+        }
+    };
 })(jQuery);

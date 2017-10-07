@@ -422,6 +422,12 @@ gj.dialog.messages['en-us'] = {
  * @widget Dialog 
  * @plugin Base
  */
+if (typeof (gj.dialog) === 'undefined') {
+    gj.dialog = {
+        plugins: {}
+    };
+}
+
 gj.dialog.config = {
     base: {
         /** If set to true, the dialog will automatically open upon initialization.
@@ -1182,12 +1188,13 @@ gj.dialog.methods = {
             $dialog.close();
         });
 
-        if (data.draggable && $.fn.draggable) {
-            gj.dialog.methods.draggable($dialog, $header);
-        }
-
-        if (data.resizable && $.fn.draggable) {
-            gj.dialog.methods.resizable($dialog);
+        if (gj.draggable) {
+            if (data.draggable) {
+                gj.dialog.methods.draggable($dialog, $header);
+            }
+            if (data.resizable) {
+                gj.dialog.methods.resizable($dialog);
+            }
         }
 
         if (data.scrollable && data.height) {
@@ -1550,23 +1557,21 @@ gj.dialog.widget.constructor = gj.dialog.widget;
 gj.dialog.widget.prototype.getHTMLConfig = gj.dialog.methods.getHTMLConfig;
 
 (function ($) {
-    if (typeof ($.fn.dialog) === "undefined") {
-        $.fn.dialog = function (method) {
-            var $widget;
-            if (this && this.length) {
-                if (typeof method === 'object' || !method) {
-                    return new gj.dialog.widget(this, method);
+    $.fn.dialog = function (method) {
+        var $widget;
+        if (this && this.length) {
+            if (typeof method === 'object' || !method) {
+                return new gj.dialog.widget(this, method);
+            } else {
+                $widget = new gj.dialog.widget(this, null);
+                if ($widget[method]) {
+                    return $widget[method].apply(this, Array.prototype.slice.call(arguments, 1));
                 } else {
-                    $widget = new gj.dialog.widget(this, null);
-                    if ($widget[method]) {
-                        return $widget[method].apply(this, Array.prototype.slice.call(arguments, 1));
-                    } else {
-                        throw 'Method ' + method + ' does not exist.';
-                    }
+                    throw 'Method ' + method + ' does not exist.';
                 }
             }
-        };
-    }
+        }
+    };
 })(jQuery);
 /* global window alert jQuery */
 /** 
@@ -1574,7 +1579,9 @@ gj.dialog.widget.prototype.getHTMLConfig = gj.dialog.methods.getHTMLConfig;
  * @plugin Base
  */
 if (typeof (gj.draggable) === 'undefined') {
-    gj.draggable = {};
+    gj.draggable = {
+        plugins: {}
+    };
 }
 
 gj.draggable.config = {
@@ -1833,23 +1840,21 @@ gj.draggable.widget.prototype = new gj.widget();
 gj.draggable.widget.constructor = gj.draggable.widget;
 
 (function ($) {
-    if (typeof ($.fn.draggable) === "undefined") {
-        $.fn.draggable = function (method) {
-            var $widget;
-            if (this && this.length) {
-                if (typeof method === 'object' || !method) {
-                    return new gj.draggable.widget(this, method);
+    $.fn.draggable = function (method) {
+        var $widget;
+        if (this && this.length) {
+            if (typeof method === 'object' || !method) {
+                return new gj.draggable.widget(this, method);
+            } else {
+                $widget = new gj.draggable.widget(this, null);
+                if ($widget[method]) {
+                    return $widget[method].apply(this, Array.prototype.slice.call(arguments, 1));
                 } else {
-                    $widget = new gj.draggable.widget(this, null);
-                    if ($widget[method]) {
-                        return $widget[method].apply(this, Array.prototype.slice.call(arguments, 1));
-                    } else {
-                        throw 'Method ' + method + ' does not exist.';
-                    }
+                    throw 'Method ' + method + ' does not exist.';
                 }
             }
-        };
-    }
+        }
+    };
 })(jQuery);
 /* global window alert jQuery */
 /** 
@@ -1857,7 +1862,9 @@ gj.draggable.widget.constructor = gj.draggable.widget;
  * @plugin Base
  */
 if (typeof (gj.droppable) === 'undefined') {
-    gj.droppable = {};
+    gj.droppable = {
+        plugins: {}
+    };
 }
 
 gj.droppable.config = {
@@ -2086,23 +2093,21 @@ gj.droppable.widget.prototype = new gj.widget();
 gj.droppable.widget.constructor = gj.droppable.widget;
 
 (function ($) {
-    if (typeof ($.fn.droppable) === "undefined") {
-        $.fn.droppable = function (method) {
-            var $widget;
-            if (this && this.length) {
-                if (typeof method === 'object' || !method) {
-                    return new gj.droppable.widget(this, method);
+    $.fn.droppable = function (method) {
+        var $widget;
+        if (this && this.length) {
+            if (typeof method === 'object' || !method) {
+                return new gj.droppable.widget(this, method);
+            } else {
+                $widget = new gj.droppable.widget(this, null);
+                if ($widget[method]) {
+                    return $widget[method].apply(this, Array.prototype.slice.call(arguments, 1));
                 } else {
-                    $widget = new gj.droppable.widget(this, null);
-                    if ($widget[method]) {
-                        return $widget[method].apply(this, Array.prototype.slice.call(arguments, 1));
-                    } else {
-                        throw 'Method ' + method + ' does not exist.';
-                    }
+                    throw 'Method ' + method + ' does not exist.';
                 }
             }
-        };
-    }
+        }
+    };
 })(jQuery);
 if (typeof (gj.grid) === 'undefined') {
     gj.grid = {
@@ -2137,6 +2142,12 @@ gj.grid.messages['en-us'] = {
   * @widget Grid
   * @plugin Base
   */
+if (typeof (gj.grid) === 'undefined') {
+    gj.grid = {
+        plugins: {}
+    };
+}
+
 gj.grid.config = {
     base: {
         /** The data source for the grid.
@@ -5117,23 +5128,21 @@ gj.grid.widget.prototype.getConfig = gj.grid.methods.getConfig;
 gj.grid.widget.prototype.getHTMLConfig = gj.grid.methods.getHTMLConfig;
 
 (function ($) {
-    if (typeof ($.fn.grid) === "undefined") {
-        $.fn.grid = function (method) {
-            var $widget;
-            if (this && this.length) {
-                if (typeof method === 'object' || !method) {
-                    return new gj.grid.widget(this, method);
+    $.fn.grid = function (method) {
+        var $widget;
+        if (this && this.length) {
+            if (typeof method === 'object' || !method) {
+                return new gj.grid.widget(this, method);
+            } else {
+                $widget = new gj.grid.widget(this, null);
+                if ($widget[method]) {
+                    return $widget[method].apply(this, Array.prototype.slice.call(arguments, 1));
                 } else {
-                    $widget = new gj.grid.widget(this, null);
-                    if ($widget[method]) {
-                        return $widget[method].apply(this, Array.prototype.slice.call(arguments, 1));
-                    } else {
-                        throw 'Method ' + method + ' does not exist.';
-                    }
+                    throw 'Method ' + method + ' does not exist.';
                 }
             }
-        };
-    }
+        }
+    };
 })(jQuery);
 
 /** 
@@ -5663,16 +5672,16 @@ gj.grid.plugins.inlineEditing.config = {
              * @alias inlineEditing.managementColumn
              * @type Boolean
              * @default true
-             * @example True <!-- materialicons, grid, checkbox -->
+             * @example True <!-- materialicons, grid, checkbox, datepicker -->
              * <table id="grid"></table>
              * <script>
              *     var grid, data = [
-             *         { 'ID': 1, 'Name': 'Hristo Stoichkov', 'PlaceOfBirth': 'Plovdiv, Bulgaria', IsActive: false },
-             *         { 'ID': 2, 'Name': 'Ronaldo Luís Nazário de Lima', 'PlaceOfBirth': 'Rio de Janeiro, Brazil', IsActive: false },
-             *         { 'ID': 3, 'Name': 'David Platt', 'PlaceOfBirth': 'Chadderton, Lancashire, England', IsActive: false },
-             *         { 'ID': 4, 'Name': 'Manuel Neuer', 'PlaceOfBirth': 'Gelsenkirchen, West Germany', IsActive: true },
-             *         { 'ID': 5, 'Name': 'James Rodríguez', 'PlaceOfBirth': 'Cúcuta, Colombia', IsActive: true },
-             *         { 'ID': 6, 'Name': 'Dimitar Berbatov', 'PlaceOfBirth': 'Blagoevgrad, Bulgaria', IsActive: false }
+             *         { 'ID': 1, 'Name': 'Hristo Stoichkov', 'PlaceOfBirth': 'Plovdiv, Bulgaria', 'DateOfBirth': '\/Date(-122954400000)\/', IsActive: false },
+             *         { 'ID': 2, 'Name': 'Ronaldo Luís Nazário de Lima', 'PlaceOfBirth': 'Rio de Janeiro, Brazil', 'DateOfBirth': '\/Date(211842000000)\/', IsActive: false },
+             *         { 'ID': 3, 'Name': 'David Platt', 'PlaceOfBirth': 'Chadderton, Lancashire, England', 'DateOfBirth': '\/Date(-112417200000)\/', IsActive: false },
+             *         { 'ID': 4, 'Name': 'Manuel Neuer', 'PlaceOfBirth': 'Gelsenkirchen, West Germany', 'DateOfBirth': '\/Date(512258400000)\/', IsActive: true },
+             *         { 'ID': 5, 'Name': 'James Rodríguez', 'PlaceOfBirth': 'Cúcuta, Colombia', 'DateOfBirth': '\/Date(679266000000)\/', IsActive: true },
+             *         { 'ID': 6, 'Name': 'Dimitar Berbatov', 'PlaceOfBirth': 'Blagoevgrad, Bulgaria', 'DateOfBirth': '\/Date(349653600000)\/', IsActive: false }
              *     ];
              *     grid = $('#grid').grid({
              *         dataSource: data,
@@ -5682,6 +5691,7 @@ gj.grid.plugins.inlineEditing.config = {
              *             { field: 'ID', width: 56 },
              *             { field: 'Name', editor: true },
              *             { field: 'PlaceOfBirth', editor: true },
+             *             { field: 'DateOfBirth', type: 'date', editor: true },
              *             { field: 'IsActive', title: 'Active?', type: 'checkbox', editor: true, width: 100, align: 'center' }
              *         ]
              *     });
@@ -5810,24 +5820,27 @@ gj.grid.plugins.inlineEditing.private = {
                 if (typeof (column.editor) === 'function') {
                     column.editor($editorContainer, value, record);
                 } else {
-                    if ('checkbox' === column.type) {
+                    config = typeof column.editor === "object" ? column.editor : {};
+                    config.uiLibrary = data.uiLibrary;
+                    config.fontSize = $grid.css('font-size');
+                    if ('checkbox' === column.type && gj.checkbox) {
                         $editorField = $('<input type="checkbox" />').prop('checked', value);
                         $editorContainer.append($editorField);
-                        $editorField.checkbox({ uiLibrary: data.uiLibrary });
-                    } else if ('date' === column.type) {
+                        $editorField.checkbox(config);
+                    } else if ('date' === column.type && gj.datepicker) {
                         $editorField = $('<input type="text" width="100%"/>');
                         $editorContainer.append($editorField);
-                        config = typeof column.editor === "object" ? column.editor : {};
-                        config.uiLibrary = data.uiLibrary;
-                        config.fontSize = $grid.css('font-size');
-                        $editorField.datepicker(config).value($displayContainer.html());
-                    } else if ('dropdown' === column.type) {
+                        $editorField = $editorField.datepicker(config);
+                        if ($editorField.value) {
+                            $editorField.value($displayContainer.html());
+                        }
+                    } else if ('dropdown' === column.type && gj.dropdown) {
                         $editorField = $('<select type="text" width="100%"/>');
                         $editorContainer.append($editorField);
-                        config = typeof column.editor === "object" ? column.editor : {};
-                        config.uiLibrary = data.uiLibrary;
-                        config.fontSize = $grid.css('font-size');
-                        $editorField.dropdown(config).value($displayContainer.html());
+                        $editorField = $editorField.dropdown(config);
+                        if ($editorField.value) {
+                            $editorField.value($displayContainer.html());
+                        }
                     } else {
                         $editorField = $('<input type="text" value="' + value + '" class="gj-width-full"/>');
                         if (data.uiLibrary === 'materialdesign') {
@@ -5836,8 +5849,8 @@ gj.grid.plugins.inlineEditing.private = {
                         $editorContainer.append($editorField);
                     }
                 }
-                $editorField = $editorContainer.find('input, select, textarea').first();
                 if (data.inlineEditing.mode !== 'command' && column.mode !== 'editOnly') {
+                    $editorField = $editorContainer.find('input, select, textarea').first();
                     $editorField.on('keyup', function (e) {
                         if (e.keyCode === 13 || e.keyCode === 27) {
                             gj.grid.plugins.inlineEditing.private.displayMode($grid, $cell, column);
@@ -6665,7 +6678,7 @@ gj.grid.plugins.pagination = {
                             gj.grid.plugins.pagination.events.pageSizeChange($grid, newSize);
                         });
                         $control.val(data.params[data.paramNames.limit]);
-                        if ($.fn.dropdown) {
+                        if (gj.dropdown) {
                             $control.dropdown({
                                 uiLibrary: data.uiLibrary,
                                 iconsLibrary: data.iconsLibrary,
@@ -7495,7 +7508,7 @@ gj.grid.plugins.resizableColumns = {
 
     configure: function ($grid, fullConfig, clientConfig) {
         $.extend(true, $grid, gj.grid.plugins.resizableColumns.public);
-        if (fullConfig.resizableColumns && $.fn.draggable) {
+        if (fullConfig.resizableColumns && gj.draggable) {
             $grid.on('initialized', function () {
                 gj.grid.plugins.resizableColumns.private.init($grid, fullConfig);
             });
@@ -7730,7 +7743,7 @@ gj.grid.plugins.rowReorder = {
 
     configure: function ($grid, fullConfig, clientConfig) {
         $.extend(true, $grid, gj.grid.plugins.rowReorder.public);
-        if (fullConfig.rowReorder && $.fn.draggable && $.fn.droppable) {
+        if (fullConfig.rowReorder && gj.draggable && gj.droppable) {
             $grid.on('dataBound', function () {
                 gj.grid.plugins.rowReorder.private.init($grid);
             });
@@ -10203,23 +10216,21 @@ gj.tree.widget.prototype = new gj.widget();
 gj.tree.widget.constructor = gj.tree.widget;
 
 (function ($) {
-    if (typeof ($.fn.tree) === "undefined") {
-        $.fn.tree = function (method) {
-            var $widget;
-            if (this && this.length) {
-                if (typeof method === 'object' || !method) {
-                    return new gj.tree.widget(this, method);
+    $.fn.tree = function (method) {
+        var $widget;
+        if (this && this.length) {
+            if (typeof method === 'object' || !method) {
+                return new gj.tree.widget(this, method);
+            } else {
+                $widget = new gj.tree.widget(this, null);
+                if ($widget[method]) {
+                    return $widget[method].apply(this, Array.prototype.slice.call(arguments, 1));
                 } else {
-                    $widget = new gj.tree.widget(this, null);
-                    if ($widget[method]) {
-                        return $widget[method].apply(this, Array.prototype.slice.call(arguments, 1));
-                    } else {
-                        throw 'Method ' + method + ' does not exist.';
-                    }
+                    throw 'Method ' + method + ' does not exist.';
                 }
             }
-        };
-    }
+        }
+    };
 })(jQuery);
 /** 
  * @widget Tree 
@@ -10830,7 +10841,7 @@ gj.tree.plugins.dragAndDrop = {
 
 	configure: function ($tree) {
 		$.extend(true, $tree, gj.tree.plugins.dragAndDrop.public);
-		if ($tree.data('dragAndDrop') && $.fn.draggable && $.fn.droppable) {
+		if ($tree.data('dragAndDrop') && gj.draggable && gj.droppable) {
 			$tree.on('nodeDataBound', function (e, $node) {
 				gj.tree.plugins.dragAndDrop.private.nodeDataBound($tree, $node);
 			});
@@ -10844,7 +10855,9 @@ gj.tree.plugins.dragAndDrop = {
  * @plugin Base
  */
 if (typeof (gj.checkbox) === 'undefined') {
-    gj.checkbox = {};
+    gj.checkbox = {
+        plugins: {}
+    };
 }
 
 gj.checkbox.config = {
@@ -11099,23 +11112,21 @@ gj.checkbox.widget.prototype = new gj.widget();
 gj.checkbox.widget.constructor = gj.checkbox.widget;
 
 (function ($) {
-    if (typeof ($.fn.checkbox) === "undefined") {
-        $.fn.checkbox = function (method) {
-            var $widget;
-            if (this && this.length) {
-                if (typeof method === 'object' || !method) {
-                    return new gj.checkbox.widget(this, method);
+    $.fn.checkbox = function (method) {
+        var $widget;
+        if (this && this.length) {
+            if (typeof method === 'object' || !method) {
+                return new gj.checkbox.widget(this, method);
+            } else {
+                $widget = new gj.checkbox.widget(this, null);
+                if ($widget[method]) {
+                    return $widget[method].apply(this, Array.prototype.slice.call(arguments, 1));
                 } else {
-                    $widget = new gj.checkbox.widget(this, null);
-                    if ($widget[method]) {
-                        return $widget[method].apply(this, Array.prototype.slice.call(arguments, 1));
-                    } else {
-                        throw 'Method ' + method + ' does not exist.';
-                    }
+                    throw 'Method ' + method + ' does not exist.';
                 }
             }
-        };
-    }
+        }
+    };
 })(jQuery);
 if (typeof (gj.editor) === 'undefined') {
     gj.editor = {
@@ -11145,6 +11156,12 @@ gj.editor.messages['en-us'] = {
  * @widget Editor 
  * @plugin Base
  */
+if (typeof (gj.editor) === 'undefined') {
+    gj.editor = {
+        plugins: {}
+    };
+}
+
 gj.editor.config = {
     base: {
 
@@ -11512,23 +11529,21 @@ gj.editor.widget.prototype = new gj.widget();
 gj.editor.widget.constructor = gj.editor.widget;
 
 (function ($) {
-    if (typeof ($.fn.editor) === "undefined") {
-        $.fn.editor = function (method) {
-            var $widget;
-            if (this && this.length) {
-                if (typeof method === 'object' || !method) {
-                    return new gj.editor.widget(this, method);
+    $.fn.editor = function (method) {
+        var $widget;
+        if (this && this.length) {
+            if (typeof method === 'object' || !method) {
+                return new gj.editor.widget(this, method);
+            } else {
+                $widget = new gj.editor.widget(this, null);
+                if ($widget[method]) {
+                    return $widget[method].apply(this, Array.prototype.slice.call(arguments, 1));
                 } else {
-                    $widget = new gj.editor.widget(this, null);
-                    if ($widget[method]) {
-                        return $widget[method].apply(this, Array.prototype.slice.call(arguments, 1));
-                    } else {
-                        throw 'Method ' + method + ' does not exist.';
-                    }
+                    throw 'Method ' + method + ' does not exist.';
                 }
             }
-        };
-    }
+        }
+    };
 })(jQuery);
 /* global window alert jQuery gj */
 /**
@@ -12118,23 +12133,21 @@ gj.dropdown.widget.prototype = new gj.widget();
 gj.dropdown.widget.constructor = gj.dropdown.widget;
 
 (function ($) {
-    if (typeof ($.fn.dropdown) === "undefined") {
-        $.fn.dropdown = function (method) {
-            var $widget;
-            if (this && this.length) {
-                if (typeof method === 'object' || !method) {
-                    return new gj.dropdown.widget(this, method);
+    $.fn.dropdown = function (method) {
+        var $widget;
+        if (this && this.length) {
+            if (typeof method === 'object' || !method) {
+                return new gj.dropdown.widget(this, method);
+            } else {
+                $widget = new gj.dropdown.widget(this, null);
+                if ($widget[method]) {
+                    return $widget[method].apply(this, Array.prototype.slice.call(arguments, 1));
                 } else {
-                    $widget = new gj.dropdown.widget(this, null);
-                    if ($widget[method]) {
-                        return $widget[method].apply(this, Array.prototype.slice.call(arguments, 1));
-                    } else {
-                        throw 'Method ' + method + ' does not exist.';
-                    }
+                    throw 'Method ' + method + ' does not exist.';
                 }
             }
-        };
-    }
+        }
+    };
 })(jQuery);
 /* global window alert jQuery gj */
 /**
@@ -12863,21 +12876,19 @@ gj.datepicker.widget.prototype = new gj.widget();
 gj.datepicker.widget.constructor = gj.datepicker.widget;
 
 (function ($) {
-    if (typeof ($.fn.datepicker) === "undefined") {
-        $.fn.datepicker = function (method) {
-            var $widget;
-            if (this && this.length) {
-                if (typeof method === 'object' || !method) {
-                    return new gj.datepicker.widget(this, method);
+    $.fn.datepicker = function (method) {
+        var $widget;
+        if (this && this.length) {
+            if (typeof method === 'object' || !method) {
+                return new gj.datepicker.widget(this, method);
+            } else {
+                $widget = new gj.datepicker.widget(this, null);
+                if ($widget[method]) {
+                    return $widget[method].apply(this, Array.prototype.slice.call(arguments, 1));
                 } else {
-                    $widget = new gj.datepicker.widget(this, null);
-                    if ($widget[method]) {
-                        return $widget[method].apply(this, Array.prototype.slice.call(arguments, 1));
-                    } else {
-                        throw 'Method ' + method + ' does not exist.';
-                    }
+                    throw 'Method ' + method + ' does not exist.';
                 }
             }
-        };
-    }
+        }
+    };
 })(jQuery);

@@ -3,6 +3,12 @@
  * @widget Dialog 
  * @plugin Base
  */
+if (typeof (gj.dialog) === 'undefined') {
+    gj.dialog = {
+        plugins: {}
+    };
+}
+
 gj.dialog.config = {
     base: {
         /** If set to true, the dialog will automatically open upon initialization.

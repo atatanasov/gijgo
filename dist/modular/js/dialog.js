@@ -17,7 +17,13 @@ gj.dialog.messages['en-us'] = {
     DefaultTitle: 'Dialog'
 };
 /* global window alert jQuery */
-/**  */gj.dialog.config = {
+/**  */if (typeof (gj.dialog) === 'undefined') {
+    gj.dialog = {
+        plugins: {}
+    };
+}
+
+gj.dialog.config = {
     base: {
         /** If set to true, the dialog will automatically open upon initialization.
          * If false, the dialog will stay hidden until the open() method is called.         */        autoOpen: true,
@@ -205,12 +211,13 @@ gj.dialog.methods = {
             $dialog.close();
         });
 
-        if (data.draggable && $.fn.draggable) {
-            gj.dialog.methods.draggable($dialog, $header);
-        }
-
-        if (data.resizable && $.fn.draggable) {
-            gj.dialog.methods.resizable($dialog);
+        if (gj.draggable) {
+            if (data.draggable) {
+                gj.dialog.methods.draggable($dialog, $header);
+            }
+            if (data.resizable) {
+                gj.dialog.methods.resizable($dialog);
+            }
         }
 
         if (data.scrollable && data.height) {
@@ -482,23 +489,21 @@ gj.dialog.widget.constructor = gj.dialog.widget;
 gj.dialog.widget.prototype.getHTMLConfig = gj.dialog.methods.getHTMLConfig;
 
 (function ($) {
-    if (typeof ($.fn.dialog) === "undefined") {
-        $.fn.dialog = function (method) {
-            var $widget;
-            if (this && this.length) {
-                if (typeof method === 'object' || !method) {
-                    return new gj.dialog.widget(this, method);
+    $.fn.dialog = function (method) {
+        var $widget;
+        if (this && this.length) {
+            if (typeof method === 'object' || !method) {
+                return new gj.dialog.widget(this, method);
+            } else {
+                $widget = new gj.dialog.widget(this, null);
+                if ($widget[method]) {
+                    return $widget[method].apply(this, Array.prototype.slice.call(arguments, 1));
                 } else {
-                    $widget = new gj.dialog.widget(this, null);
-                    if ($widget[method]) {
-                        return $widget[method].apply(this, Array.prototype.slice.call(arguments, 1));
-                    } else {
-                        throw 'Method ' + method + ' does not exist.';
-                    }
+                    throw 'Method ' + method + ' does not exist.';
                 }
             }
-        };
-    }
+        }
+    };
 })(jQuery);
 gj.dialog.messages['bg-bg'] = {
     Close: 'Затваряне',

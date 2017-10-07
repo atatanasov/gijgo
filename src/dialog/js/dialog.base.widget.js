@@ -132,21 +132,19 @@ gj.dialog.widget.constructor = gj.dialog.widget;
 gj.dialog.widget.prototype.getHTMLConfig = gj.dialog.methods.getHTMLConfig;
 
 (function ($) {
-    if (typeof ($.fn.dialog) === "undefined") {
-        $.fn.dialog = function (method) {
-            var $widget;
-            if (this && this.length) {
-                if (typeof method === 'object' || !method) {
-                    return new gj.dialog.widget(this, method);
+    $.fn.dialog = function (method) {
+        var $widget;
+        if (this && this.length) {
+            if (typeof method === 'object' || !method) {
+                return new gj.dialog.widget(this, method);
+            } else {
+                $widget = new gj.dialog.widget(this, null);
+                if ($widget[method]) {
+                    return $widget[method].apply(this, Array.prototype.slice.call(arguments, 1));
                 } else {
-                    $widget = new gj.dialog.widget(this, null);
-                    if ($widget[method]) {
-                        return $widget[method].apply(this, Array.prototype.slice.call(arguments, 1));
-                    } else {
-                        throw 'Method ' + method + ' does not exist.';
-                    }
+                    throw 'Method ' + method + ' does not exist.';
                 }
             }
-        };
-    }
+        }
+    };
 })(jQuery);

@@ -347,7 +347,7 @@ gj.grid.plugins.pagination = {
                             gj.grid.plugins.pagination.events.pageSizeChange($grid, newSize);
                         });
                         $control.val(data.params[data.paramNames.limit]);
-                        if ($.fn.dropdown) {
+                        if (gj.dropdown) {
                             $control.dropdown({
                                 uiLibrary: data.uiLibrary,
                                 iconsLibrary: data.iconsLibrary,

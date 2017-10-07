@@ -57,12 +57,13 @@
             $dialog.close();
         });
 
-        if (data.draggable && $.fn.draggable) {
-            gj.dialog.methods.draggable($dialog, $header);
-        }
-
-        if (data.resizable && $.fn.draggable) {
-            gj.dialog.methods.resizable($dialog);
+        if (gj.draggable) {
+            if (data.draggable) {
+                gj.dialog.methods.draggable($dialog, $header);
+            }
+            if (data.resizable) {
+                gj.dialog.methods.resizable($dialog);
+            }
         }
 
         if (data.scrollable && data.height) {
