@@ -388,14 +388,15 @@ gj.tree.config = {
          *         iconsLibrary: 'materialicons'
          *     });
          * </script>
-         * @example Bootstrap.4.Font.Awesome <!-- bootstrap4, fontawesome, tree.base -->
+         * @example Bootstrap.4.Font.Awesome <!-- bootstrap4, fontawesome, tree.base, checkbox -->
          * <div id="tree"></div>
          * <script>
          *     var tree = $('#tree').tree({
          *         dataSource: '/Locations/Get',
          *         width: 500,
          *         uiLibrary: 'bootstrap4',
-         *         iconsLibrary: 'fontawesome'
+         *         iconsLibrary: 'fontawesome',
+         *         checkboxes: true
          *     });
          * </script>
          */

@@ -1202,11 +1202,11 @@ ul.gj-list-md li.disabled>[data-role="wrapper"]>[data-role="expander"] {
     cursor: not-allowed;
 }
 
-.gj-checkbox-bootstrap input[type="checkbox"][disabled] + span:before {
+/*.gj-checkbox-bootstrap input[type="checkbox"][disabled] + span:before {
     background: #eee;
     border: 1px solid #ccc;
     color: #888;
-}
+}*/
 
 /* Material Design */
 .gj-checkbox-md {
@@ -1300,6 +1300,19 @@ ul.gj-list-md li.disabled>[data-role="wrapper"]>[data-role="expander"] {
     font-family: 'Glyphicons Halflings';
     content: "\2212 ";
     padding-right: 1px;
+}
+
+/* fontawesome */
+.gj-checkbox-fontawesome span.fa {
+    padding-top: 3px;
+}
+
+.gj-checkbox-fontawesome input[type="checkbox"]:checked + span:before {
+    content: "\f00c ";
+}
+
+.gj-checkbox-fontawesome input[type="checkbox"]:indeterminate + span:before {
+    content: "\f068 ";
 }
 
 /* Bootstrap and Material Design */

@@ -8875,14 +8875,15 @@ gj.tree.config = {
          *         iconsLibrary: 'materialicons'
          *     });
          * </script>
-         * @example Bootstrap.4.Font.Awesome <!-- bootstrap4, fontawesome, tree.base -->
+         * @example Bootstrap.4.Font.Awesome <!-- bootstrap4, fontawesome, tree.base, checkbox -->
          * <div id="tree"></div>
          * <script>
          *     var tree = $('#tree').tree({
          *         dataSource: '/Locations/Get',
          *         width: 500,
          *         uiLibrary: 'bootstrap4',
-         *         iconsLibrary: 'fontawesome'
+         *         iconsLibrary: 'fontawesome',
+         *         checkboxes: true
          *     });
          * </script>
          */
@@ -10908,7 +10909,29 @@ gj.checkbox.config = {
          * </script>
          */
         uiLibrary: 'materialdesign',
-
+        
+        /** The name of the icons library that is going to be in use. Currently we support Material Icons, Font Awesome and Glyphicons.
+         * @additionalinfo If you use Bootstrap 3 as uiLibrary, then the iconsLibrary is set to Glyphicons by default.<br/>
+         * If you use Material Design as uiLibrary, then the iconsLibrary is set to Material Icons by default.<br/>
+         * The css files for Material Icons, Font Awesome or Glyphicons should be manually included to the page where the grid is in use.
+         * @type (materialicons|fontawesome|glyphicons)
+         * @default 'materialicons'
+         * @example Bootstrap.4.FontAwesome <!-- bootstrap4, checkbox, fontawesome -->
+         * <div class="container-fluid" style="margin-top:10px">
+         *     <input type="checkbox" id="checkbox"/><br/><br/>
+         *     <button onclick="$chkb.state('checked')" class="btn btn-default">Checked</button>
+         *     <button onclick="$chkb.state('unchecked')" class="btn btn-default">Unchecked</button>
+         *     <button onclick="$chkb.state('indeterminate')" class="btn btn-default">Indeterminate</button>
+         *     <button onclick="$chkb.prop('disabled', false)" class="btn btn-default">Enable</button>
+         *     <button onclick="$chkb.prop('disabled', true)" class="btn btn-default">Disable</button>
+         * </div>
+         * <script>
+         *     var $chkb = $('#checkbox').checkbox({
+         *         uiLibrary: 'bootstrap4',
+         *         iconsLibrary: 'fontawesome'
+         *     });
+         * </script>
+         */
         iconsLibrary: 'materialicons',
 
         style: {
@@ -10943,6 +10966,13 @@ gj.checkbox.config = {
         style: {
             iconsCssClass: 'gj-checkbox-glyphicons',
             spanCssClass: ''
+        }
+    },
+
+    fontawesome: {
+        style: {
+            iconsCssClass: 'gj-checkbox-fontawesome',
+            spanCssClass: 'fa'
         }
     }
 };

@@ -15,8 +15,8 @@
 gj.checkbox.config = {
     base: {
         /** The name of the UI library that is going to be in use. Currently we support only Material Design and Bootstrap.          */        uiLibrary: 'materialdesign',
-
-        iconsLibrary: 'materialicons',
+        
+        /** The name of the icons library that is going to be in use. Currently we support Material Icons, Font Awesome and Glyphicons.         */        iconsLibrary: 'materialicons',
 
         style: {
             wrapperCssClass: 'gj-checkbox-md',
@@ -50,6 +50,13 @@ gj.checkbox.config = {
         style: {
             iconsCssClass: 'gj-checkbox-glyphicons',
             spanCssClass: ''
+        }
+    },
+
+    fontawesome: {
+        style: {
+            iconsCssClass: 'gj-checkbox-fontawesome',
+            spanCssClass: 'fa'
         }
     }
 };
