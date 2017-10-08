@@ -249,6 +249,10 @@ gj.documentManager = {
   * @plugin Base
   */
 gj.core = {
+    monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+
+    monthShortNames: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+
     /** 
      * @method
      * @example String.1
@@ -260,6 +264,16 @@ gj.core = {
      * <div id="date"></div>
      * <script>
      *     $('#date').text(gj.core.parseDate('2017 2.3', 'yyyy m.d'));
+     * </script>
+     * @example String.dd.mmm.yyyy
+     * <div id="date"></div>
+     * <script>
+     *     $('#date').text(gj.core.parseDate('05 Feb 2017', 'dd mmm yyyy'));
+     * </script>
+     * @example String.dd.mmmm.yyyy
+     * <div id="date"></div>
+     * <script>
+     *     $('#date').text(gj.core.parseDate('05 February 2017', 'dd mmmm yyyy'));
      * </script>
      * @example ASP.NET.JSON.Date
      * <div id="date"></div>
@@ -288,7 +302,11 @@ gj.core = {
                     if (['d', 'dd'].indexOf(formatParts[i]) > -1) {
                         date = parseInt(dateParts[i], 10);
                     } else if (['m', 'mm'].indexOf(formatParts[i]) > -1) {
-                        month = parseInt(dateParts[i], 10);
+                        month = parseInt(dateParts[i], 10) - 1;
+                    } else if ('mmm' === formatParts[i]) {
+                        month = gj.core.monthShortNames.indexOf(dateParts[i]);
+                    } else if ('mmmm' === formatParts[i]) {
+                        month = gj.core.monthNames.indexOf(dateParts[i]);
                     } else if (['yy', 'yyyy'].indexOf(formatParts[i]) > -1) {
                         year = parseInt(dateParts[i], 10);
                         if (formatParts[i] === 'yy') {
@@ -296,7 +314,7 @@ gj.core = {
                         }
                     }
                 }
-                result = new Date(year, month - 1, date);
+                result = new Date(year, month, date);
             }
         } else if (typeof value === 'number') {
             result = new Date(value);
@@ -319,12 +337,22 @@ gj.core = {
      * <script>
      *     $('#date').text(gj.core.formatDate(new Date(2017, 1, 3), 'yyyy m.d'));
      * </script>
-     * @example Sample.3
+     * @example Sample.dd.mmm.yyyy
+     * <div id="date"></div>
+     * <script>
+     *     $('#date').text(gj.core.formatDate(new Date(2017, 1, 3), 'dd mmm yyyy'));
+     * </script>
+     * @example Sample.dd.mmmm.yyyy
+     * <div id="date"></div>
+     * <script>
+     *     $('#date').text(gj.core.formatDate(new Date(2017, 1, 3), 'dd mmmm yyyy'));
+     * </script>
+     * @example Sample.5
      * <div id="date"></div>
      * <script>
      *     $('#date').text(gj.core.formatDate(new Date(2017, 1, 3, 20, 43, 53), 'hh:MM:ss tt mm/dd/yyyy'));
      * </script>
-     * @example Sample.4
+     * @example Sample.6
      * <div id="date"></div>
      * <script>
      *     $('#date').text(gj.core.formatDate(new Date(2017, 1, 3, 20, 43, 53), 'hh:MM TT'));
@@ -387,8 +415,14 @@ gj.core = {
                 case 'm' :
                     result += (date.getMonth() + 1) + separator;
                     break;
-                case 'mm' :
+                case 'mm':
                     result += pad(date.getMonth() + 1) + separator;
+                    break;
+                case 'mmm':
+                    result += gj.core.monthShortNames[date.getMonth()] + separator;
+                    break;
+                case 'mmmm':
+                    result += gj.core.monthNames[date.getMonth()] + separator;
                     break;
                 case 'yy' :
                     result += date.getFullYear().toString().substr(2) + separator;
@@ -12192,8 +12226,6 @@ if (typeof (gj.datepicker) === 'undefined') {
 
 gj.datepicker.config = {
     base: {
-        months: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-
         weekDays: ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
 
         /** Whether to display dates in other months at the start or end of the current month.
@@ -12322,6 +12354,20 @@ gj.datepicker.config = {
          * <script>
          *     var datepicker = $('#datepicker').datepicker({
          *         format: 'yyyy-dd-mm'
+         *     });
+         * </script>
+         * @example Short.Month.Format <!-- materialicons, datepicker -->
+         * <input id="datepicker" value="10 Oct 2017" />
+         * <script>
+         *     var datepicker = $('#datepicker').datepicker({
+         *         format: 'dd mmm yyyy'
+         *     });
+         * </script>
+         * @example Long.Month.Format <!-- materialicons, datepicker -->
+         * <input id="datepicker" value="10 October 2017" />
+         * <script>
+         *     var datepicker = $('#datepicker').datepicker({
+         *         format: 'dd mmmm yyyy'
          *     });
          * </script>
          */
@@ -12561,7 +12607,7 @@ gj.datepicker.methods = {
         month = parseInt($datepicker.attr('month'), 10);
         year = parseInt($datepicker.attr('year'), 10);
 
-        $table.find('thead [role="month"]').text(data.months[month] + ' ' + year);
+        $table.find('thead [role="month"]').text(gj.core.monthNames[month] + ' ' + year);
 
         daysInMonth = new Array(31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31);
         if (year % 4 == 0 && year != 1900) {

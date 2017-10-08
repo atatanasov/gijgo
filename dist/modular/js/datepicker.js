@@ -14,8 +14,6 @@
 
 gj.datepicker.config = {
     base: {
-        months: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-
         weekDays: ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
 
         /** Whether to display dates in other months at the start or end of the current month.         */        showOtherMonths: false,
@@ -191,7 +189,7 @@ gj.datepicker.methods = {
         month = parseInt($datepicker.attr('month'), 10);
         year = parseInt($datepicker.attr('year'), 10);
 
-        $table.find('thead [role="month"]').text(data.months[month] + ' ' + year);
+        $table.find('thead [role="month"]').text(gj.core.monthNames[month] + ' ' + year);
 
         daysInMonth = new Array(31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31);
         if (year % 4 == 0 && year != 1900) {

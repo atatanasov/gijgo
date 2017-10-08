@@ -245,6 +245,10 @@ gj.documentManager = {
 };
 
 /**  */gj.core = {
+    monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+
+    monthShortNames: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+
     /**      */    parseDate: function (value, format) {
         var i, date, month, year, dateParts, formatParts, result;
 
@@ -260,7 +264,11 @@ gj.documentManager = {
                     if (['d', 'dd'].indexOf(formatParts[i]) > -1) {
                         date = parseInt(dateParts[i], 10);
                     } else if (['m', 'mm'].indexOf(formatParts[i]) > -1) {
-                        month = parseInt(dateParts[i], 10);
+                        month = parseInt(dateParts[i], 10) - 1;
+                    } else if ('mmm' === formatParts[i]) {
+                        month = gj.core.monthShortNames.indexOf(dateParts[i]);
+                    } else if ('mmmm' === formatParts[i]) {
+                        month = gj.core.monthNames.indexOf(dateParts[i]);
                     } else if (['yy', 'yyyy'].indexOf(formatParts[i]) > -1) {
                         year = parseInt(dateParts[i], 10);
                         if (formatParts[i] === 'yy') {
@@ -268,7 +276,7 @@ gj.documentManager = {
                         }
                     }
                 }
-                result = new Date(year, month - 1, date);
+                result = new Date(year, month, date);
             }
         } else if (typeof value === 'number') {
             result = new Date(value);
@@ -336,8 +344,14 @@ gj.documentManager = {
                 case 'm' :
                     result += (date.getMonth() + 1) + separator;
                     break;
-                case 'mm' :
+                case 'mm':
                     result += pad(date.getMonth() + 1) + separator;
+                    break;
+                case 'mmm':
+                    result += gj.core.monthShortNames[date.getMonth()] + separator;
+                    break;
+                case 'mmmm':
+                    result += gj.core.monthNames[date.getMonth()] + separator;
                     break;
                 case 'yy' :
                     result += date.getFullYear().toString().substr(2) + separator;

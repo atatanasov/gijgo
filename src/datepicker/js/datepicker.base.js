@@ -11,8 +11,6 @@ if (typeof (gj.datepicker) === 'undefined') {
 
 gj.datepicker.config = {
     base: {
-        months: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-
         weekDays: ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
 
         /** Whether to display dates in other months at the start or end of the current month.
@@ -141,6 +139,20 @@ gj.datepicker.config = {
          * <script>
          *     var datepicker = $('#datepicker').datepicker({
          *         format: 'yyyy-dd-mm'
+         *     });
+         * </script>
+         * @example Short.Month.Format <!-- materialicons, datepicker -->
+         * <input id="datepicker" value="10 Oct 2017" />
+         * <script>
+         *     var datepicker = $('#datepicker').datepicker({
+         *         format: 'dd mmm yyyy'
+         *     });
+         * </script>
+         * @example Long.Month.Format <!-- materialicons, datepicker -->
+         * <input id="datepicker" value="10 October 2017" />
+         * <script>
+         *     var datepicker = $('#datepicker').datepicker({
+         *         format: 'dd mmmm yyyy'
          *     });
          * </script>
          */
@@ -380,7 +392,7 @@ gj.datepicker.methods = {
         month = parseInt($datepicker.attr('month'), 10);
         year = parseInt($datepicker.attr('year'), 10);
 
-        $table.find('thead [role="month"]').text(data.months[month] + ' ' + year);
+        $table.find('thead [role="month"]').text(gj.core.monthNames[month] + ' ' + year);
 
         daysInMonth = new Array(31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31);
         if (year % 4 == 0 && year != 1900) {
