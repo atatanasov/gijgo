@@ -373,6 +373,56 @@ gj.tree.widget = function ($element, jsConfig) {
     };
 
     /**
+     * Select node from the tree.
+     * @method
+     * @param {Object} node - The node as jquery object.
+     * @return jQuery Object
+     * @example Sample <!-- materialicons, checkbox, tree.base -->
+     * <button onclick="tree.select(northAmerica)">Select North America</button>
+     * <button onclick="tree.unselect(northAmerica)">Unselect North America</button>
+     * <br/><br/>
+     * <div id="tree" data-source="/Locations/Get"></div>
+     * <script>
+     *     var tree, northAmerica;
+     *     tree = $('#tree').tree({
+     *         checkboxes: true,
+     *         primaryKey: 'ID',
+     *         dataBound: function () {
+     *             northAmerica = tree.getNodeByText('North America');
+     *         }
+     *     });
+     * </script>
+     */
+    self.select = function ($node) {
+        return methods.select(this, $node);
+    };
+
+    /**
+     * Unselect node from the tree.
+     * @method
+     * @param {Object} node - The node as jquery object.
+     * @return jQuery Object
+     * @example Sample <!-- materialicons, checkbox, tree.base -->
+     * <button onclick="tree.select(northAmerica)">Select North America</button>
+     * <button onclick="tree.unselect(northAmerica)">Unselect North America</button>
+     * <br/><br/>
+     * <div id="tree" data-source="/Locations/Get"></div>
+     * <script>
+     *     var tree, northAmerica;
+     *     tree = $('#tree').tree({
+     *         checkboxes: true,
+     *         primaryKey: 'ID',
+     *         dataBound: function () {
+     *             northAmerica = tree.getNodeByText('North America');
+     *         }
+     *     });
+     * </script>
+     */
+    self.unselect = function ($node) {
+        return methods.unselect(this, $node);
+    };
+
+    /**
      * Select all tree nodes
      * @method
      * @return jQuery object

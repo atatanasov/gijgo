@@ -14,7 +14,7 @@ gj.grid.plugins.resizableColumns = {
              *     var grid = $('#grid').grid({
              *         dataSource: '/Players/Get',
              *         resizableColumns: true,
-             *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
+             *         columns: [ { field: 'ID', width: 56 }, { field: 'Name', sortable: true }, { field: 'PlaceOfBirth' } ]
              *     });
              * </script>
              * @example Bootstrap <!-- bootstrap, grid, draggable.base -->

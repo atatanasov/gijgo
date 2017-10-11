@@ -34,9 +34,9 @@ gj.tree.config = {
 
         /** Image url field name.         */        imageUrlField: 'imageUrl',
 
-        /** Disabled field name. Assume that the item is not disabled if not set.         */        disabledField: 'disabled',
-
         /** Image html field name.         */        imageHtmlField: 'imageHtml',
+
+        /** Disabled field name. Assume that the item is not disabled if not set.         */        disabledField: 'disabled',
 
         /** Width of the tree.         */        width: undefined,
 
@@ -702,6 +702,16 @@ gj.tree.methods = {
     /**
      * Return node by text.     */    self.getNodeByText = function (text) {
         return methods.getNodeByText(this.children('ul'), text);
+    };
+
+    /**
+     * Select node from the tree.     */    self.select = function ($node) {
+        return methods.select(this, $node);
+    };
+
+    /**
+     * Unselect node from the tree.     */    self.unselect = function ($node) {
+        return methods.unselect(this, $node);
     };
 
     /**

@@ -7465,7 +7465,7 @@ gj.grid.plugins.resizableColumns = {
              *     var grid = $('#grid').grid({
              *         dataSource: '/Players/Get',
              *         resizableColumns: true,
-             *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
+             *         columns: [ { field: 'ID', width: 56 }, { field: 'Name', sortable: true }, { field: 'PlaceOfBirth' } ]
              *     });
              * </script>
              * @example Bootstrap <!-- bootstrap, grid, draggable.base -->
@@ -8703,6 +8703,27 @@ gj.tree.config = {
          */
         imageUrlField: 'imageUrl',
 
+        /** Image html field name.
+         * @type string
+         * @default 'imageHtml'
+         * @example Default.HTML.Field.Name <!-- materialicons, tree.base -->
+         * <div id="tree"></div>
+         * <script>
+         *     var tree = $('#tree').tree({
+         *         dataSource: [ { text: 'folder', imageHtml: '<i class="material-icons">folder</i>', children: [ { text: 'file', imageHtml: '<i class="material-icons">insert_drive_file</i>' } ] } ]
+         *     });
+         * </script>
+         * @example Custom.HTML.Field.Name <!-- materialicons, tree.base -->
+         * <div id="tree"></div>
+         * <script>
+         *     var tree = $('#tree').tree({
+         *         imageHtmlField: 'icon',
+         *         dataSource: [ { text: 'folder', icon: '<i class="material-icons">folder</i>', children: [ { text: 'file', icon: '<i class="material-icons">insert_drive_file</i>' } ] } ]
+         *     });
+         * </script>
+         */
+        imageHtmlField: 'imageHtml',
+
         /** Disabled field name. Assume that the item is not disabled if not set.
          * @type string
          * @default 'disabled'
@@ -8759,27 +8780,6 @@ gj.tree.config = {
          * </script>
          */
         disabledField: 'disabled',
-
-        /** Image html field name.
-         * @type string
-         * @default 'imageHtml'
-         * @example Default.HTML.Field.Name <!-- materialicons, tree.base -->
-         * <div id="tree"></div>
-         * <script>
-         *     var tree = $('#tree').tree({
-         *         dataSource: [ { text: 'folder', imageHtml: '<i class="material-icons">folder</i>', children: [ { text: 'file', imageHtml: '<i class="material-icons">insert_drive_file</i>' } ] } ]
-         *     });
-         * </script>
-         * @example Custom.HTML.Field.Name <!-- materialicons, tree.base -->
-         * <div id="tree"></div>
-         * <script>
-         *     var tree = $('#tree').tree({
-         *         imageHtmlField: 'icon',
-         *         dataSource: [ { text: 'folder', icon: '<i class="material-icons">folder</i>', children: [ { text: 'file', icon: '<i class="material-icons">insert_drive_file</i>' } ] } ]
-         *     });
-         * </script>
-         */
-        imageHtmlField: 'imageHtml',
 
         /** Width of the tree.
          * @type number
@@ -10097,6 +10097,56 @@ gj.tree.widget = function ($element, jsConfig) {
      */
     self.getNodeByText = function (text) {
         return methods.getNodeByText(this.children('ul'), text);
+    };
+
+    /**
+     * Select node from the tree.
+     * @method
+     * @param {Object} node - The node as jquery object.
+     * @return jQuery Object
+     * @example Sample <!-- materialicons, checkbox, tree.base -->
+     * <button onclick="tree.select(northAmerica)">Select North America</button>
+     * <button onclick="tree.unselect(northAmerica)">Unselect North America</button>
+     * <br/><br/>
+     * <div id="tree" data-source="/Locations/Get"></div>
+     * <script>
+     *     var tree, northAmerica;
+     *     tree = $('#tree').tree({
+     *         checkboxes: true,
+     *         primaryKey: 'ID',
+     *         dataBound: function () {
+     *             northAmerica = tree.getNodeByText('North America');
+     *         }
+     *     });
+     * </script>
+     */
+    self.select = function ($node) {
+        return methods.select(this, $node);
+    };
+
+    /**
+     * Unselect node from the tree.
+     * @method
+     * @param {Object} node - The node as jquery object.
+     * @return jQuery Object
+     * @example Sample <!-- materialicons, checkbox, tree.base -->
+     * <button onclick="tree.select(northAmerica)">Select North America</button>
+     * <button onclick="tree.unselect(northAmerica)">Unselect North America</button>
+     * <br/><br/>
+     * <div id="tree" data-source="/Locations/Get"></div>
+     * <script>
+     *     var tree, northAmerica;
+     *     tree = $('#tree').tree({
+     *         checkboxes: true,
+     *         primaryKey: 'ID',
+     *         dataBound: function () {
+     *             northAmerica = tree.getNodeByText('North America');
+     *         }
+     *     });
+     * </script>
+     */
+    self.unselect = function ($node) {
+        return methods.unselect(this, $node);
     };
 
     /**

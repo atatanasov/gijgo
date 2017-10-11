@@ -182,6 +182,27 @@ gj.tree.config = {
          */
         imageUrlField: 'imageUrl',
 
+        /** Image html field name.
+         * @type string
+         * @default 'imageHtml'
+         * @example Default.HTML.Field.Name <!-- materialicons, tree.base -->
+         * <div id="tree"></div>
+         * <script>
+         *     var tree = $('#tree').tree({
+         *         dataSource: [ { text: 'folder', imageHtml: '<i class="material-icons">folder</i>', children: [ { text: 'file', imageHtml: '<i class="material-icons">insert_drive_file</i>' } ] } ]
+         *     });
+         * </script>
+         * @example Custom.HTML.Field.Name <!-- materialicons, tree.base -->
+         * <div id="tree"></div>
+         * <script>
+         *     var tree = $('#tree').tree({
+         *         imageHtmlField: 'icon',
+         *         dataSource: [ { text: 'folder', icon: '<i class="material-icons">folder</i>', children: [ { text: 'file', icon: '<i class="material-icons">insert_drive_file</i>' } ] } ]
+         *     });
+         * </script>
+         */
+        imageHtmlField: 'imageHtml',
+
         /** Disabled field name. Assume that the item is not disabled if not set.
          * @type string
          * @default 'disabled'
@@ -238,27 +259,6 @@ gj.tree.config = {
          * </script>
          */
         disabledField: 'disabled',
-
-        /** Image html field name.
-         * @type string
-         * @default 'imageHtml'
-         * @example Default.HTML.Field.Name <!-- materialicons, tree.base -->
-         * <div id="tree"></div>
-         * <script>
-         *     var tree = $('#tree').tree({
-         *         dataSource: [ { text: 'folder', imageHtml: '<i class="material-icons">folder</i>', children: [ { text: 'file', imageHtml: '<i class="material-icons">insert_drive_file</i>' } ] } ]
-         *     });
-         * </script>
-         * @example Custom.HTML.Field.Name <!-- materialicons, tree.base -->
-         * <div id="tree"></div>
-         * <script>
-         *     var tree = $('#tree').tree({
-         *         imageHtmlField: 'icon',
-         *         dataSource: [ { text: 'folder', icon: '<i class="material-icons">folder</i>', children: [ { text: 'file', icon: '<i class="material-icons">insert_drive_file</i>' } ] } ]
-         *     });
-         * </script>
-         */
-        imageHtmlField: 'imageHtml',
 
         /** Width of the tree.
          * @type number
