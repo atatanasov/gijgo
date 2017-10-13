@@ -519,7 +519,7 @@ gj.grid.methods = {
                 $grid.find('thead input[data-role="selectAll"]').prop('checked', true);
             }
         }
-        gj.grid.events.rowSelect($grid, $row, id, $grid.getById(id));
+        return gj.grid.events.rowSelect($grid, $row, id, $grid.getById(id));
     },
 
     unselectRow: function ($grid, data, $row, id) {
@@ -534,7 +534,7 @@ gj.grid.methods = {
                 }
             }
             $row.removeAttr('data-selected');
-            gj.grid.events.rowUnselect($grid, $row, id, $grid.getById(id));
+            return gj.grid.events.rowUnselect($grid, $row, id, $grid.getById(id));
         }
     },
 
@@ -563,8 +563,11 @@ gj.grid.methods = {
     selectAll: function ($grid) {
         var data = $grid.data();
         $grid.find('tbody tr[data-role="row"]').each(function () {
-            var $row = $(this);
-            gj.grid.methods.selectRow($grid, data, $row, $grid.get($row.data('position')));
+            var $row = $(this),
+                position = $row.data('position'),
+                record = $grid.get(position),
+                id = gj.grid.methods.getId(record, data.primaryKey, position);
+            gj.grid.methods.selectRow($grid, data, $row, id);
         });
         $grid.find('thead input[data-role="selectAll"]').prop('checked', true);
         return $grid;
@@ -573,8 +576,11 @@ gj.grid.methods = {
     unSelectAll: function ($grid) {
         var data = $grid.data();
         $grid.find('tbody tr').each(function () {
-            var $row = $(this);
-            gj.grid.methods.unselectRow($grid, data, $row, $grid.get($row.data('position')));
+            var $row = $(this),
+                position = $row.data('position'),
+                record = $grid.get(position),
+                id = gj.grid.methods.getId(record, data.primaryKey, position);
+            gj.grid.methods.unselectRow($grid, data, $row, id);
             $row.find('input[type="checkbox"][data-role="selectRow"]').prop('checked', false);
         });
         $grid.find('thead input[data-role="selectAll"]').prop('checked', false);

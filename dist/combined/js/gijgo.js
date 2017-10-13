@@ -3292,7 +3292,7 @@ gj.grid.events = {
      * </script>
      */
     beforeEmptyRowInsert: function ($grid, $row) {
-        $grid.triggerHandler('beforeEmptyRowInsert', [$row]);
+        return $grid.triggerHandler('beforeEmptyRowInsert', [$row]);
     },
 
     /**
@@ -3314,7 +3314,7 @@ gj.grid.events = {
      * </script>
      */
     dataBinding: function ($grid, records) {
-        $grid.triggerHandler('dataBinding', [records]);
+        return $grid.triggerHandler('dataBinding', [records]);
     },
 
     /**
@@ -3337,7 +3337,7 @@ gj.grid.events = {
      * </script>
      */
     dataBound: function ($grid, records, totalRecords) {
-        $grid.triggerHandler('dataBound', [records, totalRecords]);
+        return $grid.triggerHandler('dataBound', [records, totalRecords]);
     },
 
     /**
@@ -3360,7 +3360,7 @@ gj.grid.events = {
      * </script>
      */
     rowDataBound: function ($grid, $row, id, record) {
-        $grid.triggerHandler('rowDataBound', [$row, id, record]);
+        return $grid.triggerHandler('rowDataBound', [$row, id, record]);
     },
 
     /**
@@ -3387,7 +3387,7 @@ gj.grid.events = {
      * </script>
      */
     cellDataBound: function ($grid, $displayEl, id, column, record) {
-        $grid.triggerHandler('cellDataBound', [$displayEl, id, column, record]);
+        return $grid.triggerHandler('cellDataBound', [$displayEl, id, column, record]);
     },
 
     /**
@@ -3412,7 +3412,7 @@ gj.grid.events = {
      * </script>
      */
     rowSelect: function ($grid, $row, id, record) {
-        $grid.triggerHandler('rowSelect', [$row, id, record]);
+        return $grid.triggerHandler('rowSelect', [$row, id, record]);
     },
 
     /**
@@ -3437,7 +3437,7 @@ gj.grid.events = {
      * </script>
      */
     rowUnselect: function ($grid, $row, id, record) {
-        $grid.triggerHandler('rowUnselect', [$row, id, record]);
+        return $grid.triggerHandler('rowUnselect', [$row, id, record]);
     },
 
     /**
@@ -3466,7 +3466,7 @@ gj.grid.events = {
      * </script>
      */
     rowRemoving: function ($grid, $row, id, record) {
-        $grid.triggerHandler('rowRemoving', [$row, id, record]);
+        return $grid.triggerHandler('rowRemoving', [$row, id, record]);
     },
 
     /**
@@ -3492,7 +3492,7 @@ gj.grid.events = {
      * </script>
      */
     destroying: function ($grid) {
-        $grid.triggerHandler('destroying');
+        return $grid.triggerHandler('destroying');
     },
 
     /**
@@ -3515,7 +3515,7 @@ gj.grid.events = {
      * </script>
      */
     columnHide: function ($grid, column) {
-        $grid.triggerHandler('columnHide', [column]);
+        return $grid.triggerHandler('columnHide', [column]);
     },
 
     /**
@@ -3538,7 +3538,7 @@ gj.grid.events = {
      * </script>
      */
     columnShow: function ($grid, column) {
-        $grid.triggerHandler('columnShow', [column]);
+        return $grid.triggerHandler('columnShow', [column]);
     },
 
     /**
@@ -3559,7 +3559,7 @@ gj.grid.events = {
      * </script>
      */
     initialized: function ($grid) {
-        $grid.triggerHandler('initialized');
+        return $grid.triggerHandler('initialized');
     },
 
     /**
@@ -3591,7 +3591,7 @@ gj.grid.events = {
      * </script>
      */
     dataFiltered: function ($grid, records) {
-        $grid.triggerHandler('dataFiltered', [records]);
+        return $grid.triggerHandler('dataFiltered', [records]);
     }
 };
 
@@ -4116,7 +4116,7 @@ gj.grid.methods = {
                 $grid.find('thead input[data-role="selectAll"]').prop('checked', true);
             }
         }
-        gj.grid.events.rowSelect($grid, $row, id, $grid.getById(id));
+        return gj.grid.events.rowSelect($grid, $row, id, $grid.getById(id));
     },
 
     unselectRow: function ($grid, data, $row, id) {
@@ -4131,7 +4131,7 @@ gj.grid.methods = {
                 }
             }
             $row.removeAttr('data-selected');
-            gj.grid.events.rowUnselect($grid, $row, id, $grid.getById(id));
+            return gj.grid.events.rowUnselect($grid, $row, id, $grid.getById(id));
         }
     },
 
@@ -4160,8 +4160,11 @@ gj.grid.methods = {
     selectAll: function ($grid) {
         var data = $grid.data();
         $grid.find('tbody tr[data-role="row"]').each(function () {
-            var $row = $(this);
-            gj.grid.methods.selectRow($grid, data, $row, $grid.get($row.data('position')));
+            var $row = $(this),
+                position = $row.data('position'),
+                record = $grid.get(position),
+                id = gj.grid.methods.getId(record, data.primaryKey, position);
+            gj.grid.methods.selectRow($grid, data, $row, id);
         });
         $grid.find('thead input[data-role="selectAll"]').prop('checked', true);
         return $grid;
@@ -4170,8 +4173,11 @@ gj.grid.methods = {
     unSelectAll: function ($grid) {
         var data = $grid.data();
         $grid.find('tbody tr').each(function () {
-            var $row = $(this);
-            gj.grid.methods.unselectRow($grid, data, $row, $grid.get($row.data('position')));
+            var $row = $(this),
+                position = $row.data('position'),
+                record = $grid.get(position),
+                id = gj.grid.methods.getId(record, data.primaryKey, position);
+            gj.grid.methods.unselectRow($grid, data, $row, id);
             $row.find('input[type="checkbox"][data-role="selectRow"]').prop('checked', false);
         });
         $grid.find('thead input[data-role="selectAll"]').prop('checked', false);
