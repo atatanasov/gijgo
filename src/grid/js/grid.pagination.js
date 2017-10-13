@@ -505,11 +505,17 @@ gj.grid.plugins.pagination = {
     public: {
         getAll: function (includeAllRecords) {
             var limit, page, start, data = this.data();
-            if (!includeAllRecords && $.isArray(data.dataSource) && data.params[data.paramNames.limit] && data.params[data.paramNames.page]) {
-                limit = parseInt(data.params[data.paramNames.limit], 10);
-                page = parseInt(data.params[data.paramNames.page], 10);
-                start = (page - 1) * limit;
-                return data.records.slice(start, start + limit);
+            if ($.isArray(data.dataSource)) {
+                if (includeAllRecords) {
+                    return data.dataSource;
+                } else if (data.params[data.paramNames.limit] && data.params[data.paramNames.page]) {                    
+                    limit = parseInt(data.params[data.paramNames.limit], 10);
+                    page = parseInt(data.params[data.paramNames.page], 10);
+                    start = (page - 1) * limit;
+                    return data.records.slice(start, start + limit);
+                } else {
+                    return data.records;
+                }
             } else {
                 return data.records;
             }
