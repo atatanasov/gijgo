@@ -468,7 +468,7 @@ gj.tree.config = {
     bootstrap4: {
         style: {
             wrapper: 'gj-unselectable gj-tree-bootstrap-4',
-            list: 'gj-list gj-list-bootstrap list-group',
+            list: 'gj-list gj-list-bootstrap',
             item: 'list-group-item',
             active: 'active',
             border: 'gj-tree-bootstrap-border'

@@ -8989,7 +8989,7 @@ gj.tree.config = {
     bootstrap4: {
         style: {
             wrapper: 'gj-unselectable gj-tree-bootstrap-4',
-            list: 'gj-list gj-list-bootstrap list-group',
+            list: 'gj-list gj-list-bootstrap',
             item: 'list-group-item',
             active: 'active',
             border: 'gj-tree-bootstrap-border'
@@ -9650,15 +9650,10 @@ gj.tree.methods = {
         }
     },
 
-    enable: function($tree, $node, cascade) {
-        var i, $children;
-        if (typeof ($node) === 'undefined') {
-            $children = $tree.find('ul>li');
-            for (i = 0; i < $children.length; i++) {
-                gj.tree.methods.enableNode($tree, $($children[i]), true);
-            }
-        } else {
-            gj.tree.methods.enableNode($tree, $node, cascade);
+    enableAll: function ($tree) {
+        var i, $children = $tree.find('ul>li');
+        for (i = 0; i < $children.length; i++) {
+            gj.tree.methods.enableNode($tree, $($children[i]), true);
         }
         return $tree;
     },
@@ -9681,15 +9676,10 @@ gj.tree.methods = {
         }
     },
 
-    disable: function ($tree, $node, cascade) {
-        var i, $children;
-        if (typeof ($node) === 'undefined') {
-            $children = $tree.find('ul>li');
-            for (i = 0; i < $children.length; i++) {
-                gj.tree.methods.disableNode($tree, $($children[i]), true);
-            }
-        } else {
-            gj.tree.methods.disableNode($tree, $node, cascade);
+    disableAll: function ($tree) {
+        var i, $children = $tree.find('ul>li');
+        for (i = 0; i < $children.length; i++) {
+            gj.tree.methods.disableNode($tree, $($children[i]), true);
         }
         return $tree;
     },
@@ -10214,12 +10204,12 @@ gj.tree.widget = function ($element, jsConfig) {
     };
 
     /**
-     * Enable node from the tree. Enable all tree nodes if the node is not set.
+     * Enable node from the tree.
      * @method
      * @param {Object} node - The node as jquery object.
      * @param {Boolean} cascade - Enable all children. Set to true by default.
      * @return jQuery Object
-     * @example Sample <!-- materialicons, checkbox, tree.base -->
+     * @example Material.Design <!-- materialicons, checkbox, tree.base -->
      * <button onclick="tree.enable(northAmerica)">Enable North America (Cascade)</button>
      * <button onclick="tree.disable(northAmerica)">Disable North America (Cascade)</button>
      * <button onclick="tree.enable(northAmerica, false)">Enable North America (Non-Cascade)</button>
@@ -10236,9 +10226,55 @@ gj.tree.widget = function ($element, jsConfig) {
      *         }
      *     });
      * </script>
-     * @example Enable.Disable.All <!-- materialicons, checkbox, tree.base -->
-     * <button onclick="tree.enable()">Enable All</button>
-     * <button onclick="tree.disable()">Disable All</button>
+     * @example Bootstrap <!-- bootstrap, checkbox, tree.base -->
+     * <button onclick="tree.enable(northAmerica)">Enable North America (Cascade)</button>
+     * <button onclick="tree.disable(northAmerica)">Disable North America (Cascade)</button>
+     * <button onclick="tree.enable(northAmerica, false)">Enable North America (Non-Cascade)</button>
+     * <button onclick="tree.disable(northAmerica, false)">Disable North America (Non-Cascade)</button>
+     * <br/><br/>
+     * <div id="tree" data-source="/Locations/Get"></div>
+     * <script>
+     *     var tree, northAmerica;
+     *     tree = $('#tree').tree({
+     *         checkboxes: true,
+     *         primaryKey: 'ID',
+     *         uiLibrary: 'bootstrap',
+     *         dataBound: function () {
+     *             northAmerica = tree.getNodeByText('North America');
+     *         }
+     *     });
+     * </script>
+     * @example Bootstrap.4 <!-- bootstrap4, fontawesome, checkbox, tree.base -->
+     * <button onclick="tree.enable(northAmerica)">Enable North America (Cascade)</button>
+     * <button onclick="tree.disable(northAmerica)">Disable North America (Cascade)</button>
+     * <button onclick="tree.enable(northAmerica, false)">Enable North America (Non-Cascade)</button>
+     * <button onclick="tree.disable(northAmerica, false)">Disable North America (Non-Cascade)</button>
+     * <br/><br/>
+     * <div id="tree" data-source="/Locations/Get"></div>
+     * <script>
+     *     var tree, northAmerica;
+     *     tree = $('#tree').tree({
+     *         checkboxes: true,
+     *         primaryKey: 'ID',
+     *         uiLibrary: 'bootstrap4',
+     *         iconsLibrary: 'fontawesome',
+     *         dataBound: function () {
+     *             northAmerica = tree.getNodeByText('North America');
+     *         }
+     *     });
+     * </script>
+     */
+    self.enable = function ($node, cascade) {
+        return methods.enableNode(this, $node, cascade);
+    };
+
+    /**
+     * Enable all nodes from the tree.
+     * @method
+     * @return jQuery Object
+     * @example Sample <!-- materialicons, checkbox, tree.base -->
+     * <button onclick="tree.enableAll()">Enable All</button>
+     * <button onclick="tree.disableAll()">Disable All</button>
      * <br/><br/>
      * <div id="tree" data-source="/Locations/Get"></div>
      * <script>
@@ -10247,12 +10283,12 @@ gj.tree.widget = function ($element, jsConfig) {
      *     });
      * </script>
      */
-    self.enable = function ($node, cascade) {
-        return methods.enable(this, $node, cascade);
+    self.enableAll = function () {
+        return methods.enableAll(this);
     };
 
     /**
-     * Disable node from the tree. Disable all tree nodes if the node is not set.
+     * Disable node from the tree.
      * @method
      * @param {Object} node - The node as jquery object.
      * @param {Boolean} cascade - Disable all children. Set to true by default.
@@ -10274,9 +10310,18 @@ gj.tree.widget = function ($element, jsConfig) {
      *         }
      *     });
      * </script>
-     * @example Enable.Disable.All <!-- materialicons, checkbox, tree.base -->
-     * <button onclick="tree.enable()">Enable All</button>
-     * <button onclick="tree.disable()">Disable All</button>
+     */
+    self.disable = function ($node, cascade) {
+        return methods.disableNode(this, $node, cascade);
+    };
+
+    /**
+     * Disable all nodes from the tree.
+     * @method
+     * @return jQuery Object
+     * @example Sample <!-- materialicons, checkbox, tree.base -->
+     * <button onclick="tree.enableAll()">Enable All</button>
+     * <button onclick="tree.disableAll()">Disable All</button>
      * <br/><br/>
      * <div id="tree" data-source="/Locations/Get"></div>
      * <script>
@@ -10285,8 +10330,8 @@ gj.tree.widget = function ($element, jsConfig) {
      *     });
      * </script>
      */
-    self.disable = function ($node, cascade) {
-        return methods.disable(this, $node, cascade);
+    self.disableAll = function () {
+        return methods.disableAll(this);
     };
 
     $.extend($element, self);

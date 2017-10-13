@@ -388,15 +388,10 @@ gj.tree.methods = {
         }
     },
 
-    enable: function($tree, $node, cascade) {
-        var i, $children;
-        if (typeof ($node) === 'undefined') {
-            $children = $tree.find('ul>li');
-            for (i = 0; i < $children.length; i++) {
-                gj.tree.methods.enableNode($tree, $($children[i]), true);
-            }
-        } else {
-            gj.tree.methods.enableNode($tree, $node, cascade);
+    enableAll: function ($tree) {
+        var i, $children = $tree.find('ul>li');
+        for (i = 0; i < $children.length; i++) {
+            gj.tree.methods.enableNode($tree, $($children[i]), true);
         }
         return $tree;
     },
@@ -419,15 +414,10 @@ gj.tree.methods = {
         }
     },
 
-    disable: function ($tree, $node, cascade) {
-        var i, $children;
-        if (typeof ($node) === 'undefined') {
-            $children = $tree.find('ul>li');
-            for (i = 0; i < $children.length; i++) {
-                gj.tree.methods.disableNode($tree, $($children[i]), true);
-            }
-        } else {
-            gj.tree.methods.disableNode($tree, $node, cascade);
+    disableAll: function ($tree) {
+        var i, $children = $tree.find('ul>li');
+        for (i = 0; i < $children.length; i++) {
+            gj.tree.methods.disableNode($tree, $($children[i]), true);
         }
         return $tree;
     },

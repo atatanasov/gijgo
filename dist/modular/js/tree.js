@@ -80,7 +80,7 @@ gj.tree.config = {
     bootstrap4: {
         style: {
             wrapper: 'gj-unselectable gj-tree-bootstrap-4',
-            list: 'gj-list gj-list-bootstrap list-group',
+            list: 'gj-list gj-list-bootstrap',
             item: 'list-group-item',
             active: 'active',
             border: 'gj-tree-bootstrap-border'
@@ -560,15 +560,10 @@ gj.tree.methods = {
         }
     },
 
-    enable: function($tree, $node, cascade) {
-        var i, $children;
-        if (typeof ($node) === 'undefined') {
-            $children = $tree.find('ul>li');
-            for (i = 0; i < $children.length; i++) {
-                gj.tree.methods.enableNode($tree, $($children[i]), true);
-            }
-        } else {
-            gj.tree.methods.enableNode($tree, $node, cascade);
+    enableAll: function ($tree) {
+        var i, $children = $tree.find('ul>li');
+        for (i = 0; i < $children.length; i++) {
+            gj.tree.methods.enableNode($tree, $($children[i]), true);
         }
         return $tree;
     },
@@ -591,15 +586,10 @@ gj.tree.methods = {
         }
     },
 
-    disable: function ($tree, $node, cascade) {
-        var i, $children;
-        if (typeof ($node) === 'undefined') {
-            $children = $tree.find('ul>li');
-            for (i = 0; i < $children.length; i++) {
-                gj.tree.methods.disableNode($tree, $($children[i]), true);
-            }
-        } else {
-            gj.tree.methods.disableNode($tree, $node, cascade);
+    disableAll: function ($tree) {
+        var i, $children = $tree.find('ul>li');
+        for (i = 0; i < $children.length; i++) {
+            gj.tree.methods.disableNode($tree, $($children[i]), true);
         }
         return $tree;
     },
@@ -730,13 +720,23 @@ gj.tree.methods = {
     };
 
     /**
-     * Enable node from the tree. Enable all tree nodes if the node is not set.     */    self.enable = function ($node, cascade) {
-        return methods.enable(this, $node, cascade);
+     * Enable node from the tree.     */    self.enable = function ($node, cascade) {
+        return methods.enableNode(this, $node, cascade);
     };
 
     /**
-     * Disable node from the tree. Disable all tree nodes if the node is not set.     */    self.disable = function ($node, cascade) {
-        return methods.disable(this, $node, cascade);
+     * Enable all nodes from the tree.     */    self.enableAll = function () {
+        return methods.enableAll(this);
+    };
+
+    /**
+     * Disable node from the tree.     */    self.disable = function ($node, cascade) {
+        return methods.disableNode(this, $node, cascade);
+    };
+
+    /**
+     * Disable all nodes from the tree.     */    self.disableAll = function () {
+        return methods.disableAll(this);
     };
 
     $.extend($element, self);
