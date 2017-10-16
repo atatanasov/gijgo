@@ -1601,7 +1601,7 @@ ul.gj-list-md li.disabled>[data-role="wrapper"]>[data-role="expander"] {
 .gj-datepicker-bootstrap span[role="right-icon"].input-group-addon .material-icons {
     position: absolute;
     top: 7px;
-    left: 7px;
+    left: 8px;
 }
 
 .gj-calendar-bootstrap {
@@ -1620,6 +1620,10 @@ ul.gj-list-md li.disabled>[data-role="wrapper"]>[data-role="expander"] {
     text-align: center;
     vertical-align: middle;
     position: relative;
+}
+
+.gj-calendar-bootstrap table tr[role="month-manager"] th div .material-icons {
+    margin: 3px;
 }
 
 .gj-calendar-bootstrap table tr td[type="today"] div {

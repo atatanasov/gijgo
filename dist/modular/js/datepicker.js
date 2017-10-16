@@ -124,6 +124,12 @@ gj.datepicker.methods = {
             }
         });
 
+        $datepicker.on('blur', function () {
+            $datepicker.timeout = setTimeout(function () {
+                gj.datepicker.methods.hide($datepicker);
+            }, 100);
+        });
+
         $wrapper.append($rightIcon);
 
         gj.datepicker.methods.createCalendar($datepicker);
@@ -370,7 +376,6 @@ gj.datepicker.methods = {
             $datepicker.attr('day', year + '-' + month + '-' + day);
             $datepicker.attr('month', month);
             $datepicker.attr('year', year);
-            gj.datepicker.methods.hide($datepicker);
             return $datepicker;
         };
     },
@@ -382,6 +387,7 @@ gj.datepicker.methods = {
 
         $calendar.css('left', offset.left).css('top', offset.top + $datepicker.outerHeight(true) + 3);
         $calendar.show();
+        clearTimeout($datepicker.timeout);
         $datepicker.focus();
         gj.datepicker.events.show($datepicker);
     },

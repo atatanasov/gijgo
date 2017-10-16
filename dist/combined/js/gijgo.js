@@ -5739,7 +5739,7 @@ gj.grid.plugins.inlineEditing.config = {
              * @example False <!-- materialicons, grid -->
              * <table id="grid"></table>
              * <script>
-             *     var grid, data = [
+             *     var grid, editManager, data = [
              *         { 'ID': 1, 'Name': 'Hristo Stoichkov', 'PlaceOfBirth': 'Plovdiv, Bulgaria' },
              *         { 'ID': 2, 'Name': 'Ronaldo Luís Nazário de Lima', 'PlaceOfBirth': 'Rio de Janeiro, Brazil' },
              *         { 'ID': 3, 'Name': 'David Platt', 'PlaceOfBirth': 'Chadderton, Lancashire, England' },
@@ -5747,6 +5747,38 @@ gj.grid.plugins.inlineEditing.config = {
              *         { 'ID': 5, 'Name': 'James Rodríguez', 'PlaceOfBirth': 'Cúcuta, Colombia' },
              *         { 'ID': 6, 'Name': 'Dimitar Berbatov', 'PlaceOfBirth': 'Blagoevgrad, Bulgaria' }
              *     ];
+             *     editManager = function (value, record, $cell, $displayEl, id, $grid) {
+             *         var data = $grid.data(),
+             *             $edit = $('<button class="gj-button-md"><i class="material-icons">mode_edit</i> Edit</button>').attr('data-key', id),
+             *             $delete = $('<button class="gj-button-md"><i class="material-icons">delete</i> Delete</button>').attr('data-key', id),
+             *             $update = $('<button class="gj-button-md"><i class="material-icons">check_circle</i> Update</button>').attr('data-key', id).hide(),
+             *             $cancel = $('<button class="gj-button-md"><i class="material-icons">cancel</i> Cancel</button>').attr('data-key', id).hide();
+             *         $edit.on('click', function (e) {
+             *             $grid.edit($(this).data('key'));
+             *             $edit.hide();
+             *             $delete.hide();
+             *             $update.show();
+             *             $cancel.show();
+             *         });
+             *         $delete.on('click', function (e) {
+             *             $grid.removeRow($(this).data('key'));
+             *         });
+             *         $update.on('click', function (e) {
+             *             $grid.update($(this).data('key'));
+             *             $edit.show();
+             *             $delete.show();
+             *             $update.hide();
+             *             $cancel.hide();
+             *         });
+             *         $cancel.on('click', function (e) {
+             *             $grid.cancel($(this).data('key'));
+             *             $edit.show();
+             *             $delete.show();
+             *             $update.hide();
+             *             $cancel.hide();
+             *         });
+             *         $displayEl.empty().append($edit).append($delete).append($update).append($cancel);
+             *     }
              *     grid = $('#grid').grid({
              *         dataSource: data,
              *         primaryKey: 'ID',
@@ -5755,7 +5787,7 @@ gj.grid.plugins.inlineEditing.config = {
              *             { field: 'ID', width: 56 },
              *             { field: 'Name', editor: true },
              *             { field: 'PlaceOfBirth', editor: true },
-             *             { width: 300, align: 'center', renderer: gj.grid.plugins.inlineEditing.renderers.editManager }
+             *             { width: 300, align: 'center', renderer: editManager }
              *         ]
              *     });
              * </script>
@@ -12649,6 +12681,12 @@ gj.datepicker.methods = {
             }
         });
 
+        $datepicker.on('blur', function () {
+            $datepicker.timeout = setTimeout(function () {
+                gj.datepicker.methods.hide($datepicker);
+            }, 100);
+        });
+
         $wrapper.append($rightIcon);
 
         gj.datepicker.methods.createCalendar($datepicker);
@@ -12895,7 +12933,6 @@ gj.datepicker.methods = {
             $datepicker.attr('day', year + '-' + month + '-' + day);
             $datepicker.attr('month', month);
             $datepicker.attr('year', year);
-            gj.datepicker.methods.hide($datepicker);
             return $datepicker;
         };
     },
@@ -12907,6 +12944,7 @@ gj.datepicker.methods = {
 
         $calendar.css('left', offset.left).css('top', offset.top + $datepicker.outerHeight(true) + 3);
         $calendar.show();
+        clearTimeout($datepicker.timeout);
         $datepicker.focus();
         gj.datepicker.events.show($datepicker);
     },
