@@ -2656,6 +2656,9 @@ gj.grid.plugins.inlineEditing.configure = function ($grid, fullConfig, clientCon
         $grid.on('initialized', function () {
             gj.grid.plugins.toolbar.private.init($grid);
         });
+        $grid.on('destroying', function () {
+            $grid.prev('[data-role="toolbar"]').remove();
+        });
     }
 };
 

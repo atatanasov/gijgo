@@ -157,5 +157,8 @@ gj.grid.plugins.toolbar = {
         $grid.on('initialized', function () {
             gj.grid.plugins.toolbar.private.init($grid);
         });
+        $grid.on('destroying', function () {
+            $grid.prev('[data-role="toolbar"]').remove();
+        });
     }
 };
