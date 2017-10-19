@@ -15,6 +15,8 @@
 gj.tree.config = {
     base: {
 
+        params: {},
+
         /** When this setting is enabled the content of the tree will be loaded automatically after the creation of the tree.         */        autoLoad: true,
 
         /** The type of the node selection.<br/>

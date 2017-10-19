@@ -8577,6 +8577,8 @@ if (typeof(gj.tree) === 'undefined') {
 gj.tree.config = {
     base: {
 
+        params: {},
+
         /** When this setting is enabled the content of the tree will be loaded automatically after the creation of the tree.
          * @type boolean
          * @default true
@@ -9773,7 +9775,7 @@ gj.tree.widget = function ($element, jsConfig) {
      * @param {object} params - Params that needs to be send to the server. Only in use for remote data sources.
      * @return jQuery object
      * @example Method.Sample <!-- materialicons, tree.base -->
-     * <button onclick="tree.reload()">Reload</button>
+     * <button onclick="tree.reload()">Click to load</button>
      * <br/><br/>
      * <div id="tree"></div>
      * <script>
@@ -9781,6 +9783,18 @@ gj.tree.widget = function ($element, jsConfig) {
      *         dataSource: '/Locations/Get',
      *         autoLoad: false
      *     });
+     * </script>
+     * @example Search <!-- materialicons, tree.base -->
+     * <input type="text" id="query" /> <button onclick="Search()">Search</button>
+     * <br/><br/>
+     * <div id="tree"></div>
+     * <script>
+     *     var tree = $('#tree').tree({
+     *         dataSource: '/Locations/Get'
+     *     });
+     *     function Search() {
+     *         tree.reload({ query: $('#query').val() });
+     *     }
      * </script>
      */
     self.reload = function (params) {
@@ -12566,6 +12580,15 @@ gj.datepicker.config = {
          */
         iconsLibrary: 'materialicons',
 
+        //TODO Config:
+        weekStart: 0,
+        value: undefined,
+        disableDates: undefined, //array
+        disableDaysOfWeek: undefined, //array
+        calendarWeeks: false,
+        keyboardNavigation: true,
+        locale: 'en-us',
+
         icons: {
             /** datepicker icon definition.
              * @alias icons.rightIcon
@@ -12676,7 +12699,6 @@ gj.datepicker.methods = {
             if ($('body').children('[role="calendar"][guid="' + $datepicker.attr('data-guid') + '"]').is(':visible')) {
                 gj.datepicker.methods.hide($datepicker);
             } else {
-                gj.datepicker.methods.renderCalendar($datepicker);
                 gj.datepicker.methods.show($datepicker);
             }
         });
@@ -12942,6 +12964,7 @@ gj.datepicker.methods = {
             offset = $datepicker.offset(),
             $calendar = $('body').children('[role="calendar"][guid="' + $datepicker.attr('data-guid') + '"]');
 
+        gj.datepicker.methods.renderCalendar($datepicker);
         $calendar.css('left', offset.left).css('top', offset.top + $datepicker.outerHeight(true) + 3);
         $calendar.show();
         clearTimeout($datepicker.timeout);
@@ -13084,6 +13107,44 @@ gj.datepicker.widget = function ($element, jsConfig) {
     self.destroy = function () {
         return methods.destroy(this);
     };
+
+    /** Show the calendar.
+     * @method
+     * @return datepicker
+     * @example Show.Hide <!-- datepicker, materialicons -->
+     * <button class="gj-button-md" onclick="$datepicker.show()">Show</button>
+     * <button class="gj-button-md" onclick="$datepicker.hide()">Hide</button>
+     * <hr/>
+     * <input id="datepicker" />
+     * <script>
+     *     var $datepicker = $('#datepicker').datepicker();
+     * </script>
+     */
+    self.show = function () {
+        gj.datepicker.methods.show(this);
+    };
+
+    /** Hide the calendar.
+     * @method
+     * @return datepicker
+     * @example Show.Hide <!-- datepicker, materialicons -->
+     * <button class="gj-button-md" onclick="$datepicker.show()">Show</button>
+     * <button class="gj-button-md" onclick="$datepicker.hide()">Hide</button>
+     * <hr/>
+     * <input id="datepicker" />
+     * <script>
+     *     var $datepicker = $('#datepicker').datepicker();
+     * </script>
+     */
+    self.hide = function () {
+        gj.datepicker.methods.hide(this);
+    };
+
+    //TODO Methods:
+    self.disableDates = function () { };
+    self.disableWeekDay = function () { };
+    self.setMinDate = function () { };
+    self.setMaxDate = function () { };
 
     $.extend($element, self);
     if ('true' !== $element.attr('data-datepicker')) {

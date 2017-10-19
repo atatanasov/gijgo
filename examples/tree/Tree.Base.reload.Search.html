@@ -12,14 +12,16 @@
   <script src="../../dist/modular/js/tree.js"></script>
 </head>
 <body style="padding: 6px;">
- <button onclick="tree.reload()">Click to load</button>
+ <input type="text" id="query" /> <button onclick="Search()">Search</button>
  <br/><br/>
  <div id="tree"></div>
  <script>
      var tree = $('#tree').tree({
-         dataSource: '/Locations/Get',
-         autoLoad: false
+         dataSource: '/Locations/Get'
      });
+     function Search() {
+         tree.reload({ query: $('#query').val() });
+     }
  </script>
 </body>
 </html>

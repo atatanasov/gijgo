@@ -33,6 +33,15 @@ gj.datepicker.config = {
 
         /** The name of the icons library that is going to be in use. Currently we support Material Icons, Font Awesome and Glyphicons.         */        iconsLibrary: 'materialicons',
 
+        //TODO Config:
+        weekStart: 0,
+        value: undefined,
+        disableDates: undefined, //array
+        disableDaysOfWeek: undefined, //array
+        calendarWeeks: false,
+        keyboardNavigation: true,
+        locale: 'en-us',
+
         icons: {
             /** datepicker icon definition.             */            rightIcon: '<i class="material-icons">event</i>',
 
@@ -119,7 +128,6 @@ gj.datepicker.methods = {
             if ($('body').children('[role="calendar"][guid="' + $datepicker.attr('data-guid') + '"]').is(':visible')) {
                 gj.datepicker.methods.hide($datepicker);
             } else {
-                gj.datepicker.methods.renderCalendar($datepicker);
                 gj.datepicker.methods.show($datepicker);
             }
         });
@@ -385,6 +393,7 @@ gj.datepicker.methods = {
             offset = $datepicker.offset(),
             $calendar = $('body').children('[role="calendar"][guid="' + $datepicker.attr('data-guid') + '"]');
 
+        gj.datepicker.methods.renderCalendar($datepicker);
         $calendar.css('left', offset.left).css('top', offset.top + $datepicker.outerHeight(true) + 3);
         $calendar.show();
         clearTimeout($datepicker.timeout);
@@ -459,6 +468,20 @@ gj.datepicker.widget = function ($element, jsConfig) {
     /** Remove datepicker functionality from the element.     */    self.destroy = function () {
         return methods.destroy(this);
     };
+
+    /** Show the calendar.     */    self.show = function () {
+        gj.datepicker.methods.show(this);
+    };
+
+    /** Hide the calendar.     */    self.hide = function () {
+        gj.datepicker.methods.hide(this);
+    };
+
+    //TODO Methods:
+    self.disableDates = function () { };
+    self.disableWeekDay = function () { };
+    self.setMinDate = function () { };
+    self.setMaxDate = function () { };
 
     $.extend($element, self);
     if ('true' !== $element.attr('data-datepicker')) {

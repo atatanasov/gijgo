@@ -120,6 +120,16 @@ server.get('/Locations/Get', function (req, res) {
         }
     ];
 
+    if (params.query) {
+        result = [];
+        for (var i = 0; i < data.length; i++) {
+            if (data[i].text.indexOf(params.query) > -1) {
+                result.push(data[i]);
+            }
+        }
+        data = result;
+    }
+
     res.setHeader('Content-Type', 'application/json');
     res.send(data);
 });

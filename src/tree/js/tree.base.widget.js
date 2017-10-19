@@ -12,7 +12,7 @@ gj.tree.widget = function ($element, jsConfig) {
      * @param {object} params - Params that needs to be send to the server. Only in use for remote data sources.
      * @return jQuery object
      * @example Method.Sample <!-- materialicons, tree.base -->
-     * <button onclick="tree.reload()">Reload</button>
+     * <button onclick="tree.reload()">Click to load</button>
      * <br/><br/>
      * <div id="tree"></div>
      * <script>
@@ -20,6 +20,18 @@ gj.tree.widget = function ($element, jsConfig) {
      *         dataSource: '/Locations/Get',
      *         autoLoad: false
      *     });
+     * </script>
+     * @example Search <!-- materialicons, tree.base -->
+     * <input type="text" id="query" /> <button onclick="Search()">Search</button>
+     * <br/><br/>
+     * <div id="tree"></div>
+     * <script>
+     *     var tree = $('#tree').tree({
+     *         dataSource: '/Locations/Get'
+     *     });
+     *     function Search() {
+     *         tree.reload({ query: $('#query').val() });
+     *     }
      * </script>
      */
     self.reload = function (params) {
