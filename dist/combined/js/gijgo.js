@@ -12583,11 +12583,32 @@ gj.datepicker.config = {
          */
         iconsLibrary: 'materialicons',
 
-        //TODO Config:
-        weekStart: 0,
+        /** Day of the week start. 0 (Sunday) to 6 (Saturday)
+         * @type Number
+         * @default 0
+         * @example Monday <!-- materialicons, datepicker -->
+         * <input id="datepicker" width="312" />
+         * <script>
+         *    $('#datepicker').datepicker({
+         *        weekStartDay: 1
+         *    });
+         * </script>
+         * @example Saturday <!-- materialicons, datepicker -->
+         * <input id="datepicker" width="312" />
+         * <script>
+         *    $('#datepicker').datepicker({
+         *        weekStartDay: 6
+         *    });
+         * </script>
+         */
+        weekStartDay: 0,
+
         value: undefined,
+
+        //TODO Config:
         disableDates: undefined, //array
         disableDaysOfWeek: undefined, //array
+
         calendarWeeks: false,
         keyboardNavigation: true,
         locale: 'en-us',
@@ -12744,7 +12765,10 @@ gj.datepicker.methods = {
         $thead.append($row);
 
         $row = $('<tr role="week-days" />');
-        for (i = 0; i < data.weekDays.length; i++) {
+        for (i = data.weekStartDay; i < data.weekDays.length; i++) {
+            $row.append('<th><div>' + data.weekDays[i] + '</div></th>');
+        }
+        for (i = 0; i < data.weekStartDay; i++) {
             $row.append('<th><div>' + data.weekDays[i] + '</div></th>');
         }
         $thead.append($row);
@@ -12766,7 +12790,8 @@ gj.datepicker.methods = {
             $tbody = $table.children('tbody'),
             minDate = gj.datepicker.methods.getMinDate(data),
             maxDate = gj.datepicker.methods.getMaxDate(data);
-            
+
+        clearTimeout($datepicker.timeout);
         if ($datepicker.attr('day'))
         {
             selectedDay = $datepicker.attr('day').split('-');
@@ -12785,7 +12810,7 @@ gj.datepicker.methods = {
         }
         total = daysInMonth[month];
 
-        firstDayPosition = new Date(year, month, 1).getDay();
+        firstDayPosition = (new Date(year, month, 1).getDay() + 7 - data.weekStartDay) % 7;
 
         $tbody.empty();
 
@@ -12970,7 +12995,6 @@ gj.datepicker.methods = {
         gj.datepicker.methods.renderCalendar($datepicker);
         $calendar.css('left', offset.left).css('top', offset.top + $datepicker.outerHeight(true) + 3);
         $calendar.show();
-        clearTimeout($datepicker.timeout);
         $datepicker.focus();
         gj.datepicker.events.show($datepicker);
     },
