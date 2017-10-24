@@ -6481,6 +6481,17 @@ gj.grid.plugins.pagination = {
                  *         pager: { limit: 2, sizes: [2, 5, 10, 20] }
                  *     });
                  * </script>
+                 * @example Bootstrap.4 <!-- bootstrap4, fontawesome, grid, grid.pagination, dropdown  -->
+                 * <table id="grid"></table>
+                 * <script>
+                 *     var grid = $('#grid').grid({
+                 *         dataSource: '/Players/Get',
+                 *         uiLibrary: 'bootstrap4',
+                 *         iconsLibrary: 'fontawesome',
+                 *         columns: [ { field: 'ID', width: 36 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
+                 *         pager: { limit: 2, sizes: [2, 5, 10, 20] }
+                 *     });
+                 * </script>
                  * @example Material.Design <!-- materialicons, grid, grid.pagination, dropdown  -->
                  * <table id="grid"></table>
                  * <script>

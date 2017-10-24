@@ -70,3 +70,7 @@
 .gj-grid-bootstrap tfoot tr[data-role="pager"] th .gj-dropdown-bootstrap [role="presenter"] [role="display"] {
     font-weight: bold;
 }
+
+.gj-grid-bootstrap tfoot tr[data-role="pager"] th .gj-dropdown-bootstrap-4 [role="presenter"] {
+    padding: 1px 8px;
+}

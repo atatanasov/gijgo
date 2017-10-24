@@ -772,6 +772,10 @@ table.gj-grid-md thead th.gj-grid-select-all {
     font-weight: bold;
 }
 
+.gj-grid-bootstrap tfoot tr[data-role="pager"] th .gj-dropdown-bootstrap-4 [role="presenter"] {
+    padding: 1px 8px;
+}
+
 .gj-grid thead tr th div.gj-grid-column-resizer-wrapper {
     position: relative;
     width: 100%;
