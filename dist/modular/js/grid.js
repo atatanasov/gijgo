@@ -1874,6 +1874,9 @@ gj.grid.plugins.inlineEditing.configure = function ($grid, fullConfig, clientCon
         $grid.on('dataBound', function () {
             $grid.find('span.gj-dirty').remove();
         });
+        $grid.on('rowDataBound', function (e, $row, id, record) {
+            $grid.cancel(id);
+        });
     }
     if (data.inlineEditing.mode === 'command') {
         gj.grid.plugins.inlineEditing.private.localization(data);
