@@ -1406,8 +1406,8 @@ ul.gj-list-md li.disabled>[data-role="wrapper"]>[data-role="expander"] {
 .gj-dropdown [role="presenter"] {
     display: table;
     cursor: pointer;
-    /*width: 100%;*/
     outline: none;
+    position: relative;
 }
 
 .gj-dropdown [role="presenter"] [role="display"] {
@@ -1467,6 +1467,10 @@ ul.gj-list-md li.disabled>[data-role="wrapper"]>[data-role="expander"] {
 
 .gj-dropdown-bootstrap [role="presenter"] [role="expander"] {
     padding-left: 5px;
+}
+
+.gj-dropdown-bootstrap [role="presenter"] [role="expander"].gj-dropdown-expander-mi {
+    width: 24px;
 }
 
 .gj-dropdown-bootstrap-3 [role="presenter"] [role="expander"].gj-dropdown-expander-mi .material-icons {
@@ -1624,6 +1628,11 @@ ul.gj-list-md li.disabled>[data-role="wrapper"]>[data-role="expander"] {
     text-align: center;
     vertical-align: middle;
     position: relative;
+}
+
+.gj-calendar-bootstrap table tr th div i,
+.gj-calendar-bootstrap table tr th div span {
+    line-height: 30px;
 }
 
 .gj-calendar-bootstrap table tr[role="month-manager"] th div .material-icons {

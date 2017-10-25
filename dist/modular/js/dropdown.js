@@ -59,7 +59,7 @@ gj.dropdown.config = {
     bootstrap4: {
         style: {
             wrapper: 'gj-dropdown gj-dropdown-bootstrap gj-dropdown-bootstrap-4 gj-unselectable',
-            presenter: 'btn btn-secondary',
+            presenter: 'btn btn-outline-secondary',
             list: 'gj-list gj-list-bootstrap gj-dropdown-list-bootstrap list-group',
             item: 'list-group-item',
             active: 'active'

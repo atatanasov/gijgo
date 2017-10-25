@@ -6,8 +6,8 @@
 .gj-dropdown [role="presenter"] {
     display: table;
     cursor: pointer;
-    /*width: 100%;*/
     outline: none;
+    position: relative;
 }
 
 .gj-dropdown [role="presenter"] [role="display"] {
@@ -67,6 +67,10 @@
 
 .gj-dropdown-bootstrap [role="presenter"] [role="expander"] {
     padding-left: 5px;
+}
+
+.gj-dropdown-bootstrap [role="presenter"] [role="expander"].gj-dropdown-expander-mi {
+    width: 24px;
 }
 
 .gj-dropdown-bootstrap-3 [role="presenter"] [role="expander"].gj-dropdown-expander-mi .material-icons {

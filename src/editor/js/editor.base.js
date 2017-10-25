@@ -127,7 +127,7 @@ gj.editor.config = {
         style: {
             wrapper: 'gj-editor-bootstrap',
             buttonsGroup: 'btn-group',
-            button: 'btn btn-secondary gj-cursor-pointer',
+            button: 'btn btn-outline-secondary gj-cursor-pointer',
             buttonActive: 'active'
         },
         iconsLibrary: 'fontawesome'

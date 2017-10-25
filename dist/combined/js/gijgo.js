@@ -11511,7 +11511,7 @@ gj.editor.config = {
         style: {
             wrapper: 'gj-editor-bootstrap',
             buttonsGroup: 'btn-group',
-            button: 'btn btn-secondary gj-cursor-pointer',
+            button: 'btn btn-outline-secondary gj-cursor-pointer',
             buttonActive: 'active'
         },
         iconsLibrary: 'fontawesome'
@@ -12005,7 +12005,7 @@ gj.dropdown.config = {
     bootstrap4: {
         style: {
             wrapper: 'gj-dropdown gj-dropdown-bootstrap gj-dropdown-bootstrap-4 gj-unselectable',
-            presenter: 'btn btn-secondary',
+            presenter: 'btn btn-outline-secondary',
             list: 'gj-list gj-list-bootstrap gj-dropdown-list-bootstrap list-group',
             item: 'list-group-item',
             active: 'active'
@@ -12965,6 +12965,7 @@ gj.datepicker.methods = {
             $datepicker.attr('year', date.year);
 
             gj.datepicker.methods.renderCalendar($datepicker);
+            $datepicker.focus();
         }
     },
 
@@ -12980,6 +12981,7 @@ gj.datepicker.methods = {
             $datepicker.attr('year', date.year);
 
             gj.datepicker.methods.renderCalendar($datepicker);
+            $datepicker.focus();
         }
     },
 
@@ -12994,6 +12996,7 @@ gj.datepicker.methods = {
             $datepicker.attr('day', year + '-' + month + '-' + day);
             $datepicker.attr('month', month);
             $datepicker.attr('year', year);
+            gj.datepicker.methods.hide($datepicker);
             return $datepicker;
         };
     },

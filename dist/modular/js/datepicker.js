@@ -362,6 +362,7 @@ gj.datepicker.methods = {
             $datepicker.attr('year', date.year);
 
             gj.datepicker.methods.renderCalendar($datepicker);
+            $datepicker.focus();
         }
     },
 
@@ -377,6 +378,7 @@ gj.datepicker.methods = {
             $datepicker.attr('year', date.year);
 
             gj.datepicker.methods.renderCalendar($datepicker);
+            $datepicker.focus();
         }
     },
 
@@ -391,6 +393,7 @@ gj.datepicker.methods = {
             $datepicker.attr('day', year + '-' + month + '-' + day);
             $datepicker.attr('month', month);
             $datepicker.attr('year', year);
+            gj.datepicker.methods.hide($datepicker);
             return $datepicker;
         };
     },

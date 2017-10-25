@@ -25,7 +25,7 @@ gj.grid.messages['bg-bg'] = {
 };
 gj.editor.messages['bg-bg'] = {
 	bold: 'Удебеляване',
-	italic: 'Накланяде',
+	italic: 'Накланяне',
 	strikethrough: 'Зачертаване',
 	underline: 'Подчертаване',
 	listBulleted: 'Списък',

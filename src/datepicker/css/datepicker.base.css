@@ -136,6 +136,11 @@
     position: relative;
 }
 
+.gj-calendar-bootstrap table tr th div i,
+.gj-calendar-bootstrap table tr th div span {
+    line-height: 30px;
+}
+
 .gj-calendar-bootstrap table tr[role="month-manager"] th div .material-icons {
     margin: 3px;
 }

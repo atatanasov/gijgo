@@ -72,7 +72,7 @@ gj.editor.config = {
         style: {
             wrapper: 'gj-editor-bootstrap',
             buttonsGroup: 'btn-group',
-            button: 'btn btn-secondary gj-cursor-pointer',
+            button: 'btn btn-outline-secondary gj-cursor-pointer',
             buttonActive: 'active'
         },
         iconsLibrary: 'fontawesome'
@@ -297,7 +297,7 @@ gj.editor.widget.constructor = gj.editor.widget;
 })(jQuery);
 gj.editor.messages['bg-bg'] = {
 	bold: 'Удебеляване',
-	italic: 'Накланяде',
+	italic: 'Накланяне',
 	strikethrough: 'Зачертаване',
 	underline: 'Подчертаване',
 	listBulleted: 'Списък',
