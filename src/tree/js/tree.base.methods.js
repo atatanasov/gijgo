@@ -453,6 +453,7 @@ gj.tree.methods = {
         return $tree;
     },
 	
+	
 	getCheckedItems: function () {
             var result = [],
                 checkboxes = this.find('li [data-role="node"] [data-role="checkbox"] input[type="checkbox"]');
