@@ -451,5 +451,18 @@ gj.tree.methods = {
             $tree.removeClass().empty();
         }
         return $tree;
-    }
+    },
+	
+	
+	getCheckedItems: function () {
+            var result = [],
+                checkboxes = this.find('li [data-role="node"] [data-role="checkbox"] input[type="checkbox"]');
+            $.each(checkboxes, function () {
+                var checkbox = $(this);
+                if (checkbox.checkbox('state') === 'checked') {
+                    result.push(checkbox.closest('li').data('id'));
+                }
+            });
+            return result;
+        }
 }
