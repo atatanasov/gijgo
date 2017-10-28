@@ -121,13 +121,13 @@ gj.widget.prototype.getHTMLConfig = function () {
     var result = this.data(),
         attrs = this[0].attributes;
     if (attrs['width']) {
-        result.width = attrs['width'].nodeValue;
+        result.width = attrs['width'].value;
     }
     if (attrs['height']) {
-        result.height = attrs['height'].nodeValue;
+        result.height = attrs['height'].value;
     }
     if (attrs['align']) {
-        result.align = attrs['align'].nodeValue;
+        result.align = attrs['align'].value;
     }
     if (result && result.source) {
         result.dataSource = result.source;
