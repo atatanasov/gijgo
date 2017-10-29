@@ -132,7 +132,7 @@ gj.dropdown.methods = {
         $presenter.on('blur', function (e) {
             setTimeout(function () {
                 $list.hide();
-            }, 100);
+            }, 500);
         });
         $presenter.append($display).append($expander);
 
