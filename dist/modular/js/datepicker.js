@@ -33,9 +33,9 @@ gj.datepicker.config = {
 
         /** The name of the icons library that is going to be in use. Currently we support Material Icons, Font Awesome and Glyphicons.         */        iconsLibrary: 'materialicons',
 
-        /** Day of the week start. 0 (Sunday) to 6 (Saturday)         */        weekStartDay: 0,
+        /** The initial datepicker value.         */        value: undefined,
 
-        value: undefined,
+        /** Day of the week start. 0 (Sunday) to 6 (Saturday)         */        weekStartDay: 0,
 
         //TODO Config:
         disableDates: undefined, //array
@@ -123,9 +123,9 @@ gj.datepicker.methods = {
 
         data.width && $wrapper.css('width', data.width);
 
-        $datepicker.addClass(data.style.input).attr('role', 'input');
+        $datepicker.val(data.value).addClass(data.style.input).attr('role', 'input');
 
-        data.fontSize && $datepicker.css('font-size', data.fontSize);
+        data.fontSize && $datepicker.css('font-size', data.fontSize);        
 
         $rightIcon.on('click', function (e) {
             if ($('body').children('[role="calendar"][guid="' + $datepicker.attr('data-guid') + '"]').is(':visible')) {
@@ -149,14 +149,13 @@ gj.datepicker.methods = {
 
     createCalendar: function ($datepicker) {
         var date, data = $datepicker.data(),
-            value = $datepicker.val(),
             $calendar = $('<div role="calendar" />').addClass(data.style.calendar).attr('guid', $datepicker.attr('data-guid')),
             $table = $('<table/>'),
             $thead = $('<thead/>');
         
         data.fontSize && $calendar.css('font-size', data.fontSize);
 
-        date = gj.core.parseDate(value, data.format);
+        date = gj.core.parseDate(data.value, data.format);
         if (!date || isNaN(date.getTime())) {
             date = new Date();
         } else {

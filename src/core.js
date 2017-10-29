@@ -126,6 +126,9 @@ gj.widget.prototype.getHTMLConfig = function () {
     if (attrs['height']) {
         result.height = attrs['height'].value;
     }
+    if (attrs['value']) {
+        result.value = attrs['value'].value;
+    }
     if (attrs['align']) {
         result.align = attrs['align'].value;
     }
