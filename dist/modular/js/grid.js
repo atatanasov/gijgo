@@ -2245,7 +2245,7 @@ gj.grid.plugins.inlineEditing.configure = function ($grid, fullConfig, clientCon
                     gj.grid.plugins.pagination.private.assignPageHandler($grid, $control, page - 1, page < 2);
                     break;
                 case 'page-number':
-                    $control.val(page).off('change').on('change', gj.grid.plugins.pagination.private.createChangePageHandler($grid, page, lastPage));
+                    $control.val(page).off('change').on('change', gj.grid.plugins.pagination.private.createChangePageHandler($grid, page));
                     break;
                 case 'page-label-last':
                     $control.text(lastPage);
@@ -2307,24 +2307,20 @@ gj.grid.plugins.inlineEditing.configure = function ($grid, fullConfig, clientCon
             }
         },
 
-        createChangePageHandler: function ($grid, currentPage, lastPage) {
+        createChangePageHandler: function ($grid, currentPage) {
             return function () {
                 var data = $grid.data(),
                     newPage = parseInt(this.value, 10);
-                if (newPage && !isNaN(newPage) && newPage <= lastPage) {
-                    gj.grid.plugins.pagination.private.changePage($grid, newPage);
-                } else {
-                    this.value = currentPage;
-                    alert('Please enter a valid number.');
-                }
+                gj.grid.plugins.pagination.private.changePage($grid, newPage);
             };
         },
 
         changePage: function ($grid, newPage) {
             var data = $grid.data();
-            $grid.find('TFOOT [data-role="page-number"]').val(newPage);
-            data.params[data.paramNames.page] = newPage;
-            gj.grid.plugins.pagination.events.pageChanging($grid, newPage);
+            if (gj.grid.plugins.pagination.events.pageChanging($grid, newPage) !== false && !isNaN(newPage)) {
+                $grid.find('TFOOT [data-role="page-number"]').val(newPage);
+                data.params[data.paramNames.page] = newPage;
+            }
             $grid.reload();
         },
 

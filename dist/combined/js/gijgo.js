@@ -6816,7 +6816,7 @@ gj.grid.plugins.pagination = {
                     gj.grid.plugins.pagination.private.assignPageHandler($grid, $control, page - 1, page < 2);
                     break;
                 case 'page-number':
-                    $control.val(page).off('change').on('change', gj.grid.plugins.pagination.private.createChangePageHandler($grid, page, lastPage));
+                    $control.val(page).off('change').on('change', gj.grid.plugins.pagination.private.createChangePageHandler($grid, page));
                     break;
                 case 'page-label-last':
                     $control.text(lastPage);
@@ -6878,24 +6878,20 @@ gj.grid.plugins.pagination = {
             }
         },
 
-        createChangePageHandler: function ($grid, currentPage, lastPage) {
+        createChangePageHandler: function ($grid, currentPage) {
             return function () {
                 var data = $grid.data(),
                     newPage = parseInt(this.value, 10);
-                if (newPage && !isNaN(newPage) && newPage <= lastPage) {
-                    gj.grid.plugins.pagination.private.changePage($grid, newPage);
-                } else {
-                    this.value = currentPage;
-                    alert('Please enter a valid number.');
-                }
+                gj.grid.plugins.pagination.private.changePage($grid, newPage);
             };
         },
 
         changePage: function ($grid, newPage) {
             var data = $grid.data();
-            $grid.find('TFOOT [data-role="page-number"]').val(newPage);
-            data.params[data.paramNames.page] = newPage;
-            gj.grid.plugins.pagination.events.pageChanging($grid, newPage);
+            if (gj.grid.plugins.pagination.events.pageChanging($grid, newPage) !== false && !isNaN(newPage)) {
+                $grid.find('TFOOT [data-role="page-number"]').val(newPage);
+                data.params[data.paramNames.page] = newPage;
+            }
             $grid.reload();
         },
 
@@ -6970,16 +6966,23 @@ gj.grid.plugins.pagination = {
          * @event pageChanging
          * @param {object} e - event data
          * @param {number} newPage - The new page
-         * @example sample <!-- materialicons, grid, grid.pagination -->
+         * @example sample <!-- bootstrap4, fontawesome, dropdown, grid, grid.pagination -->
          * <table id="grid"></table>
          * <script>
          *     var grid = $('#grid').grid({
          *         dataSource: '/Players/Get',
+         *         uiLibrary: 'bootstrap4',
+         *         iconsLibrary: 'fontawesome',
          *         columns: [ { field: 'ID', width: 56 }, { field: 'Name', sortable: true }, { field: 'PlaceOfBirth' } ],
          *         pager: { limit: 2, sizes: [2, 5, 10, 20] }
          *     });
          *     grid.on('pageChanging', function (e, newPage) {
-         *         alert('The new page is ' + newPage + '.');
+         *         if (isNaN(newPage)) {
+         *             alert('Invalid page number');
+         *             return false;
+         *         } else {
+         *             alert(newPage + ' is valid page number.');
+         *         }
          *     });
          * </script>
          */
