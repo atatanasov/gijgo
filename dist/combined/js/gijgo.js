@@ -1,5 +1,5 @@
 /*
- * Gijgo JavaScript Library v1.6.0
+ * Gijgo JavaScript Library v1.6.1
  * http://gijgo.com/
  *
  * Copyright 2014, 2017 gijgo.com
@@ -128,13 +128,13 @@ gj.widget.prototype.getHTMLConfig = function () {
     var result = this.data(),
         attrs = this[0].attributes;
     if (attrs['width']) {
-        result.width = attrs['width'].nodeValue;
+        result.width = attrs['width'].value;
     }
     if (attrs['height']) {
-        result.height = attrs['height'].nodeValue;
+        result.height = attrs['height'].value;
     }
     if (attrs['align']) {
-        result.align = attrs['align'].nodeValue;
+        result.align = attrs['align'].value;
     }
     if (result && result.source) {
         result.dataSource = result.source;
@@ -1185,7 +1185,7 @@ gj.dialog.methods = {
         var result = gj.widget.prototype.getHTMLConfig.call(this),
             attrs = this[0].attributes;
         if (attrs['title']) {
-            result.title = attrs['title'].nodeValue;
+            result.title = attrs['title'].value;
         }
         return result;
     },
@@ -12744,7 +12744,7 @@ gj.datepicker.methods = {
         $datepicker.on('blur', function () {
             $datepicker.timeout = setTimeout(function () {
                 gj.datepicker.methods.hide($datepicker);
-            }, 100);
+            }, 500);
         });
 
         $wrapper.append($rightIcon);

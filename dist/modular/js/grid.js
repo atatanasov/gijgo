@@ -1,5 +1,5 @@
 /*
- * Gijgo Grid v1.6.0
+ * Gijgo Grid v1.6.1
  * http://gijgo.com/grid
  *
  * Copyright 2014, 2017 gijgo.com

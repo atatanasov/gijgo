@@ -1,5 +1,5 @@
 /*
- * Gijgo DatePicker v1.6.0
+ * Gijgo DatePicker v1.6.1
  * http://gijgo.com/datepicker
  *
  * Copyright 2014, 2017 gijgo.com
@@ -138,7 +138,7 @@ gj.datepicker.methods = {
         $datepicker.on('blur', function () {
             $datepicker.timeout = setTimeout(function () {
                 gj.datepicker.methods.hide($datepicker);
-            }, 100);
+            }, 500);
         });
 
         $wrapper.append($rightIcon);

@@ -1,5 +1,5 @@
 /*
- * Gijgo Dialog v1.6.0
+ * Gijgo Dialog v1.6.1
  * http://gijgo.com/dialog
  *
  * Copyright 2014, 2017 gijgo.com
@@ -174,7 +174,7 @@ gj.dialog.methods = {
         var result = gj.widget.prototype.getHTMLConfig.call(this),
             attrs = this[0].attributes;
         if (attrs['title']) {
-            result.title = attrs['title'].nodeValue;
+            result.title = attrs['title'].value;
         }
         return result;
     },

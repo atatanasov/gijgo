@@ -359,7 +359,7 @@ gj.datepicker.methods = {
         $datepicker.on('blur', function () {
             $datepicker.timeout = setTimeout(function () {
                 gj.datepicker.methods.hide($datepicker);
-            }, 100);
+            }, 500);
         });
 
         $wrapper.append($rightIcon);
