@@ -178,6 +178,10 @@ ul.gj-list li [data-role="display"] {
     cursor: pointer;
 }
 
+ul.gj-list li [data-role="display"]:empty:before {
+  content: "\200b"; /* unicode zero width space character */
+}
+
 /* List - Bootstrap */
 ul.gj-list-bootstrap {
     padding-left: 0px;
@@ -772,10 +776,13 @@ table.gj-grid-md thead th.gj-grid-select-all {
     font-weight: bold;
 }
 
+.gj-grid-bootstrap tfoot tr[data-role="pager"] th .gj-dropdown-bootstrap-3 [role="presenter"] {
+    padding: 2px 8px;
+}
+
 .gj-grid-bootstrap tfoot tr[data-role="pager"] th .gj-dropdown-bootstrap-4 [role="presenter"] {
     padding: 1px 8px;
 }
-
 .gj-grid thead tr th div.gj-grid-column-resizer-wrapper {
     position: relative;
     width: 100%;
@@ -1413,12 +1420,16 @@ ul.gj-list-md li.disabled>[data-role="wrapper"]>[data-role="expander"] {
 .gj-dropdown [role="presenter"] [role="display"] {
     display: table-cell;
     text-align: left;
+    width: 100%;
+    line-height: 24px;
 }
 
 .gj-dropdown [role="presenter"] [role="expander"] {
     display: table-cell;
     vertical-align:middle;
     text-align:center;
+    width: 24px;
+    height: 24px;
 }
 
 /* Material Design */
@@ -1437,13 +1448,7 @@ ul.gj-list-md li.disabled>[data-role="wrapper"]>[data-role="expander"] {
 
 .gj-dropdown-md [role="presenter"] [role="display"] {
     padding: 8px 0px;
-    /*width: 100%;*/
 }
-
-/*.gj-dropdown-md [role="presenter"] [role="expander"] {
-    width: 24px;
-    height: 24px;
-}*/
 
 .gj-dropdown-list-md {
     position: absolute;

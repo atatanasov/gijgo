@@ -178,6 +178,10 @@ ul.gj-list li [data-role="display"] {
     cursor: pointer;
 }
 
+ul.gj-list li [data-role="display"]:empty:before {
+  content: "\200b"; /* unicode zero width space character */
+}
+
 /* List - Bootstrap */
 ul.gj-list-bootstrap {
     padding-left: 0px;

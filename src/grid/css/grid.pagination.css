@@ -71,6 +71,10 @@
     font-weight: bold;
 }
 
+.gj-grid-bootstrap tfoot tr[data-role="pager"] th .gj-dropdown-bootstrap-3 [role="presenter"] {
+    padding: 2px 8px;
+}
+
 .gj-grid-bootstrap tfoot tr[data-role="pager"] th .gj-dropdown-bootstrap-4 [role="presenter"] {
     padding: 1px 8px;
 }

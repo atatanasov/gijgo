@@ -11803,7 +11803,7 @@ gj.dropdown.config = {
          * @type (string|object|array)
          * @default undefined
          * @example Local.DataSource <!-- materialicons, dropdown -->
-         * <select id="dropdown"></select>
+         * <select id="dropdown" width="200"></select>
          * <script>
          *     $('#dropdown').dropdown({
          *         dataSource: [ { value: 1, text: 'One' }, { value: 2, text: 'Two' }, { value: 3, text: 'Three' } ]
@@ -11824,7 +11824,7 @@ gj.dropdown.config = {
          * @type string
          * @default 'text'
          * @example sample <!-- materialicons, dropdown -->
-         * <select id="dropdown"></select>
+         * <select id="dropdown" width="200"></select>
          * <script>
          *     $('#dropdown').dropdown({
          *         textField: 'newTextField',
@@ -11838,7 +11838,7 @@ gj.dropdown.config = {
          * @type string
          * @default 'value'
          * @example sample <!-- materialicons, dropdown -->
-         * <select id="dropdown"></select>
+         * <select id="dropdown" width="200"></select>
          * <script>
          *     $('#dropdown').dropdown({
          *         valueField: 'newValueField',
@@ -11852,7 +11852,7 @@ gj.dropdown.config = {
          * @type string
          * @default 'selected'
          * @example sample <!-- materialicons, dropdown -->
-         * <select id="dropdown"></select>
+         * <select id="dropdown" width="200"></select>
          * <script>
          *     $('#dropdown').dropdown({
          *         selectedField: 'newSelectedField',
@@ -11883,6 +11883,16 @@ gj.dropdown.config = {
          * <script>
          *     $('#dropdown').dropdown();
          * </script>
+         * @example 100.Percent <!-- materialicons, dropdown -->
+         * <select id="dropdown" width="100%">
+         *     <option value=""></option>
+         *     <option value="1">One</option>
+         *     <option value="2">Two</option>
+         *     <option value="3">Three</option>
+         * </select>
+         * <script>
+         *     $('#dropdown').dropdown();
+         * </script>
          */
         width: undefined,
 
@@ -11895,7 +11905,7 @@ gj.dropdown.config = {
          * @type (materialdesign|bootstrap|bootstrap4)
          * @default materialdesign
          * @example MaterialDesign <!-- materialicons, dropdown -->
-         * <select id="dropdown">
+         * <select id="dropdown" width="200">
          *     <option value="1">One</option>
          *     <option value="2">Two</option>
          *     <option value="3">Three</option>
@@ -11906,7 +11916,7 @@ gj.dropdown.config = {
          *     });
          * </script>
          * @example Bootstrap.3 <!-- bootstrap, dropdown -->
-         * <select id="dropdown">
+         * <select id="dropdown" width="200">
          *     <option value="1">One</option>
          *     <option value="2">Two</option>
          *     <option value="3">Three</option>
@@ -11915,7 +11925,7 @@ gj.dropdown.config = {
          *     $('#dropdown').dropdown({ uiLibrary: 'bootstrap' });
          * </script>
          * @example Bootstrap.4 <!-- materialicons, bootstrap4, dropdown -->
-         * <select id="dropdown">
+         * <select id="dropdown" width="200">
          *     <option value="1">One</option>
          *     <option value="2">Two</option>
          *     <option value="3">Three</option>
@@ -12181,7 +12191,7 @@ gj.dropdown.methods = {
             $parent.css('width', data.width);
             $list.css('width', data.width);
             $presenter.css('width', data.width);
-            $display.css('width', $presenter.outerWidth(true) - $expander.outerWidth(true));
+            //$display.css('width', $presenter.outerWidth(true) - $expander.outerWidth(true));
         }
 
         if (data.fontSize) {
@@ -12257,7 +12267,7 @@ gj.dropdown.events = {
      * @event change
      * @param {object} e - event data
      * @example sample <!-- dropdown, materialicons -->
-     * <select id="dropdown">
+     * <select id="dropdown" width="200">
      *     <option value="1">One</option>
      *     <option value="2" selected>Two</option>
      *     <option value="3">Three</option>
@@ -12279,7 +12289,7 @@ gj.dropdown.events = {
      * @event dataBound
      * @param {object} e - event data
      * @example sample <!-- dropdown, materialicons -->
-     * <select id="dropdown">
+     * <select id="dropdown" width="200">
      *     <option value="1">One</option>
      *     <option value="2" selected>Two</option>
      *     <option value="3">Three</option>
@@ -12308,7 +12318,7 @@ gj.dropdown.widget = function ($element, jsConfig) {
      * @example Get <!-- dropdown, materialicons -->
      * <button class="gj-button-md" onclick="alert($dropdown.value())">Get Value</button>
      * <hr/>
-     * <select id="dropdown">
+     * <select id="dropdown" width="200">
      *     <option value="1">One</option>
      *     <option value="2" selected>Two</option>
      *     <option value="3">Three</option>
@@ -12319,7 +12329,7 @@ gj.dropdown.widget = function ($element, jsConfig) {
      * @example Set <!-- dropdown, materialicons -->
      * <button class="gj-button-md" onclick="$dropdown.value('3')">Set Value</button>
      * <hr/>
-     * <select id="dropdown">
+     * <select id="dropdown" width="200">
      *     <option value="1">One</option>
      *     <option value="2" selected>Two</option>
      *     <option value="3">Three</option>
@@ -12345,7 +12355,7 @@ gj.dropdown.widget = function ($element, jsConfig) {
      * @return jquery element
      * @example sample <!-- dropdown, materialicons -->
      * <button class="gj-button-md" onclick="dropdown.destroy()">Destroy</button>
-     * <select id="dropdown">
+     * <select id="dropdown" width="200">
      *     <option value="1">One</option>
      *     <option value="2" selected>Two</option>
      *     <option value="3">Three</option>
