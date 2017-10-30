@@ -12651,10 +12651,37 @@ gj.datepicker.config = {
          */
         weekStartDay: 0,
 
-        //TODO Config:
-        disableDates: undefined, //array
-        disableDaysOfWeek: undefined, //array
+        /** An array or function that will be used to determine which dates to be disabled for selection by the widget.
+         * @type Array|Function
+         * @default undefined
+         * @example Array <!-- materialicons, datepicker -->
+         * <input id="datepicker" width="312" />
+         * <script>
+         *    $('#datepicker').datepicker({
+         *        value: '11/10/2017',
+         *        disableDates: [new Date(2017,10,11), '11/12/2017']
+         *    });
+         * </script>
+         * @example Function <!-- materialicons, datepicker -->
+         * <input id="datepicker" width="312" />
+         * <script>
+         *    $('#datepicker').datepicker({
+         *        value: '11/11/2017',
+         *        disableDates:  function (date) {
+         *            var disabled = [10,15,20,25];
+         *            if (disabled.indexOf(date.getDate()) == -1 ) {
+         *                return true;
+         *            } else {
+         *                return false;
+         *            }
+         *        }
+         *    });
+         * </script>
+         */
+        disableDates: undefined,
 
+        //TODO Config:
+        disableDaysOfWeek: undefined, //array
         calendarWeeks: false,
         keyboardNavigation: true,
         locale: 'en-us',
@@ -12832,13 +12859,10 @@ gj.datepicker.methods = {
             data = $datepicker.data(),
             $calendar = $('body').children('[role="calendar"][guid="' + $datepicker.attr('data-guid') + '"]'),
             $table = $calendar.children('table'),
-            $tbody = $table.children('tbody'),
-            minDate = gj.datepicker.methods.getMinDate(data),
-            maxDate = gj.datepicker.methods.getMaxDate(data);
+            $tbody = $table.children('tbody');
 
         clearTimeout($datepicker.timeout);
-        if ($datepicker.attr('day'))
-        {
+        if ($datepicker.attr('day')) {
             selectedDay = $datepicker.attr('day').split('-');
             selectedDay = new Date(selectedDay[0], selectedDay[1], selectedDay[2]);
         } else {
@@ -12869,10 +12893,10 @@ gj.datepicker.methods = {
             } else {
                 $cell = $('<td type="other-month" />');
             }
-            $day = $('<div>' + day + '</div>');
             if (data.showOtherMonths) {
+                $day = $('<div>' + day + '</div>');
                 $cell.append($day);
-                if (data.selectOtherMonths && gj.datepicker.methods.isSelectable(minDate, maxDate, prevMonth.year, prevMonth.month, day)) {
+                if (data.selectOtherMonths && gj.datepicker.methods.isSelectable(data, prevMonth.year, prevMonth.month, day)) {
                     $cell.addClass('gj-cursor-pointer');
                     $day.on('click', gj.datepicker.methods.select($datepicker, $calendar, day, prevMonth.month, prevMonth.year));
                 } else {
@@ -12897,7 +12921,7 @@ gj.datepicker.methods = {
                 $cell = $('<td type="current-month" />');
             }
             $day = $('<div>' + i + '</div>');
-            if (gj.datepicker.methods.isSelectable(minDate, maxDate, year, month, i)) {
+            if (gj.datepicker.methods.isSelectable(data, year, month, i)) {
                 $cell.addClass('gj-cursor-pointer');
                 $day.on('click', gj.datepicker.methods.select($datepicker, $calendar, i, month, year));
             } else {
@@ -12922,7 +12946,7 @@ gj.datepicker.methods = {
             if (data.showOtherMonths) {
                 $day = $('<div>' + i + '</div>');
                 $cell.append($day);
-                if (data.selectOtherMonths && gj.datepicker.methods.isSelectable(minDate, maxDate, nextMonth.year, nextMonth.month, i)) {
+                if (data.selectOtherMonths && gj.datepicker.methods.isSelectable(data, nextMonth.year, nextMonth.month, i)) {
                     $cell.addClass('gj-cursor-pointer');
                     $day.on('click', gj.datepicker.methods.select($datepicker, $calendar, i, nextMonth.month, nextMonth.year));
                 } else {
@@ -12966,11 +12990,29 @@ gj.datepicker.methods = {
         return maxDate;
     },
 
-    isSelectable: function (minDate, maxDate, year, month, day) {
-        var result = false,
-            date = new Date(year, month, day);
-        if ((!minDate || minDate <= date) && (!maxDate || maxDate >= date)) {
-            result = true;
+    isSelectable: function (data, year, month, day) {
+        var result = true,
+            date = new Date(year, month, day),
+            minDate = gj.datepicker.methods.getMinDate(data),
+            maxDate = gj.datepicker.methods.getMaxDate(data),
+            i;
+
+        if (minDate && date < minDate) {
+            result = false;
+        } else if (maxDate && date > maxDate) {
+            result = false;
+        } else if (data.disableDates) {
+            if ($.isArray(data.disableDates)) {
+                for (i = 0; i < data.disableDates.length; i++) {
+                    if (data.disableDates[i] instanceof Date && data.disableDates[i].getTime() === date.getTime()) {
+                        result = false;
+                    } else if (typeof data.disableDates[i] === 'string' && gj.core.parseDate(data.disableDates[i], data.format).getTime() === date.getTime()) {
+                        result = false;
+                    }
+                }
+            } else if (data.disableDates instanceof Function) {
+                result = data.disableDates(date);
+            }
         }
         return result;
     },
@@ -13216,7 +13258,7 @@ gj.datepicker.widget = function ($element, jsConfig) {
     };
 
     //TODO Methods:
-    self.disableDates = function () { };
+    self.disableDates = function (dates) { };
     self.disableWeekDay = function () { };
     self.setMinDate = function () { };
     self.setMaxDate = function () { };
