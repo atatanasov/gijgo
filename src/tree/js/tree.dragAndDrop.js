@@ -174,13 +174,14 @@ gj.tree.plugins.dragAndDrop = {
 	            });
 	            if (!success) {
 	                $wrappers.each(function () {
-	                    var $targetWrapper = $(this), $targetNode, $sourceParentNode, prepend, orderNumber;
+	                    var $targetWrapper = $(this), $targetNode, $sourceParentNode, prepend, orderNumber, sourceNodeId;
 	                    if ($targetWrapper.droppable('isOver', mousePosition)) {
 	                        $targetNode = $targetWrapper.closest('li');
 	                        $sourceParentNode = $sourceNode.parent('ul').parent('li');
 	                        prepend = mousePosition.top < ($targetWrapper.position().top + ($targetWrapper.outerHeight() / 2));
-	                        orderNumber = $targetNode.prev('li').length + (prepend ? 1 : 2);
-	                        if (gj.tree.plugins.dragAndDrop.events.nodeDrop($tree, $sourceNode.data('id'), $targetNode.parent('ul').parent('li').data('id'), orderNumber) !== false) {
+	                        sourceNodeId = $sourceNode.data('id');
+	                        orderNumber = $targetNode.prev('li:not([data-id="' + sourceNodeId + '"])').length + (prepend ? 1 : 2);
+	                        if (gj.tree.plugins.dragAndDrop.events.nodeDrop($tree, sourceNodeId, $targetNode.parent('ul').parent('li').data('id'), orderNumber) !== false) {
 	                            if (prepend) {
 	                                $sourceNode.insertBefore($targetNode);
 	                            } else {
