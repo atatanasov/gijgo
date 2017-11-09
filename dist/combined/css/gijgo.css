@@ -591,15 +591,26 @@ table.gj-grid-bootstrap tbody tr td div[data-role="display"] {
     vertical-align: bottom;
     text-overflow: ellipsis;
     font-weight: 700;
-    line-height: 24px;
+    line-height: 32px;
     letter-spacing: 0;
-    height: 48px;
+    height: 56px;
     font-size: 12px;
     color: rgba(0,0,0,.54);
     padding-bottom: 8px;
     box-sizing: border-box;
-    padding: 0 18px 12px 18px;
+    padding: 12px 18px;
     text-align: right;
+}
+
+.gj-grid-md td {
+    position: relative;
+    height: 48px;
+    border-top: 1px solid rgba(0,0,0,.12);
+    border-bottom: 1px solid rgba(0,0,0,.12);
+    padding: 12px 18px;
+    box-sizing: border-box;
+    text-align: left;
+    color: rgba(0,0,0,.87);
 }
 
 .gj-grid-md tbody tr {
@@ -614,16 +625,6 @@ table.gj-grid-bootstrap tbody tr td div[data-role="display"] {
     background-color: #EEEEEE; /* Gray 200 */
 }
 
-.gj-grid-md td {
-    position: relative;
-    height: 48px;
-    border-top: 1px solid rgba(0,0,0,.12);
-    border-bottom: 1px solid rgba(0,0,0,.12);
-    padding: 12px 18px;
-    box-sizing: border-box;
-    text-align: left;
-}
-
 .gj-grid-md tbody tr.gj-grid-md-select {
     background-color: #F5F5F5; /* Grey 100 */
 }
@@ -635,8 +636,8 @@ table.gj-grid-md thead th [data-role="sorticon"] {
 
 table.gj-grid-md thead th [data-role="sorticon"] i.material-icons {
     position: absolute;
-    font-size: 18px;
-    top: 13px;
+    font-size: 16px;
+    top: 19px;
 }
 
 table.gj-grid-md thead th.gj-grid-select-all {
@@ -725,6 +726,7 @@ table.gj-grid-md thead th.gj-grid-select-all {
 
 .gj-grid-md tfoot tr[data-role="pager"] .gj-dropdown-md [role="presenter"] [role="display"] {
     text-align: right;
+    padding: 0px;
 }
 
 /*.gj-grid-md tfoot tr[data-role="pager"] .gj-dropdown-md [role="list"] li {
@@ -741,7 +743,7 @@ table.gj-grid-md thead th.gj-grid-select-all {
 }
 
 /* Bootstrap */
-.gj-grid-bootstrap tfoot tr[data-role="pager"] th.gj-grid-bootstrap-tfoot-cell {
+.gj-grid-bootstrap tfoot tr[data-role="pager"] th {
     line-height: 30px;
     background-color: #f5f5f5;
 }
@@ -754,7 +756,15 @@ table.gj-grid-md thead th.gj-grid-select-all {
     margin-right: 5px;
 }
 
-.gj-grid-bootstrap tfoot tr[data-role="pager"] th > div > input {
+.gj-grid-bootstrap-3 tfoot tr[data-role="pager"] th > div > input {
+    margin-right: 5px;
+    width: 40px;
+    text-align: right;
+    display: inline-block;
+    font-weight: bold;
+}
+
+.gj-grid-bootstrap-4 tfoot tr[data-role="pager"] th > div > div.input-group input {
     margin-right: 5px;
     width: 40px;
     text-align: right;

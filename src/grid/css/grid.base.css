@@ -115,15 +115,26 @@ table.gj-grid-bootstrap tbody tr td div[data-role="display"] {
     vertical-align: bottom;
     text-overflow: ellipsis;
     font-weight: 700;
-    line-height: 24px;
+    line-height: 32px;
     letter-spacing: 0;
-    height: 48px;
+    height: 56px;
     font-size: 12px;
     color: rgba(0,0,0,.54);
     padding-bottom: 8px;
     box-sizing: border-box;
-    padding: 0 18px 12px 18px;
+    padding: 12px 18px;
     text-align: right;
+}
+
+.gj-grid-md td {
+    position: relative;
+    height: 48px;
+    border-top: 1px solid rgba(0,0,0,.12);
+    border-bottom: 1px solid rgba(0,0,0,.12);
+    padding: 12px 18px;
+    box-sizing: border-box;
+    text-align: left;
+    color: rgba(0,0,0,.87);
 }
 
 .gj-grid-md tbody tr {
@@ -138,16 +149,6 @@ table.gj-grid-bootstrap tbody tr td div[data-role="display"] {
     background-color: #EEEEEE; /* Gray 200 */
 }
 
-.gj-grid-md td {
-    position: relative;
-    height: 48px;
-    border-top: 1px solid rgba(0,0,0,.12);
-    border-bottom: 1px solid rgba(0,0,0,.12);
-    padding: 12px 18px;
-    box-sizing: border-box;
-    text-align: left;
-}
-
 .gj-grid-md tbody tr.gj-grid-md-select {
     background-color: #F5F5F5; /* Grey 100 */
 }
@@ -159,8 +160,8 @@ table.gj-grid-md thead th [data-role="sorticon"] {
 
 table.gj-grid-md thead th [data-role="sorticon"] i.material-icons {
     position: absolute;
-    font-size: 18px;
-    top: 13px;
+    font-size: 16px;
+    top: 19px;
 }
 
 table.gj-grid-md thead th.gj-grid-select-all {
