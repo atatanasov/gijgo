@@ -1,7 +1,9 @@
 ﻿var express = require('express'),
     fs = require('fs'),
     url = require('url'),
-    server = express();
+    lodash = require('lodash'),
+    server = express(),
+    locations;
 
 server.use(express.static(__dirname));
 
@@ -79,50 +81,50 @@ server.get('/Players/Get', function (req, res) {
     res.send({ records: result, total: data.length });
 });
 
+locations = [
+    { id: 1, parentId: undefined, text: 'Asia' },
+    { id: 5, parentId: 1, text: 'China' },
+    { id: 6, parentId: 1, text: 'Japan' },
+    { id: 7, parentId: 1, text: 'Mongolia' },
+    { id: 2, parentId: undefined, text: 'North America' },
+    { id: 8, parentId: 2, text: 'USA' },
+    { id: 9, parentId: 8, text: 'California', population: 39144818 },
+    { id: 10, parentId: 8, text: 'Florida', population: 20271272 },
+    { id: 11, parentId: 2, text: 'Canada' },
+    { id: 12, parentId: 2, text: 'Mexico' },
+    { id: 3, parentId: undefined, text: 'South America' },
+    { id: 13, parentId: 3, text: 'Brazil' },
+    { id: 14, parentId: 3, text: 'Argentina' },
+    { id: 15, parentId: 3, text: 'Columbia' },
+    { id: 4, parentId: undefined, text: 'Europe' },
+    { id: 16, parentId: 4, text: 'France' },
+    { id: 17, parentId: 4, text: 'Spain' },
+    { id: 18, parentId: 4, text: 'Italy' }
+];
+
+function getChildren(data, id, recursive) {
+    var children, result = lodash.filter(data, i => i.parentId === id);
+    for (var i = 0; i < result.length; i++) {
+        if (recursive) {
+            children = getChildren(data, result[i].id);
+            if (children && children.length) {
+                result[i].children = children;
+            }
+            delete result[i].parentId;
+        }
+    }
+    return result;
+}
 
 server.get('/Locations/Get', function (req, res) {
-    var params, data;
+    var params, data, result, i;
 
+    data = JSON.parse(JSON.stringify(locations));
     params = url.parse(req.url, true).query;
-    data = [
-        {
-            id: 1, text: 'Asia', children: [
-                { id: 5, text: 'China' },
-                { id: 6, text: 'Japan' },
-                { id: 7, text: 'Mongolia' }
-            ]
-        },
-        {
-            id: 2, text: 'North America', children: [
-                {
-                    id: 8, text: 'USA', children: [
-                        { id: 9, text: 'California', population: 39144818 },
-                        { id: 10, text: 'Florida', population: 20271272 }
-                    ]
-                },
-                { id: 11, text: 'Canada' },
-                { id: 12, text: 'Mexico' }
-            ]
-        },
-        {
-            id: 3, text: 'South America', children: [
-                { id: 13, text: 'Brazil' },
-                { id: 14, text: 'Argentina' },
-                { id: 15, text: 'Columbia' }
-            ]
-        },
-        {
-            id: 4, text: 'Europe', children: [
-                { id: 16, text: 'France' },
-                { id: 17, text: 'Spain' },
-                { id: 18, text: 'Italy' }
-            ]
-        }
-    ];
 
     if (params.query) {
         result = [];
-        for (var i = 0; i < data.length; i++) {
+        for (i = 0; i < data.length; i++) {
             if (data[i].text.indexOf(params.query) > -1) {
                 result.push(data[i]);
             }
@@ -130,8 +132,50 @@ server.get('/Locations/Get', function (req, res) {
         data = result;
     }
 
+    result = lodash.filter(data, i => i.parentId === undefined);
+    for (i = 0; i < result.length; i++) {
+        result[i].children = getChildren(data, result[i].id, true);
+        delete result[i].parentId;
+    }
+
     res.setHeader('Content-Type', 'application/json');
-    res.send(data);
+    res.send(result);
+});
+
+server.get('/Locations/LazyGet', function (req, res) {
+    var params, data, result, i, children;
+
+    data = JSON.parse(JSON.stringify(locations));
+    params = url.parse(req.url, true).query;
+
+    if (params.query) {
+        result = [];
+        for (i = 0; i < data.length; i++) {
+            if (data[i].text.indexOf(params.query) > -1) {
+                result.push(data[i]);
+            }
+        }
+        data = result;
+    }
+    
+    if (params.parentId) {
+        result = lodash.filter(data, i => i.parentId == params.parentId);
+        for (i = 0; i < result.length; i++) {
+            children = getChildren(data, result[i].id, false);
+            result[i].hasChildren = children && children.length > 0;
+            delete result[i].parentId;
+        }
+    } else {
+        result = lodash.filter(data, i => i.parentId === undefined);
+        for (i = 0; i < result.length; i++) {
+            children = getChildren(data, result[i].id, false);
+            result[i].hasChildren = children && children.length > 0;
+            delete result[i].parentId;
+        }
+    }
+
+    res.setHeader('Content-Type', 'application/json');
+    res.send(result);
 });
 
 

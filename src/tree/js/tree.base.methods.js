@@ -147,7 +147,7 @@ gj.tree.methods = {
             data = $tree.data(),
             id = $node.attr('data-id'),
             $list = $node.children('ul');
-        if ($list && $list.length && gj.tree.events.expand($tree, $node, id) !== false) {
+        if (gj.tree.events.expand($tree, $node, id) !== false && $list && $list.length) {
             $list.show();
             $expander.attr('data-mode', 'open');
             $expander.empty().append(data.icons.collapse);
@@ -167,7 +167,7 @@ gj.tree.methods = {
             data = $tree.data(),
             id = $node.attr('data-id'),
             $list = $node.children('ul');
-        if ($list && $list.length && gj.tree.events.collapse($tree, $node, id) !== false) {
+        if (gj.tree.events.collapse($tree, $node, id) !== false && $list && $list.length) {
             $list.hide();
             $expander.attr('data-mode', 'close');
             $expander.empty().append(data.icons.expand);
