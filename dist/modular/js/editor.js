@@ -1,5 +1,5 @@
 /*
- * Gijgo Editor v1.6.1
+ * Gijgo Editor v1.7.0
  * http://gijgo.com/editor
  *
  * Copyright 2014, 2017 gijgo.com
