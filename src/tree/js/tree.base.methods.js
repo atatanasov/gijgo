@@ -53,6 +53,8 @@ gj.tree.methods = {
             if (response[i][data.childrenField] && response[i][data.childrenField].length) {
                 nodeData.children = gj.tree.methods.getRecords($tree, response[i][data.childrenField]);
                 delete response[i][data.childrenField];
+            } else {
+                nodeData.children = [];
             }
             result.push(nodeData);
         }
@@ -79,7 +81,8 @@ gj.tree.methods = {
             $wrapper = $('<div data-role="wrapper" />'),
             $expander = $('<span data-role="expander" data-mode="close"></span>').addClass(data.style.expander),
             $display = $('<span data-role="display">' + nodeData.data[data.textField] + '</span>'),
-            disabled = typeof(nodeData.data[data.disabledField]) !== 'undefined' && nodeData.data[data.disabledField].toString().toLowerCase() === 'true';
+            hasChildren = typeof (nodeData.data[data.hasChildrenField]) !== 'undefined' && nodeData.data[data.hasChildrenField].toString().toLowerCase() === 'true',
+            disabled = typeof (nodeData.data[data.disabledField]) !== 'undefined' && nodeData.data[data.disabledField].toString().toLowerCase() === 'true';
 
         if (data.indentation) {
             $wrapper.append('<span data-role="spacer" style="width: ' + (data.indentation * (level - 1)) + 'px;"></span>');
@@ -101,7 +104,7 @@ gj.tree.methods = {
             $parent.append($node);
         }
 
-        if (nodeData.children && nodeData.children.length) {
+        if (nodeData.children.length || hasChildren) {
             $expander.empty().append(data.icons.expand);
             $newParent = $('<ul />').addClass(data.style.list).addClass('gj-hidden');
             $node.append($newParent);
@@ -358,14 +361,21 @@ gj.tree.methods = {
     },
 
     addNode: function ($tree, data, $parent, position) {
-        var level, nodeData = gj.tree.methods.getRecords($tree, [data]);
+        var level,
+            newNodeData = gj.tree.methods.getRecords($tree, [data])[0];
 
         if (!$parent || !$parent.length) {
             $parent = $tree.children('ul');
+            $tree.data('records').push(newNodeData);
+        } else {
+            if ($parent[0].tagName.toLowerCase() === 'li') {
+                $parent = $parent.children('ul');
+            }
+            gj.tree.methods.getById($tree, $parent.parent().data('id'), $tree.data('records')).children.push(newNodeData);
         }
         level = $parent.parentsUntil('[data-type="tree"]', 'ul').length + 1;
 
-        gj.tree.methods.appendNode($tree, $parent, nodeData[0], level, position);
+        gj.tree.methods.appendNode($tree, $parent, newNodeData, level, position);
 
         return $tree;
     },
@@ -386,6 +396,23 @@ gj.tree.methods = {
                 gj.tree.methods.removeDataById($tree, id, records[i].children);
             }
         }
+    },
+
+    getChildren: function ($tree, $node, cascade) {
+        var result = [], i, $children,
+            cascade = typeof (cascade) === 'undefined' ? true : cascade;
+
+        if (cascade) {
+            $children = $node.find('ul li');
+        } else {
+            $children = $node.find('>ul>li');
+        }
+
+        for (i = 0; i < $children.length; i++) {
+            result.push($($children[i]).data('id'));
+        }
+
+        return result;
     },
 
     enableAll: function ($tree) {

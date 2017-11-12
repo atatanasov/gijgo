@@ -140,6 +140,52 @@ gj.tree.config = {
          */
         childrenField: 'children',
 
+        /** The name of the field that indicates if the node has children. Shows expand icon if the node has children.
+         * @type string
+         * @default 'hasChildren'
+         * @example Custom.FieldName <!-- materialicons, tree.base -->
+         * <div id="tree"></div>
+         * <script>
+         *     var continents, countries, states, tree;
+         *     continents = [
+         *         { id: 1, anyChildren: true, text: 'Asia', type: 'continent' },
+         *         { id: 2, anyChildren: true, text: 'North America', type: 'continent' },
+         *         { id: 3, anyChildren: false, text: 'South America', type: 'continent' }
+         *     ];
+         *     countries = [
+         *         { id: 1, anyChildren: false, continent: 'Asia', text: 'China', type: 'country' },
+         *         { id: 2, anyChildren: false, continent: 'Asia', text: 'Japan', type: 'country' },
+         *         { id: 3, anyChildren: true, continent: 'North America', text: 'USA', type: 'country' },
+         *         { id: 4, anyChildren: false, continent: 'North America', text: 'Canada', type: 'country' }
+         *     ];
+         *     states = [
+         *         { id: 1, country: 'USA', text: 'California', type: 'state' },
+         *         { id: 2, country: 'USA', text: 'Florida', type: 'state' }
+         *     ];
+         *     tree = $('#tree').tree({
+         *         hasChildrenField: 'anyChildren',
+         *         dataSource: continents
+         *     });
+         *     tree.on('expand', function (e, $node, id) {
+         *         var i, children, record = tree.getDataById(id);
+         *         if (tree.getChildren($node).length === 0) {
+         *             if (record.type === 'continent') {
+         *                 children = $.grep(countries, function (i) { return i.continent === record.text; });
+         *                 for (i = 0; i < children.length; i++) {
+         *                     tree.addNode(children[i], $node);
+         *                 }
+         *             } else if (record.type === 'country') {
+         *                 children = $.grep(states, function (i) { return i.country === record.text; });
+         *                 for (i = 0; i < children.length; i++) {
+         *                     tree.addNode(children[i], $node);
+         *                 }
+         *             }
+         *         }
+         *     });
+         * </script>
+         */
+        hasChildrenField: 'hasChildren',
+
         /** Image css class field name.
          * @type string
          * @default 'imageCssClass'

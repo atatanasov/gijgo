@@ -85,7 +85,7 @@ gj.tree.widget = function ($element, jsConfig) {
      * <script>
      *     var parent, tree = $('#tree').tree();
      *     tree.on('dataBound', function () {
-     *         parent = tree.getNodeByText('Asia').children('ul');
+     *         parent = tree.getNodeByText('Asia');
      *         tree.off('dataBound');
      *     });
      *     function append() {
@@ -99,7 +99,7 @@ gj.tree.widget = function ($element, jsConfig) {
      * <script>
      *     var parent, tree = $('#tree').tree();
      *     tree.on('dataBound', function () {
-     *         parent = tree.getNodeByText('Asia').children('ul');
+     *         parent = tree.getNodeByText('Asia');
      *         tree.off('dataBound');
      *     });
      *     function append() {
@@ -113,7 +113,7 @@ gj.tree.widget = function ($element, jsConfig) {
      * <script>
      *     var parent, tree = $('#tree').tree();
      *     tree.on('dataBound', function () {
-     *         parent = tree.getNodeByText('Asia').children('ul');
+     *         parent = tree.getNodeByText('Asia');
      *         tree.off('dataBound');
      *     });
      *     function append() {
@@ -127,7 +127,7 @@ gj.tree.widget = function ($element, jsConfig) {
      * <script>
      *     var parent, tree = $('#tree').tree();
      *     tree.on('dataBound', function () {
-     *         parent = tree.getNodeByText('Asia').children('ul');
+     *         parent = tree.getNodeByText('Asia');
      *         tree.off('dataBound');
      *     });
      *     function append() {
@@ -496,6 +496,41 @@ gj.tree.widget = function ($element, jsConfig) {
      */
     self.getSelections = function () {
         return methods.getSelections(this.children('ul'));
+    };
+
+    /**
+     * Return an array with the ids of all children.
+     * @method
+     * @param {Object} node - The node as jquery object.
+     * @param {Boolean} cascade - Include all nested children. Set to true by default.
+     * @return array
+     * @example Cascade.True <!-- materialicons, tree.base -->
+     * <div id="tree"></div>
+     * <script>
+     *     var tree = $('#tree').tree({
+     *         dataSource: '/Locations/Get',
+     *         dataBound: function () {
+     *             var node = tree.getNodeByText('North America'),
+     *                 children = tree.getChildren(node);
+     *             alert(children.join());
+     *         }
+     *     });
+     * </script>
+     * @example Cascade.False <!-- materialicons, tree.base -->
+     * <div id="tree"></div>
+     * <script>
+     *     var tree = $('#tree').tree({
+     *         dataSource: '/Locations/Get',
+     *         dataBound: function () {
+     *             var node = tree.getNodeByText('North America'),
+     *                 children = tree.getChildren(node, false);
+     *             alert(children.join());
+     *         }
+     *     });
+     * </script>
+     */
+    self.getChildren = function ($node, cascade) {
+        return methods.getChildren(this, $node, cascade);
     };
 
     /**

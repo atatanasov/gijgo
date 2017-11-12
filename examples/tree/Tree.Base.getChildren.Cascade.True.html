@@ -12,18 +12,16 @@
   <script src="../../dist/modular/js/tree.js"></script>
 </head>
 <body style="padding: 6px;">
- <button onclick="append()">Append Node</button>
- <br/><br/>
- <div id="tree" data-source="/Locations/Get"></div>
+ <div id="tree"></div>
  <script>
-     var parent, tree = $('#tree').tree();
-     tree.on('dataBound', function () {
-         parent = tree.getNodeByText('Asia');
-         tree.off('dataBound');
+     var tree = $('#tree').tree({
+         dataSource: '/Locations/Get',
+         dataBound: function () {
+             var node = tree.getNodeByText('North America'),
+                 children = tree.getChildren(node);
+             alert(children.join());
+         }
      });
-     function append() {
-         tree.addNode({ text: 'New Node' }, parent, 1);
-     }
  </script>
 </body>
 </html>

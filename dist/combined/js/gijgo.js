@@ -8728,6 +8728,52 @@ gj.tree.config = {
          */
         childrenField: 'children',
 
+        /** The name of the field that indicates if the node has children. Shows expand icon if the node has children.
+         * @type string
+         * @default 'hasChildren'
+         * @example Custom.FieldName <!-- materialicons, tree.base -->
+         * <div id="tree"></div>
+         * <script>
+         *     var continents, countries, states, tree;
+         *     continents = [
+         *         { id: 1, anyChildren: true, text: 'Asia', type: 'continent' },
+         *         { id: 2, anyChildren: true, text: 'North America', type: 'continent' },
+         *         { id: 3, anyChildren: false, text: 'South America', type: 'continent' }
+         *     ];
+         *     countries = [
+         *         { id: 1, anyChildren: false, continent: 'Asia', text: 'China', type: 'country' },
+         *         { id: 2, anyChildren: false, continent: 'Asia', text: 'Japan', type: 'country' },
+         *         { id: 3, anyChildren: true, continent: 'North America', text: 'USA', type: 'country' },
+         *         { id: 4, anyChildren: false, continent: 'North America', text: 'Canada', type: 'country' }
+         *     ];
+         *     states = [
+         *         { id: 1, country: 'USA', text: 'California', type: 'state' },
+         *         { id: 2, country: 'USA', text: 'Florida', type: 'state' }
+         *     ];
+         *     tree = $('#tree').tree({
+         *         hasChildrenField: 'anyChildren',
+         *         dataSource: continents
+         *     });
+         *     tree.on('expand', function (e, $node, id) {
+         *         var i, children, record = tree.getDataById(id);
+         *         if (tree.getChildren($node).length === 0) {
+         *             if (record.type === 'continent') {
+         *                 children = $.grep(countries, function (i) { return i.continent === record.text; });
+         *                 for (i = 0; i < children.length; i++) {
+         *                     tree.addNode(children[i], $node);
+         *                 }
+         *             } else if (record.type === 'country') {
+         *                 children = $.grep(states, function (i) { return i.country === record.text; });
+         *                 for (i = 0; i < children.length; i++) {
+         *                     tree.addNode(children[i], $node);
+         *                 }
+         *             }
+         *         }
+         *     });
+         * </script>
+         */
+        hasChildrenField: 'hasChildren',
+
         /** Image css class field name.
          * @type string
          * @default 'imageCssClass'
@@ -9384,6 +9430,8 @@ gj.tree.methods = {
             if (response[i][data.childrenField] && response[i][data.childrenField].length) {
                 nodeData.children = gj.tree.methods.getRecords($tree, response[i][data.childrenField]);
                 delete response[i][data.childrenField];
+            } else {
+                nodeData.children = [];
             }
             result.push(nodeData);
         }
@@ -9410,7 +9458,8 @@ gj.tree.methods = {
             $wrapper = $('<div data-role="wrapper" />'),
             $expander = $('<span data-role="expander" data-mode="close"></span>').addClass(data.style.expander),
             $display = $('<span data-role="display">' + nodeData.data[data.textField] + '</span>'),
-            disabled = typeof(nodeData.data[data.disabledField]) !== 'undefined' && nodeData.data[data.disabledField].toString().toLowerCase() === 'true';
+            hasChildren = typeof (nodeData.data[data.hasChildrenField]) !== 'undefined' && nodeData.data[data.hasChildrenField].toString().toLowerCase() === 'true',
+            disabled = typeof (nodeData.data[data.disabledField]) !== 'undefined' && nodeData.data[data.disabledField].toString().toLowerCase() === 'true';
 
         if (data.indentation) {
             $wrapper.append('<span data-role="spacer" style="width: ' + (data.indentation * (level - 1)) + 'px;"></span>');
@@ -9432,7 +9481,7 @@ gj.tree.methods = {
             $parent.append($node);
         }
 
-        if (nodeData.children && nodeData.children.length) {
+        if (nodeData.children.length || hasChildren) {
             $expander.empty().append(data.icons.expand);
             $newParent = $('<ul />').addClass(data.style.list).addClass('gj-hidden');
             $node.append($newParent);
@@ -9689,14 +9738,21 @@ gj.tree.methods = {
     },
 
     addNode: function ($tree, data, $parent, position) {
-        var level, nodeData = gj.tree.methods.getRecords($tree, [data]);
+        var level,
+            newNodeData = gj.tree.methods.getRecords($tree, [data])[0];
 
         if (!$parent || !$parent.length) {
             $parent = $tree.children('ul');
+            $tree.data('records').push(newNodeData);
+        } else {
+            if ($parent[0].tagName.toLowerCase() === 'li') {
+                $parent = $parent.children('ul');
+            }
+            gj.tree.methods.getById($tree, $parent.parent().data('id'), $tree.data('records')).children.push(newNodeData);
         }
         level = $parent.parentsUntil('[data-type="tree"]', 'ul').length + 1;
 
-        gj.tree.methods.appendNode($tree, $parent, nodeData[0], level, position);
+        gj.tree.methods.appendNode($tree, $parent, newNodeData, level, position);
 
         return $tree;
     },
@@ -9717,6 +9773,23 @@ gj.tree.methods = {
                 gj.tree.methods.removeDataById($tree, id, records[i].children);
             }
         }
+    },
+
+    getChildren: function ($tree, $node, cascade) {
+        var result = [], i, $children,
+            cascade = typeof (cascade) === 'undefined' ? true : cascade;
+
+        if (cascade) {
+            $children = $node.find('ul li');
+        } else {
+            $children = $node.find('>ul>li');
+        }
+
+        for (i = 0; i < $children.length; i++) {
+            result.push($($children[i]).data('id'));
+        }
+
+        return result;
     },
 
     enableAll: function ($tree) {
@@ -9871,7 +9944,7 @@ gj.tree.widget = function ($element, jsConfig) {
      * <script>
      *     var parent, tree = $('#tree').tree();
      *     tree.on('dataBound', function () {
-     *         parent = tree.getNodeByText('Asia').children('ul');
+     *         parent = tree.getNodeByText('Asia');
      *         tree.off('dataBound');
      *     });
      *     function append() {
@@ -9885,7 +9958,7 @@ gj.tree.widget = function ($element, jsConfig) {
      * <script>
      *     var parent, tree = $('#tree').tree();
      *     tree.on('dataBound', function () {
-     *         parent = tree.getNodeByText('Asia').children('ul');
+     *         parent = tree.getNodeByText('Asia');
      *         tree.off('dataBound');
      *     });
      *     function append() {
@@ -9899,7 +9972,7 @@ gj.tree.widget = function ($element, jsConfig) {
      * <script>
      *     var parent, tree = $('#tree').tree();
      *     tree.on('dataBound', function () {
-     *         parent = tree.getNodeByText('Asia').children('ul');
+     *         parent = tree.getNodeByText('Asia');
      *         tree.off('dataBound');
      *     });
      *     function append() {
@@ -9913,7 +9986,7 @@ gj.tree.widget = function ($element, jsConfig) {
      * <script>
      *     var parent, tree = $('#tree').tree();
      *     tree.on('dataBound', function () {
-     *         parent = tree.getNodeByText('Asia').children('ul');
+     *         parent = tree.getNodeByText('Asia');
      *         tree.off('dataBound');
      *     });
      *     function append() {
@@ -10282,6 +10355,41 @@ gj.tree.widget = function ($element, jsConfig) {
      */
     self.getSelections = function () {
         return methods.getSelections(this.children('ul'));
+    };
+
+    /**
+     * Return an array with the ids of all children.
+     * @method
+     * @param {Object} node - The node as jquery object.
+     * @param {Boolean} cascade - Include all nested children. Set to true by default.
+     * @return array
+     * @example Cascade.True <!-- materialicons, tree.base -->
+     * <div id="tree"></div>
+     * <script>
+     *     var tree = $('#tree').tree({
+     *         dataSource: '/Locations/Get',
+     *         dataBound: function () {
+     *             var node = tree.getNodeByText('North America'),
+     *                 children = tree.getChildren(node);
+     *             alert(children.join());
+     *         }
+     *     });
+     * </script>
+     * @example Cascade.False <!-- materialicons, tree.base -->
+     * <div id="tree"></div>
+     * <script>
+     *     var tree = $('#tree').tree({
+     *         dataSource: '/Locations/Get',
+     *         dataBound: function () {
+     *             var node = tree.getNodeByText('North America'),
+     *                 children = tree.getChildren(node, false);
+     *             alert(children.join());
+     *         }
+     *     });
+     * </script>
+     */
+    self.getChildren = function ($node, cascade) {
+        return methods.getChildren(this, $node, cascade);
     };
 
     /**

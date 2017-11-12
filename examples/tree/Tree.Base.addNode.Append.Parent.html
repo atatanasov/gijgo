@@ -18,7 +18,7 @@
  <script>
      var parent, tree = $('#tree').tree();
      tree.on('dataBound', function () {
-         parent = tree.getNodeByText('Asia').children('ul');
+         parent = tree.getNodeByText('Asia');
          tree.off('dataBound');
      });
      function append() {
