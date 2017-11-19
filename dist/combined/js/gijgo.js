@@ -12900,8 +12900,21 @@ gj.datepicker.config = {
          */
         disableDates: undefined,
 
+        /** An array that will be used to determine which days of week to be disabled for selection by the widget.
+         * The array needs to contains only numbers where 0 is Sunday, 1 is Monday and etc.
+         * @type Array
+         * @default undefined
+         * @example Array <!-- materialicons, datepicker -->
+         * <input id="datepicker" width="312" />
+         * <script>
+         *    $('#datepicker').datepicker({
+         *        disableDaysOfWeek: [0, 6]
+         *    });
+         * </script>
+         */
+        disableDaysOfWeek: undefined,
+
         //TODO Config:
-        disableDaysOfWeek: undefined, //array
         calendarWeeks: false,
         keyboardNavigation: true,
         locale: 'en-us',
@@ -13221,17 +13234,24 @@ gj.datepicker.methods = {
             result = false;
         } else if (maxDate && date > maxDate) {
             result = false;
-        } else if (data.disableDates) {
-            if ($.isArray(data.disableDates)) {
-                for (i = 0; i < data.disableDates.length; i++) {
-                    if (data.disableDates[i] instanceof Date && data.disableDates[i].getTime() === date.getTime()) {
-                        result = false;
-                    } else if (typeof data.disableDates[i] === 'string' && gj.core.parseDate(data.disableDates[i], data.format).getTime() === date.getTime()) {
-                        result = false;
+        }
+
+        if (result) {
+            if (data.disableDates) {
+                if ($.isArray(data.disableDates)) {
+                    for (i = 0; i < data.disableDates.length; i++) {
+                        if (data.disableDates[i] instanceof Date && data.disableDates[i].getTime() === date.getTime()) {
+                            result = false;
+                        } else if (typeof data.disableDates[i] === 'string' && gj.core.parseDate(data.disableDates[i], data.format).getTime() === date.getTime()) {
+                            result = false;
+                        }
                     }
+                } else if (data.disableDates instanceof Function) {
+                    result = data.disableDates(date);
                 }
-            } else if (data.disableDates instanceof Function) {
-                result = data.disableDates(date);
+            }
+            if ($.isArray(data.disableDaysOfWeek) && data.disableDaysOfWeek.indexOf(date.getDay()) > -1) {
+                result = false;
             }
         }
         return result;
