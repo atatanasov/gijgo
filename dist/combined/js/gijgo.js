@@ -10606,7 +10606,7 @@ gj.tree.plugins.checkboxes = {
             /** This setting enable cascade check and uncheck of children
              * @type boolean
              * @default true
-             * @example False <!-- materialicons, checkbox, tree.base -->
+             * @example False.Remote.DataSource <!-- materialicons, checkbox, tree.base -->
              * <div id="tree"></div>
              * <script>
              *     var tree = $('#tree').tree({
@@ -10616,6 +10616,15 @@ gj.tree.plugins.checkboxes = {
              *     });
              *     tree.on('dataBound', function() {
              *         tree.expandAll();
+             *     });
+             * </script>
+             * @example False.Local.DataSource <!-- materialicons, checkbox, tree.base -->
+             * <div id="tree"></div>
+             * <script>
+             *     var tree = $('#tree').tree({
+             *         checkboxes: true,
+             *         dataSource: [ { text: 'foo', checked: true, children: [ { text: 'bar', checked: true }, { text: 'bar2', checked: false } ] }, { text: 'foo2', checked: true, children: [ { text: 'bar2', checked: false } ] } ],
+             *         cascadeCheck: false
              *     });
              * </script>
              * @example True <!-- materialicons, checkbox, tree.base -->
@@ -10637,15 +10646,18 @@ gj.tree.plugins.checkboxes = {
 
     private: {
         dataBound: function ($tree) {
-            var $nodes = $tree.find('li[data-role="node"]');
-            $.each($nodes, function () {
-                var $node = $(this),
-                    state = $node.find('[data-role="checkbox"] input[type="checkbox"]').checkbox('state');
-                if (state === 'checked') {
-                    gj.tree.plugins.checkboxes.private.updateChildrenState($node, state);
-                    gj.tree.plugins.checkboxes.private.updateParentState($node, state);
-                }
-            });
+            var $nodes;
+            if ($tree.data('cascadeCheck')) {
+                $nodes = $tree.find('li[data-role="node"]');
+                $.each($nodes, function () {
+                    var $node = $(this),
+                        state = $node.find('[data-role="checkbox"] input[type="checkbox"]').checkbox('state');
+                    if (state === 'checked') {
+                        gj.tree.plugins.checkboxes.private.updateChildrenState($node, state);
+                        gj.tree.plugins.checkboxes.private.updateParentState($node, state);
+                    }
+                });
+            }
         },
 
         nodeDataBound: function ($tree, $node, id, record) {

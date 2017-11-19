@@ -816,15 +816,18 @@ gj.tree.widget.constructor = gj.tree.widget;
 
     private: {
         dataBound: function ($tree) {
-            var $nodes = $tree.find('li[data-role="node"]');
-            $.each($nodes, function () {
-                var $node = $(this),
-                    state = $node.find('[data-role="checkbox"] input[type="checkbox"]').checkbox('state');
-                if (state === 'checked') {
-                    gj.tree.plugins.checkboxes.private.updateChildrenState($node, state);
-                    gj.tree.plugins.checkboxes.private.updateParentState($node, state);
-                }
-            });
+            var $nodes;
+            if ($tree.data('cascadeCheck')) {
+                $nodes = $tree.find('li[data-role="node"]');
+                $.each($nodes, function () {
+                    var $node = $(this),
+                        state = $node.find('[data-role="checkbox"] input[type="checkbox"]').checkbox('state');
+                    if (state === 'checked') {
+                        gj.tree.plugins.checkboxes.private.updateChildrenState($node, state);
+                        gj.tree.plugins.checkboxes.private.updateParentState($node, state);
+                    }
+                });
+            }
         },
 
         nodeDataBound: function ($tree, $node, id, record) {
