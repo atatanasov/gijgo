@@ -180,7 +180,7 @@ gj.tree.plugins.dragAndDrop = {
 	                        $sourceParentNode = $sourceNode.parent('ul').parent('li');
 	                        prepend = mousePosition.top < ($targetWrapper.position().top + ($targetWrapper.outerHeight() / 2));
 	                        sourceNodeId = $sourceNode.data('id');
-	                        orderNumber = $targetNode.prev('li:not([data-id="' + sourceNodeId + '"])').length + (prepend ? 1 : 2);
+	                        orderNumber = $targetNode.prevAll('li:not([data-id="' + sourceNodeId + '"])').length + (prepend ? 1 : 2);
 	                        if (gj.tree.plugins.dragAndDrop.events.nodeDrop($tree, sourceNodeId, $targetNode.parent('ul').parent('li').data('id'), orderNumber) !== false) {
 	                            if (prepend) {
 	                                $sourceNode.insertBefore($targetNode);
