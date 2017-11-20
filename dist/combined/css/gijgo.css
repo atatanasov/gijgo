@@ -1659,18 +1659,27 @@ ul.gj-list-md li.disabled>[data-role="wrapper"]>[data-role="expander"] {
     margin: 3px;
 }
 
-.gj-calendar-bootstrap table tr td[type="today"] div {
+.gj-calendar-bootstrap table tr td.gj-cursor-pointer div:hover {
+    background: #EEEEEE;
+    border-radius: 4px;
+}
+
+.gj-calendar-bootstrap table tr td.today div {
     color: #204d74;
     font-weight: bold;
 }
 
-.gj-calendar-bootstrap table tr td[type="selected"] div  {
+.gj-calendar-bootstrap table tr td.selected div  {
     color: #fff;
     background-color: #204d74;
     border-color: #122b40;
     border-radius: 4px;
 }
 
-.gj-calendar-bootstrap table tr td[type="other-month"] div {
+.gj-calendar-bootstrap table tr td.other-month div {
     color: #777;
+}
+
+.gj-calendar-bootstrap table tr td.focused div {
+    background: #EEEEEE;
 }

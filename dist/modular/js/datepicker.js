@@ -475,24 +475,24 @@ gj.datepicker.methods = {
             e = e || window.event;
 
             if (e.keyCode == '38') { // up
-                index = $active.index() - 1;
-                $new = $active.closest('tr').prev('tr').find('td[day]:eq(' + index + ')');
-                if ($new.length === 0) {
+                index = $active.index();
+                $new = $active.closest('tr').prev('tr').find('td:eq(' + index + ')');
+                if (!$new.is('[day]')) {
                     gj.datepicker.methods.prevMonth($datepicker)();
-                    $new = $calendar.find('tbody tr').last().find('td[day]:eq(' + index + ')');
+                    $new = $calendar.find('tbody tr').last().find('td:eq(' + index + ')').find('[day]');
                 }
-                if ($new.length > 0) {
+                if ($new.is('[day]')) {
                     $new.addClass('focused');
                     $active.removeClass('focused');
                 }
             } else if (e.keyCode == '40') { // down
-                index = $active.index() - 1;
-                $new = $active.closest('tr').next('tr').find('td[day]:eq(' + index + ')');
-                if ($new.length === 0) {
+                index = $active.index();
+                $new = $active.closest('tr').next('tr').find('td:eq(' + index + ')');
+                if (!$new.is('[day]')) {
                     gj.datepicker.methods.nextMonth($datepicker)();
-                    $new = $calendar.find('tbody tr').first().find('td[day]:eq(' + index + ')');
+                    $new = $calendar.find('tbody tr').first().find('td:eq(' + index + ')');
                 }
-                if ($new.length > 0) {
+                if ($new.is('[day]')) {
                     $new.addClass('focused');
                     $active.removeClass('focused');
                 }

@@ -12930,10 +12930,18 @@ gj.datepicker.config = {
         /** Whether to enable keyboard navigation.
          * @type Boolean
          * @default true
-         * @example True <!-- materialicons, datepicker -->
+         * @example Material.Design <!-- materialicons, datepicker -->
          * <input id="datepicker" width="312" />
          * <script>
          *    $('#datepicker').datepicker({
+         *        keyboardNavigation: true
+         *    });
+         * </script>
+         * @example Bootstrap.4 <!-- materialicons, bootstrap4, datepicker -->
+         * <input id="datepicker" width="276" />
+         * <script>
+         *    $('#datepicker').datepicker({
+         *        uiLibrary: 'bootstrap4',
          *        keyboardNavigation: true
          *    });
          * </script>
@@ -13393,24 +13401,24 @@ gj.datepicker.methods = {
             e = e || window.event;
 
             if (e.keyCode == '38') { // up
-                index = $active.index() - 1;
-                $new = $active.closest('tr').prev('tr').find('td[day]:eq(' + index + ')');
-                if ($new.length === 0) {
+                index = $active.index();
+                $new = $active.closest('tr').prev('tr').find('td:eq(' + index + ')');
+                if (!$new.is('[day]')) {
                     gj.datepicker.methods.prevMonth($datepicker)();
-                    $new = $calendar.find('tbody tr').last().find('td[day]:eq(' + index + ')');
+                    $new = $calendar.find('tbody tr').last().find('td:eq(' + index + ')').find('[day]');
                 }
-                if ($new.length > 0) {
+                if ($new.is('[day]')) {
                     $new.addClass('focused');
                     $active.removeClass('focused');
                 }
             } else if (e.keyCode == '40') { // down
-                index = $active.index() - 1;
-                $new = $active.closest('tr').next('tr').find('td[day]:eq(' + index + ')');
-                if ($new.length === 0) {
+                index = $active.index();
+                $new = $active.closest('tr').next('tr').find('td:eq(' + index + ')');
+                if (!$new.is('[day]')) {
                     gj.datepicker.methods.nextMonth($datepicker)();
-                    $new = $calendar.find('tbody tr').first().find('td[day]:eq(' + index + ')');
+                    $new = $calendar.find('tbody tr').first().find('td:eq(' + index + ')');
                 }
-                if ($new.length > 0) {
+                if ($new.is('[day]')) {
                     $new.addClass('focused');
                     $active.removeClass('focused');
                 }
