@@ -42,9 +42,11 @@ gj.datepicker.config = {
         /** An array that will be used to determine which days of week to be disabled for selection by the widget.
          * The array needs to contains only numbers where 0 is Sunday, 1 is Monday and etc.         */        disableDaysOfWeek: undefined,
 
+        /** Whether to display week number in year on the left side of the calendar.         */        calendarWeeks: false,
+
+        /** Whether to enable keyboard navigation.         */        keyboardNavigation: true,
+
         //TODO Config:
-        calendarWeeks: false,
-        keyboardNavigation: true,
         locale: 'en-us',
 
         icons: {
@@ -110,7 +112,7 @@ gj.datepicker.methods = {
     },
 
     initialize: function ($datepicker) {
-        var data = $datepicker.data(),
+        var data = $datepicker.data(), $calendar,
             $wrapper = $datepicker.parent('div[role="wrapper"]'),
             $rightIcon = data.uiLibrary !== 'materialdesign' && data.iconsLibrary === 'materialicons' ? $('<span class="input-group-addon">' + data.icons.rightIcon + '</span>') : $(data.icons.rightIcon);
 
@@ -130,7 +132,8 @@ gj.datepicker.methods = {
         data.fontSize && $datepicker.css('font-size', data.fontSize);        
 
         $rightIcon.on('click', function (e) {
-            if ($('body').children('[role="calendar"][guid="' + $datepicker.attr('data-guid') + '"]').is(':visible')) {
+            var $calendar = $('body').children('[role="calendar"][guid="' + $datepicker.attr('data-guid') + '"]');
+            if ($calendar.is(':visible')) {
                 gj.datepicker.methods.hide($datepicker);
             } else {
                 gj.datepicker.methods.show($datepicker);
@@ -145,8 +148,11 @@ gj.datepicker.methods = {
 
         $wrapper.append($rightIcon);
 
-        gj.datepicker.methods.createCalendar($datepicker);
+        $calendar = gj.datepicker.methods.createCalendar($datepicker);
 
+        if (data.keyboardNavigation) {
+            $datepicker.on('keydown', gj.datepicker.methods.createKeyDownHandler($datepicker, $calendar));
+        }
     },
 
     createCalendar: function ($datepicker) {
@@ -169,11 +175,14 @@ gj.datepicker.methods = {
 
         $row = $('<tr role="month-manager" />');
         $row.append($('<th><div>' + data.icons.previousMonth + '</div></th>').on('click', gj.datepicker.methods.prevMonth($datepicker)));
-        $row.append('<th colspan="5"><div role="month"></div></th>');
+        $row.append('<th colspan="' + (data.calendarWeeks ? 6 : 5) + '"><div role="month"></div></th>');
         $row.append($('<th><div>' + data.icons.nextMonth + '</div></th>').on('click', gj.datepicker.methods.nextMonth($datepicker)));
         $thead.append($row);
 
         $row = $('<tr role="week-days" />');
+        if (data.calendarWeeks) {
+            $row.append('<th><div>&nbsp;</div></th>');
+        }
         for (i = data.weekStartDay; i < data.weekDays.length; i++) {
             $row.append('<th><div>' + data.weekDays[i] + '</div></th>');
         }
@@ -192,7 +201,7 @@ gj.datepicker.methods = {
     },
 
     renderCalendar: function ($datepicker) {
-        var weekDay, selectedDay, day, month, year, daysInMonth, total, firstDayPosition, i, now, prevMonth, nextMonth, $cell, $day,
+        var weekDay, selectedDay, day, month, year, daysInMonth, total, firstDayPosition, i, now, prevMonth, nextMonth, $cell, $day, date,
             data = $datepicker.data(),
             $calendar = $('body').children('[role="calendar"][guid="' + $datepicker.attr('data-guid') + '"]'),
             $table = $calendar.children('table'),
@@ -225,17 +234,21 @@ gj.datepicker.methods = {
         prevMonth = gj.datepicker.methods.getPrevMonth(month, year);
         for (i = 1; i <= firstDayPosition; i++) {
             day = (daysInMonth[prevMonth.month] - firstDayPosition + i);
+            date = new Date(prevMonth.year, prevMonth.month, day);
+            if (data.calendarWeeks && i === 1) {
+                $row.append('<td><div>' + gj.datepicker.methods.getWeekNumber(date) + '</div></td>');
+            }
             if (prevMonth.year === selectedDay.getFullYear() && prevMonth.month === selectedDay.getMonth() && day === selectedDay.getDate()) {
-                $cell = $('<td type="selected" />');
+                $cell = $('<td class="selected" />');
             } else {
-                $cell = $('<td type="other-month" />');
+                $cell = $('<td class="other-month" />');
             }
             if (data.showOtherMonths) {
                 $day = $('<div>' + day + '</div>');
                 $cell.append($day);
-                if (data.selectOtherMonths && gj.datepicker.methods.isSelectable(data, prevMonth.year, prevMonth.month, day)) {
+                if (data.selectOtherMonths && gj.datepicker.methods.isSelectable(data, date)) {
                     $cell.addClass('gj-cursor-pointer');
-                    $day.on('click', gj.datepicker.methods.select($datepicker, $calendar, day, prevMonth.month, prevMonth.year));
+                    $day.on('click', gj.datepicker.methods.select($datepicker, $calendar, date));
                 } else {
                     $cell.addClass('disabled');
                 }
@@ -247,20 +260,25 @@ gj.datepicker.methods = {
 
         now = new Date();
         for (i = 1; i <= total; i++) {
+            date = new Date(year, month, i);
             if (weekDay == 0) {
                 $row = $('<tr>');
+                if (data.calendarWeeks) {
+                    $row.append('<td><div>' + gj.datepicker.methods.getWeekNumber(date) + '</div></td>');
+                }
             }
+            $cell = $('<td day="' + i + '" />');
             if (year === selectedDay.getFullYear() && month === selectedDay.getMonth() && i === selectedDay.getDate()) {
-                $cell = $('<td type="selected" />');
+                $cell.addClass('selected');
             } else if (year === now.getFullYear() && month === now.getMonth() && i === now.getDate()) {
-                $cell = $('<td type="today" />');
+                $cell.addClass('today');
             } else {
-                $cell = $('<td type="current-month" />');
+                $cell.addClass('current-month');
             }
             $day = $('<div>' + i + '</div>');
-            if (gj.datepicker.methods.isSelectable(data, year, month, i)) {
+            if (gj.datepicker.methods.isSelectable(data, date)) {
                 $cell.addClass('gj-cursor-pointer');
-                $day.on('click', gj.datepicker.methods.select($datepicker, $calendar, i, month, year));
+                $day.on('click', gj.datepicker.methods.select($datepicker, $calendar, date));
             } else {
                 $cell.addClass('disabled');
             }
@@ -275,17 +293,18 @@ gj.datepicker.methods = {
 
         nextMonth = gj.datepicker.methods.getNextMonth(month, year);
         for (i = 1; weekDay != 0; i++) {
+            date = new Date(nextMonth.year, nextMonth.month, i);
             if (nextMonth.year === selectedDay.getFullYear() && nextMonth.month === selectedDay.getMonth() && i === selectedDay.getDate()) {
-                $cell = $('<td type="selected" />');
+                $cell = $('<td class="selected" />');
             } else {
-                $cell = $('<td type="other-month" />');
+                $cell = $('<td class="other-month" />');
             }
             if (data.showOtherMonths) {
                 $day = $('<div>' + i + '</div>');
                 $cell.append($day);
-                if (data.selectOtherMonths && gj.datepicker.methods.isSelectable(data, nextMonth.year, nextMonth.month, i)) {
+                if (data.selectOtherMonths && gj.datepicker.methods.isSelectable(data, date)) {
                     $cell.addClass('gj-cursor-pointer');
-                    $day.on('click', gj.datepicker.methods.select($datepicker, $calendar, i, nextMonth.month, nextMonth.year));
+                    $day.on('click', gj.datepicker.methods.select($datepicker, $calendar, date));
                 } else {
                     $cell.addClass('disabled');
                 }
@@ -297,6 +316,16 @@ gj.datepicker.methods = {
                 weekDay = 0;
             }
         }
+    },
+
+    getWeekNumber: function (date) {
+        var d = new Date(date.valueOf());
+        d.setDate(d.getDate() + 6);
+        d = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+        d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay() || 7));
+        var yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+        var weekNo = Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
+        return weekNo;
     },
 
     getMinDate: function (data) {
@@ -327,9 +356,8 @@ gj.datepicker.methods = {
         return maxDate;
     },
 
-    isSelectable: function (data, year, month, day) {
+    isSelectable: function (data, date) {
         var result = true,
-            date = new Date(year, month, day),
             minDate = gj.datepicker.methods.getMinDate(data),
             maxDate = gj.datepicker.methods.getMaxDate(data),
             i;
@@ -405,15 +433,16 @@ gj.datepicker.methods = {
         }
     },
 
-    select: function ($datepicker, $calendar, day, month, year) {
+    select: function ($datepicker, $calendar, date) {
         return function (e) {
-            var date, value,
+            var value,
+                month = date.getMonth(),
+                year = date.getFullYear(),
                 data = $datepicker.data();
-            date = new Date(year, month, day);
             value = gj.core.formatDate(date, data.format);
             $datepicker.val(value);
             gj.datepicker.events.change($datepicker);
-            $datepicker.attr('day', year + '-' + month + '-' + day);
+            $datepicker.attr('day', year + '-' + month + '-' + date.getDate());
             $datepicker.attr('month', month);
             $datepicker.attr('year', year);
             gj.datepicker.methods.hide($datepicker);
@@ -439,6 +468,85 @@ gj.datepicker.methods = {
         gj.datepicker.events.hide($datepicker);
     },
 
+    createKeyDownHandler: function ($datepicker, $calendar) {
+        return function (e) {
+            var month, year, day, index, $new,
+                $active = gj.datepicker.methods.getActiveCell($calendar);
+            e = e || window.event;
+
+            if (e.keyCode == '38') { // up
+                index = $active.index() - 1;
+                $new = $active.closest('tr').prev('tr').find('td[day]:eq(' + index + ')');
+                if ($new.length === 0) {
+                    gj.datepicker.methods.prevMonth($datepicker)();
+                    $new = $calendar.find('tbody tr').last().find('td[day]:eq(' + index + ')');
+                }
+                if ($new.length > 0) {
+                    $new.addClass('focused');
+                    $active.removeClass('focused');
+                }
+            } else if (e.keyCode == '40') { // down
+                index = $active.index() - 1;
+                $new = $active.closest('tr').next('tr').find('td[day]:eq(' + index + ')');
+                if ($new.length === 0) {
+                    gj.datepicker.methods.nextMonth($datepicker)();
+                    $new = $calendar.find('tbody tr').first().find('td[day]:eq(' + index + ')');
+                }
+                if ($new.length > 0) {
+                    $new.addClass('focused');
+                    $active.removeClass('focused');
+                }
+            } else if (e.keyCode == '37') { // left
+                $new = $active.prev('td[day]:not(.disabled)');
+                if ($new.length === 0) {
+                    $new = $active.closest('tr').prev('tr').find('td[day]').last();
+                }
+                if ($new.length === 0) {
+                    gj.datepicker.methods.prevMonth($datepicker)();
+                    $new = $calendar.find('tbody tr').last().find('td[day]').last();
+                }
+                if ($new.length > 0) {
+                    $new.addClass('focused');
+                    $active.removeClass('focused');
+                }
+            } else if (e.keyCode == '39' || e.keyCode == '9') { // right/tab(next)
+                $new = $active.next('[day]:not(.disabled)');
+                if ($new.length === 0) {
+                    $new = $active.closest('tr').next('tr').find('td[day]').first();
+                }
+                if ($new.length === 0) {
+                    gj.datepicker.methods.nextMonth($datepicker)();
+                    $new = $calendar.find('tbody tr').first().find('td[day]').first();
+                }
+                if ($new.length > 0) {
+                    $new.addClass('focused');
+                    $active.removeClass('focused');
+                }                
+            } else if (e.keyCode == '13') { // enter
+                day = parseInt($active.attr('day'), 10);
+                month = parseInt($datepicker.attr('month'), 10);
+                year = parseInt($datepicker.attr('year'), 10);
+                gj.datepicker.methods.select($datepicker, $calendar, new Date(year, month, day))();
+            } else if (e.keyCode == '27') { // esc
+                $datepicker.hide();
+            }
+        }
+    },
+
+    getActiveCell: function ($calendar) {
+        var $cell = $calendar.find('td[day].focused');
+        if ($cell.length === 0) {
+            $cell = $calendar.find('td[day].selected');
+            if ($cell.length === 0) {
+                $cell = $calendar.find('td[day].today');
+                if ($cell.length === 0) {
+                    $cell = $calendar.find('td[day]:not(.disabled)').first();
+                }
+            }
+        }
+        return $cell;
+    },
+
     value: function ($datepicker, value) {
         var $calendar, date;
         if (typeof (value) === "undefined") {
@@ -447,7 +555,7 @@ gj.datepicker.methods = {
             date = gj.core.parseDate(value, $datepicker.data().format);
             if (date) {
                 $calendar = $('body').children('[role="calendar"][guid="' + $datepicker.attr('data-guid') + '"]');
-                gj.datepicker.methods.select($datepicker, $calendar, date.getDate(), date.getMonth(), date.getFullYear())();
+                gj.datepicker.methods.select($datepicker, $calendar, date)();
             } else {
                 $datepicker.val('');
             }            

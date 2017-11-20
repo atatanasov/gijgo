@@ -14,10 +14,8 @@
 <body style="padding: 6px;">
  <input id="datepicker" width="312" />
  <script>
-    var today, datepicker;
-    today = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
-    datepicker = $('#datepicker').datepicker({
-        minDate: today
+    $('#datepicker').datepicker({
+        disableDaysOfWeek: [0, 6]
     });
  </script>
 </body>

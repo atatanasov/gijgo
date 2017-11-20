@@ -314,7 +314,7 @@ var writer = {
     },
 
     analyzeLibs: function (libs) {
-        var i, libs, local = false, result = '<head>\r\n';
+        var i, libs, local = true, result = '<head>\r\n';
         result += '  <meta charset="utf-8">\r\n';
         result += '  <meta name="viewport" content="width=device-width, initial-scale=1">\r\n';
         result += '  <title>Example</title>\r\n';
