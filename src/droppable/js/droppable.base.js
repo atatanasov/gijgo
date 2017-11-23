@@ -3,11 +3,9 @@
  * @widget Droppable 
  * @plugin Base
  */
-if (typeof (gj.droppable) === 'undefined') {
-    gj.droppable = {
-        plugins: {}
-    };
-}
+gj.droppable = {
+    plugins: {}
+};
 
 gj.droppable.config = {
     /** If specified, the class will be added to the droppable while draggable is being hovered over the droppable.

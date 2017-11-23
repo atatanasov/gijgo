@@ -5,23 +5,11 @@
  * Copyright 2014, 2017 gijgo.com
  * Released under the MIT license
  */
-if (typeof (gj.dialog) === 'undefined') {
-    gj.dialog = {
-        plugins: {},
-        messages: []
-    };
-}
-
-gj.dialog.messages['en-us'] = {
-    Close: 'Close',
-    DefaultTitle: 'Dialog'
-};
 /* global window alert jQuery */
-/**  */if (typeof (gj.dialog) === 'undefined') {
-    gj.dialog = {
-        plugins: {}
-    };
-}
+/**  */gj.dialog = {
+    plugins: {},
+    messages: []
+};
 
 gj.dialog.config = {
     base: {
@@ -505,6 +493,10 @@ gj.dialog.widget.prototype.getHTMLConfig = gj.dialog.methods.getHTMLConfig;
         }
     };
 })(jQuery);
+gj.dialog.messages['en-us'] = {
+    Close: 'Close',
+    DefaultTitle: 'Dialog'
+};
 gj.dialog.messages['bg-bg'] = {
     Close: 'Затваряне',
     DefaultTitle: 'Диалогов Прозорец'

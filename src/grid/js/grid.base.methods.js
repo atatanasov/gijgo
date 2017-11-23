@@ -250,18 +250,6 @@ gj.grid.methods = {
         $grid.parent().find('div[data-role="loading-text"]').remove();
     },
 
-    createAddRowHoverHandler: function ($row, cssClass) {
-        return function () {
-            $row.addClass(cssClass);
-        };
-    },
-
-    createRemoveRowHoverHandler: function ($row, cssClass) {
-        return function () {
-            $row.removeClass(cssClass);
-        };
-    },
-
     appendEmptyRow: function ($grid, caption) {
         var data, $row, $cell, $wrapper;
         data = $grid.data();
@@ -353,8 +341,6 @@ gj.grid.methods = {
             mode = 'create';
             $row = $('<tr data-role="row"/>');
             $grid.children('tbody').append($row);
-            $row.on('mouseenter', gj.grid.methods.createAddRowHoverHandler($row, data.style.content.rowHover));
-            $row.on('mouseleave', gj.grid.methods.createRemoveRowHoverHandler($row, data.style.content.rowHover));
         } else {
             mode = 'update';
             $row.removeClass(data.style.content.rowSelected).removeAttr('data-selected').off('click');

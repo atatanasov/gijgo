@@ -3,11 +3,10 @@
   * @widget Grid
   * @plugin Base
   */
-if (typeof (gj.grid) === 'undefined') {
-    gj.grid = {
-        plugins: {}
-    };
-}
+gj.grid = {
+    plugins: {},
+    messages: []
+};
 
 gj.grid.config = {
     base: {
@@ -1030,7 +1029,6 @@ gj.grid.config = {
                 sortable: 'gj-cursor-pointer'
             },
             content: {
-                rowHover: undefined,
                 rowSelected: 'gj-grid-md-select'
             }
         },
@@ -1046,7 +1044,6 @@ gj.grid.config = {
             wrapper: 'gj-grid-wrapper',
             table: 'gj-grid gj-grid-bootstrap gj-grid-bootstrap-3 table table-bordered table-hover',
             content: {
-                rowHover: undefined,
                 rowSelected: 'active'
             }
         },
@@ -1062,7 +1059,6 @@ gj.grid.config = {
             wrapper: 'gj-grid-wrapper',
             table: 'gj-grid gj-grid-bootstrap gj-grid-bootstrap-4 table table-bordered table-hover',
             content: {
-                rowHover: undefined,
                 rowSelected: 'active'
             }
         },

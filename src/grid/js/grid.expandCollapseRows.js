@@ -69,6 +69,8 @@ gj.grid.plugins.expandCollapseRows = {
              */
             keepExpandedRows: true,
 
+            expandedRows: [],
+
             icons: {
                 /** Expand row icon definition.
                  * @alias icons.expandRow
@@ -162,7 +164,7 @@ gj.grid.plugins.expandCollapseRows = {
             if (data.keepExpandedRows) {
                 if ($.isArray(data.expandedRows)) {
                     if (data.expandedRows.indexOf(id) == -1) {
-                        data.expandedRows.push(id)
+                        data.expandedRows.push(id);
                     }
                 } else {
                     data.expandedRows = [id];

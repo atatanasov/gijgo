@@ -1,11 +1,4 @@
-﻿if (typeof (gj.grid) === 'undefined') {
-    gj.grid = {
-        plugins: {},
-        messages: []
-    };
-}
-
-gj.grid.messages['en-us'] = {
+﻿gj.grid.messages['en-us'] = {
     First: 'First',
     Previous: 'Previous',
     Next: 'Next',

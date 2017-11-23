@@ -3,11 +3,9 @@
  * @widget Draggable 
  * @plugin Base
  */
-if (typeof (gj.draggable) === 'undefined') {
-    gj.draggable = {
-        plugins: {}
-    };
-}
+gj.draggable = {
+    plugins: {}
+};
 
 gj.draggable.config = {
     base: {

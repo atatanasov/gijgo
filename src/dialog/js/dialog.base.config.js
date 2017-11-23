@@ -3,11 +3,10 @@
  * @widget Dialog 
  * @plugin Base
  */
-if (typeof (gj.dialog) === 'undefined') {
-    gj.dialog = {
-        plugins: {}
-    };
-}
+gj.dialog = {
+    plugins: {},
+    messages: []
+};
 
 gj.dialog.config = {
     base: {

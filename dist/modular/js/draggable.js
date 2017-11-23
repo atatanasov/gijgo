@@ -6,11 +6,9 @@
  * Released under the MIT license
  */
 /* global window alert jQuery */
-/**  */if (typeof (gj.draggable) === 'undefined') {
-    gj.draggable = {
-        plugins: {}
-    };
-}
+/**  */gj.draggable = {
+    plugins: {}
+};
 
 gj.draggable.config = {
     base: {

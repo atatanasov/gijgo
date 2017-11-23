@@ -6,11 +6,9 @@
  * Released under the MIT license
  */
 /* global window alert jQuery */
-/**  */if (typeof (gj.checkbox) === 'undefined') {
-    gj.checkbox = {
-        plugins: {}
-    };
-}
+/**  */gj.checkbox = {
+    plugins: {}
+};
 
 gj.checkbox.config = {
     base: {

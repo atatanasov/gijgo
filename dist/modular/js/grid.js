@@ -5,40 +5,11 @@
  * Copyright 2014, 2017 gijgo.com
  * Released under the MIT license
  */
-if (typeof (gj.grid) === 'undefined') {
-    gj.grid = {
-        plugins: {},
-        messages: []
-    };
-}
-
-gj.grid.messages['en-us'] = {
-    First: 'First',
-    Previous: 'Previous',
-    Next: 'Next',
-    Last: 'Last',
-    Page: 'Page',
-    FirstPageTooltip: 'First Page',
-    PreviousPageTooltip: 'Previous Page',
-    NextPageTooltip: 'Next Page',
-    LastPageTooltip: 'Last Page',
-    Refresh: 'Refresh',
-    Of: 'of',
-    DisplayingRecords: 'Displaying records',
-    RowsPerPage: 'Rows per page:',
-    Edit: 'Edit',
-    Delete: 'Delete',
-    Update: 'Update',
-    Cancel: 'Cancel',
-    NoRecordsFound: 'No records found.',
-    Loading: 'Loading...'
-};
 /* global window alert jQuery gj */
-/**  */if (typeof (gj.grid) === 'undefined') {
-    gj.grid = {
-        plugins: {}
-    };
-}
+/**  */gj.grid = {
+    plugins: {},
+    messages: []
+};
 
 gj.grid.config = {
     base: {
@@ -146,7 +117,6 @@ gj.grid.config = {
                 sortable: 'gj-cursor-pointer'
             },
             content: {
-                rowHover: undefined,
                 rowSelected: 'gj-grid-md-select'
             }
         },
@@ -162,7 +132,6 @@ gj.grid.config = {
             wrapper: 'gj-grid-wrapper',
             table: 'gj-grid gj-grid-bootstrap gj-grid-bootstrap-3 table table-bordered table-hover',
             content: {
-                rowHover: undefined,
                 rowSelected: 'active'
             }
         },
@@ -178,7 +147,6 @@ gj.grid.config = {
             wrapper: 'gj-grid-wrapper',
             table: 'gj-grid gj-grid-bootstrap gj-grid-bootstrap-4 table table-bordered table-hover',
             content: {
-                rowHover: undefined,
                 rowSelected: 'active'
             }
         },
@@ -538,18 +506,6 @@ gj.grid.methods = {
         $grid.parent().find('div[data-role="loading-text"]').remove();
     },
 
-    createAddRowHoverHandler: function ($row, cssClass) {
-        return function () {
-            $row.addClass(cssClass);
-        };
-    },
-
-    createRemoveRowHoverHandler: function ($row, cssClass) {
-        return function () {
-            $row.removeClass(cssClass);
-        };
-    },
-
     appendEmptyRow: function ($grid, caption) {
         var data, $row, $cell, $wrapper;
         data = $grid.data();
@@ -641,8 +597,6 @@ gj.grid.methods = {
             mode = 'create';
             $row = $('<tr data-role="row"/>');
             $grid.children('tbody').append($row);
-            $row.on('mouseenter', gj.grid.methods.createAddRowHoverHandler($row, data.style.content.rowHover));
-            $row.on('mouseleave', gj.grid.methods.createRemoveRowHoverHandler($row, data.style.content.rowHover));
         } else {
             mode = 'update';
             $row.removeClass(data.style.content.rowSelected).removeAttr('data-selected').off('click');
@@ -1370,6 +1324,8 @@ gj.grid.widget.prototype.getHTMLConfig = gj.grid.methods.getHTMLConfig;
             /** If set try to persist the state of expanded rows.
              * You need to specify primaryKey on the initialization of the grid in order to enable this feature.             */            keepExpandedRows: true,
 
+            expandedRows: [],
+
             icons: {
                 /** Expand row icon definition.                 */                expandRow: '<i class="material-icons">keyboard_arrow_right</i>',
 
@@ -1425,7 +1381,7 @@ gj.grid.widget.prototype.getHTMLConfig = gj.grid.methods.getHTMLConfig;
             if (data.keepExpandedRows) {
                 if ($.isArray(data.expandedRows)) {
                     if (data.expandedRows.indexOf(id) == -1) {
-                        data.expandedRows.push(id)
+                        data.expandedRows.push(id);
                     }
                 } else {
                     data.expandedRows = [id];
@@ -3285,6 +3241,27 @@ gj.grid.plugins.inlineEditing.configure = function ($grid, fullConfig, clientCon
     }
 };
 
+gj.grid.messages['en-us'] = {
+    First: 'First',
+    Previous: 'Previous',
+    Next: 'Next',
+    Last: 'Last',
+    Page: 'Page',
+    FirstPageTooltip: 'First Page',
+    PreviousPageTooltip: 'Previous Page',
+    NextPageTooltip: 'Next Page',
+    LastPageTooltip: 'Last Page',
+    Refresh: 'Refresh',
+    Of: 'of',
+    DisplayingRecords: 'Displaying records',
+    RowsPerPage: 'Rows per page:',
+    Edit: 'Edit',
+    Delete: 'Delete',
+    Update: 'Update',
+    Cancel: 'Cancel',
+    NoRecordsFound: 'No records found.',
+    Loading: 'Loading...'
+};
 gj.grid.messages['bg-bg'] = {
     First: 'Първа',
     Previous: 'Предишна',

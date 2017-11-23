@@ -1,6 +1,4 @@
-﻿if (typeof (gj) === 'undefined') {
-    gj = {};
-}
+﻿var gj = {};
 
 gj.widget = function () {
     var self = this;

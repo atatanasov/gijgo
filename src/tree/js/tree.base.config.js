@@ -3,11 +3,9 @@
   * @widget Tree
   * @plugin Base
   */
-if (typeof(gj.tree) === 'undefined') {
-    gj.tree = {
-        plugins: {}
-    };
-}
+gj.tree = {
+    plugins: {}
+};
 
 gj.tree.config = {
     base: {

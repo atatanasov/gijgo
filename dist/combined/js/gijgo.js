@@ -5,9 +5,7 @@
  * Copyright 2014, 2017 gijgo.com
  * Released under the MIT license
  */
-if (typeof (gj) === 'undefined') {
-    gj = {};
-}
+var gj = {};
 
 gj.widget = function () {
     var self = this;
@@ -443,27 +441,15 @@ gj.core = {
         return !!navigator.userAgent.match(/Trident/g) || !!navigator.userAgent.match(/MSIE/g);
     }
 };
-if (typeof (gj.dialog) === 'undefined') {
-    gj.dialog = {
-        plugins: {},
-        messages: []
-    };
-}
-
-gj.dialog.messages['en-us'] = {
-    Close: 'Close',
-    DefaultTitle: 'Dialog'
-};
 /* global window alert jQuery */
 /** 
  * @widget Dialog 
  * @plugin Base
  */
-if (typeof (gj.dialog) === 'undefined') {
-    gj.dialog = {
-        plugins: {}
-    };
-}
+gj.dialog = {
+    plugins: {},
+    messages: []
+};
 
 gj.dialog.config = {
     base: {
@@ -1610,16 +1596,18 @@ gj.dialog.widget.prototype.getHTMLConfig = gj.dialog.methods.getHTMLConfig;
         }
     };
 })(jQuery);
+gj.dialog.messages['en-us'] = {
+    Close: 'Close',
+    DefaultTitle: 'Dialog'
+};
 /* global window alert jQuery */
 /** 
  * @widget Draggable 
  * @plugin Base
  */
-if (typeof (gj.draggable) === 'undefined') {
-    gj.draggable = {
-        plugins: {}
-    };
-}
+gj.draggable = {
+    plugins: {}
+};
 
 gj.draggable.config = {
     base: {
@@ -1898,11 +1886,9 @@ gj.draggable.widget.constructor = gj.draggable.widget;
  * @widget Droppable 
  * @plugin Base
  */
-if (typeof (gj.droppable) === 'undefined') {
-    gj.droppable = {
-        plugins: {}
-    };
-}
+gj.droppable = {
+    plugins: {}
+};
 
 gj.droppable.config = {
     /** If specified, the class will be added to the droppable while draggable is being hovered over the droppable.
@@ -2146,44 +2132,15 @@ gj.droppable.widget.constructor = gj.droppable.widget;
         }
     };
 })(jQuery);
-if (typeof (gj.grid) === 'undefined') {
-    gj.grid = {
-        plugins: {},
-        messages: []
-    };
-}
-
-gj.grid.messages['en-us'] = {
-    First: 'First',
-    Previous: 'Previous',
-    Next: 'Next',
-    Last: 'Last',
-    Page: 'Page',
-    FirstPageTooltip: 'First Page',
-    PreviousPageTooltip: 'Previous Page',
-    NextPageTooltip: 'Next Page',
-    LastPageTooltip: 'Last Page',
-    Refresh: 'Refresh',
-    Of: 'of',
-    DisplayingRecords: 'Displaying records',
-    RowsPerPage: 'Rows per page:',
-    Edit: 'Edit',
-    Delete: 'Delete',
-    Update: 'Update',
-    Cancel: 'Cancel',
-    NoRecordsFound: 'No records found.',
-    Loading: 'Loading...'
-};
 /* global window alert jQuery gj */
 /**
   * @widget Grid
   * @plugin Base
   */
-if (typeof (gj.grid) === 'undefined') {
-    gj.grid = {
-        plugins: {}
-    };
-}
+gj.grid = {
+    plugins: {},
+    messages: []
+};
 
 gj.grid.config = {
     base: {
@@ -3206,7 +3163,6 @@ gj.grid.config = {
                 sortable: 'gj-cursor-pointer'
             },
             content: {
-                rowHover: undefined,
                 rowSelected: 'gj-grid-md-select'
             }
         },
@@ -3222,7 +3178,6 @@ gj.grid.config = {
             wrapper: 'gj-grid-wrapper',
             table: 'gj-grid gj-grid-bootstrap gj-grid-bootstrap-3 table table-bordered table-hover',
             content: {
-                rowHover: undefined,
                 rowSelected: 'active'
             }
         },
@@ -3238,7 +3193,6 @@ gj.grid.config = {
             wrapper: 'gj-grid-wrapper',
             table: 'gj-grid gj-grid-bootstrap gj-grid-bootstrap-4 table table-bordered table-hover',
             content: {
-                rowHover: undefined,
                 rowSelected: 'active'
             }
         },
@@ -3850,18 +3804,6 @@ gj.grid.methods = {
         $grid.parent().find('div[data-role="loading-text"]').remove();
     },
 
-    createAddRowHoverHandler: function ($row, cssClass) {
-        return function () {
-            $row.addClass(cssClass);
-        };
-    },
-
-    createRemoveRowHoverHandler: function ($row, cssClass) {
-        return function () {
-            $row.removeClass(cssClass);
-        };
-    },
-
     appendEmptyRow: function ($grid, caption) {
         var data, $row, $cell, $wrapper;
         data = $grid.data();
@@ -3953,8 +3895,6 @@ gj.grid.methods = {
             mode = 'create';
             $row = $('<tr data-role="row"/>');
             $grid.children('tbody').append($row);
-            $row.on('mouseenter', gj.grid.methods.createAddRowHoverHandler($row, data.style.content.rowHover));
-            $row.on('mouseleave', gj.grid.methods.createRemoveRowHoverHandler($row, data.style.content.rowHover));
         } else {
             mode = 'update';
             $row.removeClass(data.style.content.rowSelected).removeAttr('data-selected').off('click');
@@ -5259,6 +5199,8 @@ gj.grid.plugins.expandCollapseRows = {
              */
             keepExpandedRows: true,
 
+            expandedRows: [],
+
             icons: {
                 /** Expand row icon definition.
                  * @alias icons.expandRow
@@ -5352,7 +5294,7 @@ gj.grid.plugins.expandCollapseRows = {
             if (data.keepExpandedRows) {
                 if ($.isArray(data.expandedRows)) {
                     if (data.expandedRows.indexOf(id) == -1) {
-                        data.expandedRows.push(id)
+                        data.expandedRows.push(id);
                     }
                 } else {
                     data.expandedRows = [id];
@@ -8586,16 +8528,35 @@ gj.grid.plugins.fixedHeader = {
     }
 };
 
+gj.grid.messages['en-us'] = {
+    First: 'First',
+    Previous: 'Previous',
+    Next: 'Next',
+    Last: 'Last',
+    Page: 'Page',
+    FirstPageTooltip: 'First Page',
+    PreviousPageTooltip: 'Previous Page',
+    NextPageTooltip: 'Next Page',
+    LastPageTooltip: 'Last Page',
+    Refresh: 'Refresh',
+    Of: 'of',
+    DisplayingRecords: 'Displaying records',
+    RowsPerPage: 'Rows per page:',
+    Edit: 'Edit',
+    Delete: 'Delete',
+    Update: 'Update',
+    Cancel: 'Cancel',
+    NoRecordsFound: 'No records found.',
+    Loading: 'Loading...'
+};
 /* global window alert jQuery gj */
 /**
   * @widget Tree
   * @plugin Base
   */
-if (typeof(gj.tree) === 'undefined') {
-    gj.tree = {
-        plugins: {}
-    };
-}
+gj.tree = {
+    plugins: {}
+};
 
 gj.tree.config = {
     base: {
@@ -11285,11 +11246,9 @@ gj.tree.plugins.lazyLoading = {
  * @widget Checkbox 
  * @plugin Base
  */
-if (typeof (gj.checkbox) === 'undefined') {
-    gj.checkbox = {
-        plugins: {}
-    };
-}
+gj.checkbox = {
+    plugins: {}
+};
 
 gj.checkbox.config = {
     base: {
@@ -11588,39 +11547,15 @@ gj.checkbox.widget.constructor = gj.checkbox.widget;
         }
     };
 })(jQuery);
-if (typeof (gj.editor) === 'undefined') {
-    gj.editor = {
-        plugins: {},
-        messages: []
-    };
-}
-
-gj.editor.messages['en-us'] = {
-    bold: 'Bold',
-    italic: 'Italic',
-    strikethrough: 'Strikethrough',
-    underline: 'Underline',
-    listBulleted: 'List Bulleted',
-    listNumbered: 'List Numbered',
-    indentDecrease: 'Indent Decrease',
-    indentIncrease: 'Indent Increase',
-    alignLeft: 'Align Left',
-    alignCenter: 'Align Center',
-    alignRight: 'Align Right',
-    alignJustify: 'Align Justify',
-    undo: 'Undo',
-    redo: 'Redo'
-};
 /* global window alert jQuery */
 /** 
  * @widget Editor 
  * @plugin Base
  */
-if (typeof (gj.editor) === 'undefined') {
-    gj.editor = {
-        plugins: {}
-    };
-}
+gj.editor = {
+    plugins: {},
+    messages: []
+};
 
 gj.editor.config = {
     base: {
@@ -12005,16 +11940,30 @@ gj.editor.widget.constructor = gj.editor.widget;
         }
     };
 })(jQuery);
+gj.editor.messages['en-us'] = {
+    bold: 'Bold',
+    italic: 'Italic',
+    strikethrough: 'Strikethrough',
+    underline: 'Underline',
+    listBulleted: 'List Bulleted',
+    listNumbered: 'List Numbered',
+    indentDecrease: 'Indent Decrease',
+    indentIncrease: 'Indent Increase',
+    alignLeft: 'Align Left',
+    alignCenter: 'Align Center',
+    alignRight: 'Align Right',
+    alignJustify: 'Align Justify',
+    undo: 'Undo',
+    redo: 'Redo'
+};
 /* global window alert jQuery gj */
 /**
   * @widget DropDown
   * @plugin Base
   */
-if (typeof (gj.dropdown) === 'undefined') {
-    gj.dropdown = {
-        plugins: {}
-    };
-}
+gj.dropdown = {
+    plugins: {}
+};
 
 gj.dropdown.config = {
     base: {
@@ -12624,11 +12573,10 @@ gj.dropdown.widget.constructor = gj.dropdown.widget;
   * @widget DatePicker
   * @plugin Base
   */
-if (typeof (gj.datepicker) === 'undefined') {
-    gj.datepicker = {
-        plugins: {}
-    };
-}
+gj.datepicker = {
+    plugins: {},
+    messages: []
+};
 
 gj.datepicker.config = {
     base: {

@@ -3,11 +3,10 @@
   * @widget DatePicker
   * @plugin Base
   */
-if (typeof (gj.datepicker) === 'undefined') {
-    gj.datepicker = {
-        plugins: {}
-    };
-}
+gj.datepicker = {
+    plugins: {},
+    messages: []
+};
 
 gj.datepicker.config = {
     base: {

@@ -5,9 +5,7 @@
  * Copyright 2014, 2017 gijgo.com
  * Released under the MIT license
  */
-if (typeof (gj) === 'undefined') {
-    gj = {};
-}
+var gj = {};
 
 gj.widget = function () {
     var self = this;

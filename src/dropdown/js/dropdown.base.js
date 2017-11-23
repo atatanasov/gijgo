@@ -3,11 +3,9 @@
   * @widget DropDown
   * @plugin Base
   */
-if (typeof (gj.dropdown) === 'undefined') {
-    gj.dropdown = {
-        plugins: {}
-    };
-}
+gj.dropdown = {
+    plugins: {}
+};
 
 gj.dropdown.config = {
     base: {

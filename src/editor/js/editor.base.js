@@ -3,11 +3,10 @@
  * @widget Editor 
  * @plugin Base
  */
-if (typeof (gj.editor) === 'undefined') {
-    gj.editor = {
-        plugins: {}
-    };
-}
+gj.editor = {
+    plugins: {},
+    messages: []
+};
 
 gj.editor.config = {
     base: {

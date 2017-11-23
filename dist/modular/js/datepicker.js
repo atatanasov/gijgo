@@ -6,11 +6,10 @@
  * Released under the MIT license
  */
 /* global window alert jQuery gj */
-/**  */if (typeof (gj.datepicker) === 'undefined') {
-    gj.datepicker = {
-        plugins: {}
-    };
-}
+/**  */gj.datepicker = {
+    plugins: {},
+    messages: []
+};
 
 gj.datepicker.config = {
     base: {

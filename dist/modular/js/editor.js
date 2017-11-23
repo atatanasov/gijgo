@@ -5,35 +5,11 @@
  * Copyright 2014, 2017 gijgo.com
  * Released under the MIT license
  */
-if (typeof (gj.editor) === 'undefined') {
-    gj.editor = {
-        plugins: {},
-        messages: []
-    };
-}
-
-gj.editor.messages['en-us'] = {
-    bold: 'Bold',
-    italic: 'Italic',
-    strikethrough: 'Strikethrough',
-    underline: 'Underline',
-    listBulleted: 'List Bulleted',
-    listNumbered: 'List Numbered',
-    indentDecrease: 'Indent Decrease',
-    indentIncrease: 'Indent Increase',
-    alignLeft: 'Align Left',
-    alignCenter: 'Align Center',
-    alignRight: 'Align Right',
-    alignJustify: 'Align Justify',
-    undo: 'Undo',
-    redo: 'Redo'
-};
 /* global window alert jQuery */
-/**  */if (typeof (gj.editor) === 'undefined') {
-    gj.editor = {
-        plugins: {}
-    };
-}
+/**  */gj.editor = {
+    plugins: {},
+    messages: []
+};
 
 gj.editor.config = {
     base: {
@@ -295,6 +271,22 @@ gj.editor.widget.constructor = gj.editor.widget;
         }
     };
 })(jQuery);
+gj.editor.messages['en-us'] = {
+    bold: 'Bold',
+    italic: 'Italic',
+    strikethrough: 'Strikethrough',
+    underline: 'Underline',
+    listBulleted: 'List Bulleted',
+    listNumbered: 'List Numbered',
+    indentDecrease: 'Indent Decrease',
+    indentIncrease: 'Indent Increase',
+    alignLeft: 'Align Left',
+    alignCenter: 'Align Center',
+    alignRight: 'Align Right',
+    alignJustify: 'Align Justify',
+    undo: 'Undo',
+    redo: 'Redo'
+};
 gj.editor.messages['bg-bg'] = {
 	bold: 'Удебеляване',
 	italic: 'Накланяне',

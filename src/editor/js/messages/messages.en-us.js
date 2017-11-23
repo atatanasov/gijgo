@@ -1,11 +1,4 @@
-﻿if (typeof (gj.editor) === 'undefined') {
-    gj.editor = {
-        plugins: {},
-        messages: []
-    };
-}
-
-gj.editor.messages['en-us'] = {
+﻿gj.editor.messages['en-us'] = {
     bold: 'Bold',
     italic: 'Italic',
     strikethrough: 'Strikethrough',

@@ -6,11 +6,9 @@
  * Released under the MIT license
  */
 /* global window alert jQuery gj */
-/**  */if (typeof (gj.dropdown) === 'undefined') {
-    gj.dropdown = {
-        plugins: {}
-    };
-}
+/**  */gj.dropdown = {
+    plugins: {}
+};
 
 gj.dropdown.config = {
     base: {
