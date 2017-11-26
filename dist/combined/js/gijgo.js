@@ -13130,7 +13130,9 @@ gj.datepicker.methods = {
             $row.append($cell);
             weekDay++;
         }
-        $tbody.append($row);
+        if (i > 1) {
+            $tbody.append($row);
+        }
 
         now = new Date();
         for (i = 1; i <= total; i++) {
@@ -13353,7 +13355,7 @@ gj.datepicker.methods = {
                 $new = $active.closest('tr').prev('tr').find('td:eq(' + index + ')');
                 if (!$new.is('[day]')) {
                     gj.datepicker.methods.prevMonth($datepicker)();
-                    $new = $calendar.find('tbody tr').last().find('td:eq(' + index + ')').find('[day]');
+                    $new = $calendar.find('tbody tr').last().find('td:eq(' + index + ')');
                 }
                 if ($new.is('[day]')) {
                     $new.addClass('focused');
@@ -13365,6 +13367,9 @@ gj.datepicker.methods = {
                 if (!$new.is('[day]')) {
                     gj.datepicker.methods.nextMonth($datepicker)();
                     $new = $calendar.find('tbody tr').first().find('td:eq(' + index + ')');
+                    if (!$new.is('[day]')) {
+                        $new = $calendar.find('tbody tr:eq(1)').find('td:eq(' + index + ')');
+                    }
                 }
                 if ($new.is('[day]')) {
                     $new.addClass('focused');
