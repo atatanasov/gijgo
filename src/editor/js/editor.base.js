@@ -5,7 +5,7 @@
  */
 gj.editor = {
     plugins: {},
-    messages: []
+    messages: {}
 };
 
 gj.editor.config = {

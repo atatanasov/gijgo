@@ -250,9 +250,13 @@ gj.documentManager = {
   * @plugin Base
   */
 gj.core = {
-    monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+    messages: {
+        'en-us': {
+            monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
 
-    monthShortNames: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+            monthShortNames: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+        }
+    },
 
     /** 
      * @method
@@ -286,9 +290,8 @@ gj.core = {
      * <script>
      *     $('#date').text(gj.core.parseDate(349653600000));
      * </script>
-
      */
-    parseDate: function (value, format) {
+    parseDate: function (value, format, locale) {
         var i, date, month, year, dateParts, formatParts, result;
 
         if (value && typeof value === 'string') {
@@ -305,9 +308,9 @@ gj.core = {
                     } else if (['m', 'mm'].indexOf(formatParts[i]) > -1) {
                         month = parseInt(dateParts[i], 10) - 1;
                     } else if ('mmm' === formatParts[i]) {
-                        month = gj.core.monthShortNames.indexOf(dateParts[i]);
+                        month = gj.core.messages[locale || 'en-us'].monthShortNames.indexOf(dateParts[i]);
                     } else if ('mmmm' === formatParts[i]) {
-                        month = gj.core.monthNames.indexOf(dateParts[i]);
+                        month = gj.core.messages[locale || 'en-us'].monthNames.indexOf(dateParts[i]);
                     } else if (['yy', 'yyyy'].indexOf(formatParts[i]) > -1) {
                         year = parseInt(dateParts[i], 10);
                         if (formatParts[i] === 'yy') {
@@ -359,7 +362,7 @@ gj.core = {
      *     $('#date').text(gj.core.formatDate(new Date(2017, 1, 3, 20, 43, 53), 'hh:MM TT'));
      * </script>
      */
-    formatDate: function (date, format) {
+    formatDate: function (date, format, locale) {
         var result = '', separator, tmp,
             formatParts = format.split(/[\s,-\.//\:]+/),
             separators = format.replace(/[shtdmyHTDMY]/g, ''),
@@ -420,10 +423,10 @@ gj.core = {
                     result += pad(date.getMonth() + 1) + separator;
                     break;
                 case 'mmm':
-                    result += gj.core.monthShortNames[date.getMonth()] + separator;
+                    result += gj.core.messages[locale || 'en-us'].monthShortNames[date.getMonth()] + separator;
                     break;
                 case 'mmmm':
-                    result += gj.core.monthNames[date.getMonth()] + separator;
+                    result += gj.core.messages[locale || 'en-us'].monthNames[date.getMonth()] + separator;
                     break;
                 case 'yy' :
                     result += date.getFullYear().toString().substr(2) + separator;
@@ -448,7 +451,7 @@ gj.core = {
  */
 gj.dialog = {
     plugins: {},
-    messages: []
+    messages: {}
 };
 
 gj.dialog.config = {
@@ -2139,7 +2142,7 @@ gj.droppable.widget.constructor = gj.droppable.widget;
   */
 gj.grid = {
     plugins: {},
-    messages: []
+    messages: {}
 };
 
 gj.grid.config = {
@@ -3114,8 +3117,7 @@ gj.grid.config = {
         /** The language that needs to be in use.
          * @type string
          * @default 'en-us'
-         * @example German.Bootstrap.Default <!-- bootstrap, grid-->
-         * <script src="../../dist/modular/grid/js/messages/messages.de-de.js"></script>
+         * @example German.Bootstrap.Default <!-- bootstrap, grid -->
          * <table id="grid"></table>
          * <script>
          *     $('#grid').grid({
@@ -3124,14 +3126,13 @@ gj.grid.config = {
          *         locale: 'de-de',
          *         columns: [ 
          *             { field: 'ID', width: 34 },
-         *             { field: 'Name', title: 'Prénom' },
-         *             { field: 'PlaceOfBirth', title: 'Lieu de naissance' }
+         *             { field: 'Name', title: 'Name' },
+         *             { field: 'PlaceOfBirth', title: 'Geburtsort' }
          *         ],
          *         pager: { limit: 5 }
          *     });
          * </script>
-         * @example French.MaterialDesign.Custom <!-- materialicons, grid-->
-         * <script src="../../dist/modular/grid/js/messages/messages.fr-fr.js"></script>
+         * @example French.MaterialDesign.Custom <!-- materialicons, grid -->
          * <table id="grid"></table>
          * <script>
          *     gj.grid.messages['fr-fr'].DisplayingRecords = 'Mes résultats';
@@ -11554,7 +11555,7 @@ gj.checkbox.widget.constructor = gj.checkbox.widget;
  */
 gj.editor = {
     plugins: {},
-    messages: []
+    messages: {}
 };
 
 gj.editor.config = {
@@ -12575,13 +12576,15 @@ gj.dropdown.widget.constructor = gj.dropdown.widget;
   */
 gj.datepicker = {
     plugins: {},
-    messages: []
+    messages: {
+        'en-us': {
+            weekDays: ['S', 'M', 'T', 'W', 'T', 'F', 'S']
+        }
+    }
 };
 
 gj.datepicker.config = {
     base: {
-        weekDays: ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
-
         /** Whether to display dates in other months at the start or end of the current month.
          * @additionalinfo Set to true by default for Bootstrap.
          * @type Boolean
@@ -12896,7 +12899,43 @@ gj.datepicker.config = {
          */
         keyboardNavigation: true,
 
-        //TODO Config:
+        /** The language that needs to be in use.
+         * @type string
+         * @default 'en-us'
+         * @example German <!-- materialicons, datepicker -->
+         * <input id="datepicker" width="276" />
+         * <script>
+         *    $('#datepicker').datepicker({
+         *        locale: 'de-de',
+         *        format: 'dd mmm yyyy'
+         *    });
+         * </script>
+         * @example Bulgarian <!-- materialicons, datepicker -->
+         * <input id="datepicker" width="276" />
+         * <script>
+         *    $('#datepicker').datepicker({
+         *        locale: 'bg-bg',
+         *        format: 'dd mmm yyyy',
+         *        weekStartDay: 1
+         *    });
+         * </script>
+         * @example French <!-- materialicons, datepicker -->
+         * <input id="datepicker" width="276" />
+         * <script>
+         *    $('#datepicker').datepicker({
+         *        locale: 'fr-fr',
+         *        format: 'dd mmm yyyy'
+         *    });
+         * </script>
+         * @example Brazil <!-- materialicons, datepicker -->
+         * <input id="datepicker" width="276" />
+         * <script>
+         *    $('#datepicker').datepicker({
+         *        locale: 'pt-br',
+         *        format: 'dd mmm yyyy'
+         *    });
+         * </script>
+         */
         locale: 'en-us',
 
         icons: {
@@ -13037,7 +13076,7 @@ gj.datepicker.methods = {
         
         data.fontSize && $calendar.css('font-size', data.fontSize);
 
-        date = gj.core.parseDate(data.value, data.format);
+        date = gj.core.parseDate(data.value, data.format, data.locale);
         if (!date || isNaN(date.getTime())) {
             date = new Date();
         } else {
@@ -13057,11 +13096,11 @@ gj.datepicker.methods = {
         if (data.calendarWeeks) {
             $row.append('<th><div>&nbsp;</div></th>');
         }
-        for (i = data.weekStartDay; i < data.weekDays.length; i++) {
-            $row.append('<th><div>' + data.weekDays[i] + '</div></th>');
+        for (i = data.weekStartDay; i < gj.datepicker.messages[data.locale].weekDays.length; i++) {
+            $row.append('<th><div>' + gj.datepicker.messages[data.locale].weekDays[i] + '</div></th>');
         }
         for (i = 0; i < data.weekStartDay; i++) {
-            $row.append('<th><div>' + data.weekDays[i] + '</div></th>');
+            $row.append('<th><div>' + gj.datepicker.messages[data.locale].weekDays[i] + '</div></th>');
         }
         $thead.append($row);
 
@@ -13091,7 +13130,7 @@ gj.datepicker.methods = {
         month = parseInt($datepicker.attr('month'), 10);
         year = parseInt($datepicker.attr('year'), 10);
 
-        $table.find('thead [role="month"]').text(gj.core.monthNames[month] + ' ' + year);
+        $table.find('thead [role="month"]').text(gj.core.messages[data.locale].monthNames[month] + ' ' + year);
 
         daysInMonth = new Array(31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31);
         if (year % 4 == 0 && year != 1900) {
@@ -13250,7 +13289,7 @@ gj.datepicker.methods = {
                     for (i = 0; i < data.disableDates.length; i++) {
                         if (data.disableDates[i] instanceof Date && data.disableDates[i].getTime() === date.getTime()) {
                             result = false;
-                        } else if (typeof data.disableDates[i] === 'string' && gj.core.parseDate(data.disableDates[i], data.format).getTime() === date.getTime()) {
+                        } else if (typeof data.disableDates[i] === 'string' && gj.core.parseDate(data.disableDates[i], data.format, data.locale).getTime() === date.getTime()) {
                             result = false;
                         }
                     }
@@ -13315,7 +13354,7 @@ gj.datepicker.methods = {
                 month = date.getMonth(),
                 year = date.getFullYear(),
                 data = $datepicker.data();
-            value = gj.core.formatDate(date, data.format);
+            value = gj.core.formatDate(date, data.format, data.locale);
             $datepicker.val(value);
             gj.datepicker.events.change($datepicker);
             $datepicker.attr('day', year + '-' + month + '-' + date.getDate());
@@ -13427,11 +13466,11 @@ gj.datepicker.methods = {
     },
 
     value: function ($datepicker, value) {
-        var $calendar, date;
+        var $calendar, date, data = $datepicker.data();
         if (typeof (value) === "undefined") {
             return $datepicker.val();
         } else {
-            date = gj.core.parseDate(value, $datepicker.data().format);
+            date = gj.core.parseDate(value, data.format, data.locale);
             if (date) {
                 $calendar = $('body').children('[role="calendar"][guid="' + $datepicker.attr('data-guid') + '"]');
                 gj.datepicker.methods.select($datepicker, $calendar, date)();

@@ -8,13 +8,15 @@
 /* global window alert jQuery gj */
 /**  */gj.datepicker = {
     plugins: {},
-    messages: []
+    messages: {
+        'en-us': {
+            weekDays: ['S', 'M', 'T', 'W', 'T', 'F', 'S']
+        }
+    }
 };
 
 gj.datepicker.config = {
     base: {
-        weekDays: ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
-
         /** Whether to display dates in other months at the start or end of the current month.         */        showOtherMonths: false,
 
         /** Whether days in other months shown before or after the current month are selectable.
@@ -45,8 +47,7 @@ gj.datepicker.config = {
 
         /** Whether to enable keyboard navigation.         */        keyboardNavigation: true,
 
-        //TODO Config:
-        locale: 'en-us',
+        /** The language that needs to be in use.         */        locale: 'en-us',
 
         icons: {
             /** datepicker icon definition.             */            rightIcon: '<i class="material-icons">event</i>',
@@ -162,7 +163,7 @@ gj.datepicker.methods = {
         
         data.fontSize && $calendar.css('font-size', data.fontSize);
 
-        date = gj.core.parseDate(data.value, data.format);
+        date = gj.core.parseDate(data.value, data.format, data.locale);
         if (!date || isNaN(date.getTime())) {
             date = new Date();
         } else {
@@ -182,11 +183,11 @@ gj.datepicker.methods = {
         if (data.calendarWeeks) {
             $row.append('<th><div>&nbsp;</div></th>');
         }
-        for (i = data.weekStartDay; i < data.weekDays.length; i++) {
-            $row.append('<th><div>' + data.weekDays[i] + '</div></th>');
+        for (i = data.weekStartDay; i < gj.datepicker.messages[data.locale].weekDays.length; i++) {
+            $row.append('<th><div>' + gj.datepicker.messages[data.locale].weekDays[i] + '</div></th>');
         }
         for (i = 0; i < data.weekStartDay; i++) {
-            $row.append('<th><div>' + data.weekDays[i] + '</div></th>');
+            $row.append('<th><div>' + gj.datepicker.messages[data.locale].weekDays[i] + '</div></th>');
         }
         $thead.append($row);
 
@@ -216,7 +217,7 @@ gj.datepicker.methods = {
         month = parseInt($datepicker.attr('month'), 10);
         year = parseInt($datepicker.attr('year'), 10);
 
-        $table.find('thead [role="month"]').text(gj.core.monthNames[month] + ' ' + year);
+        $table.find('thead [role="month"]').text(gj.core.messages[data.locale].monthNames[month] + ' ' + year);
 
         daysInMonth = new Array(31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31);
         if (year % 4 == 0 && year != 1900) {
@@ -375,7 +376,7 @@ gj.datepicker.methods = {
                     for (i = 0; i < data.disableDates.length; i++) {
                         if (data.disableDates[i] instanceof Date && data.disableDates[i].getTime() === date.getTime()) {
                             result = false;
-                        } else if (typeof data.disableDates[i] === 'string' && gj.core.parseDate(data.disableDates[i], data.format).getTime() === date.getTime()) {
+                        } else if (typeof data.disableDates[i] === 'string' && gj.core.parseDate(data.disableDates[i], data.format, data.locale).getTime() === date.getTime()) {
                             result = false;
                         }
                     }
@@ -440,7 +441,7 @@ gj.datepicker.methods = {
                 month = date.getMonth(),
                 year = date.getFullYear(),
                 data = $datepicker.data();
-            value = gj.core.formatDate(date, data.format);
+            value = gj.core.formatDate(date, data.format, data.locale);
             $datepicker.val(value);
             gj.datepicker.events.change($datepicker);
             $datepicker.attr('day', year + '-' + month + '-' + date.getDate());
@@ -552,11 +553,11 @@ gj.datepicker.methods = {
     },
 
     value: function ($datepicker, value) {
-        var $calendar, date;
+        var $calendar, date, data = $datepicker.data();
         if (typeof (value) === "undefined") {
             return $datepicker.val();
         } else {
-            date = gj.core.parseDate(value, $datepicker.data().format);
+            date = gj.core.parseDate(value, data.format, data.locale);
             if (date) {
                 $calendar = $('body').children('[role="calendar"][guid="' + $datepicker.attr('data-guid') + '"]');
                 gj.datepicker.methods.select($datepicker, $calendar, date)();
@@ -655,3 +656,35 @@ gj.datepicker.widget.constructor = gj.datepicker.widget;
         }
     };
 })(jQuery);
+gj.core.messages['bg-bg'] = {
+    monthNames: ['Януари', 'Февруари', 'Март', 'Април', 'Май', 'Юни', 'Юли', 'Август', 'Септември', 'Октомври', 'Ноември', 'Декември'],
+    monthShortNames: ['Яну', 'Фев', 'Мар', 'Апр', 'Май', 'Юни', 'Юли', 'Авг', 'Сеп', 'ОКт', 'Ное', 'Дек']
+};
+
+gj.datepicker.messages['bg-bg'] = {
+    weekDays: ['Н', 'П', 'В', 'С', 'Ч', 'П', 'С']
+};
+gj.core.messages['fr-fr'] = {
+    monthNames: ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'],
+    monthShortNames: ['janv.', 'févr.', 'mars', 'avr.', 'mai', 'juin', 'juil.', 'août', 'sept.', 'oct.', 'nov.', 'déc.' ]
+};
+
+gj.datepicker.messages['fr-fr'] = {
+    weekDays: ['D', 'L', 'M', 'M', 'J', 'V', 'S' ]
+};
+gj.core.messages['de-de'] = {
+    monthNames: ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'],
+    monthShortNames: ['Jan', 'Feb', 'Mär', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez']
+};
+
+gj.datepicker.messages['de-de'] = {
+    weekDays: ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa']
+};
+gj.core.messages['pt-br'] = {
+    monthNames: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
+    monthShortNames: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez' ]
+};
+
+gj.datepicker.messages['pt-br'] = {
+    weekDays: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb']
+};

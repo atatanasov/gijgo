@@ -24,6 +24,7 @@
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -69,6 +70,9 @@
     <Content Include="src\datepicker\css\datepicker.base.css" />
     <Content Include="src\datepicker\js\datepicker.base.js" />
     <Content Include="src\datepicker\js\header.txt" />
+    <Content Include="src\datepicker\js\messages\messages.bg-bg.js" />
+    <Content Include="src\datepicker\js\messages\messages.de-de.js" />
+    <Content Include="src\datepicker\js\messages\messages.pt-br.js" />
     <Content Include="src\dialog\css\dialog.base.css" />
     <Content Include="src\dialog\js\dialog.base.events.js" />
     <Content Include="src\dialog\js\dialog.base.widget.js" />
@@ -165,6 +169,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="src\editor\js\messages\messages.bg-bg.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="src\datepicker\js\messages\messages.fr-fr.js" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -8,7 +8,7 @@
 /* global window alert jQuery gj */
 /**  */gj.grid = {
     plugins: {},
-    messages: []
+    messages: {}
 };
 
 gj.grid.config = {

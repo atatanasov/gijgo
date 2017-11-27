@@ -5,7 +5,7 @@
   */
 gj.grid = {
     plugins: {},
-    messages: []
+    messages: {}
 };
 
 gj.grid.config = {
@@ -980,8 +980,7 @@ gj.grid.config = {
         /** The language that needs to be in use.
          * @type string
          * @default 'en-us'
-         * @example German.Bootstrap.Default <!-- bootstrap, grid-->
-         * <script src="../../dist/modular/grid/js/messages/messages.de-de.js"></script>
+         * @example German.Bootstrap.Default <!-- bootstrap, grid -->
          * <table id="grid"></table>
          * <script>
          *     $('#grid').grid({
@@ -990,14 +989,13 @@ gj.grid.config = {
          *         locale: 'de-de',
          *         columns: [ 
          *             { field: 'ID', width: 34 },
-         *             { field: 'Name', title: 'Prénom' },
-         *             { field: 'PlaceOfBirth', title: 'Lieu de naissance' }
+         *             { field: 'Name', title: 'Name' },
+         *             { field: 'PlaceOfBirth', title: 'Geburtsort' }
          *         ],
          *         pager: { limit: 5 }
          *     });
          * </script>
-         * @example French.MaterialDesign.Custom <!-- materialicons, grid-->
-         * <script src="../../dist/modular/grid/js/messages/messages.fr-fr.js"></script>
+         * @example French.MaterialDesign.Custom <!-- materialicons, grid -->
          * <table id="grid"></table>
          * <script>
          *     gj.grid.messages['fr-fr'].DisplayingRecords = 'Mes résultats';

@@ -243,9 +243,13 @@ gj.documentManager = {
   * @plugin Base
   */
 gj.core = {
-    monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+    messages: {
+        'en-us': {
+            monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
 
-    monthShortNames: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+            monthShortNames: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+        }
+    },
 
     /** 
      * @method
@@ -279,9 +283,8 @@ gj.core = {
      * <script>
      *     $('#date').text(gj.core.parseDate(349653600000));
      * </script>
-
      */
-    parseDate: function (value, format) {
+    parseDate: function (value, format, locale) {
         var i, date, month, year, dateParts, formatParts, result;
 
         if (value && typeof value === 'string') {
@@ -298,9 +301,9 @@ gj.core = {
                     } else if (['m', 'mm'].indexOf(formatParts[i]) > -1) {
                         month = parseInt(dateParts[i], 10) - 1;
                     } else if ('mmm' === formatParts[i]) {
-                        month = gj.core.monthShortNames.indexOf(dateParts[i]);
+                        month = gj.core.messages[locale || 'en-us'].monthShortNames.indexOf(dateParts[i]);
                     } else if ('mmmm' === formatParts[i]) {
-                        month = gj.core.monthNames.indexOf(dateParts[i]);
+                        month = gj.core.messages[locale || 'en-us'].monthNames.indexOf(dateParts[i]);
                     } else if (['yy', 'yyyy'].indexOf(formatParts[i]) > -1) {
                         year = parseInt(dateParts[i], 10);
                         if (formatParts[i] === 'yy') {
@@ -352,7 +355,7 @@ gj.core = {
      *     $('#date').text(gj.core.formatDate(new Date(2017, 1, 3, 20, 43, 53), 'hh:MM TT'));
      * </script>
      */
-    formatDate: function (date, format) {
+    formatDate: function (date, format, locale) {
         var result = '', separator, tmp,
             formatParts = format.split(/[\s,-\.//\:]+/),
             separators = format.replace(/[shtdmyHTDMY]/g, ''),
@@ -413,10 +416,10 @@ gj.core = {
                     result += pad(date.getMonth() + 1) + separator;
                     break;
                 case 'mmm':
-                    result += gj.core.monthShortNames[date.getMonth()] + separator;
+                    result += gj.core.messages[locale || 'en-us'].monthShortNames[date.getMonth()] + separator;
                     break;
                 case 'mmmm':
-                    result += gj.core.monthNames[date.getMonth()] + separator;
+                    result += gj.core.messages[locale || 'en-us'].monthNames[date.getMonth()] + separator;
                     break;
                 case 'yy' :
                     result += date.getFullYear().toString().substr(2) + separator;

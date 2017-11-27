@@ -5,13 +5,15 @@
   */
 gj.datepicker = {
     plugins: {},
-    messages: []
+    messages: {
+        'en-us': {
+            weekDays: ['S', 'M', 'T', 'W', 'T', 'F', 'S']
+        }
+    }
 };
 
 gj.datepicker.config = {
     base: {
-        weekDays: ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
-
         /** Whether to display dates in other months at the start or end of the current month.
          * @additionalinfo Set to true by default for Bootstrap.
          * @type Boolean
@@ -326,7 +328,43 @@ gj.datepicker.config = {
          */
         keyboardNavigation: true,
 
-        //TODO Config:
+        /** The language that needs to be in use.
+         * @type string
+         * @default 'en-us'
+         * @example German <!-- materialicons, datepicker -->
+         * <input id="datepicker" width="276" />
+         * <script>
+         *    $('#datepicker').datepicker({
+         *        locale: 'de-de',
+         *        format: 'dd mmm yyyy'
+         *    });
+         * </script>
+         * @example Bulgarian <!-- materialicons, datepicker -->
+         * <input id="datepicker" width="276" />
+         * <script>
+         *    $('#datepicker').datepicker({
+         *        locale: 'bg-bg',
+         *        format: 'dd mmm yyyy',
+         *        weekStartDay: 1
+         *    });
+         * </script>
+         * @example French <!-- materialicons, datepicker -->
+         * <input id="datepicker" width="276" />
+         * <script>
+         *    $('#datepicker').datepicker({
+         *        locale: 'fr-fr',
+         *        format: 'dd mmm yyyy'
+         *    });
+         * </script>
+         * @example Brazil <!-- materialicons, datepicker -->
+         * <input id="datepicker" width="276" />
+         * <script>
+         *    $('#datepicker').datepicker({
+         *        locale: 'pt-br',
+         *        format: 'dd mmm yyyy'
+         *    });
+         * </script>
+         */
         locale: 'en-us',
 
         icons: {
@@ -467,7 +505,7 @@ gj.datepicker.methods = {
         
         data.fontSize && $calendar.css('font-size', data.fontSize);
 
-        date = gj.core.parseDate(data.value, data.format);
+        date = gj.core.parseDate(data.value, data.format, data.locale);
         if (!date || isNaN(date.getTime())) {
             date = new Date();
         } else {
@@ -487,11 +525,11 @@ gj.datepicker.methods = {
         if (data.calendarWeeks) {
             $row.append('<th><div>&nbsp;</div></th>');
         }
-        for (i = data.weekStartDay; i < data.weekDays.length; i++) {
-            $row.append('<th><div>' + data.weekDays[i] + '</div></th>');
+        for (i = data.weekStartDay; i < gj.datepicker.messages[data.locale].weekDays.length; i++) {
+            $row.append('<th><div>' + gj.datepicker.messages[data.locale].weekDays[i] + '</div></th>');
         }
         for (i = 0; i < data.weekStartDay; i++) {
-            $row.append('<th><div>' + data.weekDays[i] + '</div></th>');
+            $row.append('<th><div>' + gj.datepicker.messages[data.locale].weekDays[i] + '</div></th>');
         }
         $thead.append($row);
 
@@ -521,7 +559,7 @@ gj.datepicker.methods = {
         month = parseInt($datepicker.attr('month'), 10);
         year = parseInt($datepicker.attr('year'), 10);
 
-        $table.find('thead [role="month"]').text(gj.core.monthNames[month] + ' ' + year);
+        $table.find('thead [role="month"]').text(gj.core.messages[data.locale].monthNames[month] + ' ' + year);
 
         daysInMonth = new Array(31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31);
         if (year % 4 == 0 && year != 1900) {
@@ -680,7 +718,7 @@ gj.datepicker.methods = {
                     for (i = 0; i < data.disableDates.length; i++) {
                         if (data.disableDates[i] instanceof Date && data.disableDates[i].getTime() === date.getTime()) {
                             result = false;
-                        } else if (typeof data.disableDates[i] === 'string' && gj.core.parseDate(data.disableDates[i], data.format).getTime() === date.getTime()) {
+                        } else if (typeof data.disableDates[i] === 'string' && gj.core.parseDate(data.disableDates[i], data.format, data.locale).getTime() === date.getTime()) {
                             result = false;
                         }
                     }
@@ -745,7 +783,7 @@ gj.datepicker.methods = {
                 month = date.getMonth(),
                 year = date.getFullYear(),
                 data = $datepicker.data();
-            value = gj.core.formatDate(date, data.format);
+            value = gj.core.formatDate(date, data.format, data.locale);
             $datepicker.val(value);
             gj.datepicker.events.change($datepicker);
             $datepicker.attr('day', year + '-' + month + '-' + date.getDate());
@@ -857,11 +895,11 @@ gj.datepicker.methods = {
     },
 
     value: function ($datepicker, value) {
-        var $calendar, date;
+        var $calendar, date, data = $datepicker.data();
         if (typeof (value) === "undefined") {
             return $datepicker.val();
         } else {
-            date = gj.core.parseDate(value, $datepicker.data().format);
+            date = gj.core.parseDate(value, data.format, data.locale);
             if (date) {
                 $calendar = $('body').children('[role="calendar"][guid="' + $datepicker.attr('data-guid') + '"]');
                 gj.datepicker.methods.select($datepicker, $calendar, date)();

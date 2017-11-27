@@ -105,15 +105,15 @@
                     'dist/modular/css/editor.css': ['dist/modular/css/editor.code.css'],
                     'dist/modular/js/dropdown.js': ['src/dropdown/js/header.txt', 'dist/modular/js/dropdown.code.js'],
                     'dist/modular/css/dropdown.css': ['dist/modular/css/dropdown.code.css'],
-                    'dist/modular/js/datepicker.js': ['src/datepicker/js/header.txt', 'dist/modular/js/datepicker.code.js'],
+                    'dist/modular/js/datepicker.js': ['src/datepicker/js/header.txt', 'dist/modular/js/datepicker.code.js', 'src/datepicker/js/messages/messages.bg-bg.js', 'src/datepicker/js/messages/messages.fr-fr.js', 'src/datepicker/js/messages/messages.de-de.js', 'src/datepicker/js/messages/messages.pt-br.js'],
                     'dist/modular/css/datepicker.css': ['dist/modular/css/datepicker.code.css'],
                     
                     'dist/combined/js/gijgo.js': ['src/header.txt', 'src/core.js', 'dist/modular/js/dialog.code.js', 'dist/modular/js/draggable.code.js', 'dist/modular/js/droppable.code.js', 'dist/modular/js/grid.code.js', 'dist/modular/js/tree.code.js', 'dist/modular/js/checkbox.code.js', 'dist/modular/js/editor.code.js', 'dist/modular/js/dropdown.code.js', 'dist/modular/js/datepicker.code.js'],
                     'dist/combined/css/gijgo.css': ['src/core.css', 'dist/modular/css/dialog.code.css', 'dist/modular/css/grid.code.css', 'dist/modular/css/tree.code.css', 'dist/modular/css/checkbox.code.css', 'dist/modular/css/editor.code.css', 'dist/modular/css/dropdown.code.css', 'dist/modular/css/datepicker.code.css'],
-                    'dist/combined/js/messages/messages.bg-bg.js': ['src/dialog/js/messages/messages.bg-bg.js', 'src/grid/js/messages/messages.bg-bg.js', 'src/editor/js/messages/messages.bg-bg.js'],
-                    'dist/combined/js/messages/messages.fr-fr.js': ['src/dialog/js/messages/messages.fr-fr.js', 'src/grid/js/messages/messages.fr-fr.js', 'src/editor/js/messages/messages.fr-fr.js'],
-                    'dist/combined/js/messages/messages.de-de.js': ['src/dialog/js/messages/messages.de-de.js', 'src/grid/js/messages/messages.de-de.js', 'src/editor/js/messages/messages.de-de.js'],
-                    'dist/combined/js/messages/messages.pt-br.js': ['src/dialog/js/messages/messages.pt-br.js', 'src/grid/js/messages/messages.pt-br.js', 'src/editor/js/messages/messages.pt-br.js']
+                    'dist/combined/js/messages/messages.bg-bg.js': ['src/dialog/js/messages/messages.bg-bg.js', 'src/grid/js/messages/messages.bg-bg.js', 'src/editor/js/messages/messages.bg-bg.js', 'src/datepicker/js/messages/messages.bg-bg.js'],
+                    'dist/combined/js/messages/messages.fr-fr.js': ['src/dialog/js/messages/messages.fr-fr.js', 'src/grid/js/messages/messages.fr-fr.js', 'src/editor/js/messages/messages.fr-fr.js', 'src/datepicker/js/messages/messages.fr-fr.js'],
+                    'dist/combined/js/messages/messages.de-de.js': ['src/dialog/js/messages/messages.de-de.js', 'src/grid/js/messages/messages.de-de.js', 'src/editor/js/messages/messages.de-de.js', 'src/datepicker/js/messages/messages.de-de.js'],
+                    'dist/combined/js/messages/messages.pt-br.js': ['src/dialog/js/messages/messages.pt-br.js', 'src/grid/js/messages/messages.pt-br.js', 'src/editor/js/messages/messages.pt-br.js', 'src/datepicker/js/messages/messages.pt-br.js']
                 }
             }
         },

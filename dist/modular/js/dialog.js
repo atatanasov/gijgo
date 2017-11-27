@@ -8,7 +8,7 @@
 /* global window alert jQuery */
 /**  */gj.dialog = {
     plugins: {},
-    messages: []
+    messages: {}
 };
 
 gj.dialog.config = {

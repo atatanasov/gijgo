@@ -5,7 +5,7 @@
  */
 gj.dialog = {
     plugins: {},
-    messages: []
+    messages: {}
 };
 
 gj.dialog.config = {
