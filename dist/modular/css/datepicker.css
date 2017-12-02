@@ -167,7 +167,8 @@
     border-radius: 4px;
 }
 
-.gj-calendar-bootstrap table tr td.other-month div {
+.gj-calendar-bootstrap table tr td.other-month div,
+.gj-calendar-bootstrap table tr td.disabled div {
     color: #777;
 }
 

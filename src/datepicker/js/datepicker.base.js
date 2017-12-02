@@ -89,12 +89,30 @@ gj.datepicker.config = {
          * @example Yesterday <!-- materialicons, datepicker -->
          * <input id="datepicker" width="312" />
          * <script>
-         *     $('#datepicker').datepicker({ 
+         *     $('#datepicker').datepicker({
          *        minDate: function() {
          *            var date = new Date();
          *            date.setDate(date.getDate()-1);
          *            return new Date(date.getFullYear(), date.getMonth(), date.getDate());
          *        }
+         *     });
+         * </script>
+         * @example Bootstrap <!-- bootstrap, datepicker -->
+         * <input id="datepicker" width="312" />
+         * <script>
+         *     $('#datepicker').datepicker({
+         *        value: '12/15/2017',
+         *        minDate: '12/12/2017',
+         *        uiLibrary: 'bootstrap'
+         *     });
+         * </script>
+         * @example Bootstrap.4 <!-- bootstrap4, fontawesome, datepicker -->
+         * <input id="datepicker" width="312" />
+         * <script>
+         *     $('#datepicker').datepicker({
+         *        minDate: '12/12/2017',
+         *        uiLibrary: 'bootstrap4',
+         *        iconsLibrary: 'fontawesome'
          *     });
          * </script>
          */
@@ -676,9 +694,12 @@ gj.datepicker.methods = {
         var minDate;
         if (data.minDate) {
             if (typeof (data.minDate) === 'string') {
-                minDate = new Date(data.minDate);
+                minDate = gj.core.parseDate(data.minDate, data.format, data.locale);
             } else if (typeof (data.minDate) === 'function') {
                 minDate = data.minDate();
+                if (typeof minDate === 'string') {
+                    minDate = gj.core.parseDate(minDate, data.format, data.locale);
+                }
             } else if (typeof data.minDate.getMonth === 'function') {
                 minDate = data.minDate;
             }
@@ -690,9 +711,12 @@ gj.datepicker.methods = {
         var maxDate;
         if (data.maxDate) {
             if (typeof data.maxDate === 'string') {
-                maxDate = new Date(data.maxDate);
+                maxDate = gj.core.parseDate(data.maxDate, data.format, data.locale);
             } else if (typeof data.maxDate === 'function') {
                 maxDate = data.maxDate();
+                if (typeof maxDate === 'string') {
+                    maxDate = gj.core.parseDate(maxDate, data.format, data.locale);
+                }
             } else if (typeof data.maxDate.getMonth === 'function') {
                 maxDate = data.maxDate;
             }

@@ -276,6 +276,7 @@ ul.gj-list-md li.disabled>[data-role="wrapper"]>[data-role="display"] {
 .gj-list-md-active {
     background: #E8EAF6;
 }
+
 .gj-draggable {
     cursor: move;
 }
@@ -1676,7 +1677,8 @@ ul.gj-list-md li.disabled>[data-role="wrapper"]>[data-role="expander"] {
     border-radius: 4px;
 }
 
-.gj-calendar-bootstrap table tr td.other-month div {
+.gj-calendar-bootstrap table tr td.other-month div,
+.gj-calendar-bootstrap table tr td.disabled div {
     color: #777;
 }
 

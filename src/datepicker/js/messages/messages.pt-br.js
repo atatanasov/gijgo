@@ -4,5 +4,6 @@
 };
 
 gj.datepicker.messages['pt-br'] = {
-    weekDays: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb']
+    //weekDays: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb']
+    weekDays: ['D', 'S', 'T', 'Q', 'Q', 'S', 'S']
 };
