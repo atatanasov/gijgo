@@ -18,14 +18,14 @@ gj.datepicker.config = {
          * @additionalinfo Set to true by default for Bootstrap.
          * @type Boolean
          * @default false
-         * @example True <!-- materialicons, datepicker -->
+         * @example True <!-- datepicker -->
          * <input id="datepicker" width="312" />
          * <script>
          *    var datepicker = $('#datepicker').datepicker({ 
          *        showOtherMonths: true
          *    });
          * </script>
-         * @example False <!-- materialicons, datepicker -->
+         * @example False <!-- datepicker -->
          * <input id="datepicker" width="312" />
          * <script>
          *     $('#datepicker').datepicker({ 
@@ -39,7 +39,7 @@ gj.datepicker.config = {
          * This only applies if the showOtherMonths option is set to true.
          * @type Boolean
          * @default true
-         * @example True <!-- materialicons, datepicker -->
+         * @example True <!-- datepicker -->
          * <input id="datepicker" width="312" />
          * <script>
          *    $('#datepicker').datepicker({
@@ -47,7 +47,7 @@ gj.datepicker.config = {
          *        selectOtherMonths: true
          *    });
          * </script>
-         * @example False <!-- materialicons, datepicker -->
+         * @example False <!-- datepicker -->
          * <input id="datepicker" width="312" />
          * <script>
          *     $('#datepicker').datepicker({ 
@@ -61,12 +61,12 @@ gj.datepicker.config = {
         /** The width of the datepicker.
          * @type number
          * @default undefined
-         * @example JS.Config <!-- materialicons, datepicker -->
+         * @example JS.Config <!-- datepicker -->
          * <input id="datepicker" />
          * <script>
          *    $('#datepicker').datepicker({ width: 312 });
          * </script>
-         * @example HTML.Config <!-- materialicons, datepicker -->
+         * @example HTML.Config <!-- datepicker -->
          * <input id="datepicker" width="312" />
          * <script>
          *    $('#datepicker').datepicker();
@@ -77,7 +77,7 @@ gj.datepicker.config = {
         /** The minimum selectable date. When not set, there is no minimum
          * @type Date|String|Function
          * @default undefined
-         * @example Today <!-- materialicons, datepicker -->
+         * @example Today <!-- datepicker -->
          * <input id="datepicker" width="312" />
          * <script>
          *    var today, datepicker;
@@ -86,7 +86,7 @@ gj.datepicker.config = {
          *        minDate: today
          *    });
          * </script>
-         * @example Yesterday <!-- materialicons, datepicker -->
+         * @example Yesterday <!-- datepicker -->
          * <input id="datepicker" width="312" />
          * <script>
          *     $('#datepicker').datepicker({
@@ -121,7 +121,7 @@ gj.datepicker.config = {
         /** The maximum selectable date. When not set, there is no maximum
          * @type Date|String|Function
          * @default undefined
-         * @example Today <!-- materialicons, datepicker -->
+         * @example Today <!-- datepicker -->
          * <input id="datepicker" width="312" />
          * <script>
          *    var today, datepicker;
@@ -130,7 +130,7 @@ gj.datepicker.config = {
          *        maxDate: today
          *    });
          * </script>
-         * @example Tomorrow <!-- materialicons, datepicker -->
+         * @example Tomorrow <!-- datepicker -->
          * <input id="datepicker" width="312" />
          * <script>
          *     $('#datepicker').datepicker({ 
@@ -153,21 +153,21 @@ gj.datepicker.config = {
          * <b>yyyy</b> - Year represented by four digits.<br/>
          * @type String
          * @default 'mm/dd/yyyy'
-         * @example Sample <!-- materialicons, datepicker -->
+         * @example Sample <!-- datepicker -->
          * <input id="datepicker" value="2017-25-07" />
          * <script>
          *     var datepicker = $('#datepicker').datepicker({
          *         format: 'yyyy-dd-mm'
          *     });
          * </script>
-         * @example Short.Month.Format <!-- materialicons, datepicker -->
+         * @example Short.Month.Format <!-- datepicker -->
          * <input id="datepicker" value="10 Oct 2017" />
          * <script>
          *     var datepicker = $('#datepicker').datepicker({
          *         format: 'dd mmm yyyy'
          *     });
          * </script>
-         * @example Long.Month.Format <!-- materialicons, datepicker -->
+         * @example Long.Month.Format <!-- datepicker -->
          * <input id="datepicker" value="10 October 2017" />
          * <script>
          *     var datepicker = $('#datepicker').datepicker({
@@ -185,7 +185,8 @@ gj.datepicker.config = {
          * <input id="datepicker" width="312" />
          * <script>
          *    var datepicker = $('#datepicker').datepicker({ 
-         *        uiLibrary: 'materialdesign'
+         *        uiLibrary: 'materialdesign',
+         *        iconsLibrary: 'materialicons'
          *    });
          * </script>
          * @example Bootstrap.3 <!-- bootstrap, datepicker -->
@@ -193,10 +194,10 @@ gj.datepicker.config = {
          * <script>
          *     $('#datepicker').datepicker({ uiLibrary: 'bootstrap' });
          * </script>
-         * @example Bootstrap.4.Material.Icons <!-- materialicons, bootstrap4, datepicker -->
+         * @example Bootstrap.4.Material.Icons <!-- bootstrap4, materialicons, datepicker -->
          * <input id="datepicker" width="276" />
          * <script>
-         *     $('#datepicker').datepicker({ uiLibrary: 'bootstrap4' });
+         *     $('#datepicker').datepicker({ uiLibrary: 'bootstrap4', iconsLibrary: 'materialicons' });
          * </script>
          * @example Bootstrap.4.FontAwesome <!-- fontawesome, bootstrap4, datepicker -->
          * <input id="datepicker" width="276" />
@@ -212,7 +213,7 @@ gj.datepicker.config = {
          * The css files for Material Icons, Font Awesome or Glyphicons should be manually included to the page where the grid is in use.
          * @type (materialicons|fontawesome|glyphicons)
          * @default 'materialicons'
-         * @example Bootstrap.Material.Icons <!-- bootstrap, materialicons, datepicker -->
+         * @example Bootstrap.Material.Icons <!-- bootstrap, datepicker -->
          * <input id="datepicker" width="276" />
          * <script>
          *     $('#datepicker').datepicker({
@@ -234,14 +235,14 @@ gj.datepicker.config = {
         /** The initial datepicker value.
          * @type String
          * @default undefined
-         * @example Javascript <!-- materialicons, datepicker -->
+         * @example Javascript <!-- datepicker -->
          * <input id="datepicker" width="312" />
          * <script>
          *    $('#datepicker').datepicker({
          *        value: '01/01/2018'
          *    });
          * </script>
-         * @example HTML <!-- materialicons, datepicker -->
+         * @example HTML <!-- datepicker -->
          * <input id="datepicker" width="312" value="01/01/2018" />
          * <script>
          *     $('#datepicker').datepicker();
@@ -252,14 +253,14 @@ gj.datepicker.config = {
         /** Day of the week start. 0 (Sunday) to 6 (Saturday)
          * @type Number
          * @default 0
-         * @example Monday <!-- materialicons, datepicker -->
+         * @example Monday <!-- datepicker -->
          * <input id="datepicker" width="312" />
          * <script>
          *    $('#datepicker').datepicker({
          *        weekStartDay: 1
          *    });
          * </script>
-         * @example Saturday <!-- materialicons, datepicker -->
+         * @example Saturday <!-- datepicker -->
          * <input id="datepicker" width="312" />
          * <script>
          *    $('#datepicker').datepicker({
@@ -272,7 +273,7 @@ gj.datepicker.config = {
         /** An array or function that will be used to determine which dates to be disabled for selection by the widget.
          * @type Array|Function
          * @default undefined
-         * @example Array <!-- materialicons, datepicker -->
+         * @example Array <!-- datepicker -->
          * <input id="datepicker" width="312" />
          * <script>
          *    $('#datepicker').datepicker({
@@ -280,7 +281,7 @@ gj.datepicker.config = {
          *        disableDates: [new Date(2017,10,11), '11/12/2017']
          *    });
          * </script>
-         * @example Function <!-- materialicons, datepicker -->
+         * @example Function <!-- datepicker -->
          * <input id="datepicker" width="312" />
          * <script>
          *    $('#datepicker').datepicker({
@@ -302,7 +303,7 @@ gj.datepicker.config = {
          * The array needs to contains only numbers where 0 is Sunday, 1 is Monday and etc.
          * @type Array
          * @default undefined
-         * @example Saturday.Sunday <!-- materialicons, datepicker -->
+         * @example Saturday.Sunday <!-- datepicker -->
          * <input id="datepicker" width="312" />
          * <script>
          *    $('#datepicker').datepicker({
@@ -315,7 +316,7 @@ gj.datepicker.config = {
         /** Whether to display week number in year on the left side of the calendar.
          * @type Boolean
          * @default false
-         * @example True <!-- materialicons, datepicker -->
+         * @example True <!-- datepicker -->
          * <input id="datepicker" width="312" />
          * <script>
          *    $('#datepicker').datepicker({
@@ -328,14 +329,14 @@ gj.datepicker.config = {
         /** Whether to enable keyboard navigation.
          * @type Boolean
          * @default true
-         * @example Material.Design <!-- materialicons, datepicker -->
+         * @example Material.Design <!-- datepicker -->
          * <input id="datepicker" width="312" />
          * <script>
          *    $('#datepicker').datepicker({
          *        keyboardNavigation: true
          *    });
          * </script>
-         * @example Bootstrap.4 <!-- materialicons, bootstrap4, datepicker -->
+         * @example Bootstrap.4 <!-- bootstrap4, datepicker -->
          * <input id="datepicker" width="276" />
          * <script>
          *    $('#datepicker').datepicker({
@@ -349,7 +350,7 @@ gj.datepicker.config = {
         /** The language that needs to be in use.
          * @type string
          * @default 'en-us'
-         * @example German <!-- materialicons, datepicker -->
+         * @example German <!-- datepicker -->
          * <input id="datepicker" width="276" />
          * <script>
          *    $('#datepicker').datepicker({
@@ -357,7 +358,7 @@ gj.datepicker.config = {
          *        format: 'dd mmm yyyy'
          *    });
          * </script>
-         * @example Bulgarian <!-- materialicons, datepicker -->
+         * @example Bulgarian <!-- datepicker -->
          * <input id="datepicker" width="276" />
          * <script>
          *    $('#datepicker').datepicker({
@@ -366,7 +367,7 @@ gj.datepicker.config = {
          *        weekStartDay: 1
          *    });
          * </script>
-         * @example French <!-- materialicons, datepicker -->
+         * @example French <!-- datepicker -->
          * <input id="datepicker" width="276" />
          * <script>
          *    $('#datepicker').datepicker({
@@ -374,7 +375,7 @@ gj.datepicker.config = {
          *        format: 'dd mmm yyyy'
          *    });
          * </script>
-         * @example Brazil <!-- materialicons, datepicker -->
+         * @example Brazil <!-- datepicker -->
          * <input id="datepicker" width="276" />
          * <script>
          *    $('#datepicker').datepicker({
@@ -404,16 +405,16 @@ gj.datepicker.config = {
              * <script>
              *     $('#datepicker').datepicker({
              *         uiLibrary: 'bootstrap',
-             *         icons: { 
+             *         icons: {
              *             rightIcon: '<span class="glyphicon glyphicon-chevron-down" />'
              *         }
              *     });
              * </script>
              */
-            rightIcon: '<i class="material-icons">event</i>',
+            rightIcon: '<i class="gj-icon event" />',
 
-            previousMonth: '<i class="material-icons">keyboard_arrow_left</i>',
-            nextMonth: '<i class="material-icons">keyboard_arrow_right</i>'
+            previousMonth: '<i class="gj-icon keyboard-arrow-left" />',
+            nextMonth: '<i class="gj-icon keyboard-arrow-right" />'
         },
 
         fontSize: undefined,
@@ -444,7 +445,11 @@ gj.datepicker.config = {
         showOtherMonths: true
     },
 
-    materialicons: {},
+    materialicons: {
+        //rightIcon: '<i class="material-icons">event</i>',
+        //previousMonth: '<i class="material-icons">keyboard_arrow_left</i>',
+        //nextMonth: '<i class="material-icons">keyboard_arrow_right</i>'
+    },
 
     fontawesome: {
         icons: {
@@ -956,7 +961,7 @@ gj.datepicker.events = {
      *
      * @event change
      * @param {object} e - event data
-     * @example sample <!-- datepicker, materialicons -->
+     * @example sample <!-- datepicker -->
      * <input id="datepicker" />
      * <script>
      *     $('#datepicker').datepicker({
@@ -974,7 +979,7 @@ gj.datepicker.events = {
      * Event fires when the datepicker is opened.
      * @event show
      * @param {object} e - event data
-     * @example sample <!-- datepicker, materialicons -->
+     * @example sample <!-- datepicker -->
      * <input id="datepicker" />
      * <script>
      *     $('#datepicker').datepicker({
@@ -992,7 +997,7 @@ gj.datepicker.events = {
      * Event fires when the datepicker is closed.
      * @event hide
      * @param {object} e - event data
-     * @example sample <!-- datepicker, materialicons -->
+     * @example sample <!-- datepicker -->
      * <input id="datepicker" />
      * <script>
      *     $('#datepicker').datepicker({
@@ -1015,14 +1020,14 @@ gj.datepicker.widget = function ($element, jsConfig) {
      * @method
      * @param {string} value - The value that needs to be selected.
      * @return string
-     * @example Get <!-- datepicker, materialicons -->
+     * @example Get <!-- datepicker -->
      * <button class="gj-button-md" onclick="alert($datepicker.value())">Get Content</button>
      * <hr/>
      * <input id="datepicker" />
      * <script>
      *     var $datepicker = $('#datepicker').datepicker();
      * </script>
-     * @example Set <!-- datepicker, materialicons -->
+     * @example Set <!-- datepicker -->
      * <button class="gj-button-md" onclick="$datepicker.value('08/01/2017')">Set Value</button>
      * <hr/>
      * <input id="datepicker" />
@@ -1037,7 +1042,7 @@ gj.datepicker.widget = function ($element, jsConfig) {
     /** Remove datepicker functionality from the element.
      * @method
      * @return jquery element
-     * @example sample <!-- datepicker, materialicons -->
+     * @example sample <!-- datepicker -->
      * <button class="gj-button-md" onclick="datepicker.destroy()">Destroy</button>
      * <input id="datepicker" />
      * <script>
@@ -1051,7 +1056,7 @@ gj.datepicker.widget = function ($element, jsConfig) {
     /** Show the calendar.
      * @method
      * @return datepicker
-     * @example Show.Hide <!-- datepicker, materialicons -->
+     * @example Show.Hide <!-- datepicker -->
      * <button class="gj-button-md" onclick="$datepicker.show()">Show</button>
      * <button class="gj-button-md" onclick="$datepicker.hide()">Hide</button>
      * <hr/>
@@ -1067,7 +1072,7 @@ gj.datepicker.widget = function ($element, jsConfig) {
     /** Hide the calendar.
      * @method
      * @return datepicker
-     * @example Show.Hide <!-- datepicker, materialicons -->
+     * @example Show.Hide <!-- datepicker -->
      * <button class="gj-button-md" onclick="$datepicker.show()">Show</button>
      * <button class="gj-button-md" onclick="$datepicker.hide()">Hide</button>
      * <hr/>

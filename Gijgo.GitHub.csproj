@@ -96,7 +96,7 @@
     <Content Include="src\editor\js\messages\messages.en-us.js" />
     <Content Include="src\editor\js\messages\messages.fr-fr.js" />
     <Content Include="src\editor\js\messages\messages.pt-br.js" />
-    <Content Include="src\fonts\gijgo.svg" />
+    <Content Include="src\fonts\gijgo-material.svg" />
     <Content Include="src\grid\css\grid.base.css" />
     <Content Include="src\grid\css\grid.columnReorder.css" />
     <Content Include="src\grid\css\grid.fixedHeader.css" />
@@ -132,7 +132,15 @@
     <Content Include="src\grid\js\messages\messages.bg-bg.js" />
     <Content Include="src\grid\js\messages\messages.en-us.js" />
     <Content Include="src\grid\js\messages\messages.fr-fr.js" />
+    <Content Include="src\icons\event.svg" />
     <Content Include="src\icons\icons.css" />
+    <Content Include="src\icons\keyboard_arrow_down.svg" />
+    <Content Include="src\icons\keyboard_arrow_left.svg" />
+    <Content Include="src\icons\keyboard_arrow_right.svg" />
+    <Content Include="src\icons\keyboard_arrow_up.svg" />
+    <Content Include="src\icons\minus.svg" />
+    <Content Include="src\icons\pencil.svg" />
+    <Content Include="src\icons\plus.svg" />
     <Content Include="src\tree\css\tree.base.css" />
     <Content Include="src\tree\css\tree.dragAndDrop.css" />
     <Content Include="src\tree\js\header.txt" />
@@ -176,8 +184,8 @@
     <Content Include="src\datepicker\js\messages\messages.fr-fr.js" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="src\fonts\gijgo.ttf" />
-    <Content Include="src\fonts\gijgo.woff" />
+    <Content Include="src\fonts\gijgo-material.ttf" />
+    <Content Include="src\fonts\gijgo-material.woff" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

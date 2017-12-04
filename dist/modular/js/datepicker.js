@@ -50,10 +50,10 @@ gj.datepicker.config = {
         /** The language that needs to be in use.         */        locale: 'en-us',
 
         icons: {
-            /** datepicker icon definition.             */            rightIcon: '<i class="material-icons">event</i>',
+            /** datepicker icon definition.             */            rightIcon: '<i class="gj-icon event" />',
 
-            previousMonth: '<i class="material-icons">keyboard_arrow_left</i>',
-            nextMonth: '<i class="material-icons">keyboard_arrow_right</i>'
+            previousMonth: '<i class="gj-icon keyboard-arrow-left" />',
+            nextMonth: '<i class="gj-icon keyboard-arrow-right" />'
         },
 
         fontSize: undefined,
@@ -84,7 +84,11 @@ gj.datepicker.config = {
         showOtherMonths: true
     },
 
-    materialicons: {},
+    materialicons: {
+        //rightIcon: '<i class="material-icons">event</i>',
+        //previousMonth: '<i class="material-icons">keyboard_arrow_left</i>',
+        //nextMonth: '<i class="material-icons">keyboard_arrow_right</i>'
+    },
 
     fontawesome: {
         icons: {

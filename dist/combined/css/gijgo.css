@@ -277,6 +277,70 @@ ul.gj-list-md li.disabled>[data-role="wrapper"]>[data-role="display"] {
     background: #E8EAF6;
 }
 
+@font-face {
+    font-family: 'gijgo-material';
+    src: url('../fonts/gijgo-material.ttf?99ykmt') format('truetype'), url('../fonts/gijgo-material.woff?99ykmt') format('woff'), url('../fonts/gijgo-material.svg?99ykmt#gijgo-material') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.gj-icon {
+    /* use !important to prevent issues with browser extensions that change fonts */
+    font-family: 'gijgo-material' !important;
+    /*speak: none;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;*/
+    font-weight: normal;
+    font-style: normal;
+    font-size: 24px;
+    line-height: 1;
+    letter-spacing: normal;
+    text-transform: none;
+    display: inline-block;
+    white-space: nowrap;
+    word-wrap: normal;
+    direction: ltr;
+    -webkit-font-feature-settings: 'liga';
+    -webkit-font-smoothing: antialiased;
+}
+
+.event:before {
+    content: "\e900";
+}
+
+.keyboard-arrow-down:before {
+    content: "\e901";
+}
+
+.keyboard-arrow-left:before {
+    content: "\e902";
+}
+
+.keyboard-arrow-right:before {
+    content: "\e903";
+}
+
+.keyboard-arrow-up:before {
+    content: "\e904";
+}
+
+.minus:before {
+    content: "\e905";
+}
+
+.pencil:before {
+    content: "\e906";
+}
+
+.plus:before {
+    content: "\e907";
+}
+
 .gj-draggable {
     cursor: move;
 }
@@ -1573,6 +1637,7 @@ ul.gj-list-md li.disabled>[data-role="wrapper"]>[data-role="expander"] {
     border: 1px solid #E0E0E0;
 }
 
+.gj-calendar-md table tr[role="month-manager"] th div i.gj-icon,
 .gj-calendar-md table tr[role="month-manager"] th div i.material-icons {
     position: absolute;
     top: 8px;
@@ -1627,6 +1692,7 @@ ul.gj-list-md li.disabled>[data-role="wrapper"]>[data-role="expander"] {
     min-width: 34px;
 }
 
+.gj-datepicker-bootstrap span[role="right-icon"].input-group-addon .gj-icon,
 .gj-datepicker-bootstrap span[role="right-icon"].input-group-addon .material-icons {
     position: absolute;
     top: 7px;
@@ -1656,6 +1722,7 @@ ul.gj-list-md li.disabled>[data-role="wrapper"]>[data-role="expander"] {
     line-height: 30px;
 }
 
+.gj-calendar-bootstrap table tr[role="month-manager"] th div .gj-icon,
 .gj-calendar-bootstrap table tr[role="month-manager"] th div .material-icons {
     margin: 3px;
 }

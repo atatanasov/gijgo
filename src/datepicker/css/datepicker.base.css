@@ -63,6 +63,7 @@
     border: 1px solid #E0E0E0;
 }
 
+.gj-calendar-md table tr[role="month-manager"] th div i.gj-icon,
 .gj-calendar-md table tr[role="month-manager"] th div i.material-icons {
     position: absolute;
     top: 8px;
@@ -117,6 +118,7 @@
     min-width: 34px;
 }
 
+.gj-datepicker-bootstrap span[role="right-icon"].input-group-addon .gj-icon,
 .gj-datepicker-bootstrap span[role="right-icon"].input-group-addon .material-icons {
     position: absolute;
     top: 7px;
@@ -146,6 +148,7 @@
     line-height: 30px;
 }
 
+.gj-calendar-bootstrap table tr[role="month-manager"] th div .gj-icon,
 .gj-calendar-bootstrap table tr[role="month-manager"] th div .material-icons {
     margin: 3px;
 }
