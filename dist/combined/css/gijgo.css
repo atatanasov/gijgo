@@ -285,16 +285,7 @@ ul.gj-list-md li.disabled>[data-role="wrapper"]>[data-role="display"] {
 }
 
 .gj-icon {
-    /* use !important to prevent issues with browser extensions that change fonts */
     font-family: 'gijgo-material' !important;
-    /*speak: none;
-    font-style: normal;
-    font-weight: normal;
-    font-variant: normal;
-    text-transform: none;
-    line-height: 1;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;*/
     font-weight: normal;
     font-style: normal;
     font-size: 24px;
@@ -1727,6 +1718,7 @@ ul.gj-list-md li.disabled>[data-role="wrapper"]>[data-role="expander"] {
     margin: 3px;
 }
 
+.gj-calendar-bootstrap table tr td.focused div,
 .gj-calendar-bootstrap table tr td.gj-cursor-pointer div:hover {
     background: #EEEEEE;
     border-radius: 4px;
@@ -1747,8 +1739,4 @@ ul.gj-list-md li.disabled>[data-role="wrapper"]>[data-role="expander"] {
 .gj-calendar-bootstrap table tr td.other-month div,
 .gj-calendar-bootstrap table tr td.disabled div {
     color: #777;
-}
-
-.gj-calendar-bootstrap table tr td.focused div {
-    background: #EEEEEE;
 }

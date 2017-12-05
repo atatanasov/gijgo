@@ -213,12 +213,12 @@ gj.datepicker.config = {
          * The css files for Material Icons, Font Awesome or Glyphicons should be manually included to the page where the grid is in use.
          * @type (materialicons|fontawesome|glyphicons)
          * @default 'materialicons'
-         * @example Bootstrap.Material.Icons <!-- bootstrap, datepicker -->
+         * @example Bootstrap.Font.Awesome <!-- bootstrap, fontawesome, datepicker -->
          * <input id="datepicker" width="276" />
          * <script>
          *     $('#datepicker').datepicker({
          *         uiLibrary: 'bootstrap',
-         *         iconsLibrary: 'materialicons'
+         *         iconsLibrary: 'fontawesome'
          *     });
          * </script>
          * @example Bootstrap.4.Font.Awesome <!-- bootstrap4, fontawesome, datepicker -->

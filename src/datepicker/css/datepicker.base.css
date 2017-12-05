@@ -153,6 +153,7 @@
     margin: 3px;
 }
 
+.gj-calendar-bootstrap table tr td.focused div,
 .gj-calendar-bootstrap table tr td.gj-cursor-pointer div:hover {
     background: #EEEEEE;
     border-radius: 4px;
@@ -173,8 +174,4 @@
 .gj-calendar-bootstrap table tr td.other-month div,
 .gj-calendar-bootstrap table tr td.disabled div {
     color: #777;
-}
-
-.gj-calendar-bootstrap table tr td.focused div {
-    background: #EEEEEE;
 }
