@@ -20,7 +20,7 @@ gj.tree.plugins.lazyLoading = {
             /** Enables lazy loading
               * @type Boolean
               * @default false
-              * @example Material.Design <!-- materialicons, tree -->
+              * @example Material.Design <!-- tree -->
               * <div class="container-fluid">
               *     <div id="tree"></div>
               * </div>

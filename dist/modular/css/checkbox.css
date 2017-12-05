@@ -116,15 +116,15 @@
 }
 
 /* Material Icons */
-.gj-checkbox-material-icons input[type="checkbox"]:checked + span:after {    
-    content: "\E876";
+.gj-checkbox-material-icons input[type="checkbox"]:checked + span:after {
+    content: "\E908";
     font-size: 14px;
     font-weight: bold;
     white-space: pre;
 }
 
 .gj-checkbox-material-icons input[type="checkbox"]:indeterminate + span:after {
-    content: "\E15B";
+    content: "\E905";
     font-size: 14px;
     font-weight: bold;
     white-space: pre;

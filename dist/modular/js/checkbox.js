@@ -40,7 +40,7 @@ gj.checkbox.config = {
     materialicons: {
         style: {
             iconsCssClass: 'gj-checkbox-material-icons',
-            spanCssClass: 'material-icons'
+            spanCssClass: 'gj-icon'
         }
     },
 

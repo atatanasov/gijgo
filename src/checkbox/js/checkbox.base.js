@@ -13,6 +13,18 @@ gj.checkbox.config = {
          * @additionalinfo The css files for Bootstrap should be manually included to the page if you use bootstrap as uiLibrary.
          * @type string (materialdesign|bootstrap|bootstrap4)
          * @default 'materialdesign'
+         * @example Material.Design <!-- checkbox  -->
+         * <input type="checkbox" id="checkbox"/><br/><br/>
+         * <button onclick="$chkb.state('checked')" class="gj-button-md">Checked</button>
+         * <button onclick="$chkb.state('unchecked')" class="gj-button-md">Unchecked</button>
+         * <button onclick="$chkb.state('indeterminate')" class="gj-button-md">Indeterminate</button>
+         * <button onclick="$chkb.prop('disabled', false)" class="gj-button-md">Enable</button>
+         * <button onclick="$chkb.prop('disabled', true)" class="gj-button-md">Disable</button>
+         * <script>
+         *     var $chkb = $('#checkbox').checkbox({
+         *         uiLibrary: 'materialdesign'
+         *     });
+         * </script>
          * @example Bootstrap.3 <!-- bootstrap, checkbox -->
          * <div class="container-fluid" style="margin-top:10px">
          *     <input type="checkbox" id="checkbox"/><br/><br/>
@@ -27,7 +39,7 @@ gj.checkbox.config = {
          *         uiLibrary: 'bootstrap'
          *     });
          * </script>
-         * @example Bootstrap.4 <!-- materialicons, bootstrap4, checkbox -->
+         * @example Bootstrap.4 <!-- bootstrap4, checkbox -->
          * <div class="container-fluid" style="margin-top:10px">
          *     <input type="checkbox" id="checkbox"/><br/><br/>
          *     <button onclick="$chkb.state('checked')" class="btn btn-default">Checked</button>
@@ -39,18 +51,6 @@ gj.checkbox.config = {
          * <script>
          *     var $chkb = $('#checkbox').checkbox({
          *         uiLibrary: 'bootstrap4'
-         *     });
-         * </script>
-         * @example Material.Design <!-- materialicons, checkbox  -->
-         * <input type="checkbox" id="checkbox"/><br/><br/>
-         * <button onclick="$chkb.state('checked')" class="gj-button-md">Checked</button>
-         * <button onclick="$chkb.state('unchecked')" class="gj-button-md">Unchecked</button>
-         * <button onclick="$chkb.state('indeterminate')" class="gj-button-md">Indeterminate</button>
-         * <button onclick="$chkb.prop('disabled', false)" class="gj-button-md">Enable</button>
-         * <button onclick="$chkb.prop('disabled', true)" class="gj-button-md">Disable</button>
-         * <script>
-         *     var $chkb = $('#checkbox').checkbox({
-         *         uiLibrary: 'materialdesign'
          *     });
          * </script>
          */
@@ -104,7 +104,7 @@ gj.checkbox.config = {
     materialicons: {
         style: {
             iconsCssClass: 'gj-checkbox-material-icons',
-            spanCssClass: 'material-icons'
+            spanCssClass: 'gj-icon'
         }
     },
 
@@ -206,7 +206,7 @@ gj.checkbox.events = {
      *
      * @event change
      * @param {object} e - event data
-     * @example sample <!-- materialicons, checkbox -->
+     * @example sample <!-- checkbox -->
      * <input type="checkbox" id="checkbox"/>
      * <script>
      *     var chkb = $('#checkbox').checkbox({
@@ -230,7 +230,7 @@ gj.checkbox.widget = function ($element, jsConfig) {
      * @method
      * @fires change
      * @return checked|unchecked|indeterminate|jquery
-     * @example sample <!-- materialicons, checkbox -->
+     * @example sample <!-- checkbox -->
      * <button onclick="$chkb.toggle()">toggle</button>
      * <hr/>
      * <input type="checkbox" id="checkbox"/>
@@ -247,7 +247,7 @@ gj.checkbox.widget = function ($element, jsConfig) {
      * @fires change
      * @param {string} value - State of the checkbox. Accept only checked, unchecked or indeterminate as values.
      * @return checked|unchecked|indeterminate|jquery
-     * @example sample <!-- materialicons, checkbox -->
+     * @example sample <!-- checkbox -->
      * <button onclick="$chkb.state('checked')">Set to checked</button>
      * <button onclick="$chkb.state('unchecked')">Set to unchecked</button>
      * <button onclick="$chkb.state('indeterminate')">Set to indeterminate</button>
@@ -265,7 +265,7 @@ gj.checkbox.widget = function ($element, jsConfig) {
     /** Remove checkbox functionality from the element.
      * @method
      * @return jquery element
-     * @example sample <!-- materialicons, checkbox -->
+     * @example sample <!-- checkbox -->
      * <button onclick="$chkb.destroy()">Destroy</button>
      * <input type="checkbox" id="checkbox"/>
      * <script>

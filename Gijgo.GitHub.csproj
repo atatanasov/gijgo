@@ -132,6 +132,7 @@
     <Content Include="src\grid\js\messages\messages.bg-bg.js" />
     <Content Include="src\grid\js\messages\messages.en-us.js" />
     <Content Include="src\grid\js\messages\messages.fr-fr.js" />
+    <Content Include="src\icons\done.svg" />
     <Content Include="src\icons\event.svg" />
     <Content Include="src\icons\icons.css" />
     <Content Include="src\icons\chevron-down.svg" />

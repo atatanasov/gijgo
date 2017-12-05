@@ -252,7 +252,7 @@ gj.tree.config = {
         /** Disabled field name. Assume that the item is not disabled if not set.
          * @type string
          * @default 'disabled'
-         * @example Default.Value <!-- materialicons, checkbox, tree -->
+         * @example Default.Value <!-- checkbox, tree -->
          * <div id="tree"></div>
          * <script>
          *     var tree = $('#tree').tree({
@@ -264,7 +264,7 @@ gj.tree.config = {
          *         ]
          *     });
          * </script>
-         * @example Custom.Value <!-- materialicons, checkbox, tree -->
+         * @example Custom.Value <!-- checkbox, tree -->
          * <div id="tree"></div>
          * <script>
          *     var tree = $('#tree').tree({
@@ -290,7 +290,7 @@ gj.tree.config = {
          *         ]
          *     });
          * </script>
-         * @example Bootstrap.4 <!-- bootstrap4, materialicons, checkbox, tree -->
+         * @example Bootstrap.4 <!-- bootstrap4, checkbox, tree -->
          * <div id="tree"></div>
          * <script>
          *     var tree = $('#tree').tree({
@@ -329,7 +329,7 @@ gj.tree.config = {
         /** When this setting is enabled the content of the tree will be wrapped by borders.
          * @type boolean
          * @default false
-         * @example Material.Design.True <!-- materialicons, checkbox, tree -->
+         * @example Material.Design.True <!-- checkbox, tree -->
          * <div id="tree"></div>
          * <script>
          *     $('#tree').tree({
@@ -339,7 +339,7 @@ gj.tree.config = {
          *         checkboxes: true
          *     });
          * </script>
-         * @example Material.Design.False <!-- materialicons, tree -->
+         * @example Material.Design.False <!-- tree -->
          * <div id="tree"></div>
          * <script>
          *     $('#tree').tree({
@@ -386,7 +386,7 @@ gj.tree.config = {
          * @additionalinfo The css file for bootstrap should be manually included if you use bootstrap.
          * @type (materialdesign|bootstrap|bootstrap4)
          * @default materialdesign
-         * @example MaterialDesign <!-- materialicons, tree, checkbox -->
+         * @example MaterialDesign <!-- tree, checkbox -->
          * <div id="tree"></div>
          * <script>
          *     var tree = $('#tree').tree({
@@ -406,7 +406,7 @@ gj.tree.config = {
          *         checkboxes: true
          *     });
          * </script>
-         * @example Bootstrap.4 <!-- materialicons, bootstrap4, tree, checkbox -->
+         * @example Bootstrap.4 <!-- bootstrap4, tree, checkbox -->
          * <div id="tree"></div>
          * <script>
          *     var tree = $('#tree').tree({
@@ -425,7 +425,7 @@ gj.tree.config = {
          * The css files for Material Icons, Font Awesome or Glyphicons should be manually included to the page where the grid is in use.
          * @type (materialicons|fontawesome|glyphicons)
          * @default 'materialicons'
-         * @example Base.Theme.Material.Icons <!-- materialicons, tree -->
+         * @example Base.Theme.Material.Icons <!-- tree -->
          * <div id="tree"></div>
          * <script>
          *     var tree = $('#tree').tree({

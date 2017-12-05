@@ -8,7 +8,7 @@ gj.tree.events = {
      * Event fires when the tree is initialized
      * @event initialized
      * @param {object} e - event data
-     * @example sample <!-- materialicons, tree -->
+     * @example sample <!-- tree -->
      * <button id="reload">Reload</button>
      * <div id="tree"></div>
      * <script>
@@ -31,7 +31,7 @@ gj.tree.events = {
      * Event fired before data binding takes place.
      * @event dataBinding
      * @param {object} e - event data
-     * @example sample <!-- materialicons, tree -->
+     * @example sample <!-- tree -->
      * <div id="tree"></div>
      * <script>
      *     $('#tree').tree({
@@ -50,7 +50,7 @@ gj.tree.events = {
      * Event fires after the loading of the data in the tree.
      * @event dataBound
      * @param {object} e - event data
-     * @example sample <!-- materialicons, tree -->
+     * @example sample <!-- tree -->
      * <div id="tree"></div>
      * <script>
      *     $('#tree').tree({
@@ -71,7 +71,7 @@ gj.tree.events = {
      * @param {object} e - event data
      * @param {object} node - the node as jquery object
      * @param {string} id - the id of the record
-     * @example sample <!-- materialicons, tree -->
+     * @example sample <!-- tree -->
      * <div id="tree" data-source="/Locations/Get"></div>
      * <script>
      *     var tree = $('#tree').tree();
@@ -90,7 +90,7 @@ gj.tree.events = {
      * @param {object} e - event data
      * @param {object} node - the node as jquery object
      * @param {string} id - the id of the record
-     * @example sample <!-- materialicons, tree -->
+     * @example sample <!-- tree -->
      * <div id="tree" data-source="/Locations/Get"></div>
      * <script>
      *     var tree = $('#tree').tree();
@@ -109,7 +109,7 @@ gj.tree.events = {
      * @param {object} e - event data
      * @param {object} node - the node as jquery object
      * @param {string} id - the id of the record
-     * @example Event.Sample <!-- materialicons, tree -->
+     * @example Event.Sample <!-- tree -->
      * <div id="tree" data-source="/Locations/Get"></div>
      * <script>
      *     var tree = $('#tree').tree();
@@ -128,7 +128,7 @@ gj.tree.events = {
      * @param {object} e - event data
      * @param {object} node - the node as jquery object
      * @param {string} id - the id of the record
-     * @example Event.Sample <!-- materialicons, tree -->
+     * @example Event.Sample <!-- tree -->
      * <div id="tree" data-source="/Locations/Get"></div>
      * <script>
      *     var tree = $('#tree').tree();
@@ -146,7 +146,7 @@ gj.tree.events = {
      * @event enable
      * @param {object} e - event data
      * @param {object} node - the node as jquery object
-     * @example Event.Sample <!-- materialicons, tree -->
+     * @example Event.Sample <!-- tree -->
      * <button onclick="tree.enable(northAmerica, false)">Enable North America</button>
      * <button onclick="tree.disable(northAmerica, false)">Disable North America</button>
      * <br/><br/>
@@ -173,7 +173,7 @@ gj.tree.events = {
      * @event disable
      * @param {object} e - event data
      * @param {object} node - the node as jquery object
-     * @example Event.Sample <!-- materialicons, tree -->
+     * @example Event.Sample <!-- tree -->
      * <button onclick="tree.enable(northAmerica, false)">Enable North America</button>
      * <button onclick="tree.disable(northAmerica, false)">Disable North America</button>
      * <br/><br/>
@@ -199,7 +199,7 @@ gj.tree.events = {
      * Event fires before tree destroy
      * @event destroying
      * @param {object} e - event data
-     * @example Event.Sample <!-- materialicons, tree -->
+     * @example Event.Sample <!-- tree -->
      * <button onclick="tree.destroy()">Destroy</button>
      * <br/><br/>
      * <div id="tree" data-source="/Locations/Get"></div>
@@ -221,7 +221,7 @@ gj.tree.events = {
      * @param {object} node - the node as jquery object
      * @param {string} id - the id of the record
      * @param {object} record - the data of the node record
-     * @example Event.Sample <!-- materialicons, tree -->
+     * @example Event.Sample <!-- tree -->
      * <div id="tree" data-source="/Locations/Get"></div>
      * <script>
      *     var tree = $('#tree').tree();
