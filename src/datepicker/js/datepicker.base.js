@@ -390,7 +390,7 @@ gj.datepicker.config = {
             /** datepicker icon definition.
              * @alias icons.rightIcon
              * @type String
-             * @default '<i class="material-icons">arrow_drop_down</i>'
+             * @default '<i class="gj-icon event" />'
              * @example Custom.Material.Icon <!-- materialicons, datepicker -->
              * <input id="datepicker" />
              * <script>
@@ -413,8 +413,8 @@ gj.datepicker.config = {
              */
             rightIcon: '<i class="gj-icon event" />',
 
-            previousMonth: '<i class="gj-icon keyboard-arrow-left" />',
-            nextMonth: '<i class="gj-icon keyboard-arrow-right" />'
+            previousMonth: '<i class="gj-icon chevron-left" />',
+            nextMonth: '<i class="gj-icon chevron-right" />'
         },
 
         fontSize: undefined,

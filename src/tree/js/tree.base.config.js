@@ -15,7 +15,7 @@ gj.tree.config = {
         /** When this setting is enabled the content of the tree will be loaded automatically after the creation of the tree.
          * @type boolean
          * @default true
-         * @example disabled <!-- materialicons, tree.base -->
+         * @example disabled <!-- tree -->
          * <div id="tree"></div>
          * <script>
          *     var tree = $('#tree').tree({
@@ -24,7 +24,7 @@ gj.tree.config = {
          *     });
          *     tree.reload(); //call .reload() explicitly in order to load the data in the tree
          * </script>
-         * @example enabled <!-- materialicons, tree.base -->
+         * @example enabled <!-- tree -->
          * <div id="tree"></div>
          * <script>
          *     $('#tree').tree({
@@ -39,7 +39,7 @@ gj.tree.config = {
          * If the type is set to multiple the user will be able to select more then one node in the tree.
          * @type (single|multiple)
          * @default single
-         * @example Single.Selection <!-- materialicons, tree.base -->
+         * @example Single.Selection <!-- tree -->
          * <div id="tree"></div>
          * <script>
          *     var tree = $('#tree').tree({
@@ -47,7 +47,7 @@ gj.tree.config = {
          *         selectionType: 'single'
          *     });
          * </script>
-         * @example Multiple.Selection <!-- materialicons, tree.base -->
+         * @example Multiple.Selection <!-- tree -->
          * <div id="tree"></div>
          * <script>
          *     $('#tree').tree({
@@ -61,7 +61,7 @@ gj.tree.config = {
         /** This setting enable cascade selection and unselection of children
          * @type boolean
          * @default false
-         * @example Sample <!-- materialicons, tree.base -->
+         * @example Sample <!-- tree -->
          * <div id="tree"></div>
          * <script>
          *     $('#tree').tree({
@@ -78,14 +78,14 @@ gj.tree.config = {
          * If set to array, then the tree is going to use the array as data for tree nodes.
          * @type (string|object|array)
          * @default undefined
-         * @example Local.DataSource <!-- materialicons, tree.base -->
+         * @example Local.DataSource <!-- tree -->
          * <div id="tree"></div>
          * <script>
          *     $('#tree').tree({
          *         dataSource: [ { text: 'foo', children: [ { text: 'bar' } ] } ]
          *     });
          * </script>
-         * @example Remote.DataSource <!-- materialicons, tree.base -->
+         * @example Remote.DataSource <!-- tree -->
          * <div id="tree"></div>
          * <script>
          *     $('#tree').tree({
@@ -98,7 +98,7 @@ gj.tree.config = {
         /** Primary key field name.
          * @type string
          * @default undefined
-         * @example sample <!-- materialicons, tree.base -->
+         * @example sample <!-- tree -->
          * <div id="tree"></div>
          * <script>
          *     var tree = $('#tree').tree({
@@ -113,7 +113,7 @@ gj.tree.config = {
         /** Text field name.
          * @type string
          * @default 'text'
-         * @example sample <!-- materialicons, tree.base -->
+         * @example sample <!-- tree -->
          * <div id="tree"></div>
          * <script>
          *     var tree = $('#tree').tree({
@@ -127,7 +127,7 @@ gj.tree.config = {
         /** Children field name.
          * @type string
          * @default 'children'
-         * @example Custom.FieldName <!-- materialicons, tree.base -->
+         * @example Custom.FieldName <!-- tree -->
          * <div id="tree"></div>
          * <script>
          *     var tree = $('#tree').tree({
@@ -141,7 +141,7 @@ gj.tree.config = {
         /** The name of the field that indicates if the node has children. Shows expand icon if the node has children.
          * @type string
          * @default 'hasChildren'
-         * @example Custom.FieldName <!-- materialicons, tree.base -->
+         * @example Custom.FieldName <!-- tree -->
          * <div id="tree"></div>
          * <script>
          *     var continents, countries, states, tree;
@@ -187,7 +187,7 @@ gj.tree.config = {
         /** Image css class field name.
          * @type string
          * @default 'imageCssClass'
-         * @example Default.Name <!-- bootstrap, tree.base -->
+         * @example Default.Name <!-- bootstrap, tree -->
          * <div id="tree"></div>
          * <script>
          *     var tree = $('#tree').tree({
@@ -195,7 +195,7 @@ gj.tree.config = {
          *         dataSource: [ { text: 'folder', imageCssClass: 'glyphicon glyphicon-folder-close', children: [ { text: 'file', imageCssClass: 'glyphicon glyphicon-file' } ] } ]
          *     });
          * </script>
-         * @example Custom.Name <!-- materialicons, tree.base  -->
+         * @example Custom.Name <!-- tree  -->
          * <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
          * <div id="tree"></div>
          * <script>
@@ -210,14 +210,14 @@ gj.tree.config = {
         /** Image url field name.
          * @type string
          * @default 'imageUrl'
-         * @example Default.HTML.Field.Name <!-- materialicons, tree.base -->
+         * @example Default.HTML.Field.Name <!-- tree -->
          * <div id="tree"></div>
          * <script>
          *     var tree = $('#tree').tree({
          *         dataSource: [ { text: 'World', imageUrl: 'http://gijgo.com/content/icons/world-icon.png', children: [ { text: 'USA', imageUrl: 'http://gijgo.com/content/icons/usa-oval-icon.png' } ] } ]
          *     });
          * </script>
-         * @example Custom.HTML.Field.Name <!-- materialicons, tree.base -->
+         * @example Custom.HTML.Field.Name <!-- tree -->
          * <div id="tree"></div>
          * <script>
          *     var tree = $('#tree').tree({
@@ -231,14 +231,14 @@ gj.tree.config = {
         /** Image html field name.
          * @type string
          * @default 'imageHtml'
-         * @example Default.HTML.Field.Name <!-- materialicons, tree.base -->
+         * @example Default.HTML.Field.Name <!-- materialicons, tree -->
          * <div id="tree"></div>
          * <script>
          *     var tree = $('#tree').tree({
          *         dataSource: [ { text: 'folder', imageHtml: '<i class="material-icons">folder</i>', children: [ { text: 'file', imageHtml: '<i class="material-icons">insert_drive_file</i>' } ] } ]
          *     });
          * </script>
-         * @example Custom.HTML.Field.Name <!-- materialicons, tree.base -->
+         * @example Custom.HTML.Field.Name <!-- materialicons, tree -->
          * <div id="tree"></div>
          * <script>
          *     var tree = $('#tree').tree({
@@ -252,7 +252,7 @@ gj.tree.config = {
         /** Disabled field name. Assume that the item is not disabled if not set.
          * @type string
          * @default 'disabled'
-         * @example Default.Value <!-- materialicons, checkbox, tree.base -->
+         * @example Default.Value <!-- materialicons, checkbox, tree -->
          * <div id="tree"></div>
          * <script>
          *     var tree = $('#tree').tree({
@@ -264,7 +264,7 @@ gj.tree.config = {
          *         ]
          *     });
          * </script>
-         * @example Custom.Value <!-- materialicons, checkbox, tree.base -->
+         * @example Custom.Value <!-- materialicons, checkbox, tree -->
          * <div id="tree"></div>
          * <script>
          *     var tree = $('#tree').tree({
@@ -277,7 +277,7 @@ gj.tree.config = {
          *         ]
          *     });
          * </script>
-         * @example Bootstrap <!-- bootstrap, checkbox, tree.base -->
+         * @example Bootstrap <!-- bootstrap, checkbox, tree -->
          * <div id="tree"></div>
          * <script>
          *     var tree = $('#tree').tree({
@@ -290,7 +290,7 @@ gj.tree.config = {
          *         ]
          *     });
          * </script>
-         * @example Bootstrap.4 <!-- bootstrap4, materialicons, checkbox, tree.base -->
+         * @example Bootstrap.4 <!-- bootstrap4, materialicons, checkbox, tree -->
          * <div id="tree"></div>
          * <script>
          *     var tree = $('#tree').tree({
@@ -309,7 +309,7 @@ gj.tree.config = {
         /** Width of the tree.
          * @type number
          * @default undefined
-         * @example JS.Config <!-- bootstrap, tree.base -->
+         * @example JS.Config <!-- bootstrap, tree -->
          * <div id="tree"></div>
          * <script>
          *     var tree = $('#tree').tree({
@@ -318,7 +318,7 @@ gj.tree.config = {
          *         uiLibrary: 'bootstrap'
          *     });
          * </script>
-         * @example HTML.Config <!-- bootstrap, tree.base -->
+         * @example HTML.Config <!-- bootstrap, tree -->
          * <div id="tree" width="500" data-source="/Locations/Get" data-ui-library="bootstrap"></div>
          * <script>
          *     $('#tree').tree();
@@ -329,7 +329,7 @@ gj.tree.config = {
         /** When this setting is enabled the content of the tree will be wrapped by borders.
          * @type boolean
          * @default false
-         * @example Material.Design.True <!-- materialicons, checkbox, tree.base -->
+         * @example Material.Design.True <!-- materialicons, checkbox, tree -->
          * <div id="tree"></div>
          * <script>
          *     $('#tree').tree({
@@ -339,7 +339,7 @@ gj.tree.config = {
          *         checkboxes: true
          *     });
          * </script>
-         * @example Material.Design.False <!-- materialicons, tree.base -->
+         * @example Material.Design.False <!-- materialicons, tree -->
          * <div id="tree"></div>
          * <script>
          *     $('#tree').tree({
@@ -348,7 +348,7 @@ gj.tree.config = {
          *         border: false
          *     });
          * </script>
-         * @example Bootstrap.3.True <!-- bootstrap, tree.base -->
+         * @example Bootstrap.3.True <!-- bootstrap, tree -->
          * <div id="tree"></div>
          * <script>
          *     $('#tree').tree({
@@ -358,7 +358,7 @@ gj.tree.config = {
          *         border: true
          *     });
          * </script>
-         * @example Bootstrap.3.False <!-- bootstrap, tree.base -->
+         * @example Bootstrap.3.False <!-- bootstrap, tree -->
          * <div id="tree"></div>
          * <script>
          *     $('#tree').tree({
@@ -368,7 +368,7 @@ gj.tree.config = {
          *         border: false
          *     });
          * </script>
-         * @example Bootstrap.4.True <!-- bootstrap4, fontawesome, tree.base -->
+         * @example Bootstrap.4.True <!-- bootstrap4, fontawesome, tree -->
          * <div id="tree"></div>
          * <script>
          *     $('#tree').tree({
@@ -386,7 +386,7 @@ gj.tree.config = {
          * @additionalinfo The css file for bootstrap should be manually included if you use bootstrap.
          * @type (materialdesign|bootstrap|bootstrap4)
          * @default materialdesign
-         * @example MaterialDesign <!-- materialicons, tree.base, checkbox -->
+         * @example MaterialDesign <!-- materialicons, tree, checkbox -->
          * <div id="tree"></div>
          * <script>
          *     var tree = $('#tree').tree({
@@ -396,7 +396,7 @@ gj.tree.config = {
          *         checkboxes: true
          *     });
          * </script>
-         * @example Bootstrap.3 <!-- bootstrap, tree.base, checkbox -->
+         * @example Bootstrap.3 <!-- bootstrap, tree, checkbox -->
          * <div id="tree"></div>
          * <script>
          *     var tree = $('#tree').tree({
@@ -406,7 +406,7 @@ gj.tree.config = {
          *         checkboxes: true
          *     });
          * </script>
-         * @example Bootstrap.4 <!-- materialicons, bootstrap4, tree.base, checkbox -->
+         * @example Bootstrap.4 <!-- materialicons, bootstrap4, tree, checkbox -->
          * <div id="tree"></div>
          * <script>
          *     var tree = $('#tree').tree({
@@ -425,7 +425,7 @@ gj.tree.config = {
          * The css files for Material Icons, Font Awesome or Glyphicons should be manually included to the page where the grid is in use.
          * @type (materialicons|fontawesome|glyphicons)
          * @default 'materialicons'
-         * @example Base.Theme.Material.Icons <!-- materialicons, tree.base -->
+         * @example Base.Theme.Material.Icons <!-- materialicons, tree -->
          * <div id="tree"></div>
          * <script>
          *     var tree = $('#tree').tree({
@@ -434,7 +434,7 @@ gj.tree.config = {
          *         iconsLibrary: 'materialicons'
          *     });
          * </script>
-         * @example Bootstrap.4.Font.Awesome <!-- bootstrap4, fontawesome, tree.base, checkbox -->
+         * @example Bootstrap.4.Font.Awesome <!-- bootstrap4, fontawesome, tree, checkbox -->
          * <div id="tree"></div>
          * <script>
          *     var tree = $('#tree').tree({
@@ -465,8 +465,8 @@ gj.tree.config = {
             /** Expand icon definition.
              * @alias icons.expand
              * @type String
-             * @default '<i class="material-icons">keyboard_arrow_right</i>'
-             * @example Plus.Minus.Icons <!-- materialicons, tree.base -->
+             * @default '<i class="gj-icon chevron-right" />'
+             * @example Plus.Minus.Icons <!-- materialicons, tree -->
              * <div id="tree"></div>
              * <script>
              *     var tree = $('#tree').tree({
@@ -478,13 +478,13 @@ gj.tree.config = {
              *     });
              * </script>
              */
-            expand: '<i class="material-icons">keyboard_arrow_right</i>',
+            expand: '<i class="gj-icon chevron-right" />',
 
             /** Collapse icon definition.
              * @alias icons.collapse
              * @type String
-             * @default '<i class="material-icons">keyboard_arrow_right</i>'
-             * @example Plus.Minus.Icons <!-- materialicons, tree.base -->
+             * @default '<i class="gj-icon chevron-down" />'
+             * @example Plus.Minus.Icons <!-- materialicons, tree -->
              * <div id="tree"></div>
              * <script>
              *     var tree = $('#tree').tree({
@@ -496,7 +496,7 @@ gj.tree.config = {
              *     });
              * </script>
              */
-            collapse: '<i class="material-icons">keyboard_arrow_down</i>'
+            collapse: '<i class="gj-icon chevron-down" />'
         }
     },
 

@@ -354,7 +354,7 @@ var writer = {
                     case 'grid':
                         result += '  <link href="../../dist/modular/css/grid.css" rel="stylesheet" type="text/css">\r\n';
                         break;
-                    case 'tree.base':
+                    case 'tree':
                         result += '  <link href="../../dist/modular/css/tree.css" rel="stylesheet" type="text/css">\r\n';
                         break;
                     case 'checkbox':
@@ -386,7 +386,7 @@ var writer = {
                     case 'grid':
                         result += '  <script src="../../dist/modular/js/grid.js"></script>\r\n';
                         break;
-                    case 'tree.base':
+                    case 'tree':
                         result += '  <script src="../../dist/modular/js/tree.js"></script>\r\n';
                         break;
                     case 'checkbox':

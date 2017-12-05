@@ -62,9 +62,9 @@ gj.tree.config = {
         },
 
         icons: {
-            /** Expand icon definition.             */            expand: '<i class="material-icons">keyboard_arrow_right</i>',
+            /** Expand icon definition.             */            expand: '<i class="gj-icon chevron-right" />',
 
-            /** Collapse icon definition.             */            collapse: '<i class="material-icons">keyboard_arrow_down</i>'
+            /** Collapse icon definition.             */            collapse: '<i class="gj-icon chevron-down" />'
         }
     },
 
@@ -981,7 +981,7 @@ gj.tree.widget.constructor = gj.tree.widget;
 
 			style: {
 			    dragEl: 'gj-tree-drag-el gj-tree-mdl-drag-el',
-			    dropAsChildIcon: 'material-icons gj-cursor-pointer gj-mdl-icon-plus',
+                dropAsChildIcon: 'material-icons gj-cursor-pointer gj-mdl-icon-plus',
 			    dropAbove: 'gj-tree-drop-above',
 			    dropBelow: 'gj-tree-drop-below'
 			}

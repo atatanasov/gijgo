@@ -52,8 +52,8 @@ gj.datepicker.config = {
         icons: {
             /** datepicker icon definition.             */            rightIcon: '<i class="gj-icon event" />',
 
-            previousMonth: '<i class="gj-icon keyboard-arrow-left" />',
-            nextMonth: '<i class="gj-icon keyboard-arrow-right" />'
+            previousMonth: '<i class="gj-icon chevron-left" />',
+            nextMonth: '<i class="gj-icon chevron-right" />'
         },
 
         fontSize: undefined,

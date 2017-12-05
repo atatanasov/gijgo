@@ -134,10 +134,10 @@
     <Content Include="src\grid\js\messages\messages.fr-fr.js" />
     <Content Include="src\icons\event.svg" />
     <Content Include="src\icons\icons.css" />
-    <Content Include="src\icons\keyboard_arrow_down.svg" />
-    <Content Include="src\icons\keyboard_arrow_left.svg" />
-    <Content Include="src\icons\keyboard_arrow_right.svg" />
-    <Content Include="src\icons\keyboard_arrow_up.svg" />
+    <Content Include="src\icons\chevron-down.svg" />
+    <Content Include="src\icons\chevron-left.svg" />
+    <Content Include="src\icons\chevron-right.svg" />
+    <Content Include="src\icons\chevron-up.svg" />
     <Content Include="src\icons\minus.svg" />
     <Content Include="src\icons\pencil.svg" />
     <Content Include="src\icons\plus.svg" />

@@ -25,19 +25,19 @@
     content: "\e900";
 }
 
-.keyboard-arrow-down:before {
+.chevron-down:before {
     content: "\e901";
 }
 
-.keyboard-arrow-left:before {
+.chevron-left:before {
     content: "\e902";
 }
 
-.keyboard-arrow-right:before {
+.chevron-right:before {
     content: "\e903";
 }
 
-.keyboard-arrow-up:before {
+.chevron-up:before {
     content: "\e904";
 }
 
