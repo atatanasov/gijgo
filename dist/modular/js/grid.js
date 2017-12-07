@@ -1621,6 +1621,7 @@ gj.grid.plugins.inlineEditing.private = {
                 } else {
                     config = typeof column.editor === "object" ? column.editor : {};
                     config.uiLibrary = data.uiLibrary;
+                    config.iconsLibrary = data.iconsLibrary;
                     config.fontSize = $grid.css('font-size');
                     if ('checkbox' === column.type && gj.checkbox) {
                         $editorField = $('<input type="checkbox" />').prop('checked', value);

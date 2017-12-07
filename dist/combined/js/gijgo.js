@@ -5571,12 +5571,13 @@ gj.grid.plugins.inlineEditing.config = {
              *         ]
              *     });
              * </script>
-             * @example Date.And.Dropdown.Bootstrap.4 <!-- bootstrap4, materialicons, grid, datepicker, dropdown, checkbox -->
+             * @example Date.And.Dropdown.Bootstrap.4 <!-- bootstrap4, fontawesome, grid, datepicker, dropdown, checkbox -->
              * <table id="grid"></table>
              * <script>
              *     var countries = [ "Bulgaria", "Brazil", "England", "Germany", "Colombia", "Poland" ];
              *     $('#grid').grid({
              *         uiLibrary: 'bootstrap4',
+             *         iconsLibrary: 'fontawesome',
              *         dataSource: '/Players/Get',
              *         columns: [
              *             { field: 'Name', editor: true },
@@ -5840,6 +5841,7 @@ gj.grid.plugins.inlineEditing.private = {
                 } else {
                     config = typeof column.editor === "object" ? column.editor : {};
                     config.uiLibrary = data.uiLibrary;
+                    config.iconsLibrary = data.iconsLibrary;
                     config.fontSize = $grid.css('font-size');
                     if ('checkbox' === column.type && gj.checkbox) {
                         $editorField = $('<input type="checkbox" />').prop('checked', value);
