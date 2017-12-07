@@ -104,7 +104,7 @@ gj.dropdown.methods = {
             $wrapper = $dropdown.parent('div[role="wrapper"]'),
             $display = $('<span role="display"></span>'),
             $expander = $('<span role="expander">' + data.icons.dropdown + '</span>').addClass(data.style.expander),
-            $presenter = $('<button role="presenter"></button>').addClass(data.style.presenter),
+            $presenter = $('<button role="presenter" type="button"></button>').addClass(data.style.presenter),
             $list = $('<ul role="list" class="' + data.style.list + '"></ul>').attr('guid', $dropdown.attr('data-guid'));
 
         if ($wrapper.length === 0) {
