@@ -389,7 +389,7 @@ gj.tree.widget = function ($element, jsConfig) {
      * @method
      * @param {Object} node - The node as jquery object.
      * @return jQuery Object
-     * @example Sample <!-- checkbox, tree -->
+     * @example Select.Method <!-- tree -->
      * <button onclick="tree.select(northAmerica)">Select North America</button>
      * <button onclick="tree.unselect(northAmerica)">Unselect North America</button>
      * <br/><br/>
@@ -397,10 +397,12 @@ gj.tree.widget = function ($element, jsConfig) {
      * <script>
      *     var tree, northAmerica;
      *     tree = $('#tree').tree({
-     *         checkboxes: true,
-     *         primaryKey: 'ID',
+     *         primaryKey: 'id',
      *         dataBound: function () {
      *             northAmerica = tree.getNodeByText('North America');
+     *         },
+     *         select: function (e, node, id) {
+     *             alert('select is fired for node with id=' + id);
      *         }
      *     });
      * </script>
@@ -414,7 +416,7 @@ gj.tree.widget = function ($element, jsConfig) {
      * @method
      * @param {Object} node - The node as jquery object.
      * @return jQuery Object
-     * @example Sample <!-- checkbox, tree -->
+     * @example UnSelect.Method <!-- tree -->
      * <button onclick="tree.select(northAmerica)">Select North America</button>
      * <button onclick="tree.unselect(northAmerica)">Unselect North America</button>
      * <br/><br/>
@@ -422,10 +424,12 @@ gj.tree.widget = function ($element, jsConfig) {
      * <script>
      *     var tree, northAmerica;
      *     tree = $('#tree').tree({
-     *         checkboxes: true,
-     *         primaryKey: 'ID',
+     *         primaryKey: 'id',
      *         dataBound: function () {
-     *             northAmerica = tree.getNodeByText('North America');
+     *             northAmerica = tree.getNodeByText('North America');  
+     *         },
+     *         unselect: function (e, node, id) {
+     *             alert('unselect is fired for node with id=' + id);
      *         }
      *     });
      * </script>

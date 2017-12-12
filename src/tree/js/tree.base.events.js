@@ -8,7 +8,7 @@ gj.tree.events = {
      * Event fires when the tree is initialized
      * @event initialized
      * @param {object} e - event data
-     * @example sample <!-- tree -->
+     * @example Event.Sample <!-- tree -->
      * <button id="reload">Reload</button>
      * <div id="tree"></div>
      * <script>
@@ -31,7 +31,7 @@ gj.tree.events = {
      * Event fired before data binding takes place.
      * @event dataBinding
      * @param {object} e - event data
-     * @example sample <!-- tree -->
+     * @example Event.Sample <!-- tree -->
      * <div id="tree"></div>
      * <script>
      *     $('#tree').tree({
@@ -50,7 +50,7 @@ gj.tree.events = {
      * Event fires after the loading of the data in the tree.
      * @event dataBound
      * @param {object} e - event data
-     * @example sample <!-- tree -->
+     * @example Event.Sample <!-- tree -->
      * <div id="tree"></div>
      * <script>
      *     $('#tree').tree({
@@ -71,12 +71,13 @@ gj.tree.events = {
      * @param {object} e - event data
      * @param {object} node - the node as jquery object
      * @param {string} id - the id of the record
-     * @example sample <!-- tree -->
+     * @example Event.Sample <!-- tree -->
+     * <p>Select tree node in order to fire the event.</p>
      * <div id="tree" data-source="/Locations/Get"></div>
      * <script>
      *     var tree = $('#tree').tree();
      *     tree.on('select', function (e, node, id) {
-     *         alert('select is fired.');
+     *         alert('select is fired for node with id=' + id);
      *     });
      * </script>
      */
@@ -90,12 +91,13 @@ gj.tree.events = {
      * @param {object} e - event data
      * @param {object} node - the node as jquery object
      * @param {string} id - the id of the record
-     * @example sample <!-- tree -->
+     * @example Event.Sample <!-- tree -->
+     * <p>Select/Unselect tree node in order to fire the event.</p>
      * <div id="tree" data-source="/Locations/Get"></div>
      * <script>
      *     var tree = $('#tree').tree();
      *     tree.on('unselect', function (e, node, id) {
-     *         alert('unselect is fired.');
+     *         alert('unselect is fired for node with id=' + id);
      *     });
      * </script>
      */

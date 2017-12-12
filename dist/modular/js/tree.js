@@ -1242,9 +1242,9 @@ gj.tree.widget.constructor = gj.tree.widget;
 
         expand: function ($tree, $node, id) {
             var ajaxOptions, data = $tree.data(), params = {},
-                $list = $node.children('ul');
+                $children = $node.find('>ul>li');
 
-            if (!$list || !$list.length) {
+            if (!$children || !$children.length) {
                 if (typeof (data.dataSource) === 'string') {
                     params[data.paramNames.parentId] = id;
                     ajaxOptions = { url: data.dataSource, data: params };
