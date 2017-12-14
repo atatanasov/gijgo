@@ -16,14 +16,14 @@ gj.dropdown.config = {
          * If set to array, then the dropdown is going to use the array as data for dropdown nodes.
          * @type (string|object|array)
          * @default undefined
-         * @example Local.DataSource <!-- materialicons, dropdown -->
+         * @example Local.DataSource <!-- dropdown -->
          * <select id="dropdown" width="200"></select>
          * <script>
          *     $('#dropdown').dropdown({
          *         dataSource: [ { value: 1, text: 'One' }, { value: 2, text: 'Two' }, { value: 3, text: 'Three' } ]
          *     });
          * </script>
-         * @example Remote.DataSource <!-- materialicons, dropdown -->
+         * @example Remote.DataSource <!-- dropdown -->
          * <select id="dropdown" width="200"></select>
          * <script>
          *     $('#dropdown').dropdown({
@@ -37,7 +37,7 @@ gj.dropdown.config = {
         /** Text field name.
          * @type string
          * @default 'text'
-         * @example sample <!-- materialicons, dropdown -->
+         * @example sample <!-- dropdown -->
          * <select id="dropdown" width="200"></select>
          * <script>
          *     $('#dropdown').dropdown({
@@ -51,7 +51,7 @@ gj.dropdown.config = {
         /** Value field name.
          * @type string
          * @default 'value'
-         * @example sample <!-- materialicons, dropdown -->
+         * @example sample <!-- dropdown -->
          * <select id="dropdown" width="200"></select>
          * <script>
          *     $('#dropdown').dropdown({
@@ -65,7 +65,7 @@ gj.dropdown.config = {
         /** Selected field name.
          * @type string
          * @default 'selected'
-         * @example sample <!-- materialicons, dropdown -->
+         * @example sample <!-- dropdown -->
          * <select id="dropdown" width="200"></select>
          * <script>
          *     $('#dropdown').dropdown({
@@ -79,7 +79,7 @@ gj.dropdown.config = {
         /** The width of the dropdown.
          * @type number
          * @default undefined
-         * @example JS.Config <!-- materialicons, dropdown -->
+         * @example JS.Config <!-- dropdown -->
          * <select id="dropdown">
          *     <option value="1">One</option>
          *     <option value="2">Two</option>
@@ -88,7 +88,7 @@ gj.dropdown.config = {
          * <script>
          *     $('#dropdown').dropdown({ width: 200 });
          * </script>
-         * @example HTML.Config <!-- materialicons, dropdown -->
+         * @example HTML.Config <!-- dropdown -->
          * <select id="dropdown" width="200">
          *     <option value="1">One</option>
          *     <option value="2">Two</option>
@@ -97,7 +97,7 @@ gj.dropdown.config = {
          * <script>
          *     $('#dropdown').dropdown();
          * </script>
-         * @example 100.Percent <!-- materialicons, dropdown -->
+         * @example 100.Percent <!-- dropdown -->
          * <select id="dropdown" width="100%">
          *     <option value=""></option>
          *     <option value="1">One</option>
@@ -118,7 +118,7 @@ gj.dropdown.config = {
          * @additionalinfo The css file for bootstrap should be manually included if you use bootstrap.
          * @type (materialdesign|bootstrap|bootstrap4)
          * @default materialdesign
-         * @example MaterialDesign <!-- materialicons, dropdown -->
+         * @example MaterialDesign <!-- dropdown -->
          * <select id="dropdown" width="200">
          *     <option value="1">One</option>
          *     <option value="2">Two</option>
@@ -138,7 +138,7 @@ gj.dropdown.config = {
          * <script>
          *     $('#dropdown').dropdown({ uiLibrary: 'bootstrap' });
          * </script>
-         * @example Bootstrap.4 <!-- materialicons, bootstrap4, dropdown -->
+         * @example Bootstrap.4 <!-- bootstrap4, dropdown -->
          * <select id="dropdown" width="200">
          *     <option value="1">One</option>
          *     <option value="2">Two</option>

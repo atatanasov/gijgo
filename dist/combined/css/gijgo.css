@@ -95,10 +95,11 @@
     background: 0 0;
 }
 
-.gj-button-md .material-icons {
+.gj-button-md .material-icons,
+.gj-button-md .gj-icon {
     vertical-align: middle;
     font-size: 1.3rem;
-    margin-right: 4px;    
+    margin-right: 4px;
 }
 
 .gj-button-md.gj-button-md-icon {
@@ -332,6 +333,85 @@ ul.gj-list-md li.disabled>[data-role="wrapper"]>[data-role="display"] {
     content: "\e907";
 }
 
+.done:before {
+    content: "\e908";
+}
+
+.redo:before {
+    content: "\e909";
+}
+
+.undo:before {
+    content: "\e90a";
+}
+
+.align-right:before {
+    content: "\e90b";
+}
+
+.align-left:before {
+    content: "\e90c";
+}
+
+.align-justify:before {
+    content: "\e90d";
+}
+
+.align-center:before {
+    content: "\e90e";
+}
+
+.strikethrough:before {
+    content: "\e90f";
+}
+
+.italic:before {
+    content: "\e910";
+}
+
+.underlined:before {
+    content: "\e911";
+}
+
+.bold:before {
+    content: "\e912";
+}
+
+.arrow-drop-down:before {
+    content: "\e913";
+}
+
+.arrow-upward:before {
+    content: "\e914";
+}
+
+.arrow-forward:before {
+    content: "\e915";
+}
+
+.arrow-downward:before {
+    content: "\e916";
+}
+
+.arrow-back:before {
+    content: "\e917";
+}
+
+.list-numbered:before {
+    content: "\e918";
+}
+
+.list-bulleted:before {
+    content: "\e919";
+}
+
+.indent-increase:before {
+    content: "\e91a";
+}
+
+.indent-decrease:before {
+    content: "\e91b";
+}
 .gj-draggable {
     cursor: move;
 }

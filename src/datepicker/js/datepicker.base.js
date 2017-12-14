@@ -181,7 +181,7 @@ gj.datepicker.config = {
          * @additionalinfo The css file for bootstrap should be manually included if you use bootstrap.
          * @type (materialdesign|bootstrap|bootstrap4)
          * @default materialdesign
-         * @example MaterialDesign <!-- materialicons, datepicker -->
+         * @example MaterialDesign <!-- datepicker -->
          * <input id="datepicker" width="312" />
          * <script>
          *    var datepicker = $('#datepicker').datepicker({ 
@@ -194,7 +194,7 @@ gj.datepicker.config = {
          * <script>
          *     $('#datepicker').datepicker({ uiLibrary: 'bootstrap' });
          * </script>
-         * @example Bootstrap.4.Material.Icons <!-- bootstrap4, materialicons, datepicker -->
+         * @example Bootstrap.4.Material.Icons <!-- bootstrap4, datepicker -->
          * <input id="datepicker" width="276" />
          * <script>
          *     $('#datepicker').datepicker({ uiLibrary: 'bootstrap4', iconsLibrary: 'materialicons' });

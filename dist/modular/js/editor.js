@@ -56,23 +56,23 @@ gj.editor.config = {
 
     materialicons: {
         icons: {
-            bold: '<i class="material-icons">format_bold</i>',
-            italic: '<i class="material-icons">format_italic</i>',
-            strikethrough: '<i class="material-icons">strikethrough_s</i>',
-            underline: '<i class="material-icons">format_underlined</i>',
+            bold: '<i class="gj-icon bold" />',
+            italic: '<i class="gj-icon italic" />',
+            strikethrough: '<i class="gj-icon strikethrough" />',
+            underline: '<i class="gj-icon underlined" />',
 
-            listBulleted: '<i class="material-icons">format_list_bulleted</i>',
-            listNumbered: '<i class="material-icons">format_list_numbered</i>',
-            indentDecrease: '<i class="material-icons">format_indent_decrease</i>',
-            indentIncrease: '<i class="material-icons">format_indent_increase</i>',
+            listBulleted: '<i class="gj-icon list-bulleted" />',
+            listNumbered: '<i class="gj-icon list-numbered" />',
+            indentDecrease: '<i class="gj-icon indent-decrease" />',
+            indentIncrease: '<i class="gj-icon indent-increase" />',
 
-            alignLeft: '<i class="material-icons">format_align_left</i>',
-            alignCenter: '<i class="material-icons">format_align_center</i>',
-            alignRight: '<i class="material-icons">format_align_right</i>',
-            alignJustify: '<i class="material-icons">format_align_justify</i>',
+            alignLeft: '<i class="gj-icon align-left" />',
+            alignCenter: '<i class="gj-icon align-center" />',
+            alignRight: '<i class="gj-icon align-right" />',
+            alignJustify: '<i class="gj-icon align-justify" />',
 
-            undo: '<i class="material-icons">undo</i>',
-            redo: '<i class="material-icons">redo</i>'
+            undo: '<i class="gj-icon undo" />',
+            redo: '<i class="gj-icon redo" />'
         }
     },
 

@@ -95,10 +95,11 @@
     background: 0 0;
 }
 
-.gj-button-md .material-icons {
+.gj-button-md .material-icons,
+.gj-button-md .gj-icon {
     vertical-align: middle;
     font-size: 1.3rem;
-    margin-right: 4px;    
+    margin-right: 4px;
 }
 
 .gj-button-md.gj-button-md-icon {
