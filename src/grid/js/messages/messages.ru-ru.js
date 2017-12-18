@@ -1,0 +1,21 @@
+﻿gj.grid.messages['ru-ru'] = {
+    First: 'Первый',
+    Previous: 'Предыдущий',
+    Next: 'Следующий',
+    Last: 'Последний',
+    Page: 'Страница',
+    FirstPageTooltip: 'Первая страница',
+    PreviousPageTooltip: 'Предыдущая страница',
+    NextPageTooltip: 'Следущая страница',
+    LastPageTooltip: 'Последняя страница',
+    Refresh: 'Обновить',
+    Of: 'от',
+    DisplayingRecords: 'Показать записи',
+    RowsPerPage: 'Записей на странице:',
+    Edit: 'Изменить',
+    Delete: 'Удалить',
+    Update: 'Обновить',
+    Cancel: 'Отмена',
+    NoRecordsFound: 'Нет ни одной записи.',
+    Loading: 'Загрузка...'
+};
