@@ -71,12 +71,14 @@
     width: 24px;
 }
 
+.gj-dropdown-bootstrap-3 [role="presenter"] [role="expander"].gj-dropdown-expander-mi .gj-icon,
 .gj-dropdown-bootstrap-3 [role="presenter"] [role="expander"].gj-dropdown-expander-mi .material-icons {
     top: 5px;
     right: 10px;
     position: absolute;
 }
 
+.gj-dropdown-bootstrap-4 [role="presenter"] [role="expander"].gj-dropdown-expander-mi .gj-icon,
 .gj-dropdown-bootstrap-4 [role="presenter"] [role="expander"].gj-dropdown-expander-mi .material-icons {
     top: 7px;
     right: 10px;

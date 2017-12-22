@@ -75,7 +75,7 @@ gj.grid.plugins.expandCollapseRows = {
                 /** Expand row icon definition.
                  * @alias icons.expandRow
                  * @type String
-                 * @default '<i class="material-icons">keyboard_arrow_right</i>'
+                 * @default '<i class="gj-icon chevron-right" />'
                  * @example Plus.Minus.Icons <!-- materialicons, grid -->
                  * <table id="grid"></table>
                  * <script>
@@ -91,12 +91,12 @@ gj.grid.plugins.expandCollapseRows = {
                  *     });
                  * </script>
                  */
-                expandRow: '<i class="material-icons">keyboard_arrow_right</i>',
+                expandRow: '<i class="gj-icon chevron-right" />',
 
                 /** Collapse row icon definition.
                  * @alias icons.collapseRow
                  * @type String
-                 * @default '<i class="material-icons">keyboard_arrow_down</i>'
+                 * @default '<i class="gj-icon chevron-down" />'
                  * @example Plus.Minus.Icons <!-- materialicons, grid -->
                  * <table id="grid"></table>
                  * <script>
@@ -112,7 +112,7 @@ gj.grid.plugins.expandCollapseRows = {
                  *     });
                  * </script>
                  */
-                collapseRow: '<i class="material-icons">keyboard_arrow_down</i>'
+                collapseRow: '<i class="gj-icon chevron-down" />'
             }
         },
 

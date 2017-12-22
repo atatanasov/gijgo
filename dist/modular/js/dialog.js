@@ -1,5 +1,5 @@
 /*
- * Gijgo Dialog v1.7.0
+ * Gijgo Dialog v1.7.1
  * http://gijgo.com/dialog
  *
  * Copyright 2014, 2017 gijgo.com
@@ -512,4 +512,8 @@ gj.dialog.messages['de-de'] = {
 gj.dialog.messages['pt-br'] = {
     Close: 'Fechar',
     DefaultTitle: 'Caixa de diálogo'
+};
+gj.dialog.messages['ru-ru'] = {
+    Close: 'Закрыть',
+    DefaultTitle: 'Сообщение'
 };

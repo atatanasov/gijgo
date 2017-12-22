@@ -97,7 +97,7 @@
     content: "\e912";
 }
 
-.arrow-drop-down:before {
+.arrow-dropdown:before {
     content: "\e913";
 }
 
@@ -131,4 +131,32 @@
 
 .indent-decrease:before {
     content: "\e91b";
+}
+
+.cancel:before {
+    content: "\e91c";
+}
+
+.clear:before {
+    content: "\e91d";
+}
+
+.check-circle:before {
+    content: "\e91e";
+}
+
+.delete:before {
+    content: "\e91f";
+}
+
+.refresh:before {
+    content: "\e920";
+}
+
+.last-page:before {
+    content: "\e921";
+}
+
+.first-page:before {
+    content: "\e922";
 }

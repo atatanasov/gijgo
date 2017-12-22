@@ -156,7 +156,7 @@ gj.dropdown.config = {
          * The css files for Material Icons, Font Awesome or Glyphicons should be manually included to the page where the grid is in use.
          * @type (materialicons|fontawesome|glyphicons)
          * @default 'materialicons'
-         * @example Bootstrap.Material.Icons <!-- bootstrap, materialicons, dropdown -->
+         * @example Bootstrap.Material.Icons <!-- bootstrap, dropdown -->
          * <select id="dropdown" width="200"></select>
          * <script>
          *     var dropdown = $('#dropdown').dropdown({
@@ -183,7 +183,7 @@ gj.dropdown.config = {
             /** DropDown icon definition.
              * @alias icons.dropdown
              * @type String
-             * @default '<i class="material-icons">arrow_drop_down</i>'
+             * @default '<i class="gj-icon arrow-dropdown" />'
              * @example Custom.Material.Icon <!-- materialicons, dropdown -->
              * <select id="dropdown"></select>
              * <script>
@@ -210,7 +210,7 @@ gj.dropdown.config = {
              *     });
              * </script>
              */
-            dropdown: '<i class="material-icons">arrow_drop_down</i>'
+            dropdown: '<i class="gj-icon arrow-dropdown" />'
         },
 
         style: {

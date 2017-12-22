@@ -1,5 +1,5 @@
 /*
- * Gijgo Checkbox v1.7.0
+ * Gijgo Checkbox v1.7.1
  * http://gijgo.com/checkbox
  *
  * Copyright 2014, 2017 gijgo.com
@@ -32,7 +32,7 @@ gj.checkbox.config = {
 
     bootstrap4: {
         style: {
-            wrapperCssClass: 'gj-checkbox-bootstrap'
+            wrapperCssClass: 'gj-checkbox-bootstrap gj-checkbox-bootstrap-4'
         },
         iconsLibrary: 'materialicons'
     },

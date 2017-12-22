@@ -104,14 +104,18 @@
 
 .gj-button-md.gj-button-md-icon {
     width: 24px;
-    height: 24px;
+    height: 32px;
     min-width: 24px;
     padding: 0px;
+    display: table;
 }
 
-.gj-button-md.gj-button-md-icon .material-icons {
-    vertical-align: baseline;
-    margin-right: 0px;    
+.gj-button-md.gj-button-md-icon .material-icons,
+.gj-button-md.gj-button-md-icon .gj-icon {
+    display: table-cell;
+    margin-right: 0px;
+    width: 24px;
+    height: 24px;
 }
 
 .gj-button-md.active {
@@ -377,7 +381,7 @@ ul.gj-list-md li.disabled>[data-role="wrapper"]>[data-role="display"] {
     content: "\e912";
 }
 
-.arrow-drop-down:before {
+.arrow-dropdown:before {
     content: "\e913";
 }
 
@@ -411,6 +415,34 @@ ul.gj-list-md li.disabled>[data-role="wrapper"]>[data-role="display"] {
 
 .indent-decrease:before {
     content: "\e91b";
+}
+
+.cancel:before {
+    content: "\e91c";
+}
+
+.clear:before {
+    content: "\e91d";
+}
+
+.check-circle:before {
+    content: "\e91e";
+}
+
+.delete:before {
+    content: "\e91f";
+}
+
+.refresh:before {
+    content: "\e920";
+}
+
+.last-page:before {
+    content: "\e921";
+}
+
+.first-page:before {
+    content: "\e922";
 }
 .gj-draggable {
     cursor: move;
@@ -646,10 +678,11 @@ TABLE.gj-grid > tbody > tr > td {
     position: relative;
 }
 
-TABLE.gj-grid DIV[data-role="display"], TABLE.gj-grid DIV[data-role="display"] > DIV {
+TABLE.gj-grid DIV[data-role="display"],
+TABLE.gj-grid DIV[data-role="display"] > DIV {
 	vertical-align: middle;
 	text-indent: 0;
-    display: inline-block;
+    display: flex;
     white-space: pre-wrap;
     -ms-word-break: break-word;
     word-break: break-word;
@@ -678,15 +711,6 @@ DIV.gj-grid-wrapper DIV.gj-grid-loading-text
     font-weight: bold;
 }
 
-table.gj-grid .gj-grid-icon
-{
-    margin: 0 2px;
-    cursor: pointer;
-    overflow: visible;
-    width: 16px;
-    height: 16px;
-}
-
 /* Bootstrap Theme */
 table.gj-grid-bootstrap thead th {
     background-color: #f5f5f5;
@@ -697,6 +721,7 @@ table.gj-grid-bootstrap thead th [data-role="sorticon"] {
     margin-left: 5px;
 }
 
+table.gj-grid-bootstrap thead th [data-role="sorticon"] i.gj-icon,
 table.gj-grid-bootstrap thead th [data-role="sorticon"] i.material-icons {
     position: absolute;
     font-size: 20px;
@@ -770,6 +795,7 @@ table.gj-grid-md thead th [data-role="sorticon"] {
     margin-left: 5px;
 }
 
+table.gj-grid-md thead th [data-role="sorticon"] i.gj-icon,
 table.gj-grid-md thead th [data-role="sorticon"] i.material-icons {
     position: absolute;
     font-size: 16px;
@@ -892,6 +918,14 @@ table.gj-grid-md thead th.gj-grid-select-all {
     margin-right: 5px;
 }
 
+.gj-grid-bootstrap-4 tfoot tr[data-role="pager"] th > div button {
+    height: 34px;
+}
+
+.gj-grid-bootstrap-4 tfoot tr[data-role="pager"] th div .gj-dropdown-bootstrap-4 .gj-dropdown-expander-mi .gj-icon {
+    top: 5px;
+}
+
 .gj-grid-bootstrap-3 tfoot tr[data-role="pager"] th > div > input {
     margin-right: 5px;
     width: 40px;
@@ -900,11 +934,12 @@ table.gj-grid-md thead th.gj-grid-select-all {
     font-weight: bold;
 }
 
-.gj-grid-bootstrap-4 tfoot tr[data-role="pager"] th > div > div.input-group input {
-    margin-right: 5px;
+.gj-grid-bootstrap-4 tfoot tr[data-role="pager"] th > div > div.input-group {
     width: 40px;
+}
+
+.gj-grid-bootstrap-4 tfoot tr[data-role="pager"] th > div > div.input-group input {
     text-align: right;
-    display: inline-block;
     font-weight: bold;
 }
 
@@ -1010,12 +1045,6 @@ span.gj-grid-column-resizer {
     padding: 0px;
 }
 
-.gj-grid-md tbody .gj-dropdown-md [role="presenter"] [role="expander"] .material-icons {
-    position: absolute;
-    top: -6px;
-    right: 0px;
-}
-
 /* Bootstrap */
 .gj-grid-bootstrap tbody tr td[data-mode="edit"] {
     padding: 0px;
@@ -1081,6 +1110,7 @@ span.gj-grid-column-resizer {
     font-family: -apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
 }
 
+.gj-grid-bootstrap-4 tbody tr td[data-mode="edit"] .gj-dropdown-bootstrap-4 [role="expander"].gj-dropdown-expander-mi .gj-icon,
 .gj-grid-bootstrap-4 tbody tr td[data-mode="edit"] .gj-dropdown-bootstrap-4 [role="expander"].gj-dropdown-expander-mi .material-icons {
     top: 12px;
 }
@@ -1102,6 +1132,7 @@ span.gj-grid-column-resizer {
     background-color: #fff;
 }
 
+.gj-grid-bootstrap-4 tbody tr td[data-mode="edit"] .gj-datepicker-bootstrap [role="right-icon"] .gj-icon,
 .gj-grid-bootstrap-4 tbody tr td[data-mode="edit"] .gj-datepicker-bootstrap [role="right-icon"] .material-icons {
     top: 12px;
     left: 10px;
@@ -1355,7 +1386,6 @@ ul.gj-list-md li.disabled>[data-role="wrapper"]>[data-role="expander"] {
     line-height: 11px;
     font-size: 11px;
     padding: 2px;
-    /*margin-right: 4px;*/
     color: #555555;
     border: 1px solid #CCCCCC;
     border-radius: 3px;
@@ -1374,11 +1404,19 @@ ul.gj-list-md li.disabled>[data-role="wrapper"]>[data-role="expander"] {
     cursor: not-allowed;
 }
 
-/*.gj-checkbox-bootstrap input[type="checkbox"][disabled] + span:before {
-    background: #eee;
-    border: 1px solid #ccc;
-    color: #888;
-}*/
+/* Bootstrap 4 */
+.gj-checkbox-bootstrap.gj-checkbox-bootstrap-4 span {
+    line-height: 16px;
+    padding: 0px;
+}
+
+.gj-checkbox-bootstrap-4.gj-checkbox-material-icons input[type="checkbox"]:checked + span:after {
+    font-size: 16px;
+}
+
+.gj-checkbox-bootstrap-4.gj-checkbox-material-icons input[type="checkbox"]:indeterminate + span:after {
+    font-size: 16px;
+}
 
 /* Material Design */
 .gj-checkbox-md {
@@ -1475,8 +1513,8 @@ ul.gj-list-md li.disabled>[data-role="wrapper"]>[data-role="expander"] {
 }
 
 /* fontawesome */
-.gj-checkbox-fontawesome span.fa {
-    padding-top: 3px;
+.gj-checkbox-fontawesome .fa {
+    font-size: 14px;
 }
 
 .gj-checkbox-fontawesome input[type="checkbox"]:checked + span:before {
@@ -1485,15 +1523,6 @@ ul.gj-list-md li.disabled>[data-role="wrapper"]>[data-role="expander"] {
 
 .gj-checkbox-fontawesome input[type="checkbox"]:indeterminate + span:before {
     content: "\f068 ";
-}
-
-/* Bootstrap and Material Design */
-.gj-checkbox-bootstrap.gj-checkbox-material-icons input[type="checkbox"]:checked + span:after {    
-    font-size: 11px;
-}
-
-.gj-checkbox-bootstrap.gj-checkbox-material-icons input[type="checkbox"]:indeterminate + span:after {    
-    font-size: 11px;
 }
 /* Material Design */
 
@@ -1624,12 +1653,14 @@ ul.gj-list-md li.disabled>[data-role="wrapper"]>[data-role="expander"] {
     width: 24px;
 }
 
+.gj-dropdown-bootstrap-3 [role="presenter"] [role="expander"].gj-dropdown-expander-mi .gj-icon,
 .gj-dropdown-bootstrap-3 [role="presenter"] [role="expander"].gj-dropdown-expander-mi .material-icons {
     top: 5px;
     right: 10px;
     position: absolute;
 }
 
+.gj-dropdown-bootstrap-4 [role="presenter"] [role="expander"].gj-dropdown-expander-mi .gj-icon,
 .gj-dropdown-bootstrap-4 [role="presenter"] [role="expander"].gj-dropdown-expander-mi .material-icons {
     top: 7px;
     right: 10px;

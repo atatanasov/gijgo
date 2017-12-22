@@ -78,13 +78,23 @@ gj.grid.plugins.pagination = {
                  *         pager: { limit: 2, sizes: [2, 5, 10, 20] }
                  *     });
                  * </script>
-                 * @example Bootstrap.4 <!-- bootstrap4, fontawesome, grid, grid.pagination, dropdown  -->
+                 * @example Bootstrap.4.FontAwesome <!-- bootstrap4, fontawesome, grid, dropdown  -->
                  * <table id="grid"></table>
                  * <script>
                  *     var grid = $('#grid').grid({
                  *         dataSource: '/Players/Get',
                  *         uiLibrary: 'bootstrap4',
                  *         iconsLibrary: 'fontawesome',
+                 *         columns: [ { field: 'ID', width: 36 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
+                 *         pager: { limit: 2, sizes: [2, 5, 10, 20] }
+                 *     });
+                 * </script>
+                 * @example Bootstrap.4.Material.Icons <!-- bootstrap4, grid, dropdown  -->
+                 * <table id="grid"></table>
+                 * <script>
+                 *     var grid = $('#grid').grid({
+                 *         dataSource: '/Players/Get',
+                 *         uiLibrary: 'bootstrap4',
                  *         columns: [ { field: 'ID', width: 36 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
                  *         pager: { limit: 2, sizes: [2, 5, 10, 20] }
                  *     });
@@ -109,6 +119,7 @@ gj.grid.plugins.pagination = {
                  * @example Font.Awesome <!-- fontawesome, grid  -->
                  * <style>
                  * .icon-disabled { color: #ccc; }
+                 * table.gj-grid div[data-role="display"] div.custom-item { display: table; margin-right: 5px; }
                  * </style>
                  * <table id="grid"></table>
                  * <script>
@@ -124,16 +135,16 @@ gj.grid.plugins.pagination = {
                  *             limit: 2, 
                  *             sizes: [2, 5, 10, 20],
                  *             leftControls: [
-                 *                 $('<div title="First" data-role="page-first" class="gj-grid-icon fa fa-fast-backward" aria-hidden="true"></div>'),
-                 *                 $('<div title="Previous" data-role="page-previous" class="gj-grid-icon fa fa-backward" aria-hidden="true"></div>'),
+                 *                 $('<div title="First" data-role="page-first" class="custom-item"><i class="fa fa-fast-backward" aria-hidden="true" /></div>'),
+                 *                 $('<div title="Previous" data-role="page-previous" class="custom-item"><i class="fa fa-backward" aria-hidden="true" /></div>'),
                  *                 $('<div> Page </div>'),
-                 *                 $('<div></div>').append($('<input type="text" data-role="page-number" style="margin: 0 5px; width: 34px;" value="0">')),
+                 *                 $('<div class="custom-item"></div>').append($('<input type="text" data-role="page-number" style="margin: 0 5px; width: 34px; height: 16px; text-align: right;" value="0">')),
                  *                 $('<div>of&nbsp;</div>'),
                  *                 $('<div data-role="page-label-last" style="margin-right: 5px;">0</div>'),
-                 *                 $('<div title="Next" data-role="page-next" class="gj-grid-icon fa fa-forward" aria-hidden="true"></div>'),
-                 *                 $('<div title="Last" data-role="page-last" class="gj-grid-icon fa fa-fast-forward" aria-hidden="true"></div>'),
-                 *                 $('<div title="Reload" data-role="page-refresh" class="gj-grid-icon fa fa-refresh" aria-hidden="true"></div>'),
-                 *                 $('<div></div>').append($('<select data-role="page-size" style="margin: 0 5px; width: 50px;"></select>'))
+                 *                 $('<div title="Next" data-role="page-next" class="custom-item"><i class="fa fa-forward" aria-hidden="true" /></div>'),
+                 *                 $('<div title="Last" data-role="page-last" class="custom-item"><i class="fa fa-fast-forward" aria-hidden="true" /></div>'),
+                 *                 $('<div title="Reload" data-role="page-refresh" class="custom-item"><i class="fa fa-refresh" aria-hidden="true" /></div>'),
+                 *                 $('<div class="custom-item"></div>').append($('<select data-role="page-size" style="margin: 0 5px; width: 50px;"></select>'))
                  *             ],
                  *             rightControls: [
                  *                 $('<div>Displaying records&nbsp;</div>'),
@@ -188,11 +199,11 @@ gj.grid.plugins.pagination = {
 
         materialicons: {
             icons: {
-                first: '<i class="material-icons">first_page</i>',
-                previous: '<i class="material-icons">chevron_left</i>',
-                next: '<i class="material-icons">chevron_right</i>',
-                last: '<i class="material-icons">last_page</i>',
-                refresh: '<i class="material-icons">refresh</i>'
+                first: '<i class="gj-icon first-page" />',
+                previous: '<i class="gj-icon chevron-left" />',
+                next: '<i class="gj-icon chevron-right" />',
+                last: '<i class="gj-icon last-page" />',
+                refresh: '<i class="gj-icon refresh" />'
             }
         },
 

@@ -1,5 +1,5 @@
 /*
- * Gijgo Grid v1.7.0
+ * Gijgo Grid v1.7.1
  * http://gijgo.com/grid
  *
  * Copyright 2014, 2017 gijgo.com
@@ -157,8 +157,8 @@ gj.grid.config = {
 
     materialicons: {
         icons: {
-            asc: '<i class="material-icons">arrow_upward</i>',
-            desc: '<i class="material-icons">arrow_downward</i>'
+            asc: '<i class="gj-icon arrow-upward" />',
+            desc: '<i class="gj-icon arrow-downward" />'
         }
     },
 
@@ -1327,9 +1327,9 @@ gj.grid.widget.prototype.getHTMLConfig = gj.grid.methods.getHTMLConfig;
             expandedRows: [],
 
             icons: {
-                /** Expand row icon definition.                 */                expandRow: '<i class="material-icons">keyboard_arrow_right</i>',
+                /** Expand row icon definition.                 */                expandRow: '<i class="gj-icon chevron-right" />',
 
-                /** Collapse row icon definition.                 */                collapseRow: '<i class="material-icons">keyboard_arrow_down</i>'
+                /** Collapse row icon definition.                 */                collapseRow: '<i class="gj-icon chevron-down" />'
             }
         },
 
@@ -1581,23 +1581,23 @@ gj.grid.plugins.inlineEditing.config = {
 
     bootstrap4: {
         inlineEditing: {
-            managementColumnConfig: { width: 200, align: 'center', renderer: gj.grid.plugins.inlineEditing.renderers.editManager, cssClass: 'gj-grid-management-column' }
+            managementColumnConfig: { width: 280, align: 'center', renderer: gj.grid.plugins.inlineEditing.renderers.editManager, cssClass: 'gj-grid-management-column' }
         }
     }
 };
 
 gj.grid.plugins.inlineEditing.private = {
     localization: function (data) {
-        if (data.uiLibrary === 'bootstrap' || data.uiLibrary === 'bootstrap4') {
+        if (data.uiLibrary === 'bootstrap') {
             data.inlineEditing.editButton = '<button type="button" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> ' + gj.grid.messages[data.locale].Edit + '</button>';
             data.inlineEditing.deleteButton = '<button type="button" class="btn btn-default btn-sm gj-margin-left-10"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> ' + gj.grid.messages[data.locale].Delete + '</button>';
             data.inlineEditing.updateButton = '<button type="button" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> ' + gj.grid.messages[data.locale].Update + '</button>';
             data.inlineEditing.cancelButton = '<button type="button" class="btn btn-default btn-sm gj-margin-left-10"><span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span> ' + gj.grid.messages[data.locale].Cancel + '</button>';
         } else {
-            data.inlineEditing.editButton = '<button class="gj-button-md"><i class="material-icons">mode_edit</i> ' + gj.grid.messages[data.locale].Edit.toUpperCase() + '</button>';
-            data.inlineEditing.deleteButton = '<button class="gj-button-md"><i class="material-icons">delete</i> ' + gj.grid.messages[data.locale].Delete.toUpperCase() + '</button>';
-            data.inlineEditing.updateButton = '<button class="gj-button-md"><i class="material-icons">check_circle</i> ' + gj.grid.messages[data.locale].Update.toUpperCase() + '</button>';
-            data.inlineEditing.cancelButton = '<button class="gj-button-md"><i class="material-icons">cancel</i> ' +gj.grid.messages[data.locale].Cancel.toUpperCase() + '</button>';
+            data.inlineEditing.editButton = '<button class="gj-button-md"><i class="gj-icon pencil" /> ' + gj.grid.messages[data.locale].Edit.toUpperCase() + '</button>';
+            data.inlineEditing.deleteButton = '<button class="gj-button-md"><i class="gj-icon delete" /> ' + gj.grid.messages[data.locale].Delete.toUpperCase() + '</button>';
+            data.inlineEditing.updateButton = '<button class="gj-button-md"><i class="gj-icon check-circle" /> ' + gj.grid.messages[data.locale].Update.toUpperCase() + '</button>';
+            data.inlineEditing.cancelButton = '<button class="gj-button-md"><i class="gj-icon cancel" /> ' +gj.grid.messages[data.locale].Cancel.toUpperCase() + '</button>';
         }
     },
 
@@ -1980,11 +1980,11 @@ gj.grid.plugins.inlineEditing.configure = function ($grid, fullConfig, clientCon
 
         materialicons: {
             icons: {
-                first: '<i class="material-icons">first_page</i>',
-                previous: '<i class="material-icons">chevron_left</i>',
-                next: '<i class="material-icons">chevron_right</i>',
-                last: '<i class="material-icons">last_page</i>',
-                refresh: '<i class="material-icons">refresh</i>'
+                first: '<i class="gj-icon first-page" />',
+                previous: '<i class="gj-icon chevron-left" />',
+                next: '<i class="gj-icon chevron-right" />',
+                last: '<i class="gj-icon last-page" />',
+                refresh: '<i class="gj-icon refresh" />'
             }
         },
 
@@ -3047,9 +3047,9 @@ gj.grid.plugins.inlineEditing.configure = function ($grid, fullConfig, clientCon
             },
 
             icons: {
-                /** Expand row icon definition.                 */                expandGroup: '<i class="material-icons">add</i>',
+                /** Expand row icon definition.                 */                expandGroup: '<i class="gj-icon plus" />',
 
-                /** Collapse row icon definition.                 */                collapseGroup: '<i class="material-icons">remove</i>'
+                /** Collapse row icon definition.                 */                collapseGroup: '<i class="gj-icon minus" />'
             }
         },
 
@@ -3346,4 +3346,25 @@ gj.grid.messages['pt-br'] = {
     Cancel: 'Cancelar',
     NoRecordsFound: 'Nenhum registro encontrado.',
     Loading: 'Carregando...'
+};
+gj.grid.messages['ru-ru'] = {
+    First: 'Первый',
+    Previous: 'Предыдущий',
+    Next: 'Следующий',
+    Last: 'Последний',
+    Page: 'Страница',
+    FirstPageTooltip: 'Первая страница',
+    PreviousPageTooltip: 'Предыдущая страница',
+    NextPageTooltip: 'Следущая страница',
+    LastPageTooltip: 'Последняя страница',
+    Refresh: 'Обновить',
+    Of: 'от',
+    DisplayingRecords: 'Показать записи',
+    RowsPerPage: 'Записей на странице:',
+    Edit: 'Изменить',
+    Delete: 'Удалить',
+    Update: 'Обновить',
+    Cancel: 'Отмена',
+    NoRecordsFound: 'Нет ни одной записи.',
+    Loading: 'Загрузка...'
 };

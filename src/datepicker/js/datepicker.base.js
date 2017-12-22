@@ -445,12 +445,6 @@ gj.datepicker.config = {
         showOtherMonths: true
     },
 
-    materialicons: {
-        //rightIcon: '<i class="material-icons">event</i>',
-        //previousMonth: '<i class="material-icons">keyboard_arrow_left</i>',
-        //nextMonth: '<i class="material-icons">keyboard_arrow_right</i>'
-    },
-
     fontawesome: {
         icons: {
             rightIcon: '<span class="input-group-addon"><i class="fa fa-calendar" aria-hidden="true"></i></span>',

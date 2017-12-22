@@ -50,6 +50,14 @@
     margin-right: 5px;
 }
 
+.gj-grid-bootstrap-4 tfoot tr[data-role="pager"] th > div button {
+    height: 34px;
+}
+
+.gj-grid-bootstrap-4 tfoot tr[data-role="pager"] th div .gj-dropdown-bootstrap-4 .gj-dropdown-expander-mi .gj-icon {
+    top: 5px;
+}
+
 .gj-grid-bootstrap-3 tfoot tr[data-role="pager"] th > div > input {
     margin-right: 5px;
     width: 40px;
@@ -58,11 +66,12 @@
     font-weight: bold;
 }
 
-.gj-grid-bootstrap-4 tfoot tr[data-role="pager"] th > div > div.input-group input {
-    margin-right: 5px;
+.gj-grid-bootstrap-4 tfoot tr[data-role="pager"] th > div > div.input-group {
     width: 40px;
+}
+
+.gj-grid-bootstrap-4 tfoot tr[data-role="pager"] th > div > div.input-group input {
     text-align: right;
-    display: inline-block;
     font-weight: bold;
 }
 

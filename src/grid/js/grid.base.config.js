@@ -803,7 +803,7 @@ gj.grid.config = {
          *         columns: [ { field: 'ID', width: 32 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
          *     });
          * </script>
-         * @example Multiple.Bootstrap.4.Checkbox <!-- bootstrap4, materialicons, checkbox, grid -->
+         * @example Multiple.Bootstrap.4.Checkbox <!-- bootstrap4, checkbox, grid -->
          * <table id="grid"></table>
          * <script>
          *     $('#grid').grid({
@@ -811,7 +811,7 @@ gj.grid.config = {
          *         dataSource: '/Players/Get',
          *         selectionType: 'multiple',
          *         selectionMethod: 'checkbox',
-         *         columns: [ { field: 'ID', width: 34 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
+         *         columns: [ { field: 'ID', width: 42 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
          *     });
          * </script>
          * @example Single.Checkbox <!-- materialicons, checkbox, grid -->
@@ -1067,8 +1067,8 @@ gj.grid.config = {
 
     materialicons: {
         icons: {
-            asc: '<i class="material-icons">arrow_upward</i>',
-            desc: '<i class="material-icons">arrow_downward</i>'
+            asc: '<i class="gj-icon arrow-upward" />',
+            desc: '<i class="gj-icon arrow-downward" />'
         }
     },
 

@@ -67,7 +67,7 @@ gj.grid.plugins.fixedHeader = {
              *         dataSource: '/Players/Get',
              *         fixedHeader: true,
              *         columns: [ 
-             *             { field: 'ID', width: 34 }, 
+             *             { field: 'ID', width: 42 }, 
              *             { field: 'Name' }, 
              *             { field: 'PlaceOfBirth' } 
              *         ],

@@ -96,7 +96,7 @@ gj.checkbox.config = {
 
     bootstrap4: {
         style: {
-            wrapperCssClass: 'gj-checkbox-bootstrap'
+            wrapperCssClass: 'gj-checkbox-bootstrap gj-checkbox-bootstrap-4'
         },
         iconsLibrary: 'materialicons'
     },

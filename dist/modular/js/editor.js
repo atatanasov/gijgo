@@ -1,5 +1,5 @@
 /*
- * Gijgo Editor v1.7.0
+ * Gijgo Editor v1.7.1
  * http://gijgo.com/editor
  *
  * Copyright 2014, 2017 gijgo.com
@@ -350,4 +350,20 @@ gj.editor.messages['pt-br'] = {
     alignJustify: 'Justificar',
     undo: 'Desfazer',
     redo: 'Refazer'
+};
+gj.editor.messages['ru-ru'] = {
+	bold: 'Жирный',
+	italic: 'Курсив',
+	strikethrough: 'Зачеркнутый',
+	underline: 'Подчеркнутый',
+	listBulleted: 'Список',
+	listNumbered: 'Нумерованный список',
+	indentDecrease: 'Уменьшить отступ',
+	indentIncrease: 'Увеличить отступ',
+	alignLeft: 'Выровнять по левому краю',
+	alignCenter: 'Выровнять по центру',
+	alignRight: 'Выровнять по правому краю',
+	alignJustify: 'Выровнять по ширине',
+	undo: 'Назад',
+	redo: 'Вперед'
 };

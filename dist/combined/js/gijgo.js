@@ -1,5 +1,5 @@
 /*
- * Gijgo JavaScript Library v1.7.0
+ * Gijgo JavaScript Library v1.7.1
  * http://gijgo.com/
  *
  * Copyright 2014, 2017 gijgo.com
@@ -2940,7 +2940,7 @@ gj.grid.config = {
          *         columns: [ { field: 'ID', width: 32 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
          *     });
          * </script>
-         * @example Multiple.Bootstrap.4.Checkbox <!-- bootstrap4, materialicons, checkbox, grid -->
+         * @example Multiple.Bootstrap.4.Checkbox <!-- bootstrap4, checkbox, grid -->
          * <table id="grid"></table>
          * <script>
          *     $('#grid').grid({
@@ -2948,7 +2948,7 @@ gj.grid.config = {
          *         dataSource: '/Players/Get',
          *         selectionType: 'multiple',
          *         selectionMethod: 'checkbox',
-         *         columns: [ { field: 'ID', width: 34 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
+         *         columns: [ { field: 'ID', width: 42 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
          *     });
          * </script>
          * @example Single.Checkbox <!-- materialicons, checkbox, grid -->
@@ -3204,8 +3204,8 @@ gj.grid.config = {
 
     materialicons: {
         icons: {
-            asc: '<i class="material-icons">arrow_upward</i>',
-            desc: '<i class="material-icons">arrow_downward</i>'
+            asc: '<i class="gj-icon arrow-upward" />',
+            desc: '<i class="gj-icon arrow-downward" />'
         }
     },
 
@@ -5206,7 +5206,7 @@ gj.grid.plugins.expandCollapseRows = {
                 /** Expand row icon definition.
                  * @alias icons.expandRow
                  * @type String
-                 * @default '<i class="material-icons">keyboard_arrow_right</i>'
+                 * @default '<i class="gj-icon chevron-right" />'
                  * @example Plus.Minus.Icons <!-- materialicons, grid -->
                  * <table id="grid"></table>
                  * <script>
@@ -5222,12 +5222,12 @@ gj.grid.plugins.expandCollapseRows = {
                  *     });
                  * </script>
                  */
-                expandRow: '<i class="material-icons">keyboard_arrow_right</i>',
+                expandRow: '<i class="gj-icon chevron-right" />',
 
                 /** Collapse row icon definition.
                  * @alias icons.collapseRow
                  * @type String
-                 * @default '<i class="material-icons">keyboard_arrow_down</i>'
+                 * @default '<i class="gj-icon chevron-down" />'
                  * @example Plus.Minus.Icons <!-- materialicons, grid -->
                  * <table id="grid"></table>
                  * <script>
@@ -5243,7 +5243,7 @@ gj.grid.plugins.expandCollapseRows = {
                  *     });
                  * </script>
                  */
-                collapseRow: '<i class="material-icons">keyboard_arrow_down</i>'
+                collapseRow: '<i class="gj-icon chevron-down" />'
             }
         },
 
@@ -5762,7 +5762,7 @@ gj.grid.plugins.inlineEditing.config = {
              *         pager: { limit: 3, sizes: [3, 5, 10, 20] }
              *     });
              * </script>
-             * @example Bootstrap.4 <!-- materialicons, bootstrap4, grid, dropdown -->
+             * @example Bootstrap.4 <!-- bootstrap4, grid, dropdown -->
              * <table id="grid"></table>
              * <script>
              *     var grid, data = [
@@ -5779,7 +5779,7 @@ gj.grid.plugins.inlineEditing.config = {
              *         inlineEditing: { mode: 'command' },
              *         uiLibrary: 'bootstrap4',
              *         columns: [
-             *             { field: 'ID', width: 34 },
+             *             { field: 'ID', width: 42 },
              *             { field: 'Name', editor: true },
              *             { field: 'PlaceOfBirth', editor: true }
              *         ],
@@ -5801,23 +5801,23 @@ gj.grid.plugins.inlineEditing.config = {
 
     bootstrap4: {
         inlineEditing: {
-            managementColumnConfig: { width: 200, align: 'center', renderer: gj.grid.plugins.inlineEditing.renderers.editManager, cssClass: 'gj-grid-management-column' }
+            managementColumnConfig: { width: 280, align: 'center', renderer: gj.grid.plugins.inlineEditing.renderers.editManager, cssClass: 'gj-grid-management-column' }
         }
     }
 };
 
 gj.grid.plugins.inlineEditing.private = {
     localization: function (data) {
-        if (data.uiLibrary === 'bootstrap' || data.uiLibrary === 'bootstrap4') {
+        if (data.uiLibrary === 'bootstrap') {
             data.inlineEditing.editButton = '<button type="button" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> ' + gj.grid.messages[data.locale].Edit + '</button>';
             data.inlineEditing.deleteButton = '<button type="button" class="btn btn-default btn-sm gj-margin-left-10"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> ' + gj.grid.messages[data.locale].Delete + '</button>';
             data.inlineEditing.updateButton = '<button type="button" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> ' + gj.grid.messages[data.locale].Update + '</button>';
             data.inlineEditing.cancelButton = '<button type="button" class="btn btn-default btn-sm gj-margin-left-10"><span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span> ' + gj.grid.messages[data.locale].Cancel + '</button>';
         } else {
-            data.inlineEditing.editButton = '<button class="gj-button-md"><i class="material-icons">mode_edit</i> ' + gj.grid.messages[data.locale].Edit.toUpperCase() + '</button>';
-            data.inlineEditing.deleteButton = '<button class="gj-button-md"><i class="material-icons">delete</i> ' + gj.grid.messages[data.locale].Delete.toUpperCase() + '</button>';
-            data.inlineEditing.updateButton = '<button class="gj-button-md"><i class="material-icons">check_circle</i> ' + gj.grid.messages[data.locale].Update.toUpperCase() + '</button>';
-            data.inlineEditing.cancelButton = '<button class="gj-button-md"><i class="material-icons">cancel</i> ' +gj.grid.messages[data.locale].Cancel.toUpperCase() + '</button>';
+            data.inlineEditing.editButton = '<button class="gj-button-md"><i class="gj-icon pencil" /> ' + gj.grid.messages[data.locale].Edit.toUpperCase() + '</button>';
+            data.inlineEditing.deleteButton = '<button class="gj-button-md"><i class="gj-icon delete" /> ' + gj.grid.messages[data.locale].Delete.toUpperCase() + '</button>';
+            data.inlineEditing.updateButton = '<button class="gj-button-md"><i class="gj-icon check-circle" /> ' + gj.grid.messages[data.locale].Update.toUpperCase() + '</button>';
+            data.inlineEditing.cancelButton = '<button class="gj-button-md"><i class="gj-icon cancel" /> ' +gj.grid.messages[data.locale].Cancel.toUpperCase() + '</button>';
         }
     },
 
@@ -6432,13 +6432,23 @@ gj.grid.plugins.pagination = {
                  *         pager: { limit: 2, sizes: [2, 5, 10, 20] }
                  *     });
                  * </script>
-                 * @example Bootstrap.4 <!-- bootstrap4, fontawesome, grid, grid.pagination, dropdown  -->
+                 * @example Bootstrap.4.FontAwesome <!-- bootstrap4, fontawesome, grid, dropdown  -->
                  * <table id="grid"></table>
                  * <script>
                  *     var grid = $('#grid').grid({
                  *         dataSource: '/Players/Get',
                  *         uiLibrary: 'bootstrap4',
                  *         iconsLibrary: 'fontawesome',
+                 *         columns: [ { field: 'ID', width: 36 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
+                 *         pager: { limit: 2, sizes: [2, 5, 10, 20] }
+                 *     });
+                 * </script>
+                 * @example Bootstrap.4.Material.Icons <!-- bootstrap4, grid, dropdown  -->
+                 * <table id="grid"></table>
+                 * <script>
+                 *     var grid = $('#grid').grid({
+                 *         dataSource: '/Players/Get',
+                 *         uiLibrary: 'bootstrap4',
                  *         columns: [ { field: 'ID', width: 36 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
                  *         pager: { limit: 2, sizes: [2, 5, 10, 20] }
                  *     });
@@ -6463,6 +6473,7 @@ gj.grid.plugins.pagination = {
                  * @example Font.Awesome <!-- fontawesome, grid  -->
                  * <style>
                  * .icon-disabled { color: #ccc; }
+                 * table.gj-grid div[data-role="display"] div.custom-item { display: table; margin-right: 5px; }
                  * </style>
                  * <table id="grid"></table>
                  * <script>
@@ -6478,16 +6489,16 @@ gj.grid.plugins.pagination = {
                  *             limit: 2, 
                  *             sizes: [2, 5, 10, 20],
                  *             leftControls: [
-                 *                 $('<div title="First" data-role="page-first" class="gj-grid-icon fa fa-fast-backward" aria-hidden="true"></div>'),
-                 *                 $('<div title="Previous" data-role="page-previous" class="gj-grid-icon fa fa-backward" aria-hidden="true"></div>'),
+                 *                 $('<div title="First" data-role="page-first" class="custom-item"><i class="fa fa-fast-backward" aria-hidden="true" /></div>'),
+                 *                 $('<div title="Previous" data-role="page-previous" class="custom-item"><i class="fa fa-backward" aria-hidden="true" /></div>'),
                  *                 $('<div> Page </div>'),
-                 *                 $('<div></div>').append($('<input type="text" data-role="page-number" style="margin: 0 5px; width: 34px;" value="0">')),
+                 *                 $('<div class="custom-item"></div>').append($('<input type="text" data-role="page-number" style="margin: 0 5px; width: 34px; height: 16px; text-align: right;" value="0">')),
                  *                 $('<div>of&nbsp;</div>'),
                  *                 $('<div data-role="page-label-last" style="margin-right: 5px;">0</div>'),
-                 *                 $('<div title="Next" data-role="page-next" class="gj-grid-icon fa fa-forward" aria-hidden="true"></div>'),
-                 *                 $('<div title="Last" data-role="page-last" class="gj-grid-icon fa fa-fast-forward" aria-hidden="true"></div>'),
-                 *                 $('<div title="Reload" data-role="page-refresh" class="gj-grid-icon fa fa-refresh" aria-hidden="true"></div>'),
-                 *                 $('<div></div>').append($('<select data-role="page-size" style="margin: 0 5px; width: 50px;"></select>'))
+                 *                 $('<div title="Next" data-role="page-next" class="custom-item"><i class="fa fa-forward" aria-hidden="true" /></div>'),
+                 *                 $('<div title="Last" data-role="page-last" class="custom-item"><i class="fa fa-fast-forward" aria-hidden="true" /></div>'),
+                 *                 $('<div title="Reload" data-role="page-refresh" class="custom-item"><i class="fa fa-refresh" aria-hidden="true" /></div>'),
+                 *                 $('<div class="custom-item"></div>').append($('<select data-role="page-size" style="margin: 0 5px; width: 50px;"></select>'))
                  *             ],
                  *             rightControls: [
                  *                 $('<div>Displaying records&nbsp;</div>'),
@@ -6542,11 +6553,11 @@ gj.grid.plugins.pagination = {
 
         materialicons: {
             icons: {
-                first: '<i class="material-icons">first_page</i>',
-                previous: '<i class="material-icons">chevron_left</i>',
-                next: '<i class="material-icons">chevron_right</i>',
-                last: '<i class="material-icons">last_page</i>',
-                refresh: '<i class="material-icons">refresh</i>'
+                first: '<i class="gj-icon first-page" />',
+                previous: '<i class="gj-icon chevron-left" />',
+                next: '<i class="gj-icon chevron-right" />',
+                last: '<i class="gj-icon last-page" />',
+                refresh: '<i class="gj-icon refresh" />'
             }
         },
 
@@ -8228,7 +8239,7 @@ gj.grid.plugins.grouping = {
                 /** Expand row icon definition.
                  * @alias icons.expandGroup
                  * @type String
-                 * @default '<i class="material-icons">add</i>'
+                 * @default '<i class="gj-icon plus" />'
                  * @example Right.Down.Icons <!-- materialicons, grid -->
                  * <table id="grid"></table>
                  * <script>
@@ -8244,12 +8255,12 @@ gj.grid.plugins.grouping = {
                  *     });
                  * </script>
                  */
-                expandGroup: '<i class="material-icons">add</i>',
+                expandGroup: '<i class="gj-icon plus" />',
 
                 /** Collapse row icon definition.
                  * @alias icons.collapseGroup
                  * @type String
-                 * @default '<i class="material-icons">remove</i>'
+                 * @default '<i class="gj-icon minus" />'
                  * @example Right.Down.Icons <!-- materialicons, grid -->
                  * <table id="grid"></table>
                  * <script>
@@ -8265,7 +8276,7 @@ gj.grid.plugins.grouping = {
                  *     });
                  * </script>
                  */
-                collapseGroup: '<i class="material-icons">remove</i>'
+                collapseGroup: '<i class="gj-icon minus" />'
             }
         },
 
@@ -8425,7 +8436,7 @@ gj.grid.plugins.fixedHeader = {
              *         dataSource: '/Players/Get',
              *         fixedHeader: true,
              *         columns: [ 
-             *             { field: 'ID', width: 34 }, 
+             *             { field: 'ID', width: 42 }, 
              *             { field: 'Name' }, 
              *             { field: 'PlaceOfBirth' } 
              *         ],
@@ -11348,7 +11359,7 @@ gj.checkbox.config = {
 
     bootstrap4: {
         style: {
-            wrapperCssClass: 'gj-checkbox-bootstrap'
+            wrapperCssClass: 'gj-checkbox-bootstrap gj-checkbox-bootstrap-4'
         },
         iconsLibrary: 'materialicons'
     },
@@ -12123,7 +12134,7 @@ gj.dropdown.config = {
          * The css files for Material Icons, Font Awesome or Glyphicons should be manually included to the page where the grid is in use.
          * @type (materialicons|fontawesome|glyphicons)
          * @default 'materialicons'
-         * @example Bootstrap.Material.Icons <!-- bootstrap, materialicons, dropdown -->
+         * @example Bootstrap.Material.Icons <!-- bootstrap, dropdown -->
          * <select id="dropdown" width="200"></select>
          * <script>
          *     var dropdown = $('#dropdown').dropdown({
@@ -12150,7 +12161,7 @@ gj.dropdown.config = {
             /** DropDown icon definition.
              * @alias icons.dropdown
              * @type String
-             * @default '<i class="material-icons">arrow_drop_down</i>'
+             * @default '<i class="gj-icon arrow-dropdown" />'
              * @example Custom.Material.Icon <!-- materialicons, dropdown -->
              * <select id="dropdown"></select>
              * <script>
@@ -12177,7 +12188,7 @@ gj.dropdown.config = {
              *     });
              * </script>
              */
-            dropdown: '<i class="material-icons">arrow_drop_down</i>'
+            dropdown: '<i class="gj-icon arrow-dropdown" />'
         },
 
         style: {
@@ -13022,12 +13033,6 @@ gj.datepicker.config = {
             calendar: 'gj-calendar gj-calendar-bootstrap'
         },
         showOtherMonths: true
-    },
-
-    materialicons: {
-        //rightIcon: '<i class="material-icons">event</i>',
-        //previousMonth: '<i class="material-icons">keyboard_arrow_left</i>',
-        //nextMonth: '<i class="material-icons">keyboard_arrow_right</i>'
     },
 
     fontawesome: {

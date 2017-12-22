@@ -1,5 +1,5 @@
 /*
- * Gijgo DatePicker v1.7.0
+ * Gijgo DatePicker v1.7.1
  * http://gijgo.com/datepicker
  *
  * Copyright 2014, 2017 gijgo.com
@@ -82,12 +82,6 @@ gj.datepicker.config = {
             calendar: 'gj-calendar gj-calendar-bootstrap'
         },
         showOtherMonths: true
-    },
-
-    materialicons: {
-        //rightIcon: '<i class="material-icons">event</i>',
-        //previousMonth: '<i class="material-icons">keyboard_arrow_left</i>',
-        //nextMonth: '<i class="material-icons">keyboard_arrow_right</i>'
     },
 
     fontawesome: {
@@ -698,4 +692,12 @@ gj.core.messages['pt-br'] = {
 gj.datepicker.messages['pt-br'] = {
     //weekDays: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb']
     weekDays: ['D', 'S', 'T', 'Q', 'Q', 'S', 'S']
+};
+gj.core.messages['ru-ru'] = {
+    monthNames: ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
+    monthShortNames: ['Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июн', 'Июл', 'Авг', 'Сен', 'Окт', 'Ноя', 'Дек']
+};
+
+gj.datepicker.messages['ru-ru'] = {
+    weekDays: ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб']
 };

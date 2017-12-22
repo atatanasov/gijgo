@@ -1,5 +1,5 @@
 /*
- * Gijgo DropDown v1.7.0
+ * Gijgo DropDown v1.7.1
  * http://gijgo.com/dropdown
  *
  * Copyright 2014, 2017 gijgo.com
@@ -32,7 +32,7 @@ gj.dropdown.config = {
         /** The name of the icons library that is going to be in use. Currently we support Material Icons, Font Awesome and Glyphicons.         */        iconsLibrary: 'materialicons',
 
         icons: {
-            /** DropDown icon definition.             */            dropdown: '<i class="material-icons">arrow_drop_down</i>'
+            /** DropDown icon definition.             */            dropdown: '<i class="gj-icon arrow-dropdown" />'
         },
 
         style: {

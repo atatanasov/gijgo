@@ -23,12 +23,6 @@
     padding: 0px;
 }
 
-.gj-grid-md tbody .gj-dropdown-md [role="presenter"] [role="expander"] .material-icons {
-    position: absolute;
-    top: -6px;
-    right: 0px;
-}
-
 /* Bootstrap */
 .gj-grid-bootstrap tbody tr td[data-mode="edit"] {
     padding: 0px;
@@ -94,6 +88,7 @@
     font-family: -apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
 }
 
+.gj-grid-bootstrap-4 tbody tr td[data-mode="edit"] .gj-dropdown-bootstrap-4 [role="expander"].gj-dropdown-expander-mi .gj-icon,
 .gj-grid-bootstrap-4 tbody tr td[data-mode="edit"] .gj-dropdown-bootstrap-4 [role="expander"].gj-dropdown-expander-mi .material-icons {
     top: 12px;
 }
@@ -115,6 +110,7 @@
     background-color: #fff;
 }
 
+.gj-grid-bootstrap-4 tbody tr td[data-mode="edit"] .gj-datepicker-bootstrap [role="right-icon"] .gj-icon,
 .gj-grid-bootstrap-4 tbody tr td[data-mode="edit"] .gj-datepicker-bootstrap [role="right-icon"] .material-icons {
     top: 12px;
     left: 10px;

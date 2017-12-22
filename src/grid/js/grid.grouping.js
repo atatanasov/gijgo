@@ -90,7 +90,7 @@ gj.grid.plugins.grouping = {
                 /** Expand row icon definition.
                  * @alias icons.expandGroup
                  * @type String
-                 * @default '<i class="material-icons">add</i>'
+                 * @default '<i class="gj-icon plus" />'
                  * @example Right.Down.Icons <!-- materialicons, grid -->
                  * <table id="grid"></table>
                  * <script>
@@ -106,12 +106,12 @@ gj.grid.plugins.grouping = {
                  *     });
                  * </script>
                  */
-                expandGroup: '<i class="material-icons">add</i>',
+                expandGroup: '<i class="gj-icon plus" />',
 
                 /** Collapse row icon definition.
                  * @alias icons.collapseGroup
                  * @type String
-                 * @default '<i class="material-icons">remove</i>'
+                 * @default '<i class="gj-icon minus" />'
                  * @example Right.Down.Icons <!-- materialicons, grid -->
                  * <table id="grid"></table>
                  * <script>
@@ -127,7 +127,7 @@ gj.grid.plugins.grouping = {
                  *     });
                  * </script>
                  */
-                collapseGroup: '<i class="material-icons">remove</i>'
+                collapseGroup: '<i class="gj-icon minus" />'
             }
         },
 
