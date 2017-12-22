@@ -9,7 +9,7 @@ gj.grid.plugins.responsiveDesign = {
              * This setting is in use only if the resizeMonitoring setting is set to true.
              * @type number
              * @default 500
-             * @example sample <!-- materialicons, grid, grid.responsiveDesign -->
+             * @example sample <!-- grid, grid.responsiveDesign -->
              * <p>Change browser window size in order to fire resize event.</p>
              * <table id="grid"></table>
              * <script>

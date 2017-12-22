@@ -2187,7 +2187,7 @@ gj.grid.config = {
          *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
          *     });
          * </script>
-         * @example Html.DataSource <!-- materialicons, grid -->
+         * @example Html.DataSource <!-- grid -->
          * <table id="grid">
          *     <thead>
          *         <tr>
@@ -2271,7 +2271,7 @@ gj.grid.config = {
 
         /** An object that holds the default configuration settings of each column from the grid.
          * @type object
-         * @example sample <!-- materialicons, grid -->
+         * @example sample <!-- grid -->
          * <table id="grid"></table>
          * <script>
          *     $('#grid').grid({
@@ -2287,7 +2287,7 @@ gj.grid.config = {
              * @alias column.hidden
              * @type boolean
              * @default false
-             * @example sample <!-- materialicons, grid -->
+             * @example sample <!-- grid -->
              * <table id="grid"></table>
              * <script>
              *     $('#grid').grid({
@@ -2327,7 +2327,7 @@ gj.grid.config = {
              * @alias column.sortable
              * @type boolean|object
              * @default false
-             * @example Remote <!-- materialicons, grid -->
+             * @example Remote <!-- grid -->
              * <table id="grid"></table>
              * <script>
              *     $('#grid').grid({
@@ -2339,7 +2339,7 @@ gj.grid.config = {
              *         ]
              *     });
              * </script>
-             * @example Local.Custom <!-- materialicons, grid -->
+             * @example Local.Custom <!-- grid -->
              * <table id="grid"></table>
              * <script>
              *     var data = [
@@ -2376,7 +2376,7 @@ gj.grid.config = {
              *             { field: 'PlaceOfBirth', sortable: false }
              *         ]
              *     });
-             * @example Remote.Bootstrap.4.Material.Icons <!-- materialicons, bootstrap4, grid -->
+             * @example Remote.Bootstrap.4.Material.Icons <!-- bootstrap4, grid -->
              * <table id="grid"></table>
              * <script>
              *     $('#grid').grid({
@@ -2847,7 +2847,7 @@ gj.grid.config = {
          * @additionalinfo The css files for Bootstrap or Material Design should be manually included to the page where the grid is in use.
          * @type (materialdesign|bootstrap|bootstrap4)
          * @default 'materialdesign'
-         * @example Material.Design.With.Icons <!-- materialicons, dropdown, grid -->
+         * @example Material.Design.With.Icons <!-- dropdown, grid -->
          * <table id="grid"></table>
          * <script>
          *     $('#grid').grid({
@@ -2856,7 +2856,7 @@ gj.grid.config = {
          *         pager: { limit: 2, sizes: [2, 5, 10, 20] }
          *     });
          * </script>
-         * @example Material.Design.Without.Icons <!-- materialicons, grid -->
+         * @example Material.Design.Without.Icons <!-- grid -->
          * <table id="grid"></table>
          * <script>
          *     $('#grid').grid({
@@ -2918,7 +2918,7 @@ gj.grid.config = {
          * If the type is set to multiple the user will be able to select more then one row from the grid.
          * @type (single|multiple)
          * @default 'single'
-         * @example Multiple.Material.Design.Checkbox <!-- materialicons, checkbox, grid -->
+         * @example Multiple.Material.Design.Checkbox <!-- checkbox, grid -->
          * <table id="grid"></table>
          * <script>
          *     $('#grid').grid({
@@ -2951,7 +2951,7 @@ gj.grid.config = {
          *         columns: [ { field: 'ID', width: 42 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
          *     });
          * </script>
-         * @example Single.Checkbox <!-- materialicons, checkbox, grid -->
+         * @example Single.Checkbox <!-- checkbox, grid -->
          * <table id="grid"></table>
          * <script>
          *     $('#grid').grid({
@@ -2969,7 +2969,7 @@ gj.grid.config = {
          * If this setting is set to "checkbox" a column with checkboxes will appear as first row of the grid and when the user select a row, then this row will be highlighted and the checkbox selected.
          * @type (basic|checkbox)
          * @default "basic"
-         * @example sample <!-- materialicons, checkbox, grid -->
+         * @example sample <!-- checkbox, grid -->
          * <table id="grid"></table>
          * <script>
          *     $('#grid').grid({
@@ -3132,7 +3132,7 @@ gj.grid.config = {
          *         pager: { limit: 5 }
          *     });
          * </script>
-         * @example French.MaterialDesign.Custom <!-- materialicons, grid -->
+         * @example French.MaterialDesign.Custom <!-- grid -->
          * <table id="grid"></table>
          * <script>
          *     gj.grid.messages['fr-fr'].DisplayingRecords = 'Mes résultats';
@@ -3356,7 +3356,7 @@ gj.grid.events = {
      * @param {object} $row - the row presented as jquery object
      * @param {string} id - the id of the record
      * @param {object} record - the data of the row record
-     * @example sample <!-- materialicons, checkbox, grid -->
+     * @example sample <!-- checkbox, grid -->
      * <table id="grid"></table>
      * <script>
      *     var grid = $('#grid').grid({
@@ -3381,7 +3381,7 @@ gj.grid.events = {
      * @param {object} $row - the row presented as jquery object
      * @param {string} id - the id of the record
      * @param {object} record - the data of the row record
-     * @example sample <!-- materialicons, checkbox, grid -->
+     * @example sample <!-- checkbox, grid -->
      * <table id="grid"></table>
      * <script>
      *     var grid = $('#grid').grid({
@@ -4520,7 +4520,7 @@ gj.grid.widget = function ($grid, jsConfig) {
      * @method
      * @param {boolean} showNotFoundText - Indicates if the "Not Found" text is going to show after the clearing of the grid.
      * @return grid
-     * @example sample <!-- materialicons, grid -->
+     * @example sample <!-- grid -->
      * <button id="btnClear">Clear</button>
      * <br/><br/>
      * <table id="grid"></table>
@@ -4657,7 +4657,7 @@ gj.grid.widget = function ($grid, jsConfig) {
      * @method
      * @param {string} id - The id of the row that needs to be selected
      * @return grid
-     * @example sample <!-- materialicons, checkbox, grid -->
+     * @example sample <!-- checkbox, grid -->
      * <input type="text" id="txtNumber" value="1" />
      * <button id="btnSelect" class="gj-button-md">Select</button>
      * <br/><br/>
@@ -4682,7 +4682,7 @@ gj.grid.widget = function ($grid, jsConfig) {
      * If the multiple selection method is one this method is going to return only the id of the first selected record.
      * @method
      * @return string
-     * @example sample <!-- materialicons, checkbox, grid -->
+     * @example sample <!-- checkbox, grid -->
      * <button id="btnShowSelection" class="gj-button-md">Show Selection</button>
      * <br/><br/>
      * <table id="grid"></table>
@@ -4706,7 +4706,7 @@ gj.grid.widget = function ($grid, jsConfig) {
      * @additionalinfo Specify primaryKey if you want to use field from the dataSource as identificator for selection.
      * @method
      * @return array
-     * @example With.Primary.Ket <!-- materialicons, checkbox, grid, dropdown -->
+     * @example With.Primary.Ket <!-- checkbox, grid, dropdown -->
      * <button id="btnShowSelection" class="gj-button-md">Show Selections</button>
      * <br/><br/>
      * <table id="grid"></table>
@@ -4730,7 +4730,7 @@ gj.grid.widget = function ($grid, jsConfig) {
      *         alert(selections.join());
      *     });
      * </script>
-     * @example Without.Primary.Ket <!-- materialicons, checkbox, grid, dropdown -->
+     * @example Without.Primary.Ket <!-- checkbox, grid, dropdown -->
      * <button id="btnShowSelection" class="gj-button-md">Show Selections</button>
      * <br/><br/>
      * <table id="grid"></table>
@@ -4762,7 +4762,7 @@ gj.grid.widget = function ($grid, jsConfig) {
      * Select all records from the grid.
      * @method
      * @return grid
-     * @example sample <!-- materialicons, checkbox, grid -->
+     * @example sample <!-- checkbox, grid -->
      * <button id="btnSelectAll">Select All</button>
      * <br/><br/>
      * <table id="grid"></table>
@@ -4786,7 +4786,7 @@ gj.grid.widget = function ($grid, jsConfig) {
      * Unselect all records from the grid.
      * @method
      * @return void
-     * @example sample <!-- materialicons, checkbox, grid -->
+     * @example sample <!-- checkbox, grid -->
      * <button id="btnSelectAll">Select All</button>
      * <button id="btnUnSelectAll">UnSelect All</button>
      * <br/><br/>
@@ -4952,7 +4952,7 @@ gj.grid.widget = function ($grid, jsConfig) {
      * @method
      * @param {object} record - Object with data for the new record.
      * @return grid
-     * @example without.pagination <!-- materialicons, grid -->
+     * @example without.pagination <!-- grid -->
      * <button id="btnAdd" class="gj-button-md">Add Row</button>
      * <br/><br/>
      * <table id="grid"></table>
@@ -4969,7 +4969,7 @@ gj.grid.widget = function ($grid, jsConfig) {
      *         grid.addRow({ 'ID': grid.count(true) + 1, 'Name': 'Test Player', 'PlaceOfBirth': 'Test City, Test Country' });
      *     });
      * </script>
-     * @example with.pagination <!-- materialicons, grid -->
+     * @example with.pagination <!-- grid -->
      * <button id="btnAdd" class="gj-button-md">Add Row</button>
      * <br/><br/>
      * <table id="grid"></table>
@@ -5004,7 +5004,7 @@ gj.grid.widget = function ($grid, jsConfig) {
      * @param {string} id - The id of the row that needs to be updated
      * @param {object} record - Object with data for the new record.
      * @return grid
-     * @example sample <!-- materialicons, grid -->
+     * @example sample <!-- grid -->
      * <table id="grid"></table>
      * <script>
      *     var grid;
@@ -5043,7 +5043,7 @@ gj.grid.widget = function ($grid, jsConfig) {
      * @method
      * @param {string} id - Id of the record that needs to be removed.
      * @return grid
-     * @example Without.Pagination <!-- materialicons, grid -->
+     * @example Without.Pagination <!-- grid -->
      * <table id="grid"></table>
      * <script>
      *     var grid;
@@ -5067,7 +5067,7 @@ gj.grid.widget = function ($grid, jsConfig) {
      *         ]
      *     });
      * </script>
-     * @example With.Pagination <!-- materialicons, grid, grid.pagination -->
+     * @example With.Pagination <!-- grid, grid.pagination -->
      * <table id="grid"></table>
      * <script>
      *     var grid;
@@ -5140,7 +5140,7 @@ gj.grid.plugins.expandCollapseRows = {
              * Automatically add expand collapse column as a first column in the grid during initialization.
              * @type string
              * @default undefined
-             * @example Material.Design <!-- materialicons, grid, grid.expandCollapseRows -->
+             * @example Material.Design <!-- grid, grid.expandCollapseRows -->
              * <table id="grid"></table>
              * <script>
              *     $('#grid').grid({
@@ -5362,7 +5362,7 @@ gj.grid.plugins.expandCollapseRows = {
          * @param {object} e - event data
          * @param {object} detailWrapper - the detail wrapper as jQuery object 
          * @param {string} id - the id of the record
-         * @example sample <!-- materialicons, grid -->
+         * @example sample <!-- grid -->
          * <table id="grid"></table>
          * <script>
          *     var grid = $('#grid').grid({
@@ -5388,7 +5388,7 @@ gj.grid.plugins.expandCollapseRows = {
          * @param {object} e - event data
          * @param {object} detailWrapper - the detail wrapper as jQuery object 
          * @param {string} id - the id of the record
-         * @example sample <!-- materialicons, grid -->
+         * @example sample <!-- grid -->
          * <table id="grid"></table>
          * <script>
          *     var grid = $('#grid').grid({
@@ -5542,7 +5542,7 @@ gj.grid.plugins.inlineEditing.config = {
              *         ]
              *     });
              * </script>
-             * @example Date.And.Dropdown.Material <!-- materialicons, grid, datepicker, dropdown, checkbox -->
+             * @example Date.And.Dropdown.Material <!-- grid, datepicker, dropdown, checkbox -->
              * <table id="grid"></table>
              * <script>
              *     var countries = [ "Bulgaria", "Brazil", "England", "Germany", "Colombia", "Poland" ];
@@ -5629,7 +5629,7 @@ gj.grid.plugins.inlineEditing.config = {
              *         ]
              *     });
              * </script>
-             * @example Command <!-- materialicons, dropdown, grid -->
+             * @example Command <!-- dropdown, grid -->
              * <table id="grid"></table>
              * <script>
              *     var grid, data = [
@@ -5659,7 +5659,7 @@ gj.grid.plugins.inlineEditing.config = {
              * @alias inlineEditing.managementColumn
              * @type Boolean
              * @default true
-             * @example True <!-- materialicons, grid, checkbox, datepicker -->
+             * @example True <!-- grid, checkbox, datepicker -->
              * <table id="grid"></table>
              * <script>
              *     var grid, data = [
@@ -6194,7 +6194,7 @@ gj.grid.plugins.inlineEditing.events = {
      * @param {object} e - event data
      * @param {object} id - the id of the record
      * @param {object} record - the data of the row record
-     * @example sample <!-- materialicons, grid -->
+     * @example sample <!-- grid -->
      * <table id="grid"></table>
      * <script>
      *     var grid = $('#grid').grid({
@@ -6390,7 +6390,7 @@ gj.grid.plugins.pagination = {
                  * @alias pager.limit
                  * @type number
                  * @default 10
-                 * @example local.data <!-- materialicons, grid, dropdown -->
+                 * @example local.data <!-- grid, dropdown -->
                  * <table id="grid"></table>
                  * <script>
                  *     var data, grid;
@@ -6405,7 +6405,7 @@ gj.grid.plugins.pagination = {
                  *         pager: { limit: 2, sizes: [2, 5, 10, 100] }
                  *     });
                  * </script>
-                 * @example remote.data <!-- materialicons, grid, dropdown -->
+                 * @example remote.data <!-- grid, dropdown -->
                  * <table id="grid"></table>
                  * <script>
                  *     var grid = $('#grid').grid({
@@ -6453,7 +6453,7 @@ gj.grid.plugins.pagination = {
                  *         pager: { limit: 2, sizes: [2, 5, 10, 20] }
                  *     });
                  * </script>
-                 * @example Material.Design <!-- materialicons, grid, grid.pagination, dropdown  -->
+                 * @example Material.Design <!-- grid, grid.pagination, dropdown  -->
                  * <table id="grid"></table>
                  * <script>
                  *     var grid = $('#grid').grid({
@@ -6983,7 +6983,7 @@ gj.grid.plugins.responsiveDesign = {
              * This setting is in use only if the resizeMonitoring setting is set to true.
              * @type number
              * @default 500
-             * @example sample <!-- materialicons, grid, grid.responsiveDesign -->
+             * @example sample <!-- grid, grid.responsiveDesign -->
              * <p>Change browser window size in order to fire resize event.</p>
              * <table id="grid"></table>
              * <script>
@@ -7334,7 +7334,7 @@ gj.grid.plugins.toolbar = {
             /** The title of the grid. Appears in a separate row on top of the grid.
               * @type string
               * @default undefined
-              * @example Material.Design <!-- materialicons, grid, grid.toolbar -->
+              * @example Material.Design <!-- grid, grid.toolbar -->
               * <table id="grid"></table>
               * <script>
               *     $('#grid').grid({
@@ -7425,7 +7425,7 @@ gj.grid.plugins.toolbar = {
          * @method
          * @param {object} text - The text of the new grid title.
          * @return string or grid object
-         * @example text <!-- materialicons, grid, grid.toolbar -->
+         * @example text <!-- grid, grid.toolbar -->
          * <button onclick="grid.title('New Title')" class="gj-button-md">Set New Title</button>
          * <button onclick="alert(grid.title())" class="gj-button-md">Get Title</button>
          * <br/><br/>
@@ -7437,7 +7437,7 @@ gj.grid.plugins.toolbar = {
          *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
          *     });
          * </script>
-         * @example html.template <!-- materialicons, grid, grid.toolbar -->
+         * @example html.template <!-- grid, grid.toolbar -->
          * <button onclick="grid.title('New Title')" class="gj-button-md">Set New Title</button>
          * <button onclick="alert(grid.title())" class="gj-button-md">Get Title</button>
          * <br/><br/>
@@ -7482,7 +7482,7 @@ gj.grid.plugins.resizableColumns = {
             /** If set to true, users can resize columns by dragging the edges (resize handles) of their header cells.
              * @type boolean
              * @default false
-             * @example Material.Design <!-- materialicons, grid, draggable.base -->
+             * @example Material.Design <!-- grid, draggable.base -->
              * <table id="grid"></table>
              * <script>
              *     var grid = $('#grid').grid({
@@ -7583,7 +7583,7 @@ gj.grid.plugins.rowReorder = {
             /** If set to true, enable row reordering with drag and drop.
              * @type boolean
              * @default false
-             * @example Material.Design <!-- materialicons, grid, grid.rowReorder, draggable.base, droppable.base -->
+             * @example Material.Design <!-- grid, grid.rowReorder, draggable.base, droppable.base -->
              * <p>Drag and Drop rows in order to reorder them.</p>
              * <table id="grid"></table>
              * <script>
@@ -7622,7 +7622,7 @@ gj.grid.plugins.rowReorder = {
              * Accept only field names of columns.
              * @type string
              * @default undefined
-             * @example sample <!-- materialicons, grid, grid.rowReorder, draggable.base, droppable.base -->
+             * @example sample <!-- grid, grid.rowReorder, draggable.base, droppable.base -->
              * <table id="grid"></table>
              * <script>
              *     $('#grid').grid({
@@ -7818,7 +7818,7 @@ gj.grid.plugins.columnReorder = {
             /** If set to true, enable column reordering with drag and drop.
              * @type boolean
              * @default false
-             * @example Material.Design <!-- materialicons, grid, draggable.base, droppable.base -->
+             * @example Material.Design <!-- grid, draggable.base, droppable.base -->
              * <p>Drag and Drop column headers in order to reorder the columns.</p>
              * <table id="grid"></table>
              * <script>
@@ -7990,7 +7990,7 @@ gj.grid.plugins.headerFilter = {
                  * @alias column.filterable
                  * @type boolean
                  * @default true
-                 * @example Material.Design <!-- materialicons, grid -->
+                 * @example Material.Design <!-- grid -->
                  * <table id="grid"></table>
                  * <script>
                  *     $('#grid').grid({
@@ -8024,7 +8024,7 @@ gj.grid.plugins.headerFilter = {
             /** If set to true, add filters for each column
              * @type boolean
              * @default object
-             * @example Remote.DataSource <!-- materialicons, grid -->
+             * @example Remote.DataSource <!-- grid -->
              * <table id="grid"></table>
              * <script>
              *     $('#grid').grid({
@@ -8033,7 +8033,7 @@ gj.grid.plugins.headerFilter = {
              *         columns: [ { field: 'ID', width: 56, filterable: false }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
              *     });
              * </script>
-             * @example Local.DataSource <!-- materialicons, grid -->
+             * @example Local.DataSource <!-- grid -->
              * <table id="grid"></table>
              * <script>
              *     var data = [
@@ -8061,7 +8061,7 @@ gj.grid.plugins.headerFilter = {
                  * @alias headerFilter.type
                  * @type (onenterkeypress|onchange)
                  * @default 'onenterkeypress'
-                 * @example OnEnterKeyPress <!-- materialicons, grid -->
+                 * @example OnEnterKeyPress <!-- grid -->
                  * <table id="grid"></table>
                  * <script>
                  *     $('#grid').grid({
@@ -8072,7 +8072,7 @@ gj.grid.plugins.headerFilter = {
                  *         columns: [ { field: 'ID', width: 56, filterable: false }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
                  *     });
                  * </script>
-                 * @example OnChange <!-- materialicons, grid -->
+                 * @example OnChange <!-- grid -->
                  * <table id="grid"></table>
                  * <script>
                  *     $('#grid').grid({
@@ -8177,7 +8177,7 @@ gj.grid.plugins.grouping = {
                   * @type string
                   * @alias grouping.groupBy
                   * @default undefined
-                  * @example Local.Data <!-- materialicons, grid -->
+                  * @example Local.Data <!-- grid -->
                   * <table id="grid"></table>
                   * <script>
                   *     var grid, data = [
@@ -8195,7 +8195,7 @@ gj.grid.plugins.grouping = {
                   *         pager: { limit: 5 }
                   *     });
                   * </script>
-                  * @example Remote.Data <!-- materialicons, grid -->
+                  * @example Remote.Data <!-- grid -->
                   * <table id="grid"></table>
                   * <script>
                   *     $('#grid').grid({
@@ -8378,7 +8378,7 @@ gj.grid.plugins.fixedHeader = {
             /** If set to true, add scroll to the table body
              * @type boolean
              * @default object
-             * @example Material.Design.Without.Pager <!-- materialicons, grid -->
+             * @example Material.Design.Without.Pager <!-- grid -->
              * <table id="grid"></table>
              * <script>
              *     $('#grid').grid({
@@ -8387,7 +8387,7 @@ gj.grid.plugins.fixedHeader = {
              *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
              *     });
              * </script>
-             * @example Material.Design.With.Pager <!-- materialicons, grid -->
+             * @example Material.Design.With.Pager <!-- grid -->
              * <table id="grid"></table>
              * <script>
              *     $('#grid').grid({
@@ -8428,7 +8428,7 @@ gj.grid.plugins.fixedHeader = {
              *         pager: { limit: 5 }
              *     });
              * </script>
-             * @example Bootstrap.4 <!-- materialicons, bootstrap4, grid -->
+             * @example Bootstrap.4 <!-- bootstrap4, grid -->
              * <div class="container"><table id="grid"></table></div>
              * <script>
              *     $('#grid').grid({
@@ -11638,7 +11638,7 @@ gj.editor.config = {
          * The css files for Material Icons or Font Awesome should be manually included to the page where the grid is in use.
          * @type (materialicons|fontawesome)
          * @default 'materialicons'
-         * @example Base.Theme.Material.Icons <!-- materialicons, bootstrap, editor -->
+         * @example Base.Theme.Material.Icons <!-- bootstrap, editor -->
          * <div id="editor"></div>
          * <script>
          *     $('#editor').editor({
@@ -11652,7 +11652,7 @@ gj.editor.config = {
         /** The language that needs to be in use.
          * @type string
          * @default 'en-us'
-         * @example French <!-- materialicons, editor -->
+         * @example French <!-- editor -->
          * <script src="../../dist/modular/editor/js/messages/messages.fr-fr.js"></script>
          * <div id="editor">Hover buttons in the toolbar in order to see localized tooltips</div>
          * <script>
@@ -11660,7 +11660,7 @@ gj.editor.config = {
          *         locale: 'fr-fr'
          *     });
          * </script>
-         * @example German <!-- materialicons, editor -->
+         * @example German <!-- editor -->
          * <script src="../../dist/modular/editor/js/messages/messages.de-de.js"></script>
          * <div id="editor">Hover <b><u>buttons</u></b> in the toolbar in order to see localized tooltips</div>
          * <script>

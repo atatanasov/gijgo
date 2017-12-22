@@ -36,7 +36,7 @@ gj.grid.plugins.pagination = {
                  * @alias pager.limit
                  * @type number
                  * @default 10
-                 * @example local.data <!-- materialicons, grid, dropdown -->
+                 * @example local.data <!-- grid, dropdown -->
                  * <table id="grid"></table>
                  * <script>
                  *     var data, grid;
@@ -51,7 +51,7 @@ gj.grid.plugins.pagination = {
                  *         pager: { limit: 2, sizes: [2, 5, 10, 100] }
                  *     });
                  * </script>
-                 * @example remote.data <!-- materialicons, grid, dropdown -->
+                 * @example remote.data <!-- grid, dropdown -->
                  * <table id="grid"></table>
                  * <script>
                  *     var grid = $('#grid').grid({
@@ -99,7 +99,7 @@ gj.grid.plugins.pagination = {
                  *         pager: { limit: 2, sizes: [2, 5, 10, 20] }
                  *     });
                  * </script>
-                 * @example Material.Design <!-- materialicons, grid, grid.pagination, dropdown  -->
+                 * @example Material.Design <!-- grid, grid.pagination, dropdown  -->
                  * <table id="grid"></table>
                  * <script>
                  *     var grid = $('#grid').grid({

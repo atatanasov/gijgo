@@ -69,7 +69,7 @@ gj.editor.config = {
          * The css files for Material Icons or Font Awesome should be manually included to the page where the grid is in use.
          * @type (materialicons|fontawesome)
          * @default 'materialicons'
-         * @example Base.Theme.Material.Icons <!-- materialicons, bootstrap, editor -->
+         * @example Base.Theme.Material.Icons <!-- bootstrap, editor -->
          * <div id="editor"></div>
          * <script>
          *     $('#editor').editor({
@@ -83,7 +83,7 @@ gj.editor.config = {
         /** The language that needs to be in use.
          * @type string
          * @default 'en-us'
-         * @example French <!-- materialicons, editor -->
+         * @example French <!-- editor -->
          * <script src="../../dist/modular/editor/js/messages/messages.fr-fr.js"></script>
          * <div id="editor">Hover buttons in the toolbar in order to see localized tooltips</div>
          * <script>
@@ -91,7 +91,7 @@ gj.editor.config = {
          *         locale: 'fr-fr'
          *     });
          * </script>
-         * @example German <!-- materialicons, editor -->
+         * @example German <!-- editor -->
          * <script src="../../dist/modular/editor/js/messages/messages.de-de.js"></script>
          * <div id="editor">Hover <b><u>buttons</u></b> in the toolbar in order to see localized tooltips</div>
          * <script>

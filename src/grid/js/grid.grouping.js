@@ -28,7 +28,7 @@ gj.grid.plugins.grouping = {
                   * @type string
                   * @alias grouping.groupBy
                   * @default undefined
-                  * @example Local.Data <!-- materialicons, grid -->
+                  * @example Local.Data <!-- grid -->
                   * <table id="grid"></table>
                   * <script>
                   *     var grid, data = [
@@ -46,7 +46,7 @@ gj.grid.plugins.grouping = {
                   *         pager: { limit: 5 }
                   *     });
                   * </script>
-                  * @example Remote.Data <!-- materialicons, grid -->
+                  * @example Remote.Data <!-- grid -->
                   * <table id="grid"></table>
                   * <script>
                   *     $('#grid').grid({

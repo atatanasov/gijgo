@@ -9,7 +9,7 @@ gj.grid.plugins.fixedHeader = {
             /** If set to true, add scroll to the table body
              * @type boolean
              * @default object
-             * @example Material.Design.Without.Pager <!-- materialicons, grid -->
+             * @example Material.Design.Without.Pager <!-- grid -->
              * <table id="grid"></table>
              * <script>
              *     $('#grid').grid({
@@ -18,7 +18,7 @@ gj.grid.plugins.fixedHeader = {
              *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
              *     });
              * </script>
-             * @example Material.Design.With.Pager <!-- materialicons, grid -->
+             * @example Material.Design.With.Pager <!-- grid -->
              * <table id="grid"></table>
              * <script>
              *     $('#grid').grid({
@@ -59,7 +59,7 @@ gj.grid.plugins.fixedHeader = {
              *         pager: { limit: 5 }
              *     });
              * </script>
-             * @example Bootstrap.4 <!-- materialicons, bootstrap4, grid -->
+             * @example Bootstrap.4 <!-- bootstrap4, grid -->
              * <div class="container"><table id="grid"></table></div>
              * <script>
              *     $('#grid').grid({

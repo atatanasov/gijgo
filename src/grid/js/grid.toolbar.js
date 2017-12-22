@@ -25,7 +25,7 @@ gj.grid.plugins.toolbar = {
             /** The title of the grid. Appears in a separate row on top of the grid.
               * @type string
               * @default undefined
-              * @example Material.Design <!-- materialicons, grid, grid.toolbar -->
+              * @example Material.Design <!-- grid, grid.toolbar -->
               * <table id="grid"></table>
               * <script>
               *     $('#grid').grid({
@@ -116,7 +116,7 @@ gj.grid.plugins.toolbar = {
          * @method
          * @param {object} text - The text of the new grid title.
          * @return string or grid object
-         * @example text <!-- materialicons, grid, grid.toolbar -->
+         * @example text <!-- grid, grid.toolbar -->
          * <button onclick="grid.title('New Title')" class="gj-button-md">Set New Title</button>
          * <button onclick="alert(grid.title())" class="gj-button-md">Get Title</button>
          * <br/><br/>
@@ -128,7 +128,7 @@ gj.grid.plugins.toolbar = {
          *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
          *     });
          * </script>
-         * @example html.template <!-- materialicons, grid, grid.toolbar -->
+         * @example html.template <!-- grid, grid.toolbar -->
          * <button onclick="grid.title('New Title')" class="gj-button-md">Set New Title</button>
          * <button onclick="alert(grid.title())" class="gj-button-md">Get Title</button>
          * <br/><br/>

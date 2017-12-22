@@ -63,7 +63,7 @@ gj.grid.plugins.inlineEditing.config = {
              *         ]
              *     });
              * </script>
-             * @example Date.And.Dropdown.Material <!-- materialicons, grid, datepicker, dropdown, checkbox -->
+             * @example Date.And.Dropdown.Material <!-- grid, datepicker, dropdown, checkbox -->
              * <table id="grid"></table>
              * <script>
              *     var countries = [ "Bulgaria", "Brazil", "England", "Germany", "Colombia", "Poland" ];
@@ -150,7 +150,7 @@ gj.grid.plugins.inlineEditing.config = {
              *         ]
              *     });
              * </script>
-             * @example Command <!-- materialicons, dropdown, grid -->
+             * @example Command <!-- dropdown, grid -->
              * <table id="grid"></table>
              * <script>
              *     var grid, data = [
@@ -180,7 +180,7 @@ gj.grid.plugins.inlineEditing.config = {
              * @alias inlineEditing.managementColumn
              * @type Boolean
              * @default true
-             * @example True <!-- materialicons, grid, checkbox, datepicker -->
+             * @example True <!-- grid, checkbox, datepicker -->
              * <table id="grid"></table>
              * <script>
              *     var grid, data = [
@@ -715,7 +715,7 @@ gj.grid.plugins.inlineEditing.events = {
      * @param {object} e - event data
      * @param {object} id - the id of the record
      * @param {object} record - the data of the row record
-     * @example sample <!-- materialicons, grid -->
+     * @example sample <!-- grid -->
      * <table id="grid"></table>
      * <script>
      *     var grid = $('#grid').grid({

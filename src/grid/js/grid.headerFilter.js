@@ -10,7 +10,7 @@ gj.grid.plugins.headerFilter = {
                  * @alias column.filterable
                  * @type boolean
                  * @default true
-                 * @example Material.Design <!-- materialicons, grid -->
+                 * @example Material.Design <!-- grid -->
                  * <table id="grid"></table>
                  * <script>
                  *     $('#grid').grid({
@@ -44,7 +44,7 @@ gj.grid.plugins.headerFilter = {
             /** If set to true, add filters for each column
              * @type boolean
              * @default object
-             * @example Remote.DataSource <!-- materialicons, grid -->
+             * @example Remote.DataSource <!-- grid -->
              * <table id="grid"></table>
              * <script>
              *     $('#grid').grid({
@@ -53,7 +53,7 @@ gj.grid.plugins.headerFilter = {
              *         columns: [ { field: 'ID', width: 56, filterable: false }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
              *     });
              * </script>
-             * @example Local.DataSource <!-- materialicons, grid -->
+             * @example Local.DataSource <!-- grid -->
              * <table id="grid"></table>
              * <script>
              *     var data = [
@@ -81,7 +81,7 @@ gj.grid.plugins.headerFilter = {
                  * @alias headerFilter.type
                  * @type (onenterkeypress|onchange)
                  * @default 'onenterkeypress'
-                 * @example OnEnterKeyPress <!-- materialicons, grid -->
+                 * @example OnEnterKeyPress <!-- grid -->
                  * <table id="grid"></table>
                  * <script>
                  *     $('#grid').grid({
@@ -92,7 +92,7 @@ gj.grid.plugins.headerFilter = {
                  *         columns: [ { field: 'ID', width: 56, filterable: false }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
                  *     });
                  * </script>
-                 * @example OnChange <!-- materialicons, grid -->
+                 * @example OnChange <!-- grid -->
                  * <table id="grid"></table>
                  * <script>
                  *     $('#grid').grid({

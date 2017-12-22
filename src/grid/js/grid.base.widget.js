@@ -37,7 +37,7 @@ gj.grid.widget = function ($grid, jsConfig) {
      * @method
      * @param {boolean} showNotFoundText - Indicates if the "Not Found" text is going to show after the clearing of the grid.
      * @return grid
-     * @example sample <!-- materialicons, grid -->
+     * @example sample <!-- grid -->
      * <button id="btnClear">Clear</button>
      * <br/><br/>
      * <table id="grid"></table>
@@ -174,7 +174,7 @@ gj.grid.widget = function ($grid, jsConfig) {
      * @method
      * @param {string} id - The id of the row that needs to be selected
      * @return grid
-     * @example sample <!-- materialicons, checkbox, grid -->
+     * @example sample <!-- checkbox, grid -->
      * <input type="text" id="txtNumber" value="1" />
      * <button id="btnSelect" class="gj-button-md">Select</button>
      * <br/><br/>
@@ -199,7 +199,7 @@ gj.grid.widget = function ($grid, jsConfig) {
      * If the multiple selection method is one this method is going to return only the id of the first selected record.
      * @method
      * @return string
-     * @example sample <!-- materialicons, checkbox, grid -->
+     * @example sample <!-- checkbox, grid -->
      * <button id="btnShowSelection" class="gj-button-md">Show Selection</button>
      * <br/><br/>
      * <table id="grid"></table>
@@ -223,7 +223,7 @@ gj.grid.widget = function ($grid, jsConfig) {
      * @additionalinfo Specify primaryKey if you want to use field from the dataSource as identificator for selection.
      * @method
      * @return array
-     * @example With.Primary.Ket <!-- materialicons, checkbox, grid, dropdown -->
+     * @example With.Primary.Ket <!-- checkbox, grid, dropdown -->
      * <button id="btnShowSelection" class="gj-button-md">Show Selections</button>
      * <br/><br/>
      * <table id="grid"></table>
@@ -247,7 +247,7 @@ gj.grid.widget = function ($grid, jsConfig) {
      *         alert(selections.join());
      *     });
      * </script>
-     * @example Without.Primary.Ket <!-- materialicons, checkbox, grid, dropdown -->
+     * @example Without.Primary.Ket <!-- checkbox, grid, dropdown -->
      * <button id="btnShowSelection" class="gj-button-md">Show Selections</button>
      * <br/><br/>
      * <table id="grid"></table>
@@ -279,7 +279,7 @@ gj.grid.widget = function ($grid, jsConfig) {
      * Select all records from the grid.
      * @method
      * @return grid
-     * @example sample <!-- materialicons, checkbox, grid -->
+     * @example sample <!-- checkbox, grid -->
      * <button id="btnSelectAll">Select All</button>
      * <br/><br/>
      * <table id="grid"></table>
@@ -303,7 +303,7 @@ gj.grid.widget = function ($grid, jsConfig) {
      * Unselect all records from the grid.
      * @method
      * @return void
-     * @example sample <!-- materialicons, checkbox, grid -->
+     * @example sample <!-- checkbox, grid -->
      * <button id="btnSelectAll">Select All</button>
      * <button id="btnUnSelectAll">UnSelect All</button>
      * <br/><br/>
@@ -469,7 +469,7 @@ gj.grid.widget = function ($grid, jsConfig) {
      * @method
      * @param {object} record - Object with data for the new record.
      * @return grid
-     * @example without.pagination <!-- materialicons, grid -->
+     * @example without.pagination <!-- grid -->
      * <button id="btnAdd" class="gj-button-md">Add Row</button>
      * <br/><br/>
      * <table id="grid"></table>
@@ -486,7 +486,7 @@ gj.grid.widget = function ($grid, jsConfig) {
      *         grid.addRow({ 'ID': grid.count(true) + 1, 'Name': 'Test Player', 'PlaceOfBirth': 'Test City, Test Country' });
      *     });
      * </script>
-     * @example with.pagination <!-- materialicons, grid -->
+     * @example with.pagination <!-- grid -->
      * <button id="btnAdd" class="gj-button-md">Add Row</button>
      * <br/><br/>
      * <table id="grid"></table>
@@ -521,7 +521,7 @@ gj.grid.widget = function ($grid, jsConfig) {
      * @param {string} id - The id of the row that needs to be updated
      * @param {object} record - Object with data for the new record.
      * @return grid
-     * @example sample <!-- materialicons, grid -->
+     * @example sample <!-- grid -->
      * <table id="grid"></table>
      * <script>
      *     var grid;
@@ -560,7 +560,7 @@ gj.grid.widget = function ($grid, jsConfig) {
      * @method
      * @param {string} id - Id of the record that needs to be removed.
      * @return grid
-     * @example Without.Pagination <!-- materialicons, grid -->
+     * @example Without.Pagination <!-- grid -->
      * <table id="grid"></table>
      * <script>
      *     var grid;
@@ -584,7 +584,7 @@ gj.grid.widget = function ($grid, jsConfig) {
      *         ]
      *     });
      * </script>
-     * @example With.Pagination <!-- materialicons, grid, grid.pagination -->
+     * @example With.Pagination <!-- grid, grid.pagination -->
      * <table id="grid"></table>
      * <script>
      *     var grid;

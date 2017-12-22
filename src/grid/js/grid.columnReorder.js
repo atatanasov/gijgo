@@ -8,7 +8,7 @@ gj.grid.plugins.columnReorder = {
             /** If set to true, enable column reordering with drag and drop.
              * @type boolean
              * @default false
-             * @example Material.Design <!-- materialicons, grid, draggable.base, droppable.base -->
+             * @example Material.Design <!-- grid, draggable.base, droppable.base -->
              * <p>Drag and Drop column headers in order to reorder the columns.</p>
              * <table id="grid"></table>
              * <script>

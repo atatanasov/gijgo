@@ -130,7 +130,7 @@ gj.grid.events = {
      * @param {object} $row - the row presented as jquery object
      * @param {string} id - the id of the record
      * @param {object} record - the data of the row record
-     * @example sample <!-- materialicons, checkbox, grid -->
+     * @example sample <!-- checkbox, grid -->
      * <table id="grid"></table>
      * <script>
      *     var grid = $('#grid').grid({
@@ -155,7 +155,7 @@ gj.grid.events = {
      * @param {object} $row - the row presented as jquery object
      * @param {string} id - the id of the record
      * @param {object} record - the data of the row record
-     * @example sample <!-- materialicons, checkbox, grid -->
+     * @example sample <!-- checkbox, grid -->
      * <table id="grid"></table>
      * <script>
      *     var grid = $('#grid').grid({
