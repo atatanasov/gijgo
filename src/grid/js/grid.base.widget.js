@@ -37,8 +37,8 @@ gj.grid.widget = function ($grid, jsConfig) {
      * @method
      * @param {boolean} showNotFoundText - Indicates if the "Not Found" text is going to show after the clearing of the grid.
      * @return grid
-     * @example sample <!-- grid -->
-     * <button id="btnClear">Clear</button>
+     * @example sample <!-- grid, dropdown -->
+     * <button id="btnClear" class="gj-button-md">Clear</button>
      * <br/><br/>
      * <table id="grid"></table>
      * <script>
@@ -280,7 +280,7 @@ gj.grid.widget = function ($grid, jsConfig) {
      * @method
      * @return grid
      * @example sample <!-- checkbox, grid -->
-     * <button id="btnSelectAll">Select All</button>
+     * <button id="btnSelectAll" class="gj-button-md">Select All</button>
      * <br/><br/>
      * <table id="grid"></table>
      * <script>
@@ -304,8 +304,8 @@ gj.grid.widget = function ($grid, jsConfig) {
      * @method
      * @return void
      * @example sample <!-- checkbox, grid -->
-     * <button id="btnSelectAll">Select All</button>
-     * <button id="btnUnSelectAll">UnSelect All</button>
+     * <button id="btnSelectAll" class="gj-button-md">Select All</button>
+     * <button id="btnUnSelectAll" class="gj-button-md">UnSelect All</button>
      * <br/><br/>
      * <table id="grid"></table>
      * <script>
@@ -486,7 +486,7 @@ gj.grid.widget = function ($grid, jsConfig) {
      *         grid.addRow({ 'ID': grid.count(true) + 1, 'Name': 'Test Player', 'PlaceOfBirth': 'Test City, Test Country' });
      *     });
      * </script>
-     * @example with.pagination <!-- grid -->
+     * @example with.pagination <!-- grid, dropdown -->
      * <button id="btnAdd" class="gj-button-md">Add Row</button>
      * <br/><br/>
      * <table id="grid"></table>
@@ -502,7 +502,7 @@ gj.grid.widget = function ($grid, jsConfig) {
      *             { field: 'ID', width: 56 },
      *             { field: 'Name' },
      *             { field: 'PlaceOfBirth' },
-     *             { width: 70, align: 'center', tmpl: '<i class="material-icons">delete</i>', events: { 'click': function(e) { grid.removeRow(e.data.id); } } }
+     *             { width: 100, align: 'center', tmpl: '<i class="material-icons">delete</i>', events: { 'click': function(e) { grid.removeRow(e.data.id); } } }
      *         ],
      *         pager: { limit: 2, sizes: [2, 5, 10, 20] }
      *     });
@@ -521,7 +521,7 @@ gj.grid.widget = function ($grid, jsConfig) {
      * @param {string} id - The id of the row that needs to be updated
      * @param {object} record - Object with data for the new record.
      * @return grid
-     * @example sample <!-- grid -->
+     * @example sample <!-- grid, dropdown -->
      * <table id="grid"></table>
      * <script>
      *     var grid;
@@ -536,7 +536,7 @@ gj.grid.widget = function ($grid, jsConfig) {
      *             { field: 'ID', width: 56 },
      *             { field: 'Name' },
      *             { field: 'PlaceOfBirth' },
-     *             { title: '', width: 50, align: 'center', tmpl: '<u>Edit</u>', events: { 'click': Edit } }
+     *             { title: '', width: 90, align: 'center', tmpl: '<u>Edit</u>', events: { 'click': Edit } }
      *         ],
      *         pager: { limit: 2, sizes: [2, 5, 10, 20] }
      *     });
@@ -584,7 +584,7 @@ gj.grid.widget = function ($grid, jsConfig) {
      *         ]
      *     });
      * </script>
-     * @example With.Pagination <!-- grid, grid.pagination -->
+     * @example With.Pagination <!-- grid, dropdown -->
      * <table id="grid"></table>
      * <script>
      *     var grid;

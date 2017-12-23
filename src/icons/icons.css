@@ -21,142 +21,142 @@
     -webkit-font-smoothing: antialiased;
 }
 
-.event:before {
+.gj-icon.event:before {
     content: "\e900";
 }
 
-.chevron-down:before {
+.gj-icon.chevron-down:before {
     content: "\e901";
 }
 
-.chevron-left:before {
+.gj-icon.chevron-left:before {
     content: "\e902";
 }
 
-.chevron-right:before {
+.gj-icon.chevron-right:before {
     content: "\e903";
 }
 
-.chevron-up:before {
+.gj-icon.chevron-up:before {
     content: "\e904";
 }
 
-.minus:before {
+.gj-icon.minus:before {
     content: "\e905";
 }
 
-.pencil:before {
+.gj-icon.pencil:before {
     content: "\e906";
 }
 
-.plus:before {
+.gj-icon.plus:before {
     content: "\e907";
 }
 
-.done:before {
+.gj-icon.done:before {
     content: "\e908";
 }
 
-.redo:before {
+.gj-icon.redo:before {
     content: "\e909";
 }
 
-.undo:before {
+.gj-icon.undo:before {
     content: "\e90a";
 }
 
-.align-right:before {
+.gj-icon.align-right:before {
     content: "\e90b";
 }
 
-.align-left:before {
+.gj-icon.align-left:before {
     content: "\e90c";
 }
 
-.align-justify:before {
+.gj-icon.align-justify:before {
     content: "\e90d";
 }
 
-.align-center:before {
+.gj-icon.align-center:before {
     content: "\e90e";
 }
 
-.strikethrough:before {
+.gj-icon.strikethrough:before {
     content: "\e90f";
 }
 
-.italic:before {
+.gj-icon.italic:before {
     content: "\e910";
 }
 
-.underlined:before {
+.gj-icon.underlined:before {
     content: "\e911";
 }
 
-.bold:before {
+.gj-icon.bold:before {
     content: "\e912";
 }
 
-.arrow-dropdown:before {
+.gj-icon.arrow-dropdown:before {
     content: "\e913";
 }
 
-.arrow-upward:before {
+.gj-icon.arrow-upward:before {
     content: "\e914";
 }
 
-.arrow-forward:before {
+.gj-icon.arrow-forward:before {
     content: "\e915";
 }
 
-.arrow-downward:before {
+.gj-icon.arrow-downward:before {
     content: "\e916";
 }
 
-.arrow-back:before {
+.gj-icon.arrow-back:before {
     content: "\e917";
 }
 
-.list-numbered:before {
+.gj-icon.list-numbered:before {
     content: "\e918";
 }
 
-.list-bulleted:before {
+.gj-icon.list-bulleted:before {
     content: "\e919";
 }
 
-.indent-increase:before {
+.gj-icon.indent-increase:before {
     content: "\e91a";
 }
 
-.indent-decrease:before {
+.gj-icon.indent-decrease:before {
     content: "\e91b";
 }
 
-.cancel:before {
+.gj-icon.cancel:before {
     content: "\e91c";
 }
 
-.clear:before {
+.gj-icon.clear:before {
     content: "\e91d";
 }
 
-.check-circle:before {
+.gj-icon.check-circle:before {
     content: "\e91e";
 }
 
-.delete:before {
+.gj-icon.delete:before {
     content: "\e91f";
 }
 
-.refresh:before {
+.gj-icon.refresh:before {
     content: "\e920";
 }
 
-.last-page:before {
+.gj-icon.last-page:before {
     content: "\e921";
 }
 
-.first-page:before {
+.gj-icon.first-page:before {
     content: "\e922";
 }

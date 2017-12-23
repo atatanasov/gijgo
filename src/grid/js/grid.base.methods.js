@@ -366,11 +366,10 @@ gj.grid.methods = {
         var $displayEl, key;
 
         if (!$cell || $cell.length === 0) {
-            $cell = $('<td/>').css('text-align', column.align || 'left');
+            $cell = $('<td/>');
             $displayEl = $('<div data-role="display" />');
-            if (column.cssClass) {
-                $cell.addClass(column.cssClass);
-            }
+            column.align && $cell.css('text-align', column.align);
+            column.cssClass && $cell.addClass(column.cssClass);
             $cell.append($displayEl);
             mode = 'create';
         } else {

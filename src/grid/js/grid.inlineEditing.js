@@ -46,24 +46,7 @@ gj.grid.plugins.inlineEditing.config = {
              * @alias column.editor
              * @type function|boolean
              * @default undefined
-             * @example sample <!-- grid, checkbox, bootstrap -->
-             * <table id="grid"></table>
-             * <script>
-             *     function editRenderer($container, currentValue, record) {
-             *         $container.append('<input type="text" value="' + currentValue + '" class="gj-width-full"/>');
-             *     }
-             *     $('#grid').grid({
-             *         dataSource: '/Players/Get',
-             *         uiLibrary: 'bootstrap',
-             *         columns: [
-             *             { field: 'ID', width: 32 },
-             *             { field: 'Name', editor: editRenderer },
-             *             { field: 'PlaceOfBirth', editor: true },
-             *             { field: 'IsActive', title: 'Active?', type:'checkbox', editor: true, mode: 'editOnly', width: 80, align: 'center' }
-             *         ]
-             *     });
-             * </script>
-             * @example Date.And.Dropdown.Material <!-- grid, datepicker, dropdown, checkbox -->
+             * @example Material.Design <!-- grid, datepicker, dropdown, checkbox -->
              * <table id="grid"></table>
              * <script>
              *     var countries = [ "Bulgaria", "Brazil", "England", "Germany", "Colombia", "Poland" ];
@@ -77,7 +60,7 @@ gj.grid.plugins.inlineEditing.config = {
              *         ]
              *     });
              * </script>
-             * @example Date.And.Dropdown.Bootstrap <!-- bootstrap, grid, datepicker, dropdown, checkbox -->
+             * @example Bootstrap.3 <!-- bootstrap, grid, datepicker, dropdown, checkbox -->
              * <table id="grid"></table>
              * <script>
              *     var countries = [ "Bulgaria", "Brazil", "England", "Germany", "Colombia", "Poland" ];
@@ -92,13 +75,12 @@ gj.grid.plugins.inlineEditing.config = {
              *         ]
              *     });
              * </script>
-             * @example Date.And.Dropdown.Bootstrap.4 <!-- bootstrap4, fontawesome, grid, datepicker, dropdown, checkbox -->
+             * @example Bootstrap.4 <!-- bootstrap4, grid, datepicker, dropdown, checkbox -->
              * <table id="grid"></table>
              * <script>
              *     var countries = [ "Bulgaria", "Brazil", "England", "Germany", "Colombia", "Poland" ];
              *     $('#grid').grid({
              *         uiLibrary: 'bootstrap4',
-             *         iconsLibrary: 'fontawesome',
              *         dataSource: '/Players/Get',
              *         columns: [
              *             { field: 'Name', editor: true },

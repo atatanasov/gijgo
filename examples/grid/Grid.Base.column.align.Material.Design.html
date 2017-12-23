@@ -12,16 +12,13 @@
 </head>
 <body style="padding: 6px;">
  <table id="grid"></table>
- <style>
- .italic { font-style: italic }
- </style>
  <script>
      $('#grid').grid({
          dataSource: '/Players/Get',
          columns: [
-             { field: 'ID', width: 56 },
-             { field: 'Name', headerCssClass: 'italic' },
-             { field: 'PlaceOfBirth' }
+             { field: 'ID', width: 100, align: 'center' },
+             { field: 'Name', align: 'right' },
+             { field: 'PlaceOfBirth', align: 'left' }
          ]
      });
  </script>

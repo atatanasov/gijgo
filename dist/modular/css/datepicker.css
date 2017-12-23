@@ -125,6 +125,10 @@
     left: 8px;
 }
 
+.gj-datepicker-bootstrap input:focus {
+    box-shadow: none;
+}
+
 .gj-calendar-bootstrap {
     border: 1px solid rgba(0,0,0,0.15);
     border-radius: 4px;

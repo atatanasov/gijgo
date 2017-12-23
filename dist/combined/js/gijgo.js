@@ -2187,7 +2187,7 @@ gj.grid.config = {
          *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
          *     });
          * </script>
-         * @example Html.DataSource <!-- grid -->
+         * @example Html.DataSource <!-- grid, dropdown -->
          * <table id="grid">
          *     <thead>
          *         <tr>
@@ -2376,6 +2376,7 @@ gj.grid.config = {
              *             { field: 'PlaceOfBirth', sortable: false }
              *         ]
              *     });
+             * </script>
              * @example Remote.Bootstrap.4.Material.Icons <!-- bootstrap4, grid -->
              * <table id="grid"></table>
              * <script>
@@ -2490,12 +2491,25 @@ gj.grid.config = {
             /** This setting control the alignment of the text in the cell.
              * @alias column.align
              * @type left|right|center|justify|initial|inherit
-             * @default "left"
-             * @example sample <!-- grid -->
+             * @default undefined
+             * @example Material.Design <!-- grid -->
              * <table id="grid"></table>
              * <script>
              *     $('#grid').grid({
              *         dataSource: '/Players/Get',
+             *         columns: [
+             *             { field: 'ID', width: 100, align: 'center' },
+             *             { field: 'Name', align: 'right' },
+             *             { field: 'PlaceOfBirth', align: 'left' }
+             *         ]
+             *     });
+             * </script>
+             * @example Bootstrap.4 <!-- grid, bootstrap4 -->
+             * <table id="grid"></table>
+             * <script>
+             *     $('#grid').grid({
+             *         dataSource: '/Players/Get',
+             *         uiLibrary: 'bootstrap4',
              *         columns: [
              *             { field: 'ID', width: 56, align: 'center' },
              *             { field: 'Name', align: 'right' },
@@ -2504,7 +2518,7 @@ gj.grid.config = {
              *     });
              * </script>
              */
-            align: 'left',
+            align: undefined,
 
             /** The name(s) of css class(es) that are going to be applied to all cells inside that column, except the header cell.
              * @alias column.cssClass
@@ -2543,7 +2557,7 @@ gj.grid.config = {
              *         dataSource: '/Players/Get',
              *         columns: [
              *             { field: 'ID', width: 56 },
-             *             { field: 'Name', width: 100, headerCssClass: 'italic' },
+             *             { field: 'Name', headerCssClass: 'italic' },
              *             { field: 'PlaceOfBirth' }
              *         ]
              *     });
@@ -2593,7 +2607,7 @@ gj.grid.config = {
             icon: undefined,
 
             /** Configuration object with event names as keys and functions as values that are going to be bind to each cell from the column.
-             * Each function is going to receive event information as a parameter with info in the "data" field for id, field name and record data.
+             * Each function is going to receive event information as a parameter with info in the 'data' field for id, field name and record data.
              * @alias column.events
              * @type object
              * @default undefined
@@ -2788,7 +2802,7 @@ gj.grid.config = {
              *             { 'ID': 4, 'Value1': null, 'Value2': undefined }
              *         ],
              *         caseSensitiveFilter = function (value, searchStr) { 
-             *             return value.indexOf(searchStr) > -1
+             *             return value.indexOf(searchStr) > -1;
              *         };
              *     grid = $('#grid').grid({
              *         dataSource: data,
@@ -2901,7 +2915,7 @@ gj.grid.config = {
          * The css files for Material Icons, Font Awesome or Glyphicons should be manually included to the page where the grid is in use.
          * @type (materialicons|fontawesome|glyphicons)
          * @default 'materialicons'
-         * @example Font.Awesome <!-- fontawesome, grid, grid.pagination -->
+         * @example Font.Awesome <!-- fontawesome, grid, dropdown -->
          * <table id="grid"></table>
          * <script>
          *     $('#grid').grid({
@@ -3117,7 +3131,7 @@ gj.grid.config = {
         /** The language that needs to be in use.
          * @type string
          * @default 'en-us'
-         * @example German.Bootstrap.Default <!-- bootstrap, grid -->
+         * @example German.Bootstrap.Default <!-- bootstrap, grid, dropdown -->
          * <table id="grid"></table>
          * <script>
          *     $('#grid').grid({
@@ -3132,7 +3146,7 @@ gj.grid.config = {
          *         pager: { limit: 5 }
          *     });
          * </script>
-         * @example French.MaterialDesign.Custom <!-- grid -->
+         * @example French.MaterialDesign.Custom <!-- grid, dropdown -->
          * <table id="grid"></table>
          * <script>
          *     gj.grid.messages['fr-fr'].DisplayingRecords = 'Mes résultats';
@@ -3406,7 +3420,7 @@ gj.grid.events = {
      * @param {string} id - the id of the record
      * @param {object} record - the data of the row record
      * @example sample <!-- grid -->
-     * <button onclick="grid.removeRow('1')">Remove Row</button><br/>
+     * <button onclick="grid.removeRow('1')" class="gj-button-md">Remove Row</button><br/><br/>
      * <table id="grid"></table>
      * <script>
      *     var grid = $('#grid').grid({
@@ -3433,7 +3447,7 @@ gj.grid.events = {
      * @event destroying
      * @param {object} e - event data
      * @example sample <!-- grid -->
-     * <button id="btnDestroy">Destroy</button>
+     * <button id="btnDestroy" class="gj-button-md">Destroy</button>
      * <br/><br/>
      * <table id="grid"></table>
      * <script>
@@ -3921,11 +3935,10 @@ gj.grid.methods = {
         var $displayEl, key;
 
         if (!$cell || $cell.length === 0) {
-            $cell = $('<td/>').css('text-align', column.align || 'left');
+            $cell = $('<td/>');
             $displayEl = $('<div data-role="display" />');
-            if (column.cssClass) {
-                $cell.addClass(column.cssClass);
-            }
+            column.align && $cell.css('text-align', column.align);
+            column.cssClass && $cell.addClass(column.cssClass);
             $cell.append($displayEl);
             mode = 'create';
         } else {
@@ -4520,8 +4533,8 @@ gj.grid.widget = function ($grid, jsConfig) {
      * @method
      * @param {boolean} showNotFoundText - Indicates if the "Not Found" text is going to show after the clearing of the grid.
      * @return grid
-     * @example sample <!-- grid -->
-     * <button id="btnClear">Clear</button>
+     * @example sample <!-- grid, dropdown -->
+     * <button id="btnClear" class="gj-button-md">Clear</button>
      * <br/><br/>
      * <table id="grid"></table>
      * <script>
@@ -4763,7 +4776,7 @@ gj.grid.widget = function ($grid, jsConfig) {
      * @method
      * @return grid
      * @example sample <!-- checkbox, grid -->
-     * <button id="btnSelectAll">Select All</button>
+     * <button id="btnSelectAll" class="gj-button-md">Select All</button>
      * <br/><br/>
      * <table id="grid"></table>
      * <script>
@@ -4787,8 +4800,8 @@ gj.grid.widget = function ($grid, jsConfig) {
      * @method
      * @return void
      * @example sample <!-- checkbox, grid -->
-     * <button id="btnSelectAll">Select All</button>
-     * <button id="btnUnSelectAll">UnSelect All</button>
+     * <button id="btnSelectAll" class="gj-button-md">Select All</button>
+     * <button id="btnUnSelectAll" class="gj-button-md">UnSelect All</button>
      * <br/><br/>
      * <table id="grid"></table>
      * <script>
@@ -4969,7 +4982,7 @@ gj.grid.widget = function ($grid, jsConfig) {
      *         grid.addRow({ 'ID': grid.count(true) + 1, 'Name': 'Test Player', 'PlaceOfBirth': 'Test City, Test Country' });
      *     });
      * </script>
-     * @example with.pagination <!-- grid -->
+     * @example with.pagination <!-- grid, dropdown -->
      * <button id="btnAdd" class="gj-button-md">Add Row</button>
      * <br/><br/>
      * <table id="grid"></table>
@@ -4985,7 +4998,7 @@ gj.grid.widget = function ($grid, jsConfig) {
      *             { field: 'ID', width: 56 },
      *             { field: 'Name' },
      *             { field: 'PlaceOfBirth' },
-     *             { width: 70, align: 'center', tmpl: '<i class="material-icons">delete</i>', events: { 'click': function(e) { grid.removeRow(e.data.id); } } }
+     *             { width: 100, align: 'center', tmpl: '<i class="material-icons">delete</i>', events: { 'click': function(e) { grid.removeRow(e.data.id); } } }
      *         ],
      *         pager: { limit: 2, sizes: [2, 5, 10, 20] }
      *     });
@@ -5004,7 +5017,7 @@ gj.grid.widget = function ($grid, jsConfig) {
      * @param {string} id - The id of the row that needs to be updated
      * @param {object} record - Object with data for the new record.
      * @return grid
-     * @example sample <!-- grid -->
+     * @example sample <!-- grid, dropdown -->
      * <table id="grid"></table>
      * <script>
      *     var grid;
@@ -5019,7 +5032,7 @@ gj.grid.widget = function ($grid, jsConfig) {
      *             { field: 'ID', width: 56 },
      *             { field: 'Name' },
      *             { field: 'PlaceOfBirth' },
-     *             { title: '', width: 50, align: 'center', tmpl: '<u>Edit</u>', events: { 'click': Edit } }
+     *             { title: '', width: 90, align: 'center', tmpl: '<u>Edit</u>', events: { 'click': Edit } }
      *         ],
      *         pager: { limit: 2, sizes: [2, 5, 10, 20] }
      *     });
@@ -5067,7 +5080,7 @@ gj.grid.widget = function ($grid, jsConfig) {
      *         ]
      *     });
      * </script>
-     * @example With.Pagination <!-- grid, grid.pagination -->
+     * @example With.Pagination <!-- grid, dropdown -->
      * <table id="grid"></table>
      * <script>
      *     var grid;
@@ -5525,24 +5538,7 @@ gj.grid.plugins.inlineEditing.config = {
              * @alias column.editor
              * @type function|boolean
              * @default undefined
-             * @example sample <!-- grid, checkbox, bootstrap -->
-             * <table id="grid"></table>
-             * <script>
-             *     function editRenderer($container, currentValue, record) {
-             *         $container.append('<input type="text" value="' + currentValue + '" class="gj-width-full"/>');
-             *     }
-             *     $('#grid').grid({
-             *         dataSource: '/Players/Get',
-             *         uiLibrary: 'bootstrap',
-             *         columns: [
-             *             { field: 'ID', width: 32 },
-             *             { field: 'Name', editor: editRenderer },
-             *             { field: 'PlaceOfBirth', editor: true },
-             *             { field: 'IsActive', title: 'Active?', type:'checkbox', editor: true, mode: 'editOnly', width: 80, align: 'center' }
-             *         ]
-             *     });
-             * </script>
-             * @example Date.And.Dropdown.Material <!-- grid, datepicker, dropdown, checkbox -->
+             * @example Material.Design <!-- grid, datepicker, dropdown, checkbox -->
              * <table id="grid"></table>
              * <script>
              *     var countries = [ "Bulgaria", "Brazil", "England", "Germany", "Colombia", "Poland" ];
@@ -5556,7 +5552,7 @@ gj.grid.plugins.inlineEditing.config = {
              *         ]
              *     });
              * </script>
-             * @example Date.And.Dropdown.Bootstrap <!-- bootstrap, grid, datepicker, dropdown, checkbox -->
+             * @example Bootstrap.3 <!-- bootstrap, grid, datepicker, dropdown, checkbox -->
              * <table id="grid"></table>
              * <script>
              *     var countries = [ "Bulgaria", "Brazil", "England", "Germany", "Colombia", "Poland" ];
@@ -5571,13 +5567,12 @@ gj.grid.plugins.inlineEditing.config = {
              *         ]
              *     });
              * </script>
-             * @example Date.And.Dropdown.Bootstrap.4 <!-- bootstrap4, fontawesome, grid, datepicker, dropdown, checkbox -->
+             * @example Bootstrap.4 <!-- bootstrap4, grid, datepicker, dropdown, checkbox -->
              * <table id="grid"></table>
              * <script>
              *     var countries = [ "Bulgaria", "Brazil", "England", "Germany", "Colombia", "Poland" ];
              *     $('#grid').grid({
              *         uiLibrary: 'bootstrap4',
-             *         iconsLibrary: 'fontawesome',
              *         dataSource: '/Players/Get',
              *         columns: [
              *             { field: 'Name', editor: true },
@@ -7323,7 +7318,7 @@ gj.grid.plugins.toolbar = {
               *     var grid = $('#grid').grid({
               *         dataSource: '/Players/Get',
               *         uiLibrary: 'bootstrap',
-              *         toolbarTemplate: '<div class="row"><div class="col-md-8" style="line-height:34px"><span data-role="title">Grid Title</span></div><div class="col-md-4 text-right"><button onclick="grid.reload()" class="btn btn-default">click here to refresh</button></div></div>',
+              *         toolbarTemplate: '<div class="row"><div class="col-xs-8" style="line-height:34px"><span data-role="title">Grid Title</span></div><div class="col-xs-4 text-right"><button onclick="grid.reload()" class="btn btn-default">click here to refresh</button></div></div>',
               *         columns: [ { field: 'ID', width: 34 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
               *         pager: { limit: 5 }
               *     });
@@ -7654,7 +7649,7 @@ gj.grid.plugins.rowReorder = {
              *     });
              * </script>
              * @example Hidden.OrderNumber <!-- grid, grid.rowReorder, draggable.base, droppable.base -->
-             * <button onclick="alert(JSON.stringify(grid.getAll()))">Show Data</button>
+             * <button onclick="alert(JSON.stringify(grid.getAll()))" class="gj-button-md">Show Data</button><br/><br/>
              * <table id="grid"></table>
              * <script>
              *     var data = [
@@ -8191,8 +8186,7 @@ gj.grid.plugins.grouping = {
                   *     $('#grid').grid({
                   *         dataSource: data,
                   *         grouping: { groupBy: 'Nationality' },
-                  *         columns: [ { field: 'Name', sortable: true }, { field: 'PlaceOfBirth' } ],
-                  *         pager: { limit: 5 }
+                  *         columns: [ { field: 'Name', sortable: true }, { field: 'PlaceOfBirth' } ]
                   *     });
                   * </script>
                   * @example Remote.Data <!-- grid -->
@@ -8201,8 +8195,7 @@ gj.grid.plugins.grouping = {
                   *     $('#grid').grid({
                   *         dataSource: '/Players/Get',
                   *         grouping: { groupBy: 'Nationality' },
-                  *         columns: [ { field: 'Name', sortable: true }, { field: 'PlaceOfBirth' } ],
-                  *         pager: { limit: 5 }
+                  *         columns: [ { field: 'Name', sortable: true }, { field: 'PlaceOfBirth' } ]
                   *     });
                   * </script>
                   * @example Bootstrap.3 <!-- bootstrap, grid -->
@@ -8212,8 +8205,7 @@ gj.grid.plugins.grouping = {
                   *         dataSource: '/Players/Get',
                   *         uiLibrary: 'bootstrap',
                   *         grouping: { groupBy: 'Nationality' },
-                  *         columns: [ { field: 'Name', sortable: true }, { field: 'DateOfBirth', type: 'date' } ],
-                  *         pager: { limit: 5 },
+                  *         columns: [ { field: 'Name', sortable: true }, { field: 'DateOfBirth', type: 'date' } ]
                   *         detailTemplate: '<div><b>Place Of Birth:</b> {PlaceOfBirth}</div>'
                   *     });
                   * </script>
@@ -8225,8 +8217,7 @@ gj.grid.plugins.grouping = {
                   *         uiLibrary: 'bootstrap4',
                   *         iconsLibrary: 'fontawesome',
                   *         grouping: { groupBy: 'Nationality' },
-                  *         columns: [ { field: 'Name', sortable: true }, { field: 'PlaceOfBirth' } ],
-                  *         pager: { limit: 5 }
+                  *         columns: [ { field: 'Name', sortable: true }, { field: 'PlaceOfBirth' } ]
                   *     });
                   * </script>
                   */
@@ -8387,7 +8378,7 @@ gj.grid.plugins.fixedHeader = {
              *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
              *     });
              * </script>
-             * @example Material.Design.With.Pager <!-- grid -->
+             * @example Material.Design.With.Pager <!-- grid, dropdown -->
              * <table id="grid"></table>
              * <script>
              *     $('#grid').grid({

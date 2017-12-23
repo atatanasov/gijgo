@@ -79,7 +79,7 @@ gj.grid.plugins.rowReorder = {
              *     });
              * </script>
              * @example Hidden.OrderNumber <!-- grid, grid.rowReorder, draggable.base, droppable.base -->
-             * <button onclick="alert(JSON.stringify(grid.getAll()))">Show Data</button>
+             * <button onclick="alert(JSON.stringify(grid.getAll()))" class="gj-button-md">Show Data</button><br/><br/>
              * <table id="grid"></table>
              * <script>
              *     var data = [

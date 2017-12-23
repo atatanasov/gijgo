@@ -34,14 +34,18 @@ TABLE.gj-grid > tbody > tr > td {
     position: relative;
 }
 
-TABLE.gj-grid DIV[data-role="display"],
-TABLE.gj-grid DIV[data-role="display"] > DIV {
-	vertical-align: middle;
-	text-indent: 0;
-    display: flex;
+table.gj-grid tbody div[data-role="display"] {
+    vertical-align: middle;
+    text-indent: 0;
     white-space: pre-wrap;
     -ms-word-break: break-word;
     word-break: break-word;
+}
+
+table.gj-grid tfoot DIV[data-role="display"] {
+    vertical-align: middle;
+    text-indent: 0;
+    display: flex;
 }
 
 TABLE.gj-grid .fa {
@@ -88,6 +92,12 @@ table.gj-grid-bootstrap tbody tr td div[data-role="display"] {
     padding: 0px;
 }
 
+.gj-grid-bootstrap-4 tbody tr td .gj-checkbox-bootstrap {
+    display: flex;
+    padding-top: 3px;
+    height: 21px;
+}
+
 /* Material Design Theme */
 .gj-grid-md {
     position: relative;
@@ -108,7 +118,7 @@ table.gj-grid-bootstrap tbody tr td div[data-role="display"] {
     vertical-align: bottom;
     text-overflow: ellipsis;
     font-weight: 700;
-    line-height: 32px;
+    line-height: 31px;
     letter-spacing: 0;
     height: 56px;
     font-size: 12px;
@@ -247,12 +257,6 @@ table.gj-grid-md thead th.gj-grid-select-all {
     padding: 0px;
 }
 
-/*.gj-grid-md tfoot tr[data-role="pager"] .gj-dropdown-md [role="list"] li {
-    font-size: 12px;
-    font-weight: bold;
-    color: rgba(0,0,0,.54);
-}*/
-
 .gj-grid-md tfoot tr[data-role="pager"] .gj-grid-md-limit-select {
     margin-left: 10px;
     font-size: 12px;
@@ -297,6 +301,9 @@ table.gj-grid-md thead th.gj-grid-select-all {
 .gj-grid-bootstrap-4 tfoot tr[data-role="pager"] th > div > div.input-group input {
     text-align: right;
     font-weight: bold;
+    height: 34px;
+    padding-top: 2px;
+    padding-bottom: 6px;
 }
 
 .gj-grid-bootstrap tfoot tr[data-role="pager"] th > div > select {
@@ -415,6 +422,10 @@ span.gj-grid-column-resizer {
     padding: 3px;
 }
 
+.gj-grid-bootstrap-3 tbody tr td[data-mode="edit"] {
+    height: 38px;
+}
+
 .gj-grid-bootstrap-3 tbody tr td[data-mode="edit"] [data-role="edit"] input[type="text"] {
     height: 37px;
     padding: 8px;
@@ -444,39 +455,39 @@ span.gj-grid-column-resizer {
 
 .gj-grid-bootstrap-3 tbody tr td[data-mode="edit"] .gj-checkbox-bootstrap {
     display: inline-block;
-    padding-top: 8px;
+    padding-top: 10px;
     height: 32px;
 }
 
 /* Bootstrap 4 */
 .gj-grid-bootstrap-4 tbody tr td.gj-grid-management-column {
-    padding: 11px;
+    padding: 6px;
 }
 
 .gj-grid-bootstrap-4 tbody tr td[data-mode="edit"] [data-role="edit"] input[type="text"] {
-    height: 50px;
+    height: 48px;
     padding-left: 12px;
 }
 
 .gj-grid-bootstrap-4 tbody tr td[data-mode="edit"] .gj-dropdown-bootstrap [role="presenter"] {
     border: 0px;
     border-radius: 0px;
-    height: 50px;
+    height: 48px;
     padding-left: 12px;
     font-family: -apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
 }
 
 .gj-grid-bootstrap-4 tbody tr td[data-mode="edit"] .gj-dropdown-bootstrap-4 [role="expander"].gj-dropdown-expander-mi .gj-icon,
 .gj-grid-bootstrap-4 tbody tr td[data-mode="edit"] .gj-dropdown-bootstrap-4 [role="expander"].gj-dropdown-expander-mi .material-icons {
-    top: 12px;
+    top: 13px;
 }
 
 .gj-grid-bootstrap-4 tbody tr td[data-mode="edit"] .gj-datepicker-bootstrap {
-    height: 50px;
+    height: 48px;
 }
 
 .gj-grid-bootstrap-4 tbody tr td[data-mode="edit"] .gj-datepicker-bootstrap [role="input"] {
-    height: 50px;
+    height: 48px;
     border:0px;
     border-radius: 0px;
 }

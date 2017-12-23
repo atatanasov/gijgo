@@ -34,14 +34,18 @@ TABLE.gj-grid > tbody > tr > td {
     position: relative;
 }
 
-TABLE.gj-grid DIV[data-role="display"],
-TABLE.gj-grid DIV[data-role="display"] > DIV {
-	vertical-align: middle;
-	text-indent: 0;
-    display: flex;
+table.gj-grid tbody div[data-role="display"] {
+    vertical-align: middle;
+    text-indent: 0;
     white-space: pre-wrap;
     -ms-word-break: break-word;
     word-break: break-word;
+}
+
+table.gj-grid tfoot DIV[data-role="display"] {
+    vertical-align: middle;
+    text-indent: 0;
+    display: flex;
 }
 
 TABLE.gj-grid .fa {
@@ -88,6 +92,12 @@ table.gj-grid-bootstrap tbody tr td div[data-role="display"] {
     padding: 0px;
 }
 
+.gj-grid-bootstrap-4 tbody tr td .gj-checkbox-bootstrap {
+    display: flex;
+    padding-top: 3px;
+    height: 21px;
+}
+
 /* Material Design Theme */
 .gj-grid-md {
     position: relative;
@@ -108,7 +118,7 @@ table.gj-grid-bootstrap tbody tr td div[data-role="display"] {
     vertical-align: bottom;
     text-overflow: ellipsis;
     font-weight: 700;
-    line-height: 32px;
+    line-height: 31px;
     letter-spacing: 0;
     height: 56px;
     font-size: 12px;

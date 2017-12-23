@@ -180,7 +180,7 @@ gj.grid.events = {
      * @param {string} id - the id of the record
      * @param {object} record - the data of the row record
      * @example sample <!-- grid -->
-     * <button onclick="grid.removeRow('1')">Remove Row</button><br/>
+     * <button onclick="grid.removeRow('1')" class="gj-button-md">Remove Row</button><br/><br/>
      * <table id="grid"></table>
      * <script>
      *     var grid = $('#grid').grid({
@@ -207,7 +207,7 @@ gj.grid.events = {
      * @event destroying
      * @param {object} e - event data
      * @example sample <!-- grid -->
-     * <button id="btnDestroy">Destroy</button>
+     * <button id="btnDestroy" class="gj-button-md">Destroy</button>
      * <br/><br/>
      * <table id="grid"></table>
      * <script>

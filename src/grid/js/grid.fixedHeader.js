@@ -18,7 +18,7 @@ gj.grid.plugins.fixedHeader = {
              *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
              *     });
              * </script>
-             * @example Material.Design.With.Pager <!-- grid -->
+             * @example Material.Design.With.Pager <!-- grid, dropdown -->
              * <table id="grid"></table>
              * <script>
              *     $('#grid').grid({

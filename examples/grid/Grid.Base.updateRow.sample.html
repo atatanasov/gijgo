@@ -8,7 +8,9 @@
   <script src="../../dist/modular/js/core.js" type="text/javascript"></script>
   <link href="../../dist/modular/css/core.css" rel="stylesheet" type="text/css">
   <link href="../../dist/modular/css/grid.css" rel="stylesheet" type="text/css">
+  <link href="../../dist/modular/css/dropdown.css" rel="stylesheet" type="text/css">
   <script src="../../dist/modular/js/grid.js"></script>
+  <script src="../../dist/modular/js/dropdown.js"></script>
 </head>
 <body style="padding: 6px;">
  <table id="grid"></table>
@@ -25,7 +27,7 @@
              { field: 'ID', width: 56 },
              { field: 'Name' },
              { field: 'PlaceOfBirth' },
-             { title: '', width: 50, align: 'center', tmpl: '<u>Edit</u>', events: { 'click': Edit } }
+             { title: '', width: 90, align: 'center', tmpl: '<u>Edit</u>', events: { 'click': Edit } }
          ],
          pager: { limit: 2, sizes: [2, 5, 10, 20] }
      });

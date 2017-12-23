@@ -50,7 +50,7 @@ gj.grid.config = {
          *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
          *     });
          * </script>
-         * @example Html.DataSource <!-- grid -->
+         * @example Html.DataSource <!-- grid, dropdown -->
          * <table id="grid">
          *     <thead>
          *         <tr>
@@ -239,6 +239,7 @@ gj.grid.config = {
              *             { field: 'PlaceOfBirth', sortable: false }
              *         ]
              *     });
+             * </script>
              * @example Remote.Bootstrap.4.Material.Icons <!-- bootstrap4, grid -->
              * <table id="grid"></table>
              * <script>
@@ -353,12 +354,25 @@ gj.grid.config = {
             /** This setting control the alignment of the text in the cell.
              * @alias column.align
              * @type left|right|center|justify|initial|inherit
-             * @default "left"
-             * @example sample <!-- grid -->
+             * @default undefined
+             * @example Material.Design <!-- grid -->
              * <table id="grid"></table>
              * <script>
              *     $('#grid').grid({
              *         dataSource: '/Players/Get',
+             *         columns: [
+             *             { field: 'ID', width: 100, align: 'center' },
+             *             { field: 'Name', align: 'right' },
+             *             { field: 'PlaceOfBirth', align: 'left' }
+             *         ]
+             *     });
+             * </script>
+             * @example Bootstrap.4 <!-- grid, bootstrap4 -->
+             * <table id="grid"></table>
+             * <script>
+             *     $('#grid').grid({
+             *         dataSource: '/Players/Get',
+             *         uiLibrary: 'bootstrap4',
              *         columns: [
              *             { field: 'ID', width: 56, align: 'center' },
              *             { field: 'Name', align: 'right' },
@@ -367,7 +381,7 @@ gj.grid.config = {
              *     });
              * </script>
              */
-            align: 'left',
+            align: undefined,
 
             /** The name(s) of css class(es) that are going to be applied to all cells inside that column, except the header cell.
              * @alias column.cssClass
@@ -406,7 +420,7 @@ gj.grid.config = {
              *         dataSource: '/Players/Get',
              *         columns: [
              *             { field: 'ID', width: 56 },
-             *             { field: 'Name', width: 100, headerCssClass: 'italic' },
+             *             { field: 'Name', headerCssClass: 'italic' },
              *             { field: 'PlaceOfBirth' }
              *         ]
              *     });
@@ -456,7 +470,7 @@ gj.grid.config = {
             icon: undefined,
 
             /** Configuration object with event names as keys and functions as values that are going to be bind to each cell from the column.
-             * Each function is going to receive event information as a parameter with info in the "data" field for id, field name and record data.
+             * Each function is going to receive event information as a parameter with info in the 'data' field for id, field name and record data.
              * @alias column.events
              * @type object
              * @default undefined
@@ -651,7 +665,7 @@ gj.grid.config = {
              *             { 'ID': 4, 'Value1': null, 'Value2': undefined }
              *         ],
              *         caseSensitiveFilter = function (value, searchStr) { 
-             *             return value.indexOf(searchStr) > -1
+             *             return value.indexOf(searchStr) > -1;
              *         };
              *     grid = $('#grid').grid({
              *         dataSource: data,
@@ -764,7 +778,7 @@ gj.grid.config = {
          * The css files for Material Icons, Font Awesome or Glyphicons should be manually included to the page where the grid is in use.
          * @type (materialicons|fontawesome|glyphicons)
          * @default 'materialicons'
-         * @example Font.Awesome <!-- fontawesome, grid, grid.pagination -->
+         * @example Font.Awesome <!-- fontawesome, grid, dropdown -->
          * <table id="grid"></table>
          * <script>
          *     $('#grid').grid({
@@ -980,7 +994,7 @@ gj.grid.config = {
         /** The language that needs to be in use.
          * @type string
          * @default 'en-us'
-         * @example German.Bootstrap.Default <!-- bootstrap, grid -->
+         * @example German.Bootstrap.Default <!-- bootstrap, grid, dropdown -->
          * <table id="grid"></table>
          * <script>
          *     $('#grid').grid({
@@ -995,7 +1009,7 @@ gj.grid.config = {
          *         pager: { limit: 5 }
          *     });
          * </script>
-         * @example French.MaterialDesign.Custom <!-- grid -->
+         * @example French.MaterialDesign.Custom <!-- grid, dropdown -->
          * <table id="grid"></table>
          * <script>
          *     gj.grid.messages['fr-fr'].DisplayingRecords = 'Mes résultats';

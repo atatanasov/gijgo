@@ -36,7 +36,7 @@ gj.grid.config = {
             /** The field name to which the column is bound.
              * If the column.title is not defined this value is used as column.title.             */            field: undefined,
 
-            /** This setting control the alignment of the text in the cell.             */            align: 'left',
+            /** This setting control the alignment of the text in the cell.             */            align: undefined,
 
             /** The name(s) of css class(es) that are going to be applied to all cells inside that column, except the header cell.             */            cssClass: undefined,
 
@@ -48,7 +48,7 @@ gj.grid.config = {
              * This setting can be in use only with combination of type icon.             */            icon: undefined,
 
             /** Configuration object with event names as keys and functions as values that are going to be bind to each cell from the column.
-             * Each function is going to receive event information as a parameter with info in the "data" field for id, field name and record data.             */            events: undefined,
+             * Each function is going to receive event information as a parameter with info in the 'data' field for id, field name and record data.             */            events: undefined,
 
             /** Format the date when the type of the column is date.             */            format: 'mm/dd/yyyy',
 
@@ -622,11 +622,10 @@ gj.grid.methods = {
         var $displayEl, key;
 
         if (!$cell || $cell.length === 0) {
-            $cell = $('<td/>').css('text-align', column.align || 'left');
+            $cell = $('<td/>');
             $displayEl = $('<div data-role="display" />');
-            if (column.cssClass) {
-                $cell.addClass(column.cssClass);
-            }
+            column.align && $cell.css('text-align', column.align);
+            column.cssClass && $cell.addClass(column.cssClass);
             $cell.append($displayEl);
             mode = 'create';
         } else {

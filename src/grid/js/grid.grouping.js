@@ -42,8 +42,7 @@ gj.grid.plugins.grouping = {
                   *     $('#grid').grid({
                   *         dataSource: data,
                   *         grouping: { groupBy: 'Nationality' },
-                  *         columns: [ { field: 'Name', sortable: true }, { field: 'PlaceOfBirth' } ],
-                  *         pager: { limit: 5 }
+                  *         columns: [ { field: 'Name', sortable: true }, { field: 'PlaceOfBirth' } ]
                   *     });
                   * </script>
                   * @example Remote.Data <!-- grid -->
@@ -52,8 +51,7 @@ gj.grid.plugins.grouping = {
                   *     $('#grid').grid({
                   *         dataSource: '/Players/Get',
                   *         grouping: { groupBy: 'Nationality' },
-                  *         columns: [ { field: 'Name', sortable: true }, { field: 'PlaceOfBirth' } ],
-                  *         pager: { limit: 5 }
+                  *         columns: [ { field: 'Name', sortable: true }, { field: 'PlaceOfBirth' } ]
                   *     });
                   * </script>
                   * @example Bootstrap.3 <!-- bootstrap, grid -->
@@ -63,8 +61,7 @@ gj.grid.plugins.grouping = {
                   *         dataSource: '/Players/Get',
                   *         uiLibrary: 'bootstrap',
                   *         grouping: { groupBy: 'Nationality' },
-                  *         columns: [ { field: 'Name', sortable: true }, { field: 'DateOfBirth', type: 'date' } ],
-                  *         pager: { limit: 5 },
+                  *         columns: [ { field: 'Name', sortable: true }, { field: 'DateOfBirth', type: 'date' } ]
                   *         detailTemplate: '<div><b>Place Of Birth:</b> {PlaceOfBirth}</div>'
                   *     });
                   * </script>
@@ -76,8 +73,7 @@ gj.grid.plugins.grouping = {
                   *         uiLibrary: 'bootstrap4',
                   *         iconsLibrary: 'fontawesome',
                   *         grouping: { groupBy: 'Nationality' },
-                  *         columns: [ { field: 'Name', sortable: true }, { field: 'PlaceOfBirth' } ],
-                  *         pager: { limit: 5 }
+                  *         columns: [ { field: 'Name', sortable: true }, { field: 'PlaceOfBirth' } ]
                   *     });
                   * </script>
                   */

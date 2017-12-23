@@ -305,143 +305,143 @@ ul.gj-list-md li.disabled>[data-role="wrapper"]>[data-role="display"] {
     -webkit-font-smoothing: antialiased;
 }
 
-.event:before {
+.gj-icon.event:before {
     content: "\e900";
 }
 
-.chevron-down:before {
+.gj-icon.chevron-down:before {
     content: "\e901";
 }
 
-.chevron-left:before {
+.gj-icon.chevron-left:before {
     content: "\e902";
 }
 
-.chevron-right:before {
+.gj-icon.chevron-right:before {
     content: "\e903";
 }
 
-.chevron-up:before {
+.gj-icon.chevron-up:before {
     content: "\e904";
 }
 
-.minus:before {
+.gj-icon.minus:before {
     content: "\e905";
 }
 
-.pencil:before {
+.gj-icon.pencil:before {
     content: "\e906";
 }
 
-.plus:before {
+.gj-icon.plus:before {
     content: "\e907";
 }
 
-.done:before {
+.gj-icon.done:before {
     content: "\e908";
 }
 
-.redo:before {
+.gj-icon.redo:before {
     content: "\e909";
 }
 
-.undo:before {
+.gj-icon.undo:before {
     content: "\e90a";
 }
 
-.align-right:before {
+.gj-icon.align-right:before {
     content: "\e90b";
 }
 
-.align-left:before {
+.gj-icon.align-left:before {
     content: "\e90c";
 }
 
-.align-justify:before {
+.gj-icon.align-justify:before {
     content: "\e90d";
 }
 
-.align-center:before {
+.gj-icon.align-center:before {
     content: "\e90e";
 }
 
-.strikethrough:before {
+.gj-icon.strikethrough:before {
     content: "\e90f";
 }
 
-.italic:before {
+.gj-icon.italic:before {
     content: "\e910";
 }
 
-.underlined:before {
+.gj-icon.underlined:before {
     content: "\e911";
 }
 
-.bold:before {
+.gj-icon.bold:before {
     content: "\e912";
 }
 
-.arrow-dropdown:before {
+.gj-icon.arrow-dropdown:before {
     content: "\e913";
 }
 
-.arrow-upward:before {
+.gj-icon.arrow-upward:before {
     content: "\e914";
 }
 
-.arrow-forward:before {
+.gj-icon.arrow-forward:before {
     content: "\e915";
 }
 
-.arrow-downward:before {
+.gj-icon.arrow-downward:before {
     content: "\e916";
 }
 
-.arrow-back:before {
+.gj-icon.arrow-back:before {
     content: "\e917";
 }
 
-.list-numbered:before {
+.gj-icon.list-numbered:before {
     content: "\e918";
 }
 
-.list-bulleted:before {
+.gj-icon.list-bulleted:before {
     content: "\e919";
 }
 
-.indent-increase:before {
+.gj-icon.indent-increase:before {
     content: "\e91a";
 }
 
-.indent-decrease:before {
+.gj-icon.indent-decrease:before {
     content: "\e91b";
 }
 
-.cancel:before {
+.gj-icon.cancel:before {
     content: "\e91c";
 }
 
-.clear:before {
+.gj-icon.clear:before {
     content: "\e91d";
 }
 
-.check-circle:before {
+.gj-icon.check-circle:before {
     content: "\e91e";
 }
 
-.delete:before {
+.gj-icon.delete:before {
     content: "\e91f";
 }
 
-.refresh:before {
+.gj-icon.refresh:before {
     content: "\e920";
 }
 
-.last-page:before {
+.gj-icon.last-page:before {
     content: "\e921";
 }
 
-.first-page:before {
+.gj-icon.first-page:before {
     content: "\e922";
 }
 .gj-draggable {
@@ -678,14 +678,18 @@ TABLE.gj-grid > tbody > tr > td {
     position: relative;
 }
 
-TABLE.gj-grid DIV[data-role="display"],
-TABLE.gj-grid DIV[data-role="display"] > DIV {
-	vertical-align: middle;
-	text-indent: 0;
-    display: flex;
+table.gj-grid tbody div[data-role="display"] {
+    vertical-align: middle;
+    text-indent: 0;
     white-space: pre-wrap;
     -ms-word-break: break-word;
     word-break: break-word;
+}
+
+table.gj-grid tfoot DIV[data-role="display"] {
+    vertical-align: middle;
+    text-indent: 0;
+    display: flex;
 }
 
 TABLE.gj-grid .fa {
@@ -732,6 +736,12 @@ table.gj-grid-bootstrap tbody tr td div[data-role="display"] {
     padding: 0px;
 }
 
+.gj-grid-bootstrap-4 tbody tr td .gj-checkbox-bootstrap {
+    display: flex;
+    padding-top: 3px;
+    height: 21px;
+}
+
 /* Material Design Theme */
 .gj-grid-md {
     position: relative;
@@ -752,7 +762,7 @@ table.gj-grid-bootstrap tbody tr td div[data-role="display"] {
     vertical-align: bottom;
     text-overflow: ellipsis;
     font-weight: 700;
-    line-height: 32px;
+    line-height: 31px;
     letter-spacing: 0;
     height: 56px;
     font-size: 12px;
@@ -891,12 +901,6 @@ table.gj-grid-md thead th.gj-grid-select-all {
     padding: 0px;
 }
 
-/*.gj-grid-md tfoot tr[data-role="pager"] .gj-dropdown-md [role="list"] li {
-    font-size: 12px;
-    font-weight: bold;
-    color: rgba(0,0,0,.54);
-}*/
-
 .gj-grid-md tfoot tr[data-role="pager"] .gj-grid-md-limit-select {
     margin-left: 10px;
     font-size: 12px;
@@ -941,6 +945,9 @@ table.gj-grid-md thead th.gj-grid-select-all {
 .gj-grid-bootstrap-4 tfoot tr[data-role="pager"] th > div > div.input-group input {
     text-align: right;
     font-weight: bold;
+    height: 34px;
+    padding-top: 2px;
+    padding-bottom: 6px;
 }
 
 .gj-grid-bootstrap tfoot tr[data-role="pager"] th > div > select {
@@ -1059,6 +1066,10 @@ span.gj-grid-column-resizer {
     padding: 3px;
 }
 
+.gj-grid-bootstrap-3 tbody tr td[data-mode="edit"] {
+    height: 38px;
+}
+
 .gj-grid-bootstrap-3 tbody tr td[data-mode="edit"] [data-role="edit"] input[type="text"] {
     height: 37px;
     padding: 8px;
@@ -1088,39 +1099,39 @@ span.gj-grid-column-resizer {
 
 .gj-grid-bootstrap-3 tbody tr td[data-mode="edit"] .gj-checkbox-bootstrap {
     display: inline-block;
-    padding-top: 8px;
+    padding-top: 10px;
     height: 32px;
 }
 
 /* Bootstrap 4 */
 .gj-grid-bootstrap-4 tbody tr td.gj-grid-management-column {
-    padding: 11px;
+    padding: 6px;
 }
 
 .gj-grid-bootstrap-4 tbody tr td[data-mode="edit"] [data-role="edit"] input[type="text"] {
-    height: 50px;
+    height: 48px;
     padding-left: 12px;
 }
 
 .gj-grid-bootstrap-4 tbody tr td[data-mode="edit"] .gj-dropdown-bootstrap [role="presenter"] {
     border: 0px;
     border-radius: 0px;
-    height: 50px;
+    height: 48px;
     padding-left: 12px;
     font-family: -apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
 }
 
 .gj-grid-bootstrap-4 tbody tr td[data-mode="edit"] .gj-dropdown-bootstrap-4 [role="expander"].gj-dropdown-expander-mi .gj-icon,
 .gj-grid-bootstrap-4 tbody tr td[data-mode="edit"] .gj-dropdown-bootstrap-4 [role="expander"].gj-dropdown-expander-mi .material-icons {
-    top: 12px;
+    top: 13px;
 }
 
 .gj-grid-bootstrap-4 tbody tr td[data-mode="edit"] .gj-datepicker-bootstrap {
-    height: 50px;
+    height: 48px;
 }
 
 .gj-grid-bootstrap-4 tbody tr td[data-mode="edit"] .gj-datepicker-bootstrap [role="input"] {
-    height: 50px;
+    height: 48px;
     border:0px;
     border-radius: 0px;
 }
@@ -1799,6 +1810,10 @@ ul.gj-list-md li.disabled>[data-role="wrapper"]>[data-role="expander"] {
     position: absolute;
     top: 7px;
     left: 8px;
+}
+
+.gj-datepicker-bootstrap input:focus {
+    box-shadow: none;
 }
 
 .gj-calendar-bootstrap {
