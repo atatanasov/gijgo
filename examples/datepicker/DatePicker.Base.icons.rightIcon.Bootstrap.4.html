@@ -7,7 +7,8 @@
   <script src="../../dist/libraries/jquery/jquery.min.js"></script>
   <script src="../../dist/modular/js/core.js" type="text/javascript"></script>
   <link href="../../dist/modular/css/core.css" rel="stylesheet" type="text/css">
-  <link href="../../dist/libraries/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">
   <link href="../../dist/modular/css/datepicker.css" rel="stylesheet" type="text/css">
   <script src="../../dist/modular/js/datepicker.js"></script>
 </head>
@@ -15,9 +16,9 @@
  <input id="datepicker" width="250" />
  <script>
      $('#datepicker').datepicker({
-         uiLibrary: 'bootstrap',
+         uiLibrary: 'bootstrap4',
          icons: {
-             rightIcon: '<span class="input-group-addon" role="right-icon"><span class="glyphicon glyphicon-chevron-down"></span></span>'
+             rightIcon: '<i class="material-icons">date_range</i>'
          }
      });
  </script>

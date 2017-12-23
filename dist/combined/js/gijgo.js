@@ -12730,6 +12730,8 @@ gj.datepicker.config = {
          * <b>dd</b> - Day of the month as digits; leading zero for single-digit days.<br/>
          * <b>m</b> - Month as digits; no leading zero for single-digit months.<br/>
          * <b>mm</b> - Month as digits; leading zero for single-digit months.<br/>
+         * <b>mmm</b> - Month as a three-letter abbreviation.<br/>
+         * <b>mmmm</b> - Month as its full name.<br/>
          * <b>yy</b> - Year as last two digits; leading zero for years less than 10.<br/>
          * <b>yyyy</b> - Year represented by four digits.<br/>
          * @type String
@@ -12964,6 +12966,14 @@ gj.datepicker.config = {
          *        format: 'dd mmm yyyy'
          *    });
          * </script>
+         * @example Russian <!-- datepicker -->
+         * <input id="datepicker" width="276" />
+         * <script>
+         *    $('#datepicker').datepicker({
+         *        locale: 'ru-ru',
+         *        format: 'dd mmm yyyy'
+         *    });
+         * </script>
          */
         locale: 'en-us',
 
@@ -12982,12 +12992,22 @@ gj.datepicker.config = {
              *     });
              * </script>
              * @example Custom.Glyphicon.Icon <!-- bootstrap, datepicker -->
-             * <input id="datepicker" />
+             * <input id="datepicker" width="250" />
              * <script>
              *     $('#datepicker').datepicker({
              *         uiLibrary: 'bootstrap',
              *         icons: {
-             *             rightIcon: '<span class="glyphicon glyphicon-chevron-down" />'
+             *             rightIcon: '<span class="input-group-addon" role="right-icon"><span class="glyphicon glyphicon-chevron-down"></span></span>'
+             *         }
+             *     });
+             * </script>
+             * @example Bootstrap.4 <!-- bootstrap4, materialicons, datepicker -->
+             * <input id="datepicker" width="250" />
+             * <script>
+             *     $('#datepicker').datepicker({
+             *         uiLibrary: 'bootstrap4',
+             *         icons: {
+             *             rightIcon: '<i class="material-icons">date_range</i>'
              *         }
              *     });
              * </script>
