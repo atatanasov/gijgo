@@ -8,7 +8,16 @@ gj.tree.plugins.dragAndDrop = {
 			/** Enables drag and drop functionality for each node.
               * @type Boolean
               * @default undefined
-              * @example Bootstrap <!-- bootstrap, draggable.base, droppable.base, tree -->
+              * @example Material.Design <!-- draggable.base, droppable.base, tree -->
+              * <h3>Drag and Drop Tree Nodes</h3>
+              * <div id="tree"></div>
+              * <script>
+              *     $('#tree').tree({
+              *         dataSource: '/Locations/Get',
+              *         dragAndDrop: true
+              *     });
+              * </script>
+              * @example Bootstrap.3 <!-- bootstrap, draggable.base, droppable.base, tree -->
               * <div class="container">
               *     <h3>Drag and Drop Tree Nodes</h3>
               *     <div id="tree"></div>
@@ -20,35 +29,46 @@ gj.tree.plugins.dragAndDrop = {
               *         uiLibrary: 'bootstrap'
               *     });
               * </script>
-              * @example Material.Design <!-- draggable.base, droppable.base, tree -->
-              * <h3>Drag and Drop Tree Nodes</h3>
-              * <div id="tree"></div>
+              * @example Bootstrap.4 <!-- bootstrap4, draggable.base, droppable.base, tree -->
+              * <div class="container">
+              *     <h3>Drag and Drop Tree Nodes</h3>
+              *     <div id="tree"></div>
+              * </div>
               * <script>
               *     $('#tree').tree({
               *         dataSource: '/Locations/Get',
               *         dragAndDrop: true,
-              *         uiLibrary: 'materialdesign'
+              *         uiLibrary: 'bootstrap4'
               *     });
               * </script>
               */
 			dragAndDrop: undefined,
 
 			style: {
-			    dragEl: 'gj-tree-drag-el gj-tree-mdl-drag-el',
-                dropAsChildIcon: 'material-icons gj-cursor-pointer gj-mdl-icon-plus',
+			    dragEl: 'gj-tree-drag-el gj-tree-md-drag-el',
+                dropAsChildIcon: 'gj-cursor-pointer gj-icon plus',
 			    dropAbove: 'gj-tree-drop-above',
 			    dropBelow: 'gj-tree-drop-below'
 			}
-		},
+        },
 
-		bootstrap: {
-		    style: {
-		        dragEl: 'gj-tree-drag-el gj-tree-bootstrap-drag-el',
-		        dropAsChildIcon: 'glyphicon glyphicon-plus',
-		        dropAbove: 'gj-tree-drop-above',
-		        dropBelow: 'gj-tree-drop-below'
-		    }
-		}
+        bootstrap: {
+            style: {
+                dragEl: 'gj-tree-drag-el gj-tree-bootstrap-drag-el',
+                dropAsChildIcon: 'glyphicon glyphicon-plus',
+                dropAbove: 'drop-above',
+                dropBelow: 'drop-below'
+            }
+        },
+
+        bootstrap4: {
+            style: {
+                dragEl: 'gj-tree-drag-el gj-tree-bootstrap-drag-el',
+                dropAsChildIcon: 'gj-cursor-pointer gj-icon plus',
+                dropAbove: 'drop-above',
+                dropBelow: 'drop-below'
+            }
+        }
 	},
 
 	private: {

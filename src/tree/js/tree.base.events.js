@@ -9,7 +9,7 @@ gj.tree.events = {
      * @event initialized
      * @param {object} e - event data
      * @example Event.Sample <!-- tree -->
-     * <button id="reload">Reload</button>
+     * <button id="reload" class="gj-button-md">Reload</button>
      * <div id="tree"></div>
      * <script>
      *     var tree = $('#tree').tree({
@@ -149,8 +149,8 @@ gj.tree.events = {
      * @param {object} e - event data
      * @param {object} node - the node as jquery object
      * @example Event.Sample <!-- tree -->
-     * <button onclick="tree.enable(northAmerica, false)">Enable North America</button>
-     * <button onclick="tree.disable(northAmerica, false)">Disable North America</button>
+     * <button onclick="tree.enable(northAmerica, false)" class="gj-button-md">Enable North America</button>
+     * <button onclick="tree.disable(northAmerica, false)" class="gj-button-md">Disable North America</button>
      * <br/><br/>
      * <div id="tree" data-source="/Locations/Get"></div>
      * <script>
@@ -176,8 +176,8 @@ gj.tree.events = {
      * @param {object} e - event data
      * @param {object} node - the node as jquery object
      * @example Event.Sample <!-- tree -->
-     * <button onclick="tree.enable(northAmerica, false)">Enable North America</button>
-     * <button onclick="tree.disable(northAmerica, false)">Disable North America</button>
+     * <button onclick="tree.enable(northAmerica, false)" class="gj-button-md">Enable North America</button>
+     * <button onclick="tree.disable(northAmerica, false)" class="gj-button-md">Disable North America</button>
      * <br/><br/>
      * <div id="tree" data-source="/Locations/Get"></div>
      * <script>
@@ -202,7 +202,7 @@ gj.tree.events = {
      * @event destroying
      * @param {object} e - event data
      * @example Event.Sample <!-- tree -->
-     * <button onclick="tree.destroy()">Destroy</button>
+     * <button onclick="tree.destroy()" class="gj-button-md">Destroy</button>
      * <br/><br/>
      * <div id="tree" data-source="/Locations/Get"></div>
      * <script>

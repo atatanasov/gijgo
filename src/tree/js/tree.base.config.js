@@ -98,14 +98,28 @@ gj.tree.config = {
         /** Primary key field name.
          * @type string
          * @default undefined
-         * @example sample <!-- tree -->
+         * @example defined <!-- tree -->
+         * <p>Select a node to see the key.</p>
          * <div id="tree"></div>
          * <script>
-         *     var tree = $('#tree').tree({
+         *     $('#tree').tree({
          *         primaryKey: 'id',
-         *         dataSource: [ { id: 101, text: 'foo', children: [ { id: 202, text: 'bar' } ] } ]
+         *         dataSource: [ { id: 101, text: 'foo', children: [ { id: 202, text: 'bar' } ] } ],
+         *         select: function (e, node, id) {
+         *             alert('Your key is ' + id);
+         *         }
          *     });
-         *     alert(tree.getDataById(101).text);
+         * </script>
+         * @example undefined <!-- tree -->
+         * <p>Select a node to see the key.</p>
+         * <div id="tree"></div>
+         * <script>
+         *     $('#tree').tree({
+         *         dataSource: [ { id: 101, text: 'foo', children: [ { id: 202, text: 'bar' } ] } ],
+         *         select: function (e, node, id) {
+         *             alert('Your key is ' + id);
+         *         }
+         *     });
          * </script>
          */
         primaryKey: undefined,
@@ -315,11 +329,12 @@ gj.tree.config = {
          *     var tree = $('#tree').tree({
          *         dataSource: '/Locations/Get',
          *         width: 500,
-         *         uiLibrary: 'bootstrap'
+         *         uiLibrary: 'bootstrap',
+         *         border: true
          *     });
          * </script>
          * @example HTML.Config <!-- bootstrap, tree -->
-         * <div id="tree" width="500" data-source="/Locations/Get" data-ui-library="bootstrap"></div>
+         * <div id="tree" width="500" data-source="/Locations/Get" data-ui-library="bootstrap" data-border="true"></div>
          * <script>
          *     $('#tree').tree();
          * </script>
@@ -368,15 +383,24 @@ gj.tree.config = {
          *         border: false
          *     });
          * </script>
-         * @example Bootstrap.4.True <!-- bootstrap4, fontawesome, tree -->
+         * @example Bootstrap.4.True <!-- bootstrap4, tree -->
          * <div id="tree"></div>
          * <script>
          *     $('#tree').tree({
          *         dataSource: '/Locations/Get',
          *         width: 500,
          *         uiLibrary: 'bootstrap4',
-         *         iconsLibrary: 'fontawesome',
          *         border: true
+         *     });
+         * </script>
+         * @example Bootstrap.4.False <!-- bootstrap4, tree -->
+         * <div id="tree"></div>
+         * <script>
+         *     $('#tree').tree({
+         *         dataSource: '/Locations/Get',
+         *         width: 500,
+         *         uiLibrary: 'bootstrap4',
+         *         border: false
          *     });
          * </script>
          */
@@ -518,6 +542,10 @@ gj.tree.config = {
             item: 'list-group-item',
             active: 'active',
             border: 'gj-tree-bootstrap-border'
+        },
+        icons: {
+            expand: '<i class="gj-icon plus" />',
+            collapse: '<i class="gj-icon minus" />'
         }
     },
 

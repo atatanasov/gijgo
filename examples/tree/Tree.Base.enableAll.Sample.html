@@ -13,9 +13,9 @@
   <script src="../../dist/modular/js/tree.js"></script>
 </head>
 <body style="padding: 6px;">
- <button onclick="tree.enableAll()">Enable All</button>
- <button onclick="tree.disableAll()">Disable All</button>
- <br/><br/>
+ <button onclick="tree.enableAll()" class="gj-button-md">Enable All</button>
+ <button onclick="tree.disableAll()" class="gj-button-md">Disable All</button>
+ <br/>
  <div id="tree" data-source="/Locations/Get"></div>
  <script>
      var tree = $('#tree').tree({

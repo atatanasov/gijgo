@@ -21,12 +21,11 @@ gj.tree.plugins.lazyLoading = {
               * @type Boolean
               * @default false
               * @example Material.Design <!-- tree -->
-              * <div class="container-fluid">
-              *     <div id="tree"></div>
-              * </div>
+              * <div id="tree"></div>
               * <script>
               *     $('#tree').tree({
               *         dataSource: '/Locations/LazyGet',
+              *         primaryKey: 'id',
               *         lazyLoading: true
               *     });
               * </script>

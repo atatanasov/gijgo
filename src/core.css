@@ -227,6 +227,7 @@ ul.gj-list-md {
     list-style-type: none;
     line-height: 24px;
     letter-spacing: 0;
+    color: #616161; /* Gray 700 */
 }
 
 ul.gj-list-md li {

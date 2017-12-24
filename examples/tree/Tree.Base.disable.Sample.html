@@ -13,11 +13,11 @@
   <script src="../../dist/modular/js/tree.js"></script>
 </head>
 <body style="padding: 6px;">
- <button onclick="tree.enable(northAmerica)">Enable North America (Cascade)</button>
- <button onclick="tree.disable(northAmerica)">Disable North America (Cascade)</button>
- <button onclick="tree.enable(northAmerica, false)">Enable North America (Non-Cascade)</button>
- <button onclick="tree.disable(northAmerica, false)">Disable North America (Non-Cascade)</button>
- <br/><br/>
+ <button onclick="tree.enable(northAmerica)" class="gj-button-md">Enable North America (Cascade)</button>
+ <button onclick="tree.disable(northAmerica)" class="gj-button-md">Disable North America (Cascade)</button>
+ <button onclick="tree.enable(northAmerica, false)" class="gj-button-md">Enable North America (Non-Cascade)</button>
+ <button onclick="tree.disable(northAmerica, false)" class="gj-button-md">Disable North America (Non-Cascade)</button>
+ <br/>
  <div id="tree" data-source="/Locations/Get"></div>
  <script>
      var tree, northAmerica;

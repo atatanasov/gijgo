@@ -86,6 +86,10 @@ gj.tree.config = {
             item: 'list-group-item',
             active: 'active',
             border: 'gj-tree-bootstrap-border'
+        },
+        icons: {
+            expand: '<i class="gj-icon plus" />',
+            collapse: '<i class="gj-icon minus" />'
         }
     },
 
@@ -980,21 +984,30 @@ gj.tree.widget.constructor = gj.tree.widget;
 			/** Enables drag and drop functionality for each node.              */			dragAndDrop: undefined,
 
 			style: {
-			    dragEl: 'gj-tree-drag-el gj-tree-mdl-drag-el',
-                dropAsChildIcon: 'material-icons gj-cursor-pointer gj-mdl-icon-plus',
+			    dragEl: 'gj-tree-drag-el gj-tree-md-drag-el',
+                dropAsChildIcon: 'gj-cursor-pointer gj-icon plus',
 			    dropAbove: 'gj-tree-drop-above',
 			    dropBelow: 'gj-tree-drop-below'
 			}
-		},
+        },
 
-		bootstrap: {
-		    style: {
-		        dragEl: 'gj-tree-drag-el gj-tree-bootstrap-drag-el',
-		        dropAsChildIcon: 'glyphicon glyphicon-plus',
-		        dropAbove: 'gj-tree-drop-above',
-		        dropBelow: 'gj-tree-drop-below'
-		    }
-		}
+        bootstrap: {
+            style: {
+                dragEl: 'gj-tree-drag-el gj-tree-bootstrap-drag-el',
+                dropAsChildIcon: 'glyphicon glyphicon-plus',
+                dropAbove: 'drop-above',
+                dropBelow: 'drop-below'
+            }
+        },
+
+        bootstrap4: {
+            style: {
+                dragEl: 'gj-tree-drag-el gj-tree-bootstrap-drag-el',
+                dropAsChildIcon: 'gj-cursor-pointer gj-icon plus',
+                dropAbove: 'drop-above',
+                dropBelow: 'drop-below'
+            }
+        }
 	},
 
 	private: {

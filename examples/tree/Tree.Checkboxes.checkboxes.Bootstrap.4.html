@@ -7,17 +7,20 @@
   <script src="../../dist/libraries/jquery/jquery.min.js"></script>
   <script src="../../dist/modular/js/core.js" type="text/javascript"></script>
   <link href="../../dist/modular/css/core.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+  <link href="../../dist/modular/css/checkbox.css" rel="stylesheet" type="text/css">
   <link href="../../dist/modular/css/tree.css" rel="stylesheet" type="text/css">
+  <script src="../../dist/modular/js/checkbox.js"></script>
   <script src="../../dist/modular/js/tree.js"></script>
 </head>
 <body style="padding: 6px;">
  <div id="tree"></div>
  <script>
      var tree = $('#tree').tree({
-         primaryKey: 'id',
-         dataSource: [ { id: 101, text: 'foo', children: [ { id: 202, text: 'bar' } ] } ]
+         dataSource: '/Locations/Get',
+         checkboxes: true,
+         uiLibrary: 'bootstrap4'
      });
-     alert(tree.getDataById(101).text);
  </script>
 </body>
 </html>

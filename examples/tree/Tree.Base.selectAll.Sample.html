@@ -11,8 +11,9 @@
   <script src="../../dist/modular/js/tree.js"></script>
 </head>
 <body style="padding: 6px;">
- <button onclick="tree.selectAll()">Select All</button><button onclick="tree.unselectAll()">Unselect All</button>
- <br/><br/>
+ <button onclick="tree.selectAll()" class="gj-button-md">Select All</button>
+ <button onclick="tree.unselectAll()" class="gj-button-md">Unselect All</button>
+ <br/>
  <div id="tree" data-source="/Locations/Get"></div>
  <script>
      var tree = $('#tree').tree({

@@ -8,11 +8,16 @@ gj.tree.plugins.checkboxes = {
             /** Add checkbox for each node, if set to true.
               * @type Boolean
               * @default undefined
-              * @example Bootstrap <!-- bootstrap, checkbox, tree -->
-              * <div class="container-fluid">
-              *     <h3>Bootstrap Treeview With Checkboxes</h3>
-              *     <div id="tree"></div>
-              * </div>
+              * @example Material.Design <!-- checkbox, tree -->
+              * <div id="tree"></div>
+              * <script>
+              *     var tree = $('#tree').tree({
+              *         dataSource: '/Locations/Get',
+              *         checkboxes: true
+              *     });
+              * </script>
+              * @example Bootstrap.3 <!-- bootstrap, checkbox, tree -->
+              * <div id="tree"></div>
               * <script>
               *     var tree = $('#tree').tree({
               *         dataSource: '/Locations/Get',
@@ -20,16 +25,13 @@ gj.tree.plugins.checkboxes = {
               *         uiLibrary: 'bootstrap'
               *     });
               * </script>
-              * @example Material.Design <!-- checkbox, tree -->
-              * <div class="container-fluid">
-              *     <h3>Material Design Treeview With Checkboxes</h3>
-              *     <div id="tree"></div>
-              * </div>
+              * @example Bootstrap.4 <!-- bootstrap4, checkbox, tree -->
+              * <div id="tree"></div>
               * <script>
               *     var tree = $('#tree').tree({
               *         dataSource: '/Locations/Get',
               *         checkboxes: true,
-              *         uiLibrary: 'materialdesign'
+              *         uiLibrary: 'bootstrap4'
               *     });
               * </script>
               */
@@ -188,7 +190,7 @@ gj.tree.plugins.checkboxes = {
          * @method
          * @return Array
          * @example Base.Theme <!-- checkbox, tree -->
-         * <button id="btnGet">Get Checked Nodes</button>
+         * <button id="btnGet" class="gj-button-md">Get Checked Nodes</button>
          * <div id="tree"></div>
          * <script>
          *     var tree = $('#tree').tree({
@@ -218,7 +220,8 @@ gj.tree.plugins.checkboxes = {
          * @method
          * @return tree as jQuery object
          * @example Sample <!-- checkbox, tree -->
-         * <button onclick="tree.checkAll()">Check All</button><button onclick="tree.uncheckAll()">Uncheck All</button>
+         * <button onclick="tree.checkAll()" class="gj-button-md">Check All</button>
+         * <button onclick="tree.uncheckAll()" class="gj-button-md">Uncheck All</button>
          * <br/><br/>
          * <div id="tree" data-source="/Locations/Get"></div>
          * <script>
@@ -243,7 +246,8 @@ gj.tree.plugins.checkboxes = {
          * @method
          * @return tree as jQuery object
          * @example Sample <!-- checkbox, tree -->
-         * <button onclick="tree.checkAll()">Check All</button><button onclick="tree.uncheckAll()">Uncheck All</button>
+         * <button onclick="tree.checkAll()" class="gj-button-md">Check All</button>
+         * <button onclick="tree.uncheckAll()" class="gj-button-md">Uncheck All</button>
          * <br/><br/>
          * <div id="tree" data-source="/Locations/Get"></div>
          * <script>
@@ -269,8 +273,8 @@ gj.tree.plugins.checkboxes = {
          * @param {object} node - The node as jQuery object
          * @return tree as jQuery object
          * @example Sample <!-- checkbox, tree -->
-         * <button onclick="tree.check(tree.getNodeByText('China'))">Check China</button>
-         * <br/><br/>
+         * <button onclick="tree.check(tree.getNodeByText('China'))" class="gj-button-md">Check China</button>
+         * <br/>
          * <div id="tree" data-source="/Locations/Get"></div>
          * <script>
          *     var tree = $('#tree').tree({
@@ -292,8 +296,8 @@ gj.tree.plugins.checkboxes = {
          * @param {object} node - The node as jQuery object
          * @return tree as jQuery object
          * @example Sample <!-- checkbox, tree -->
-         * <button onclick="tree.uncheck(tree.getNodeByText('China'))">UnCheck China</button>
-         * <br/><br/>
+         * <button onclick="tree.uncheck(tree.getNodeByText('China'))" class="gj-button-md">UnCheck China</button>
+         * <br/>
          * <div id="tree" data-source="/Locations/Get"></div>
          * <script>
          *     var tree = $('#tree').tree({

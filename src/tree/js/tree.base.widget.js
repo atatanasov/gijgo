@@ -12,7 +12,7 @@ gj.tree.widget = function ($element, jsConfig) {
      * @param {object} params - Params that needs to be send to the server. Only in use for remote data sources.
      * @return jQuery object
      * @example Method.Sample <!-- tree -->
-     * <button onclick="tree.reload()">Click to load</button>
+     * <button onclick="tree.reload()" class="gj-button-md">Click to load</button>
      * <br/><br/>
      * <div id="tree"></div>
      * <script>
@@ -69,8 +69,8 @@ gj.tree.widget = function ($element, jsConfig) {
      * @param {Number} position - Position where the new node need to be added. 
      * @return jQuery object
      * @example Append.ToRoot <!-- tree -->
-     * <button onclick="append()">Append Node</button>
-     * <br/><br/>
+     * <button onclick="append()" class="gj-button-md">Append To Root</button>
+     * <br/>
      * <div id="tree" data-source="/Locations/Get"></div>
      * <script>
      *     var tree = $('#tree').tree();
@@ -79,8 +79,8 @@ gj.tree.widget = function ($element, jsConfig) {
      *     }
      * </script>
      * @example Append.Parent <!-- tree -->
-     * <button onclick="append()">Append Node</button>
-     * <br/><br/>
+     * <button onclick="append()" class="gj-button-md">Append To Asia</button>
+     * <br/>
      * <div id="tree" data-source="/Locations/Get"></div>
      * <script>
      *     var parent, tree = $('#tree').tree();
@@ -93,7 +93,7 @@ gj.tree.widget = function ($element, jsConfig) {
      *     }
      * </script>
      * @example Bootstrap <!-- bootstrap, tree -->
-     * <button onclick="append()">Append Node</button>
+     * <button onclick="append()" class="btn btn-default">Append To Asia</button>
      * <br/><br/>
      * <div id="tree" data-source="/Locations/Get" data-ui-library="bootstrap"></div>
      * <script>
@@ -107,8 +107,8 @@ gj.tree.widget = function ($element, jsConfig) {
      *     }
      * </script>
      * @example Prepend <!-- tree -->
-     * <button onclick="append()">Append Node</button>
-     * <br/><br/>
+     * <button onclick="append()" class="gj-button-md">Prepend in Asia</button>
+     * <br/>
      * <div id="tree" data-source="/Locations/Get"></div>
      * <script>
      *     var parent, tree = $('#tree').tree();
@@ -121,8 +121,8 @@ gj.tree.widget = function ($element, jsConfig) {
      *     }
      * </script>
      * @example Position <!-- tree -->
-     * <button onclick="append()">Append Node</button>
-     * <br/><br/>
+     * <button onclick="append()" class="gj-button-md">Append to Asia as second</button>
+     * <br/>
      * <div id="tree" data-source="/Locations/Get"></div>
      * <script>
      *     var parent, tree = $('#tree').tree();
@@ -145,8 +145,8 @@ gj.tree.widget = function ($element, jsConfig) {
      * @param {object} node - The node as jQuery object
      * @return jQuery object
      * @example Method.Sample <!-- tree -->
-     * <button onclick="remove()">Remove USA</button>
-     * <br/><br/>
+     * <button onclick="remove()" class="gj-button-md">Remove USA</button>
+     * <br/>
      * <div id="tree"></div>
      * <script>
      *     var tree = $('#tree').tree({
@@ -167,8 +167,8 @@ gj.tree.widget = function ($element, jsConfig) {
      * @method
      * @return jQuery object
      * @example Method.Sample <!-- tree -->
-     * <button onclick="tree.destroy()">Destroy</button>
-     * <br/><br/>
+     * <button onclick="tree.destroy()" class="gj-button-md">Destroy</button>
+     * <br/>
      * <div id="tree"></div>
      * <script>
      *     var tree = $('#tree').tree({
@@ -187,8 +187,9 @@ gj.tree.widget = function ($element, jsConfig) {
      * @param {boolean} cascade - Expand all children
      * @return jQuery object
      * @example Method.Sample <!-- tree -->
-     * <button onclick="expand()">Expand Asia</button><button onclick="collapse()">Collapse Asia</button>
-     * <br/><br/>
+     * <button onclick="expand()" class="gj-button-md">Expand Asia</button>
+     * <button onclick="collapse()" class="gj-button-md">Collapse Asia</button>
+     * <br/>
      * <div id="tree"></div>
      * <script>
      *     var tree = $('#tree').tree({
@@ -204,8 +205,8 @@ gj.tree.widget = function ($element, jsConfig) {
      *     }
      * </script>
      * @example Cascade <!-- tree -->
-     * <button onclick="expand()">Expand North America</button>
-     * <br/><br/>
+     * <button onclick="expand()" class="gj-button-md">Expand North America</button>
+     * <br/>
      * <div id="tree"></div>
      * <script>
      *     var tree = $('#tree').tree({
@@ -228,8 +229,9 @@ gj.tree.widget = function ($element, jsConfig) {
      * @param {boolean} cascade - Collapse all children
      * @return jQuery object
      * @example Method.Sample <!-- tree -->
-     * <button onclick="expand()">Expand Asia</button><button onclick="collapse()">Collapse Asia</button>
-     * <br/><br/>
+     * <button onclick="expand()" class="gj-button-md">Expand Asia</button>
+     * <button onclick="collapse()" class="gj-button-md">Collapse Asia</button>
+     * <br/>
      * <div id="tree"></div>
      * <script>
      *     var tree = $('#tree').tree({
@@ -245,8 +247,8 @@ gj.tree.widget = function ($element, jsConfig) {
      *     }
      * </script>
      * @example Cascade <!-- tree -->
-     * <button onclick="collapse()">Collapse North America</button>
-     * <br/><br>
+     * <button onclick="collapse()" class="gj-button-md">Collapse North America</button>
+     * <br/>
      * <div id="tree"></div>
      * <script>
      *     var tree = $('#tree').tree({
@@ -267,8 +269,9 @@ gj.tree.widget = function ($element, jsConfig) {
      * @method
      * @return jQuery object
      * @example Sample <!-- tree -->
-     * <button onclick="tree.expandAll()">Expand All</button><button onclick="tree.collapseAll()">Collapse All</button>
-     * <br/><br/>
+     * <button onclick="tree.expandAll()" class="gj-button-md">Expand All</button>
+     * <button onclick="tree.collapseAll()" class="gj-button-md">Collapse All</button>
+     * <br/>
      * <div id="tree" data-source="/Locations/Get"></div>
      * <script>
      *     var tree = $('#tree').tree();
@@ -283,8 +286,9 @@ gj.tree.widget = function ($element, jsConfig) {
      * @method
      * @return jQuery object
      * @example Sample <!-- tree -->
-     * <button onclick="tree.expandAll()">Expand All</button><button onclick="tree.collapseAll()">Collapse All</button>
-     * <br/><br/>
+     * <button onclick="tree.expandAll()" class="gj-button-md">Expand All</button>
+     * <button onclick="tree.collapseAll()" class="gj-button-md">Collapse All</button>
+     * <br/>
      * <div id="tree" data-source="/Locations/Get"></div>
      * <script>
      *     var tree = $('#tree').tree();
@@ -300,8 +304,8 @@ gj.tree.widget = function ($element, jsConfig) {
      * @param {string|number} id - The id of the record that needs to be returned
      * @return object
      * @example sample <!-- tree -->
-     * <button id="btnGetData">Get Data</button>
-     * <br/><br/>
+     * <button id="btnGetData" class="gj-button-md">Get Data</button>
+     * <br/>
      * <div id="tree"></div>
      * <script>
      *     var tree = $('#tree').tree({
@@ -324,8 +328,8 @@ gj.tree.widget = function ($element, jsConfig) {
      * @param {string} text - The text of the record that needs to be returned
      * @return object
      * @example sample <!-- tree -->
-     * <button id="btnGetData">Get Data</button>
-     * <br/><br/>
+     * <button id="btnGetData" class="gj-button-md">Get Data</button>
+     * <br/>
      * <div id="tree"></div>
      * <script>
      *     var tree = $('#tree').tree({
@@ -390,9 +394,9 @@ gj.tree.widget = function ($element, jsConfig) {
      * @param {Object} node - The node as jquery object.
      * @return jQuery Object
      * @example Select.Method <!-- tree -->
-     * <button onclick="tree.select(northAmerica)">Select North America</button>
-     * <button onclick="tree.unselect(northAmerica)">Unselect North America</button>
-     * <br/><br/>
+     * <button onclick="tree.select(northAmerica)" class="gj-button-md">Select North America</button>
+     * <button onclick="tree.unselect(northAmerica)" class="gj-button-md">Unselect North America</button>
+     * <br/>
      * <div id="tree" data-source="/Locations/Get"></div>
      * <script>
      *     var tree, northAmerica;
@@ -417,9 +421,9 @@ gj.tree.widget = function ($element, jsConfig) {
      * @param {Object} node - The node as jquery object.
      * @return jQuery Object
      * @example UnSelect.Method <!-- tree -->
-     * <button onclick="tree.select(northAmerica)">Select North America</button>
-     * <button onclick="tree.unselect(northAmerica)">Unselect North America</button>
-     * <br/><br/>
+     * <button onclick="tree.select(northAmerica)" class="gj-button-md">Select North America</button>
+     * <button onclick="tree.unselect(northAmerica)" class="gj-button-md">Unselect North America</button>
+     * <br/>
      * <div id="tree" data-source="/Locations/Get"></div>
      * <script>
      *     var tree, northAmerica;
@@ -443,8 +447,9 @@ gj.tree.widget = function ($element, jsConfig) {
      * @method
      * @return jQuery object
      * @example Sample <!-- tree -->
-     * <button onclick="tree.selectAll()">Select All</button><button onclick="tree.unselectAll()">Unselect All</button>
-     * <br/><br/>
+     * <button onclick="tree.selectAll()" class="gj-button-md">Select All</button>
+     * <button onclick="tree.unselectAll()" class="gj-button-md">Unselect All</button>
+     * <br/>
      * <div id="tree" data-source="/Locations/Get"></div>
      * <script>
      *     var tree = $('#tree').tree({
@@ -464,8 +469,9 @@ gj.tree.widget = function ($element, jsConfig) {
      * @method
      * @return jQuery object
      * @example Sample <!-- tree -->
-     * <button onclick="tree.selectAll()">Select All</button><button onclick="tree.unselectAll()">Unselect All</button>
-     * <br/><br/>
+     * <button onclick="tree.selectAll()" class="gj-button-md">Select All</button>
+     * <button onclick="tree.unselectAll()" class="gj-button-md">Unselect All</button>
+     * <br/>
      * <div id="tree" data-source="/Locations/Get"></div>
      * <script>
      *     var tree = $('#tree').tree({
@@ -485,8 +491,8 @@ gj.tree.widget = function ($element, jsConfig) {
      * @method
      * @return array
      * @example Sample <!-- tree -->
-     * <button id="btnShowSelection">Show Selections</button>
-     * <br/><br/>
+     * <button id="btnShowSelection" class="gj-button-md">Show Selections</button>
+     * <br/>
      * <div id="tree" data-source="/Locations/Get"></div>
      * <script>
      *     var tree = $('#tree').tree({
@@ -544,11 +550,11 @@ gj.tree.widget = function ($element, jsConfig) {
      * @param {Boolean} cascade - Enable all children. Set to true by default.
      * @return jQuery Object
      * @example Material.Design <!-- checkbox, tree -->
-     * <button onclick="tree.enable(northAmerica)">Enable North America (Cascade)</button>
-     * <button onclick="tree.disable(northAmerica)">Disable North America (Cascade)</button>
-     * <button onclick="tree.enable(northAmerica, false)">Enable North America (Non-Cascade)</button>
-     * <button onclick="tree.disable(northAmerica, false)">Disable North America (Non-Cascade)</button>
-     * <br/><br/>
+     * <button onclick="tree.enable(northAmerica)" class="gj-button-md">Enable North America (Cascade)</button>
+     * <button onclick="tree.disable(northAmerica)" class="gj-button-md">Disable North America (Cascade)</button>
+     * <button onclick="tree.enable(northAmerica, false)" class="gj-button-md">Enable North America (Non-Cascade)</button>
+     * <button onclick="tree.disable(northAmerica, false)" class="gj-button-md">Disable North America (Non-Cascade)</button>
+     * <br/>
      * <div id="tree" data-source="/Locations/Get"></div>
      * <script>
      *     var tree, northAmerica;
@@ -561,11 +567,11 @@ gj.tree.widget = function ($element, jsConfig) {
      *     });
      * </script>
      * @example Bootstrap <!-- bootstrap, checkbox, tree -->
-     * <button onclick="tree.enable(northAmerica)">Enable North America (Cascade)</button>
-     * <button onclick="tree.disable(northAmerica)">Disable North America (Cascade)</button>
-     * <button onclick="tree.enable(northAmerica, false)">Enable North America (Non-Cascade)</button>
-     * <button onclick="tree.disable(northAmerica, false)">Disable North America (Non-Cascade)</button>
-     * <br/><br/>
+     * <button onclick="tree.enable(northAmerica)" class="btn btn-default">Enable North America (Cascade)</button>
+     * <button onclick="tree.disable(northAmerica)" class="btn btn-default">Disable North America (Cascade)</button>
+     * <button onclick="tree.enable(northAmerica, false)" class="btn btn-default">Enable North America (Non-Cascade)</button>
+     * <button onclick="tree.disable(northAmerica, false)" class="btn btn-default">Disable North America (Non-Cascade)</button>
+     * <br/>
      * <div id="tree" data-source="/Locations/Get"></div>
      * <script>
      *     var tree, northAmerica;
@@ -579,10 +585,10 @@ gj.tree.widget = function ($element, jsConfig) {
      *     });
      * </script>
      * @example Bootstrap.4 <!-- bootstrap4, fontawesome, checkbox, tree -->
-     * <button onclick="tree.enable(northAmerica)">Enable North America (Cascade)</button>
-     * <button onclick="tree.disable(northAmerica)">Disable North America (Cascade)</button>
-     * <button onclick="tree.enable(northAmerica, false)">Enable North America (Non-Cascade)</button>
-     * <button onclick="tree.disable(northAmerica, false)">Disable North America (Non-Cascade)</button>
+     * <button onclick="tree.enable(northAmerica)" class="btn btn-default">Enable North America (Cascade)</button>
+     * <button onclick="tree.disable(northAmerica)" class="btn btn-default">Disable North America (Cascade)</button>
+     * <button onclick="tree.enable(northAmerica, false)" class="btn btn-default">Enable North America (Non-Cascade)</button>
+     * <button onclick="tree.disable(northAmerica, false)" class="btn btn-default">Disable North America (Non-Cascade)</button>
      * <br/><br/>
      * <div id="tree" data-source="/Locations/Get"></div>
      * <script>
@@ -607,9 +613,9 @@ gj.tree.widget = function ($element, jsConfig) {
      * @method
      * @return jQuery Object
      * @example Sample <!-- checkbox, tree -->
-     * <button onclick="tree.enableAll()">Enable All</button>
-     * <button onclick="tree.disableAll()">Disable All</button>
-     * <br/><br/>
+     * <button onclick="tree.enableAll()" class="gj-button-md">Enable All</button>
+     * <button onclick="tree.disableAll()" class="gj-button-md">Disable All</button>
+     * <br/>
      * <div id="tree" data-source="/Locations/Get"></div>
      * <script>
      *     var tree = $('#tree').tree({
@@ -628,11 +634,11 @@ gj.tree.widget = function ($element, jsConfig) {
      * @param {Boolean} cascade - Disable all children. Set to true by default.
      * @return jQuery Object
      * @example Sample <!-- checkbox, tree -->
-     * <button onclick="tree.enable(northAmerica)">Enable North America (Cascade)</button>
-     * <button onclick="tree.disable(northAmerica)">Disable North America (Cascade)</button>
-     * <button onclick="tree.enable(northAmerica, false)">Enable North America (Non-Cascade)</button>
-     * <button onclick="tree.disable(northAmerica, false)">Disable North America (Non-Cascade)</button>
-     * <br/><br/>
+     * <button onclick="tree.enable(northAmerica)" class="gj-button-md">Enable North America (Cascade)</button>
+     * <button onclick="tree.disable(northAmerica)" class="gj-button-md">Disable North America (Cascade)</button>
+     * <button onclick="tree.enable(northAmerica, false)" class="gj-button-md">Enable North America (Non-Cascade)</button>
+     * <button onclick="tree.disable(northAmerica, false)" class="gj-button-md">Disable North America (Non-Cascade)</button>
+     * <br/>
      * <div id="tree" data-source="/Locations/Get"></div>
      * <script>
      *     var tree, northAmerica;
@@ -654,9 +660,9 @@ gj.tree.widget = function ($element, jsConfig) {
      * @method
      * @return jQuery Object
      * @example Sample <!-- checkbox, tree -->
-     * <button onclick="tree.enableAll()">Enable All</button>
-     * <button onclick="tree.disableAll()">Disable All</button>
-     * <br/><br/>
+     * <button onclick="tree.enableAll()" class="gj-button-md">Enable All</button>
+     * <button onclick="tree.disableAll()" class="gj-button-md">Disable All</button>
+     * <br/>
      * <div id="tree" data-source="/Locations/Get"></div>
      * <script>
      *     var tree = $('#tree').tree({
