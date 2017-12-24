@@ -229,9 +229,9 @@ gj.checkbox.widget = function ($element, jsConfig) {
     /** Toogle the state of the checkbox.
      * @method
      * @fires change
-     * @return checked|unchecked|indeterminate|jquery
+     * @return checkbox as jquery object
      * @example sample <!-- checkbox -->
-     * <button onclick="$chkb.toggle()">toggle</button>
+     * <button onclick="$chkb.toggle()" class="gj-button-md">toggle</button>
      * <hr/>
      * <input type="checkbox" id="checkbox"/>
      * <script>
@@ -246,12 +246,12 @@ gj.checkbox.widget = function ($element, jsConfig) {
      * @method
      * @fires change
      * @param {string} value - State of the checkbox. Accept only checked, unchecked or indeterminate as values.
-     * @return checked|unchecked|indeterminate|jquery
+     * @return checked|unchecked|indeterminate|checkbox as jquery object
      * @example sample <!-- checkbox -->
-     * <button onclick="$chkb.state('checked')">Set to checked</button>
-     * <button onclick="$chkb.state('unchecked')">Set to unchecked</button>
-     * <button onclick="$chkb.state('indeterminate')">Set to indeterminate</button>
-     * <button onclick="alert($chkb.state())">Get state</button>
+     * <button onclick="$chkb.state('checked')" class="gj-button-md">Set to checked</button>
+     * <button onclick="$chkb.state('unchecked')" class="gj-button-md">Set to unchecked</button>
+     * <button onclick="$chkb.state('indeterminate')" class="gj-button-md">Set to indeterminate</button>
+     * <button onclick="alert($chkb.state())" class="gj-button-md">Get state</button>
      * <hr/>
      * <input type="checkbox" id="checkbox"/>
      * <script>
@@ -264,9 +264,9 @@ gj.checkbox.widget = function ($element, jsConfig) {
 
     /** Remove checkbox functionality from the element.
      * @method
-     * @return jquery element
+     * @return checkbox as jquery object
      * @example sample <!-- checkbox -->
-     * <button onclick="$chkb.destroy()">Destroy</button>
+     * <button onclick="$chkb.destroy()" class="gj-button-md">Destroy</button>
      * <input type="checkbox" id="checkbox"/>
      * <script>
      *     var $chkb = $('#checkbox').checkbox();

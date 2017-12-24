@@ -14,7 +14,7 @@ gj.dialog.widget = function ($element, jsConfig) {
      * @return dialog
      * @example Sample <!-- draggable.base, dialog.base, bootstrap -->
      * <div id="dialog" style="display: none">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
-     * <button onclick="dialog.open()">Open Dialog</button>
+     * <button onclick="dialog.open()" class="gj-button-md">Open Dialog</button>
      * <script>
      *     var dialog = $('#dialog').dialog({
      *         autoOpen: false
@@ -22,7 +22,7 @@ gj.dialog.widget = function ($element, jsConfig) {
      * </script>
      * @example Title <!-- draggable.base, dialog.base, bootstrap -->
      * <div id="dialog" style="display: none">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
-     * <button onclick="dialog.open('Custom Text')">Open Dialog</button>
+     * <button onclick="dialog.open('Custom Text')" class="gj-button-md">Open Dialog</button>
      * <script>
      *     var dialog = $('#dialog').dialog({
      *         autoOpen: false
@@ -40,8 +40,8 @@ gj.dialog.widget = function ($element, jsConfig) {
      * @return dialog
      * @example sample <!-- draggable.base, dialog.base, bootstrap -->
      * <div id="dialog" style="display: none">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
-     * <button onclick="dialog.open()">Open Dialog</button>
-     * <button onclick="dialog.close()">Close Dialog</button>
+     * <button onclick="dialog.open()" class="gj-button-md">Open Dialog</button>
+     * <button onclick="dialog.close()" class="gj-button-md">Close Dialog</button>
      * <script>
      *     var dialog = $('#dialog').dialog();
      * </script>
@@ -56,9 +56,9 @@ gj.dialog.widget = function ($element, jsConfig) {
      * @return boolean
      * @example sample <!-- draggable.base, dialog.base, bootstrap -->
      * <div id="dialog" style="display: none">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
-     * <button onclick="dialog.open()">Open Dialog</button>
-     * <button onclick="dialog.close()">Close Dialog</button>
-     * <button onclick="alert($('#dialog').dialog('isOpen'))">isOpen</button>
+     * <button onclick="dialog.open()" class="gj-button-md">Open Dialog</button>
+     * <button onclick="dialog.close()" class="gj-button-md">Close Dialog</button>
+     * <button onclick="alert($('#dialog').dialog('isOpen'))" class="gj-button-md">isOpen</button>
      * <script>
      *     var dialog = $('#dialog').dialog();
      * </script>
@@ -91,8 +91,8 @@ gj.dialog.widget = function ($element, jsConfig) {
      * @return void
      * @example Keep.HTML.Markup <!-- draggable.base, dialog.base -->
      * <div id="dialog" style="display: none">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
-     * <button onclick="create()">Create</button>
-     * <button onclick="dialog.destroy()">Destroy</button>
+     * <button onclick="create()" class="gj-button-md">Create</button>
+     * <button onclick="dialog.destroy()" class="gj-button-md">Destroy</button>
      * <script>
      *     var dialog;
      *     function create() { 
@@ -101,8 +101,8 @@ gj.dialog.widget = function ($element, jsConfig) {
      * </script>
      * @example Remove.HTML.Markup <!-- draggable.base, dialog.base -->
      * <div id="dialog" style="display: none">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
-     * <button onclick="create()">Create</button>
-     * <button onclick="dialog.destroy(false)">Destroy</button>
+     * <button onclick="create()" class="gj-button-md">Create</button>
+     * <button onclick="dialog.destroy(false)" class="gj-button-md">Destroy</button>
      * <script>
      *     var dialog;
      *     function create() {

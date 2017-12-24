@@ -469,7 +469,7 @@ gj.dialog.config = {
          * </script>
          * @example False <!-- dialog.base, bootstrap -->
          * <div id="dialog" style="display: none">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
-         * <button onclick="dialog.open()">Open Dialog</button>
+         * <button onclick="dialog.open()" class="btn btn-default">Open Dialog</button>
          * <script>
          *     var dialog = $("#dialog").dialog({
          *         uiLibrary: 'bootstrap',
@@ -491,9 +491,8 @@ gj.dialog.config = {
          * </script>
          * @example False <!-- dialog.base, draggable.base -->
          * <div id="dialog" style="display: none">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
-         * <button onclick="dialog.open()">Open Dialog</button>
          * <script>
-         *     var dialog = $("#dialog").dialog({
+         *     $("#dialog").dialog({
          *         closeOnEscape: false
          *     });
          * </script>
@@ -889,7 +888,7 @@ gj.dialog.events = {
      * @param {object} e - event data
      * @example sample <!-- draggable.base, dialog.base, bootstrap -->
      * <div id="dialog" style="display: none">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
-     * <button onclick="dialog.open()">Open Dialog</button>
+     * <button onclick="dialog.open()" class="gj-button-md">Open Dialog</button>
      * <script>
      *     var dialog = $("#dialog").dialog({
      *         autoOpen: false,
@@ -909,7 +908,7 @@ gj.dialog.events = {
      * @param {object} e - event data
      * @example sample <!-- draggable.base, dialog.base, bootstrap -->
      * <div id="dialog" style="display: none">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
-     * <button onclick="dialog.open()">Open Dialog</button>
+     * <button onclick="dialog.open()" class="gj-button-md">Open Dialog</button>
      * <script>
      *     var dialog = $("#dialog").dialog({
      *         autoOpen: false,
@@ -932,7 +931,7 @@ gj.dialog.events = {
      * @param {object} e - event data
      * @example sample <!-- draggable.base, dialog.base, bootstrap -->
      * <div id="dialog" style="display: none">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
-     * <button onclick="dialog.open()">Open Dialog</button>
+     * <button onclick="dialog.open()" class="gj-button-md">Open Dialog</button>
      * <script>
      *     var dialog = $("#dialog").dialog({
      *         autoOpen: false,
@@ -955,7 +954,7 @@ gj.dialog.events = {
      * @param {object} e - event data
      * @example sample <!-- draggable.base, dialog.base, bootstrap -->
      * <div id="dialog" style="display: none">Close the dialog in order to fire closing event.</div>
-     * <button onclick="dialog.open()">Open Dialog</button>
+     * <button onclick="dialog.open()" class="gj-button-md">Open Dialog</button>
      * <script>
      *     var dialog = $("#dialog").dialog({
      *         autoOpen: false,
@@ -978,7 +977,7 @@ gj.dialog.events = {
      * @param {object} e - event data
      * @example sample <!-- draggable.base, dialog.base, bootstrap -->
      * <div id="dialog" style="display: none">Close the dialog in order to fire closed event.</div>
-     * <button onclick="dialog.open()">Open Dialog</button>
+     * <button onclick="dialog.open()" class="gj-button-md">Open Dialog</button>
      * <script>
      *     var dialog = $("#dialog").dialog({
      *         autoOpen: false,
@@ -1465,7 +1464,7 @@ gj.dialog.widget = function ($element, jsConfig) {
      * @return dialog
      * @example Sample <!-- draggable.base, dialog.base, bootstrap -->
      * <div id="dialog" style="display: none">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
-     * <button onclick="dialog.open()">Open Dialog</button>
+     * <button onclick="dialog.open()" class="gj-button-md">Open Dialog</button>
      * <script>
      *     var dialog = $('#dialog').dialog({
      *         autoOpen: false
@@ -1473,7 +1472,7 @@ gj.dialog.widget = function ($element, jsConfig) {
      * </script>
      * @example Title <!-- draggable.base, dialog.base, bootstrap -->
      * <div id="dialog" style="display: none">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
-     * <button onclick="dialog.open('Custom Text')">Open Dialog</button>
+     * <button onclick="dialog.open('Custom Text')" class="gj-button-md">Open Dialog</button>
      * <script>
      *     var dialog = $('#dialog').dialog({
      *         autoOpen: false
@@ -1491,8 +1490,8 @@ gj.dialog.widget = function ($element, jsConfig) {
      * @return dialog
      * @example sample <!-- draggable.base, dialog.base, bootstrap -->
      * <div id="dialog" style="display: none">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
-     * <button onclick="dialog.open()">Open Dialog</button>
-     * <button onclick="dialog.close()">Close Dialog</button>
+     * <button onclick="dialog.open()" class="gj-button-md">Open Dialog</button>
+     * <button onclick="dialog.close()" class="gj-button-md">Close Dialog</button>
      * <script>
      *     var dialog = $('#dialog').dialog();
      * </script>
@@ -1507,9 +1506,9 @@ gj.dialog.widget = function ($element, jsConfig) {
      * @return boolean
      * @example sample <!-- draggable.base, dialog.base, bootstrap -->
      * <div id="dialog" style="display: none">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
-     * <button onclick="dialog.open()">Open Dialog</button>
-     * <button onclick="dialog.close()">Close Dialog</button>
-     * <button onclick="alert($('#dialog').dialog('isOpen'))">isOpen</button>
+     * <button onclick="dialog.open()" class="gj-button-md">Open Dialog</button>
+     * <button onclick="dialog.close()" class="gj-button-md">Close Dialog</button>
+     * <button onclick="alert($('#dialog').dialog('isOpen'))" class="gj-button-md">isOpen</button>
      * <script>
      *     var dialog = $('#dialog').dialog();
      * </script>
@@ -1542,8 +1541,8 @@ gj.dialog.widget = function ($element, jsConfig) {
      * @return void
      * @example Keep.HTML.Markup <!-- draggable.base, dialog.base -->
      * <div id="dialog" style="display: none">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
-     * <button onclick="create()">Create</button>
-     * <button onclick="dialog.destroy()">Destroy</button>
+     * <button onclick="create()" class="gj-button-md">Create</button>
+     * <button onclick="dialog.destroy()" class="gj-button-md">Destroy</button>
      * <script>
      *     var dialog;
      *     function create() { 
@@ -1552,8 +1551,8 @@ gj.dialog.widget = function ($element, jsConfig) {
      * </script>
      * @example Remove.HTML.Markup <!-- draggable.base, dialog.base -->
      * <div id="dialog" style="display: none">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
-     * <button onclick="create()">Create</button>
-     * <button onclick="dialog.destroy(false)">Destroy</button>
+     * <button onclick="create()" class="gj-button-md">Create</button>
+     * <button onclick="dialog.destroy(false)" class="gj-button-md">Destroy</button>
      * <script>
      *     var dialog;
      *     function create() {
@@ -1845,7 +1844,7 @@ gj.draggable.widget = function ($element, jsConfig) {
          * <style>
          * .element { border: 1px solid #999; width: 300px; height: 200px; cursor: move; text-align: center; background-color: #DDD; }
          * </style>
-         * <button onclick="dragEl.destroy()">Destroy</button>
+         * <button onclick="dragEl.destroy()" class="gj-button-md">Destroy</button>
          * <div id="element" class="element">Drag Me</div>
          * <script>
          *     var dragEl = $('#element').draggable();
@@ -2078,8 +2077,8 @@ gj.droppable.widget = function ($element, jsConfig) {
      * @method
      * @return jquery element
      * @example sample <!-- draggable.base, droppable.base -->
-     * <button onclick="create()">Create</button>
-     * <button onclick="dropEl.destroy()">Destroy</button>
+     * <button onclick="create()" class="gj-button-md">Create</button>
+     * <button onclick="dropEl.destroy()" class="gj-button-md">Destroy</button>
      * <br/><br/>
      * <style>
      * .draggable { border: 1px solid #999; width: 300px; height: 200px; text-align: center; }
@@ -11540,9 +11539,9 @@ gj.checkbox.widget = function ($element, jsConfig) {
     /** Toogle the state of the checkbox.
      * @method
      * @fires change
-     * @return checked|unchecked|indeterminate|jquery
+     * @return checkbox as jquery object
      * @example sample <!-- checkbox -->
-     * <button onclick="$chkb.toggle()">toggle</button>
+     * <button onclick="$chkb.toggle()" class="gj-button-md">toggle</button>
      * <hr/>
      * <input type="checkbox" id="checkbox"/>
      * <script>
@@ -11557,12 +11556,12 @@ gj.checkbox.widget = function ($element, jsConfig) {
      * @method
      * @fires change
      * @param {string} value - State of the checkbox. Accept only checked, unchecked or indeterminate as values.
-     * @return checked|unchecked|indeterminate|jquery
+     * @return checked|unchecked|indeterminate|checkbox as jquery object
      * @example sample <!-- checkbox -->
-     * <button onclick="$chkb.state('checked')">Set to checked</button>
-     * <button onclick="$chkb.state('unchecked')">Set to unchecked</button>
-     * <button onclick="$chkb.state('indeterminate')">Set to indeterminate</button>
-     * <button onclick="alert($chkb.state())">Get state</button>
+     * <button onclick="$chkb.state('checked')" class="gj-button-md">Set to checked</button>
+     * <button onclick="$chkb.state('unchecked')" class="gj-button-md">Set to unchecked</button>
+     * <button onclick="$chkb.state('indeterminate')" class="gj-button-md">Set to indeterminate</button>
+     * <button onclick="alert($chkb.state())" class="gj-button-md">Get state</button>
      * <hr/>
      * <input type="checkbox" id="checkbox"/>
      * <script>
@@ -11575,9 +11574,9 @@ gj.checkbox.widget = function ($element, jsConfig) {
 
     /** Remove checkbox functionality from the element.
      * @method
-     * @return jquery element
+     * @return checkbox as jquery object
      * @example sample <!-- checkbox -->
-     * <button onclick="$chkb.destroy()">Destroy</button>
+     * <button onclick="$chkb.destroy()" class="gj-button-md">Destroy</button>
      * <input type="checkbox" id="checkbox"/>
      * <script>
      *     var $chkb = $('#checkbox').checkbox();
@@ -11663,15 +11662,15 @@ gj.editor.config = {
          * <script>
          *     $('#editor').editor({ uiLibrary: 'materialdesign' });
          * </script>
-         * @example Bootstrap.3 <!-- fontawesome, bootstrap, editor -->
-         * <div class="container"><div id="editor"></div></div>
+         * @example Bootstrap.3 <!-- bootstrap, editor -->
+         * <div id="editor"></div>
          * <script>
          *     $('#editor').editor({
          *         uiLibrary: 'bootstrap'
          *     });
          * </script>
-         * @example Bootstrap.4 <!-- fontawesome, bootstrap4, editor -->
-         * <div class="container"><div id="editor"></div></div>
+         * @example Bootstrap.4 <!-- bootstrap4, editor -->
+         * <div id="editor"></div>
          * <script>
          *     $('#editor').editor({
          *         uiLibrary: 'bootstrap4'
@@ -11686,12 +11685,20 @@ gj.editor.config = {
          * The css files for Material Icons or Font Awesome should be manually included to the page where the grid is in use.
          * @type (materialicons|fontawesome)
          * @default 'materialicons'
-         * @example Base.Theme.Material.Icons <!-- bootstrap, editor -->
+         * @example Bootstrap.4.FontAwesome <!-- bootstrap4, fontawesome, editor -->
+         * <div id="editor"></div>
+         * <script>
+         *     $('#editor').editor({
+         *         uiLibrary: 'bootstrap4',
+         *         iconsLibrary: 'fontawesome'
+         *     });
+         * </script>
+         * @example Bootstrap.3.FontAwesome <!-- bootstrap, fontawesome, editor -->
          * <div id="editor"></div>
          * <script>
          *     $('#editor').editor({
          *         uiLibrary: 'bootstrap',
-         *         iconsLibrary: 'materialicons'
+         *         iconsLibrary: 'fontawesome'
          *     });
          * </script>
          */
@@ -11735,8 +11742,7 @@ gj.editor.config = {
             buttonsGroup: 'btn-group',
             button: 'btn btn-default gj-cursor-pointer',
             buttonActive: 'active'
-        },
-        iconsLibrary: 'fontawesome'
+        }
     },
 
     bootstrap4: {
@@ -11745,8 +11751,7 @@ gj.editor.config = {
             buttonsGroup: 'btn-group',
             button: 'btn btn-outline-secondary gj-cursor-pointer',
             buttonActive: 'active'
-        },
-        iconsLibrary: 'fontawesome'
+        }
     },
 
     materialicons: {
@@ -11970,7 +11975,7 @@ gj.editor.widget = function ($element, jsConfig) {
      * @method
      * @return jquery element
      * @example sample <!-- editor, materialicons -->
-     * <button class="gj-button-md" onclick="editor.destroy()">Destroy</button>
+     * <button class="gj-button-md" onclick="editor.destroy()">Destroy</button><br/>
      * <div id="editor"></div>
      * <script>
      *     var editor = $('#editor').editor();

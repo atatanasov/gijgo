@@ -40,8 +40,7 @@ gj.editor.config = {
             buttonsGroup: 'btn-group',
             button: 'btn btn-default gj-cursor-pointer',
             buttonActive: 'active'
-        },
-        iconsLibrary: 'fontawesome'
+        }
     },
 
     bootstrap4: {
@@ -50,8 +49,7 @@ gj.editor.config = {
             buttonsGroup: 'btn-group',
             button: 'btn btn-outline-secondary gj-cursor-pointer',
             buttonActive: 'active'
-        },
-        iconsLibrary: 'fontawesome'
+        }
     },
 
     materialicons: {

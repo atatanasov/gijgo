@@ -14,9 +14,9 @@
 </head>
 <body style="padding: 6px;">
  <div id="dialog" style="display: none">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
- <button onclick="dialog.open()">Open Dialog</button>
- <button onclick="dialog.close()">Close Dialog</button>
- <button onclick="alert($('#dialog').dialog('isOpen'))">isOpen</button>
+ <button onclick="dialog.open()" class="gj-button-md">Open Dialog</button>
+ <button onclick="dialog.close()" class="gj-button-md">Close Dialog</button>
+ <button onclick="alert($('#dialog').dialog('isOpen'))" class="gj-button-md">isOpen</button>
  <script>
      var dialog = $('#dialog').dialog();
  </script>

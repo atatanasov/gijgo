@@ -23,7 +23,7 @@ gj.dialog.config = {
          * </script>
          * @example False <!-- dialog.base, bootstrap -->
          * <div id="dialog" style="display: none">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
-         * <button onclick="dialog.open()">Open Dialog</button>
+         * <button onclick="dialog.open()" class="btn btn-default">Open Dialog</button>
          * <script>
          *     var dialog = $("#dialog").dialog({
          *         uiLibrary: 'bootstrap',
@@ -45,9 +45,8 @@ gj.dialog.config = {
          * </script>
          * @example False <!-- dialog.base, draggable.base -->
          * <div id="dialog" style="display: none">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
-         * <button onclick="dialog.open()">Open Dialog</button>
          * <script>
-         *     var dialog = $("#dialog").dialog({
+         *     $("#dialog").dialog({
          *         closeOnEscape: false
          *     });
          * </script>

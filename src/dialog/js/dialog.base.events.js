@@ -10,7 +10,7 @@ gj.dialog.events = {
      * @param {object} e - event data
      * @example sample <!-- draggable.base, dialog.base, bootstrap -->
      * <div id="dialog" style="display: none">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
-     * <button onclick="dialog.open()">Open Dialog</button>
+     * <button onclick="dialog.open()" class="gj-button-md">Open Dialog</button>
      * <script>
      *     var dialog = $("#dialog").dialog({
      *         autoOpen: false,
@@ -30,7 +30,7 @@ gj.dialog.events = {
      * @param {object} e - event data
      * @example sample <!-- draggable.base, dialog.base, bootstrap -->
      * <div id="dialog" style="display: none">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
-     * <button onclick="dialog.open()">Open Dialog</button>
+     * <button onclick="dialog.open()" class="gj-button-md">Open Dialog</button>
      * <script>
      *     var dialog = $("#dialog").dialog({
      *         autoOpen: false,
@@ -53,7 +53,7 @@ gj.dialog.events = {
      * @param {object} e - event data
      * @example sample <!-- draggable.base, dialog.base, bootstrap -->
      * <div id="dialog" style="display: none">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
-     * <button onclick="dialog.open()">Open Dialog</button>
+     * <button onclick="dialog.open()" class="gj-button-md">Open Dialog</button>
      * <script>
      *     var dialog = $("#dialog").dialog({
      *         autoOpen: false,
@@ -76,7 +76,7 @@ gj.dialog.events = {
      * @param {object} e - event data
      * @example sample <!-- draggable.base, dialog.base, bootstrap -->
      * <div id="dialog" style="display: none">Close the dialog in order to fire closing event.</div>
-     * <button onclick="dialog.open()">Open Dialog</button>
+     * <button onclick="dialog.open()" class="gj-button-md">Open Dialog</button>
      * <script>
      *     var dialog = $("#dialog").dialog({
      *         autoOpen: false,
@@ -99,7 +99,7 @@ gj.dialog.events = {
      * @param {object} e - event data
      * @example sample <!-- draggable.base, dialog.base, bootstrap -->
      * <div id="dialog" style="display: none">Close the dialog in order to fire closed event.</div>
-     * <button onclick="dialog.open()">Open Dialog</button>
+     * <button onclick="dialog.open()" class="gj-button-md">Open Dialog</button>
      * <script>
      *     var dialog = $("#dialog").dialog({
      *         autoOpen: false,

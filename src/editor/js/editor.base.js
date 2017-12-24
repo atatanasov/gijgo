@@ -46,15 +46,15 @@ gj.editor.config = {
          * <script>
          *     $('#editor').editor({ uiLibrary: 'materialdesign' });
          * </script>
-         * @example Bootstrap.3 <!-- fontawesome, bootstrap, editor -->
-         * <div class="container"><div id="editor"></div></div>
+         * @example Bootstrap.3 <!-- bootstrap, editor -->
+         * <div id="editor"></div>
          * <script>
          *     $('#editor').editor({
          *         uiLibrary: 'bootstrap'
          *     });
          * </script>
-         * @example Bootstrap.4 <!-- fontawesome, bootstrap4, editor -->
-         * <div class="container"><div id="editor"></div></div>
+         * @example Bootstrap.4 <!-- bootstrap4, editor -->
+         * <div id="editor"></div>
          * <script>
          *     $('#editor').editor({
          *         uiLibrary: 'bootstrap4'
@@ -69,12 +69,20 @@ gj.editor.config = {
          * The css files for Material Icons or Font Awesome should be manually included to the page where the grid is in use.
          * @type (materialicons|fontawesome)
          * @default 'materialicons'
-         * @example Base.Theme.Material.Icons <!-- bootstrap, editor -->
+         * @example Bootstrap.4.FontAwesome <!-- bootstrap4, fontawesome, editor -->
+         * <div id="editor"></div>
+         * <script>
+         *     $('#editor').editor({
+         *         uiLibrary: 'bootstrap4',
+         *         iconsLibrary: 'fontawesome'
+         *     });
+         * </script>
+         * @example Bootstrap.3.FontAwesome <!-- bootstrap, fontawesome, editor -->
          * <div id="editor"></div>
          * <script>
          *     $('#editor').editor({
          *         uiLibrary: 'bootstrap',
-         *         iconsLibrary: 'materialicons'
+         *         iconsLibrary: 'fontawesome'
          *     });
          * </script>
          */
@@ -118,8 +126,7 @@ gj.editor.config = {
             buttonsGroup: 'btn-group',
             button: 'btn btn-default gj-cursor-pointer',
             buttonActive: 'active'
-        },
-        iconsLibrary: 'fontawesome'
+        }
     },
 
     bootstrap4: {
@@ -128,8 +135,7 @@ gj.editor.config = {
             buttonsGroup: 'btn-group',
             button: 'btn btn-outline-secondary gj-cursor-pointer',
             buttonActive: 'active'
-        },
-        iconsLibrary: 'fontawesome'
+        }
     },
 
     materialicons: {
@@ -353,7 +359,7 @@ gj.editor.widget = function ($element, jsConfig) {
      * @method
      * @return jquery element
      * @example sample <!-- editor, materialicons -->
-     * <button class="gj-button-md" onclick="editor.destroy()">Destroy</button>
+     * <button class="gj-button-md" onclick="editor.destroy()">Destroy</button><br/>
      * <div id="editor"></div>
      * <script>
      *     var editor = $('#editor').editor();

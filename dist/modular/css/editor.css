@@ -13,6 +13,16 @@
     margin-bottom: 7px;
 }
 
+.gj-editor-md [data-role="toolbar"] .gj-button-md {
+    min-width: 54px;
+    margin-right: 5px;
+}
+
+.gj-editor-md [data-role="toolbar"] .gj-button-md .gj-icon {
+    width: 24px;
+    height: 24px;
+}
+
 .gj-editor-md div[data-role="body"] {
     border: 1px solid rgba(158,158,158,.2);
     outline: 0px solid transparent;
@@ -39,6 +49,10 @@
 
 .gj-editor-bootstrap [data-role="toolbar"] .btn-group {
     margin-right: 10px;
+}
+
+.gj-editor-bootstrap [data-role="toolbar"] button {
+    height: 36px;
 }
 
 .gj-editor-bootstrap div[data-role="body"] {

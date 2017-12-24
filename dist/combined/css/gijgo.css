@@ -98,8 +98,8 @@
 .gj-button-md .material-icons,
 .gj-button-md .gj-icon {
     vertical-align: middle;
-    font-size: 1.3rem;
-    margin-right: 4px;
+    /*font-size: 1.3rem;
+    margin-right: 4px;*/
 }
 
 .gj-button-md.gj-button-md-icon {
@@ -1247,7 +1247,6 @@ ul.gj-list li [data-role="expander"] {
 
 [data-type="tree"] ul li [data-role="expander"].gj-tree-material-icons-expander {
     width: 24px;
-    /*color: #616161; /* Gray 700 */
 }
 
 [data-type="tree"] ul li [data-role="expander"].gj-tree-font-awesome-expander {
@@ -1592,6 +1591,16 @@ ul.gj-list-md li.disabled > [data-role="wrapper"] > [data-role="expander"] {
     margin-bottom: 7px;
 }
 
+.gj-editor-md [data-role="toolbar"] .gj-button-md {
+    min-width: 54px;
+    margin-right: 5px;
+}
+
+.gj-editor-md [data-role="toolbar"] .gj-button-md .gj-icon {
+    width: 24px;
+    height: 24px;
+}
+
 .gj-editor-md div[data-role="body"] {
     border: 1px solid rgba(158,158,158,.2);
     outline: 0px solid transparent;
@@ -1618,6 +1627,10 @@ ul.gj-list-md li.disabled > [data-role="wrapper"] > [data-role="expander"] {
 
 .gj-editor-bootstrap [data-role="toolbar"] .btn-group {
     margin-right: 10px;
+}
+
+.gj-editor-bootstrap [data-role="toolbar"] button {
+    height: 36px;
 }
 
 .gj-editor-bootstrap div[data-role="body"] {

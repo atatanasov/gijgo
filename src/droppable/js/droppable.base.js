@@ -192,8 +192,8 @@ gj.droppable.widget = function ($element, jsConfig) {
      * @method
      * @return jquery element
      * @example sample <!-- draggable.base, droppable.base -->
-     * <button onclick="create()">Create</button>
-     * <button onclick="dropEl.destroy()">Destroy</button>
+     * <button onclick="create()" class="gj-button-md">Create</button>
+     * <button onclick="dropEl.destroy()" class="gj-button-md">Destroy</button>
      * <br/><br/>
      * <style>
      * .draggable { border: 1px solid #999; width: 300px; height: 200px; text-align: center; }

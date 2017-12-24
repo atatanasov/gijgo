@@ -240,7 +240,7 @@ gj.draggable.widget = function ($element, jsConfig) {
          * <style>
          * .element { border: 1px solid #999; width: 300px; height: 200px; cursor: move; text-align: center; background-color: #DDD; }
          * </style>
-         * <button onclick="dragEl.destroy()">Destroy</button>
+         * <button onclick="dragEl.destroy()" class="gj-button-md">Destroy</button>
          * <div id="element" class="element">Drag Me</div>
          * <script>
          *     var dragEl = $('#element').draggable();
