@@ -295,12 +295,26 @@ gj.grid.config = {
              *         ]
              *     });
              * </script>
-             * @example Checkbox <!-- grid, checkbox, bootstrap -->
+             * @example Bootstrap.3.Checkbox <!-- grid, checkbox, bootstrap -->
              * <table id="grid"></table>
              * <script>
              *     $('#grid').grid({
              *         dataSource: '/Players/Get',
              *         uiLibrary: 'bootstrap',
+             *         columns: [
+             *             { field: 'ID', width: 34 },
+             *             { field: 'Name', title: 'Player' },
+             *             { field: 'PlaceOfBirth', title: 'Place of Birth' },
+             *             { title: 'Active?', field: 'IsActive', width: 80, type: 'checkbox', align: 'center' }
+             *         ]
+             *     });
+             * </script>
+             * @example Bootstrap.4.Checkbox <!-- grid, checkbox, bootstrap4 -->
+             * <table id="grid"></table>
+             * <script>
+             *     $('#grid').grid({
+             *         dataSource: '/Players/Get',
+             *         uiLibrary: 'bootstrap4',
              *         columns: [
              *             { field: 'ID', width: 34 },
              *             { field: 'Name', title: 'Player' },

@@ -92,10 +92,9 @@ table.gj-grid-bootstrap tbody tr td div[data-role="display"] {
     padding: 0px;
 }
 
-.gj-grid-bootstrap-4 tbody tr td .gj-checkbox-bootstrap {
-    display: flex;
-    padding-top: 3px;
-    height: 21px;
+.gj-grid-bootstrap-4 .gj-checkbox-bootstrap {
+    display: inline-block;
+    padding-top: 2px;
 }
 
 /* Material Design Theme */

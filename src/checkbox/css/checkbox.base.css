@@ -30,6 +30,7 @@
     border-radius: 3px;
     transition: box-shadow 0.2s linear, border-color 0.2s linear;
     cursor: pointer;
+    margin: auto;
 }
 
 .gj-checkbox-bootstrap input[type="checkbox"]:focus + span:before {

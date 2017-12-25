@@ -91,7 +91,13 @@ ul.gj-list li [data-role="expander"] {
 }
 
 ul.gj-list-bootstrap li [data-role="expander"].gj-tree-material-icons-expander {
-    padding-top: 6px;
+    padding-top: 8px;
+    padding-bottom: 4px;
+}
+
+ul.gj-list-bootstrap li [data-role="expander"].gj-tree-material-icons-expander .gj-icon {
+    width: 24px;
+    height: 24px;
 }
 
 /* Material Design Theme */

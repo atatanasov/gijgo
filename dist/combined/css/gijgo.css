@@ -737,10 +737,9 @@ table.gj-grid-bootstrap tbody tr td div[data-role="display"] {
     padding: 0px;
 }
 
-.gj-grid-bootstrap-4 tbody tr td .gj-checkbox-bootstrap {
-    display: flex;
-    padding-top: 3px;
-    height: 21px;
+.gj-grid-bootstrap-4 .gj-checkbox-bootstrap {
+    display: inline-block;
+    padding-top: 2px;
 }
 
 /* Material Design Theme */
@@ -1327,7 +1326,13 @@ ul.gj-list li [data-role="expander"] {
 }
 
 ul.gj-list-bootstrap li [data-role="expander"].gj-tree-material-icons-expander {
-    padding-top: 6px;
+    padding-top: 8px;
+    padding-bottom: 4px;
+}
+
+ul.gj-list-bootstrap li [data-role="expander"].gj-tree-material-icons-expander .gj-icon {
+    width: 24px;
+    height: 24px;
 }
 
 /* Material Design Theme */
@@ -1443,6 +1448,7 @@ ul.gj-list-md li.disabled > [data-role="wrapper"] > [data-role="expander"] {
     border-radius: 3px;
     transition: box-shadow 0.2s linear, border-color 0.2s linear;
     cursor: pointer;
+    margin: auto;
 }
 
 .gj-checkbox-bootstrap input[type="checkbox"]:focus + span:before {
