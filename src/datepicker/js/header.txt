@@ -1,5 +1,5 @@
 ﻿/*
- * Gijgo DatePicker v1.7.1
+ * Gijgo DatePicker v1.7.2
  * http://gijgo.com/datepicker
  *
  * Copyright 2014, 2017 gijgo.com
