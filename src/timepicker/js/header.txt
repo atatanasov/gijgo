@@ -1,0 +1,7 @@
+﻿/*
+ * Gijgo TimePicker v1.7.2
+ * http://gijgo.com/timepicker
+ *
+ * Copyright 2014, 2017 gijgo.com
+ * Released under the MIT license
+ */

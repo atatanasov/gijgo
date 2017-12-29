@@ -168,6 +168,9 @@
     <Content Include="src\icons\strikethrough.svg" />
     <Content Include="src\icons\underlined.svg" />
     <Content Include="src\icons\undo.svg" />
+    <Content Include="src\timepicker\css\timepicker.base.css" />
+    <Content Include="src\timepicker\js\header.txt" />
+    <Content Include="src\timepicker\js\timepicker.base.js" />
     <Content Include="src\tree\css\tree.base.css" />
     <Content Include="src\tree\css\tree.dragAndDrop.css" />
     <Content Include="src\tree\js\header.txt" />

@@ -2410,7 +2410,7 @@ gj.grid.config = {
              * @alias column.type
              * @type text|checkbox|icon
              * @default 'text'
-             * @example Icon <!-- grid, bootstrap -->
+             * @example Bootstrap.3.Icon <!-- grid, bootstrap -->
              * <table id="grid"></table>
              * <script>
              *     $('#grid').grid({
@@ -2422,6 +2422,27 @@ gj.grid.config = {
              *             { field: 'PlaceOfBirth', title: 'Place of Birth' },
              *             {
              *               title: '', field: 'Info', width: 32, type: 'icon', icon: 'glyphicon-info-sign',
+             *               events: {
+             *                 'click': function (e) {
+             *                     alert('record with id=' + e.data.id + ' is clicked.');
+             *                 }
+             *               }
+             *             }
+             *         ]
+             *     });
+             * </script>
+             * @example Bootstrap.4.Icon <!-- grid, bootstrap4, fontawesome -->
+             * <table id="grid"></table>
+             * <script>
+             *     $('#grid').grid({
+             *         dataSource: '/Players/Get',
+             *         uiLibrary: 'bootstrap4',
+             *         columns: [
+             *             { field: 'ID', width: 42 },
+             *             { field: 'Name', title: 'Player' },
+             *             { field: 'PlaceOfBirth', title: 'Place of Birth' },
+             *             {
+             *               title: '', field: 'Info', width: 42, type: 'icon', icon: 'fa fa-pencil',
              *               events: {
              *                 'click': function (e) {
              *                     alert('record with id=' + e.data.id + ' is clicked.');
@@ -4010,9 +4031,8 @@ gj.grid.methods = {
             }
         } else if ('icon' === column.type) {
             if ('create' === mode) {
-                $displayEl.append($('<span/>')
-                    .addClass($grid.data().uiLibrary === 'bootstrap' ? 'glyphicon' : 'ui-icon')
-                    .addClass(column.icon).css({ cursor: 'pointer' }));
+                $displayEl.append($('<span/>').addClass(column.icon).css({ cursor: 'pointer' }));
+                $grid.data().uiLibrary === 'bootstrap' && $displayEl.children('span').addClass('glyphicon');
                 column.stopPropagation = true;
             }
         } else if (column.tmpl) {
