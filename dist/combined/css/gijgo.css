@@ -445,6 +445,14 @@ ul.gj-list-md li.disabled>[data-role="wrapper"]>[data-role="display"] {
 .gj-icon.first-page:before {
     content: "\e922";
 }
+
+.gj-icon.arrow-dropup:before {
+    content: "\e923";
+}
+
+.gj-icon.clock:before {
+    content: "\e924";
+}
 .gj-draggable {
     cursor: move;
 }
@@ -1380,6 +1388,7 @@ ul.gj-list-md li.disabled > [data-role="wrapper"] > [data-role="expander"] {
 .gj-tree-drag-el {
     padding: 0px;
     margin: 0px;
+    z-index:9999;
 }
 
 .gj-tree-drag-el li {
@@ -1779,7 +1788,6 @@ ul.gj-list-md li.disabled > [data-role="wrapper"] > [data-role="expander"] {
     text-align: center;
 }
 
-
 /* Material Design */
 .gj-datepicker-md {
     font-family: "Roboto","Helvetica","Arial",sans-serif;
@@ -1790,16 +1798,6 @@ ul.gj-list-md li.disabled > [data-role="wrapper"] > [data-role="expander"] {
     color: rgba(0,0,0,.87);
 }
 
-.gj-calendar-md {
-    font-family: "Roboto","Helvetica","Arial",sans-serif;
-    font-size: 16px;
-    font-weight: 400;
-    letter-spacing: .04em;
-    line-height: 1;
-    color: rgba(0,0,0,.87);
-    background-color: #FFFFFF;
-}
-
 .gj-datepicker-md [role="right-icon"] {
     cursor: pointer;
     position: absolute;
@@ -1808,6 +1806,13 @@ ul.gj-list-md li.disabled > [data-role="wrapper"] > [data-role="expander"] {
 }
 
 .gj-calendar-md {
+    font-family: "Roboto","Helvetica","Arial",sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    letter-spacing: .04em;
+    line-height: 1;
+    color: rgba(0,0,0,.87);
+    background-color: #FFFFFF;
     border: 1px solid #E0E0E0;
 }
 
@@ -1856,23 +1861,6 @@ ul.gj-list-md li.disabled > [data-role="wrapper"] > [data-role="expander"] {
 }
 
 /* Bootstrap */
-.gj-datepicker-bootstrap span[role="right-icon"].input-group-addon {
-    border-top-left-radius: 0px;
-    border-bottom-left-radius: 0px;
-    border-top-right-radius: 4px;
-    border-bottom-right-radius: 4px;
-    border-left: 0px;
-    position: relative;
-    width: 38px;
-}
-
-.gj-datepicker-bootstrap span[role="right-icon"].input-group-addon .gj-icon,
-.gj-datepicker-bootstrap span[role="right-icon"].input-group-addon .material-icons {
-    position: absolute;
-    top: 7px;
-    left: 7px;
-}
-
 .gj-datepicker-bootstrap input:focus {
     box-shadow: none;
 }
@@ -1926,4 +1914,176 @@ ul.gj-list-md li.disabled > [data-role="wrapper"] > [data-role="expander"] {
 .gj-calendar-bootstrap table tr td.other-month div,
 .gj-calendar-bootstrap table tr td.disabled div {
     color: #777;
+}
+
+/* Bootstrap 3 */
+.gj-datepicker-bootstrap span[role="right-icon"].input-group-addon {
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+    border-left: 0px;
+    position: relative;
+    width: 38px;
+}
+
+.gj-datepicker-bootstrap span[role="right-icon"].input-group-addon .gj-icon,
+.gj-datepicker-bootstrap span[role="right-icon"].input-group-addon .material-icons {
+    position: absolute;
+    top: 7px;
+    left: 7px;
+}
+
+/* Bootstrap 4 */
+.gj-datepicker-bootstrap span[role="right-icon"].input-group-append,
+.gj-datepicker-bootstrap span[role="right-icon"].input-group-prepend {
+    width: 38px;
+}
+
+.gj-datepicker-bootstrap span[role="right-icon"] .input-group-text {
+    padding: 7px 8px 8px 30px;
+    border-left: 0px;
+}
+
+.gj-datepicker-bootstrap span[role="right-icon"] .input-group-text .gj-icon,
+.gj-datepicker-bootstrap span[role="right-icon"] .input-group-text .material-icons {
+    position: absolute;
+    right: 8px;
+    top: 8px;
+}
+
+.gj-datepicker-bootstrap span[role="right-icon"] .input-group-text .fa {
+    position: absolute;
+    right: 10px;
+    top: 7px;
+    font-size: 21px;
+}
+.gj-timepicker {
+    position: relative;
+    display: table;
+}
+
+.gj-timepicker [role="input"] {
+    display: table-cell;
+    width: 100%;
+}
+
+.gj-timepicker [role="input"]::-ms-clear {
+    display: none;
+}
+
+.gj-timepicker [role="right-icon"] {
+    cursor: pointer;
+    display: table-cell;
+}
+
+.gj-clock {
+    position: absolute;
+    z-index: 4;
+}
+
+/* Material Design */
+.gj-timepicker-md {
+    font-family: "Roboto","Helvetica","Arial",sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    letter-spacing: .04em;
+    line-height: 1;
+    color: rgba(0,0,0,.87);
+}
+
+.gj-timepicker-md [role="right-icon"] {
+    cursor: pointer;
+    position: absolute;
+    right: 0px;
+    top: 0px;
+}
+
+.gj-clock-md {
+    font-family: "Roboto","Helvetica","Arial",sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    letter-spacing: .04em;
+    line-height: 1;
+    color: rgba(0,0,0,.87);
+    background-color: #FFFFFF;
+    border: 1px solid #E0E0E0;
+}
+
+.gj-clock-md [role="body"] {
+    padding: 10px;
+}
+
+.gj-clock-md [role="body"] [role="dial"] {
+    width: 256px;
+    color: rgba(0, 0, 0, 0.87);
+    height: 256px;
+    position: relative;
+    background: #eeeeee;
+    border-radius: 50%;
+}
+
+.c291 {
+    top: calc(50% - 16px);
+    left: calc(50% - 16px);
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+    position: absolute;
+    font-size: 14px;
+    text-align: center;
+    line-height: 32px;
+    user-select: none;
+    pointer-events: none;
+}
+
+.c291.selected {
+    color: rgba(255, 255, 255, 1);
+}
+
+.c292 {
+    color: rgba(0, 0, 0, 0.54);
+    font-size: 12px;
+}
+
+.gj-clock-md [role="body"] [role="arrow"] {
+    top: calc(50% - 1px);
+    left: 50%;
+    width: calc(50% - 20px);
+    height: 2px;
+    position: absolute;
+    pointer-events: none;
+    background-color: #2196f3;
+    transform-origin: left center;
+    transition: all 250ms cubic-bezier(0.4, 0, 0.2, 1);
+    width: calc(50% - 52px);
+}
+
+.c296 {
+    top: -3px;
+    left: -4px;
+    width: 8px;
+    height: 8px;
+    position: absolute;
+    border-radius: 50%;
+    background-color: #2196f3;
+}
+
+.c297 {
+    top: -15px;
+    right: -16px;
+    width: 0;
+    border: 16px solid #2196f3;
+    height: 0;
+    position: absolute;
+    box-sizing: content-box;
+    border-width: 16px;
+    border-radius: 50%;
+}
+
+.c298 {
+    width: 4px;
+    height: 4px;
+    background: rgba(255, 255, 255, 1);
+    border-width: 14px;
 }

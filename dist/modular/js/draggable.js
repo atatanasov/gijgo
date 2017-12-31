@@ -1,5 +1,5 @@
 /*
- * Gijgo Draggable v1.7.2
+ * Gijgo Draggable v1.7.3
  * http://gijgo.com/draggable
  *
  * Copyright 2014, 2017 gijgo.com

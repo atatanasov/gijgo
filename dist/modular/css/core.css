@@ -445,3 +445,11 @@ ul.gj-list-md li.disabled>[data-role="wrapper"]>[data-role="display"] {
 .gj-icon.first-page:before {
     content: "\e922";
 }
+
+.gj-icon.arrow-dropup:before {
+    content: "\e923";
+}
+
+.gj-icon.clock:before {
+    content: "\e924";
+}

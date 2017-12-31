@@ -1,5 +1,5 @@
 /*
- * Gijgo Tree v1.7.2
+ * Gijgo Tree v1.7.3
  * http://gijgo.com/tree
  *
  * Copyright 2014, 2017 gijgo.com

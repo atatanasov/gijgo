@@ -1,5 +1,5 @@
 /*
- * Gijgo DatePicker v1.7.2
+ * Gijgo DatePicker v1.7.3
  * http://gijgo.com/datepicker
  *
  * Copyright 2014, 2017 gijgo.com
@@ -86,7 +86,7 @@ gj.datepicker.config = {
 
     fontawesome: {
         icons: {
-            rightIcon: '<span class="input-group-addon"><i class="fa fa-calendar" aria-hidden="true"></i></span>',
+            rightIcon: '<i class="fa fa-calendar" aria-hidden="true"></i>',
             previousMonth: '<i class="fa fa-chevron-left" aria-hidden="true"></i>',
             nextMonth: '<i class="fa fa-chevron-right" aria-hidden="true"></i>'
         }
@@ -94,7 +94,7 @@ gj.datepicker.config = {
 
     glyphicons: {
         icons: {
-            rightIcon: '<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>',
+            rightIcon: '<span class="glyphicon glyphicon-calendar"></span>',
             previousMonth: '<span class="glyphicon glyphicon-chevron-left"></span>',
             nextMonth: '<span class="glyphicon glyphicon-chevron-right"></span>'
         }
@@ -110,9 +110,16 @@ gj.datepicker.methods = {
     },
 
     initialize: function ($datepicker) {
-        var data = $datepicker.data(), $calendar,
-            $wrapper = $datepicker.parent('div[role="wrapper"]'),
-            $rightIcon = data.uiLibrary !== 'materialdesign' && data.iconsLibrary === 'materialicons' ? $('<span class="input-group-addon">' + data.icons.rightIcon + '</span>') : $(data.icons.rightIcon);
+        var data = $datepicker.data(), $calendar, $rightIcon,
+            $wrapper = $datepicker.parent('div[role="wrapper"]');
+
+        if (data.uiLibrary === 'bootstrap') {
+            $rightIcon = $('<span class="input-group-addon">' + data.icons.rightIcon + '</span>');
+        } else if (data.uiLibrary === 'bootstrap4') {
+            $rightIcon = $('<span class="input-group-append"><span class="input-group-text">' + data.icons.rightIcon + '</span></span>');
+        } else {
+            $rightIcon = $(data.icons.rightIcon);
+        }
 
         $rightIcon.attr('role', 'right-icon');
         if ($wrapper.length === 0) {

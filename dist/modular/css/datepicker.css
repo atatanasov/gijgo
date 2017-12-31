@@ -31,7 +31,6 @@
     text-align: center;
 }
 
-
 /* Material Design */
 .gj-datepicker-md {
     font-family: "Roboto","Helvetica","Arial",sans-serif;
@@ -42,16 +41,6 @@
     color: rgba(0,0,0,.87);
 }
 
-.gj-calendar-md {
-    font-family: "Roboto","Helvetica","Arial",sans-serif;
-    font-size: 16px;
-    font-weight: 400;
-    letter-spacing: .04em;
-    line-height: 1;
-    color: rgba(0,0,0,.87);
-    background-color: #FFFFFF;
-}
-
 .gj-datepicker-md [role="right-icon"] {
     cursor: pointer;
     position: absolute;
@@ -60,6 +49,13 @@
 }
 
 .gj-calendar-md {
+    font-family: "Roboto","Helvetica","Arial",sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    letter-spacing: .04em;
+    line-height: 1;
+    color: rgba(0,0,0,.87);
+    background-color: #FFFFFF;
     border: 1px solid #E0E0E0;
 }
 
@@ -108,23 +104,6 @@
 }
 
 /* Bootstrap */
-.gj-datepicker-bootstrap span[role="right-icon"].input-group-addon {
-    border-top-left-radius: 0px;
-    border-bottom-left-radius: 0px;
-    border-top-right-radius: 4px;
-    border-bottom-right-radius: 4px;
-    border-left: 0px;
-    position: relative;
-    width: 38px;
-}
-
-.gj-datepicker-bootstrap span[role="right-icon"].input-group-addon .gj-icon,
-.gj-datepicker-bootstrap span[role="right-icon"].input-group-addon .material-icons {
-    position: absolute;
-    top: 7px;
-    left: 7px;
-}
-
 .gj-datepicker-bootstrap input:focus {
     box-shadow: none;
 }
@@ -178,4 +157,47 @@
 .gj-calendar-bootstrap table tr td.other-month div,
 .gj-calendar-bootstrap table tr td.disabled div {
     color: #777;
+}
+
+/* Bootstrap 3 */
+.gj-datepicker-bootstrap span[role="right-icon"].input-group-addon {
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+    border-left: 0px;
+    position: relative;
+    width: 38px;
+}
+
+.gj-datepicker-bootstrap span[role="right-icon"].input-group-addon .gj-icon,
+.gj-datepicker-bootstrap span[role="right-icon"].input-group-addon .material-icons {
+    position: absolute;
+    top: 7px;
+    left: 7px;
+}
+
+/* Bootstrap 4 */
+.gj-datepicker-bootstrap span[role="right-icon"].input-group-append,
+.gj-datepicker-bootstrap span[role="right-icon"].input-group-prepend {
+    width: 38px;
+}
+
+.gj-datepicker-bootstrap span[role="right-icon"] .input-group-text {
+    padding: 7px 8px 8px 30px;
+    border-left: 0px;
+}
+
+.gj-datepicker-bootstrap span[role="right-icon"] .input-group-text .gj-icon,
+.gj-datepicker-bootstrap span[role="right-icon"] .input-group-text .material-icons {
+    position: absolute;
+    right: 8px;
+    top: 8px;
+}
+
+.gj-datepicker-bootstrap span[role="right-icon"] .input-group-text .fa {
+    position: absolute;
+    right: 10px;
+    top: 7px;
+    font-size: 21px;
 }

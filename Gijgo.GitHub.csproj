@@ -73,6 +73,7 @@
     <Content Include="src\datepicker\js\messages\messages.bg-bg.js" />
     <Content Include="src\datepicker\js\messages\messages.de-de.js" />
     <Content Include="src\datepicker\js\messages\messages.pt-br.js" />
+    <Content Include="src\datepicker\js\messages\messages.ru-ru.js" />
     <Content Include="src\dialog\css\dialog.base.css" />
     <Content Include="src\dialog\js\dialog.base.events.js" />
     <Content Include="src\dialog\js\dialog.base.widget.js" />
@@ -139,12 +140,14 @@
     <Content Include="src\icons\arrow-back.svg" />
     <Content Include="src\icons\arrow-downward.svg" />
     <Content Include="src\icons\arrow-dropdown.svg" />
+    <Content Include="src\icons\arrow-dropup.svg" />
     <Content Include="src\icons\arrow-forward.svg" />
     <Content Include="src\icons\arrow-upward.svg" />
     <Content Include="src\icons\bold.svg" />
     <Content Include="src\icons\cancel.svg" />
     <Content Include="src\icons\check-circle.svg" />
     <Content Include="src\icons\clear.svg" />
+    <Content Include="src\icons\clock.svg" />
     <Content Include="src\icons\delete.svg" />
     <Content Include="src\icons\done.svg" />
     <Content Include="src\icons\event.svg" />

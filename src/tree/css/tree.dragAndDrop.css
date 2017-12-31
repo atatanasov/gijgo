@@ -25,6 +25,7 @@
 .gj-tree-drag-el {
     padding: 0px;
     margin: 0px;
+    z-index:9999;
 }
 
 .gj-tree-drag-el li {

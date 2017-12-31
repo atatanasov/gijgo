@@ -26,6 +26,7 @@
                     { src: ['src/editor/js/*.js'], dest: 'examples/editor/' },
                     { src: ['src/dropdown/js/*.js'], dest: 'examples/dropdown/' },
                     { src: ['src/datepicker/js/*.js'], dest: 'examples/datepicker/' },
+                    { src: ['src/timepicker/js/*.js'], dest: 'examples/timepicker/' },
                     { src: ['src/core.js'], dest: 'examples/core/' }
                 ]
             }
@@ -89,6 +90,12 @@
                     'dist/modular/css/datepicker.code.css': ['src/datepicker/css/datepicker.base.css']
                 }
             },
+            timepicker: {
+                files: {
+                    'dist/modular/js/timepicker.code.js': ['src/timepicker/js/timepicker.base.js'],
+                    'dist/modular/css/timepicker.code.css': ['src/timepicker/css/timepicker.base.css']
+                }
+            },
             final: {
                 files: {
                     'dist/modular/js/core.js': ['src/header.txt', 'src/core.js'],
@@ -109,9 +116,11 @@
                     'dist/modular/css/dropdown.css': ['dist/modular/css/dropdown.code.css'],
                     'dist/modular/js/datepicker.js': ['src/datepicker/js/header.txt', 'dist/modular/js/datepicker.code.js', 'src/datepicker/js/messages/messages.bg-bg.js', 'src/datepicker/js/messages/messages.fr-fr.js', 'src/datepicker/js/messages/messages.de-de.js', 'src/datepicker/js/messages/messages.pt-br.js', 'src/datepicker/js/messages/messages.ru-ru.js'],
                     'dist/modular/css/datepicker.css': ['dist/modular/css/datepicker.code.css'],
+                    'dist/modular/js/timepicker.js': ['src/timepicker/js/header.txt', 'dist/modular/js/timepicker.code.js'],
+                    'dist/modular/css/timepicker.css': ['dist/modular/css/timepicker.code.css'],
                     
-                    'dist/combined/js/gijgo.js': ['src/header.txt', 'src/core.js', 'dist/modular/js/dialog.code.js', 'dist/modular/js/draggable.code.js', 'dist/modular/js/droppable.code.js', 'dist/modular/js/grid.code.js', 'dist/modular/js/tree.code.js', 'dist/modular/js/checkbox.code.js', 'dist/modular/js/editor.code.js', 'dist/modular/js/dropdown.code.js', 'dist/modular/js/datepicker.code.js'],
-                    'dist/combined/css/gijgo.css': ['src/core.css', 'src/icons/icons.css', 'dist/modular/css/dialog.code.css', 'dist/modular/css/grid.code.css', 'dist/modular/css/tree.code.css', 'dist/modular/css/checkbox.code.css', 'dist/modular/css/editor.code.css', 'dist/modular/css/dropdown.code.css', 'dist/modular/css/datepicker.code.css'],
+                    'dist/combined/js/gijgo.js': ['src/header.txt', 'src/core.js', 'dist/modular/js/dialog.code.js', 'dist/modular/js/draggable.code.js', 'dist/modular/js/droppable.code.js', 'dist/modular/js/grid.code.js', 'dist/modular/js/tree.code.js', 'dist/modular/js/checkbox.code.js', 'dist/modular/js/editor.code.js', 'dist/modular/js/dropdown.code.js', 'dist/modular/js/datepicker.code.js', 'dist/modular/js/timepicker.code.js'],
+                    'dist/combined/css/gijgo.css': ['src/core.css', 'src/icons/icons.css', 'dist/modular/css/dialog.code.css', 'dist/modular/css/grid.code.css', 'dist/modular/css/tree.code.css', 'dist/modular/css/checkbox.code.css', 'dist/modular/css/editor.code.css', 'dist/modular/css/dropdown.code.css', 'dist/modular/css/datepicker.code.css', 'dist/modular/css/timepicker.code.css'],
                     'dist/combined/js/messages/messages.bg-bg.js': ['src/dialog/js/messages/messages.bg-bg.js', 'src/grid/js/messages/messages.bg-bg.js', 'src/editor/js/messages/messages.bg-bg.js', 'src/datepicker/js/messages/messages.bg-bg.js'],
                     'dist/combined/js/messages/messages.fr-fr.js': ['src/dialog/js/messages/messages.fr-fr.js', 'src/grid/js/messages/messages.fr-fr.js', 'src/editor/js/messages/messages.fr-fr.js', 'src/datepicker/js/messages/messages.fr-fr.js'],
                     'dist/combined/js/messages/messages.de-de.js': ['src/dialog/js/messages/messages.de-de.js', 'src/grid/js/messages/messages.de-de.js', 'src/editor/js/messages/messages.de-de.js', 'src/datepicker/js/messages/messages.de-de.js'],
@@ -176,7 +185,8 @@
                     'dist/modular/js/grid.min.js': ['dist/modular/js/grid.js'],
                     'dist/modular/js/tree.min.js': ['dist/modular/js/tree.js'],
                     'dist/modular/js/dropdown.min.js': ['dist/modular/js/dropdown.js'],
-                    'dist/modular/js/datepicker.min.js': ['dist/modular/js/datepicker.js']
+                    'dist/modular/js/datepicker.min.js': ['dist/modular/js/datepicker.js'],
+                    'dist/modular/js/timepicker.min.js': ['dist/modular/js/timepicker.js']
                 }
             }
         },
@@ -191,7 +201,8 @@
                     { expand: true, cwd: 'dist/modular/css', src: ['tree.css'], dest: 'dist/modular/css', ext: '.min.css' },
                     { expand: true, cwd: 'dist/modular/css', src: ['grid.css'], dest: 'dist/modular/css', ext: '.min.css' },
                     { expand: true, cwd: 'dist/modular/css', src: ['dropdown.css'], dest: 'dist/modular/css', ext: '.min.css' },
-                    { expand: true, cwd: 'dist/modular/css', src: ['datepicker.css'], dest: 'dist/modular/css', ext: '.min.css' }
+                    { expand: true, cwd: 'dist/modular/css', src: ['datepicker.css'], dest: 'dist/modular/css', ext: '.min.css' },
+                    { expand: true, cwd: 'dist/modular/css', src: ['timepicker.css'], dest: 'dist/modular/css', ext: '.min.css' }
                 ]
             }
         },
@@ -342,7 +353,7 @@ var writer = {
                         }
                         break;
                     case 'bootstrap4':
-                        result += '  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">\r\n';
+                        result += '  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">\r\n';
                         break;
                     case 'fontawesome':
                         result += '  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">\r\n';
@@ -370,6 +381,9 @@ var writer = {
                         break;
                     case 'datepicker':
                         result += '  <link href="../../dist/modular/css/datepicker.css" rel="stylesheet" type="text/css">\r\n';
+                        break;
+                    case 'timepicker':
+                        result += '  <link href="../../dist/modular/css/timepicker.css" rel="stylesheet" type="text/css">\r\n';
                         break;
                 }
             }
@@ -402,6 +416,9 @@ var writer = {
                         break;
                     case 'datepicker':
                         result += '  <script src="../../dist/modular/js/datepicker.js"></script>\r\n';
+                        break;
+                    case 'timepicker':
+                        result += '  <script src="../../dist/modular/js/timepicker.js"></script>\r\n';
                         break;
                 }
             }

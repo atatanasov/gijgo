@@ -22,10 +22,10 @@ gj.timepicker.config = {
          * @example JS.Config <!-- timepicker -->
          * <input id="timepicker" />
          * <script>
-         *    $('#timepicker').timepicker({ width: 312 });
+         *    $('#timepicker').timepicker({ width: 280 });
          * </script>
          * @example HTML.Config <!-- timepicker -->
-         * <input id="timepicker" width="312" />
+         * <input id="timepicker" width="280" />
          * <script>
          *    $('#timepicker').timepicker();
          * </script>
@@ -135,10 +135,14 @@ gj.timepicker.config = {
          */
         locale: 'en-us',
 
+        icons: {
+            rightIcon: '<i class="gj-icon clock" />'
+        },
+
         style: {
             wrapper: 'gj-timepicker gj-timepicker-md gj-unselectable',
             input: 'gj-textbox-md',
-            calendar: 'gj-calendar gj-calendar-md'
+            clock: 'gj-clock gj-clock-md'
         }
     },
 
@@ -188,11 +192,11 @@ gj.timepicker.methods = {
 
         $timepicker.val(data.value).addClass(data.style.input).attr('role', 'input');
 
-        data.fontSize && $timepicker.css('font-size', data.fontSize);
+        //data.fontSize && $timepicker.css('font-size', data.fontSize);
 
         $rightIcon.on('click', function (e) {
-            var $calendar = $('body').children('[role="calendar"][guid="' + $timepicker.attr('data-guid') + '"]');
-            if ($calendar.is(':visible')) {
+            var $clock = $('body').children('[role="clock"][guid="' + $timepicker.attr('data-guid') + '"]');
+            if ($clock.is(':visible')) {
                 gj.timepicker.methods.hide($timepicker);
             } else {
                 gj.timepicker.methods.show($timepicker);
@@ -200,198 +204,122 @@ gj.timepicker.methods = {
         });
 
         $timepicker.on('blur', function () {
+            console.log('blur');
             $timepicker.timeout = setTimeout(function () {
-                gj.timepicker.methods.hide($timepicker);
+                if (!$timepicker.mouseMove) {
+                    gj.timepicker.methods.hide($timepicker);
+                    console.log('blur-aftertimeout');
+                }
             }, 500);
         });
 
         $wrapper.append($rightIcon);
 
-        $calendar = gj.timepicker.methods.createCalendar($timepicker);
+        $calendar = gj.timepicker.methods.createClock($timepicker);
 
         if (data.keyboardNavigation) {
             $timepicker.on('keydown', gj.timepicker.methods.createKeyDownHandler($timepicker, $calendar));
         }
     },
 
-    createCalendar: function ($timepicker) {
+    createClock: function ($timepicker) {
         var date, data = $timepicker.data(),
-            $calendar = $('<div role="calendar" />').addClass(data.style.calendar).attr('guid', $timepicker.attr('data-guid')),
-            $table = $('<table/>'),
-            $thead = $('<thead/>');
-
-        data.fontSize && $calendar.css('font-size', data.fontSize);
+            $clock = $('<div role="clock" />').addClass(data.style.clock).attr('guid', $timepicker.attr('data-guid')),
+            $body = $('<div role="body" />');
+            $dial = $('<div role="dial"></div>');
+        
 
         date = gj.core.parseDate(data.value, data.format, data.locale);
         if (!date || isNaN(date.getTime())) {
             date = new Date();
         } else {
-            $timepicker.attr('day', date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate());
+            $timepicker.attr('hours', date.getHours());
         }
+        
+        $dial.on('mousedown', gj.timepicker.methods.mouseDownHandler($timepicker, $clock));
+        $dial.on('mousemove', gj.timepicker.methods.mouseMoveHandler($timepicker, $clock));
+        $dial.on('mouseup', gj.timepicker.methods.mouseUpHandler($timepicker));
 
-        $timepicker.attr('month', date.getMonth());
-        $timepicker.attr('year', date.getFullYear());
+        $body.append($dial);
+        $clock.append($body);
+        $clock.hide();
 
-        $row = $('<tr role="month-manager" />');
-        $row.append($('<th><div>' + data.icons.previousMonth + '</div></th>').on('click', gj.timepicker.methods.prevMonth($timepicker)));
-        $row.append('<th colspan="' + (data.calendarWeeks ? 6 : 5) + '"><div role="month"></div></th>');
-        $row.append($('<th><div>' + data.icons.nextMonth + '</div></th>').on('click', gj.timepicker.methods.nextMonth($timepicker)));
-        $thead.append($row);
-
-        $row = $('<tr role="week-days" />');
-        if (data.calendarWeeks) {
-            $row.append('<th><div>&nbsp;</div></th>');
-        }
-        for (i = data.weekStartDay; i < gj.timepicker.messages[data.locale].weekDays.length; i++) {
-            $row.append('<th><div>' + gj.timepicker.messages[data.locale].weekDays[i] + '</div></th>');
-        }
-        for (i = 0; i < data.weekStartDay; i++) {
-            $row.append('<th><div>' + gj.timepicker.messages[data.locale].weekDays[i] + '</div></th>');
-        }
-        $thead.append($row);
-
-        $table.append($thead);
-        $table.append('<tbody/>');
-        $calendar.append($table);
-        $calendar.hide();
-
-        $('body').append($calendar);
-        return $calendar;
+        $('body').append($clock);
+        return $clock;
     },
 
-    renderCalendar: function ($timepicker) {
-        var weekDay, selectedDay, day, month, year, daysInMonth, total, firstDayPosition, i, now, prevMonth, nextMonth, $cell, $day, date,
-            data = $timepicker.data(),
-            $calendar = $('body').children('[role="calendar"][guid="' + $timepicker.attr('data-guid') + '"]'),
-            $table = $calendar.children('table'),
-            $tbody = $table.children('tbody');
+    mouseDownHandler: function ($timepicker, $clock) {
+        return function (e) {
+            var $arrow = $clock.find('[role="arrow"]');
+            $timepicker.mouseMove = true;
+            $arrow.show();
+            console.log('mousedown');
+        }
+    },
+
+    mouseMoveHandler: function ($timepicker, $clock) {
+        return function (e) {
+            var x, y, $dial, $arrow, offset, height;
+            if ($timepicker.mouseMove) {
+                $dial = $clock.find('[role="dial"]');
+                $arrow = $clock.find('[role="arrow"]');
+                offset = $dial.offset();
+                height = $dial.height();
+                x = $timepicker.mouseX(e) - offset.left;
+                y = $timepicker.mouseY(e) - offset.top;
+                //Math.round(((y / height) * 100) / 1.8)
+                console.log('mousemove x=' + x + ' y=' + (((y / height) * 180) - 90));
+
+                $arrow.css('transform', 'rotate(' + (((y / height) * 180) - 90) + 'deg);');
+            }
+        }
+    },
+
+    mouseUpHandler: function ($timepicker) {
+        return function (e) {
+            $timepicker.mouseMove = false;
+            $timepicker.focus();
+            clearTimeout($timepicker.timeout);
+            console.log('mouseup');
+        }
+    },
+
+    renderHours: function ($timepicker, $clock) {
+        var $dial = $clock.find('[role="dial"]');
 
         clearTimeout($timepicker.timeout);
-        if ($timepicker.attr('day')) {
-            selectedDay = $timepicker.attr('day').split('-');
-            selectedDay = new Date(selectedDay[0], selectedDay[1], selectedDay[2]);
-        } else {
-            selectedDay = new Date(undefined);
-        }
-        month = parseInt($timepicker.attr('month'), 10);
-        year = parseInt($timepicker.attr('year'), 10);
+        $dial.empty();
 
-        $table.find('thead [role="month"]').text(gj.core.messages[data.locale].monthNames[month] + ' ' + year);
+        $dial.append('<div role="arrow" style="transform: rotate(60deg); display: none;"><div class="c296"></div><div class="c297"></div></div>');
 
-        daysInMonth = new Array(31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31);
-        if (year % 4 == 0 && year != 1900) {
-            daysInMonth[1] = 29;
-        }
-        total = daysInMonth[month];
-
-        firstDayPosition = (new Date(year, month, 1).getDay() + 7 - data.weekStartDay) % 7;
-
-        $tbody.empty();
-
-        weekDay = 0;
-        $row = $('<tr />');
-        prevMonth = gj.timepicker.methods.getPrevMonth(month, year);
-        for (i = 1; i <= firstDayPosition; i++) {
-            day = (daysInMonth[prevMonth.month] - firstDayPosition + i);
-            date = new Date(prevMonth.year, prevMonth.month, day);
-            if (data.calendarWeeks && i === 1) {
-                $row.append('<td><div>' + gj.timepicker.methods.getWeekNumber(date) + '</div></td>');
-            }
-            if (prevMonth.year === selectedDay.getFullYear() && prevMonth.month === selectedDay.getMonth() && day === selectedDay.getDate()) {
-                $cell = $('<td class="selected" />');
-            } else {
-                $cell = $('<td class="other-month" />');
-            }
-            if (data.showOtherMonths) {
-                $day = $('<div>' + day + '</div>');
-                $cell.append($day);
-                if (data.selectOtherMonths && gj.timepicker.methods.isSelectable(data, date)) {
-                    $cell.addClass('gj-cursor-pointer');
-                    $day.on('click', gj.timepicker.methods.select($timepicker, $calendar, date));
-                } else {
-                    $cell.addClass('disabled');
-                }
-            }
-            $row.append($cell);
-            weekDay++;
-        }
-        if (i > 1) {
-            $tbody.append($row);
-        }
-
-        now = new Date();
-        for (i = 1; i <= total; i++) {
-            date = new Date(year, month, i);
-            if (weekDay == 0) {
-                $row = $('<tr>');
-                if (data.calendarWeeks) {
-                    $row.append('<td><div>' + gj.timepicker.methods.getWeekNumber(date) + '</div></td>');
-                }
-            }
-            $cell = $('<td day="' + i + '" />');
-            if (year === selectedDay.getFullYear() && month === selectedDay.getMonth() && i === selectedDay.getDate()) {
-                $cell.addClass('selected');
-            } else if (year === now.getFullYear() && month === now.getMonth() && i === now.getDate()) {
-                $cell.addClass('today');
-            } else {
-                $cell.addClass('current-month');
-            }
-            $day = $('<div>' + i + '</div>');
-            if (gj.timepicker.methods.isSelectable(data, date)) {
-                $cell.addClass('gj-cursor-pointer');
-                $day.on('click', gj.timepicker.methods.select($timepicker, $calendar, date));
-            } else {
-                $cell.addClass('disabled');
-            }
-            $cell.append($day);
-            $row.append($cell);
-            weekDay++;
-            if (weekDay == 7) {
-                $tbody.append($row);
-                weekDay = 0;
-            }
-        }
-
-        nextMonth = gj.timepicker.methods.getNextMonth(month, year);
-        for (i = 1; weekDay != 0; i++) {
-            date = new Date(nextMonth.year, nextMonth.month, i);
-            if (nextMonth.year === selectedDay.getFullYear() && nextMonth.month === selectedDay.getMonth() && i === selectedDay.getDate()) {
-                $cell = $('<td class="selected" />');
-            } else {
-                $cell = $('<td class="other-month" />');
-            }
-            if (data.showOtherMonths) {
-                $day = $('<div>' + i + '</div>');
-                $cell.append($day);
-                if (data.selectOtherMonths && gj.timepicker.methods.isSelectable(data, date)) {
-                    $cell.addClass('gj-cursor-pointer');
-                    $day.on('click', gj.timepicker.methods.select($timepicker, $calendar, date));
-                } else {
-                    $cell.addClass('disabled');
-                }
-            }
-            $row.append($cell);
-            weekDay++;
-            if (weekDay == 7) {
-                $tbody.append($row);
-                weekDay = 0;
-            }
-        }
+        $dial.append('<span class="c291" style="transform: translate(54px, -93.5307px);">1</span>');
+        $dial.append('<span class="c291" style="transform: translate(93.5307px, -54px);">2</span>');
+        $dial.append('<span class="c291" style="transform: translate(108px, 0px);">3</span>');
+        $dial.append('<span class="c291" style="transform: translate(93.5307px, 54px);">4</span>');
+        $dial.append('<span class="c291" style="transform: translate(54px, 93.5307px);">5</span>');
+        $dial.append('<span class="c291" style="transform: translate(6.61309e-15px, 108px);">6</span>');
+        $dial.append('<span class="c291" style="transform: translate(-54px, 93.5307px);">7</span>');
+        $dial.append('<span class="c291" style="transform: translate(-93.5307px, 54px);">8</span>');
+        $dial.append('<span class="c291" style="transform: translate(-108px, 1.32262e-14px);">9</span>');
+        $dial.append('<span class="c291" style="transform: translate(-93.5307px, -54px);">10</span>');
+        $dial.append('<span class="c291" style="transform: translate(-54px, -93.5307px);">11</span>');
+        $dial.append('<span class="c291" style="transform: translate(-1.98393e-14px, -108px);">12</span>');
+        $dial.append('<span class="c291 c292" style="transform: translate(38px, -65.8179px);">13</span>');
+        $dial.append('<span class="c291 c292" style="transform: translate(65.8179px, -38px);">14</span>');
+        $dial.append('<span class="c291 c292" style="transform: translate(76px, 0px);">15</span>');
+        $dial.append('<span class="c291 c292" style="transform: translate(65.8179px, 38px);">16</span>');
+        $dial.append('<span class="c291 c292 selected" style="transform: translate(38px, 65.8179px);">17</span>');
+        $dial.append('<span class="c291 c292" style="transform: translate(4.65366e-15px, 76px);">18</span>');
+        $dial.append('<span class="c291 c292" style="transform: translate(-38px, 65.8179px);">19</span>');
+        $dial.append('<span class="c291 c292" style="transform: translate(-65.8179px, 38px);">20</span>');
+        $dial.append('<span class="c291 c292" style="transform: translate(-76px, 9.30732e-15px);">21</span>');
+        $dial.append('<span class="c291 c292" style="transform: translate(-65.8179px, -38px);">22</span>');
+        $dial.append('<span class="c291 c292" style="transform: translate(-38px, -65.8179px);">23</span>');
+        $dial.append('<span class="c291 c292" style="transform: translate(-1.3961e-14px, -76px);">00</span>');
     },
 
     select: function ($timepicker, $calendar, date) {
         return function (e) {
-            var value,
-                month = date.getMonth(),
-                year = date.getFullYear(),
-                data = $timepicker.data();
-            value = gj.core.formatDate(date, data.format, data.locale);
-            $timepicker.val(value);
-            gj.timepicker.events.change($timepicker);
-            $timepicker.attr('day', year + '-' + month + '-' + date.getDate());
-            $timepicker.attr('month', month);
-            $timepicker.attr('year', year);
-            gj.timepicker.methods.hide($timepicker);
             return $timepicker;
         };
     },
@@ -399,30 +327,30 @@ gj.timepicker.methods = {
     show: function ($timepicker) {
         var data = $timepicker.data(),
             offset = $timepicker.offset(),
-            $calendar = $('body').children('[role="calendar"][guid="' + $timepicker.attr('data-guid') + '"]');
+            $clock = $('body').children('[role="clock"][guid="' + $timepicker.attr('data-guid') + '"]');
 
-        gj.timepicker.methods.renderCalendar($timepicker);
-        $calendar.css('left', offset.left).css('top', offset.top + $timepicker.outerHeight(true) + 3);
-        $calendar.show();
+        gj.timepicker.methods.renderHours($timepicker, $clock);
+        $clock.css('left', offset.left).css('top', offset.top + $timepicker.outerHeight(true) + 3);
+        $clock.show();
         $timepicker.focus();
         gj.timepicker.events.show($timepicker);
     },
 
     hide: function ($timepicker) {
-        var $calendar = $('body').children('[role="calendar"][guid="' + $timepicker.attr('data-guid') + '"]');
-        $calendar.hide();
+        var $clock = $('body').children('[role="clock"][guid="' + $timepicker.attr('data-guid') + '"]');
+        $clock.hide();
         gj.timepicker.events.hide($timepicker);
     },
 
     value: function ($timepicker, value) {
-        var $calendar, date, data = $timepicker.data();
+        var $clock, time, data = $timepicker.data();
         if (typeof (value) === "undefined") {
             return $timepicker.val();
         } else {
-            date = gj.core.parseDate(value, data.format, data.locale);
-            if (date) {
-                $calendar = $('body').children('[role="calendar"][guid="' + $timepicker.attr('data-guid') + '"]');
-                gj.timepicker.methods.select($timepicker, $calendar, date)();
+            time = gj.core.parseDate(value, data.format, data.locale);
+            if (time) {
+                $clock = $('body').children('[role="clock"][guid="' + $timepicker.attr('data-guid') + '"]');
+                gj.timepicker.methods.select($timepicker, $clock, time)();
             } else {
                 $timepicker.val('');
             }
@@ -435,7 +363,7 @@ gj.timepicker.methods = {
             $parent = $timepicker.parent();
         if (data) {
             $timepicker.off();
-            $('body').children('[role="calendar"][guid="' + $timepicker.attr('data-guid') + '"]').remove();
+            $('body').children('[role="clock"][guid="' + $timepicker.attr('data-guid') + '"]').remove();
             $timepicker.removeData();
             $timepicker.removeAttr('data-type').removeAttr('data-guid').removeAttr('data-timepicker');
             $timepicker.removeClass();
