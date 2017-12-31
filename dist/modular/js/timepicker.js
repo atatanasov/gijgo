@@ -153,18 +153,54 @@ gj.timepicker.methods = {
 
     mouseMoveHandler: function ($timepicker, $clock) {
         return function (e) {
-            var x, y, $dial, $arrow, offset, height;
+            var mouseX, mouseY, $dial, $arrow, rect, value;
             if ($timepicker.mouseMove) {
                 $dial = $clock.find('[role="dial"]');
                 $arrow = $clock.find('[role="arrow"]');
-                offset = $dial.offset();
-                height = $dial.height();
-                x = $timepicker.mouseX(e) - offset.left;
-                y = $timepicker.mouseY(e) - offset.top;
-                //Math.round(((y / height) * 100) / 1.8)
-                console.log('mousemove x=' + x + ' y=' + (((y / height) * 180) - 90));
+                mouseX = $timepicker.mouseX(e);
+                mouseY = $timepicker.mouseY(e);
 
-                $arrow.css('transform', 'rotate(' + (((y / height) * 180) - 90) + 'deg);');
+                rect = e.target.getBoundingClientRect();
+                value = gj.timepicker.methods.getPointerValue(mouseX - rect.left, mouseY - rect.top, '24h');
+
+                if (value > 0 && value < 13) {
+                    $arrow.css('width', 'calc(50% - 20px)');
+                } else {
+                    $arrow.css('width', 'calc(50% - 52px)');
+                }
+
+                $arrow.css('transform', 'rotate(' + ((value * 30) - 90).toString() + 'deg)');
+            }
+        }
+    },
+
+    getPointerValue: function (x, y, mode) {
+        var value, radius, size = 256,
+            angle = Math.atan2(size / 2 - x, size / 2 - y) / Math.PI * 180;
+
+        if (angle < 0) {
+            angle = 360 + angle;
+        }
+
+        switch (mode) {
+            case '12h': {
+                value = 12 - Math.round(angle * 12 / 360);
+                return value === 0 ? 12 : value;
+            }
+            case '24h': {
+                radius = Math.sqrt(Math.pow(size / 2 - x, 2) + Math.pow(size / 2 - y, 2));
+                value = 12 - Math.round(angle * 12 / 360);
+                if (value === 0) {
+                    value = 12;
+                }
+                if (radius < size / 2 - 32) {
+                    value = value === 12 ? 0 : value + 12;
+                }
+                return value;
+            }
+            case 'minutes': {
+                value = Math.round(60 - 60 * angle / 360);
+                return value === 60 ? 0 : value;
             }
         }
     },
