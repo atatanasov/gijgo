@@ -21,7 +21,7 @@ gj.timepicker.config = {
 
         /** The width of the timepicker.         */        width: undefined,
 
-        /** Specifies the format, which is used to format the value of the DatePicker displayed in the input.         */        format: 'MM:HH',
+        /** Specifies the format, which is used to format the value of the DatePicker displayed in the input.         */        format: 'HH:MM',
 
         /** The name of the UI library that is going to be in use.         */        uiLibrary: 'materialdesign',
 
@@ -98,11 +98,9 @@ gj.timepicker.methods = {
         });
 
         $timepicker.on('blur', function () {
-            console.log('blur');
             $timepicker.timeout = setTimeout(function () {
                 if (!$timepicker.mouseMove) {
                     gj.timepicker.methods.hide($timepicker);
-                    console.log('blur-aftertimeout');
                 }
             }, 500);
         });
@@ -132,7 +130,7 @@ gj.timepicker.methods = {
         
         $dial.on('mousedown', gj.timepicker.methods.mouseDownHandler($timepicker, $clock));
         $dial.on('mousemove', gj.timepicker.methods.mouseMoveHandler($timepicker, $clock));
-        $dial.on('mouseup', gj.timepicker.methods.mouseUpHandler($timepicker));
+        $dial.on('mouseup', gj.timepicker.methods.mouseUpHandler($timepicker, $clock));
 
         $body.append($dial);
         $clock.append($body);
@@ -140,38 +138,6 @@ gj.timepicker.methods = {
 
         $('body').append($clock);
         return $clock;
-    },
-
-    mouseDownHandler: function ($timepicker, $clock) {
-        return function (e) {
-            var $arrow = $clock.find('[role="arrow"]');
-            $timepicker.mouseMove = true;
-            $arrow.show();
-            console.log('mousedown');
-        }
-    },
-
-    mouseMoveHandler: function ($timepicker, $clock) {
-        return function (e) {
-            var mouseX, mouseY, $dial, $arrow, rect, value;
-            if ($timepicker.mouseMove) {
-                $dial = $clock.find('[role="dial"]');
-                $arrow = $clock.find('[role="arrow"]');
-                mouseX = $timepicker.mouseX(e);
-                mouseY = $timepicker.mouseY(e);
-
-                rect = e.target.getBoundingClientRect();
-                value = gj.timepicker.methods.getPointerValue(mouseX - rect.left, mouseY - rect.top, '24h');
-
-                if (value > 0 && value < 13) {
-                    $arrow.css('width', 'calc(50% - 20px)');
-                } else {
-                    $arrow.css('width', 'calc(50% - 52px)');
-                }
-
-                $arrow.css('transform', 'rotate(' + ((value * 30) - 90).toString() + 'deg)');
-            }
-        }
     },
 
     getPointerValue: function (x, y, mode) {
@@ -205,12 +171,70 @@ gj.timepicker.methods = {
         }
     },
 
-    mouseUpHandler: function ($timepicker) {
+    select: function (e, $timepicker, $clock) {
+        var mouseX, mouseY, $dial, $arrow, rect, value;
+        $dial = $clock.find('[role="dial"]');
+        $arrow = $clock.find('[role="arrow"]');
+        mouseX = $timepicker.mouseX(e);
+        mouseY = $timepicker.mouseY(e);
+
+        rect = e.target.getBoundingClientRect();
+        value = gj.timepicker.methods.getPointerValue(mouseX - rect.left, mouseY - rect.top, $timepicker.dialMode == 'hours' ? '24h' : 'minutes');
+
+        if ($timepicker.dialMode == 'hours' && (value == 0 || value > 12)) {
+            $arrow.css('width', 'calc(50% - 52px)');
+        } else {
+            $arrow.css('width', 'calc(50% - 20px)');
+        }
+
+        if ($timepicker.dialMode == 'hours') {
+            $arrow.css('transform', 'rotate(' + ((value * 30) - 90).toString() + 'deg)');
+        } else {
+            $arrow.css('transform', 'rotate(' + ((value * 6) - 90).toString() + 'deg)');
+        }
+        $arrow.show();
+
+        if ($timepicker.dialMode == 'hours') {
+            $timepicker.attr('hour', value);
+            setTimeout(function () {
+                gj.timepicker.methods.renderMinutes($timepicker, $clock);
+            }, 1000);
+        } else if ($timepicker.dialMode == 'minutes') {
+            $timepicker.attr('minute', value);
+        }
+
+        gj.timepicker.methods.update($timepicker);
+    },
+
+    update: function ($timepicker) {
+        var data = $timepicker.data(),
+            date = new Date(0, 0, 0, $timepicker.attr('hour') || 0, $timepicker.attr('minute') || 0),
+            value = gj.core.formatDate(date, data.format, data.locale);
+
+        $timepicker.val(value);
+        gj.timepicker.events.change($timepicker);
+    },
+
+    mouseDownHandler: function ($timepicker, $clock) {
         return function (e) {
+            $timepicker.mouseMove = true;
+        }
+    },
+
+    mouseMoveHandler: function ($timepicker, $clock) {
+        return function (e) {
+            if ($timepicker.mouseMove) {
+                gj.timepicker.methods.select(e, $timepicker, $clock);
+            }
+        }
+    },
+
+    mouseUpHandler: function ($timepicker, $clock) {
+        return function (e) {
+            gj.timepicker.methods.select(e, $timepicker, $clock);
             $timepicker.mouseMove = false;
             $timepicker.focus();
             clearTimeout($timepicker.timeout);
-            console.log('mouseup');
         }
     },
 
@@ -220,38 +244,58 @@ gj.timepicker.methods = {
         clearTimeout($timepicker.timeout);
         $dial.empty();
 
-        $dial.append('<div role="arrow" style="transform: rotate(60deg); display: none;"><div class="c296"></div><div class="c297"></div></div>');
+        $dial.append('<div role="arrow" style="transform: rotate(-90deg); display: none;"><div class="c296"></div><div class="c297"></div></div>');
 
-        $dial.append('<span class="c291" style="transform: translate(54px, -93.5307px);">1</span>');
-        $dial.append('<span class="c291" style="transform: translate(93.5307px, -54px);">2</span>');
-        $dial.append('<span class="c291" style="transform: translate(108px, 0px);">3</span>');
-        $dial.append('<span class="c291" style="transform: translate(93.5307px, 54px);">4</span>');
-        $dial.append('<span class="c291" style="transform: translate(54px, 93.5307px);">5</span>');
-        $dial.append('<span class="c291" style="transform: translate(6.61309e-15px, 108px);">6</span>');
-        $dial.append('<span class="c291" style="transform: translate(-54px, 93.5307px);">7</span>');
-        $dial.append('<span class="c291" style="transform: translate(-93.5307px, 54px);">8</span>');
-        $dial.append('<span class="c291" style="transform: translate(-108px, 1.32262e-14px);">9</span>');
-        $dial.append('<span class="c291" style="transform: translate(-93.5307px, -54px);">10</span>');
-        $dial.append('<span class="c291" style="transform: translate(-54px, -93.5307px);">11</span>');
-        $dial.append('<span class="c291" style="transform: translate(-1.98393e-14px, -108px);">12</span>');
-        $dial.append('<span class="c291 c292" style="transform: translate(38px, -65.8179px);">13</span>');
-        $dial.append('<span class="c291 c292" style="transform: translate(65.8179px, -38px);">14</span>');
-        $dial.append('<span class="c291 c292" style="transform: translate(76px, 0px);">15</span>');
-        $dial.append('<span class="c291 c292" style="transform: translate(65.8179px, 38px);">16</span>');
-        $dial.append('<span class="c291 c292 selected" style="transform: translate(38px, 65.8179px);">17</span>');
-        $dial.append('<span class="c291 c292" style="transform: translate(4.65366e-15px, 76px);">18</span>');
-        $dial.append('<span class="c291 c292" style="transform: translate(-38px, 65.8179px);">19</span>');
-        $dial.append('<span class="c291 c292" style="transform: translate(-65.8179px, 38px);">20</span>');
-        $dial.append('<span class="c291 c292" style="transform: translate(-76px, 9.30732e-15px);">21</span>');
-        $dial.append('<span class="c291 c292" style="transform: translate(-65.8179px, -38px);">22</span>');
-        $dial.append('<span class="c291 c292" style="transform: translate(-38px, -65.8179px);">23</span>');
-        $dial.append('<span class="c291 c292" style="transform: translate(-1.3961e-14px, -76px);">00</span>');
+        $dial.append('<span role="hour" style="transform: translate(54px, -93.5307px);">1</span>');
+        $dial.append('<span role="hour" style="transform: translate(93.5307px, -54px);">2</span>');
+        $dial.append('<span role="hour" style="transform: translate(108px, 0px);">3</span>');
+        $dial.append('<span role="hour" style="transform: translate(93.5307px, 54px);">4</span>');
+        $dial.append('<span role="hour" style="transform: translate(54px, 93.5307px);">5</span>');
+        $dial.append('<span role="hour" style="transform: translate(6.61309e-15px, 108px);">6</span>');
+        $dial.append('<span role="hour" style="transform: translate(-54px, 93.5307px);">7</span>');
+        $dial.append('<span role="hour" style="transform: translate(-93.5307px, 54px);">8</span>');
+        $dial.append('<span role="hour" style="transform: translate(-108px, 1.32262e-14px);">9</span>');
+        $dial.append('<span role="hour" style="transform: translate(-93.5307px, -54px);">10</span>');
+        $dial.append('<span role="hour" style="transform: translate(-54px, -93.5307px);">11</span>');
+        $dial.append('<span role="hour" style="transform: translate(-1.98393e-14px, -108px);">12</span>');
+        $dial.append('<span role="hour" style="transform: translate(38px, -65.8179px);">13</span>');
+        $dial.append('<span role="hour" style="transform: translate(65.8179px, -38px);">14</span>');
+        $dial.append('<span role="hour" style="transform: translate(76px, 0px);">15</span>');
+        $dial.append('<span role="hour" style="transform: translate(65.8179px, 38px);">16</span>');
+        $dial.append('<span role="hour" style="transform: translate(38px, 65.8179px);">17</span>');
+        $dial.append('<span role="hour" style="transform: translate(4.65366e-15px, 76px);">18</span>');
+        $dial.append('<span role="hour" style="transform: translate(-38px, 65.8179px);">19</span>');
+        $dial.append('<span role="hour" style="transform: translate(-65.8179px, 38px);">20</span>');
+        $dial.append('<span role="hour" style="transform: translate(-76px, 9.30732e-15px);">21</span>');
+        $dial.append('<span role="hour" style="transform: translate(-65.8179px, -38px);">22</span>');
+        $dial.append('<span role="hour" style="transform: translate(-38px, -65.8179px);">23</span>');
+        $dial.append('<span role="hour" style="transform: translate(-1.3961e-14px, -76px);">00</span>');
+
+        $timepicker.dialMode = 'hours';
     },
 
-    select: function ($timepicker, $calendar, date) {
-        return function (e) {
-            return $timepicker;
-        };
+    renderMinutes: function ($timepicker, $clock) {
+        var $dial = $clock.find('[role="dial"]');
+
+        clearTimeout($timepicker.timeout);
+        $dial.empty();
+
+        $dial.append('<div role="arrow" style="transform: rotate(-90deg); display: none;"><div class="c296"></div><div class="c297"></div></div>');
+
+        $dial.append('<span role="hour" style="transform: translate(54px, -93.5307px);">5</span>');
+        $dial.append('<span role="hour" style="transform: translate(93.5307px, -54px);">10</span>');
+        $dial.append('<span role="hour" style="transform: translate(108px, 0px);">15</span>');
+        $dial.append('<span role="hour" style="transform: translate(93.5307px, 54px);">20</span>');
+        $dial.append('<span role="hour" style="transform: translate(54px, 93.5307px);">25</span>');
+        $dial.append('<span role="hour" style="transform: translate(6.61309e-15px, 108px);">30</span>');
+        $dial.append('<span role="hour" style="transform: translate(-54px, 93.5307px);">35</span>');
+        $dial.append('<span role="hour" style="transform: translate(-93.5307px, 54px);">40</span>');
+        $dial.append('<span role="hour" style="transform: translate(-108px, 1.32262e-14px);">45</span>');
+        $dial.append('<span role="hour" style="transform: translate(-93.5307px, -54px);">50</span>');
+        $dial.append('<span role="hour" style="transform: translate(-54px, -93.5307px);">55</span>');
+        $dial.append('<span role="hour" style="transform: translate(-1.98393e-14px, -108px);">60</span>');
+
+        $timepicker.dialMode = 'minutes';
     },
 
     show: function ($timepicker) {
@@ -325,6 +369,9 @@ gj.timepicker.events = {
 gj.timepicker.widget = function ($element, jsConfig) {
     var self = this,
         methods = gj.timepicker.methods;
+
+    self.mouseMove = false;
+    self.dialMode = undefined;
 
     /** Gets or sets the value of the timepicker.     */    self.value = function (value) {
         return methods.value(this, value);

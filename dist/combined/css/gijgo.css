@@ -2023,7 +2023,7 @@ ul.gj-list-md li.disabled > [data-role="wrapper"] > [data-role="expander"] {
     border-radius: 50%;
 }
 
-.c291 {
+.gj-clock-md [role="body"] [role="hour"] {
     top: calc(50% - 16px);
     left: calc(50% - 16px);
     width: 32px;
@@ -2037,13 +2037,8 @@ ul.gj-list-md li.disabled > [data-role="wrapper"] > [data-role="expander"] {
     pointer-events: none;
 }
 
-.c291.selected {
+.gj-clock-md [role="body"] [role="hour"].selected {
     color: rgba(255, 255, 255, 1);
-}
-
-.c292 {
-    color: rgba(0, 0, 0, 0.54);
-    font-size: 12px;
 }
 
 .gj-clock-md [role="body"] [role="arrow"] {
