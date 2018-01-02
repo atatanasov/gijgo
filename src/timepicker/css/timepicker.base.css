@@ -50,6 +50,22 @@
     border: 1px solid #E0E0E0;
 }
 
+.gj-clock-md .selected {
+    color: #fff;
+}
+
+.gj-clock-md [role="header"] {
+    color: rgba(255, 255, 255, 0.54);
+    padding: 20px 0;
+    display: flex;
+    font-size: 58px;
+    background: #2196f3;
+    line-height: 58px;
+    align-items: baseline;
+    user-select: none;
+    justify-content: center;
+}
+
 .gj-clock-md [role="body"] {
     padding: 10px;
 }
@@ -121,4 +137,9 @@
     height: 4px;
     background: rgba(255, 255, 255, 1);
     border-width: 14px;
+}
+
+.gj-clock-md [role="footer"] {
+    float: right;
+    padding: 10px;
 }

@@ -280,6 +280,11 @@ gj.core = {
      * <script>
      *     $('#date').text(gj.core.parseDate('05 February 2017', 'dd mmmm yyyy'));
      * </script>
+     * @example String.HH:MM
+     * <div id="date"></div>
+     * <script>
+     *     $('#date').text(gj.core.parseDate('10:57', 'HH:MM'));
+     * </script>
      * @example ASP.NET.JSON.Date
      * <div id="date"></div>
      * <script>
@@ -292,7 +297,7 @@ gj.core = {
      * </script>
      */
     parseDate: function (value, format, locale) {
-        var i, date, month, year, dateParts, formatParts, result;
+        var i, year = 0, month = 0, date = 0, hour = 0, minute = 0, dateParts, formatParts, result;
 
         if (value && typeof value === 'string') {
             if (/^\d+$/.test(value)) {
@@ -316,9 +321,13 @@ gj.core = {
                         if (formatParts[i] === 'yy') {
                             year += 2000;
                         }
+                    } else if (['h', 'hh', 'H', 'HH'].indexOf(formatParts[i]) > -1) {
+                        hour = parseInt(dateParts[i], 10);
+                    } else if (['M', 'MM'].indexOf(formatParts[i]) > -1) {
+                        minute = parseInt(dateParts[i], 10);
                     }
                 }
-                result = new Date(year, month, date);
+                result = new Date(year, month, date, hour, minute);
             }
         } else if (typeof value === 'number') {
             result = new Date(value);
@@ -365,15 +374,7 @@ gj.core = {
     formatDate: function (date, format, locale) {
         var result = '', separator, tmp,
             formatParts = format.split(/[\s,-\.//\:]+/),
-            separators = format.replace(/[shtdmyHTDMY]/g, ''),
-            pad = function (val, len) {
-                val = String(val);
-                len = len || 2;
-                while (val.length < len) {
-                    val = '0' + val;
-                }
-                return val;
-            };
+            separators = format.replace(/[shtdmyHTDMY]/g, '');
 
         for (i = 0; i < formatParts.length; i++) {
             separator = (separators[i] || '');
@@ -382,19 +383,19 @@ gj.core = {
                     result += date.getSeconds() + separator;
                     break;
                 case 'ss':
-                    result += pad(date.getSeconds()) + separator;
+                    result += gj.core.pad(date.getSeconds()) + separator;
                     break;
                 case 'M':
                     result += date.getMinutes() + separator;
                     break;
                 case 'MM':
-                    result += pad(date.getMinutes()) + separator;
+                    result += gj.core.pad(date.getMinutes()) + separator;
                     break;
                 case 'H':
                     result += date.getHours() + separator;
                     break;
                 case 'HH':
-                    result += pad(date.getHours()) + separator;
+                    result += gj.core.pad(date.getHours()) + separator;
                     break;
                 case 'h':
                     tmp = date.getHours() > 12 ? date.getHours() % 12 : date.getHours();
@@ -402,7 +403,7 @@ gj.core = {
                     break;
                 case 'hh':
                     tmp = date.getHours() > 12 ? date.getHours() % 12 : date.getHours();
-                    result += pad(tmp) + separator;
+                    result += gj.core.pad(tmp) + separator;
                     break;
                 case 'tt':
                     result += (date.getHours() >= 12 ? 'pm' : 'am') + separator;
@@ -414,13 +415,13 @@ gj.core = {
                     result += date.getDate() + separator;
                     break;
                 case 'dd' :
-                    result += pad(date.getDate()) + separator;
+                    result += gj.core.pad(date.getDate()) + separator;
                     break;
                 case 'm' :
                     result += (date.getMonth() + 1) + separator;
                     break;
                 case 'mm':
-                    result += pad(date.getMonth() + 1) + separator;
+                    result += gj.core.pad(date.getMonth() + 1) + separator;
                     break;
                 case 'mmm':
                     result += gj.core.messages[locale || 'en-us'].monthShortNames[date.getMonth()] + separator;
@@ -438,6 +439,23 @@ gj.core = {
         }
 
         return result;
+    },
+
+    pad: function (val, len) {
+        val = String(val);
+        len = len || 2;
+        while (val.length < len) {
+            val = '0' + val;
+        }
+        return val;
+    },
+
+    center: function ($dialog) {
+        var left = ($(window).width() / 2) - ($dialog.width() / 2),
+            top = ($(window).height() / 2) - ($dialog.height() / 2);
+        $dialog.css('position', 'absolute');
+        $dialog.css('left', left > 0 ? left : 0);
+        $dialog.css('top', top > 0 ? top : 0);
     },
 
     isIE: function () {
@@ -1230,7 +1248,7 @@ gj.dialog.methods = {
             });            
         }
 
-        gj.dialog.methods.setPosition($dialog);
+        gj.core.center($dialog);
 
         if (data.modal) {
             $dialog.wrapAll('<div data-role="modal" class="' + data.style.modal + '"/>');
@@ -1279,14 +1297,6 @@ gj.dialog.methods = {
         }
 
         return $header;
-    },
-
-    setPosition: function ($dialog) {
-        var left = ($(window).width() / 2) - ($dialog.width() / 2),
-            top = ($(window).height() / 2) - ($dialog.height() / 2);
-        $dialog.css('position', 'absolute');
-        $dialog.css('left', left > 0 ? left : 0);
-        $dialog.css('top', top > 0 ? top : 0);
     },
 
     draggable: function ($dialog, $header) {
@@ -13851,6 +13861,8 @@ gj.timepicker.config = {
          */
         width: undefined,
 
+        modal: true,
+
         /** Specifies the format, which is used to format the value of the DatePicker displayed in the input.
          * @additionalinfo <b>d</b> - Day of the month as digits; no leading zero for single-digit days.<br/>
          * <b>M</b> - Minutes; no leading zero for single-digit minutes.<br/>
@@ -13864,7 +13876,7 @@ gj.timepicker.config = {
          * @type String
          * @default 'MM:HH'
          * @example Sample <!-- timepicker -->
-         * <input id="timepicker" value="13 - 42" />
+         * <input id="timepicker" value="13.42" />
          * <script>
          *     var timepicker = $('#timepicker').timepicker({
          *         format: 'HH.MM'
@@ -13959,6 +13971,7 @@ gj.timepicker.config = {
         },
 
         style: {
+            modal: 'gj-modal',
             wrapper: 'gj-timepicker gj-timepicker-md gj-unselectable',
             input: 'gj-textbox-md',
             clock: 'gj-clock gj-clock-md'
@@ -13967,6 +13980,7 @@ gj.timepicker.config = {
 
     bootstrap: {
         style: {
+            modal: 'modal',
             wrapper: 'gj-timepicker gj-timepicker-bootstrap gj-unselectable input-group',
             input: 'form-control',
             calendar: 'gj-calendar gj-calendar-bootstrap'
@@ -13977,6 +13991,7 @@ gj.timepicker.config = {
 
     bootstrap4: {
         style: {
+            modal: 'modal',
             wrapper: 'gj-timepicker gj-timepicker-bootstrap gj-unselectable input-group',
             input: 'form-control',
             calendar: 'gj-calendar gj-calendar-bootstrap'
@@ -14014,7 +14029,7 @@ gj.timepicker.methods = {
         //data.fontSize && $timepicker.css('font-size', data.fontSize);
 
         $rightIcon.on('click', function (e) {
-            var $clock = $('body').children('[role="clock"][guid="' + $timepicker.attr('data-guid') + '"]');
+            var $clock = $('body').find('[role="clock"][guid="' + $timepicker.attr('data-guid') + '"]');
             if ($clock.is(':visible')) {
                 gj.timepicker.methods.hide($timepicker);
             } else {
@@ -14042,9 +14057,14 @@ gj.timepicker.methods = {
     createClock: function ($timepicker) {
         var date, data = $timepicker.data(),
             $clock = $('<div role="clock" />').addClass(data.style.clock).attr('guid', $timepicker.attr('data-guid')),
-            $body = $('<div role="body" />');
-            $dial = $('<div role="dial"></div>');
-        
+            $hour = $('<div role="hour" />'),
+            $minute = $('<div role="minute" />'),
+            $header = $('<div role="header" />'),
+            $body = $('<div role="body" />'),
+            $dial = $('<div role="dial"></div>'),
+            $btnOk = $('<button class="gj-button-md">Ok</button>'),
+            $btnCancel = $('<button class="gj-button-md">Cancel</button>'),
+            $footer = $('<div role="footer" />');
 
         date = gj.core.parseDate(data.value, data.format, data.locale);
         if (!date || isNaN(date.getTime())) {
@@ -14057,11 +14077,30 @@ gj.timepicker.methods = {
         $dial.on('mousemove', gj.timepicker.methods.mouseMoveHandler($timepicker, $clock));
         $dial.on('mouseup', gj.timepicker.methods.mouseUpHandler($timepicker, $clock));
 
+        $hour.on('click', function () {
+            gj.timepicker.methods.renderHours($timepicker, $clock);
+        });
+        $minute.on('click', function () {
+            gj.timepicker.methods.renderMinutes($timepicker, $clock);
+        });
+        $header.append($hour).append(':').append($minute);
+        $clock.append($header);
+
         $body.append($dial);
         $clock.append($body);
+
+        $footer.append($btnCancel);
+        $footer.append($btnOk);
+        $clock.append($footer);
+
         $clock.hide();
 
         $('body').append($clock);
+
+        if (data.modal) {
+            $clock.wrapAll('<div role="modal" class="' + data.style.modal + '"/>');
+            gj.core.center($clock);
+        }
         return $clock;
     },
 
@@ -14096,45 +14135,62 @@ gj.timepicker.methods = {
         }
     },
 
-    select: function (e, $timepicker, $clock) {
-        var mouseX, mouseY, $dial, $arrow, rect, value;
-        $dial = $clock.find('[role="dial"]');
-        $arrow = $clock.find('[role="arrow"]');
+    updateArrow: function(e, $timepicker, $clock) {
+        var mouseX, mouseY, rect, value;
         mouseX = $timepicker.mouseX(e);
         mouseY = $timepicker.mouseY(e);
 
         rect = e.target.getBoundingClientRect();
-        value = gj.timepicker.methods.getPointerValue(mouseX - rect.left, mouseY - rect.top, $timepicker.dialMode == 'hours' ? '24h' : 'minutes');
+        if ($timepicker.dialMode == 'hours') {
+            value = gj.timepicker.methods.getPointerValue(mouseX - rect.left, mouseY - rect.top, '24h');
+            $timepicker.attr('hour', value);
+        } else if ($timepicker.dialMode == 'minutes') {
+            value = gj.timepicker.methods.getPointerValue(mouseX - rect.left, mouseY - rect.top, 'minutes');
+            $timepicker.attr('minute', value);
+        }
 
-        if ($timepicker.dialMode == 'hours' && (value == 0 || value > 12)) {
+        if ($timepicker.dialMode == 'hours') {
+            setTimeout(function () {
+                gj.timepicker.methods.renderMinutes($timepicker, $clock);
+            }, 1000);
+        } else if ($timepicker.dialMode == 'minutes') {
+            $timepicker.hide();
+        }
+
+        gj.timepicker.methods.select($timepicker, $clock);
+    },
+
+    select: function ($timepicker, $clock) {
+        var $dial = $clock.find('[role="dial"]'),
+            $arrow = $clock.find('[role="arrow"]'),
+            hour = $timepicker.attr('hour'),
+            minute = $timepicker.attr('minute');
+
+        if ($timepicker.dialMode == 'hours' && (hour == 0 || hour > 12)) {
             $arrow.css('width', 'calc(50% - 52px)');
         } else {
             $arrow.css('width', 'calc(50% - 20px)');
         }
 
         if ($timepicker.dialMode == 'hours') {
-            $arrow.css('transform', 'rotate(' + ((value * 30) - 90).toString() + 'deg)');
+            $arrow.css('transform', 'rotate(' + ((hour * 30) - 90).toString() + 'deg)');
         } else {
-            $arrow.css('transform', 'rotate(' + ((value * 6) - 90).toString() + 'deg)');
+            $arrow.css('transform', 'rotate(' + ((minute * 6) - 90).toString() + 'deg)');
         }
         $arrow.show();
 
-        if ($timepicker.dialMode == 'hours') {
-            $timepicker.attr('hour', value);
-            setTimeout(function () {
-                gj.timepicker.methods.renderMinutes($timepicker, $clock);
-            }, 1000);
-        } else if ($timepicker.dialMode == 'minutes') {
-            $timepicker.attr('minute', value);
-        }
-
-        gj.timepicker.methods.update($timepicker);
+        gj.timepicker.methods.update($timepicker, $clock);
     },
 
-    update: function ($timepicker) {
+    update: function ($timepicker, $clock) {
         var data = $timepicker.data(),
-            date = new Date(0, 0, 0, $timepicker.attr('hour') || 0, $timepicker.attr('minute') || 0),
+            hour = $timepicker.attr('hour') || 0,
+            minute = $timepicker.attr('minute') || 0,
+            date = new Date(0, 0, 0, hour, minute),
             value = gj.core.formatDate(date, data.format, data.locale);
+
+        $clock.find('[role="header"] > [role="hour"]').text(gj.core.pad(hour));
+        $clock.find('[role="header"] > [role="minute"]').text(gj.core.pad(minute));
 
         $timepicker.val(value);
         gj.timepicker.events.change($timepicker);
@@ -14149,14 +14205,14 @@ gj.timepicker.methods = {
     mouseMoveHandler: function ($timepicker, $clock) {
         return function (e) {
             if ($timepicker.mouseMove) {
-                gj.timepicker.methods.select(e, $timepicker, $clock);
+                gj.timepicker.methods.updateArrow(e, $timepicker, $clock);
             }
         }
     },
 
     mouseUpHandler: function ($timepicker, $clock) {
         return function (e) {
-            gj.timepicker.methods.select(e, $timepicker, $clock);
+            gj.timepicker.methods.updateArrow(e, $timepicker, $clock);
             $timepicker.mouseMove = false;
             $timepicker.focus();
             clearTimeout($timepicker.timeout);
@@ -14196,7 +14252,12 @@ gj.timepicker.methods = {
         $dial.append('<span role="hour" style="transform: translate(-38px, -65.8179px);">23</span>');
         $dial.append('<span role="hour" style="transform: translate(-1.3961e-14px, -76px);">00</span>');
 
+        $clock.find('[role="header"] [role="hour"]').addClass('selected');
+        $clock.find('[role="header"] [role="minute"]').removeClass('selected');
+
         $timepicker.dialMode = 'hours';
+
+        gj.timepicker.methods.select($timepicker, $clock);
     },
 
     renderMinutes: function ($timepicker, $clock) {
@@ -14220,24 +14281,38 @@ gj.timepicker.methods = {
         $dial.append('<span role="hour" style="transform: translate(-54px, -93.5307px);">55</span>');
         $dial.append('<span role="hour" style="transform: translate(-1.98393e-14px, -108px);">60</span>');
 
+        $clock.find('[role="header"] [role="hour"]').removeClass('selected');
+        $clock.find('[role="header"] [role="minute"]').addClass('selected');
+
         $timepicker.dialMode = 'minutes';
+
+        gj.timepicker.methods.select($timepicker, $clock);
     },
 
     show: function ($timepicker) {
         var data = $timepicker.data(),
             offset = $timepicker.offset(),
-            $clock = $('body').children('[role="clock"][guid="' + $timepicker.attr('data-guid') + '"]');
+            $clock = $('body').find('[role="clock"][guid="' + $timepicker.attr('data-guid') + '"]');
 
         gj.timepicker.methods.renderHours($timepicker, $clock);
-        $clock.css('left', offset.left).css('top', offset.top + $timepicker.outerHeight(true) + 3);
+        if (!$timepicker.value()) {
+            $timepicker.value(gj.core.formatDate(new Date(), data.format, data.locale));
+        }
         $clock.show();
+        $clock.closest('div[role="modal"]').show();
+        if (data.modal) {
+            gj.core.center($clock);
+        } else {
+            $clock.css('left', offset.left).css('top', offset.top + $timepicker.outerHeight(true) + 3);
+        }
         $timepicker.focus();
         gj.timepicker.events.show($timepicker);
     },
 
     hide: function ($timepicker) {
-        var $clock = $('body').children('[role="clock"][guid="' + $timepicker.attr('data-guid') + '"]');
+        var $clock = $('body').find('[role="clock"][guid="' + $timepicker.attr('data-guid') + '"]');
         $clock.hide();
+        $clock.closest('div[role="modal"]').hide();
         gj.timepicker.events.hide($timepicker);
     },
 
@@ -14248,8 +14323,10 @@ gj.timepicker.methods = {
         } else {
             time = gj.core.parseDate(value, data.format, data.locale);
             if (time) {
-                $clock = $('body').children('[role="clock"][guid="' + $timepicker.attr('data-guid') + '"]');
-                gj.timepicker.methods.select($timepicker, $clock, time)();
+                $clock = $('body').find('[role="clock"][guid="' + $timepicker.attr('data-guid') + '"]');
+                $timepicker.attr('hour', time.getHours());
+                $timepicker.attr('minute', time.getMinutes());
+                gj.timepicker.methods.select($timepicker, $clock);
             } else {
                 $timepicker.val('');
             }
@@ -14259,10 +14336,14 @@ gj.timepicker.methods = {
 
     destroy: function ($timepicker) {
         var data = $timepicker.data(),
-            $parent = $timepicker.parent();
+            $parent = $timepicker.parent(),
+            $clock = $('body').find('[role="clock"][guid="' + $timepicker.attr('data-guid') + '"]');
         if (data) {
             $timepicker.off();
-            $('body').children('[role="clock"][guid="' + $timepicker.attr('data-guid') + '"]').remove();
+            if ($clock.parent('[role="modal"]').length > 0) {
+                $clock.unwrap();
+            }
+            $clock.remove();
             $timepicker.removeData();
             $timepicker.removeAttr('data-type').removeAttr('data-guid').removeAttr('data-timepicker');
             $timepicker.removeClass();

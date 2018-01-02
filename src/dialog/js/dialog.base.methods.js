@@ -74,7 +74,7 @@
             });            
         }
 
-        gj.dialog.methods.setPosition($dialog);
+        gj.core.center($dialog);
 
         if (data.modal) {
             $dialog.wrapAll('<div data-role="modal" class="' + data.style.modal + '"/>');
@@ -123,14 +123,6 @@
         }
 
         return $header;
-    },
-
-    setPosition: function ($dialog) {
-        var left = ($(window).width() / 2) - ($dialog.width() / 2),
-            top = ($(window).height() / 2) - ($dialog.height() / 2);
-        $dialog.css('position', 'absolute');
-        $dialog.css('left', left > 0 ? left : 0);
-        $dialog.css('top', top > 0 ? top : 0);
     },
 
     draggable: function ($dialog, $header) {

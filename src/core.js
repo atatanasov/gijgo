@@ -273,6 +273,11 @@ gj.core = {
      * <script>
      *     $('#date').text(gj.core.parseDate('05 February 2017', 'dd mmmm yyyy'));
      * </script>
+     * @example String.HH:MM
+     * <div id="date"></div>
+     * <script>
+     *     $('#date').text(gj.core.parseDate('10:57', 'HH:MM'));
+     * </script>
      * @example ASP.NET.JSON.Date
      * <div id="date"></div>
      * <script>
@@ -285,7 +290,7 @@ gj.core = {
      * </script>
      */
     parseDate: function (value, format, locale) {
-        var i, date, month, year, dateParts, formatParts, result;
+        var i, year = 0, month = 0, date = 0, hour = 0, minute = 0, dateParts, formatParts, result;
 
         if (value && typeof value === 'string') {
             if (/^\d+$/.test(value)) {
@@ -309,9 +314,13 @@ gj.core = {
                         if (formatParts[i] === 'yy') {
                             year += 2000;
                         }
+                    } else if (['h', 'hh', 'H', 'HH'].indexOf(formatParts[i]) > -1) {
+                        hour = parseInt(dateParts[i], 10);
+                    } else if (['M', 'MM'].indexOf(formatParts[i]) > -1) {
+                        minute = parseInt(dateParts[i], 10);
                     }
                 }
-                result = new Date(year, month, date);
+                result = new Date(year, month, date, hour, minute);
             }
         } else if (typeof value === 'number') {
             result = new Date(value);
@@ -358,15 +367,7 @@ gj.core = {
     formatDate: function (date, format, locale) {
         var result = '', separator, tmp,
             formatParts = format.split(/[\s,-\.//\:]+/),
-            separators = format.replace(/[shtdmyHTDMY]/g, ''),
-            pad = function (val, len) {
-                val = String(val);
-                len = len || 2;
-                while (val.length < len) {
-                    val = '0' + val;
-                }
-                return val;
-            };
+            separators = format.replace(/[shtdmyHTDMY]/g, '');
 
         for (i = 0; i < formatParts.length; i++) {
             separator = (separators[i] || '');
@@ -375,19 +376,19 @@ gj.core = {
                     result += date.getSeconds() + separator;
                     break;
                 case 'ss':
-                    result += pad(date.getSeconds()) + separator;
+                    result += gj.core.pad(date.getSeconds()) + separator;
                     break;
                 case 'M':
                     result += date.getMinutes() + separator;
                     break;
                 case 'MM':
-                    result += pad(date.getMinutes()) + separator;
+                    result += gj.core.pad(date.getMinutes()) + separator;
                     break;
                 case 'H':
                     result += date.getHours() + separator;
                     break;
                 case 'HH':
-                    result += pad(date.getHours()) + separator;
+                    result += gj.core.pad(date.getHours()) + separator;
                     break;
                 case 'h':
                     tmp = date.getHours() > 12 ? date.getHours() % 12 : date.getHours();
@@ -395,7 +396,7 @@ gj.core = {
                     break;
                 case 'hh':
                     tmp = date.getHours() > 12 ? date.getHours() % 12 : date.getHours();
-                    result += pad(tmp) + separator;
+                    result += gj.core.pad(tmp) + separator;
                     break;
                 case 'tt':
                     result += (date.getHours() >= 12 ? 'pm' : 'am') + separator;
@@ -407,13 +408,13 @@ gj.core = {
                     result += date.getDate() + separator;
                     break;
                 case 'dd' :
-                    result += pad(date.getDate()) + separator;
+                    result += gj.core.pad(date.getDate()) + separator;
                     break;
                 case 'm' :
                     result += (date.getMonth() + 1) + separator;
                     break;
                 case 'mm':
-                    result += pad(date.getMonth() + 1) + separator;
+                    result += gj.core.pad(date.getMonth() + 1) + separator;
                     break;
                 case 'mmm':
                     result += gj.core.messages[locale || 'en-us'].monthShortNames[date.getMonth()] + separator;
@@ -431,6 +432,23 @@ gj.core = {
         }
 
         return result;
+    },
+
+    pad: function (val, len) {
+        val = String(val);
+        len = len || 2;
+        while (val.length < len) {
+            val = '0' + val;
+        }
+        return val;
+    },
+
+    center: function ($dialog) {
+        var left = ($(window).width() / 2) - ($dialog.width() / 2),
+            top = ($(window).height() / 2) - ($dialog.height() / 2);
+        $dialog.css('position', 'absolute');
+        $dialog.css('left', left > 0 ? left : 0);
+        $dialog.css('top', top > 0 ? top : 0);
     },
 
     isIE: function () {
