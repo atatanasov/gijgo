@@ -260,7 +260,9 @@ gj.timepicker.methods = {
         $body.append($dial);
         $clock.append($body);
 
+        $btnCancel.on('click', function () { $timepicker.hide(); });
         $footer.append($btnCancel);
+        $btnOk.on('click', function () { $timepicker.hide(); });
         $footer.append($btnOk);
         $clock.append($footer);
 
@@ -314,10 +316,10 @@ gj.timepicker.methods = {
         rect = e.target.getBoundingClientRect();
         if ($timepicker.dialMode == 'hours') {
             value = gj.timepicker.methods.getPointerValue(mouseX - rect.left, mouseY - rect.top, '24h');
-            $timepicker.attr('hour', value);
+            $clock.attr('hour', value);
         } else if ($timepicker.dialMode == 'minutes') {
             value = gj.timepicker.methods.getPointerValue(mouseX - rect.left, mouseY - rect.top, 'minutes');
-            $timepicker.attr('minute', value);
+            $clock.attr('minute', value);
         }
 
         if ($timepicker.dialMode == 'hours') {
@@ -334,8 +336,8 @@ gj.timepicker.methods = {
     select: function ($timepicker, $clock) {
         var $dial = $clock.find('[role="dial"]'),
             $arrow = $clock.find('[role="arrow"]'),
-            hour = $timepicker.attr('hour'),
-            minute = $timepicker.attr('minute');
+            hour = $clock.attr('hour'),
+            minute = $clock.attr('minute');
 
         if ($timepicker.dialMode == 'hours' && (hour == 0 || hour > 12)) {
             $arrow.css('width', 'calc(50% - 52px)');
@@ -355,8 +357,8 @@ gj.timepicker.methods = {
 
     update: function ($timepicker, $clock) {
         var data = $timepicker.data(),
-            hour = $timepicker.attr('hour') || 0,
-            minute = $timepicker.attr('minute') || 0,
+            hour = $clock.attr('hour') || 0,
+            minute = $clock.attr('minute') || 0,
             date = new Date(0, 0, 0, hour, minute),
             value = gj.core.formatDate(date, data.format, data.locale);
 
@@ -495,8 +497,8 @@ gj.timepicker.methods = {
             time = gj.core.parseDate(value, data.format, data.locale);
             if (time) {
                 $clock = $('body').find('[role="clock"][guid="' + $timepicker.attr('data-guid') + '"]');
-                $timepicker.attr('hour', time.getHours());
-                $timepicker.attr('minute', time.getMinutes());
+                $clock.attr('hour', time.getHours());
+                $clock.attr('minute', time.getMinutes());
                 gj.timepicker.methods.select($timepicker, $clock);
             } else {
                 $timepicker.val('');

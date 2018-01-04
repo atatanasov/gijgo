@@ -369,6 +369,10 @@ gj.tree.methods = {
             $tree.data('records').push(newNodeData);
         } else {
             if ($parent[0].tagName.toLowerCase() === 'li') {
+                if ($parent.children('ul').length === 0) {
+                    $parent.find('[data-role="expander"]').empty().append($tree.data().icons.collapse);
+                    $parent.append($('<ul />').addClass($tree.data().style.list));
+                }
                 $parent = $parent.children('ul');
             }
             gj.tree.methods.getById($tree, $parent.parent().data('id'), $tree.data('records')).children.push(newNodeData);
