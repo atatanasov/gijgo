@@ -256,11 +256,19 @@ gj.dialog.config = {
          * Modal dialogs create an overlay below the dialog, but above other page elements and you can't interact with them.
          * @type boolean
          * @default false
-         * @example True <!-- draggable.base, dialog.base -->
+         * @example True.Material.Design <!-- draggable.base, dialog.base -->
          * <div id="dialog">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
          * <script>
          *     $("#dialog").dialog({
          *         modal: true
+         *     });
+         * </script>
+         * @example True.Bootstrap.4 <!-- bootstrap4, draggable.base, dialog.base -->
+         * <div id="dialog">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
+         * <script>
+         *     $("#dialog").dialog({
+         *         modal: true,
+         *         uiLibrary: 'bootstrap4'
          *     });
          * </script>
          * @example False <!-- draggable.base, dialog.base, bootstrap -->
