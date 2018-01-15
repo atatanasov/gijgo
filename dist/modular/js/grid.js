@@ -1635,10 +1635,12 @@ gj.grid.plugins.inlineEditing.private = {
                     } else if ('dropdown' === column.type && gj.dropdown) {
                         $editorField = $('<select type="text" width="100%"/>');
                         $editorContainer.append($editorField);
+                        config.dataBound = function (e) {
+                            if ($editorField.value) {
+                                $editorField.value($displayContainer.html());
+                            }
+                        };
                         $editorField = $editorField.dropdown(config);
-                        if ($editorField.value) {
-                            $editorField.value($displayContainer.html());
-                        }
                     } else {
                         $editorField = $('<input type="text" value="' + value + '" class="gj-width-full"/>');
                         if (data.uiLibrary === 'materialdesign') {

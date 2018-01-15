@@ -422,10 +422,12 @@ gj.dropdown.methods = {
             $list = $('body').children('[role="list"][guid="' + $dropdown.attr('data-guid') + '"]'),
             $item = $list.children('li[value="' + value + '"]'),
             record = gj.dropdown.methods.getRecordByValue($dropdown, value);
-        $list.children('li').removeClass(data.style.active);
-        $item.addClass(data.style.active);
-        $dropdown.val(value);
-        $dropdown.next('[role="presenter"]').find('[role="display"]').html(record[data.textField]);
+        if (record) {
+            $list.children('li').removeClass(data.style.active);
+            $item.addClass(data.style.active);
+            $dropdown.val(value);
+            $dropdown.next('[role="presenter"]').find('[role="display"]').html(record[data.textField]);
+        }
         $list.hide();
         return $dropdown;
     },

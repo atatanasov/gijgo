@@ -2010,10 +2010,13 @@ ul.gj-list-md li.disabled > [data-role="wrapper"] > [data-role="expander"] {
 
 .gj-clock [role="header"] div {
     cursor: pointer;
+    width: 66px;
+    text-align: right;
 }
 
 .gj-clock [role="header"] [role="mode"] {
     position: relative;
+    width: 0px;
 }
 
 .gj-clock [role="header"] [role="mode"] span {
