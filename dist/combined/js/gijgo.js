@@ -14382,7 +14382,7 @@ gj.timepicker.methods = {
         clearTimeout($timepicker.timeout);
         $dial.empty();
 
-        $dial.append('<div role="arrow" style="transform: rotate(-90deg); display: none;"><div class="c296"></div><div class="c297"></div></div>');
+        $dial.append('<div role="arrow" style="transform: rotate(-90deg); display: none;"><div class="arrow-begin"></div><div class="arrow-end"></div></div>');
 
         $dial.append('<span role="hour" style="transform: translate(54px, -93.5307px);">1</span>');
         $dial.append('<span role="hour" style="transform: translate(93.5307px, -54px);">2</span>');
@@ -14425,7 +14425,7 @@ gj.timepicker.methods = {
         clearTimeout($timepicker.timeout);
         $dial.empty();
 
-        $dial.append('<div role="arrow" style="transform: rotate(-90deg); display: none;"><div class="c296"></div><div class="c297"></div></div>');
+        $dial.append('<div role="arrow" style="transform: rotate(-90deg); display: none;"><div class="arrow-begin"></div><div class="arrow-end"></div></div>');
 
         $dial.append('<span role="hour" style="transform: translate(54px, -93.5307px);">5</span>');
         $dial.append('<span role="hour" style="transform: translate(93.5307px, -54px);">10</span>');

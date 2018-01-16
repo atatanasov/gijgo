@@ -2072,10 +2072,29 @@ ul.gj-list-md li.disabled > [data-role="wrapper"] > [data-role="expander"] {
     height: 2px;
     position: absolute;
     pointer-events: none;
-    background-color: #2196f3;
     transform-origin: left center;
     transition: all 250ms cubic-bezier(0.4, 0, 0.2, 1);
     width: calc(50% - 52px);
+}
+
+.gj-clock .arrow-begin {
+    top: -3px;
+    left: -4px;
+    width: 8px;
+    height: 8px;
+    position: absolute;
+    border-radius: 50%;
+}
+
+.gj-clock .arrow-end {
+    top: -15px;
+    right: -16px;
+    width: 0;
+    height: 0;
+    position: absolute;
+    box-sizing: content-box;
+    border-width: 16px;
+    border-radius: 50%;
 }
 
 /* Material Design */
@@ -2099,33 +2118,15 @@ ul.gj-list-md li.disabled > [data-role="wrapper"] > [data-role="expander"] {
     font-family: "Roboto","Helvetica","Arial",sans-serif;
 }
 
-.c296 {
-    top: -3px;
-    left: -4px;
-    width: 8px;
-    height: 8px;
-    position: absolute;
-    border-radius: 50%;
+.gj-clock-md .arrow-begin {
     background-color: #2196f3;
 }
-
-.c297 {
-    top: -15px;
-    right: -16px;
-    width: 0;
+.gj-clock-md .arrow-end {
     border: 16px solid #2196f3;
-    height: 0;
-    position: absolute;
-    box-sizing: content-box;
-    border-width: 16px;
-    border-radius: 50%;
 }
 
-.c298 {
-    width: 4px;
-    height: 4px;
-    background: rgba(255, 255, 255, 1);
-    border-width: 14px;
+.gj-clock-md [role="body"] [role="arrow"] {
+    background-color: #2196f3;
 }
 
 .gj-clock-md [role="footer"] {
@@ -2133,6 +2134,27 @@ ul.gj-list-md li.disabled > [data-role="wrapper"] > [data-role="expander"] {
     padding: 10px;
 }
 
+/* Bootstrap */
+.gj-clock-bootstrap .selected {
+    color: #888;
+}
+
+.gj-clock-bootstrap [role="header"] {
+    background: #eee;
+    color: #AAA;
+}
+
+.gj-clock-bootstrap [role="body"] [role="arrow"] {
+    background-color: #888;
+}
+
+.gj-clock-bootstrap .arrow-begin {
+    background-color: #888;
+}
+
+.gj-clock-bootstrap .arrow-end {
+    border: 16px solid #888;
+}
 
 /* Bootstrap 3 */
 .gj-timepicker-bootstrap span[role="right-icon"].input-group-addon {
@@ -2150,15 +2172,6 @@ ul.gj-list-md li.disabled > [data-role="wrapper"] > [data-role="expander"] {
     position: absolute;
     top: 5px;
     left: 7px;
-}
-
-.gj-clock-bootstrap .selected {
-    color: #AAA;
-}
-
-.gj-clock-bootstrap [role="header"] {
-    background: #eee;
-    color: #888;
 }
 
 /* Bootstrap 4 */
