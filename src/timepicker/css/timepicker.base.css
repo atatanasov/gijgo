@@ -224,6 +224,7 @@
 .gj-timepicker-bootstrap span[role="right-icon"] .input-group-text {
     padding: 7px 8px 8px 30px;
     border-left: 0px;
+    display: inline;
 }
 
 .gj-timepicker-bootstrap span[role="right-icon"] .input-group-text .gj-icon,
