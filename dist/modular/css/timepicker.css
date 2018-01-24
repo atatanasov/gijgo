@@ -26,7 +26,6 @@
     line-height: 1;
     color: rgba(0,0,0,.87);
     background-color: #FFFFFF;
-    border: 1px solid #E0E0E0;
 }
 
 .gj-clock .selected {
@@ -172,6 +171,11 @@
 }
 
 /* Bootstrap */
+.gj-clock-bootstrap {
+    border-radius: 4px;
+    border: 1px solid #E0E0E0;
+}
+
 .gj-clock-bootstrap .selected {
     color: #888;
 }
@@ -207,7 +211,7 @@
 .gj-timepicker-bootstrap span[role="right-icon"].input-group-addon .gj-icon,
 .gj-timepicker-bootstrap span[role="right-icon"].input-group-addon .material-icons {
     position: absolute;
-    top: 5px;
+    top: 4px;
     left: 7px;
 }
 

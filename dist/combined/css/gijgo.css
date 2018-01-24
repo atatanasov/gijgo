@@ -1900,6 +1900,7 @@ ul.gj-list-md li.disabled > [data-role="wrapper"] > [data-role="expander"] {
 .gj-calendar-bootstrap table tr td.gj-cursor-pointer div:hover {
     background: #EEEEEE;
     border-radius: 4px;
+    color: #212529;
 }
 
 .gj-calendar-bootstrap table tr td.today div {
@@ -1946,6 +1947,7 @@ ul.gj-list-md li.disabled > [data-role="wrapper"] > [data-role="expander"] {
 .gj-datepicker-bootstrap span[role="right-icon"] .input-group-text {
     padding: 7px 8px 8px 30px;
     border-left: 0px;
+    display: inline;
 }
 
 .gj-datepicker-bootstrap span[role="right-icon"] .input-group-text .gj-icon,
@@ -1957,8 +1959,8 @@ ul.gj-list-md li.disabled > [data-role="wrapper"] > [data-role="expander"] {
 
 .gj-datepicker-bootstrap span[role="right-icon"] .input-group-text .fa {
     position: absolute;
-    right: 10px;
-    top: 7px;
+    right: 11px;
+    top: 8px;
     font-size: 21px;
 }
 .gj-timepicker {
@@ -1989,7 +1991,6 @@ ul.gj-list-md li.disabled > [data-role="wrapper"] > [data-role="expander"] {
     line-height: 1;
     color: rgba(0,0,0,.87);
     background-color: #FFFFFF;
-    border: 1px solid #E0E0E0;
 }
 
 .gj-clock .selected {
@@ -2135,6 +2136,11 @@ ul.gj-list-md li.disabled > [data-role="wrapper"] > [data-role="expander"] {
 }
 
 /* Bootstrap */
+.gj-clock-bootstrap {
+    border-radius: 4px;
+    border: 1px solid #E0E0E0;
+}
+
 .gj-clock-bootstrap .selected {
     color: #888;
 }
@@ -2170,7 +2176,7 @@ ul.gj-list-md li.disabled > [data-role="wrapper"] > [data-role="expander"] {
 .gj-timepicker-bootstrap span[role="right-icon"].input-group-addon .gj-icon,
 .gj-timepicker-bootstrap span[role="right-icon"].input-group-addon .material-icons {
     position: absolute;
-    top: 5px;
+    top: 4px;
     left: 7px;
 }
 

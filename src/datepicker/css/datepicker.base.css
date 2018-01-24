@@ -140,6 +140,7 @@
 .gj-calendar-bootstrap table tr td.gj-cursor-pointer div:hover {
     background: #EEEEEE;
     border-radius: 4px;
+    color: #212529;
 }
 
 .gj-calendar-bootstrap table tr td.today div {
@@ -186,6 +187,7 @@
 .gj-datepicker-bootstrap span[role="right-icon"] .input-group-text {
     padding: 7px 8px 8px 30px;
     border-left: 0px;
+    display: inline;
 }
 
 .gj-datepicker-bootstrap span[role="right-icon"] .input-group-text .gj-icon,
@@ -197,7 +199,7 @@
 
 .gj-datepicker-bootstrap span[role="right-icon"] .input-group-text .fa {
     position: absolute;
-    right: 10px;
-    top: 7px;
+    right: 11px;
+    top: 8px;
     font-size: 21px;
 }

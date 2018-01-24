@@ -323,7 +323,7 @@ var writer = {
     buildHtmlFile: function (record) {
         return '<!DOCTYPE html>\r\n<html>\r\n' +
             writer.analyzeLibs(record.libs) +
-            '<body style="padding: 6px;">\r\n' +
+            '<body style="padding: 8px;">\r\n' +
             record.text +
             '</body>\r\n</html>';
     },
@@ -353,7 +353,7 @@ var writer = {
                         }
                         break;
                     case 'bootstrap4':
-                        result += '  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">\r\n';
+                        result += '  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">\r\n';
                         break;
                     case 'fontawesome':
                         result += '  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">\r\n';

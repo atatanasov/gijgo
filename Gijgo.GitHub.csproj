@@ -173,6 +173,11 @@
     <Content Include="src\icons\undo.svg" />
     <Content Include="src\timepicker\css\timepicker.base.css" />
     <Content Include="src\timepicker\js\header.txt" />
+    <Content Include="src\timepicker\js\messages\messages.bg-bg.js" />
+    <Content Include="src\timepicker\js\messages\messages.de-de.js" />
+    <Content Include="src\timepicker\js\messages\messages.fr-fr.js" />
+    <Content Include="src\timepicker\js\messages\messages.pt-br.js" />
+    <Content Include="src\timepicker\js\messages\messages.ru-ru.js" />
     <Content Include="src\timepicker\js\timepicker.base.js" />
     <Content Include="src\tree\css\tree.base.css" />
     <Content Include="src\tree\css\tree.dragAndDrop.css" />

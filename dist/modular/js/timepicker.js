@@ -11,7 +11,9 @@
     messages: {
         'en-us': {
             am: 'AM',
-            pm: 'PM'
+            pm: 'PM',
+            ok: 'Ok',
+            cancel: 'Cancel'
         }
     }
 };
@@ -53,7 +55,6 @@ gj.timepicker.config = {
 
     bootstrap: {
         style: {
-            modal: 'modal',
             wrapper: 'gj-timepicker gj-timepicker-bootstrap gj-unselectable input-group',
             input: 'form-control',
             clock: 'gj-clock gj-clock-bootstrap',
@@ -65,7 +66,6 @@ gj.timepicker.config = {
 
     bootstrap4: {
         style: {
-            modal: 'modal',
             wrapper: 'gj-timepicker gj-timepicker-bootstrap gj-unselectable input-group',
             input: 'form-control',
             clock: 'gj-clock gj-clock-bootstrap',
@@ -179,6 +179,10 @@ gj.timepicker.methods = {
                     if (hour >= 12) {
                         $clock.attr('hour', hour - 12);
                     }
+                    if (!data.modal) {
+                        clearTimeout($timepicker.timeout);
+                        $timepicker.focus();
+                    }
                 }));
                 $mode.append('<br />');
                 $mode.append($('<span role="pm">PM</span>').on('click', function () {
@@ -188,6 +192,10 @@ gj.timepicker.methods = {
                     $(this).parent().children('[role="am"]').removeClass('selected');
                     if (hour < 12) {
                         $clock.attr('hour', hour + 12);
+                    }
+                    if (!data.modal) {
+                        clearTimeout($timepicker.timeout);
+                        $timepicker.focus();
                     }
                 }));
                 $header.append($mode);
@@ -277,7 +285,7 @@ gj.timepicker.methods = {
         rect = e.target.getBoundingClientRect();
         if (data.dialMode == 'hours') {
             value = gj.timepicker.methods.getPointerValue(mouseX - rect.left, mouseY - rect.top, data.mode);
-            $clock.attr('hour', value);
+            $clock.attr('hour', data.mode === 'ampm' && $clock.attr('mode') === 'pm' && value < 12 ? value + 12 : value);
         } else if (data.dialMode == 'minutes') {
             value = gj.timepicker.methods.getPointerValue(mouseX - rect.left, mouseY - rect.top, 'minutes');
             $clock.attr('minute', value);
@@ -364,8 +372,10 @@ gj.timepicker.methods = {
         return function (e) {
             gj.timepicker.methods.updateArrow(e, $timepicker, $clock);
             $timepicker.mouseMove = false;
-            $timepicker.focus();
-            clearTimeout($timepicker.timeout);
+            if (!$timepicker.data().modal) {
+                clearTimeout($timepicker.timeout);
+                $timepicker.focus();
+            }
         }
     },
 
@@ -442,8 +452,7 @@ gj.timepicker.methods = {
     },
 
     show: function ($timepicker) {
-        var time, hour, data = $timepicker.data(),
-            offset = $timepicker.offset(),
+        var time, hour, offset, data = $timepicker.data(),
             $clock = $('body').find('[role="clock"][guid="' + $timepicker.attr('data-guid') + '"]');
 
         if ($timepicker.value()) {
@@ -464,9 +473,10 @@ gj.timepicker.methods = {
         if (data.modal) {
             gj.core.center($clock);
         } else {
+            offset = $timepicker.offset();
             $clock.css('left', offset.left).css('top', offset.top + $timepicker.outerHeight(true) + 3);
+            $timepicker.focus();
         }
-        $timepicker.focus();
         gj.timepicker.events.show($timepicker);
     },
 
