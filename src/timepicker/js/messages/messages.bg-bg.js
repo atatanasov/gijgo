@@ -1,6 +1,4 @@
-﻿gj.datepicker.messages['bg-bg'] = {
-    am: 'AM',
-    pm: 'PM',
-    ok: 'Добре',
-    cancel: 'Отменям'
+﻿gj.timepicker.messages['bg-bg'] = {
+    ok: 'ОК',
+    cancel: 'Отказ'
 };

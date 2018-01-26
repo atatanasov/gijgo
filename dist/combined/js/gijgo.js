@@ -7559,6 +7559,17 @@ gj.grid.plugins.resizableColumns = {
              *         columns: [ { field: 'ID', width: 42 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
              *     });
              * </script>
+             * @example Bootstrap.4.FixedHeader <!-- bootstrap4, grid, draggable.base -->
+             * <table id="grid"></table>
+             * <script>
+             *     var grid = $('#grid').grid({
+             *         dataSource: '/Players/Get',
+             *         resizableColumns: true,
+             *         fixedHeader: true,
+             *         uiLibrary: 'bootstrap4',
+             *         columns: [ { field: 'ID', width: 42 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
+             *     });
+             * </script>
              */
             resizableColumns: false
         }
@@ -7595,7 +7606,7 @@ gj.grid.plugins.resizableColumns = {
 
         createResizeHandle: function ($grid, $column, column) {
             return function (e, offset) {
-                var newWidth, currentWidth = parseInt($column.attr('width'), 10);
+                var i, index, rows, cell, newWidth, currentWidth = parseInt($column.attr('width'), 10);
                 if (!currentWidth) {
                     currentWidth = $column.outerWidth();
                 }
@@ -7603,6 +7614,15 @@ gj.grid.plugins.resizableColumns = {
                     newWidth = currentWidth + offset.left;
                     column.width = newWidth;
                     $column.attr('width', newWidth);
+                    if ($grid.data().resizableColumns) {
+                        rows = $grid[0].tBodies[0].children;
+                        for (i = 0; i < rows.length; i++) {
+                            index = $column[0].cellIndex;
+                            rows[i].cells[index].setAttribute('width', newWidth);
+                            cell = rows[i].cells[index + 1];
+                            cell.setAttribute('width', parseInt(cell.getAttribute('width'), 10) - offset.left);
+                        }
+                    }
                 }
             };
         }
@@ -14154,8 +14174,8 @@ gj.timepicker.methods = {
             $mode = $('<div role="mode" />'),
             $body = $('<div role="body" />'),
             $dial = $('<div role="dial"></div>'),
-            $btnOk = $('<button class="' + data.style.button + '">Ok</button>'),
-            $btnCancel = $('<button class="' + data.style.button + '">Cancel</button>'),
+            $btnOk = $('<button class="' + data.style.button + '">' + gj.timepicker.messages[data.locale].ok + '</button>'),
+            $btnCancel = $('<button class="' + data.style.button + '">' + gj.timepicker.messages[data.locale].cancel + '</button>'),
             $footer = $('<div role="footer" class="' + data.style.footer + '" />');
 
         date = gj.core.parseDate(data.value, data.format, data.locale);
@@ -14178,7 +14198,7 @@ gj.timepicker.methods = {
             });
             $header.append($hour).append(':').append($minute);
             if (data.mode === 'ampm') {
-                $mode.append($('<span role="am">AM</span>').on('click', function () {
+                $mode.append($('<span role="am">' + gj.timepicker.messages[data.locale].am + '</span>').on('click', function () {
                     var hour = gj.timepicker.methods.getHour($clock);
                     $clock.attr('mode', 'am');
                     $(this).addClass('selected');
@@ -14192,7 +14212,7 @@ gj.timepicker.methods = {
                     }
                 }));
                 $mode.append('<br />');
-                $mode.append($('<span role="pm">PM</span>').on('click', function () {
+                $mode.append($('<span role="pm">' + gj.timepicker.messages[data.locale].pm + '</span>').on('click', function () {
                     var hour = gj.timepicker.methods.getHour($clock);
                     $clock.attr('mode', 'pm');
                     $(this).addClass('selected');

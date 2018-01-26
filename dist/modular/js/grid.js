@@ -2656,7 +2656,7 @@ gj.grid.plugins.inlineEditing.configure = function ($grid, fullConfig, clientCon
 
         createResizeHandle: function ($grid, $column, column) {
             return function (e, offset) {
-                var newWidth, currentWidth = parseInt($column.attr('width'), 10);
+                var i, index, rows, cell, newWidth, currentWidth = parseInt($column.attr('width'), 10);
                 if (!currentWidth) {
                     currentWidth = $column.outerWidth();
                 }
@@ -2664,6 +2664,15 @@ gj.grid.plugins.inlineEditing.configure = function ($grid, fullConfig, clientCon
                     newWidth = currentWidth + offset.left;
                     column.width = newWidth;
                     $column.attr('width', newWidth);
+                    if ($grid.data().resizableColumns) {
+                        rows = $grid[0].tBodies[0].children;
+                        for (i = 0; i < rows.length; i++) {
+                            index = $column[0].cellIndex;
+                            rows[i].cells[index].setAttribute('width', newWidth);
+                            cell = rows[i].cells[index + 1];
+                            cell.setAttribute('width', parseInt(cell.getAttribute('width'), 10) - offset.left);
+                        }
+                    }
                 }
             };
         }

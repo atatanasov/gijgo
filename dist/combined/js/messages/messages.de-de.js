@@ -47,3 +47,7 @@ gj.core.messages['de-de'] = {
 gj.datepicker.messages['de-de'] = {
     weekDays: ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa']
 };
+gj.timepicker.messages['de-de'] = {
+    ok: 'OK',
+    cancel: 'Abbrechen'
+};

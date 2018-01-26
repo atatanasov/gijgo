@@ -47,3 +47,7 @@ gj.core.messages['ru-ru'] = {
 gj.datepicker.messages['ru-ru'] = {
     weekDays: ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб']
 };
+gj.timepicker.messages['ru-ru'] = {
+    ok: 'ОК',
+    cancel: 'Отмена'
+};

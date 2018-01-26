@@ -147,8 +147,8 @@ gj.timepicker.methods = {
             $mode = $('<div role="mode" />'),
             $body = $('<div role="body" />'),
             $dial = $('<div role="dial"></div>'),
-            $btnOk = $('<button class="' + data.style.button + '">Ok</button>'),
-            $btnCancel = $('<button class="' + data.style.button + '">Cancel</button>'),
+            $btnOk = $('<button class="' + data.style.button + '">' + gj.timepicker.messages[data.locale].ok + '</button>'),
+            $btnCancel = $('<button class="' + data.style.button + '">' + gj.timepicker.messages[data.locale].cancel + '</button>'),
             $footer = $('<div role="footer" class="' + data.style.footer + '" />');
 
         date = gj.core.parseDate(data.value, data.format, data.locale);
@@ -171,7 +171,7 @@ gj.timepicker.methods = {
             });
             $header.append($hour).append(':').append($minute);
             if (data.mode === 'ampm') {
-                $mode.append($('<span role="am">AM</span>').on('click', function () {
+                $mode.append($('<span role="am">' + gj.timepicker.messages[data.locale].am + '</span>').on('click', function () {
                     var hour = gj.timepicker.methods.getHour($clock);
                     $clock.attr('mode', 'am');
                     $(this).addClass('selected');
@@ -185,7 +185,7 @@ gj.timepicker.methods = {
                     }
                 }));
                 $mode.append('<br />');
-                $mode.append($('<span role="pm">PM</span>').on('click', function () {
+                $mode.append($('<span role="pm">' + gj.timepicker.messages[data.locale].pm + '</span>').on('click', function () {
                     var hour = gj.timepicker.methods.getHour($clock);
                     $clock.attr('mode', 'pm');
                     $(this).addClass('selected');
@@ -586,3 +586,23 @@ gj.timepicker.widget.constructor = gj.timepicker.widget;
         }
     };
 })(jQuery);
+gj.timepicker.messages['bg-bg'] = {
+    ok: 'ОК',
+    cancel: 'Отказ'
+};
+gj.timepicker.messages['fr-fr'] = {
+    ok: 'OK',
+    cancel: 'Annuler'
+};
+gj.timepicker.messages['de-de'] = {
+    ok: 'OK',
+    cancel: 'Abbrechen'
+};
+gj.timepicker.messages['pt-br'] = {
+    ok: 'OK',
+    cancel: 'Cancelar'
+};
+gj.timepicker.messages['ru-ru'] = {
+    ok: 'ОК',
+    cancel: 'Отмена'
+};

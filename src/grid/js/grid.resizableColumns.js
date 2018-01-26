@@ -37,6 +37,17 @@ gj.grid.plugins.resizableColumns = {
              *         columns: [ { field: 'ID', width: 42 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
              *     });
              * </script>
+             * @example Bootstrap.4.FixedHeader <!-- bootstrap4, grid, draggable.base -->
+             * <table id="grid"></table>
+             * <script>
+             *     var grid = $('#grid').grid({
+             *         dataSource: '/Players/Get',
+             *         resizableColumns: true,
+             *         fixedHeader: true,
+             *         uiLibrary: 'bootstrap4',
+             *         columns: [ { field: 'ID', width: 42 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
+             *     });
+             * </script>
              */
             resizableColumns: false
         }
@@ -73,7 +84,7 @@ gj.grid.plugins.resizableColumns = {
 
         createResizeHandle: function ($grid, $column, column) {
             return function (e, offset) {
-                var newWidth, currentWidth = parseInt($column.attr('width'), 10);
+                var i, index, rows, cell, newWidth, currentWidth = parseInt($column.attr('width'), 10);
                 if (!currentWidth) {
                     currentWidth = $column.outerWidth();
                 }
@@ -81,6 +92,15 @@ gj.grid.plugins.resizableColumns = {
                     newWidth = currentWidth + offset.left;
                     column.width = newWidth;
                     $column.attr('width', newWidth);
+                    if ($grid.data().resizableColumns) {
+                        rows = $grid[0].tBodies[0].children;
+                        for (i = 0; i < rows.length; i++) {
+                            index = $column[0].cellIndex;
+                            rows[i].cells[index].setAttribute('width', newWidth);
+                            cell = rows[i].cells[index + 1];
+                            cell.setAttribute('width', parseInt(cell.getAttribute('width'), 10) - offset.left);
+                        }
+                    }
                 }
             };
         }
