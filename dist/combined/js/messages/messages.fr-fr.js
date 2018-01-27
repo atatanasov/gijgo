@@ -48,6 +48,8 @@ gj.datepicker.messages['fr-fr'] = {
     weekDays: ['D', 'L', 'M', 'M', 'J', 'V', 'S' ]
 };
 gj.timepicker.messages['fr-fr'] = {
+    am: 'AM',
+    pm: 'PM',
     ok: 'OK',
     cancel: 'Annuler'
 };

@@ -49,6 +49,8 @@ gj.datepicker.messages['pt-br'] = {
     weekDays: ['D', 'S', 'T', 'Q', 'Q', 'S', 'S']
 };
 gj.timepicker.messages['pt-br'] = {
+    am: 'AM',
+    pm: 'PM',
     ok: 'OK',
     cancel: 'Cancelar'
 };

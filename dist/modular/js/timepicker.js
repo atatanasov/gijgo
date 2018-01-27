@@ -587,22 +587,32 @@ gj.timepicker.widget.constructor = gj.timepicker.widget;
     };
 })(jQuery);
 gj.timepicker.messages['bg-bg'] = {
+    am: 'AM',
+    pm: 'PM',
     ok: 'ОК',
     cancel: 'Отказ'
 };
 gj.timepicker.messages['fr-fr'] = {
+    am: 'AM',
+    pm: 'PM',
     ok: 'OK',
     cancel: 'Annuler'
 };
 gj.timepicker.messages['de-de'] = {
+    am: 'AM',
+    pm: 'PM',
     ok: 'OK',
     cancel: 'Abbrechen'
 };
 gj.timepicker.messages['pt-br'] = {
+    am: 'AM',
+    pm: 'PM',
     ok: 'OK',
     cancel: 'Cancelar'
 };
 gj.timepicker.messages['ru-ru'] = {
+    am: 'AM',
+    pm: 'PM',
     ok: 'ОК',
     cancel: 'Отмена'
 };
