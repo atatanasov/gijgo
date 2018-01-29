@@ -38,7 +38,7 @@ gj.grid.plugins.resizableColumns = {
              *     });
              * </script>
              * @example Bootstrap.4.FixedHeader <!-- bootstrap4, grid, draggable.base -->
-             * <table id="grid"></table>
+             * <table id="grid" width="900"></table>
              * <script>
              *     var grid = $('#grid').grid({
              *         dataSource: '/Players/Get',
@@ -79,12 +79,18 @@ gj.grid.plugins.resizableColumns = {
                     });
                     $column.append($wrapper.append($resizer));
                 }
+                for (i = 0; i < $columns.length; i++) {
+                    $column = $($columns[i]);
+                    if (!$column.attr('width')) {
+                        $column.attr('width', $column.outerWidth());
+                    }
+                }
             }
         },
 
         createResizeHandle: function ($grid, $column, column) {
             return function (e, offset) {
-                var i, index, rows, cell, newWidth, currentWidth = parseInt($column.attr('width'), 10);
+                var i, index, rows, cell, newWidth, nextWidth, currentWidth = parseInt($column.attr('width'), 10);
                 if (!currentWidth) {
                     currentWidth = $column.outerWidth();
                 }
@@ -92,13 +98,16 @@ gj.grid.plugins.resizableColumns = {
                     newWidth = currentWidth + offset.left;
                     column.width = newWidth;
                     $column.attr('width', newWidth);
+                    index = $column[0].cellIndex;
+                    cell = $column[0].parentElement.children[index + 1];
+                    nextWidth = parseInt($(cell).attr('width'), 10) - offset.left;
+                    cell.setAttribute('width', nextWidth);
                     if ($grid.data().resizableColumns) {
                         rows = $grid[0].tBodies[0].children;
                         for (i = 0; i < rows.length; i++) {
-                            index = $column[0].cellIndex;
                             rows[i].cells[index].setAttribute('width', newWidth);
                             cell = rows[i].cells[index + 1];
-                            cell.setAttribute('width', parseInt(cell.getAttribute('width'), 10) - offset.left);
+                            cell.setAttribute('width', nextWidth);
                         }
                     }
                 }

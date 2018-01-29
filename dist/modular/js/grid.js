@@ -1313,6 +1313,108 @@ gj.grid.widget.prototype.getHTMLConfig = gj.grid.methods.getHTMLConfig;
     };
 })(jQuery);
 
+/** */gj.grid.plugins.fixedHeader = {
+    config: {
+        base: {
+
+            /** If set to true, add scroll to the table body             */            fixedHeader: false,
+
+            height: 300
+        }
+    },
+
+    private: {
+        init: function ($grid) {
+            var data = $grid.data(),
+                $tbody = $grid.children('tbody'),
+                $thead = $grid.children('thead'),
+                bodyHeight = data.height - $thead.outerHeight() - ($grid.children('tfoot').outerHeight() || 0);
+            $grid.addClass('gj-grid-scrollable');
+            $tbody.css('width', $thead.outerWidth());
+            $tbody.height(bodyHeight);
+        },
+
+        refresh: function ($grid) {
+            var i, width,
+                data = $grid.data(),
+                $tbody = $grid.children('tbody'),
+                $thead = $grid.children('thead'),
+                $tbodyCells = $grid.find('tbody tr[data-role="row"] td'),
+                $theadCells = $grid.find('thead tr[data-role="caption"] th');
+
+            if ($grid.children('tbody').height() < gj.grid.plugins.fixedHeader.private.getRowsHeight($grid)) {
+                $tbody.css('width', $thead.outerWidth() + gj.grid.plugins.fixedHeader.private.getScrollBarWidth() + (navigator.userAgent.toLowerCase().indexOf('firefox') > -1 ? 1 : 0));
+            } else {
+                $tbody.css('width', $thead.outerWidth());
+            }
+
+            for (i = 0; i < $theadCells.length; i++) {
+                width = $($theadCells[i]).outerWidth();
+                if (i === 0 && gj.core.isIE()) {
+                    width = width - 1;
+                }
+                $($tbodyCells[i]).attr('width', width);
+            }
+        },
+
+        getRowsHeight: function ($grid) {
+            var total = 0;
+            $grid.find('tbody tr').each(function () {
+                total += $(this).height();
+            });
+            return total;
+        },
+
+        getScrollBarWidth: function () {
+            var inner = document.createElement('p');
+            inner.style.width = "100%";
+            inner.style.height = "200px";
+
+            var outer = document.createElement('div');
+            outer.style.position = "absolute";
+            outer.style.top = "0px";
+            outer.style.left = "0px";
+            outer.style.visibility = "hidden";
+            outer.style.width = "200px";
+            outer.style.height = "150px";
+            outer.style.overflow = "hidden";
+            outer.appendChild(inner);
+
+            document.body.appendChild(outer);
+            var w1 = inner.offsetWidth;
+            outer.style.overflow = 'scroll';
+            var w2 = inner.offsetWidth;
+            if (w1 == w2) w2 = outer.clientWidth;
+
+            document.body.removeChild(outer);
+
+            return (w1 - w2);
+        }
+    },
+
+    public: {
+    },
+
+    events: {
+    },
+
+    configure: function ($grid, fullConfig, clientConfig) {
+        $.extend(true, $grid, gj.grid.plugins.fixedHeader.public);
+        var data = $grid.data();
+        if (clientConfig.fixedHeader) {
+            $grid.on('initialized', function () {
+                gj.grid.plugins.fixedHeader.private.init($grid);
+            });
+            $grid.on('dataBound', function () {
+                gj.grid.plugins.fixedHeader.private.refresh($grid);
+            });
+            $grid.on('resize', function () {
+                gj.grid.plugins.fixedHeader.private.refresh($grid);
+            });
+        }
+    }
+};
+
 /**  */gj.grid.plugins.expandCollapseRows = {
     config: {
         base: {
@@ -2651,12 +2753,18 @@ gj.grid.plugins.inlineEditing.configure = function ($grid, fullConfig, clientCon
                     });
                     $column.append($wrapper.append($resizer));
                 }
+                for (i = 0; i < $columns.length; i++) {
+                    $column = $($columns[i]);
+                    if (!$column.attr('width')) {
+                        $column.attr('width', $column.outerWidth());
+                    }
+                }
             }
         },
 
         createResizeHandle: function ($grid, $column, column) {
             return function (e, offset) {
-                var i, index, rows, cell, newWidth, currentWidth = parseInt($column.attr('width'), 10);
+                var i, index, rows, cell, newWidth, nextWidth, currentWidth = parseInt($column.attr('width'), 10);
                 if (!currentWidth) {
                     currentWidth = $column.outerWidth();
                 }
@@ -2664,13 +2772,16 @@ gj.grid.plugins.inlineEditing.configure = function ($grid, fullConfig, clientCon
                     newWidth = currentWidth + offset.left;
                     column.width = newWidth;
                     $column.attr('width', newWidth);
+                    index = $column[0].cellIndex;
+                    cell = $column[0].parentElement.children[index + 1];
+                    nextWidth = parseInt($(cell).attr('width'), 10) - offset.left;
+                    cell.setAttribute('width', nextWidth);
                     if ($grid.data().resizableColumns) {
                         rows = $grid[0].tBodies[0].children;
                         for (i = 0; i < rows.length; i++) {
-                            index = $column[0].cellIndex;
                             rows[i].cells[index].setAttribute('width', newWidth);
                             cell = rows[i].cells[index + 1];
-                            cell.setAttribute('width', parseInt(cell.getAttribute('width'), 10) - offset.left);
+                            cell.setAttribute('width', nextWidth);
                         }
                     }
                 }
@@ -3144,108 +3255,6 @@ gj.grid.plugins.inlineEditing.configure = function ($grid, fullConfig, clientCon
 
             $grid.on('dataFiltered', function (e, records) {
                 gj.grid.plugins.grouping.private.grouping($grid, records);
-            });
-        }
-    }
-};
-
-/** */gj.grid.plugins.fixedHeader = {
-    config: {
-        base: {
-
-            /** If set to true, add scroll to the table body             */            fixedHeader: false,
-
-            height: 300
-        }
-    },
-
-    private: {
-        init: function ($grid) {
-            var data = $grid.data(),
-                $tbody = $grid.children('tbody'),
-                $thead = $grid.children('thead'),
-                bodyHeight = data.height - $thead.outerHeight() - ($grid.children('tfoot').outerHeight() || 0);
-            $grid.addClass('gj-grid-scrollable');
-            $tbody.css('width', $thead.outerWidth());
-            $tbody.height(bodyHeight);
-        },
-
-        refresh: function ($grid) {
-            var i, width,
-                data = $grid.data(),
-                $tbody = $grid.children('tbody'),
-                $thead = $grid.children('thead'),
-                $tbodyCells = $grid.find('tbody tr[data-role="row"] td'),
-                $theadCells = $grid.find('thead tr[data-role="caption"] th');
-
-            if ($grid.children('tbody').height() < gj.grid.plugins.fixedHeader.private.getRowsHeight($grid)) {
-                $tbody.css('width', $thead.outerWidth() + gj.grid.plugins.fixedHeader.private.getScrollBarWidth() + (navigator.userAgent.toLowerCase().indexOf('firefox') > -1 ? 1 : 0));
-            } else {
-                $tbody.css('width', $thead.outerWidth());
-            }
-
-            for (i = 0; i < $theadCells.length; i++) {
-                width = $($theadCells[i]).outerWidth();
-                if (i === 0 && gj.core.isIE()) {
-                    width = width - 1;
-                }
-                $($tbodyCells[i]).attr('width', width);
-            }
-        },
-
-        getRowsHeight: function ($grid) {
-            var total = 0;
-            $grid.find('tbody tr').each(function () {
-                total += $(this).height();
-            });
-            return total;
-        },
-
-        getScrollBarWidth: function () {
-            var inner = document.createElement('p');
-            inner.style.width = "100%";
-            inner.style.height = "200px";
-
-            var outer = document.createElement('div');
-            outer.style.position = "absolute";
-            outer.style.top = "0px";
-            outer.style.left = "0px";
-            outer.style.visibility = "hidden";
-            outer.style.width = "200px";
-            outer.style.height = "150px";
-            outer.style.overflow = "hidden";
-            outer.appendChild(inner);
-
-            document.body.appendChild(outer);
-            var w1 = inner.offsetWidth;
-            outer.style.overflow = 'scroll';
-            var w2 = inner.offsetWidth;
-            if (w1 == w2) w2 = outer.clientWidth;
-
-            document.body.removeChild(outer);
-
-            return (w1 - w2);
-        }
-    },
-
-    public: {
-    },
-
-    events: {
-    },
-
-    configure: function ($grid, fullConfig, clientConfig) {
-        $.extend(true, $grid, gj.grid.plugins.fixedHeader.public);
-        var data = $grid.data();
-        if (clientConfig.fixedHeader) {
-            $grid.on('initialized', function () {
-                gj.grid.plugins.fixedHeader.private.init($grid);
-            });
-            $grid.on('dataBound', function () {
-                gj.grid.plugins.fixedHeader.private.refresh($grid);
-            });
-            $grid.on('resize', function () {
-                gj.grid.plugins.fixedHeader.private.refresh($grid);
             });
         }
     }
