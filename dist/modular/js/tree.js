@@ -1018,51 +1018,68 @@ gj.tree.widget.constructor = gj.tree.widget;
 	    nodeDataBound: function ($tree, $node) {
 	        var $wrapper = $node.children('[data-role="wrapper"]'),
     	        $display = $node.find('>[data-role="wrapper"]>[data-role="display"]');
-	        if ($wrapper.length && $display.length) {
-	            $display.on('mousedown', gj.tree.plugins.dragAndDrop.private.createNodeMouseDownHandler($tree, $node, $display));
+            if ($wrapper.length && $display.length) {
+                $display.on('mousedown', gj.tree.plugins.dragAndDrop.private.createNodeMouseDownHandler($tree));
+                $display.on('mousemove', gj.tree.plugins.dragAndDrop.private.createNodeMouseMoveHandler($tree, $node, $display));
+                $display.on('mouseup', gj.tree.plugins.dragAndDrop.private.createNodeMouseUpHandler($tree));
 		    }
-		},
+        },
 
-	    createNodeMouseDownHandler: function ($tree, $node, $display) {
-		    return function (e) {
-		        var data = $tree.data(), $dragEl, $wrapper, offsetTop, offsetLeft;
-		        $dragEl = $display.clone().wrap('<div data-role="wrapper"/>').closest('div')
-                            .wrap('<li class="' + data.style.item + '" />').closest('li')
-                            .wrap('<ul class="' + data.style.list + '" />').closest('ul');
-		        $('body').append($dragEl);
-		        $dragEl.attr('data-role', 'draggable-clone').addClass('gj-unselectable').addClass(data.style.dragEl);
-		        $dragEl.find('[data-role="wrapper"]').prepend('<span data-role="indicator" />');
-		        $dragEl.draggable({
-		            drag: gj.tree.plugins.dragAndDrop.private.createDragHandler($tree, $node, $display),
-		            stop: gj.tree.plugins.dragAndDrop.private.createDragStopHandler($tree, $node, $display)
-		        });
-		        $wrapper = $display.parent();
-		        offsetTop = $display.offset().top;
-		        offsetTop -= parseInt($wrapper.css("border-top-width")) + parseInt($wrapper.css("margin-top")) + parseInt($wrapper.css("padding-top"));
-		        offsetLeft = $display.offset().left;
-		        offsetLeft -= parseInt($wrapper.css("border-left-width")) + parseInt($wrapper.css("margin-left")) + parseInt($wrapper.css("padding-left"));
-		        offsetLeft -= $dragEl.find('[data-role="indicator"]').outerWidth(true);
-		        $dragEl.css({
-		            position: 'absolute', top: offsetTop, left: offsetLeft, width: $display.outerWidth(true)
-		        });
-		        if ($display.attr('data-droppable') === 'true') {
-		            $display.droppable('destroy');
-		        }
-		        gj.tree.plugins.dragAndDrop.private.getTargetDisplays($tree, $node, $display).each(function () {
-		            var $dropEl = $(this);
-		            if ($dropEl.attr('data-droppable') === 'true') {
-		                $dropEl.droppable('destroy');
-		            }
-		            $dropEl.droppable();
-		        });
-		        gj.tree.plugins.dragAndDrop.private.getTargetDisplays($tree, $node).each(function () {
-		            var $dropEl = $(this);
-		            if ($dropEl.attr('data-droppable') === 'true') {
-		                $dropEl.droppable('destroy');
-		            }
-		            $dropEl.droppable();
-		        });
-		        $dragEl.trigger('mousedown');
+        createNodeMouseDownHandler: function ($tree) {
+            return function (e) {
+                $tree.data('dragReady', true);
+            }
+        },
+
+        createNodeMouseUpHandler: function ($tree) {
+            return function (e) {
+                $tree.data('dragReady', false);
+            }
+        },
+
+	    createNodeMouseMoveHandler: function ($tree, $node, $display) {
+            return function (e) {
+                if ($tree.data('dragReady')) {
+                    $tree.data('dragReady', false);
+                    var data = $tree.data(), $dragEl, $wrapper, offsetTop, offsetLeft;
+                    $dragEl = $display.clone().wrap('<div data-role="wrapper"/>').closest('div')
+                        .wrap('<li class="' + data.style.item + '" />').closest('li')
+                        .wrap('<ul class="' + data.style.list + '" />').closest('ul');
+                    $('body').append($dragEl);
+                    $dragEl.attr('data-role', 'draggable-clone').addClass('gj-unselectable').addClass(data.style.dragEl);
+                    $dragEl.find('[data-role="wrapper"]').prepend('<span data-role="indicator" />');
+                    $dragEl.draggable({
+                        drag: gj.tree.plugins.dragAndDrop.private.createDragHandler($tree, $node, $display),
+                        stop: gj.tree.plugins.dragAndDrop.private.createDragStopHandler($tree, $node, $display)
+                    });
+                    $wrapper = $display.parent();
+                    offsetTop = $display.offset().top;
+                    offsetTop -= parseInt($wrapper.css("border-top-width")) + parseInt($wrapper.css("margin-top")) + parseInt($wrapper.css("padding-top"));
+                    offsetLeft = $display.offset().left;
+                    offsetLeft -= parseInt($wrapper.css("border-left-width")) + parseInt($wrapper.css("margin-left")) + parseInt($wrapper.css("padding-left"));
+                    offsetLeft -= $dragEl.find('[data-role="indicator"]').outerWidth(true);
+                    $dragEl.css({
+                        position: 'absolute', top: offsetTop, left: offsetLeft, width: $display.outerWidth(true)
+                    });
+                    if ($display.attr('data-droppable') === 'true') {
+                        $display.droppable('destroy');
+                    }
+                    gj.tree.plugins.dragAndDrop.private.getTargetDisplays($tree, $node, $display).each(function () {
+                        var $dropEl = $(this);
+                        if ($dropEl.attr('data-droppable') === 'true') {
+                            $dropEl.droppable('destroy');
+                        }
+                        $dropEl.droppable();
+                    });
+                    gj.tree.plugins.dragAndDrop.private.getTargetDisplays($tree, $node).each(function () {
+                        var $dropEl = $(this);
+                        if ($dropEl.attr('data-droppable') === 'true') {
+                            $dropEl.droppable('destroy');
+                        }
+                        $dropEl.droppable();
+                    });
+                    $dragEl.trigger('mousedown');
+                }
 		    };
 	    },
 
