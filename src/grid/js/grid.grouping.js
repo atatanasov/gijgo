@@ -148,7 +148,7 @@ gj.grid.plugins.grouping = {
 
             previousValue = undefined;
             $grid.on('rowDataBound', function (e, $row, id, record) {
-                if (previousValue !== record[data.grouping.groupBy]) {
+                if (previousValue !== record[data.grouping.groupBy] || $row[0].rowIndex === 1) {
                     var colspan = gj.grid.methods.countVisibleColumns($grid) - 1,
                         $groupRow = $('<tr data-role="group" />'),
                         $expandCollapseCell = $('<td class="gj-text-align-center gj-unselectable gj-cursor-pointer" />');
