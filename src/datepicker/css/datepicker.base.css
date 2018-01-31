@@ -19,7 +19,7 @@
 
 .gj-calendar {
     position: absolute;
-    z-index: 4;
+    z-index: 1202;
 }
 
 .gj-calendar table tr[role="month-manager"] th {

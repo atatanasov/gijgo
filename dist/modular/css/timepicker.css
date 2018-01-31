@@ -19,7 +19,7 @@
 
 .gj-clock {
     position: absolute;
-    z-index: 4;
+    z-index: 1202;
     font-size: 16px;
     font-weight: 400;
     letter-spacing: .04em;

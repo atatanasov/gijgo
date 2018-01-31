@@ -997,7 +997,7 @@ span.gj-grid-column-resizer {
     width: 10px;
     top: -100px;
     height: 300px;
-    z-index: 100;
+    z-index: 1202;
     cursor: e-resize;
 }
 
@@ -1396,7 +1396,7 @@ ul.gj-list-md li.disabled > [data-role="wrapper"] > [data-role="expander"] {
 .gj-tree-drag-el {
     padding: 0px;
     margin: 0px;
-    z-index:9999;
+    z-index: 1203;
 }
 
 .gj-tree-drag-el li {
@@ -1721,7 +1721,7 @@ ul.gj-list-md li.disabled > [data-role="wrapper"] > [data-role="expander"] {
     background-color: #f5f5f5;
     color: #000;
     margin: 0px;
-    z-index: 4;
+    z-index: 1202;
 }
 
 .gj-dropdown-list-md li:hover, .gj-dropdown-list-md li.active {
@@ -1761,7 +1761,7 @@ ul.gj-list-md li.disabled > [data-role="wrapper"] > [data-role="expander"] {
     top: 32px;
     left: 0px;
     margin: 0px;
-    z-index: 4;
+    z-index: 1202;
 }
 .gj-datepicker {
     position: relative;
@@ -1784,7 +1784,7 @@ ul.gj-list-md li.disabled > [data-role="wrapper"] > [data-role="expander"] {
 
 .gj-calendar {
     position: absolute;
-    z-index: 4;
+    z-index: 1202;
 }
 
 .gj-calendar table tr[role="month-manager"] th {
@@ -1989,7 +1989,7 @@ ul.gj-list-md li.disabled > [data-role="wrapper"] > [data-role="expander"] {
 
 .gj-clock {
     position: absolute;
-    z-index: 4;
+    z-index: 1202;
     font-size: 16px;
     font-weight: 400;
     letter-spacing: .04em;

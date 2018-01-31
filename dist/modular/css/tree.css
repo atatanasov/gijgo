@@ -145,7 +145,7 @@ ul.gj-list-md li.disabled > [data-role="wrapper"] > [data-role="expander"] {
 .gj-tree-drag-el {
     padding: 0px;
     margin: 0px;
-    z-index:9999;
+    z-index: 1203;
 }
 
 .gj-tree-drag-el li {
