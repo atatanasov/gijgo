@@ -124,8 +124,15 @@ gj.editor.methods = {
 
         $body.attr('contenteditable', true);
 
-        $body.on('mouseup keyup mouseout', function () {
+        $body.on('keydown', function (e) {
+            if (gj.editor.events.changing($editor) === false) {
+                e.preventDefault();
+            }
+        });
+
+        $body.on('mouseup keyup mouseout cut paste', function (e) {
             self.updateToolbar($editor, $toolbar);
+            gj.editor.events.changed($editor);
         });
 
         if ($toolbar.length === 0) {
@@ -190,7 +197,6 @@ gj.editor.methods = {
                 $btn.removeClass(data.style.buttonActive);
             }
         });
-        gj.editor.events.change($editor);
     },
 
     executeCmd: function ($editor, $body, $toolbar, $btn) {
@@ -222,10 +228,17 @@ gj.editor.methods = {
 };
 
 gj.editor.events = {
+
     /**
-     * Triggered when the editor text is changed.
-     *     */    change: function ($editor) {
-        return $editor.triggerHandler('change');
+     * Event fires before change of text in the editor.
+     *     */    changing: function ($editor) {
+        return $editor.triggerHandler('changing');
+    },
+
+    /**
+     * Event fires after change of text in the editor.
+     *     */    changed: function ($editor) {
+        return $editor.triggerHandler('changed');
     }
 };
 

@@ -83,6 +83,7 @@
     <Content Include="src\dialog\js\messages\messages.en-us.js" />
     <Content Include="src\dialog\js\messages\messages.fr-fr.js" />
     <Content Include="src\dialog\js\messages\messages.pt-br.js" />
+    <Content Include="src\dialog\js\messages\messages.ru-ru.js" />
     <Content Include="src\draggable\js\draggable.base.js" />
     <Content Include="src\draggable\js\header.txt" />
     <Content Include="src\dropdown\css\dropdown.base.css" />
@@ -97,6 +98,7 @@
     <Content Include="src\editor\js\messages\messages.en-us.js" />
     <Content Include="src\editor\js\messages\messages.fr-fr.js" />
     <Content Include="src\editor\js\messages\messages.pt-br.js" />
+    <Content Include="src\editor\js\messages\messages.ru-ru.js" />
     <Content Include="src\fonts\gijgo-material.svg" />
     <Content Include="src\grid\css\grid.base.css" />
     <Content Include="src\grid\css\grid.columnReorder.css" />
@@ -129,6 +131,7 @@
     <Content Include="src\grid\js\header.txt" />
     <Content Include="src\grid\js\messages\messages.de-de.js" />
     <Content Include="src\grid\js\messages\messages.pt-br.js" />
+    <Content Include="src\grid\js\messages\messages.ru-ru.js" />
     <Content Include="src\header.txt" />
     <Content Include="src\grid\js\messages\messages.bg-bg.js" />
     <Content Include="src\grid\js\messages\messages.en-us.js" />

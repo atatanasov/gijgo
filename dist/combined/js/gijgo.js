@@ -11930,8 +11930,15 @@ gj.editor.methods = {
 
         $body.attr('contenteditable', true);
 
-        $body.on('mouseup keyup mouseout', function () {
+        $body.on('keydown', function (e) {
+            if (gj.editor.events.changing($editor) === false) {
+                e.preventDefault();
+            }
+        });
+
+        $body.on('mouseup keyup mouseout cut paste', function (e) {
             self.updateToolbar($editor, $toolbar);
+            gj.editor.events.changed($editor);
         });
 
         if ($toolbar.length === 0) {
@@ -11996,7 +12003,6 @@ gj.editor.methods = {
                 $btn.removeClass(data.style.buttonActive);
             }
         });
-        gj.editor.events.change($editor);
     },
 
     executeCmd: function ($editor, $body, $toolbar, $btn) {
@@ -12028,23 +12034,42 @@ gj.editor.methods = {
 };
 
 gj.editor.events = {
+
     /**
-     * Triggered when the editor text is changed.
+     * Event fires before change of text in the editor.
      *
-     * @event change
+     * @event changing
      * @param {object} e - event data
-     * @example sample <!-- editor, materialicons -->
+     * @example MaxLength <!-- editor -->
+     * <div id="editor"></div>
+     * <script>
+     *     var editor = $('#editor').editor();
+     *     editor.on('changing', function (e) {
+     *         return $(e.target).text().length < 3;
+     *     });
+     * </script>
+     */
+    changing: function ($editor) {
+        return $editor.triggerHandler('changing');
+    },
+
+    /**
+     * Event fires after change of text in the editor.
+     *
+     * @event changed
+     * @param {object} e - event data
+     * @example sample <!-- editor -->
      * <div id="editor"></div>
      * <script>
      *     $('#editor').editor({
-     *         change: function (e) {
-     *             alert('Change is fired');
+     *         changed: function (e) {
+     *             alert('changed is fired');
      *         }
      *     });
      * </script>
      */
-    change: function ($editor) {
-        return $editor.triggerHandler('change');
+    changed: function ($editor) {
+        return $editor.triggerHandler('changed');
     }
 };
 
