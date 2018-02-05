@@ -469,6 +469,18 @@ ul.gj-list-md li.disabled>[data-role="wrapper"]>[data-role="display"] {
 .gj-icon.clock:before {
     content: "\e924";
 }
+
+.gj-icon.vertical-align-top:before {
+    content: "\e925";
+}
+
+.gj-icon.vertical-align-center:before {
+    content: "\e926";
+}
+
+.gj-icon.vertical-align-bottom:before {
+    content: "\e927";
+}
 .gj-draggable {
     cursor: move;
 }

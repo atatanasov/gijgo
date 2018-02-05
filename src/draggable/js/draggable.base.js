@@ -113,8 +113,8 @@ gj.draggable.methods = {
         return function (e) {
             var x, y, offsetX, offsetY, prevX, prevY;
             if ($dragEl.attr('data-draggable-dragging') === 'true') {
-                x = $dragEl.mouseX(e);
-                y = $dragEl.mouseY(e);
+                x = Math.round($dragEl.mouseX(e));
+                y = Math.round($dragEl.mouseY(e));
                 prevX = $dragEl.attr('data-draggable-x');
                 prevY = $dragEl.attr('data-draggable-y');
                 if (prevX && prevY) {                

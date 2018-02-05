@@ -1735,8 +1735,8 @@ gj.draggable.methods = {
         return function (e) {
             var x, y, offsetX, offsetY, prevX, prevY;
             if ($dragEl.attr('data-draggable-dragging') === 'true') {
-                x = $dragEl.mouseX(e);
-                y = $dragEl.mouseY(e);
+                x = Math.round($dragEl.mouseX(e));
+                y = Math.round($dragEl.mouseY(e));
                 prevX = $dragEl.attr('data-draggable-x');
                 prevY = $dragEl.attr('data-draggable-y');
                 if (prevX && prevY) {                
@@ -7786,6 +7786,7 @@ gj.grid.plugins.resizableColumns = {
         },
 
         createResizeHandle: function ($grid, $column, column) {
+            var data = $grid.data();
             return function (e, offset) {
                 var i, index, rows, cell, newWidth, nextWidth, currentWidth = parseInt($column.attr('width'), 10);
                 if (!currentWidth) {
@@ -7799,7 +7800,7 @@ gj.grid.plugins.resizableColumns = {
                     cell = $column[0].parentElement.children[index + 1];
                     nextWidth = parseInt($(cell).attr('width'), 10) - offset.left;
                     cell.setAttribute('width', nextWidth);
-                    if ($grid.data().resizableColumns) {
+                    if (data.resizableColumns) {
                         rows = $grid[0].tBodies[0].children;
                         for (i = 0; i < rows.length; i++) {
                             rows[i].cells[index].setAttribute('width', newWidth);
