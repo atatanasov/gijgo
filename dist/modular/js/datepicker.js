@@ -481,7 +481,6 @@ gj.datepicker.methods = {
             offset = { left: elemRect.left - bodyRect.left, top: elemRect.top - bodyRect.top };
 
         childEl.style.left = elemRect.left - bodyRect.left;
-
         document.documentElement.clientHeight;
     },
 
