@@ -4267,7 +4267,7 @@ gj.grid.methods = {
             position = id;
         }
         if (position) {
-            $result = $grid.find('tbody > tr[data-position="' + position + '"]');
+            $result = $grid.children('tbody').children('tr[data-position="' + position + '"]');
         }
         return $result;
     },
@@ -6269,7 +6269,7 @@ gj.grid.plugins.inlineEditing.public = {
      */
     edit: function (id) {
         var i, record = this.getById(id),
-            $cells = gj.grid.methods.getRowById(this, id).find('td'),
+            $cells = gj.grid.methods.getRowById(this, id).children('td'),
             columns = this.data('columns');
 
         for (i = 0; i < $cells.length; i++) {
@@ -13629,6 +13629,16 @@ gj.datepicker.methods = {
         $calendar.show();
         $datepicker.focus();
         gj.datepicker.events.show($datepicker);
+    },
+
+    calcPosition: function (mainEl, childEl) {
+        var bodyRect = document.body.getBoundingClientRect(),
+            elemRect = mainEl.getBoundingClientRect(),
+            offset = { left: elemRect.left - bodyRect.left, top: elemRect.top - bodyRect.top };
+
+        childEl.style.left = elemRect.left - bodyRect.left;
+
+        document.documentElement.clientHeight;
     },
 
     hide: function ($datepicker) {

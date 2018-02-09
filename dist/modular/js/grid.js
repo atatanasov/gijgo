@@ -902,7 +902,7 @@ gj.grid.methods = {
             position = id;
         }
         if (position) {
-            $result = $grid.find('tbody > tr[data-position="' + position + '"]');
+            $result = $grid.children('tbody').children('tr[data-position="' + position + '"]');
         }
         return $result;
     },
@@ -1873,7 +1873,7 @@ gj.grid.plugins.inlineEditing.public = {
     /**
      * Enable edit mode for all editable cells within a row.     */    edit: function (id) {
         var i, record = this.getById(id),
-            $cells = gj.grid.methods.getRowById(this, id).find('td'),
+            $cells = gj.grid.methods.getRowById(this, id).children('td'),
             columns = this.data('columns');
 
         for (i = 0; i < $cells.length; i++) {

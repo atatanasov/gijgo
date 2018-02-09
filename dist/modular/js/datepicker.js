@@ -475,6 +475,16 @@ gj.datepicker.methods = {
         gj.datepicker.events.show($datepicker);
     },
 
+    calcPosition: function (mainEl, childEl) {
+        var bodyRect = document.body.getBoundingClientRect(),
+            elemRect = mainEl.getBoundingClientRect(),
+            offset = { left: elemRect.left - bodyRect.left, top: elemRect.top - bodyRect.top };
+
+        childEl.style.left = elemRect.left - bodyRect.left;
+
+        document.documentElement.clientHeight;
+    },
+
     hide: function ($datepicker) {
         var $calendar = $('body').children('[role="calendar"][guid="' + $datepicker.attr('data-guid') + '"]');
         $calendar.hide();

@@ -551,7 +551,7 @@ gj.grid.plugins.inlineEditing.public = {
      */
     edit: function (id) {
         var i, record = this.getById(id),
-            $cells = gj.grid.methods.getRowById(this, id).find('td'),
+            $cells = gj.grid.methods.getRowById(this, id).children('td'),
             columns = this.data('columns');
 
         for (i = 0; i < $cells.length; i++) {

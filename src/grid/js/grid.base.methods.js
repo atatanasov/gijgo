@@ -646,7 +646,7 @@ gj.grid.methods = {
             position = id;
         }
         if (position) {
-            $result = $grid.find('tbody > tr[data-position="' + position + '"]');
+            $result = $grid.children('tbody').children('tr[data-position="' + position + '"]');
         }
         return $result;
     },
