@@ -186,10 +186,7 @@ gj.datepicker.config = {
          * @example MaterialDesign <!-- datepicker -->
          * <input id="datepicker" width="312" />
          * <script>
-         *    var datepicker = $('#datepicker').datepicker({ 
-         *        uiLibrary: 'materialdesign',
-         *        iconsLibrary: 'materialicons'
-         *    });
+         *    var datepicker = $('#datepicker').datepicker({ uiLibrary: 'materialdesign' });
          * </script>
          * @example Bootstrap.3 <!-- bootstrap, datepicker -->
          * <input id="datepicker" width="270" />
@@ -850,20 +847,10 @@ gj.datepicker.methods = {
             $calendar = $('body').children('[role="calendar"][guid="' + $datepicker.attr('data-guid') + '"]');
 
         gj.datepicker.methods.renderCalendar($datepicker);
-        $calendar.css('left', offset.left).css('top', offset.top + $datepicker.outerHeight(true) + 3);
         $calendar.show();
+        gj.core.calcPosition($datepicker[0], $calendar[0]);
         $datepicker.focus();
         gj.datepicker.events.show($datepicker);
-    },
-
-    calcPosition: function (mainEl, childEl) {
-        var bodyRect = document.body.getBoundingClientRect(),
-            elemRect = mainEl.getBoundingClientRect(),
-            offset = { left: elemRect.left - bodyRect.left, top: elemRect.top - bodyRect.top };
-
-        childEl.style.left = elemRect.left - bodyRect.left;
-
-        document.documentElement.clientHeight;
     },
 
     hide: function ($datepicker) {

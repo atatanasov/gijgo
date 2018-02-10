@@ -453,5 +453,39 @@ gj.core = {
 
     isIE: function () {
         return !!navigator.userAgent.match(/Trident/g) || !!navigator.userAgent.match(/MSIE/g);
+    },
+
+    calcPosition: function (mainEl, childEl) {
+        var bodyRect = document.body.getBoundingClientRect(),
+            mainElRect = mainEl.getBoundingClientRect(),
+            mainElHeight = gj.core.height(mainEl, true),
+            childElHeight = gj.core.height(childEl, true);
+
+        if ((mainElRect.top + mainElHeight + childElHeight) > window.innerHeight && mainElRect.top > childElHeight) {
+            childEl.style.top = mainElRect.top - childElHeight - 3 + 'px';
+            childEl.style.left = mainElRect.left + 'px';
+        } else {
+            childEl.style.top = mainElRect.top + mainElHeight + 3 + 'px';
+            childEl.style.left = mainElRect.left + 'px';
+        }
+
+    },
+
+    height: function (el, margin) {
+        var result, style = window.getComputedStyle(el);
+
+        if (style.lineHeight === 'normal') {
+            result = parseInt(style.height, 10);
+            result += parseInt(style.paddingTop, 10) + parseInt(style.paddingBottom, 10);
+            result += parseInt(style.borderTop, 10) + parseInt(style.borderBottom, 10);
+        } else {
+            result = parseInt(style.height, 10);
+        }
+
+        if (margin) {
+            result += parseInt(style.marginTop, 10) + parseInt(style.marginBottom, 10);
+        }
+
+        return result;
     }
 };

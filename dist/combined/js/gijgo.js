@@ -460,6 +460,40 @@ gj.core = {
 
     isIE: function () {
         return !!navigator.userAgent.match(/Trident/g) || !!navigator.userAgent.match(/MSIE/g);
+    },
+
+    calcPosition: function (mainEl, childEl) {
+        var bodyRect = document.body.getBoundingClientRect(),
+            mainElRect = mainEl.getBoundingClientRect(),
+            mainElHeight = gj.core.height(mainEl, true),
+            childElHeight = gj.core.height(childEl, true);
+
+        if ((mainElRect.top + mainElHeight + childElHeight) > window.innerHeight && mainElRect.top > childElHeight) {
+            childEl.style.top = mainElRect.top - childElHeight - 3 + 'px';
+            childEl.style.left = mainElRect.left + 'px';
+        } else {
+            childEl.style.top = mainElRect.top + mainElHeight + 3 + 'px';
+            childEl.style.left = mainElRect.left + 'px';
+        }
+
+    },
+
+    height: function (el, margin) {
+        var result, style = window.getComputedStyle(el);
+
+        if (style.lineHeight === 'normal') {
+            result = parseInt(style.height, 10);
+            result += parseInt(style.paddingTop, 10) + parseInt(style.paddingBottom, 10);
+            result += parseInt(style.borderTop, 10) + parseInt(style.borderBottom, 10);
+        } else {
+            result = parseInt(style.height, 10);
+        }
+
+        if (margin) {
+            result += parseInt(style.marginTop, 10) + parseInt(style.marginBottom, 10);
+        }
+
+        return result;
     }
 };
 /* global window alert jQuery */
@@ -12961,10 +12995,7 @@ gj.datepicker.config = {
          * @example MaterialDesign <!-- datepicker -->
          * <input id="datepicker" width="312" />
          * <script>
-         *    var datepicker = $('#datepicker').datepicker({ 
-         *        uiLibrary: 'materialdesign',
-         *        iconsLibrary: 'materialicons'
-         *    });
+         *    var datepicker = $('#datepicker').datepicker({ uiLibrary: 'materialdesign' });
          * </script>
          * @example Bootstrap.3 <!-- bootstrap, datepicker -->
          * <input id="datepicker" width="270" />
@@ -13625,19 +13656,10 @@ gj.datepicker.methods = {
             $calendar = $('body').children('[role="calendar"][guid="' + $datepicker.attr('data-guid') + '"]');
 
         gj.datepicker.methods.renderCalendar($datepicker);
-        $calendar.css('left', offset.left).css('top', offset.top + $datepicker.outerHeight(true) + 3);
         $calendar.show();
+        gj.core.calcPosition($datepicker[0], $calendar[0]);
         $datepicker.focus();
         gj.datepicker.events.show($datepicker);
-    },
-
-    calcPosition: function (mainEl, childEl) {
-        var bodyRect = document.body.getBoundingClientRect(),
-            elemRect = mainEl.getBoundingClientRect(),
-            offset = { left: elemRect.left - bodyRect.left, top: elemRect.top - bodyRect.top };
-
-        childEl.style.left = elemRect.left - bodyRect.left;
-        document.documentElement.clientHeight;
     },
 
     hide: function ($datepicker) {

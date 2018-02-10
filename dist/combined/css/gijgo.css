@@ -1858,6 +1858,7 @@ ul.gj-list-md li.disabled > [data-role="wrapper"] > [data-role="expander"] {
 .gj-calendar-md table tr td.gj-cursor-pointer div:hover {
     background: #EEEEEE;
     border-radius: 50%;
+    color: rgba(0,0,0,.87);
 }
 
 .gj-calendar-md table tr td.today div {
