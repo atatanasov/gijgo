@@ -139,15 +139,15 @@ gj.datepicker.methods = {
         $rightIcon.on('click', function (e) {
             var $calendar = $('body').children('[role="calendar"][guid="' + $datepicker.attr('data-guid') + '"]');
             if ($calendar.is(':visible')) {
-                gj.datepicker.methods.hide($datepicker);
+                gj.datepicker.methods.close($datepicker);
             } else {
-                gj.datepicker.methods.show($datepicker);
+                gj.datepicker.methods.open($datepicker);
             }
         });
 
         $datepicker.on('blur', function () {
             $datepicker.timeout = setTimeout(function () {
-                gj.datepicker.methods.hide($datepicker);
+                gj.datepicker.methods.close($datepicker);
             }, 500);
         });
 
@@ -458,12 +458,12 @@ gj.datepicker.methods = {
             $datepicker.attr('day', year + '-' + month + '-' + date.getDate());
             $datepicker.attr('month', month);
             $datepicker.attr('year', year);
-            gj.datepicker.methods.hide($datepicker);
+            gj.datepicker.methods.close($datepicker);
             return $datepicker;
         };
     },
 
-    show: function ($datepicker) {
+    open: function ($datepicker) {
         var data = $datepicker.data(),
             offset = $datepicker.offset(),
             $calendar = $('body').children('[role="calendar"][guid="' + $datepicker.attr('data-guid') + '"]');
@@ -472,13 +472,13 @@ gj.datepicker.methods = {
         $calendar.show();
         gj.core.calcPosition($datepicker[0], $calendar[0]);
         $datepicker.focus();
-        gj.datepicker.events.show($datepicker);
+        gj.datepicker.events.open($datepicker);
     },
 
-    hide: function ($datepicker) {
+    close: function ($datepicker) {
         var $calendar = $('body').children('[role="calendar"][guid="' + $datepicker.attr('data-guid') + '"]');
         $calendar.hide();
-        gj.datepicker.events.hide($datepicker);
+        gj.datepicker.events.close($datepicker);
     },
 
     createKeyDownHandler: function ($datepicker, $calendar) {
@@ -544,7 +544,7 @@ gj.datepicker.methods = {
                 year = parseInt($datepicker.attr('year'), 10);
                 gj.datepicker.methods.select($datepicker, $calendar, new Date(year, month, day))();
             } else if (e.keyCode == '27') { // esc
-                $datepicker.hide();
+                $datepicker.close();
             }
         }
     },
@@ -603,13 +603,13 @@ gj.datepicker.events = {
     },
 
     /**
-     * Event fires when the datepicker is opened.     */    show: function ($datepicker) {
-        return $datepicker.triggerHandler('show');
+     * Event fires when the calendar is opened.     */    open: function ($datepicker) {
+        return $datepicker.triggerHandler('open');
     },
 
     /**
-     * Event fires when the datepicker is closed.     */    hide: function ($datepicker) {
-        return $datepicker.triggerHandler('hide');
+     * Event fires when the calendar is closed.     */    close: function ($datepicker) {
+        return $datepicker.triggerHandler('close');
     }
 };
 
@@ -625,19 +625,13 @@ gj.datepicker.widget = function ($element, jsConfig) {
         return methods.destroy(this);
     };
 
-    /** Show the calendar.     */    self.show = function () {
-        gj.datepicker.methods.show(this);
+    /** Open the calendar.     */    self.open = function () {
+        gj.datepicker.methods.open(this);
     };
 
-    /** Hide the calendar.     */    self.hide = function () {
-        gj.datepicker.methods.hide(this);
+    /** Close the calendar.     */    self.close = function () {
+        gj.datepicker.methods.close(this);
     };
-
-    //TODO Methods:
-    self.disableDates = function (dates) { };
-    self.disableWeekDay = function () { };
-    self.setMinDate = function () { };
-    self.setMaxDate = function () { };
 
     $.extend($element, self);
     if ('true' !== $element.attr('data-datepicker')) {
