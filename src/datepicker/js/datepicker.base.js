@@ -995,7 +995,7 @@ gj.datepicker.events = {
 
     /**
      * Event fires when the calendar is opened.
-     * @event show
+     * @event open
      * @param {object} e - event data
      * @example sample <!-- datepicker -->
      * <input id="datepicker" />
@@ -1013,7 +1013,7 @@ gj.datepicker.events = {
 
     /**
      * Event fires when the calendar is closed.
-     * @event hide
+     * @event close
      * @param {object} e - event data
      * @example sample <!-- datepicker -->
      * <input id="datepicker" />
