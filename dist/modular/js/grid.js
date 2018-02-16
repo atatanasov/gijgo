@@ -1730,6 +1730,9 @@ gj.grid.plugins.inlineEditing.private = {
                     } else if ('date' === column.type && gj.datepicker) {
                         $editorField = $('<input type="text" width="100%"/>');
                         $editorContainer.append($editorField);
+                        if (column.format) {
+                            config.format = column.format;
+                        }
                         $editorField = $editorField.datepicker(config);
                         if ($editorField.value) {
                             $editorField.value($displayContainer.html());

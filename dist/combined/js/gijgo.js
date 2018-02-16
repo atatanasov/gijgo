@@ -5807,7 +5807,7 @@ gj.grid.plugins.inlineEditing.config = {
              *         columns: [
              *             { field: 'Name', editor: true },
              *             { field: 'Nationality', type: 'dropdown', editor: { dataSource: countries } },
-             *             { field: 'DateOfBirth', type: 'date', editor: true },
+             *             { field: 'DateOfBirth', type: 'date', editor: true, format: 'dd.mm.yyyy' },
              *             { field: 'IsActive', title: 'Active?', type:'checkbox', editor: true, mode: 'editOnly', width: 80, align: 'center' }
              *         ]
              *     });
@@ -6105,6 +6105,9 @@ gj.grid.plugins.inlineEditing.private = {
                     } else if ('date' === column.type && gj.datepicker) {
                         $editorField = $('<input type="text" width="100%"/>');
                         $editorContainer.append($editorField);
+                        if (column.format) {
+                            config.format = column.format;
+                        }
                         $editorField = $editorField.datepicker(config);
                         if ($editorField.value) {
                             $editorField.value($displayContainer.html());
