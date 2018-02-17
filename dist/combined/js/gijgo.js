@@ -6106,7 +6106,7 @@ gj.grid.plugins.inlineEditing.private = {
                 $editorContainer = $('<div data-role="edit" />');
                 $cell.append($editorContainer);
             }
-            value = column.type === 'checkbox' ? record[column.field] : $displayContainer.html();
+            value = record[column.field];
             $editorField = $editorContainer.find('input, select, textarea').first();
             if ($editorField.length) {
                 column.type === 'checkbox' ? $editorField.prop('checked', value) : $editorField.val(value);
