@@ -5812,6 +5812,26 @@ gj.grid.plugins.inlineEditing.config = {
              *         ]
              *     });
              * </script>
+             * @example Custom.With.Select2 <!-- grid, datepicker, checkbox -->
+             * <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
+             * <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+             * <table id="grid"></table>
+             * <script>
+             *     function select2editor($editorContainer, value, record) {
+             *         var select = $('<select><option value="Bulgaria">Bulgaria</option><option value="Brazil">Brazil</option><option value="England">England</option><option value="Germany">Germany</option><option value="Colombia">Colombia</option><option value="Poland">Poland</option></select>');
+             *         $editorContainer.append(select);
+             *         select.select2();
+             *     }
+             *     $('#grid').grid({
+             *         dataSource: '/Players/Get',
+             *         columns: [
+             *             { field: 'Name', editor: true },
+             *             { field: 'Nationality', type: 'dropdown', editor: select2editor },
+             *             { field: 'DateOfBirth', type: 'date', editor: true, format: 'dd.mm.yyyy' },
+             *             { field: 'IsActive', title: 'Active?', type:'checkbox', editor: true, mode: 'editOnly', width: 80, align: 'center' }
+             *         ]
+             *     });
+             * </script>
              * @example Bootstrap.3 <!-- bootstrap, grid, datepicker, dropdown, checkbox -->
              * <table id="grid"></table>
              * <script>
