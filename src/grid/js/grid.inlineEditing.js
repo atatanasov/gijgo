@@ -361,6 +361,7 @@ gj.grid.plugins.inlineEditing.private = {
             } else {
                 if (typeof (column.editor) === 'function') {
                     column.editor($editorContainer, value, record);
+                    $editorField = $editorContainer.find('input, select, textarea').first();
                 } else {
                     config = typeof column.editor === "object" ? column.editor : {};
                     config.uiLibrary = data.uiLibrary;

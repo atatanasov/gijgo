@@ -5829,7 +5829,8 @@ gj.grid.plugins.inlineEditing.config = {
              *             { field: 'Nationality', type: 'dropdown', editor: select2editor },
              *             { field: 'DateOfBirth', type: 'date', editor: true, format: 'dd.mm.yyyy' },
              *             { field: 'IsActive', title: 'Active?', type:'checkbox', editor: true, mode: 'editOnly', width: 80, align: 'center' }
-             *         ]
+             *         ],
+             *         inlineEditing: { mode: 'command', managementColumn: true }
              *     });
              * </script>
              * @example Bootstrap.3 <!-- bootstrap, grid, datepicker, dropdown, checkbox -->
@@ -6113,6 +6114,7 @@ gj.grid.plugins.inlineEditing.private = {
             } else {
                 if (typeof (column.editor) === 'function') {
                     column.editor($editorContainer, value, record);
+                    $editorField = $editorContainer.find('input, select, textarea').first();
                 } else {
                     config = typeof column.editor === "object" ? column.editor : {};
                     config.uiLibrary = data.uiLibrary;
