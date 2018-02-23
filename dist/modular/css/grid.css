@@ -364,23 +364,23 @@ span.gj-grid-column-resizer {
 .gj-grid-md thead tr th.gj-grid-left-border,
 .gj-grid-md tbody tr td.gj-grid-left-border
 {
-    border-left: 2px solid #777;
+    border-left: 3px solid #777;
 }
 .gj-grid-md thead tr th.gj-grid-right-border,
 .gj-grid-md tbody tr td.gj-grid-right-border
 {
-    border-right: 2px solid #777;
+    border-right: 3px solid #777;
 }
 
 .gj-grid-bootstrap thead tr th.gj-grid-left-border,
 .gj-grid-bootstrap tbody tr td.gj-grid-left-border
 {
-    border-left: 2px solid #ddd;
+    border-left: 5px solid #ddd;
 }
 .gj-grid-bootstrap thead tr th.gj-grid-right-border,
 .gj-grid-bootstrap tbody tr td.gj-grid-right-border
 {
-    border-right: 2px solid #ddd;
+    border-right: 5px solid #ddd;
 }
 .gj-dirty {
     position: absolute;

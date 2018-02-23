@@ -388,19 +388,23 @@ gj.documentManager = {
     },
 
     calcPosition: function (mainEl, childEl) {
-        var bodyRect = document.body.getBoundingClientRect(),
-            mainElRect = mainEl.getBoundingClientRect(),
+        var mainElRect = mainEl.getBoundingClientRect(),
             mainElHeight = gj.core.height(mainEl, true),
-            childElHeight = gj.core.height(childEl, true);
+            childElHeight = gj.core.height(childEl, true),
+            mainElWidth = gj.core.width(mainEl, true),
+            childElWidth = gj.core.width(childEl, true);
 
         if ((mainElRect.top + mainElHeight + childElHeight) > window.innerHeight && mainElRect.top > childElHeight) {
             childEl.style.top = mainElRect.top - childElHeight - 3 + 'px';
-            childEl.style.left = mainElRect.left + 'px';
         } else {
             childEl.style.top = mainElRect.top + mainElHeight + 3 + 'px';
-            childEl.style.left = mainElRect.left + 'px';
         }
 
+        if (mainElRect.left + childElWidth > window.innerWidth) {
+            childEl.style.left = (mainElRect.left + mainElWidth - childElWidth) + 'px';
+        } else {
+            childEl.style.left = mainElRect.left + 'px';
+        }
     },
 
     height: function (el, margin) {
@@ -416,6 +420,24 @@ gj.documentManager = {
 
         if (margin) {
             result += parseInt(style.marginTop, 10) + parseInt(style.marginBottom, 10);
+        }
+
+        return result;
+    },
+
+    width: function (el, margin) {
+        var result, style = window.getComputedStyle(el);
+
+        if (style.lineHeight === 'normal') {
+            result = parseInt(style.width, 10);
+            result += parseInt(style.paddingLeft, 10) + parseInt(style.paddingRight, 10);
+            result += parseInt(style.borderLeft, 10) + parseInt(style.borderRight, 10);
+        } else {
+            result = parseInt(style.width, 10);
+        }
+
+        if (margin) {
+            result += parseInt(style.marginLeft, 10) + parseInt(style.marginRight, 10);
         }
 
         return result;

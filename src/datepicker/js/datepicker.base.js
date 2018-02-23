@@ -28,7 +28,14 @@ gj.datepicker.config = {
          * @example False <!-- datepicker -->
          * <input id="datepicker" width="312" />
          * <script>
-         *     $('#datepicker').datepicker({ 
+         *     $('#datepicker').datepicker({
+         *         showOtherMonths: false
+         *     });
+         * </script>
+         * @example False2 <!-- datepicker -->
+         * <input id="datepicker" width="112" style="align: right" />
+         * <script>
+         *     $('#datepicker').datepicker({
          *         showOtherMonths: false
          *     });
          * </script>

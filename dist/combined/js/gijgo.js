@@ -463,19 +463,23 @@ gj.core = {
     },
 
     calcPosition: function (mainEl, childEl) {
-        var bodyRect = document.body.getBoundingClientRect(),
-            mainElRect = mainEl.getBoundingClientRect(),
+        var mainElRect = mainEl.getBoundingClientRect(),
             mainElHeight = gj.core.height(mainEl, true),
-            childElHeight = gj.core.height(childEl, true);
+            childElHeight = gj.core.height(childEl, true),
+            mainElWidth = gj.core.width(mainEl, true),
+            childElWidth = gj.core.width(childEl, true);
 
         if ((mainElRect.top + mainElHeight + childElHeight) > window.innerHeight && mainElRect.top > childElHeight) {
             childEl.style.top = mainElRect.top - childElHeight - 3 + 'px';
-            childEl.style.left = mainElRect.left + 'px';
         } else {
             childEl.style.top = mainElRect.top + mainElHeight + 3 + 'px';
-            childEl.style.left = mainElRect.left + 'px';
         }
 
+        if (mainElRect.left + childElWidth > window.innerWidth) {
+            childEl.style.left = (mainElRect.left + mainElWidth - childElWidth) + 'px';
+        } else {
+            childEl.style.left = mainElRect.left + 'px';
+        }
     },
 
     height: function (el, margin) {
@@ -491,6 +495,24 @@ gj.core = {
 
         if (margin) {
             result += parseInt(style.marginTop, 10) + parseInt(style.marginBottom, 10);
+        }
+
+        return result;
+    },
+
+    width: function (el, margin) {
+        var result, style = window.getComputedStyle(el);
+
+        if (style.lineHeight === 'normal') {
+            result = parseInt(style.width, 10);
+            result += parseInt(style.paddingLeft, 10) + parseInt(style.paddingRight, 10);
+            result += parseInt(style.borderLeft, 10) + parseInt(style.borderRight, 10);
+        } else {
+            result = parseInt(style.width, 10);
+        }
+
+        if (margin) {
+            result += parseInt(style.marginLeft, 10) + parseInt(style.marginRight, 10);
         }
 
         return result;
@@ -3261,7 +3283,7 @@ gj.grid.config = {
             loadingText: 'gj-grid-loading-text',
             header: {
                 cell: undefined,
-                sortable: 'gj-cursor-pointer'
+                sortable: 'gj-cursor-pointer gj-unselectable'
             },
             content: {
                 rowSelected: 'gj-grid-md-select'
@@ -8158,11 +8180,13 @@ gj.grid.plugins.columnReorder = {
              *         dataSource: '/Players/Get',
              *         uiLibrary: 'bootstrap4',
              *         columnReorder: true,
-             *         columns: [ { field: 'ID', width: 48 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
+             *         columns: [ { field: 'ID', width: 48 }, { field: 'Name', sortable: true }, { field: 'PlaceOfBirth', sortable: true } ]
              *     });
              * </script>
              */
             columnReorder: false,
+
+            dragReady: false,
 
             style: {
                 targetRowIndicatorTop: 'gj-grid-row-reorder-indicator-top',
@@ -8178,40 +8202,61 @@ gj.grid.plugins.columnReorder = {
             for (i = 0; i < $cells.length; i++) {
                 $cell = $($cells[i]);
                 $cell.on('mousedown', gj.grid.plugins.columnReorder.private.createMouseDownHandler($grid, $cell));
+                $cell.on('mousemove', gj.grid.plugins.columnReorder.private.createMouseMoveHandler($grid, $cell));
+                $cell.on('mouseup', gj.grid.plugins.columnReorder.private.createMouseUpHandler($grid, $cell));
             }
         },
 
-        createMouseDownHandler: function ($grid, $thSource) {
+        createMouseDownHandler: function ($grid) {
             return function (e) {
-                var $dragEl = $grid.clone(),
+                $grid.timeout = setTimeout(function () {
+                    $grid.data('dragReady', true);
+                }, 100);
+            }
+        },
+
+        createMouseUpHandler: function ($grid) {
+            return function (e) {
+                clearTimeout($grid.timeout);
+                $grid.data('dragReady', false);
+            }
+        },
+
+        createMouseMoveHandler: function ($grid, $thSource) {
+            return function (e) {
+                var $dragEl, srcIndex;
+                if ($grid.data('dragReady')) {
+                    $grid.data('dragReady', false);
+                    $dragEl = $grid.clone();
                     srcIndex = $thSource.index();
-                $grid.addClass('gj-unselectable');
-                $('body').append($dragEl);
-                $dragEl.attr('data-role', 'draggable-clone').css('cursor', 'move');
-                $dragEl.find('thead tr th:eq(' + srcIndex + ')').siblings().remove();
-                $dragEl.find('tbody tr[data-role != "row"]').remove();
-                $dragEl.find('tbody tr td:nth-child(' + (srcIndex + 1) + ')').siblings().remove();
-                $dragEl.find('tfoot').remove();
-                $dragEl.draggable({
-                    stop: gj.grid.plugins.columnReorder.private.createDragStopHandler($grid, $thSource)
-                });
-                $dragEl.css({
-                    position: 'absolute', top: $thSource.offset().top, left: $thSource.offset().left, width: $thSource.width(), zIndex: 1
-                });
-                if ($thSource.attr('data-droppable') === 'true') {
-                    $thSource.droppable('destroy');
-                }
-                $thSource.siblings('th').each(function () {
-                    var $dropEl = $(this);
-                    if ($dropEl.attr('data-droppable') === 'true') {
-                        $dropEl.droppable('destroy');
-                    }
-                    $dropEl.droppable({
-                        over: gj.grid.plugins.columnReorder.private.createDroppableOverHandler($grid, $thSource),
-                        out: gj.grid.plugins.columnReorder.private.droppableOut
+                    $grid.addClass('gj-unselectable');
+                    $('body').append($dragEl);
+                    $dragEl.attr('data-role', 'draggable-clone').css('cursor', 'move');
+                    $dragEl.find('thead tr th:eq(' + srcIndex + ')').siblings().remove();
+                    $dragEl.find('tbody tr[data-role != "row"]').remove();
+                    $dragEl.find('tbody tr td:nth-child(' + (srcIndex + 1) + ')').siblings().remove();
+                    $dragEl.find('tfoot').remove();
+                    $dragEl.draggable({
+                        stop: gj.grid.plugins.columnReorder.private.createDragStopHandler($grid, $thSource)
                     });
-                });
-                $dragEl.trigger('mousedown');
+                    $dragEl.css({
+                        position: 'absolute', top: $thSource.offset().top, left: $thSource.offset().left, width: $thSource.width(), zIndex: 1
+                    });
+                    if ($thSource.attr('data-droppable') === 'true') {
+                        $thSource.droppable('destroy');
+                    }
+                    $thSource.siblings('th').each(function () {
+                        var $dropEl = $(this);
+                        if ($dropEl.attr('data-droppable') === 'true') {
+                            $dropEl.droppable('destroy');
+                        }
+                        $dropEl.droppable({
+                            over: gj.grid.plugins.columnReorder.private.createDroppableOverHandler($grid, $thSource),
+                            out: gj.grid.plugins.columnReorder.private.droppableOut
+                        });
+                    });
+                    $dragEl.trigger('mousedown');
+                }
             };
         },
 
@@ -11159,8 +11204,9 @@ gj.tree.plugins.dragAndDrop = {
 	    createNodeMouseMoveHandler: function ($tree, $node, $display) {
             return function (e) {
                 if ($tree.data('dragReady')) {
-                    $tree.data('dragReady', false);
                     var data = $tree.data(), $dragEl, $wrapper, offsetTop, offsetLeft;
+
+                    $tree.data('dragReady', false);
                     $dragEl = $display.clone().wrap('<div data-role="wrapper"/>').closest('div')
                         .wrap('<li class="' + data.style.item + '" />').closest('li')
                         .wrap('<ul class="' + data.style.list + '" />').closest('ul');
@@ -12861,7 +12907,14 @@ gj.datepicker.config = {
          * @example False <!-- datepicker -->
          * <input id="datepicker" width="312" />
          * <script>
-         *     $('#datepicker').datepicker({ 
+         *     $('#datepicker').datepicker({
+         *         showOtherMonths: false
+         *     });
+         * </script>
+         * @example False2 <!-- datepicker -->
+         * <input id="datepicker" width="112" style="align: right" />
+         * <script>
+         *     $('#datepicker').datepicker({
          *         showOtherMonths: false
          *     });
          * </script>

@@ -1040,8 +1040,9 @@ gj.tree.widget.constructor = gj.tree.widget;
 	    createNodeMouseMoveHandler: function ($tree, $node, $display) {
             return function (e) {
                 if ($tree.data('dragReady')) {
-                    $tree.data('dragReady', false);
                     var data = $tree.data(), $dragEl, $wrapper, offsetTop, offsetLeft;
+
+                    $tree.data('dragReady', false);
                     $dragEl = $display.clone().wrap('<div data-role="wrapper"/>').closest('div')
                         .wrap('<li class="' + data.style.item + '" />').closest('li')
                         .wrap('<ul class="' + data.style.list + '" />').closest('ul');
