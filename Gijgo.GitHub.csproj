@@ -67,6 +67,7 @@
     <Content Include="src\checkbox\css\checkbox.base.css" />
     <Content Include="src\checkbox\js\checkbox.base.js" />
     <Content Include="src\checkbox\js\header.txt" />
+    <Content Include="src\colorpicker\js\colorpicker.base.js" />
     <Content Include="src\datepicker\css\datepicker.base.css" />
     <Content Include="src\datepicker\js\datepicker.base.js" />
     <Content Include="src\datepicker\js\header.txt" />
@@ -202,6 +203,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />
+    <Folder Include="src\colorpicker\css\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="src\dialog\js\dialog.base.config.js" />
