@@ -27,7 +27,7 @@ gj.editor.config = {
         buttons: undefined,
 
         style: {
-            wrapper: 'gj-editor-md',
+            wrapper: 'gj-editor gj-editor-md',
             buttonsGroup: 'gj-button-md-group',
             button: 'gj-button-md',
             buttonActive: 'active'
@@ -36,7 +36,7 @@ gj.editor.config = {
 
     bootstrap: {
         style: {
-            wrapper: 'gj-editor-bootstrap',
+            wrapper: 'gj-editor gj-editor-bootstrap',
             buttonsGroup: 'btn-group',
             button: 'btn btn-default gj-cursor-pointer',
             buttonActive: 'active'
@@ -45,7 +45,7 @@ gj.editor.config = {
 
     bootstrap4: {
         style: {
-            wrapper: 'gj-editor-bootstrap',
+            wrapper: 'gj-editor gj-editor-bootstrap',
             buttonsGroup: 'btn-group',
             button: 'btn btn-outline-secondary gj-cursor-pointer',
             buttonActive: 'active'
@@ -152,7 +152,7 @@ gj.editor.methods = {
             }
         }
 
-        $body.height(data.height - $toolbar.outerHeight());
+        $body.height(data.height - gj.core.height($toolbar[0], true));
     },
 
     localization: function (data) {

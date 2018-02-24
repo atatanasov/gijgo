@@ -1611,8 +1611,13 @@ ul.gj-list-md li.disabled > [data-role="wrapper"] > [data-role="expander"] {
 .gj-checkbox-fontawesome input[type="checkbox"]:indeterminate + span:before {
     content: "\f068 ";
 }
-/* Material Design */
+.gj-editor [data-role="body"] {
+    overflow: auto;
+    outline: 0px solid transparent;
+    box-sizing: border-box;
+}
 
+/* Material Design */
 .gj-editor-md {
     padding: 7px;
     font-family: "Roboto","Helvetica","Arial",sans-serif;
@@ -1636,9 +1641,8 @@ ul.gj-list-md li.disabled > [data-role="wrapper"] > [data-role="expander"] {
     height: 24px;
 }
 
-.gj-editor-md div[data-role="body"] {
+.gj-editor-md [data-role="body"] {
     border: 1px solid rgba(158,158,158,.2);
-    outline: 0px solid transparent;
 }
 
 .gj-editor-md p {
@@ -1668,9 +1672,8 @@ ul.gj-list-md li.disabled > [data-role="wrapper"] > [data-role="expander"] {
     height: 36px;
 }
 
-.gj-editor-bootstrap div[data-role="body"] {
+.gj-editor-bootstrap [data-role="body"] {
     border: 1px solid #eceeef;
-    outline: 0px solid transparent;
 }
 
 .gj-editor-bootstrap p {
