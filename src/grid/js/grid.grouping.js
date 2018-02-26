@@ -32,16 +32,16 @@ gj.grid.plugins.grouping = {
                   * <table id="grid"></table>
                   * <script>
                   *     var grid, data = [
-                  *         { 'ID': 1, 'Name': 'Hristo Stoichkov', 'PlaceOfBirth': 'Plovdiv, Bulgaria', Nationality: 'Bulgaria' },
-                  *         { 'ID': 2, 'Name': 'Ronaldo Luís Nazário de Lima', 'PlaceOfBirth': 'Rio de Janeiro, Brazil', Nationality: 'Brazil' },
-                  *         { 'ID': 3, 'Name': 'David Platt', 'PlaceOfBirth': 'Chadderton, Lancashire, England', Nationality: 'England' },
-                  *         { 'ID': 4, 'Name': 'Manuel Neuer', 'PlaceOfBirth': 'Gelsenkirchen, West Germany', Nationality: 'Germany' },
-                  *         { 'ID': 5, 'Name': 'James Rodríguez', 'PlaceOfBirth': 'Cúcuta, Colombia', Nationality: 'Colombia' },
-                  *         { 'ID': 6, 'Name': 'Dimitar Berbatov', 'PlaceOfBirth': 'Blagoevgrad, Bulgaria', Nationality: 'Bulgaria' }
+                  *         { 'ID': 1, 'Name': 'Hristo Stoichkov', 'PlaceOfBirth': 'Plovdiv, Bulgaria', CountryName: 'Bulgaria' },
+                  *         { 'ID': 2, 'Name': 'Ronaldo Luís Nazário de Lima', 'PlaceOfBirth': 'Rio de Janeiro, Brazil', CountryName: 'Brazil' },
+                  *         { 'ID': 3, 'Name': 'David Platt', 'PlaceOfBirth': 'Chadderton, Lancashire, England', CountryName: 'England' },
+                  *         { 'ID': 4, 'Name': 'Manuel Neuer', 'PlaceOfBirth': 'Gelsenkirchen, West Germany', CountryName: 'Germany' },
+                  *         { 'ID': 5, 'Name': 'James Rodríguez', 'PlaceOfBirth': 'Cúcuta, Colombia', CountryName: 'Colombia' },
+                  *         { 'ID': 6, 'Name': 'Dimitar Berbatov', 'PlaceOfBirth': 'Blagoevgrad, Bulgaria', CountryName: 'Bulgaria' }
                   *     ];
                   *     $('#grid').grid({
                   *         dataSource: data,
-                  *         grouping: { groupBy: 'Nationality' },
+                  *         grouping: { groupBy: 'CountryName' },
                   *         columns: [ { field: 'Name', sortable: true }, { field: 'PlaceOfBirth' } ]
                   *     });
                   * </script>
@@ -50,7 +50,7 @@ gj.grid.plugins.grouping = {
                   * <script>
                   *     $('#grid').grid({
                   *         dataSource: '/Players/Get',
-                  *         grouping: { groupBy: 'Nationality' },
+                  *         grouping: { groupBy: 'CountryName' },
                   *         columns: [ { field: 'Name', sortable: true }, { field: 'PlaceOfBirth' } ]
                   *     });
                   * </script>
@@ -60,7 +60,7 @@ gj.grid.plugins.grouping = {
                   *     $('#grid').grid({
                   *         dataSource: '/Players/Get',
                   *         uiLibrary: 'bootstrap',
-                  *         grouping: { groupBy: 'Nationality' },
+                  *         grouping: { groupBy: 'CountryName' },
                   *         columns: [ { field: 'Name', sortable: true }, { field: 'DateOfBirth', type: 'date' } ]
                   *         detailTemplate: '<div><b>Place Of Birth:</b> {PlaceOfBirth}</div>'
                   *     });
@@ -72,7 +72,7 @@ gj.grid.plugins.grouping = {
                   *         dataSource: '/Players/Get',
                   *         uiLibrary: 'bootstrap4',
                   *         iconsLibrary: 'fontawesome',
-                  *         grouping: { groupBy: 'Nationality' },
+                  *         grouping: { groupBy: 'CountryName' },
                   *         columns: [ { field: 'Name', sortable: true }, { field: 'PlaceOfBirth' } ]
                   *     });
                   * </script>
@@ -94,7 +94,7 @@ gj.grid.plugins.grouping = {
                  *         primaryKey: 'ID',
                  *         dataSource: '/Players/Get',
                  *         columns: [ { field: 'Name', sortable: true }, { field: 'PlaceOfBirth' } ],
-                 *         grouping: { groupBy: 'Nationality' },
+                 *         grouping: { groupBy: 'CountryName' },
                  *         icons: {
                  *             expandGroup: '<i class="material-icons">keyboard_arrow_right</i>',
                  *             collapseGroup: '<i class="material-icons">keyboard_arrow_down</i>'
@@ -115,7 +115,7 @@ gj.grid.plugins.grouping = {
                  *         primaryKey: 'ID',
                  *         dataSource: '/Players/Get',
                  *         columns: [ { field: 'Name', sortable: true }, { field: 'PlaceOfBirth' } ],
-                 *         grouping: { groupBy: 'Nationality' },
+                 *         grouping: { groupBy: 'CountryName' },
                  *         icons: {
                  *             expandGroup: '<i class="material-icons">keyboard_arrow_right</i>',
                  *             collapseGroup: '<i class="material-icons">keyboard_arrow_down</i>'

@@ -20,13 +20,12 @@
 <body style="padding: 8px;">
  <table id="grid"></table>
  <script>
-     var countries = [ "Bulgaria", "Brazil", "England", "Germany", "Colombia", "Poland" ];
      $('#grid').grid({
          uiLibrary: 'bootstrap4',
          dataSource: '/Players/Get',
          columns: [
              { field: 'Name', editor: true },
-             { field: 'Nationality', type: 'dropdown', editor: { dataSource: countries } },
+             { field: 'CountryName', type: 'dropdown', editor: { dataSource: '/Locations/GetCountries', valueField: 'id' }, editField: 'CountryID'  },
              { field: 'DateOfBirth', type: 'date', editor: true },
              { field: 'IsActive', title: 'Active?', type:'checkbox', editor: true, mode: 'editOnly', width: 80, align: 'center' }
          ]

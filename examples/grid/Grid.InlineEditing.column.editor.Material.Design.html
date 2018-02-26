@@ -19,12 +19,12 @@
 <body style="padding: 8px;">
  <table id="grid"></table>
  <script>
-     var countries = [ "Bulgaria", "Brazil", "England", "Germany", "Colombia", "Poland" ];
+     var countries = [ 'Bulgaria', 'Brazil', 'England', 'Germany', 'Colombia', 'Poland' ];
      $('#grid').grid({
          dataSource: '/Players/Get',
          columns: [
              { field: 'Name', editor: true },
-             { field: 'Nationality', type: 'dropdown', editor: { dataSource: countries } },
+             { field: 'CountryName', type: 'dropdown', editor: { dataSource: countries } },
              { field: 'DateOfBirth', type: 'date', editor: true, format: 'dd.mm.yyyy' },
              { field: 'IsActive', title: 'Active?', type:'checkbox', editor: true, mode: 'editOnly', width: 80, align: 'center' }
          ]

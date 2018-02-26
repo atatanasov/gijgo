@@ -1659,7 +1659,9 @@ gj.grid.widget.prototype.getHTMLConfig = gj.grid.methods.getHTMLConfig;
 gj.grid.plugins.inlineEditing.config = {
     base: {
         defaultColumnSettings: {
-            /** Provides a way to specify a custom editing UI for the column.             */            editor: undefined,
+            /** Provides a way to set an editing UI for the column.             */            editor: undefined,
+
+            /** The name of the field in the grid data where the grid is going to set the new value.             */            editField: undefined,
 
             /** Provides a way to specify a display mode for the column.             */            mode: 'readEdit'
         },
@@ -1742,8 +1744,11 @@ gj.grid.plugins.inlineEditing.private = {
                         $editorField = $('<select type="text" width="100%"/>');
                         $editorContainer.append($editorField);
                         config.dataBound = function (e) {
-                            if ($editorField.value) {
-                                $editorField.value($displayContainer.html());
+                            var $dropdown = $(this).dropdown();
+                            if (column.editField) {
+                                $dropdown.value(record[column.editField]);
+                            } else {
+                                $dropdown.value(record[column.field]);
                             }
                         };
                         $editorField = $editorField.dropdown(config);
@@ -1793,24 +1798,33 @@ gj.grid.plugins.inlineEditing.private = {
     },
 
     displayMode: function ($grid, $cell, column, cancel) {
-        var $editorContainer, $displayContainer, $ele, newValue, oldValue, record, position, style = '';
+        var $editorContainer, $displayContainer, $ele, newValue, newEditFieldValue, record, position, style = '';
         if ($cell.attr('data-mode') === 'edit' && column.mode !== 'editOnly') {
             $editorContainer = $cell.find('div[data-role="edit"]');
             $displayContainer = $cell.find('div[data-role="display"]');
             $ele = $editorContainer.find('input, select, textarea').first();
-            newValue = column.type === 'checkbox' ? $ele.prop('checked') : $ele.val();
+            if ($ele[0].tagName.toUpperCase() === "SELECT") {
+                newValue = $ele[0].options[$ele[0].selectedIndex].innerHTML;
+                newEditFieldValue = $ele[0].value;
+            } else if ($ele[0].tagName.toUpperCase() === "INPUT" && $ele[0].type.toUpperCase() === "CHECKBOX") {
+                newValue = $ele[0].checked;
+            } else {
+                newValue = $ele.val();
+            }
             position = $cell.parent().data('position');
             record = $grid.get(position);
-            oldValue = column.type === 'checkbox' ? record[column.field] : $displayContainer.html();
-            if (cancel !== true && newValue !== oldValue) {
+            if (cancel !== true && newValue !== record[column.field]) {
                 record[column.field] = column.type === 'date' ? gj.core.parseDate(newValue, column.format) : newValue;
+                if (column.editField) {
+                    record[column.editField] = newEditFieldValue || newValue;
+                }
                 if (column.mode !== 'editOnly') {
                     gj.grid.methods.renderDisplayElement($grid, $displayContainer, column, record, gj.grid.methods.getId(record, $grid.data('primaryKey'), position), 'update');
                     if ($cell.find('span.gj-dirty').length === 0) {
                         $cell.prepend($('<span class="gj-dirty" />'));
                     }
                 }
-                gj.grid.plugins.inlineEditing.events.cellDataChanged($grid, $cell, column, record, oldValue, newValue);
+                gj.grid.plugins.inlineEditing.events.cellDataChanged($grid, $cell, column, record, newValue);
                 gj.grid.plugins.inlineEditing.private.updateChanges($grid, column, record, newValue);
             }
             $editorContainer.hide();

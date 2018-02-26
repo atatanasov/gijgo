@@ -42,19 +42,19 @@ gj.grid.plugins.inlineEditing = {
 gj.grid.plugins.inlineEditing.config = {
     base: {
         defaultColumnSettings: {
-            /** Provides a way to specify a custom editing UI for the column.
+            /** Provides a way to set an editing UI for the column.
              * @alias column.editor
              * @type function|boolean
              * @default undefined
              * @example Material.Design <!-- grid, datepicker, dropdown, checkbox -->
              * <table id="grid"></table>
              * <script>
-             *     var countries = [ "Bulgaria", "Brazil", "England", "Germany", "Colombia", "Poland" ];
+             *     var countries = [ 'Bulgaria', 'Brazil', 'England', 'Germany', 'Colombia', 'Poland' ];
              *     $('#grid').grid({
              *         dataSource: '/Players/Get',
              *         columns: [
              *             { field: 'Name', editor: true },
-             *             { field: 'Nationality', type: 'dropdown', editor: { dataSource: countries } },
+             *             { field: 'CountryName', type: 'dropdown', editor: { dataSource: countries } },
              *             { field: 'DateOfBirth', type: 'date', editor: true, format: 'dd.mm.yyyy' },
              *             { field: 'IsActive', title: 'Active?', type:'checkbox', editor: true, mode: 'editOnly', width: 80, align: 'center' }
              *         ]
@@ -74,7 +74,7 @@ gj.grid.plugins.inlineEditing.config = {
              *         dataSource: '/Players/Get',
              *         columns: [
              *             { field: 'Name', editor: true },
-             *             { field: 'Nationality', type: 'dropdown', editor: select2editor },
+             *             { field: 'CountryName', type: 'dropdown', editor: select2editor },
              *             { field: 'DateOfBirth', type: 'date', editor: true, format: 'dd.mm.yyyy' },
              *             { field: 'IsActive', title: 'Active?', type:'checkbox', editor: true, mode: 'editOnly', width: 80, align: 'center' }
              *         ]
@@ -83,13 +83,13 @@ gj.grid.plugins.inlineEditing.config = {
              * @example Bootstrap.3 <!-- bootstrap, grid, datepicker, dropdown, checkbox -->
              * <table id="grid"></table>
              * <script>
-             *     var countries = [ "Bulgaria", "Brazil", "England", "Germany", "Colombia", "Poland" ];
+             *     var countries = [ 'Bulgaria', 'Brazil', 'England', 'Germany', 'Colombia', 'Poland' ];
              *     $('#grid').grid({
              *         uiLibrary: 'bootstrap',
              *         dataSource: '/Players/Get',
              *         columns: [
              *             { field: 'Name', editor: true },
-             *             { field: 'Nationality', type: 'dropdown', editor: { dataSource: countries } },
+             *             { field: 'CountryName', type: 'dropdown', editor: { dataSource: countries } },
              *             { field: 'DateOfBirth', type: 'date', editor: true },
              *             { field: 'IsActive', title: 'Active?', type:'checkbox', editor: true, mode: 'editOnly', width: 80, align: 'center' }
              *         ]
@@ -98,13 +98,12 @@ gj.grid.plugins.inlineEditing.config = {
              * @example Bootstrap.4 <!-- bootstrap4, grid, datepicker, dropdown, checkbox -->
              * <table id="grid"></table>
              * <script>
-             *     var countries = [ "Bulgaria", "Brazil", "England", "Germany", "Colombia", "Poland" ];
              *     $('#grid').grid({
              *         uiLibrary: 'bootstrap4',
              *         dataSource: '/Players/Get',
              *         columns: [
              *             { field: 'Name', editor: true },
-             *             { field: 'Nationality', type: 'dropdown', editor: { dataSource: countries } },
+             *             { field: 'CountryName', type: 'dropdown', editor: { dataSource: '/Locations/GetCountries', valueField: 'id' }, editField: 'CountryID'  },
              *             { field: 'DateOfBirth', type: 'date', editor: true },
              *             { field: 'IsActive', title: 'Active?', type:'checkbox', editor: true, mode: 'editOnly', width: 80, align: 'center' }
              *         ]
@@ -112,6 +111,29 @@ gj.grid.plugins.inlineEditing.config = {
              * </script>
              */
             editor: undefined,
+
+            /** The name of the field in the grid data where the grid is going to set the new value.
+             * @additionalinfo This is usable when the editor is interface with key/value pairs like dropdowns where the key needs to be updated in a different field..
+             * @alias column.editField
+             * @type String
+             * @default undefined
+             * @example Bootstrap.4 <!-- bootstrap4, grid, datepicker, dropdown, checkbox -->
+             * <table id="grid"></table>
+             * <script>
+             *     var countries = [ { value: 1, text: 'Bulgaria' } , { value: 2, text: 'Brazil' }, { value: 3, text: 'England' }, { value: 4, text: 'Germany' }, { value: 5, text: 'Colombia' }, { value: 6, text: 'Poland' } ];
+             *     $('#grid').grid({
+             *         uiLibrary: 'bootstrap4',
+             *         dataSource: '/Players/Get',
+             *         columns: [
+             *             { field: 'Name', editor: true },
+             *             { field: 'CountryName', type: 'dropdown', editor: { dataSource: countries }, editField: 'CountryID' },
+             *             { field: 'DateOfBirth', type: 'date', editor: true },
+             *             { field: 'IsActive', title: 'Active?', type:'checkbox', editor: true, mode: 'editOnly', width: 80, align: 'center' }
+             *         ]
+             *     });
+             * </script>
+             */
+            editField: undefined,
 
             /** Provides a way to specify a display mode for the column.
              * @alias column.mode
@@ -385,8 +407,11 @@ gj.grid.plugins.inlineEditing.private = {
                         $editorField = $('<select type="text" width="100%"/>');
                         $editorContainer.append($editorField);
                         config.dataBound = function (e) {
-                            if ($editorField.value) {
-                                $editorField.value($displayContainer.html());
+                            var $dropdown = $(this).dropdown();
+                            if (column.editField) {
+                                $dropdown.value(record[column.editField]);
+                            } else {
+                                $dropdown.value(record[column.field]);
                             }
                         };
                         $editorField = $editorField.dropdown(config);
@@ -436,24 +461,33 @@ gj.grid.plugins.inlineEditing.private = {
     },
 
     displayMode: function ($grid, $cell, column, cancel) {
-        var $editorContainer, $displayContainer, $ele, newValue, oldValue, record, position, style = '';
+        var $editorContainer, $displayContainer, $ele, newValue, newEditFieldValue, record, position, style = '';
         if ($cell.attr('data-mode') === 'edit' && column.mode !== 'editOnly') {
             $editorContainer = $cell.find('div[data-role="edit"]');
             $displayContainer = $cell.find('div[data-role="display"]');
             $ele = $editorContainer.find('input, select, textarea').first();
-            newValue = column.type === 'checkbox' ? $ele.prop('checked') : $ele.val();
+            if ($ele[0].tagName.toUpperCase() === "SELECT") {
+                newValue = $ele[0].options[$ele[0].selectedIndex].innerHTML;
+                newEditFieldValue = $ele[0].value;
+            } else if ($ele[0].tagName.toUpperCase() === "INPUT" && $ele[0].type.toUpperCase() === "CHECKBOX") {
+                newValue = $ele[0].checked;
+            } else {
+                newValue = $ele.val();
+            }
             position = $cell.parent().data('position');
             record = $grid.get(position);
-            oldValue = column.type === 'checkbox' ? record[column.field] : $displayContainer.html();
-            if (cancel !== true && newValue !== oldValue) {
+            if (cancel !== true && newValue !== record[column.field]) {
                 record[column.field] = column.type === 'date' ? gj.core.parseDate(newValue, column.format) : newValue;
+                if (column.editField) {
+                    record[column.editField] = newEditFieldValue || newValue;
+                }
                 if (column.mode !== 'editOnly') {
                     gj.grid.methods.renderDisplayElement($grid, $displayContainer, column, record, gj.grid.methods.getId(record, $grid.data('primaryKey'), position), 'update');
                     if ($cell.find('span.gj-dirty').length === 0) {
                         $cell.prepend($('<span class="gj-dirty" />'));
                     }
                 }
-                gj.grid.plugins.inlineEditing.events.cellDataChanged($grid, $cell, column, record, oldValue, newValue);
+                gj.grid.plugins.inlineEditing.events.cellDataChanged($grid, $cell, column, record, newValue);
                 gj.grid.plugins.inlineEditing.private.updateChanges($grid, column, record, newValue);
             }
             $editorContainer.hide();
@@ -698,7 +732,6 @@ gj.grid.plugins.inlineEditing.events = {
      * @param {object} $cell - the cell presented as jquery object 
      * @param {object} column - the column configuration data
      * @param {object} record - the data of the row record
-     * @param {object} oldValue - the old cell value
      * @param {object} newValue - the new cell value
      * @example sample <!-- grid -->
      * <table id="grid"></table>
@@ -707,8 +740,8 @@ gj.grid.plugins.inlineEditing.events = {
      *         dataSource: '/Players/Get',
      *         columns: [ { field: 'ID', width: 56 }, { field: 'Name', editor: true }, { field: 'PlaceOfBirth', editor: true } ]
      *     });
-     *     grid.on('cellDataChanged', function (e, $cell, column, record, oldValue, newValue) {
-     *         alert('"' + oldValue + '" is changed to "' + newValue + '"');
+     *     grid.on('cellDataChanged', function (e, $cell, column, record, newValue) {
+     *         alert('The value for "' + column.field + '" is changed to "' + newValue + '"');
      *     });
      * </script>
      */

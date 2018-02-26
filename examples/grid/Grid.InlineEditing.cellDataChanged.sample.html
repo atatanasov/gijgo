@@ -17,8 +17,8 @@
          dataSource: '/Players/Get',
          columns: [ { field: 'ID', width: 56 }, { field: 'Name', editor: true }, { field: 'PlaceOfBirth', editor: true } ]
      });
-     grid.on('cellDataChanged', function (e, $cell, column, record, oldValue, newValue) {
-         alert('"' + oldValue + '" is changed to "' + newValue + '"');
+     grid.on('cellDataChanged', function (e, $cell, column, record, newValue) {
+         alert('The value for "' + column.field + '" is changed to "' + newValue + '"');
      });
  </script>
 </body>

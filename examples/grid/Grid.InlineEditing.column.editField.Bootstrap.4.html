@@ -7,7 +7,7 @@
   <script src="../../dist/libraries/jquery/jquery.js"></script>
   <script src="../../dist/modular/js/core.js" type="text/javascript"></script>
   <link href="../../dist/modular/css/core.css" rel="stylesheet" type="text/css">
-  <link href="../../dist/libraries/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
   <link href="../../dist/modular/css/grid.css" rel="stylesheet" type="text/css">
   <link href="../../dist/modular/css/datepicker.css" rel="stylesheet" type="text/css">
   <link href="../../dist/modular/css/dropdown.css" rel="stylesheet" type="text/css">
@@ -20,13 +20,13 @@
 <body style="padding: 8px;">
  <table id="grid"></table>
  <script>
-     var countries = [ 'Bulgaria', 'Brazil', 'England', 'Germany', 'Colombia', 'Poland' ];
+     var countries = [ { value: 1, text: 'Bulgaria' } , { value: 2, text: 'Brazil' }, { value: 3, text: 'England' }, { value: 4, text: 'Germany' }, { value: 5, text: 'Colombia' }, { value: 6, text: 'Poland' } ];
      $('#grid').grid({
-         uiLibrary: 'bootstrap',
+         uiLibrary: 'bootstrap4',
          dataSource: '/Players/Get',
          columns: [
              { field: 'Name', editor: true },
-             { field: 'CountryName', type: 'dropdown', editor: { dataSource: countries } },
+             { field: 'CountryName', type: 'dropdown', editor: { dataSource: countries }, editField: 'CountryID' },
              { field: 'DateOfBirth', type: 'date', editor: true },
              { field: 'IsActive', title: 'Active?', type:'checkbox', editor: true, mode: 'editOnly', width: 80, align: 'center' }
          ]
