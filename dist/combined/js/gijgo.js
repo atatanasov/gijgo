@@ -5558,7 +5558,7 @@ gj.grid.plugins.expandCollapseRows = {
     },
 
     'private': {
-        detailExpand: function ($grid, $cell) {
+        expandDetail: function ($grid, $cell, id) {
             var $contentRow = $cell.closest('tr'),
                 $detailsRow = $('<tr data-role="details" />'),
                 $detailsCell = $('<td colspan="' + gj.grid.methods.countVisibleColumns($grid) + '" />'),
@@ -5566,23 +5566,32 @@ gj.grid.plugins.expandCollapseRows = {
                 data = $grid.data(),
                 position = $contentRow.data('position'),
                 record = $grid.get(position),
-                id = gj.grid.methods.getId(record, data.primaryKey, record);
+                plugin = gj.grid.plugins.expandCollapseRows;
 
+            if (typeof (id) === undefined) {
+                id = gj.grid.methods.getId(record, data.primaryKey, record);
+            }
             $detailsRow.append($detailsCell.append($detailsWrapper.append($contentRow.data('details'))));
             $detailsRow.insertAfter($contentRow);
             $cell.children('div[data-role="display"]').empty().append(data.icons.collapseRow);
             $grid.updateDetails($contentRow);
-            gj.grid.plugins.expandCollapseRows.events.detailExpand($grid, $detailsRow.find('td>div'), id);
+            plugin.private.keepSelection($grid, id);
+            plugin.events.detailExpand($grid, $detailsRow.find('td>div'), id);
         },
 
-        detailCollapse: function ($grid, $cell) {
+        collapseDetail: function ($grid, $cell, id) {
             var $contentRow = $cell.closest('tr'),
                 $detailsRow = $contentRow.next('tr[data-role="details"]'),
                 data = $grid.data(),
-                id = gj.grid.methods.getId($contentRow, data.primaryKey, $contentRow.data('position'));
+                plugin = gj.grid.plugins.expandCollapseRows;
+
+            if (typeof (id) === undefined) {
+                id = gj.grid.methods.getId(record, data.primaryKey, record);
+            }
             $detailsRow.remove();
             $cell.children('div[data-role="display"]').empty().append(data.icons.expandRow);
-            gj.grid.plugins.expandCollapseRows.events.detailCollapse($grid, $detailsRow.find('td>div'), id);
+            plugin.private.removeSelection($grid, id);
+            plugin.events.detailCollapse($grid, $detailsRow.find('td>div'), id);
         },
 
         keepSelection: function($grid, id) {
@@ -5614,22 +5623,76 @@ gj.grid.plugins.expandCollapseRows = {
     },
 
     'public': {
-        //TODO: add documentation
+
+        /**
+         * Collapse all grid rows.
+         * @method
+         * @return jQuery object
+         * @example Sample <!-- grid -->
+         * <button onclick="grid.expandAll()" class="gj-button-md">Expand All</button>
+         * <button onclick="grid.collapseAll()" class="gj-button-md">Collapse All</button>
+         * <br/><br/>
+         * <table id="grid"></table>
+         * <script>
+         *     var grid = $('#grid').grid({
+         *         dataSource: '/Players/Get',
+         *         detailTemplate: '<div style="text-align: left"><b>Place Of Birth:</b> {PlaceOfBirth}</div>',
+         *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'DateOfBirth', type: 'date' } ],
+         *         grouping: { groupBy: 'CountryName' },
+         *     });
+         * </script>
+         */
         collapseAll: function () {
-            var $grid = this,
+            var $grid = this, data = $grid.data(), position;
+                
+
+            if (typeof (data.detailTemplate) !== 'undefined') {
                 position = gj.grid.methods.getColumnPositionByRole($grid, 'expander');
-            $grid.find('tbody tr[data-role="row"]').each(function () {
-                gj.grid.plugins.expandCollapseRows.private.detailCollapse($grid, $(this).find('td:eq(' + position + ')'));
-            });
+                $grid.find('tbody tr[data-role="row"]').each(function () {
+                    gj.grid.plugins.expandCollapseRows.private.collapseDetail($grid, $(this).find('td:eq(' + position + ')'));
+                });
+            }
+
+            if (typeof (data.grouping) !== 'undefined') {
+                $grid.find('tbody tr[role="group"]').each(function () {
+                    gj.grid.plugins.grouping.private.collapseGroup(data, $(this).find('td:eq(0)'));
+                });
+            }
         },
 
-        //TODO: add documentation
+        /**
+         * Expand all grid rows.
+         * @method
+         * @return jQuery object
+         * @example Sample <!-- grid -->
+         * <button onclick="grid.expandAll()" class="gj-button-md">Expand All</button>
+         * <button onclick="grid.collapseAll()" class="gj-button-md">Collapse All</button>
+         * <br/><br/>
+         * <table id="grid"></table>
+         * <script>
+         *     var grid = $('#grid').grid({
+         *         dataSource: '/Players/Get',
+         *         detailTemplate: '<div style="text-align: left"><b>Place Of Birth:</b> {PlaceOfBirth}</div>',
+         *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'DateOfBirth', type: 'date' } ],
+         *         grouping: { groupBy: 'CountryName' },
+         *     });
+         * </script>
+         */
         expandAll: function () {
-            var $grid = this,
+            var $grid = this, data = $grid.data(), position;
+
+            if (typeof (data.detailTemplate) !== 'undefined') {
                 position = gj.grid.methods.getColumnPositionByRole($grid, 'expander');
-            $grid.find('tbody tr[data-role="row"]').each(function () {
-                gj.grid.plugins.expandCollapseRows.private.detailExpand($grid, $(this).find('td:eq(' + position + ')'));
-            });
+                $grid.find('tbody tr[data-role="row"]').each(function () {
+                    gj.grid.plugins.expandCollapseRows.private.expandDetail($grid, $(this).find('td:eq(' + position + ')'));
+                });
+            }
+
+            if (typeof (data.grouping) !== 'undefined') {
+                $grid.find('tbody tr[role="group"]').each(function () {
+                    gj.grid.plugins.grouping.private.expandGroup(data, $(this).find('td:eq(0)'));
+                });
+            }
         },
 
         //TODO: add documentation
@@ -5725,11 +5788,9 @@ gj.grid.plugins.expandCollapseRows = {
                     'click': function (e) {
                         var $cell = $(this), methods = gj.grid.plugins.expandCollapseRows.private;
                         if ($cell.closest('tr').next().attr('data-role') === 'details') {
-                            methods.detailCollapse($grid, $cell);
-                            methods.removeSelection($grid, e.data.id);
+                            methods.collapseDetail($grid, $cell, e.data.id);
                         } else {
-                            methods.detailExpand($grid, $(this));
-                            methods.keepSelection($grid, e.data.id);
+                            methods.expandDetail($grid, $(this), e.data.id);
                         }
                     }
                 }
@@ -5746,7 +5807,7 @@ gj.grid.plugins.expandCollapseRows = {
                 gj.grid.plugins.expandCollapseRows.private.updateDetailsColSpan($grid);
             });
             $grid.on('rowRemoving', function (e, $row, id, record) {
-                gj.grid.plugins.expandCollapseRows.private.detailCollapse($grid, $row.children('td').first());
+                gj.grid.plugins.expandCollapseRows.private.collapseDetail($grid, $row.children('td').first(), id);
             });
             $grid.on('dataBinding', function () {
                 $grid.collapseAll();
@@ -5763,7 +5824,7 @@ gj.grid.plugins.expandCollapseRows = {
                             position = gj.grid.methods.getColumnPositionByRole($grid, 'expander');
                             $cell = $row.children('td:eq(' + position + ')');
                             if ($cell && $cell.length) {
-                                gj.grid.plugins.expandCollapseRows.private.detailExpand($grid, $cell);
+                                gj.grid.plugins.expandCollapseRows.private.expandDetail($grid, $cell);
                             }
                         }
                     }
@@ -8688,7 +8749,7 @@ gj.grid.plugins.grouping = {
             $grid.on('rowDataBound', function (e, $row, id, record) {
                 if (previousValue !== record[data.grouping.groupBy] || $row[0].rowIndex === 1) {
                     var colspan = gj.grid.methods.countVisibleColumns($grid) - 1,
-                        $groupRow = $('<tr data-role="group" />'),
+                        $groupRow = $('<tr role="group" />'),
                         $expandCollapseCell = $('<td class="gj-text-align-center gj-unselectable gj-cursor-pointer" />');
 
                     $expandCollapseCell.append('<div data-role="display">' + data.icons.collapseGroup + '</div>');
@@ -8713,16 +8774,29 @@ gj.grid.plugins.grouping = {
         createExpandCollapseHandler: function (data) {
             return function (e) {
                 var $cell = $(this),
-                    $display = $cell.children('div[data-role="display"]'),
-                    $groupRow = $cell.closest('tr');
-                if ($groupRow.next(':visible').data('role') === 'row') {
-                    $groupRow.nextUntil('[data-role="group"]').hide();
-                    $display.empty().append(data.icons.expandGroup);
+                    methods = gj.grid.plugins.grouping.private;
+                if ($cell.closest('tr').next(':visible').data('role') === 'row') {
+                    methods.collapseGroup(data, $cell);
                 } else {
-                    $groupRow.nextUntil('[data-role="group"]').show();
-                    $display.empty().append(data.icons.collapseGroup);
+                    methods.expandGroup(data, $cell);
                 }
             };
+        },
+
+        collapseGroup: function (data, $cell) {
+            var $display = $cell.children('div[data-role="display"]'),
+                $groupRow = $cell.closest('tr');
+
+            $groupRow.nextUntil('[role="group"]').hide();
+            $display.empty().append(data.icons.expandGroup);
+        },
+
+        expandGroup: function (data, $cell) {
+            var $display = $cell.children('div[data-role="display"]'),
+                $groupRow = $cell.closest('tr');
+
+            $groupRow.nextUntil('[role="group"]').show();
+            $display.empty().append(data.icons.collapseGroup);
         }
     },
 
