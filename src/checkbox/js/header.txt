@@ -1,5 +1,5 @@
 ﻿/*
- * Gijgo Checkbox v1.8.1
+ * Gijgo Checkbox v1.8.2
  * http://gijgo.com/checkbox
  *
  * Copyright 2014, 2017 gijgo.com
