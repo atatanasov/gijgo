@@ -23,6 +23,8 @@ gj.dropdown.config = {
 
         /** The width of the dropdown.         */        width: undefined,
 
+        /** The maximum height of the dropdown list. When set to auto adjust to the screen height.         */        maxHeight: 'auto',
+
         optionsDisplay: 'materialdesign',
 
         fontSize: undefined,
@@ -143,12 +145,27 @@ gj.dropdown.methods = {
     },
 
     setListPosition: function ($presenter, $list, data) {
-        var offset = $presenter.offset();
-        $list.css('left', offset.left).css('width', $presenter.outerWidth(true));
+        var offset = $presenter.offset(), top, listHeight, newHeight;
+        $list.css('left', offset.left);
+        $list[0].style.width = gj.core.width($presenter[0]) + 'px';
         if (data.optionsDisplay === 'standard') {
-            $list.css('top', offset.top + $presenter.outerHeight(true) + 2);
+            top = offset.top + gj.core.height($presenter[0], true) + 5;
         } else {
-            $list.css('top', offset.top);
+            top = offset.top;
+        }
+        $list[0].style.top = Math.round(top) + 'px';
+
+        listHeight = gj.core.height($list[0], true);
+        if (!isNaN(listHeight) && data.maxHeight === 'auto' && listHeight > window.innerHeight) {
+            newHeight = window.innerHeight - top - 3;
+        } else if (!isNaN(listHeight) && !isNaN(data.maxHeight) && data.maxHeight < listHeight) {
+            newHeight = data.maxHeight;
+        }
+
+        if (newHeight) {
+            $list[0].style.overflow = 'scroll';
+            $list[0].style.overflowX = 'hidden';
+            $list[0].style.height = newHeight + 'px';
         }
     },
 

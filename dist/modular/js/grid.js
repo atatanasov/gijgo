@@ -1830,7 +1830,7 @@ gj.grid.plugins.inlineEditing.private = {
             $editorContainer = $cell.find('div[data-role="edit"]');
             $displayContainer = $cell.find('div[data-role="display"]');
             $ele = $editorContainer.find('input, select, textarea').first();
-            if ($ele[0].tagName.toUpperCase() === "SELECT") {
+            if ($ele[0].tagName.toUpperCase() === "SELECT" && $ele[0].selectedIndex > -1) {
                 newValue = $ele[0].options[$ele[0].selectedIndex].innerHTML;
                 newEditFieldValue = $ele[0].value;
             } else if ($ele[0].tagName.toUpperCase() === "INPUT" && $ele[0].type.toUpperCase() === "CHECKBOX") {

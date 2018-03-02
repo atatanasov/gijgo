@@ -110,6 +110,28 @@ gj.dropdown.config = {
          */
         width: undefined,
 
+        /** The maximum height of the dropdown list. When set to auto adjust to the screen height.
+         * @type Number|'auto'
+         * @default 'auto'
+         * @example Auto <!-- dropdown -->
+         * <p>Note: Minimize the window in order to enable scrolling for the drop down list.</p>
+         * <select id="dropdown" width="200"></select>
+         * <script>
+         *     $('#dropdown').dropdown({ maxHeight: 'auto', dataSource: '/Locations/GetCountries', valueField: 'id' });
+         * </script>
+         * @example Fixed <!-- dropdown -->
+         * <select id="dropdown" width="200"></select>
+         * <script>
+         *     $('#dropdown').dropdown({ maxHeight: 200, dataSource: '/Locations/GetCountries', valueField: 'id' });
+         * </script>
+         * @example Bootstrap.4 <!-- bootstrap4, dropdown -->
+         * <select id="dropdown" width="200"></select>
+         * <script>
+         *     $('#dropdown').dropdown({ maxHeight: 200, dataSource: '/Locations/GetCountries', valueField: 'id', uiLibrary: 'bootstrap4' });
+         * </script>
+         */
+        maxHeight: 'auto',
+
         optionsDisplay: 'materialdesign',
 
         fontSize: undefined,
@@ -321,12 +343,27 @@ gj.dropdown.methods = {
     },
 
     setListPosition: function ($presenter, $list, data) {
-        var offset = $presenter.offset();
-        $list.css('left', offset.left).css('width', $presenter.outerWidth(true));
+        var offset = $presenter.offset(), top, listHeight, newHeight;
+        $list.css('left', offset.left);
+        $list[0].style.width = gj.core.width($presenter[0]) + 'px';
         if (data.optionsDisplay === 'standard') {
-            $list.css('top', offset.top + $presenter.outerHeight(true) + 2);
+            top = offset.top + gj.core.height($presenter[0], true) + 5;
         } else {
-            $list.css('top', offset.top);
+            top = offset.top;
+        }
+        $list[0].style.top = Math.round(top) + 'px';
+
+        listHeight = gj.core.height($list[0], true);
+        if (!isNaN(listHeight) && data.maxHeight === 'auto' && listHeight > window.innerHeight) {
+            newHeight = window.innerHeight - top - 3;
+        } else if (!isNaN(listHeight) && !isNaN(data.maxHeight) && data.maxHeight < listHeight) {
+            newHeight = data.maxHeight;
+        }
+
+        if (newHeight) {
+            $list[0].style.overflow = 'scroll';
+            $list[0].style.overflowX = 'hidden';
+            $list[0].style.height = newHeight + 'px';
         }
     },
 
