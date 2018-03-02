@@ -113,9 +113,9 @@ gj.timepicker.methods = {
         $rightIcon.on('click', function (e) {
             var $clock = $('body').find('[role="clock"][guid="' + $timepicker.attr('data-guid') + '"]');
             if ($clock.is(':visible')) {
-                gj.timepicker.methods.hide($timepicker);
+                gj.timepicker.methods.close($timepicker);
             } else {
-                gj.timepicker.methods.show($timepicker);
+                gj.timepicker.methods.open($timepicker);
             }
         });
 
@@ -123,7 +123,7 @@ gj.timepicker.methods = {
             $timepicker.on('blur', function () {
                 $timepicker.timeout = setTimeout(function () {
                     if (!$timepicker.mouseMove) {
-                        gj.timepicker.methods.hide($timepicker);
+                        gj.timepicker.methods.close($timepicker);
                     }
                 }, 500);
             });
@@ -207,7 +207,7 @@ gj.timepicker.methods = {
         $clock.append($body);
 
         if (data.footer) {
-            $btnCancel.on('click', function () { $timepicker.hide(); });
+            $btnCancel.on('click', function () { $timepicker.close(); });
             $footer.append($btnCancel);
             $btnOk.on('click', gj.timepicker.methods.setTime($timepicker, $clock));
             $footer.append($btnOk);
@@ -242,7 +242,7 @@ gj.timepicker.methods = {
                 data = $timepicker.data(),
                 value = gj.core.formatDate(date, data.format, data.locale);
             $timepicker.value(value);
-            $timepicker.hide();
+            $timepicker.close();
         }
     },
 
@@ -451,7 +451,7 @@ gj.timepicker.methods = {
         gj.timepicker.methods.select($timepicker, $clock);
     },
 
-    show: function ($timepicker) {
+    open: function ($timepicker) {
         var time, hour, offset, data = $timepicker.data(),
             $clock = $('body').find('[role="clock"][guid="' + $timepicker.attr('data-guid') + '"]');
 
@@ -477,14 +477,14 @@ gj.timepicker.methods = {
             $clock.css('left', offset.left).css('top', offset.top + $timepicker.outerHeight(true) + 3);
             $timepicker.focus();
         }
-        gj.timepicker.events.show($timepicker);
+        gj.timepicker.events.open($timepicker);
     },
 
-    hide: function ($timepicker) {
+    close: function ($timepicker) {
         var $clock = $('body').find('[role="clock"][guid="' + $timepicker.attr('data-guid') + '"]');
         $clock.hide();
         $clock.closest('div[role="modal"]').hide();
-        gj.timepicker.events.hide($timepicker);
+        gj.timepicker.events.close($timepicker);
     },
 
     value: function ($timepicker, value) {
@@ -526,13 +526,13 @@ gj.timepicker.events = {
     },
 
     /**
-     * Event fires when the timepicker is opened.     */    show: function ($timepicker) {
-        return $timepicker.triggerHandler('show');
+     * Event fires when the timepicker is opened.     */    open: function ($timepicker) {
+        return $timepicker.triggerHandler('open');
     },
 
     /**
-     * Event fires when the timepicker is closed.     */    hide: function ($timepicker) {
-        return $timepicker.triggerHandler('hide');
+     * Event fires when the timepicker is closed.     */    close: function ($timepicker) {
+        return $timepicker.triggerHandler('close');
     }
 };
 
@@ -550,12 +550,12 @@ gj.timepicker.widget = function ($element, jsConfig) {
         return methods.destroy(this);
     };
 
-    /** Show the calendar.     */    self.show = function () {
-        gj.timepicker.methods.show(this);
+    /** Open the clock.     */    self.open = function () {
+        gj.timepicker.methods.open(this);
     };
 
-    /** Hide the calendar.     */    self.hide = function () {
-        gj.timepicker.methods.hide(this);
+    /** Close the clock.     */    self.close = function () {
+        gj.timepicker.methods.close(this);
     };
 
     $.extend($element, self);

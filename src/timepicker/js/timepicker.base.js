@@ -275,9 +275,9 @@ gj.timepicker.methods = {
         $rightIcon.on('click', function (e) {
             var $clock = $('body').find('[role="clock"][guid="' + $timepicker.attr('data-guid') + '"]');
             if ($clock.is(':visible')) {
-                gj.timepicker.methods.hide($timepicker);
+                gj.timepicker.methods.close($timepicker);
             } else {
-                gj.timepicker.methods.show($timepicker);
+                gj.timepicker.methods.open($timepicker);
             }
         });
 
@@ -285,7 +285,7 @@ gj.timepicker.methods = {
             $timepicker.on('blur', function () {
                 $timepicker.timeout = setTimeout(function () {
                     if (!$timepicker.mouseMove) {
-                        gj.timepicker.methods.hide($timepicker);
+                        gj.timepicker.methods.close($timepicker);
                     }
                 }, 500);
             });
@@ -369,7 +369,7 @@ gj.timepicker.methods = {
         $clock.append($body);
 
         if (data.footer) {
-            $btnCancel.on('click', function () { $timepicker.hide(); });
+            $btnCancel.on('click', function () { $timepicker.close(); });
             $footer.append($btnCancel);
             $btnOk.on('click', gj.timepicker.methods.setTime($timepicker, $clock));
             $footer.append($btnOk);
@@ -404,7 +404,7 @@ gj.timepicker.methods = {
                 data = $timepicker.data(),
                 value = gj.core.formatDate(date, data.format, data.locale);
             $timepicker.value(value);
-            $timepicker.hide();
+            $timepicker.close();
         }
     },
 
@@ -613,7 +613,7 @@ gj.timepicker.methods = {
         gj.timepicker.methods.select($timepicker, $clock);
     },
 
-    show: function ($timepicker) {
+    open: function ($timepicker) {
         var time, hour, offset, data = $timepicker.data(),
             $clock = $('body').find('[role="clock"][guid="' + $timepicker.attr('data-guid') + '"]');
 
@@ -639,14 +639,14 @@ gj.timepicker.methods = {
             $clock.css('left', offset.left).css('top', offset.top + $timepicker.outerHeight(true) + 3);
             $timepicker.focus();
         }
-        gj.timepicker.events.show($timepicker);
+        gj.timepicker.events.open($timepicker);
     },
 
-    hide: function ($timepicker) {
+    close: function ($timepicker) {
         var $clock = $('body').find('[role="clock"][guid="' + $timepicker.attr('data-guid') + '"]');
         $clock.hide();
         $clock.closest('div[role="modal"]').hide();
-        gj.timepicker.events.hide($timepicker);
+        gj.timepicker.events.close($timepicker);
     },
 
     value: function ($timepicker, value) {
@@ -702,38 +702,38 @@ gj.timepicker.events = {
 
     /**
      * Event fires when the timepicker is opened.
-     * @event show
+     * @event open
      * @param {object} e - event data
      * @example sample <!-- timepicker -->
      * <input id="timepicker" />
      * <script>
      *     $('#timepicker').timepicker({
-     *         show: function (e) {
-     *             alert('show is fired.');
+     *         open: function (e) {
+     *             alert('open is fired.');
      *         }
      *     });
      * </script>
      */
-    show: function ($timepicker) {
-        return $timepicker.triggerHandler('show');
+    open: function ($timepicker) {
+        return $timepicker.triggerHandler('open');
     },
 
     /**
      * Event fires when the timepicker is closed.
-     * @event hide
+     * @event close
      * @param {object} e - event data
      * @example sample <!-- timepicker -->
      * <input id="timepicker" />
      * <script>
      *     $('#timepicker').timepicker({
-     *         hide: function (e) {
-     *             alert('hide is fired.');
+     *         close: function (e) {
+     *             alert('close is fired.');
      *         }
      *     });
      * </script>
      */
-    hide: function ($timepicker) {
-        return $timepicker.triggerHandler('hide');
+    close: function ($timepicker) {
+        return $timepicker.triggerHandler('close');
     }
 };
 
@@ -780,36 +780,36 @@ gj.timepicker.widget = function ($element, jsConfig) {
         return methods.destroy(this);
     };
 
-    /** Show the calendar.
+    /** Open the clock.
      * @method
      * @return timepicker
-     * @example Show.Hide <!-- timepicker -->
-     * <button class="gj-button-md" onclick="$timepicker.show()">Show</button>
-     * <button class="gj-button-md" onclick="$timepicker.hide()">Hide</button>
+     * @example Open.Close <!-- timepicker -->
+     * <button class="gj-button-md" onclick="$timepicker.open()">Open</button>
+     * <button class="gj-button-md" onclick="$timepicker.close()">Close</button>
      * <hr/>
      * <input id="timepicker" />
      * <script>
-     *     var $timepicker = $('#timepicker').timepicker({ modal: false, header: false, footer: false });
+     *     var $timepicker = $('#timepicker').timepicker({ modal: false, header: false, footer: false, mode: '24hr' });
      * </script>
      */
-    self.show = function () {
-        gj.timepicker.methods.show(this);
+    self.open = function () {
+        gj.timepicker.methods.open(this);
     };
 
-    /** Hide the calendar.
+    /** Close the clock.
      * @method
      * @return timepicker
-     * @example Show.Hide <!-- timepicker -->
-     * <button class="gj-button-md" onclick="$timepicker.show()">Show</button>
-     * <button class="gj-button-md" onclick="$timepicker.hide()">Hide</button>
+     * @example Open.Close <!-- timepicker -->
+     * <button class="gj-button-md" onclick="$timepicker.open()">Open</button>
+     * <button class="gj-button-md" onclick="$timepicker.close()">Close</button>
      * <hr/>
      * <input id="timepicker" />
      * <script>
-     *     var $timepicker = $('#timepicker').timepicker({ modal: false, header: false, footer: false });
+     *     var $timepicker = $('#timepicker').timepicker({ modal: false, header: false, footer: false, mode: '24hr' });
      * </script>
      */
-    self.hide = function () {
-        gj.timepicker.methods.hide(this);
+    self.close = function () {
+        gj.timepicker.methods.close(this);
     };
 
     $.extend($element, self);
