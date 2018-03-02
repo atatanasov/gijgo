@@ -11932,7 +11932,7 @@ gj.checkbox.widget.constructor = gj.checkbox.widget;
 })(jQuery);
 /* global window alert jQuery */
 /** 
- * @widget Editor 
+ * @widget Editor
  * @plugin Base
  */
 gj.editor = {
@@ -11959,12 +11959,15 @@ gj.editor.config = {
         /** The width of the editor. Numeric values are treated as pixels.
          * @type number|string
          * @default undefined
-         * @example sample <!-- editor, materialicons -->
+         * @example JS <!-- editor -->
          * <div id="editor"></div>
          * <script>
-         *     $('#editor').editor({
-         *         width: 900
-         *     });
+         *     $('#editor').editor({ width: 900 });
+         * </script>
+         * @example HTML <!-- editor -->
+         * <div id="editor" width="900"></div>
+         * <script>
+         *     $('#editor').editor();
          * </script>
          */
         width: undefined,
@@ -12125,8 +12128,8 @@ gj.editor.methods = {
 
     initialize: function ($editor) {
         var self = this, data = $editor.data(), $group, $btn,
-            $body = $editor.children('div[data-role="body"]'),
-            $toolbar = $editor.children('div[data-role="toolbar"]');
+            $body = $editor.children('div[role="body"]'),
+            $toolbar = $editor.children('div[role="toolbar"]');
 
         gj.editor.methods.localization(data);
 
@@ -12136,8 +12139,8 @@ gj.editor.methods = {
         }
 
         if ($body.length === 0) {
-            $editor.wrapInner('<div data-role="body"></div>');
-            $body = $editor.children('div[data-role="body"]');
+            $editor.wrapInner('<div role="body"></div>');
+            $body = $editor.children('div[role="body"]');
         }
 
         $body.attr('contenteditable', true);
@@ -12154,7 +12157,7 @@ gj.editor.methods = {
         });
 
         if ($toolbar.length === 0) {
-            $toolbar = $('<div data-role="toolbar"></div>');
+            $toolbar = $('<div role="toolbar"></div>');
             $body.before($toolbar);
 
             for (var group in data.buttons) {
@@ -12178,26 +12181,26 @@ gj.editor.methods = {
         if (typeof (data.buttons) === 'undefined') {
             data.buttons = [
                 [
-                    '<button type="button" class="' + data.style.button + '" title="' + msg.bold + '" data-role="bold">' + data.icons.bold + '</button>',
-                    '<button type="button" class="' + data.style.button + '" title="' + msg.italic + '" data-role="italic">' + data.icons.italic + '</button>',
-                    '<button type="button" class="' + data.style.button + '" title="' + msg.strikethrough + '" data-role="strikethrough">' + data.icons.strikethrough + '</button>',
-                    '<button type="button" class="' + data.style.button + '" title="' + msg.underline + '" data-role="underline">' + data.icons.underline + '</button>'
+                    '<button type="button" class="' + data.style.button + '" title="' + msg.bold + '" role="bold">' + data.icons.bold + '</button>',
+                    '<button type="button" class="' + data.style.button + '" title="' + msg.italic + '" role="italic">' + data.icons.italic + '</button>',
+                    '<button type="button" class="' + data.style.button + '" title="' + msg.strikethrough + '" role="strikethrough">' + data.icons.strikethrough + '</button>',
+                    '<button type="button" class="' + data.style.button + '" title="' + msg.underline + '" role="underline">' + data.icons.underline + '</button>'
                 ],
                 [
-                    '<button type="button" class="' + data.style.button + '" title="' + msg.listBulleted + '" data-role="insertunorderedlist">' + data.icons.listBulleted + '</button>',
-                    '<button type="button" class="' + data.style.button + '" title="' + msg.listNumbered + '" data-role="insertorderedlist">' + data.icons.listNumbered + '</button>',
-                    '<button type="button" class="' + data.style.button + '" title="' + msg.indentDecrease + '" data-role="outdent">' + data.icons.indentDecrease + '</button>',
-                    '<button type="button" class="' + data.style.button + '" title="' + msg.indentIncrease + '" data-role="indent">' + data.icons.indentIncrease + '</button>'
+                    '<button type="button" class="' + data.style.button + '" title="' + msg.listBulleted + '" role="insertunorderedlist">' + data.icons.listBulleted + '</button>',
+                    '<button type="button" class="' + data.style.button + '" title="' + msg.listNumbered + '" role="insertorderedlist">' + data.icons.listNumbered + '</button>',
+                    '<button type="button" class="' + data.style.button + '" title="' + msg.indentDecrease + '" role="outdent">' + data.icons.indentDecrease + '</button>',
+                    '<button type="button" class="' + data.style.button + '" title="' + msg.indentIncrease + '" role="indent">' + data.icons.indentIncrease + '</button>'
                 ],
                 [
-                    '<button type="button" class="' + data.style.button + '" title="' + msg.alignLeft + '" data-role="justifyleft">' + data.icons.alignLeft + '</button>',
-                    '<button type="button" class="' + data.style.button + '" title="' + msg.alignCenter + '" data-role="justifycenter">' + data.icons.alignCenter + '</button>',
-                    '<button type="button" class="' + data.style.button + '" title="' + msg.alignRight + '" data-role="justifyright">' + data.icons.alignRight + '</button>',
-                    '<button type="button" class="' + data.style.button + '" title="' + msg.alignJustify + '" data-role="justifyfull">' + data.icons.alignJustify + '</button>'
+                    '<button type="button" class="' + data.style.button + '" title="' + msg.alignLeft + '" role="justifyleft">' + data.icons.alignLeft + '</button>',
+                    '<button type="button" class="' + data.style.button + '" title="' + msg.alignCenter + '" role="justifycenter">' + data.icons.alignCenter + '</button>',
+                    '<button type="button" class="' + data.style.button + '" title="' + msg.alignRight + '" role="justifyright">' + data.icons.alignRight + '</button>',
+                    '<button type="button" class="' + data.style.button + '" title="' + msg.alignJustify + '" role="justifyfull">' + data.icons.alignJustify + '</button>'
                 ],
                 [
-                    '<button type="button" class="' + data.style.button + '" title="' + msg.undo + '" data-role="undo">' + data.icons.undo + '</button>',
-                    '<button type="button" class="' + data.style.button + '" title="' + msg.redo + '" data-role="redo">' + data.icons.redo + '</button>'
+                    '<button type="button" class="' + data.style.button + '" title="' + msg.undo + '" role="undo">' + data.icons.undo + '</button>',
+                    '<button type="button" class="' + data.style.button + '" title="' + msg.redo + '" role="redo">' + data.icons.redo + '</button>'
                 ]
             ];
         }
@@ -12205,9 +12208,9 @@ gj.editor.methods = {
 
     updateToolbar: function ($editor, $toolbar) {
         var data = $editor.data();
-        $buttons = $toolbar.find('[data-role]').each(function() {
+        $buttons = $toolbar.find('[role]').each(function() {
             var $btn = $(this),
-                cmd = $btn.attr('data-role');
+                cmd = $btn.attr('role');
 
             if (cmd && document.queryCommandEnabled(cmd) && document.queryCommandValue(cmd) === "true") {
                 $btn.addClass(data.style.buttonActive);
@@ -12219,12 +12222,12 @@ gj.editor.methods = {
 
     executeCmd: function ($editor, $body, $toolbar, $btn) {
         $body.focus();
-        document.execCommand($btn.attr('data-role'), false);
+        document.execCommand($btn.attr('role'), false);
         gj.editor.methods.updateToolbar($editor, $toolbar);
     },
 
     content: function ($editor, html) {
-        var $body = $editor.children('div[data-role="body"]');
+        var $body = $editor.children('div[role="body"]');
         if (typeof (html) === "undefined") {
             return $body.html();
         } else {
