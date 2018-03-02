@@ -7,7 +7,7 @@
     display: block;
     -ms-touch-action: none;
     touch-action: none;
-    z-index: 3;
+    z-index: 1203;
 }
 
 .gj-resizable-n {
@@ -82,6 +82,7 @@
 /** Bootstrap 3 **/
 .gj-dialog-bootstrap {
     overflow: hidden;
+    z-index: 1202;
 }
 
 .gj-dialog-bootstrap [data-role="title"] {
@@ -94,6 +95,7 @@
 /** Bootstrap 4 **/
 .gj-dialog-bootstrap4 {
     overflow: hidden;
+    z-index: 1202;
 }
 
 .gj-dialog-bootstrap4 [data-role="title"] {
@@ -111,12 +113,10 @@
     box-shadow: 0 9px 46px 8px rgba(0,0,0,.14), 0 11px 15px -7px rgba(0,0,0,.12), 0 24px 38px 3px rgba(0,0,0,.2);
     box-sizing: border-box;
     position: relative;
-
     display: -webkit-box;
     display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
-
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
     -webkit-flex-direction: column;
@@ -125,6 +125,7 @@
     -webkit-background-clip: padding-box;
     background-clip: padding-box;
     outline: 0;
+    z-index: 1202;
 }
 
 .gj-dialog-md-header {
