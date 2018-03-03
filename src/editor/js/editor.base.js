@@ -14,12 +14,10 @@ gj.editor.config = {
         /** The height of the editor. Numeric values are treated as pixels.
          * @type number|string
          * @default 300
-         * @example sample <!-- editor, materialicons -->
-         * <div id="editor"></div>
+         * @example sample <!-- editor -->
+         * <textarea id="editor"></textarea>
          * <script>
-         *     $('#editor').editor({
-         *         height: 500
-         *     });
+         *     $('#editor').editor({ height: 400 });
          * </script>
          */
         height: 300,
@@ -28,7 +26,7 @@ gj.editor.config = {
          * @type number|string
          * @default undefined
          * @example JS <!-- editor -->
-         * <div id="editor"></div>
+         * <textarea id="editor"></textarea>
          * <script>
          *     $('#editor').editor({ width: 900 });
          * </script>
@@ -45,19 +43,19 @@ gj.editor.config = {
          * @type string (materialdesign|bootstrap|bootstrap4)
          * @default 'materialdesign'
          * @example Material.Design <!-- editor, materialicons  -->
-         * <div id="editor"></div>
+         * <textarea id="editor"></textarea>
          * <script>
          *     $('#editor').editor({ uiLibrary: 'materialdesign' });
          * </script>
          * @example Bootstrap.3 <!-- bootstrap, editor -->
-         * <div id="editor"></div>
+         * <textarea id="editor"></textarea>
          * <script>
          *     $('#editor').editor({
          *         uiLibrary: 'bootstrap'
          *     });
          * </script>
          * @example Bootstrap.4 <!-- bootstrap4, editor -->
-         * <div id="editor"></div>
+         * <textarea id="editor"></textarea>
          * <script>
          *     $('#editor').editor({
          *         uiLibrary: 'bootstrap4'
@@ -73,7 +71,7 @@ gj.editor.config = {
          * @type (materialicons|fontawesome)
          * @default 'materialicons'
          * @example Bootstrap.4.FontAwesome <!-- bootstrap4, fontawesome, editor -->
-         * <div id="editor"></div>
+         * <textarea id="editor"></textarea>
          * <script>
          *     $('#editor').editor({
          *         uiLibrary: 'bootstrap4',
@@ -81,7 +79,7 @@ gj.editor.config = {
          *     });
          * </script>
          * @example Bootstrap.3.FontAwesome <!-- bootstrap, fontawesome, editor -->
-         * <div id="editor"></div>
+         * <textarea id="editor"></textarea>
          * <script>
          *     $('#editor').editor({
          *         uiLibrary: 'bootstrap',
@@ -195,35 +193,43 @@ gj.editor.methods = {
     },
 
     initialize: function ($editor) {
-        var self = this, data = $editor.data(), $group, $btn,
-            $body = $editor.children('div[role="body"]'),
-            $toolbar = $editor.children('div[role="toolbar"]');
+        var self = this, data = $editor.data(),
+            $group, $btn, wrapper, $body, $toolbar;
+
+        $editor.hide();
+
+        if ($editor[0].parentElement.attributes.role !== 'wrapper') {
+            wrapper = document.createElement('div');
+            wrapper.setAttribute('role', 'wrapper');
+            $editor[0].parentNode.insertBefore(wrapper, $editor[0]);
+            wrapper.appendChild($editor[0]);
+        }
 
         gj.editor.methods.localization(data);
-
-        $editor.addClass(data.style.wrapper);
+        $(wrapper).addClass(data.style.wrapper);
         if (data.width) {
-            $editor.width(data.width);
+            $(wrapper).width(data.width);
         }
 
+        $body = $(wrapper).children('div[role="body"]');
         if ($body.length === 0) {
-            $editor.wrapInner('<div role="body"></div>');
-            $body = $editor.children('div[role="body"]');
+            $body = $('<div role="body"></div>');
+            $(wrapper).append($body);
         }
-
         $body.attr('contenteditable', true);
-
         $body.on('keydown', function (e) {
-            if (gj.editor.events.changing($editor) === false) {
+            var key = event.keyCode || event.charCode;
+            if (gj.editor.events.changing($editor) === false && key !== 8 && key !== 46) {
                 e.preventDefault();
             }
         });
-
         $body.on('mouseup keyup mouseout cut paste', function (e) {
             self.updateToolbar($editor, $toolbar);
             gj.editor.events.changed($editor);
+            $editor.html($body.html());
         });
 
+        $toolbar = $(wrapper).children('div[role="toolbar"]');
         if ($toolbar.length === 0) {
             $toolbar = $('<div role="toolbar"></div>');
             $body.before($toolbar);
@@ -295,7 +301,7 @@ gj.editor.methods = {
     },
 
     content: function ($editor, html) {
-        var $body = $editor.children('div[role="body"]');
+        var $body = $editor.parent().children('div[role="body"]');
         if (typeof (html) === "undefined") {
             return $body.html();
         } else {
@@ -304,13 +310,17 @@ gj.editor.methods = {
     },
 
     destroy: function ($editor) {
+        var $wrapper;
         if ($editor.attr('data-editor') === 'true') {
-            $editor.removeClass($editor.data().style.wrapper);
+            $wrapper = $editor.parent();
+            $wrapper.children('div[role="body"]').remove();
+            $wrapper.children('div[role="toolbar"]').remove();
+            $editor.unwrap();
             $editor.removeData();
             $editor.removeAttr('data-guid');
             $editor.removeAttr('data-editor');
             $editor.off();
-            $editor.empty();
+            $editor.show();
         }
         return $editor;
     }
@@ -324,7 +334,7 @@ gj.editor.events = {
      * @event changing
      * @param {object} e - event data
      * @example MaxLength <!-- editor -->
-     * <div id="editor"></div>
+     * <textarea id="editor"></textarea>
      * <script>
      *     var editor = $('#editor').editor();
      *     editor.on('changing', function (e) {
@@ -342,7 +352,7 @@ gj.editor.events = {
      * @event changed
      * @param {object} e - event data
      * @example sample <!-- editor -->
-     * <div id="editor"></div>
+     * <textarea id="editor"></textarea>
      * <script>
      *     $('#editor').editor({
      *         changed: function (e) {
@@ -374,7 +384,7 @@ gj.editor.widget = function ($element, jsConfig) {
      * @example Set <!-- editor, materialicons -->
      * <button class="gj-button-md" onclick="$editor.content('<h1>new value</h1>')">Set Content</button>
      * <hr/>
-     * <div id="editor"></div>
+     * <textarea id="editor"></textarea>
      * <script>
      *     var $editor = $('#editor').editor();
      * </script>
@@ -388,7 +398,7 @@ gj.editor.widget = function ($element, jsConfig) {
      * @return jquery element
      * @example sample <!-- editor, materialicons -->
      * <button class="gj-button-md" onclick="editor.destroy()">Destroy</button><br/>
-     * <div id="editor"></div>
+     * <textarea id="editor"></textarea>
      * <script>
      *     var editor = $('#editor').editor();
      * </script>
