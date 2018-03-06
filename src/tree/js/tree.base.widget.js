@@ -389,6 +389,25 @@ gj.tree.widget = function ($element, jsConfig) {
     };
 
     /**
+     * Return an array with all records presented in the tree.
+     * @method
+     * @return jQuery object
+     * @example sample <!-- tree -->
+     * <button onclick="alert(JSON.stringify(tree.getAll()))" class="gj-button-md">Get All Data</button>
+     * <button onclick="tree.addNode({ text: 'New Node' });" class="gj-button-md">Add New Node</button>
+     * <br/>
+     * <div id="tree"></div>
+     * <script>
+     *     var tree = $('#tree').tree({
+     *         dataSource: [ { text: 'foo', children: [ { text: 'bar' } ] } ]
+     *     });
+     * </script>
+     */
+    self.getAll = function () {
+        return methods.getAll(this, this.data('records'));
+    };
+
+    /**
      * Select node from the tree.
      * @method
      * @param {Object} node - The node as jquery object.

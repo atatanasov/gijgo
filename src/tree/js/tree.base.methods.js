@@ -360,6 +360,21 @@ gj.tree.methods = {
         return $result;
     },
 
+    getAll: function ($tree, records) {
+        var i, $node, id, targetRecord,
+            result = [],
+            childrenField = $tree.data('childrenField');
+
+        for (i = 0; i < records.length; i++) {
+            targetRecord = JSON.parse(JSON.stringify(records[i].data));
+            if (records[i].children.length) {
+                targetRecord[childrenField] = gj.tree.methods.getAll($tree, records[i].children);
+            }
+            result.push(targetRecord);
+        }
+        return result;
+    },
+
     addNode: function ($tree, data, $parent, position) {
         var level,
             newNodeData = gj.tree.methods.getRecords($tree, [data])[0];

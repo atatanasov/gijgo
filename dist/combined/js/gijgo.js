@@ -10026,6 +10026,21 @@ gj.tree.methods = {
         return $result;
     },
 
+    getAll: function ($tree, records) {
+        var i, $node, id, targetRecord,
+            result = [],
+            childrenField = $tree.data('childrenField');
+
+        for (i = 0; i < records.length; i++) {
+            targetRecord = JSON.parse(JSON.stringify(records[i].data));
+            if (records[i].children.length) {
+                targetRecord[childrenField] = gj.tree.methods.getAll($tree, records[i].children);
+            }
+            result.push(targetRecord);
+        }
+        return result;
+    },
+
     addNode: function ($tree, data, $parent, position) {
         var level,
             newNodeData = gj.tree.methods.getRecords($tree, [data])[0];
@@ -10538,6 +10553,25 @@ gj.tree.widget = function ($element, jsConfig) {
      */
     self.getNodeByText = function (text) {
         return methods.getNodeByText(this.children('ul'), text);
+    };
+
+    /**
+     * Return an array with all records presented in the tree.
+     * @method
+     * @return jQuery object
+     * @example sample <!-- tree -->
+     * <button onclick="alert(JSON.stringify(tree.getAll()))" class="gj-button-md">Get All Data</button>
+     * <button onclick="tree.addNode({ text: 'New Node' });" class="gj-button-md">Add New Node</button>
+     * <br/>
+     * <div id="tree"></div>
+     * <script>
+     *     var tree = $('#tree').tree({
+     *         dataSource: [ { text: 'foo', children: [ { text: 'bar' } ] } ]
+     *     });
+     * </script>
+     */
+    self.getAll = function () {
+        return methods.getAll(this, this.data('records'));
     };
 
     /**
