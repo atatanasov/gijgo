@@ -1,0 +1,25 @@
+﻿<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Treeview Example</title>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+    <link href="../../dist/combined/css/gijgo.css" rel="stylesheet" type="text/css">
+    <script src="../../dist/combined/js/gijgo.js"></script>
+</head>
+<body>
+    <button onclick="tree.addNode({ Title: 'node1'})">Add node1</button>
+    <button onclick="tree.addNode({ Title: 'node1-1' }, tree.getNodeByText('node1'))">Add node1-1</button>
+    <button onclick="alert(tree.getNodeByText('node1').html())">Get node1</button>
+    <div id="tree"></div>
+    <script>
+        var tree = $('#tree').tree({
+            primaryKey: 'Id',
+            textField: 'Title',
+            childrenField: 'Children',
+            checkboxes: true,
+            border: true,
+            dataSource: []
+        });
+    </script>
+</body>
+</html>

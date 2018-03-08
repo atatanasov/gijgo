@@ -9714,7 +9714,7 @@ gj.tree.methods = {
         var i, id, nodeData, result = [],
             data = $tree.data();
         for (i = 0; i < response.length; i++) {
-            id = data.primaryKey ? response[i][data.primaryKey] : data.autoGenId++;
+            id = data.primaryKey && response[i][data.primaryKey] ? response[i][data.primaryKey] : data.autoGenId++;
             nodeData = { id: id, data: response[i] };
             if (response[i][data.childrenField] && response[i][data.childrenField].length) {
                 nodeData.children = gj.tree.methods.getRecords($tree, response[i][data.childrenField]);
@@ -14312,7 +14312,7 @@ gj.datepicker.widget = function ($element, jsConfig) {
      * @param {string} value - The value that needs to be selected.
      * @return string
      * @example Get <!-- datepicker -->
-     * <button class="gj-button-md" onclick="alert($datepicker.value())">Get Content</button>
+     * <button class="gj-button-md" onclick="alert($datepicker.value())">Get Value</button>
      * <hr/>
      * <input id="datepicker" />
      * <script>

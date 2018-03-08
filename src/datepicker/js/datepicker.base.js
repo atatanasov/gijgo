@@ -1242,7 +1242,7 @@ gj.datepicker.widget = function ($element, jsConfig) {
      * @param {string} value - The value that needs to be selected.
      * @return string
      * @example Get <!-- datepicker -->
-     * <button class="gj-button-md" onclick="alert($datepicker.value())">Get Content</button>
+     * <button class="gj-button-md" onclick="alert($datepicker.value())">Get Value</button>
      * <hr/>
      * <input id="datepicker" />
      * <script>
