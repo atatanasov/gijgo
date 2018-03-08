@@ -52,7 +52,7 @@
                 files: {
                     'dist/modular/js/grid.code.js': ['src/grid/js/grid.base.config.js', 'src/grid/js/grid.base.events.js', 'src/grid/js/grid.base.methods.js', 'src/grid/js/grid.base.widget.js',
                         'src/grid/js/grid.fixedHeader.js', 'src/grid/js/grid.expandCollapseRows.js', 'src/grid/js/grid.inlineEditing.js', 'src/grid/js/grid.optimisticPersistence.js', 'src/grid/js/grid.pagination.js',
-                        'src/grid/js/grid.responsiveDesign.js', 'src/grid/js/grid.toolbar.js', 'src/grid/js/grid.resizableColumns.js', 'src/grid/js/grid.rowReorder.js',
+                        'src/grid/js/grid.responsiveDesign.js', 'src/grid/js/grid.toolbar.js', 'src/grid/js/grid.resizableColumns.js', 'src/grid/js/grid.rowReorder.js', 'src/grid/js/grid.export.js',
                         'src/grid/js/grid.columnReorder.js', 'src/grid/js/grid.headerFilter.js', 'src/grid/js/grid.grouping.js', 'src/grid/js/messages/messages.en-us.js'],
 
                     'dist/modular/css/grid.code.css': ['src/grid/css/grid.base.css', 'src/grid/css/grid.responsiveDesign.css', 'src/grid/css/grid.pagination.css',

@@ -2994,6 +2994,56 @@ gj.grid.plugins.inlineEditing.configure = function ($grid, fullConfig, clientCon
     }
 };
 
+/**  */gj.grid.plugins.export = {
+    config: { base: {} },
+
+    public: {
+        /**
+         * Get grid data in Comma Separated Values (CSV) format.         */        getCSV: function (wrap, includeAllRecords) {
+            var i, j, line = '', str = '',
+                columns = this.data().columns,
+                records = this.getAll(includeAllRecords);
+
+            if (records.length) {
+
+                for (i = 0; i < columns.length; i++) {
+                    if (columns[i].hidden !== true) {
+                        line += '"' + (columns[i].title || columns[i].field) + '",';
+                    }
+                }
+                str += line.slice(0, line.length - 1) + '\r\n';
+
+                for (i = 0; i < records.length; i++) {
+                    line = '';
+
+                    for (j = 0; j < columns.length; j++) {
+                        if (columns[j].hidden !== true) {
+                            line += '"' + records[i][columns[j].field] + '",';
+                        }
+                    }                    
+                    str += line.slice(0, line.length - 1) + '\r\n';
+                }
+            }
+
+            return str;
+        },
+
+        /**
+         * Download grid data in Comma Separated Values (CSV) format.         */        downloadCSV: function (filename, includeAllRecords) {
+            var link = document.createElement('a');
+            document.body.appendChild(link);
+            link.download = filename || 'griddata.csv';
+            link.href = 'data:text/csv;charset=utf-8,' + escape(this.getCSV(includeAllRecords));
+            link.click();
+            document.body.removeChild(link);
+        }
+    },
+
+    configure: function ($grid) {
+        $.extend(true, $grid, gj.grid.plugins.export.public);
+    }
+};
+
 /**  */gj.grid.plugins.columnReorder = {
     config: {
         base: {
