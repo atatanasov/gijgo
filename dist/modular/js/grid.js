@@ -1650,33 +1650,21 @@ gj.grid.widget.prototype.getHTMLConfig = gj.grid.methods.getHTMLConfig;
     renderers: {
         editManager: function (value, record, $cell, $displayEl, id, $grid) {
             var data = $grid.data(),
-                $edit = $(data.inlineEditing.editButton).attr('data-key', id),
-                $delete = $(data.inlineEditing.deleteButton).attr('data-key', id),
-                $update = $(data.inlineEditing.updateButton).attr('data-key', id).hide(),
-                $cancel = $(data.inlineEditing.cancelButton).attr('data-key', id).hide();
+                $edit = $(data.inlineEditing.editButton).attr('key', id),
+                $delete = $(data.inlineEditing.deleteButton).attr('key', id),
+                $update = $(data.inlineEditing.updateButton).attr('key', id).hide(),
+                $cancel = $(data.inlineEditing.cancelButton).attr('key', id).hide();
             $edit.on('click', function (e) {
-                $grid.edit($(this).data('key'));
-                $edit.hide();
-                $delete.hide();
-                $update.show();
-                $cancel.show();
+                $grid.edit($(this).attr('key'));
             });
             $delete.on('click', function (e) {
-                $grid.removeRow($(this).data('key'));
+                $grid.removeRow($(this).attr('key'));
             });
             $update.on('click', function (e) {
-                $grid.update($(this).data('key'));
-                $edit.show();
-                $delete.show();
-                $update.hide();
-                $cancel.hide();
+                $grid.update($(this).attr('key'));
             });
             $cancel.on('click', function (e) {
-                $grid.cancel($(this).data('key'));
-                $edit.show();
-                $delete.show();
-                $update.hide();
-                $cancel.hide();
+                $grid.cancel($(this).attr('key'));
             });
             $displayEl.empty().append($edit).append($delete).append($update).append($cancel);
         }
@@ -1698,19 +1686,19 @@ gj.grid.plugins.inlineEditing.config = {
                 
             /** If set to true, add column with buttons for edit, delete, update and cancel at the end of the grid.            */            managementColumn: true,
 
-            managementColumnConfig: { width: 300, align: 'center', renderer: gj.grid.plugins.inlineEditing.renderers.editManager, cssClass: 'gj-grid-management-column' }
+            managementColumnConfig: { width: 300, role: 'managementColumn', align: 'center', renderer: gj.grid.plugins.inlineEditing.renderers.editManager, cssClass: 'gj-grid-management-column' }
         }
     },
 
     bootstrap: {
         inlineEditing: {
-            managementColumnConfig: { width: 200, align: 'center', renderer: gj.grid.plugins.inlineEditing.renderers.editManager, cssClass: 'gj-grid-management-column' }
+            managementColumnConfig: { width: 200, role: 'managementColumn', align: 'center', renderer: gj.grid.plugins.inlineEditing.renderers.editManager, cssClass: 'gj-grid-management-column' }
         }
     },
 
     bootstrap4: {
         inlineEditing: {
-            managementColumnConfig: { width: 280, align: 'center', renderer: gj.grid.plugins.inlineEditing.renderers.editManager, cssClass: 'gj-grid-management-column' }
+            managementColumnConfig: { width: 280, role: 'managementColumn', align: 'center', renderer: gj.grid.plugins.inlineEditing.renderers.editManager, cssClass: 'gj-grid-management-column' }
         }
     }
 };
@@ -1718,90 +1706,97 @@ gj.grid.plugins.inlineEditing.config = {
 gj.grid.plugins.inlineEditing.private = {
     localization: function (data) {
         if (data.uiLibrary === 'bootstrap') {
-            data.inlineEditing.editButton = '<button type="button" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> ' + gj.grid.messages[data.locale].Edit + '</button>';
-            data.inlineEditing.deleteButton = '<button type="button" class="btn btn-default btn-sm gj-margin-left-10"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> ' + gj.grid.messages[data.locale].Delete + '</button>';
-            data.inlineEditing.updateButton = '<button type="button" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> ' + gj.grid.messages[data.locale].Update + '</button>';
-            data.inlineEditing.cancelButton = '<button type="button" class="btn btn-default btn-sm gj-margin-left-10"><span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span> ' + gj.grid.messages[data.locale].Cancel + '</button>';
+            data.inlineEditing.editButton = '<button role="edit" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> ' + gj.grid.messages[data.locale].Edit + '</button>';
+            data.inlineEditing.deleteButton = '<button role="delete" class="btn btn-default btn-sm gj-margin-left-10"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> ' + gj.grid.messages[data.locale].Delete + '</button>';
+            data.inlineEditing.updateButton = '<button role="update" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> ' + gj.grid.messages[data.locale].Update + '</button>';
+            data.inlineEditing.cancelButton = '<button role="cancel" class="btn btn-default btn-sm gj-margin-left-10"><span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span> ' + gj.grid.messages[data.locale].Cancel + '</button>';
         } else {
-            data.inlineEditing.editButton = '<button class="gj-button-md"><i class="gj-icon pencil" /> ' + gj.grid.messages[data.locale].Edit.toUpperCase() + '</button>';
-            data.inlineEditing.deleteButton = '<button class="gj-button-md"><i class="gj-icon delete" /> ' + gj.grid.messages[data.locale].Delete.toUpperCase() + '</button>';
-            data.inlineEditing.updateButton = '<button class="gj-button-md"><i class="gj-icon check-circle" /> ' + gj.grid.messages[data.locale].Update.toUpperCase() + '</button>';
-            data.inlineEditing.cancelButton = '<button class="gj-button-md"><i class="gj-icon cancel" /> ' +gj.grid.messages[data.locale].Cancel.toUpperCase() + '</button>';
+            data.inlineEditing.editButton = '<button role="edit" class="gj-button-md"><i class="gj-icon pencil" /> ' + gj.grid.messages[data.locale].Edit.toUpperCase() + '</button>';
+            data.inlineEditing.deleteButton = '<button role="delete" class="gj-button-md"><i class="gj-icon delete" /> ' + gj.grid.messages[data.locale].Delete.toUpperCase() + '</button>';
+            data.inlineEditing.updateButton = '<button role="update" class="gj-button-md"><i class="gj-icon check-circle" /> ' + gj.grid.messages[data.locale].Update.toUpperCase() + '</button>';
+            data.inlineEditing.cancelButton = '<button role="cancel" class="gj-button-md"><i class="gj-icon cancel" /> ' +gj.grid.messages[data.locale].Cancel.toUpperCase() + '</button>';
         }
     },
 
     editMode: function ($grid, $cell, column, record) {
         var $displayContainer, $editorContainer, $editorField, value, config, data = $grid.data();
-        if ($cell.attr('data-mode') !== 'edit' && column.editor) {
-            gj.grid.plugins.inlineEditing.private.updateOtherCells($grid, column.mode);
-            $displayContainer = $cell.find('div[data-role="display"]').hide();
-            $editorContainer = $cell.find('div[data-role="edit"]').show();
-            if ($editorContainer.length === 0) {
-                $editorContainer = $('<div data-role="edit" />');
-                $cell.append($editorContainer);
-            }
-            value = record[column.field];
-            $editorField = $editorContainer.find('input, select, textarea').first();
-            if ($editorField.length) {
-                column.type === 'checkbox' ? $editorField.prop('checked', value) : $editorField.val(value);
-            } else {
-                if (typeof (column.editor) === 'function') {
-                    column.editor($editorContainer, value, record);
-                    $editorField = $editorContainer.find('input, select, textarea').first();
+        if ($cell.attr('data-mode') !== 'edit') {
+            if (column.editor) {
+                gj.grid.plugins.inlineEditing.private.updateOtherCells($grid, column.mode);
+                $displayContainer = $cell.find('div[data-role="display"]').hide();
+                $editorContainer = $cell.find('div[data-role="edit"]').show();
+                if ($editorContainer.length === 0) {
+                    $editorContainer = $('<div data-role="edit" />');
+                    $cell.append($editorContainer);
+                }
+                value = record[column.field];
+                $editorField = $editorContainer.find('input, select, textarea').first();
+                if ($editorField.length) {
+                    column.type === 'checkbox' ? $editorField.prop('checked', value) : $editorField.val(value);
                 } else {
-                    config = typeof column.editor === "object" ? column.editor : {};
-                    config.uiLibrary = data.uiLibrary;
-                    config.iconsLibrary = data.iconsLibrary;
-                    config.fontSize = $grid.css('font-size');
-                    if ('checkbox' === column.type && gj.checkbox) {
-                        $editorField = $('<input type="checkbox" />').prop('checked', value);
-                        $editorContainer.append($editorField);
-                        $editorField.checkbox(config);
-                    } else if ('date' === column.type && gj.datepicker) {
-                        $editorField = $('<input type="text" width="100%"/>');
-                        $editorContainer.append($editorField);
-                        if (column.format) {
-                            config.format = column.format;
-                        }
-                        $editorField = $editorField.datepicker(config);
-                        if ($editorField.value) {
-                            $editorField.value($displayContainer.html());
-                        }
-                    } else if ('dropdown' === column.type && gj.dropdown) {
-                        $editorField = $('<select type="text" width="100%"/>');
-                        $editorContainer.append($editorField);
-                        config.dataBound = function (e) {
-                            var $dropdown = $(this).dropdown();
-                            if (column.editField) {
-                                $dropdown.value(record[column.editField]);
-                            } else {
-                                $dropdown.value(record[column.field]);
-                            }
-                        };
-                        $editorField = $editorField.dropdown(config);
+                    if (typeof (column.editor) === 'function') {
+                        column.editor($editorContainer, value, record);
+                        $editorField = $editorContainer.find('input, select, textarea').first();
                     } else {
-                        $editorField = $('<input type="text" value="' + value + '" class="gj-width-full"/>');
-                        if (data.uiLibrary === 'materialdesign') {
-                            $editorField.addClass('gj-textbox-md').css('font-size', $grid.css('font-size'));
+                        config = typeof column.editor === "object" ? column.editor : {};
+                        config.uiLibrary = data.uiLibrary;
+                        config.iconsLibrary = data.iconsLibrary;
+                        config.fontSize = $grid.css('font-size');
+                        if ('checkbox' === column.type && gj.checkbox) {
+                            $editorField = $('<input type="checkbox" />').prop('checked', value);
+                            $editorContainer.append($editorField);
+                            $editorField.checkbox(config);
+                        } else if ('date' === column.type && gj.datepicker) {
+                            $editorField = $('<input type="text" width="100%"/>');
+                            $editorContainer.append($editorField);
+                            if (column.format) {
+                                config.format = column.format;
+                            }
+                            $editorField = $editorField.datepicker(config);
+                            if ($editorField.value) {
+                                $editorField.value($displayContainer.html());
+                            }
+                        } else if ('dropdown' === column.type && gj.dropdown) {
+                            $editorField = $('<select type="text" width="100%"/>');
+                            $editorContainer.append($editorField);
+                            config.dataBound = function (e) {
+                                var $dropdown = $(this).dropdown();
+                                if (column.editField) {
+                                    $dropdown.value(record[column.editField]);
+                                } else {
+                                    $dropdown.value(record[column.field]);
+                                }
+                            };
+                            $editorField = $editorField.dropdown(config);
+                        } else {
+                            $editorField = $('<input type="text" value="' + value + '" class="gj-width-full"/>');
+                            if (data.uiLibrary === 'materialdesign') {
+                                $editorField.addClass('gj-textbox-md').css('font-size', $grid.css('font-size'));
+                            }
+                            $editorContainer.append($editorField);
                         }
-                        $editorContainer.append($editorField);
+                    }
+                    if (data.inlineEditing.mode !== 'command' && column.mode !== 'editOnly') {
+                        $editorField = $editorContainer.find('input, select, textarea').first();
+                        $editorField.on('keyup', function (e) {
+                            if (e.keyCode === 13 || e.keyCode === 27) {
+                                gj.grid.plugins.inlineEditing.private.displayMode($grid, $cell, column);
+                            }
+                        });
                     }
                 }
-                if (data.inlineEditing.mode !== 'command' && column.mode !== 'editOnly') {
-                    $editorField = $editorContainer.find('input, select, textarea').first();
-                    $editorField.on('keyup', function (e) {
-                        if (e.keyCode === 13 || e.keyCode === 27) {
-                            gj.grid.plugins.inlineEditing.private.displayMode($grid, $cell, column);
-                        }
-                    });
+                if ($editorField.prop('tagName').toUpperCase() === "INPUT" && $editorField.prop('type').toUpperCase() === 'TEXT') {
+                    gj.grid.plugins.inlineEditing.private.setCaretAtEnd($editorField[0]);
+                } else {
+                    $editorField.focus();
                 }
+                $cell.attr('data-mode', 'edit');
+            } else if (column.role === 'managementColumn') {
+                $cell.find('[role="edit"]').hide();
+                $cell.find('[role="delete"]').hide();
+                $cell.find('[role="update"]').show();
+                $cell.find('[role="cancel"]').show();
             }
-            if ($editorField.prop('tagName').toUpperCase() === "INPUT" && $editorField.prop('type').toUpperCase() === 'TEXT') {
-                gj.grid.plugins.inlineEditing.private.setCaretAtEnd($editorField[0]);
-            } else {
-                $editorField.focus();
-            }
-            $cell.attr('data-mode', 'edit');
         }
     },
 
@@ -1826,37 +1821,45 @@ gj.grid.plugins.inlineEditing.private = {
 
     displayMode: function ($grid, $cell, column, cancel) {
         var $editorContainer, $displayContainer, $ele, newValue, newEditFieldValue, record, position, style = '';
-        if ($cell.attr('data-mode') === 'edit' && column.mode !== 'editOnly') {
-            $editorContainer = $cell.find('div[data-role="edit"]');
-            $displayContainer = $cell.find('div[data-role="display"]');
-            $ele = $editorContainer.find('input, select, textarea').first();
-            if ($ele[0].tagName.toUpperCase() === "SELECT" && $ele[0].selectedIndex > -1) {
-                newValue = $ele[0].options[$ele[0].selectedIndex].innerHTML;
-                newEditFieldValue = $ele[0].value;
-            } else if ($ele[0].tagName.toUpperCase() === "INPUT" && $ele[0].type.toUpperCase() === "CHECKBOX") {
-                newValue = $ele[0].checked;
-            } else {
-                newValue = $ele.val();
-            }
-            position = $cell.parent().data('position');
-            record = $grid.get(position);
-            if (cancel !== true && newValue !== record[column.field]) {
-                record[column.field] = column.type === 'date' ? gj.core.parseDate(newValue, column.format) : newValue;
-                if (column.editField) {
-                    record[column.editField] = newEditFieldValue || newValue;
+        if (column.mode !== 'editOnly') {
+            if ($cell.attr('data-mode') === 'edit') {
+                $editorContainer = $cell.find('div[data-role="edit"]');
+                $displayContainer = $cell.find('div[data-role="display"]');
+                $ele = $editorContainer.find('input, select, textarea').first();
+                if ($ele[0].tagName.toUpperCase() === "SELECT" && $ele[0].selectedIndex > -1) {
+                    newValue = $ele[0].options[$ele[0].selectedIndex].innerHTML;
+                    newEditFieldValue = $ele[0].value;
+                } else if ($ele[0].tagName.toUpperCase() === "INPUT" && $ele[0].type.toUpperCase() === "CHECKBOX") {
+                    newValue = $ele[0].checked;
+                } else {
+                    newValue = $ele.val();
                 }
-                if (column.mode !== 'editOnly') {
-                    gj.grid.methods.renderDisplayElement($grid, $displayContainer, column, record, gj.grid.methods.getId(record, $grid.data('primaryKey'), position), 'update');
-                    if ($cell.find('span.gj-dirty').length === 0) {
-                        $cell.prepend($('<span class="gj-dirty" />'));
+                position = $cell.parent().data('position');
+                record = $grid.get(position);
+                if (cancel !== true && newValue !== record[column.field]) {
+                    record[column.field] = column.type === 'date' ? gj.core.parseDate(newValue, column.format) : newValue;
+                    if (column.editField) {
+                        record[column.editField] = newEditFieldValue || newValue;
                     }
+                    if (column.mode !== 'editOnly') {
+                        gj.grid.methods.renderDisplayElement($grid, $displayContainer, column, record, gj.grid.methods.getId(record, $grid.data('primaryKey'), position), 'update');
+                        if ($cell.find('span.gj-dirty').length === 0) {
+                            $cell.prepend($('<span class="gj-dirty" />'));
+                        }
+                    }
+                    gj.grid.plugins.inlineEditing.events.cellDataChanged($grid, $cell, column, record, newValue);
+                    gj.grid.plugins.inlineEditing.private.updateChanges($grid, column, record, newValue);
                 }
-                gj.grid.plugins.inlineEditing.events.cellDataChanged($grid, $cell, column, record, newValue);
-                gj.grid.plugins.inlineEditing.private.updateChanges($grid, column, record, newValue);
+                $editorContainer.hide();
+                $displayContainer.show();
+                $cell.attr('data-mode', 'display');
             }
-            $editorContainer.hide();
-            $displayContainer.show();
-            $cell.attr('data-mode', 'display');
+            if (column.role === 'managementColumn') {
+                $cell.find('[role="update"]').hide();
+                $cell.find('[role="cancel"]').hide();
+                $cell.find('[role="edit"]').show();
+                $cell.find('[role="delete"]').show();
+            }
         }
     },
 
