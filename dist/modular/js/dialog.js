@@ -16,9 +16,9 @@ gj.dialog.config = {
         /** If set to true, the dialog will automatically open upon initialization.
          * If false, the dialog will stay hidden until the open() method is called.         */        autoOpen: true,
 
-        /** Specifies whether the dialog should close when it has focus and the user presses the escape (ESC) key.         */        closeOnEscape: true,
-
         /** Specifies whether the dialog should have a close button in right part of dialog header.         */        closeButtonInHeader: true,
+
+        /** Specifies whether the dialog should close when it has focus and the user presses the escape (ESC) key.         */        closeOnEscape: true,
 
         /** If set to true, the dialog will be draggable by the title bar.         */        draggable: true,
 
@@ -26,15 +26,13 @@ gj.dialog.config = {
 
         /** The language that needs to be in use.         */        locale: 'en-us',
 
-        /** The minimum height in pixels to which the dialog can be resized.         */        minHeight: undefined,
-
         /** The maximum height in pixels to which the dialog can be resized.         */        maxHeight: undefined,
 
-        /** The width of the dialog.         */        width: 300,
+        /** The maximum width in pixels to which the dialog can be resized.         */        maxWidth: undefined,
+
+        /** The minimum height in pixels to which the dialog can be resized.         */        minHeight: undefined,
 
         /** The minimum width in pixels to which the dialog can be resized.         */        minWidth: undefined,
-
-        /** The maximum width in pixels to which the dialog can be resized.         */        maxWidth: undefined,
 
         /** If set to true, the dialog will have modal behavior.
          * Modal dialogs create an overlay below the dialog, but above other page elements and you can't interact with them.         */        modal: false,
@@ -46,6 +44,8 @@ gj.dialog.config = {
         /** The title of the dialog. Can be also set through the title attribute of the html element.         */        title: undefined,
 
         /** The name of the UI library that is going to be in use. Currently we support Material Design and Bootstrap.         */        uiLibrary: undefined,
+
+        /** The width of the dialog.         */        width: 300,
 
         style: {
             modal: 'gj-modal',

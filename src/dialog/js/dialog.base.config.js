@@ -33,26 +33,6 @@ gj.dialog.config = {
          */
         autoOpen: true,
 
-        /** Specifies whether the dialog should close when it has focus and the user presses the escape (ESC) key.
-         * @type boolean
-         * @default true
-         * @example True <!-- dialog.base -->
-         * <div id="dialog">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
-         * <script>
-         *     $("#dialog").dialog({
-         *         closeOnEscape: true
-         *     });
-         * </script>
-         * @example False <!-- dialog.base, draggable.base -->
-         * <div id="dialog" style="display: none">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
-         * <script>
-         *     $("#dialog").dialog({
-         *         closeOnEscape: false
-         *     });
-         * </script>
-         */
-        closeOnEscape: true,
-
         /** Specifies whether the dialog should have a close button in right part of dialog header.
          * @type boolean
          * @default true
@@ -87,6 +67,26 @@ gj.dialog.config = {
          * </script>
          */
         closeButtonInHeader: true,
+
+        /** Specifies whether the dialog should close when it has focus and the user presses the escape (ESC) key.
+         * @type boolean
+         * @default true
+         * @example True <!-- dialog.base -->
+         * <div id="dialog">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
+         * <script>
+         *     $("#dialog").dialog({
+         *         closeOnEscape: true
+         *     });
+         * </script>
+         * @example False <!-- dialog.base, draggable.base -->
+         * <div id="dialog" style="display: none">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
+         * <script>
+         *     $("#dialog").dialog({
+         *         closeOnEscape: false
+         *     });
+         * </script>
+         */
+        closeOnEscape: true,
 
         /** If set to true, the dialog will be draggable by the title bar.
          * @type boolean
@@ -172,21 +172,6 @@ gj.dialog.config = {
          */
         locale: 'en-us',
 
-        /** The minimum height in pixels to which the dialog can be resized.
-         * @type number
-         * @default undefined
-         * @example sample <!-- draggable.base, dialog.base -->
-         * <div id="dialog">The minimum height of this dialog is set to 200 px. Try to resize it for testing.</div>
-         * <script>
-         *     $("#dialog").dialog({
-         *         resizable: true,
-         *         height: 300,
-         *         minHeight: 200
-         *     });
-         * </script>
-         */
-        minHeight: undefined,
-
         /** The maximum height in pixels to which the dialog can be resized.
          * @type number
          * @default undefined
@@ -202,27 +187,34 @@ gj.dialog.config = {
          */
         maxHeight: undefined,
 
-        /** The width of the dialog.
+        /** The maximum width in pixels to which the dialog can be resized.
          * @type number
-         * @default 300
-         * @example Fixed.Width <!-- draggable.base, dialog.base -->
-         * <div id="dialog">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
+         * @default undefined
+         * @example sample <!-- draggable.base, dialog.base -->
+         * <div id="dialog">The maximum width of this dialog is set to 400 px. Try to resize it for testing.</div>
          * <script>
          *     $("#dialog").dialog({
-         *         width: 400
-         *     });
-         * </script>
-         * @example Auto.Width <!-- draggable.base, dialog.base -->
-         * <div id="dialog" title="Wikipedia">
-         *   <img src="https://upload.wikimedia.org/wikipedia/en/thumb/8/80/Wikipedia-logo-v2.svg/1122px-Wikipedia-logo-v2.svg.png" width="420"/>
-         * </div>
-         * <script>
-         *     $("#dialog").dialog({
-         *         width: 'auto'
+         *         resizable: true,
+         *         maxWidth: 400
          *     });
          * </script>
          */
-        width: 300,
+        maxWidth: undefined,
+
+        /** The minimum height in pixels to which the dialog can be resized.
+         * @type number
+         * @default undefined
+         * @example sample <!-- draggable.base, dialog.base -->
+         * <div id="dialog">The minimum height of this dialog is set to 200 px. Try to resize it for testing.</div>
+         * <script>
+         *     $("#dialog").dialog({
+         *         resizable: true,
+         *         height: 300,
+         *         minHeight: 200
+         *     });
+         * </script>
+         */
+        minHeight: undefined,
 
         /** The minimum width in pixels to which the dialog can be resized.
          * @type number
@@ -237,20 +229,6 @@ gj.dialog.config = {
          * </script>
          */
         minWidth: undefined,
-
-        /** The maximum width in pixels to which the dialog can be resized.
-         * @type number
-         * @default undefined
-         * @example sample <!-- draggable.base, dialog.base -->
-         * <div id="dialog">The maximum width of this dialog is set to 400 px. Try to resize it for testing.</div>
-         * <script>
-         *     $("#dialog").dialog({
-         *         resizable: true,
-         *         maxWidth: 400
-         *     });
-         * </script>
-         */
-        maxWidth: undefined,
 
         /** If set to true, the dialog will have modal behavior.
          * Modal dialogs create an overlay below the dialog, but above other page elements and you can't interact with them.
@@ -402,6 +380,28 @@ gj.dialog.config = {
          * </script>
          */
         uiLibrary: undefined,
+
+        /** The width of the dialog.
+         * @type number
+         * @default 300
+         * @example Fixed.Width <!-- draggable.base, dialog.base -->
+         * <div id="dialog">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
+         * <script>
+         *     $("#dialog").dialog({
+         *         width: 400
+         *     });
+         * </script>
+         * @example Auto.Width <!-- draggable.base, dialog.base -->
+         * <div id="dialog" title="Wikipedia">
+         *   <img src="https://upload.wikimedia.org/wikipedia/en/thumb/8/80/Wikipedia-logo-v2.svg/1122px-Wikipedia-logo-v2.svg.png" width="420"/>
+         * </div>
+         * <script>
+         *     $("#dialog").dialog({
+         *         width: 'auto'
+         *     });
+         * </script>
+         */
+        width: 300,
 
         style: {
             modal: 'gj-modal',

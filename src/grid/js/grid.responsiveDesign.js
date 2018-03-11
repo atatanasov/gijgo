@@ -218,8 +218,8 @@ gj.grid.plugins.responsiveDesign = {
          * Make the grid responsive based on the available space.
          * Show column if the space for the grid is expanding and hide columns when the space for the grid is decreasing.
          * @method
-         * @return void
-         * @example sample <!-- grid, grid.responsiveDesign -->
+         * @return grid object
+         * @example sample <!-- grid -->
          * <button onclick="grid.makeResponsive()" class="gj-button-md">Make Responsive</button>
          * <br/><br/>
          * <table id="grid"></table>
@@ -264,6 +264,8 @@ gj.grid.plugins.responsiveDesign = {
                     this.hideColumn(columns[i].field);
                 }
             }
+
+            return this;
         },
     },
 

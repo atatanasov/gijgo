@@ -1532,6 +1532,7 @@ gj.grid.widget.prototype.getHTMLConfig = gj.grid.methods.getHTMLConfig;
                     gj.grid.plugins.grouping.private.collapseGroup(data, $(this).find('td:eq(0)'));
                 });
             }
+            return $grid;
         },
 
         /**
@@ -1550,6 +1551,7 @@ gj.grid.widget.prototype.getHTMLConfig = gj.grid.methods.getHTMLConfig;
                     gj.grid.plugins.grouping.private.expandGroup(data, $(this).find('td:eq(0)'));
                 });
             }
+            return $grid;
         },
 
         //TODO: add documentation
@@ -1566,6 +1568,7 @@ gj.grid.widget.prototype.getHTMLConfig = gj.grid.methods.getHTMLConfig;
                 });
                 $detailWrapper.html(content);
             }
+            return $grid;
         }
     },
 
@@ -2636,6 +2639,8 @@ gj.grid.plugins.inlineEditing.configure = function ($grid, fullConfig, clientCon
                     this.hideColumn(columns[i].field);
                 }
             }
+
+            return this;
         },
     },
 
@@ -3002,7 +3007,7 @@ gj.grid.plugins.inlineEditing.configure = function ($grid, fullConfig, clientCon
 
     public: {
         /**
-         * Get grid data in Comma Separated Values (CSV) format.         */        getCSV: function (wrap, includeAllRecords) {
+         * Get grid data in Comma Separated Values (CSV) format.         */        getCSV: function (includeAllRecords) {
             var i, j, line = '', str = '',
                 columns = this.data().columns,
                 records = this.getAll(includeAllRecords);
@@ -3039,6 +3044,7 @@ gj.grid.plugins.inlineEditing.configure = function ($grid, fullConfig, clientCon
             link.href = 'data:text/csv;charset=utf-8,' + escape(this.getCSV(includeAllRecords));
             link.click();
             document.body.removeChild(link);
+            return this;
         }
     },
 

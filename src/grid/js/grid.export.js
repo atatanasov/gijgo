@@ -10,7 +10,7 @@ gj.grid.plugins.export = {
          * Get grid data in Comma Separated Values (CSV) format.
          * @method
          * @param {boolean} includeAllRecords - include records that are not visible when you are using local dataSource.
-         * @return string or grid object
+         * @return string
          * @example Local.Data <!-- grid, dropdown -->
          * <button onclick="alert(grid.getCSV(true))" class="gj-button-md">Get All</button>
          * <br/><br/>
@@ -40,7 +40,7 @@ gj.grid.plugins.export = {
          *     });
          * </script>
          */
-        getCSV: function (wrap, includeAllRecords) {
+        getCSV: function (includeAllRecords) {
             var i, j, line = '', str = '',
                 columns = this.data().columns,
                 records = this.getAll(includeAllRecords);
@@ -74,7 +74,7 @@ gj.grid.plugins.export = {
          * @method
          * @param {string} filename - name of the generated file.
          * @param {boolean} includeAllRecords - include records that are not visible when you are using local dataSource.
-         * @return string or grid object
+         * @return grid object
          * @example Local.Data <!-- grid, dropdown -->
          * <button onclick="grid.downloadCSV()" class="gj-button-md">Download Only First Page</button>
          * <button onclick="grid.downloadCSV('myfilename.csv', true)" class="gj-button-md">Download All Data</button>
@@ -112,6 +112,7 @@ gj.grid.plugins.export = {
             link.href = 'data:text/csv;charset=utf-8,' + escape(this.getCSV(includeAllRecords));
             link.click();
             document.body.removeChild(link);
+            return this;
         }
     },
 

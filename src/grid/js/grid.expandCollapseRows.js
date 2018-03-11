@@ -232,6 +232,7 @@ gj.grid.plugins.expandCollapseRows = {
                     gj.grid.plugins.grouping.private.collapseGroup(data, $(this).find('td:eq(0)'));
                 });
             }
+            return $grid;
         },
 
         /**
@@ -267,6 +268,7 @@ gj.grid.plugins.expandCollapseRows = {
                     gj.grid.plugins.grouping.private.expandGroup(data, $(this).find('td:eq(0)'));
                 });
             }
+            return $grid;
         },
 
         //TODO: add documentation
@@ -283,6 +285,7 @@ gj.grid.plugins.expandCollapseRows = {
                 });
                 $detailWrapper.html(content);
             }
+            return $grid;
         }
     },
 

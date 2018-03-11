@@ -373,7 +373,7 @@ gj.editor.widget = function ($element, jsConfig) {
     /** Get or set html content in the body.
      * @method
      * @param {string} html - The html content that needs to be set.
-     * @return string
+     * @return string | editor
      * @example Get <!-- editor, materialicons -->
      * <button class="gj-button-md" onclick="alert($editor.content())">Get Content</button>
      * <hr/>

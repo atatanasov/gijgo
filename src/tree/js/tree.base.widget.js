@@ -391,7 +391,7 @@ gj.tree.widget = function ($element, jsConfig) {
     /**
      * Return an array with all records presented in the tree.
      * @method
-     * @return jQuery object
+     * @return Array
      * @example sample <!-- tree -->
      * <button onclick="alert(JSON.stringify(tree.getAll()))" class="gj-button-md">Get All Data</button>
      * <button onclick="tree.addNode({ text: 'New Node' });" class="gj-button-md">Add New Node</button>

@@ -206,6 +206,7 @@ gj.checkbox.events = {
      *
      * @event change
      * @param {object} e - event data
+     * @param {string} state - the data of the checkbox
      * @example sample <!-- checkbox -->
      * <input type="checkbox" id="checkbox"/>
      * <script>

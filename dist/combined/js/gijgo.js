@@ -553,26 +553,6 @@ gj.dialog.config = {
          */
         autoOpen: true,
 
-        /** Specifies whether the dialog should close when it has focus and the user presses the escape (ESC) key.
-         * @type boolean
-         * @default true
-         * @example True <!-- dialog.base -->
-         * <div id="dialog">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
-         * <script>
-         *     $("#dialog").dialog({
-         *         closeOnEscape: true
-         *     });
-         * </script>
-         * @example False <!-- dialog.base, draggable.base -->
-         * <div id="dialog" style="display: none">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
-         * <script>
-         *     $("#dialog").dialog({
-         *         closeOnEscape: false
-         *     });
-         * </script>
-         */
-        closeOnEscape: true,
-
         /** Specifies whether the dialog should have a close button in right part of dialog header.
          * @type boolean
          * @default true
@@ -607,6 +587,26 @@ gj.dialog.config = {
          * </script>
          */
         closeButtonInHeader: true,
+
+        /** Specifies whether the dialog should close when it has focus and the user presses the escape (ESC) key.
+         * @type boolean
+         * @default true
+         * @example True <!-- dialog.base -->
+         * <div id="dialog">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
+         * <script>
+         *     $("#dialog").dialog({
+         *         closeOnEscape: true
+         *     });
+         * </script>
+         * @example False <!-- dialog.base, draggable.base -->
+         * <div id="dialog" style="display: none">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
+         * <script>
+         *     $("#dialog").dialog({
+         *         closeOnEscape: false
+         *     });
+         * </script>
+         */
+        closeOnEscape: true,
 
         /** If set to true, the dialog will be draggable by the title bar.
          * @type boolean
@@ -692,21 +692,6 @@ gj.dialog.config = {
          */
         locale: 'en-us',
 
-        /** The minimum height in pixels to which the dialog can be resized.
-         * @type number
-         * @default undefined
-         * @example sample <!-- draggable.base, dialog.base -->
-         * <div id="dialog">The minimum height of this dialog is set to 200 px. Try to resize it for testing.</div>
-         * <script>
-         *     $("#dialog").dialog({
-         *         resizable: true,
-         *         height: 300,
-         *         minHeight: 200
-         *     });
-         * </script>
-         */
-        minHeight: undefined,
-
         /** The maximum height in pixels to which the dialog can be resized.
          * @type number
          * @default undefined
@@ -722,27 +707,34 @@ gj.dialog.config = {
          */
         maxHeight: undefined,
 
-        /** The width of the dialog.
+        /** The maximum width in pixels to which the dialog can be resized.
          * @type number
-         * @default 300
-         * @example Fixed.Width <!-- draggable.base, dialog.base -->
-         * <div id="dialog">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
+         * @default undefined
+         * @example sample <!-- draggable.base, dialog.base -->
+         * <div id="dialog">The maximum width of this dialog is set to 400 px. Try to resize it for testing.</div>
          * <script>
          *     $("#dialog").dialog({
-         *         width: 400
-         *     });
-         * </script>
-         * @example Auto.Width <!-- draggable.base, dialog.base -->
-         * <div id="dialog" title="Wikipedia">
-         *   <img src="https://upload.wikimedia.org/wikipedia/en/thumb/8/80/Wikipedia-logo-v2.svg/1122px-Wikipedia-logo-v2.svg.png" width="420"/>
-         * </div>
-         * <script>
-         *     $("#dialog").dialog({
-         *         width: 'auto'
+         *         resizable: true,
+         *         maxWidth: 400
          *     });
          * </script>
          */
-        width: 300,
+        maxWidth: undefined,
+
+        /** The minimum height in pixels to which the dialog can be resized.
+         * @type number
+         * @default undefined
+         * @example sample <!-- draggable.base, dialog.base -->
+         * <div id="dialog">The minimum height of this dialog is set to 200 px. Try to resize it for testing.</div>
+         * <script>
+         *     $("#dialog").dialog({
+         *         resizable: true,
+         *         height: 300,
+         *         minHeight: 200
+         *     });
+         * </script>
+         */
+        minHeight: undefined,
 
         /** The minimum width in pixels to which the dialog can be resized.
          * @type number
@@ -757,20 +749,6 @@ gj.dialog.config = {
          * </script>
          */
         minWidth: undefined,
-
-        /** The maximum width in pixels to which the dialog can be resized.
-         * @type number
-         * @default undefined
-         * @example sample <!-- draggable.base, dialog.base -->
-         * <div id="dialog">The maximum width of this dialog is set to 400 px. Try to resize it for testing.</div>
-         * <script>
-         *     $("#dialog").dialog({
-         *         resizable: true,
-         *         maxWidth: 400
-         *     });
-         * </script>
-         */
-        maxWidth: undefined,
 
         /** If set to true, the dialog will have modal behavior.
          * Modal dialogs create an overlay below the dialog, but above other page elements and you can't interact with them.
@@ -922,6 +900,28 @@ gj.dialog.config = {
          * </script>
          */
         uiLibrary: undefined,
+
+        /** The width of the dialog.
+         * @type number
+         * @default 300
+         * @example Fixed.Width <!-- draggable.base, dialog.base -->
+         * <div id="dialog">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
+         * <script>
+         *     $("#dialog").dialog({
+         *         width: 400
+         *     });
+         * </script>
+         * @example Auto.Width <!-- draggable.base, dialog.base -->
+         * <div id="dialog" title="Wikipedia">
+         *   <img src="https://upload.wikimedia.org/wikipedia/en/thumb/8/80/Wikipedia-logo-v2.svg/1122px-Wikipedia-logo-v2.svg.png" width="420"/>
+         * </div>
+         * <script>
+         *     $("#dialog").dialog({
+         *         width: 'auto'
+         *     });
+         * </script>
+         */
+        width: 300,
 
         style: {
             modal: 'gj-modal',
@@ -5658,6 +5658,7 @@ gj.grid.plugins.expandCollapseRows = {
                     gj.grid.plugins.grouping.private.collapseGroup(data, $(this).find('td:eq(0)'));
                 });
             }
+            return $grid;
         },
 
         /**
@@ -5693,6 +5694,7 @@ gj.grid.plugins.expandCollapseRows = {
                     gj.grid.plugins.grouping.private.expandGroup(data, $(this).find('td:eq(0)'));
                 });
             }
+            return $grid;
         },
 
         //TODO: add documentation
@@ -5709,6 +5711,7 @@ gj.grid.plugins.expandCollapseRows = {
                 });
                 $detailWrapper.html(content);
             }
+            return $grid;
         }
     },
 
@@ -7592,8 +7595,8 @@ gj.grid.plugins.responsiveDesign = {
          * Make the grid responsive based on the available space.
          * Show column if the space for the grid is expanding and hide columns when the space for the grid is decreasing.
          * @method
-         * @return void
-         * @example sample <!-- grid, grid.responsiveDesign -->
+         * @return grid object
+         * @example sample <!-- grid -->
          * <button onclick="grid.makeResponsive()" class="gj-button-md">Make Responsive</button>
          * <br/><br/>
          * <table id="grid"></table>
@@ -7638,6 +7641,8 @@ gj.grid.plugins.responsiveDesign = {
                     this.hideColumn(columns[i].field);
                 }
             }
+
+            return this;
         },
     },
 
@@ -8250,7 +8255,7 @@ gj.grid.plugins.export = {
          * Get grid data in Comma Separated Values (CSV) format.
          * @method
          * @param {boolean} includeAllRecords - include records that are not visible when you are using local dataSource.
-         * @return string or grid object
+         * @return string
          * @example Local.Data <!-- grid, dropdown -->
          * <button onclick="alert(grid.getCSV(true))" class="gj-button-md">Get All</button>
          * <br/><br/>
@@ -8280,7 +8285,7 @@ gj.grid.plugins.export = {
          *     });
          * </script>
          */
-        getCSV: function (wrap, includeAllRecords) {
+        getCSV: function (includeAllRecords) {
             var i, j, line = '', str = '',
                 columns = this.data().columns,
                 records = this.getAll(includeAllRecords);
@@ -8314,7 +8319,7 @@ gj.grid.plugins.export = {
          * @method
          * @param {string} filename - name of the generated file.
          * @param {boolean} includeAllRecords - include records that are not visible when you are using local dataSource.
-         * @return string or grid object
+         * @return grid object
          * @example Local.Data <!-- grid, dropdown -->
          * <button onclick="grid.downloadCSV()" class="gj-button-md">Download Only First Page</button>
          * <button onclick="grid.downloadCSV('myfilename.csv', true)" class="gj-button-md">Download All Data</button>
@@ -8352,6 +8357,7 @@ gj.grid.plugins.export = {
             link.href = 'data:text/csv;charset=utf-8,' + escape(this.getCSV(includeAllRecords));
             link.click();
             document.body.removeChild(link);
+            return this;
         }
     },
 
@@ -10683,7 +10689,7 @@ gj.tree.widget = function ($element, jsConfig) {
     /**
      * Return an array with all records presented in the tree.
      * @method
-     * @return jQuery object
+     * @return Array
      * @example sample <!-- tree -->
      * <button onclick="alert(JSON.stringify(tree.getAll()))" class="gj-button-md">Get All Data</button>
      * <button onclick="tree.addNode({ text: 'New Node' });" class="gj-button-md">Add New Node</button>
@@ -11991,6 +11997,7 @@ gj.checkbox.events = {
      *
      * @event change
      * @param {object} e - event data
+     * @param {string} state - the data of the checkbox
      * @example sample <!-- checkbox -->
      * <input type="checkbox" id="checkbox"/>
      * <script>
@@ -12464,7 +12471,7 @@ gj.editor.widget = function ($element, jsConfig) {
     /** Get or set html content in the body.
      * @method
      * @param {string} html - The html content that needs to be set.
-     * @return string
+     * @return string | editor
      * @example Get <!-- editor, materialicons -->
      * <button class="gj-button-md" onclick="alert($editor.content())">Get Content</button>
      * <hr/>
@@ -14435,7 +14442,7 @@ gj.datepicker.widget = function ($element, jsConfig) {
     /** Gets or sets the value of the datepicker.
      * @method
      * @param {string} value - The value that needs to be selected.
-     * @return string
+     * @return string | datepicker object
      * @example Get <!-- datepicker -->
      * <button class="gj-button-md" onclick="alert($datepicker.value())">Get Value</button>
      * <hr/>
@@ -15171,6 +15178,7 @@ gj.timepicker.methods = {
             $timepicker.focus();
         }
         gj.timepicker.events.open($timepicker);
+        return $timepicker;
     },
 
     close: function ($timepicker) {
@@ -15178,6 +15186,7 @@ gj.timepicker.methods = {
         $clock.hide();
         $clock.closest('div[role="modal"]').hide();
         gj.timepicker.events.close($timepicker);
+        return $timepicker;
     },
 
     value: function ($timepicker, value) {
@@ -15324,7 +15333,7 @@ gj.timepicker.widget = function ($element, jsConfig) {
      * </script>
      */
     self.open = function () {
-        gj.timepicker.methods.open(this);
+        return gj.timepicker.methods.open(this);
     };
 
     /** Close the clock.
@@ -15340,7 +15349,7 @@ gj.timepicker.widget = function ($element, jsConfig) {
      * </script>
      */
     self.close = function () {
-        gj.timepicker.methods.close(this);
+        return gj.timepicker.methods.close(this);
     };
 
     $.extend($element, self);

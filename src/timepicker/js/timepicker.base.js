@@ -640,6 +640,7 @@ gj.timepicker.methods = {
             $timepicker.focus();
         }
         gj.timepicker.events.open($timepicker);
+        return $timepicker;
     },
 
     close: function ($timepicker) {
@@ -647,6 +648,7 @@ gj.timepicker.methods = {
         $clock.hide();
         $clock.closest('div[role="modal"]').hide();
         gj.timepicker.events.close($timepicker);
+        return $timepicker;
     },
 
     value: function ($timepicker, value) {
@@ -793,7 +795,7 @@ gj.timepicker.widget = function ($element, jsConfig) {
      * </script>
      */
     self.open = function () {
-        gj.timepicker.methods.open(this);
+        return gj.timepicker.methods.open(this);
     };
 
     /** Close the clock.
@@ -809,7 +811,7 @@ gj.timepicker.widget = function ($element, jsConfig) {
      * </script>
      */
     self.close = function () {
-        gj.timepicker.methods.close(this);
+        return gj.timepicker.methods.close(this);
     };
 
     $.extend($element, self);
