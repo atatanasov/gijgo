@@ -12,13 +12,13 @@
     <button onclick="alert(tree.getNodeByText('node1').html())">Get node1</button>
     <div id="tree"></div>
     <script>
-        var tree = $('#tree').tree({
-            primaryKey: 'Id',
-            textField: 'Title',
-            childrenField: 'Children',
-            checkboxes: true,
-            border: true,
-            dataSource: []
+        $(document).ready(function () {
+            $('#tree').tree({
+                primaryKey: 'id',
+                dataSource: '/Locations/LazyGet',
+                lazyLoading: true,
+                checkboxes: true
+            });
         });
     </script>
 </body>

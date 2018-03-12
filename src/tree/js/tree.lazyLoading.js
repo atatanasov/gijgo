@@ -59,6 +59,7 @@ gj.tree.plugins.lazyLoading = {
                     $expander = $node.find('>[data-role="wrapper"]>[data-role="expander"]'),
                     $expander.attr('data-mode', 'open');
                     $expander.empty().append(data.icons.collapse);
+                    gj.tree.events.dataBound($tree);
                 }
             };
         },
