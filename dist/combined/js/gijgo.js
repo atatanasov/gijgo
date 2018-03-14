@@ -10198,7 +10198,7 @@ gj.tree.methods = {
 
     remove: function ($tree, $node) {
         gj.tree.methods.removeDataById($tree, $node.attr('data-id'), $tree.data('records'));
-        $node.remove();    
+        $node.remove();
         return $tree;
     },
 
@@ -10212,6 +10212,16 @@ gj.tree.methods = {
                 gj.tree.methods.removeDataById($tree, id, records[i].children);
             }
         }
+    },
+
+    update: function ($tree, id, newRecord) {
+        var data = $tree.data(),
+            $node = $tree.getNodeById(id),
+            oldRecord = $tree.getDataById(id);
+        oldRecord = newRecord;
+        $node.find('>[data-role="wrapper"]>[data-role="display"]').html(newRecord[data.textField]);
+        gj.tree.events.nodeDataBound($tree, $node, id, newRecord);
+        return $tree;
     },
 
     getChildren: function ($tree, $node, cascade) {
@@ -10458,6 +10468,37 @@ gj.tree.widget = function ($element, jsConfig) {
      */
     self.removeNode = function ($node) {
         return methods.remove(this, $node);
+    };
+
+    /**
+     * Update node from the tree.
+     * @method
+     * @param {string} id - The id of the node that needs to be updated
+     * @param {object} record - The node as jQuery object
+     * @return jQuery object
+     * @example Method.Sample <!-- tree -->
+     * <input type="text" id="nodeName" />
+     * <button onclick="save()" class="gj-button-md">Save</button>
+     * <br/>
+     * <div id="tree"></div>
+     * <script>
+     *     var tree = $('#tree').tree({
+     *         primaryKey: 'id',
+     *         dataSource: '/Locations/Get'
+     *     });
+     *     tree.on('select', function (e, node, id) {
+     *         $('#nodeName').val(tree.getDataById(id).text);
+     *     });
+     *     function save() {
+     *         var id = tree.getSelections()[0],
+     *             record = tree.getDataById(id);
+     *         record.text = $('#nodeName').val();
+     *         tree.updateNode(id, record);
+     *     }
+     * </script>
+     */
+    self.updateNode = function (id, record) {
+        return methods.update(this, id, record);
     };
 
     /**
@@ -14203,7 +14244,9 @@ gj.datepicker.methods = {
             $datepicker.attr('day', year + '-' + month + '-' + date.getDate());
             $datepicker.attr('month', month);
             $datepicker.attr('year', year);
-            gj.datepicker.methods.close($datepicker);
+            if (window.getComputedStyle($calendar[0]).display !== 'none') {
+                gj.datepicker.methods.close($datepicker);
+            }
             return $datepicker;
         };
     },

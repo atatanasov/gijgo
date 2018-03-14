@@ -163,6 +163,37 @@ gj.tree.widget = function ($element, jsConfig) {
     };
 
     /**
+     * Update node from the tree.
+     * @method
+     * @param {string} id - The id of the node that needs to be updated
+     * @param {object} record - The node as jQuery object
+     * @return jQuery object
+     * @example Method.Sample <!-- tree -->
+     * <input type="text" id="nodeName" />
+     * <button onclick="save()" class="gj-button-md">Save</button>
+     * <br/>
+     * <div id="tree"></div>
+     * <script>
+     *     var tree = $('#tree').tree({
+     *         primaryKey: 'id',
+     *         dataSource: '/Locations/Get'
+     *     });
+     *     tree.on('select', function (e, node, id) {
+     *         $('#nodeName').val(tree.getDataById(id).text);
+     *     });
+     *     function save() {
+     *         var id = tree.getSelections()[0],
+     *             record = tree.getDataById(id);
+     *         record.text = $('#nodeName').val();
+     *         tree.updateNode(id, record);
+     *     }
+     * </script>
+     */
+    self.updateNode = function (id, record) {
+        return methods.update(this, id, record);
+    };
+
+    /**
      * Destroy the tree.
      * @method
      * @return jQuery object

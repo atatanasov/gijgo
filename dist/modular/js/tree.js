@@ -579,7 +579,7 @@ gj.tree.methods = {
 
     remove: function ($tree, $node) {
         gj.tree.methods.removeDataById($tree, $node.attr('data-id'), $tree.data('records'));
-        $node.remove();    
+        $node.remove();
         return $tree;
     },
 
@@ -593,6 +593,16 @@ gj.tree.methods = {
                 gj.tree.methods.removeDataById($tree, id, records[i].children);
             }
         }
+    },
+
+    update: function ($tree, id, newRecord) {
+        var data = $tree.data(),
+            $node = $tree.getNodeById(id),
+            oldRecord = $tree.getDataById(id);
+        oldRecord = newRecord;
+        $node.find('>[data-role="wrapper"]>[data-role="display"]').html(newRecord[data.textField]);
+        gj.tree.events.nodeDataBound($tree, $node, id, newRecord);
+        return $tree;
     },
 
     getChildren: function ($tree, $node, cascade) {
@@ -699,6 +709,11 @@ gj.tree.methods = {
     /**
      * Remove node from the tree.     */    self.removeNode = function ($node) {
         return methods.remove(this, $node);
+    };
+
+    /**
+     * Update node from the tree.     */    self.updateNode = function (id, record) {
+        return methods.update(this, id, record);
     };
 
     /**

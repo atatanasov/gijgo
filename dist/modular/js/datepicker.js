@@ -614,7 +614,9 @@ gj.datepicker.methods = {
             $datepicker.attr('day', year + '-' + month + '-' + date.getDate());
             $datepicker.attr('month', month);
             $datepicker.attr('year', year);
-            gj.datepicker.methods.close($datepicker);
+            if (window.getComputedStyle($calendar[0]).display !== 'none') {
+                gj.datepicker.methods.close($datepicker);
+            }
             return $datepicker;
         };
     },
