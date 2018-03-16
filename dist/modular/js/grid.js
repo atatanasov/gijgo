@@ -98,6 +98,12 @@ gj.grid.config = {
 
         /** Minimum width of the grid.         */        minWidth: undefined,
 
+        /** This configuration option manage the behaviour of the header row height.
+         * Auto scale if set to to 'autogrow'. All body rows are with the same height if set to 'fixed'.         */        headerRowHeight: 'fixed',
+
+        /** This configuration option manage the behaviour of the body row height.
+         * Auto scale if set to to 'autogrow'. All body rows are with the same height if set to 'fixed'.         */        bodyRowHeight: 'autogrow',
+
         /** The size of the font in the grid.         */        fontSize: undefined,
 
         /** Name of column that contains the record id.          */        primaryKey: undefined,
@@ -339,6 +345,12 @@ gj.grid.methods = {
         }
         if (data.fontSize) {
             $grid.css('font-size', data.fontSize);
+        }
+        if (data.headerRowHeight === 'autogrow') {
+            $grid.addClass('autogrow-header-row');
+        }
+        if (data.bodyRowHeight === 'fixed') {
+            $grid.addClass('fixed-body-rows');
         }
         $grid.addClass(data.style.table);
         if ('checkbox' === data.selectionMethod) {

@@ -84,6 +84,12 @@ gj.grid.methods = {
         if (data.fontSize) {
             $grid.css('font-size', data.fontSize);
         }
+        if (data.headerRowHeight === 'autogrow') {
+            $grid.addClass('autogrow-header-row');
+        }
+        if (data.bodyRowHeight === 'fixed') {
+            $grid.addClass('fixed-body-rows');
+        }
         $grid.addClass(data.style.table);
         if ('checkbox' === data.selectionMethod) {
             data.columns.splice(gj.grid.methods.getColumnPositionNotInRole($grid), 0, {

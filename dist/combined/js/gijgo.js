@@ -3175,6 +3175,80 @@ gj.grid.config = {
          */
         minWidth: undefined,
 
+        /** This configuration option manage the behaviour of the header row height.
+         * Auto scale if set to to 'autogrow'. All body rows are with the same height if set to 'fixed'.
+         * @type ('autogrow'|'fixed')
+         * @default "fixed"
+         * @example AutoGrow <!-- grid -->
+         * <table id="grid"></table>
+         * <script>
+         *     var data = [
+         *         { 'ID': 1, 'Name': 'Hristo Stoichkov', 'PlaceOfBirth': 'Plovdiv, Bulgaria' },
+         *         { 'ID': 2, 'Name': 'Ronaldo Luis Nazario de Lima', 'PlaceOfBirth': 'Rio de Janeiro, Brazil' },
+         *         { 'ID': 3, 'Name': 'David Platt', 'PlaceOfBirth': 'Chadderton, Lancashire, England' }
+         *     ];
+         *     $('#grid').grid({
+         *         dataSource: '/Players/Get',
+         *         width: 500,
+         *         headerRowHeight: 'autogrow',
+         *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth', title: 'Very very very very long column title', width: 200 } ]
+         *     });
+         * </script>
+         * @example Fixed <!-- grid -->
+         * <table id="grid"></table>
+         * <script>
+         *     var data = [
+         *         { 'ID': 1, 'Name': 'Hristo Stoichkov', 'PlaceOfBirth': 'Plovdiv, Bulgaria' },
+         *         { 'ID': 2, 'Name': 'Ronaldo Luis Nazario de Lima', 'PlaceOfBirth': 'Rio de Janeiro, Brazil' },
+         *         { 'ID': 3, 'Name': 'David Platt', 'PlaceOfBirth': 'Chadderton, Lancashire, England' }
+         *     ];
+         *     $('#grid').grid({
+         *         dataSource: '/Players/Get',
+         *         width: 500,
+         *         headerRowHeight: 'fixed',
+         *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth', title: 'Very very very very long column title', width: 200 } ]
+         *     });
+         * </script>
+         */
+        headerRowHeight: 'fixed',
+
+        /** This configuration option manage the behaviour of the body row height.
+         * Auto scale if set to to 'autogrow'. All body rows are with the same height if set to 'fixed'.
+         * @type ('autogrow'|'fixed')
+         * @default "autogrow"
+         * @example AutoGrow <!-- grid -->
+         * <table id="grid"></table>
+         * <script>
+         *     var data = [
+         *         { 'ID': 1, 'Name': 'Hristo Stoichkov', 'PlaceOfBirth': 'Plovdiv, Bulgaria' },
+         *         { 'ID': 2, 'Name': 'Ronaldo Luis Nazario de Lima', 'PlaceOfBirth': 'Rio de Janeiro, Brazil' },
+         *         { 'ID': 3, 'Name': 'David Platt', 'PlaceOfBirth': 'Chadderton, Lancashire, England' }
+         *     ];
+         *     $('#grid').grid({
+         *         dataSource: '/Players/Get',
+         *         width: 500,
+         *         bodyRowHeight: 'autogrow',
+         *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth', title: 'Very very very very long column title', width: 200 } ]
+         *     });
+         * </script>
+         * @example Fixed <!-- grid -->
+         * <table id="grid"></table>
+         * <script>
+         *     var data = [
+         *         { 'ID': 1, 'Name': 'Hristo Stoichkov', 'PlaceOfBirth': 'Plovdiv, Bulgaria' },
+         *         { 'ID': 2, 'Name': 'Ronaldo Luis Nazario de Lima', 'PlaceOfBirth': 'Rio de Janeiro, Brazil' },
+         *         { 'ID': 3, 'Name': 'David Platt', 'PlaceOfBirth': 'Chadderton, Lancashire, England' }
+         *     ];
+         *     $('#grid').grid({
+         *         dataSource: '/Players/Get',
+         *         width: 500,
+         *         bodyRowHeight: 'fixed',
+         *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth', title: 'Very very very very long column title', width: 200 } ]
+         *     });
+         * </script>
+         */
+        bodyRowHeight: 'autogrow',
+
         /** The size of the font in the grid.
          * @type string
          * @default undefined
@@ -3760,6 +3834,12 @@ gj.grid.methods = {
         }
         if (data.fontSize) {
             $grid.css('font-size', data.fontSize);
+        }
+        if (data.headerRowHeight === 'autogrow') {
+            $grid.addClass('autogrow-header-row');
+        }
+        if (data.bodyRowHeight === 'fixed') {
+            $grid.addClass('fixed-body-rows');
         }
         $grid.addClass(data.style.table);
         if ('checkbox' === data.selectionMethod) {

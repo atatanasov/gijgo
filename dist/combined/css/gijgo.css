@@ -695,9 +695,17 @@ TABLE.gj-grid THEAD TH [data-role="sorticon"] {
     display: inline-block;
 }
 
-TABLE.gj-grid > thead > tr > th {
+TABLE.gj-grid THEAD TH {
     overflow: hidden;
-    /*position: relative;*/
+    text-overflow: ellipsis;
+}
+
+TABLE.gj-grid.autogrow-header-row THEAD TH {
+    overflow: auto;
+    text-overflow: initial;
+    white-space: pre-wrap;
+    -ms-word-break: break-word;
+    word-break: break-word;
 }
 
 TABLE.gj-grid > tbody > tr > td {
@@ -711,6 +719,14 @@ table.gj-grid tbody div[data-role="display"] {
     white-space: pre-wrap;
     -ms-word-break: break-word;
     word-break: break-word;
+}
+
+table.gj-grid.fixed-body-rows tbody div[data-role="display"] {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    -ms-word-break: initial;
+    word-break: initial;
 }
 
 table.gj-grid tfoot DIV[data-role="display"] {
@@ -786,7 +802,6 @@ table.gj-grid-bootstrap tbody tr td div[data-role="display"] {
 .gj-grid-md th {
     position: relative;
     vertical-align: bottom;
-    text-overflow: ellipsis;
     font-weight: 700;
     line-height: 31px;
     letter-spacing: 0;
