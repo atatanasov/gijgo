@@ -33,14 +33,14 @@
     letter-spacing: .04em;
     line-height: 1;
     color: rgba(0,0,0,.87);
-
     padding: 0px;
     border: 0px;
+    border-bottom: 1px solid rgba(0,0,0,.42);
     background: transparent;
 }
 
 .gj-dropdown-md [role="presenter"] [role="display"] {
-    padding: 8px 0px;
+    padding: 8px 5px;
 }
 
 .gj-dropdown-list-md {

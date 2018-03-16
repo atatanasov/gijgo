@@ -25,8 +25,6 @@ gj.dropdown.config = {
 
         /** The maximum height of the dropdown list. When set to auto adjust to the screen height.         */        maxHeight: 'auto',
 
-        optionsDisplay: 'materialdesign',
-
         fontSize: undefined,
 
         /** The name of the UI library that is going to be in use.         */        uiLibrary: 'materialdesign',
@@ -52,8 +50,7 @@ gj.dropdown.config = {
             item: 'list-group-item',
             active: 'active'
         },
-        iconsLibrary: 'glyphicons',
-        optionsDisplay: 'standard'
+        iconsLibrary: 'glyphicons'
     },
 
     bootstrap4: {
@@ -63,8 +60,7 @@ gj.dropdown.config = {
             list: 'gj-list gj-list-bootstrap gj-dropdown-list-bootstrap list-group',
             item: 'list-group-item',
             active: 'active'
-        },
-        optionsDisplay: 'standard'
+        }
     },
 
     materialicons: {
@@ -124,9 +120,9 @@ gj.dropdown.methods = {
             if ($list.is(':visible')) {
                 $list.hide();
             } else {
-                gj.dropdown.methods.setListPosition($presenter, $list, data);
+                //gj.dropdown.methods.setListPosition($presenter, $list[0], data);
                 $list.show();
-                gj.dropdown.methods.setListPosition($presenter, $list, data);
+                gj.dropdown.methods.setListPosition($presenter[0], $list[0], data);
             }
         });
         $presenter.on('blur', function (e) {
@@ -144,28 +140,28 @@ gj.dropdown.methods = {
         $dropdown.reload();
     },
 
-    setListPosition: function ($presenter, $list, data) {
-        var offset = $presenter.offset(), top, listHeight, newHeight;
-        $list.css('left', offset.left);
-        $list[0].style.width = gj.core.width($presenter[0]) + 'px';
-        if (data.optionsDisplay === 'standard') {
-            top = offset.top + gj.core.height($presenter[0], true) + 5;
-        } else {
-            top = offset.top;
-        }
-        $list[0].style.top = Math.round(top) + 'px';
+    setListPosition: function (presenter, list, data) {
+        var top, listHeight, presenterHeight, newHeight;
 
-        listHeight = gj.core.height($list[0], true);
-        if (!isNaN(listHeight) && data.maxHeight === 'auto' && listHeight > window.innerHeight) {
-            newHeight = window.innerHeight - top - 3;
+        gj.core.setChildPosition(presenter, list);
+
+        // Reset list size
+        list.style.overflow = '';
+        list.style.overflowX = '';
+        list.style.height = '';
+
+        listHeight = gj.core.height(list, true);
+        presenterHeight = gj.core.height(presenter, true);
+        if (!isNaN(listHeight) && data.maxHeight === 'auto' && (listHeight + presenterHeight) > document.body.clientHeight) {
+            newHeight = window.innerHeight - presenterHeight - 3;
         } else if (!isNaN(listHeight) && !isNaN(data.maxHeight) && data.maxHeight < listHeight) {
             newHeight = data.maxHeight;
         }
 
         if (newHeight) {
-            $list[0].style.overflow = 'scroll';
-            $list[0].style.overflowX = 'hidden';
-            $list[0].style.height = newHeight + 'px';
+            list.style.overflow = 'scroll';
+            list.style.overflowX = 'hidden';
+            list.style.height = newHeight + 'px';
         }
     },
 

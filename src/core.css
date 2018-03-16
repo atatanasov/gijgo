@@ -296,5 +296,7 @@ ul.gj-list-md li.disabled>[data-role="wrapper"]>[data-role="display"] {
 }
 
 .gj-list-md-active {
-    background: #E8EAF6;
+    /* background: #E8EAF6; */
+    background: rgba(0,0,0,.12);
+    color: #3f51b5;
 }

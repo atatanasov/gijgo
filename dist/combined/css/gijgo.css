@@ -296,7 +296,9 @@ ul.gj-list-md li.disabled>[data-role="wrapper"]>[data-role="display"] {
 }
 
 .gj-list-md-active {
-    background: #E8EAF6;
+    /* background: #E8EAF6; */
+    background: rgba(0,0,0,.12);
+    color: #3f51b5;
 }
 
 @font-face {
@@ -1720,14 +1722,14 @@ ul.gj-list-md li.disabled > [data-role="wrapper"] > [data-role="expander"] {
     letter-spacing: .04em;
     line-height: 1;
     color: rgba(0,0,0,.87);
-
     padding: 0px;
     border: 0px;
+    border-bottom: 1px solid rgba(0,0,0,.42);
     background: transparent;
 }
 
 .gj-dropdown-md [role="presenter"] [role="display"] {
-    padding: 8px 0px;
+    padding: 8px 5px;
 }
 
 .gj-dropdown-list-md {

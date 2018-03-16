@@ -455,7 +455,7 @@ gj.core = {
         return !!navigator.userAgent.match(/Trident/g) || !!navigator.userAgent.match(/MSIE/g);
     },
 
-    calcPosition: function (mainEl, childEl) {
+    setChildPosition: function (mainEl, childEl) {
         var mainElRect = mainEl.getBoundingClientRect(),
             mainElHeight = gj.core.height(mainEl, true),
             childElHeight = gj.core.height(childEl, true),
@@ -463,15 +463,15 @@ gj.core = {
             childElWidth = gj.core.width(childEl, true);
 
         if ((mainElRect.top + mainElHeight + childElHeight) > window.innerHeight && mainElRect.top > childElHeight) {
-            childEl.style.top = mainElRect.top - childElHeight - 3 + 'px';
+            childEl.style.top = Math.round(mainElRect.top + window.scrollY - childElHeight - 3) + 'px';
         } else {
-            childEl.style.top = mainElRect.top + mainElHeight + 3 + 'px';
+            childEl.style.top = Math.round(mainElRect.top + window.scrollY + mainElHeight + 3) + 'px';
         }
 
-        if (mainElRect.left + childElWidth > window.innerWidth) {
-            childEl.style.left = (mainElRect.left + mainElWidth - childElWidth) + 'px';
+        if (mainElRect.left + childElWidth > document.body.clientWidth) {
+            childEl.style.left = Math.round(mainElRect.left + window.scrollX + mainElWidth - childElWidth) + 'px';
         } else {
-            childEl.style.left = mainElRect.left + 'px';
+            childEl.style.left = Math.round(mainElRect.left + window.scrollX) + 'px';
         }
     },
 

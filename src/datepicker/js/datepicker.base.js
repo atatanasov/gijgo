@@ -1053,7 +1053,7 @@ gj.datepicker.methods = {
         }
 
         $calendar.show();
-        gj.core.calcPosition($datepicker[0], $calendar[0]);
+        gj.core.setChildPosition($datepicker[0], $calendar[0]);
         $datepicker.focus();
         gj.datepicker.events.open($datepicker);
     },

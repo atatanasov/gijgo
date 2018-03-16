@@ -419,6 +419,7 @@
     <Content Include="examples\grid\Grid.Toolbar.title.text.html" />
     <Content Include="examples\grid\Grid.Toolbar.toolbarTemplate.sample.html" />
     <Content Include="examples\grid\index.html" />
+    <Content Include="examples\tests\dropdown-positions.html" />
     <Content Include="examples\tests\tempgrid.html" />
     <Content Include="examples\tests\temptree.html" />
     <Content Include="examples\timepicker\index.html" />
