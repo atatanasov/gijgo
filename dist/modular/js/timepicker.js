@@ -71,8 +71,7 @@ gj.timepicker.config = {
             clock: 'gj-clock gj-clock-bootstrap',
             footer: 'modal-footer',
             button: 'btn btn-default'
-        },
-        showOtherMonths: true
+        }
     }
 };
 
@@ -452,7 +451,7 @@ gj.timepicker.methods = {
     },
 
     open: function ($timepicker) {
-        var time, hour, offset, data = $timepicker.data(),
+        var time, hour, data = $timepicker.data(),
             $clock = $('body').find('[role="clock"][guid="' + $timepicker.attr('data-guid') + '"]');
 
         if ($timepicker.value()) {
@@ -473,8 +472,7 @@ gj.timepicker.methods = {
         if (data.modal) {
             gj.core.center($clock);
         } else {
-            offset = $timepicker.offset();
-            $clock.css('left', offset.left).css('top', offset.top + $timepicker.outerHeight(true) + 3);
+            gj.core.setChildPosition($timepicker[0], $clock[0]);
             $timepicker.focus();
         }
         gj.timepicker.events.open($timepicker);

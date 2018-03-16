@@ -6814,7 +6814,6 @@ gj.grid.plugins.pagination = {
                  *     var grid = $('#grid').grid({
                  *         dataSource: '/Players/Get',
                  *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
-                 *         fontSize: 22,
                  *         pager: { limit: 2, sizes: [2, 5, 10, 100] }
                  *     });
                  * </script>
@@ -12824,7 +12823,9 @@ gj.dropdown.config = {
              *     });
              * </script>
              */
-            dropdown: '<i class="gj-icon arrow-dropdown" />'
+            dropdown: '<i class="gj-icon arrow-dropdown" />',
+
+            dropup: '<i class="gj-icon arrow-dropup" />'
         },
 
         style: {
@@ -12863,7 +12864,8 @@ gj.dropdown.config = {
 
     fontawesome: {
         icons: {
-            dropdown: '<i class="fa fa-caret-down" aria-hidden="true"></i>'
+            dropdown: '<i class="fa fa-caret-down" aria-hidden="true"></i>',
+            dropup: '<i class="fa fa-caret-up" aria-hidden="true"></i>'
         },
         style: {
             expander: 'gj-dropdown-expander-fa'
@@ -12872,7 +12874,8 @@ gj.dropdown.config = {
 
     glyphicons: {
         icons: {
-            dropdown: '<span class="caret"></span>'
+            dropdown: '<span class="caret"></span>',
+            dropup: '<span class="dropup"><span class="caret" ></span></span>'
         },
         style: {
             expander: 'gj-dropdown-expander-glyphicons'
@@ -12910,16 +12913,14 @@ gj.dropdown.methods = {
 
         $presenter.on('click', function (e) {
             if ($list.is(':visible')) {
-                $list.hide();
+                gj.dropdown.methods.close($dropdown, $list);
             } else {
-                //gj.dropdown.methods.setListPosition($presenter, $list[0], data);
-                $list.show();
-                gj.dropdown.methods.setListPosition($presenter[0], $list[0], data);
+                gj.dropdown.methods.open($dropdown, $list);
             }
         });
         $presenter.on('blur', function (e) {
             setTimeout(function () {
-                $list.hide();
+                gj.dropdown.methods.close($dropdown, $list);
             }, 500);
         });
         $presenter.append($display).append($expander);
@@ -12933,7 +12934,8 @@ gj.dropdown.methods = {
     },
 
     setListPosition: function (presenter, list, data) {
-        var top, listHeight, presenterHeight, newHeight;
+        var top, listHeight, presenterHeight, newHeight,
+            mainElRect = presenter.getBoundingClientRect();
 
         gj.core.setChildPosition(presenter, list);
 
@@ -12944,8 +12946,8 @@ gj.dropdown.methods = {
 
         listHeight = gj.core.height(list, true);
         presenterHeight = gj.core.height(presenter, true);
-        if (!isNaN(listHeight) && data.maxHeight === 'auto' && (listHeight + presenterHeight) > document.body.clientHeight) {
-            newHeight = window.innerHeight - presenterHeight - 3;
+        if (!isNaN(listHeight) && data.maxHeight === 'auto' && (listHeight + presenterHeight) > window.innerHeight) {
+            newHeight = window.innerHeight - mainElRect.top - presenterHeight - 3;
         } else if (!isNaN(listHeight) && !isNaN(data.maxHeight) && data.maxHeight < listHeight) {
             newHeight = data.maxHeight;
         }
@@ -13044,6 +13046,22 @@ gj.dropdown.methods = {
         return $dropdown;
     },
 
+    open: function ($dropdown, $list) {
+        var data = $dropdown.data(),
+            $expander = $dropdown.parent().find('[role="expander"]'),
+            $presenter = $dropdown.parent().find('[role="presenter"]');
+        $list.show();
+        gj.dropdown.methods.setListPosition($presenter[0], $list[0], data);
+        $expander.html(data.icons.dropup);
+    },
+
+    close: function ($dropdown, $list) {
+        var data = $dropdown.data(),
+            $expander = $dropdown.parent().find('[role="expander"]');
+        $expander.html(data.icons.dropdown);
+        $list.hide();
+    },
+
     select: function ($dropdown, value) {
         var data = $dropdown.data(),
             $list = $('body').children('[role="list"][guid="' + $dropdown.attr('data-guid') + '"]'),
@@ -13055,7 +13073,7 @@ gj.dropdown.methods = {
             $dropdown.val(value);
             $dropdown.next('[role="presenter"]').find('[role="display"]').html(record[data.textField]);
         }
-        $list.hide();
+        gj.dropdown.methods.close($dropdown, $list);
         return $dropdown;
     },
 
@@ -14812,8 +14830,7 @@ gj.timepicker.config = {
             clock: 'gj-clock gj-clock-bootstrap',
             footer: 'modal-footer',
             button: 'btn btn-default'
-        },
-        showOtherMonths: true
+        }
     }
 };
 
@@ -15193,7 +15210,7 @@ gj.timepicker.methods = {
     },
 
     open: function ($timepicker) {
-        var time, hour, offset, data = $timepicker.data(),
+        var time, hour, data = $timepicker.data(),
             $clock = $('body').find('[role="clock"][guid="' + $timepicker.attr('data-guid') + '"]');
 
         if ($timepicker.value()) {
@@ -15214,8 +15231,7 @@ gj.timepicker.methods = {
         if (data.modal) {
             gj.core.center($clock);
         } else {
-            offset = $timepicker.offset();
-            $clock.css('left', offset.left).css('top', offset.top + $timepicker.outerHeight(true) + 3);
+            gj.core.setChildPosition($timepicker[0], $clock[0]);
             $timepicker.focus();
         }
         gj.timepicker.events.open($timepicker);

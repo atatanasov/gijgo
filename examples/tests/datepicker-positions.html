@@ -1,0 +1,27 @@
+﻿<html>
+<head>
+    <meta charset="utf-8" />
+    <title>DropDown Positions Test</title>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+    <link href="../../dist/modular/css/core.css" rel="stylesheet" type="text/css">
+    <link href="../../dist/modular/css/datepicker.css" rel="stylesheet" type="text/css">
+    <script src="../../dist/modular/js/core.js"></script>
+    <script src="../../dist/modular/js/datepicker.js"></script>
+</head>
+<body>
+    <div style="position:relative; width: 2000px;">
+        <div style="position: absolute; top: 10px; left: 10px;"><input id="topLeft" /></div>
+        <div style="position: absolute; top: 10px; right: 10px;"><input id="topRight" /></div>
+        <div style="position: fixed; bottom: 10px; right: 10px;"><input id="bottomRight" /></div>
+        <div style="position: fixed; bottom: 10px; left: 10px;"><input id="bottomLeft" /></div>
+    </div>
+    <script>
+        $(document).ready(function () {
+            $('#topLeft').datepicker({ width: 150 });
+            $('#topRight').datepicker({ width: 150 });
+            $('#bottomRight').datepicker({ width: 150 });
+            $('#bottomLeft').datepicker({ width: 150 });
+        });
+    </script>
+</body>
+</html>
