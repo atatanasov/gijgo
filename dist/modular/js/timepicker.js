@@ -616,3 +616,9 @@ gj.timepicker.messages['ru-ru'] = {
     ok: 'ОК',
     cancel: 'Отмена'
 };
+gj.timepicker.messages['es-es'] = {
+    am: 'AM',
+    pm: 'PM',
+    ok: 'OK',
+    cancel: 'Cancelar'
+};

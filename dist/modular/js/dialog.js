@@ -509,3 +509,7 @@ gj.dialog.messages['ru-ru'] = {
     Close: 'Закрыть',
     DefaultTitle: 'Сообщение'
 };
+gj.dialog.messages['es-es'] = {
+    Close: 'Cerrar',
+    DefaultTitle: 'Titulo por defecto'
+};

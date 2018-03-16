@@ -398,6 +398,14 @@ gj.datepicker.config = {
          *        format: 'dd mmm yyyy'
          *    });
          * </script>
+         * @example Spanish <!-- datepicker -->
+         * <input id="datepicker" width="276" />
+         * <script>
+         *    $('#datepicker').datepicker({
+         *        locale: 'es-es',
+         *        format: 'dd/mm/yyyy'
+         *    });
+         * </script>
          */
         locale: 'en-us',
 

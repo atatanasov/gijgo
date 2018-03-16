@@ -249,6 +249,8 @@
     <Content Include="examples\grid\Grid.Base.autoLoad.disabled.html" />
     <Content Include="examples\grid\Grid.Base.autoLoad.enabled.html" />
     <Content Include="examples\grid\Grid.Base.beforeEmptyRowInsert.sample.html" />
+    <Content Include="examples\grid\Grid.Base.bodyRowHeight.AutoGrow.html" />
+    <Content Include="examples\grid\Grid.Base.bodyRowHeight.Fixed.html" />
     <Content Include="examples\grid\Grid.Base.cellDataBound.sample.html" />
     <Content Include="examples\grid\Grid.Base.clear.sample.html" />
     <Content Include="examples\grid\Grid.Base.column.align.Bootstrap.4.html" />
@@ -419,6 +421,7 @@
     <Content Include="examples\grid\Grid.Toolbar.title.text.html" />
     <Content Include="examples\grid\Grid.Toolbar.toolbarTemplate.sample.html" />
     <Content Include="examples\grid\index.html" />
+    <Content Include="examples\tests\tempdatepicker.html" />
     <Content Include="examples\tests\timepicker-positions.html" />
     <Content Include="examples\tests\datepicker-positions.html" />
     <Content Include="examples\tests\dropdown-positions.html" />
@@ -564,6 +567,7 @@
     <Content Include="src\datepicker\js\header.txt" />
     <Content Include="src\datepicker\js\messages\messages.bg-bg.js" />
     <Content Include="src\datepicker\js\messages\messages.de-de.js" />
+    <Content Include="src\datepicker\js\messages\messages.es-es.js" />
     <Content Include="src\datepicker\js\messages\messages.pt-br.js" />
     <Content Include="src\datepicker\js\messages\messages.ru-ru.js" />
     <Content Include="src\dialog\css\dialog.base.css" />
@@ -573,6 +577,7 @@
     <Content Include="src\dialog\js\messages\messages.bg-bg.js" />
     <Content Include="src\dialog\js\messages\messages.de-de.js" />
     <Content Include="src\dialog\js\messages\messages.en-us.js" />
+    <Content Include="src\dialog\js\messages\messages.es-es.js" />
     <Content Include="src\dialog\js\messages\messages.fr-fr.js" />
     <Content Include="src\dialog\js\messages\messages.pt-br.js" />
     <Content Include="src\dialog\js\messages\messages.ru-ru.js" />
@@ -588,6 +593,7 @@
     <Content Include="src\editor\js\header.txt" />
     <Content Include="src\editor\js\messages\messages.de-de.js" />
     <Content Include="src\editor\js\messages\messages.en-us.js" />
+    <Content Include="src\editor\js\messages\messages.es-es.js" />
     <Content Include="src\editor\js\messages\messages.fr-fr.js" />
     <Content Include="src\editor\js\messages\messages.pt-br.js" />
     <Content Include="src\editor\js\messages\messages.ru-ru.js" />
@@ -623,6 +629,7 @@
     <Content Include="src\grid\js\grid.base.widget.js" />
     <Content Include="src\grid\js\header.txt" />
     <Content Include="src\grid\js\messages\messages.de-de.js" />
+    <Content Include="src\grid\js\messages\messages.es-es.js" />
     <Content Include="src\grid\js\messages\messages.pt-br.js" />
     <Content Include="src\grid\js\messages\messages.ru-ru.js" />
     <Content Include="src\header.txt" />
@@ -677,6 +684,7 @@
     <Content Include="src\timepicker\js\header.txt" />
     <Content Include="src\timepicker\js\messages\messages.bg-bg.js" />
     <Content Include="src\timepicker\js\messages\messages.de-de.js" />
+    <Content Include="src\timepicker\js\messages\messages.es-es.js" />
     <Content Include="src\timepicker\js\messages\messages.fr-fr.js" />
     <Content Include="src\timepicker\js\messages\messages.pt-br.js" />
     <Content Include="src\timepicker\js\messages\messages.ru-ru.js" />
