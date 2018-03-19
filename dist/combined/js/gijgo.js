@@ -1,5 +1,5 @@
 /*
- * Gijgo JavaScript Library v1.9.0
+ * Gijgo JavaScript Library v1.9.1
  * http://gijgo.com/
  *
  * Copyright 2014, 2017 gijgo.com
@@ -13112,9 +13112,7 @@ gj.dropdown.methods = {
 
         if (data.width) {
             $parent.css('width', data.width);
-            $list.css('width', data.width);
             $presenter.css('width', data.width);
-            //$display.css('width', $presenter.outerWidth(true) - $expander.outerWidth(true));
         }
 
         if (data.fontSize) {
@@ -13130,6 +13128,7 @@ gj.dropdown.methods = {
         var data = $dropdown.data(),
             $expander = $dropdown.parent().find('[role="expander"]'),
             $presenter = $dropdown.parent().find('[role="presenter"]');
+        $list.css('width', gj.core.width($presenter[0]));
         $list.show();
         gj.dropdown.methods.setListPosition($presenter[0], $list[0], data);
         $expander.html(data.icons.dropup);
