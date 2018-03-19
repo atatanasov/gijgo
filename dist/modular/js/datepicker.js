@@ -58,6 +58,8 @@ gj.datepicker.config = {
 
         fontSize: undefined,
 
+        /** The size of the datepicker input.         */        size: 'default',
+
         style: {
             wrapper: 'gj-datepicker gj-datepicker-md gj-unselectable',
             input: 'gj-textbox-md',
@@ -134,7 +136,24 @@ gj.datepicker.methods = {
 
         $datepicker.val(data.value).addClass(data.style.input).attr('role', 'input');
 
-        data.fontSize && $datepicker.css('font-size', data.fontSize);        
+        data.fontSize && $datepicker.css('font-size', data.fontSize);
+
+        
+        if (data.uiLibrary === 'bootstrap' || data.uiLibrary === 'bootstrap4') {
+            if (data.size === 'small') {
+                $wrapper.addClass('input-group-sm');
+                $datepicker.addClass('form-control-sm');
+            } else if (data.size === 'large') {
+                $wrapper.addClass('input-group-lg');
+                $datepicker.addClass('form-control-lg');
+            }
+        } else {
+            if (data.size === 'small') {
+                $wrapper.addClass('small');
+            } else if (data.size === 'large') {
+                $wrapper.addClass('large');
+            }
+        }
 
         $rightIcon.on('click', function (e) {
             var $calendar = $('body').children('[role="calendar"][guid="' + $datepicker.attr('data-guid') + '"]');

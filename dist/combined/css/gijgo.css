@@ -1860,6 +1860,22 @@ ul.gj-list-md li.disabled > [data-role="wrapper"] > [data-role="expander"] {
     top: 0px;
 }
 
+.gj-datepicker-md.small .gj-textbox-md {
+    font-size: 14px;
+}
+
+.gj-datepicker-md.small .gj-icon {
+    font-size: 22px;
+}
+
+.gj-datepicker-md.large .gj-textbox-md {
+    font-size: 18px;
+}
+
+.gj-datepicker-md.large .gj-icon {
+    font-size: 28px;
+}
+
 .gj-calendar-md {
     font-family: "Roboto","Helvetica","Arial",sans-serif;
     font-size: 16px;
@@ -2056,18 +2072,48 @@ ul.gj-list-md li.disabled > [data-role="wrapper"] > [data-role="expander"] {
     display: inline;
 }
 
-.gj-datepicker-bootstrap span[role="right-icon"] .input-group-text .gj-icon,
-.gj-datepicker-bootstrap span[role="right-icon"] .input-group-text .material-icons {
+.gj-datepicker-bootstrap.input-group-sm span[role="right-icon"] .input-group-text {
+    padding: 5px 8px 5px 24px;
+}
+
+.gj-datepicker-bootstrap.input-group-lg span[role="right-icon"] .input-group-text {
+    padding: 9px 8px 10px 38px;
+}
+
+.gj-datepicker-bootstrap .input-group-text .gj-icon,
+.gj-datepicker-bootstrap .input-group-text .material-icons {
     position: absolute;
     right: 8px;
     top: 8px;
 }
 
-.gj-datepicker-bootstrap span[role="right-icon"] .input-group-text .fa {
+.gj-datepicker-bootstrap.input-group-sm .input-group-text .gj-icon,
+.gj-datepicker-bootstrap.input-group-sm .input-group-text .material-icons {
+    top: 7px;
+    right: 13px;
+    font-size: 18px;
+}
+
+.gj-datepicker-bootstrap.input-group-lg .input-group-text .gj-icon,
+.gj-datepicker-bootstrap.input-group-lg .input-group-text .material-icons {
+    font-size: 32px;
+}
+
+.gj-datepicker-bootstrap .input-group-text .fa {
     position: absolute;
     right: 11px;
     top: 8px;
     font-size: 21px;
+}
+
+.gj-datepicker-bootstrap.input-group-sm .input-group-text .fa {
+    font-size: 15px;
+    right: 15px;
+}
+
+.gj-datepicker-bootstrap.input-group-lg .input-group-text .fa {
+    font-size: 28px;
+    top: 9px;
 }
 .gj-timepicker {
     position: relative;

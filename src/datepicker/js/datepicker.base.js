@@ -452,6 +452,84 @@ gj.datepicker.config = {
 
         fontSize: undefined,
 
+        /** The size of the datepicker input.
+         * @type 'small'|'default'|'large'
+         * @default 'default'
+         * @example Bootstrap.4 <!-- bootstrap4, datepicker -->
+         * <p><label for="datepicker-small">Small Size:</label> <input id="datepicker-small" width="220" /></p>
+         * <p><label for="datepicker-default">Default Size:</label> <input id="datepicker-default" width="220" /></p>
+         * <p><label for="datepicker-large">Large Size:</label> <input id="datepicker-large" width="220" /></p>
+         * <script>
+         *     $('#datepicker-small').datepicker({
+         *         uiLibrary: 'bootstrap4',
+         *         size: 'small'
+         *     });
+         *     $('#datepicker-default').datepicker({
+         *         uiLibrary: 'bootstrap4',
+         *         size: 'default'
+         *     });
+         *     $('#datepicker-large').datepicker({
+         *         uiLibrary: 'bootstrap4',
+         *         size: 'large'
+         *     });
+         * </script>
+         * @example Bootstrap.4.Font.Awesome <!-- bootstrap4, fontawesome, datepicker -->
+         * <p><label for="datepicker-small">Small Size:</label> <input id="datepicker-small" width="220" /></p>
+         * <p><label for="datepicker-default">Default Size:</label> <input id="datepicker-default" width="220" /></p>
+         * <p><label for="datepicker-large">Large Size:</label> <input id="datepicker-large" width="220" /></p>
+         * <script>
+         *     $('#datepicker-small').datepicker({
+         *         uiLibrary: 'bootstrap4',
+         *         iconsLibrary: 'fontawesome',
+         *         size: 'small'
+         *     });
+         *     $('#datepicker-default').datepicker({
+         *         uiLibrary: 'bootstrap4',
+         *         iconsLibrary: 'fontawesome',
+         *         size: 'default'
+         *     });
+         *     $('#datepicker-large').datepicker({
+         *         uiLibrary: 'bootstrap4',
+         *         iconsLibrary: 'fontawesome',
+         *         size: 'large'
+         *     });
+         * </script>
+         * @example Bootstrap.3 <!-- bootstrap, datepicker -->
+         * <p><label for="datepicker-small">Small Size:</label> <input id="datepicker-small" width="220" /></p>
+         * <p><label for="datepicker-default">Default Size:</label> <input id="datepicker-default" width="220" /></p>
+         * <p><label for="datepicker-large">Large Size:</label> <input id="datepicker-large" width="220" /></p>
+         * <script>
+         *     $('#datepicker-small').datepicker({
+         *         uiLibrary: 'bootstrap',
+         *         size: 'small'
+         *     });
+         *     $('#datepicker-default').datepicker({
+         *         uiLibrary: 'bootstrap',
+         *         size: 'default'
+         *     });
+         *     $('#datepicker-large').datepicker({
+         *         uiLibrary: 'bootstrap',
+         *         size: 'large'
+         *     });
+         * </script>
+         * @example Material.Design <!-- datepicker -->
+         * <p><label for="datepicker-small">Small Size:</label> <input id="datepicker-small" width="220" /></p>
+         * <p><label for="datepicker-default">Default Size:</label> <input id="datepicker-default" width="220" /></p>
+         * <p><label for="datepicker-large">Large Size:</label> <input id="datepicker-large" width="220" /></p>
+         * <script>
+         *     $('#datepicker-small').datepicker({
+         *         size: 'small'
+         *     });
+         *     $('#datepicker-default').datepicker({
+         *         size: 'default'
+         *     });
+         *     $('#datepicker-large').datepicker({
+         *         size: 'large'
+         *     });
+         * </script>
+         */
+        size: 'default',
+
         style: {
             wrapper: 'gj-datepicker gj-datepicker-md gj-unselectable',
             input: 'gj-textbox-md',
@@ -528,7 +606,24 @@ gj.datepicker.methods = {
 
         $datepicker.val(data.value).addClass(data.style.input).attr('role', 'input');
 
-        data.fontSize && $datepicker.css('font-size', data.fontSize);        
+        data.fontSize && $datepicker.css('font-size', data.fontSize);
+
+        
+        if (data.uiLibrary === 'bootstrap' || data.uiLibrary === 'bootstrap4') {
+            if (data.size === 'small') {
+                $wrapper.addClass('input-group-sm');
+                $datepicker.addClass('form-control-sm');
+            } else if (data.size === 'large') {
+                $wrapper.addClass('input-group-lg');
+                $datepicker.addClass('form-control-lg');
+            }
+        } else {
+            if (data.size === 'small') {
+                $wrapper.addClass('small');
+            } else if (data.size === 'large') {
+                $wrapper.addClass('large');
+            }
+        }
 
         $rightIcon.on('click', function (e) {
             var $calendar = $('body').children('[role="calendar"][guid="' + $datepicker.attr('data-guid') + '"]');
