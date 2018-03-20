@@ -1,5 +1,5 @@
 /*
- * Gijgo DatePicker v1.9.0
+ * Gijgo DatePicker v1.9.1
  * http://gijgo.com/datepicker
  *
  * Copyright 2014, 2017 gijgo.com
@@ -703,64 +703,67 @@ gj.datepicker.methods = {
                 $active = gj.datepicker.methods.getActiveCell($calendar);
             e = e || window.event;
 
-            if (e.keyCode == '38') { // up
-                index = $active.index();
-                $new = $active.closest('tr').prev('tr').find('td:eq(' + index + ')');
-                if (!$new.is('[day]')) {
-                    gj.datepicker.methods.prev($datepicker)();
-                    $new = $calendar.find('tbody tr').last().find('td:eq(' + index + ')');
-                }
-                if ($new.is('[day]')) {
-                    $new.addClass('focused');
-                    $active.removeClass('focused');
-                }
-            } else if (e.keyCode == '40') { // down
-                index = $active.index();
-                $new = $active.closest('tr').next('tr').find('td:eq(' + index + ')');
-                if (!$new.is('[day]')) {
-                    gj.datepicker.methods.next($datepicker)();
-                    $new = $calendar.find('tbody tr').first().find('td:eq(' + index + ')');
+            if (window.getComputedStyle($calendar[0]).display !== 'none')
+            {
+                if (e.keyCode == '38') { // up
+                    index = $active.index();
+                    $new = $active.closest('tr').prev('tr').find('td:eq(' + index + ')');
                     if (!$new.is('[day]')) {
-                        $new = $calendar.find('tbody tr:eq(1)').find('td:eq(' + index + ')');
+                        gj.datepicker.methods.prev($datepicker)();
+                        $new = $calendar.find('tbody tr').last().find('td:eq(' + index + ')');
                     }
+                    if ($new.is('[day]')) {
+                        $new.addClass('focused');
+                        $active.removeClass('focused');
+                    }
+                } else if (e.keyCode == '40') { // down
+                    index = $active.index();
+                    $new = $active.closest('tr').next('tr').find('td:eq(' + index + ')');
+                    if (!$new.is('[day]')) {
+                        gj.datepicker.methods.next($datepicker)();
+                        $new = $calendar.find('tbody tr').first().find('td:eq(' + index + ')');
+                        if (!$new.is('[day]')) {
+                            $new = $calendar.find('tbody tr:eq(1)').find('td:eq(' + index + ')');
+                        }
+                    }
+                    if ($new.is('[day]')) {
+                        $new.addClass('focused');
+                        $active.removeClass('focused');
+                    }
+                } else if (e.keyCode == '37') { // left
+                    $new = $active.prev('td[day]:not(.disabled)');
+                    if ($new.length === 0) {
+                        $new = $active.closest('tr').prev('tr').find('td[day]').last();
+                    }
+                    if ($new.length === 0) {
+                        gj.datepicker.methods.prev($datepicker)();
+                        $new = $calendar.find('tbody tr').last().find('td[day]').last();
+                    }
+                    if ($new.length > 0) {
+                        $new.addClass('focused');
+                        $active.removeClass('focused');
+                    }
+                } else if (e.keyCode == '39' || e.keyCode == '9') { // right/tab(next)
+                    $new = $active.next('[day]:not(.disabled)');
+                    if ($new.length === 0) {
+                        $new = $active.closest('tr').next('tr').find('td[day]').first();
+                    }
+                    if ($new.length === 0) {
+                        gj.datepicker.methods.next($datepicker)();
+                        $new = $calendar.find('tbody tr').first().find('td[day]').first();
+                    }
+                    if ($new.length > 0) {
+                        $new.addClass('focused');
+                        $active.removeClass('focused');
+                    }
+                } else if (e.keyCode == '13') { // enter
+                    day = parseInt($active.attr('day'), 10);
+                    month = parseInt($datepicker.attr('month'), 10);
+                    year = parseInt($datepicker.attr('year'), 10);
+                    gj.datepicker.methods.select($datepicker, $calendar, new Date(year, month, day))();
+                } else if (e.keyCode == '27') { // esc
+                    $datepicker.close();
                 }
-                if ($new.is('[day]')) {
-                    $new.addClass('focused');
-                    $active.removeClass('focused');
-                }
-            } else if (e.keyCode == '37') { // left
-                $new = $active.prev('td[day]:not(.disabled)');
-                if ($new.length === 0) {
-                    $new = $active.closest('tr').prev('tr').find('td[day]').last();
-                }
-                if ($new.length === 0) {
-                    gj.datepicker.methods.prev($datepicker)();
-                    $new = $calendar.find('tbody tr').last().find('td[day]').last();
-                }
-                if ($new.length > 0) {
-                    $new.addClass('focused');
-                    $active.removeClass('focused');
-                }
-            } else if (e.keyCode == '39' || e.keyCode == '9') { // right/tab(next)
-                $new = $active.next('[day]:not(.disabled)');
-                if ($new.length === 0) {
-                    $new = $active.closest('tr').next('tr').find('td[day]').first();
-                }
-                if ($new.length === 0) {
-                    gj.datepicker.methods.next($datepicker)();
-                    $new = $calendar.find('tbody tr').first().find('td[day]').first();
-                }
-                if ($new.length > 0) {
-                    $new.addClass('focused');
-                    $active.removeClass('focused');
-                }                
-            } else if (e.keyCode == '13') { // enter
-                day = parseInt($active.attr('day'), 10);
-                month = parseInt($datepicker.attr('month'), 10);
-                year = parseInt($datepicker.attr('year'), 10);
-                gj.datepicker.methods.select($datepicker, $calendar, new Date(year, month, day))();
-            } else if (e.keyCode == '27') { // esc
-                $datepicker.close();
             }
         }
     },
