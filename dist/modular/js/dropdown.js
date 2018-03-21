@@ -25,6 +25,8 @@ gj.dropdown.config = {
 
         /** The maximum height of the dropdown list. When set to auto adjust to the screen height.         */        maxHeight: 'auto',
 
+        /** Placeholder. This label appear only if the value is not set yet.         */        placeholder: undefined,
+
         fontSize: undefined,
 
         /** The name of the UI library that is going to be in use.         */        uiLibrary: 'materialdesign',
@@ -100,6 +102,15 @@ gj.dropdown.methods = {
         return this;
     },
 
+    getHTMLConfig: function () {
+        var result = gj.widget.prototype.getHTMLConfig.call(this),
+            attrs = this[0].attributes;
+        if (attrs['placeholder']) {
+            result.placeholder = attrs['placeholder'].value;
+        }
+        return result;
+    },
+
     initialize: function ($dropdown) {
         var $item,
             data = $dropdown.data(),
@@ -169,14 +180,13 @@ gj.dropdown.methods = {
     },
 
     useHtmlDataSource: function ($dropdown, data) {
-        var dataSource = [], i, $option, record,
+        var dataSource = [], i, record,
             $options = $dropdown.find('option');
         for (i = 0; i < $options.length; i++) {
-            $option = $($options[i]);
             record = {};
-            record[data.valueField] = $option.val();
-            record[data.textField] = $option.html();
-            record[data.selectedField] = $option.prop('selected');
+            record[data.valueField] = $options[i].value;
+            record[data.textField] = $options[i].innerHTML;
+            record[data.selectedField] = $dropdown[0].value === $options[i].value;
             dataSource.push(record);
         }
         data.dataSource = dataSource;
@@ -199,7 +209,7 @@ gj.dropdown.methods = {
     },
 
     render: function ($dropdown, response) {
-        var selectedInd = false,
+        var selections = [],
             data = $dropdown.data(),
             $parent = $dropdown.parent(),
             $list = $('body').children('[role="list"][guid="' + $dropdown.attr('data-guid') + '"]'),
@@ -216,26 +226,30 @@ gj.dropdown.methods = {
                 var value = this[data.valueField],
                     text = this[data.textField],
                     selected = this[data.selectedField] && this[data.selectedField].toString().toLowerCase() === 'true',
-                    $item, $option;
+                    $item, i;
 
                 $item = $('<li value="' + value + '"><div data-role="wrapper"><span data-role="display">' + text + '</span></div></li>');
                 $item.addClass(data.style.item);
                 $item.on('click', function (e) {
                     gj.dropdown.methods.select($dropdown, value);
-                    gj.dropdown.events.change($dropdown);
                 });
                 $list.append($item);
-
-                $option = $('<option value="' + value + '">' + text + '</option>');
-                $dropdown.append($option);
+                
+                $dropdown.append('<option value="' + value + '">' + text + '</option>');
 
                 if (selected) {
-                    gj.dropdown.methods.select($dropdown, value);
-                    selectedInd = true;
+                    selections.push(value);
                 }
             });
-            if (selectedInd === false) {
-                gj.dropdown.methods.select($dropdown, response[0][data.valueField]);
+            if (selections.length === 0) {
+                $dropdown.prepend('<option value=""></option>');
+                if (data.placeholder) {
+                    $display[0].innerHTML = '<span class="placeholder">' + data.placeholder + '</span>';
+                }
+            } else {
+                for (i = 0; i < selections.length; i++) {
+                    gj.dropdown.methods.select($dropdown, selections[i]);
+                }
             }
         }
 
@@ -278,8 +292,9 @@ gj.dropdown.methods = {
         if (record) {
             $list.children('li').removeClass(data.style.active);
             $item.addClass(data.style.active);
-            $dropdown.val(value);
+            $dropdown[0].value = value;
             $dropdown.next('[role="presenter"]').find('[role="display"]').html(record[data.textField]);
+            gj.dropdown.events.change($dropdown);
         }
         gj.dropdown.methods.close($dropdown, $list);
         return $dropdown;
@@ -304,7 +319,6 @@ gj.dropdown.methods = {
             return $dropdown.val();
         } else {
             gj.dropdown.methods.select($dropdown, value);
-            gj.dropdown.events.change($dropdown);
             return $dropdown;
         }
     },
@@ -372,6 +386,8 @@ gj.dropdown.widget = function ($element, jsConfig) {
 
 gj.dropdown.widget.prototype = new gj.widget();
 gj.dropdown.widget.constructor = gj.dropdown.widget;
+
+gj.dropdown.widget.prototype.getHTMLConfig = gj.dropdown.methods.getHTMLConfig;
 
 (function ($) {
     $.fn.dropdown = function (method) {

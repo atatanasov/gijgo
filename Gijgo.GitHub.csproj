@@ -421,6 +421,7 @@
     <Content Include="examples\grid\Grid.Toolbar.title.text.html" />
     <Content Include="examples\grid\Grid.Toolbar.toolbarTemplate.sample.html" />
     <Content Include="examples\grid\index.html" />
+    <Content Include="examples\tests\ajax-sourced-data.html" />
     <Content Include="examples\tests\tempdatepicker.html" />
     <Content Include="examples\tests\timepicker-positions.html" />
     <Content Include="examples\tests\datepicker-positions.html" />

@@ -268,7 +268,6 @@ table.gj-grid-md thead th.gj-grid-select-all {
 
 .gj-grid-md tfoot tr[data-role="pager"] .gj-dropdown-md [role="presenter"] [role="display"] {
     text-align: right;
-    padding: 0px;
 }
 
 .gj-grid-md tfoot tr[data-role="pager"] .gj-grid-md-limit-select {
