@@ -13066,7 +13066,7 @@ gj.dropdown.methods = {
 
         listHeight = gj.core.height(list, true);
         presenterHeight = gj.core.height(presenter, true);
-        if (!isNaN(listHeight) && data.maxHeight === 'auto' && (listHeight + presenterHeight) > window.innerHeight) {
+        if (!isNaN(listHeight) && data.maxHeight === 'auto' && (mainElRect.top + listHeight + presenterHeight) > window.innerHeight) {
             newHeight = window.innerHeight - mainElRect.top - presenterHeight - 3;
         } else if (!isNaN(listHeight) && !isNaN(data.maxHeight) && data.maxHeight < listHeight) {
             newHeight = data.maxHeight;
@@ -13905,7 +13905,7 @@ gj.datepicker.config = {
     bootstrap4: {
         style: {
             wrapper: 'gj-datepicker gj-datepicker-bootstrap gj-unselectable input-group',
-            input: 'form-control border',
+            input: 'form-control',
             calendar: 'gj-calendar gj-calendar-bootstrap'
         },
         showOtherMonths: true
@@ -13943,7 +13943,7 @@ gj.datepicker.methods = {
         if (data.uiLibrary === 'bootstrap') {
             $rightIcon = $('<span class="input-group-addon">' + data.icons.rightIcon + '</span>');
         } else if (data.uiLibrary === 'bootstrap4') {
-            $rightIcon = $('<span class="input-group-append"><button class="btn btn-outline-secondary border-left-0 border" type="button">' + data.icons.rightIcon + '</button></span>');
+            $rightIcon = $('<span class="input-group-append"><button class="btn btn-outline-secondary border-left-0" type="button">' + data.icons.rightIcon + '</button></span>');
         } else {
             $rightIcon = $(data.icons.rightIcon);
         }

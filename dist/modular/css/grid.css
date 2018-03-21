@@ -509,19 +509,19 @@ span.gj-grid-column-resizer {
     background-color: #fff;
 }
 
-.gj-grid-bootstrap-4 tbody tr td[data-mode="edit"] .gj-datepicker-bootstrap [role="right-icon"] .input-group-text {
-    border:0px;
+.gj-grid-bootstrap-4 tbody tr td[data-mode="edit"] .gj-datepicker-bootstrap [role="right-icon"] button {
+    border: 0px;
     border-radius: 0px;
     width: 43px;
     position: relative;
-    background-color: #fff;
 }
 
-/*.gj-grid-bootstrap-4 tbody tr td[data-mode="edit"] .gj-datepicker-bootstrap [role="right-icon"] .gj-icon,
+.gj-grid-bootstrap-4 tbody tr td[data-mode="edit"] .gj-datepicker-bootstrap [role="right-icon"] .gj-icon,
 .gj-grid-bootstrap-4 tbody tr td[data-mode="edit"] .gj-datepicker-bootstrap [role="right-icon"] .material-icons {
-    top: 12px;
+    top: 13px;
     left: 10px;
-}*/
+    font-size: 24px;
+}
 
 .gj-grid-bootstrap-4 tbody tr td[data-mode="edit"] .gj-checkbox-bootstrap {
     display: inline-block;

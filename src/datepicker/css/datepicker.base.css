@@ -257,6 +257,12 @@
 .gj-datepicker-bootstrap [role="right-icon"] button {
     width: 38px;
     position: relative;
+    border: 1px solid #ced4da;
+}
+
+.gj-datepicker-bootstrap [role="right-icon"] button:hover {
+    color: #6c757d;
+    background-color: transparent;
 }
 
 .gj-datepicker-bootstrap.input-group-sm [role="right-icon"] button {

@@ -166,7 +166,7 @@ gj.dropdown.methods = {
 
         listHeight = gj.core.height(list, true);
         presenterHeight = gj.core.height(presenter, true);
-        if (!isNaN(listHeight) && data.maxHeight === 'auto' && (listHeight + presenterHeight) > window.innerHeight) {
+        if (!isNaN(listHeight) && data.maxHeight === 'auto' && (mainElRect.top + listHeight + presenterHeight) > window.innerHeight) {
             newHeight = window.innerHeight - mainElRect.top - presenterHeight - 3;
         } else if (!isNaN(listHeight) && !isNaN(data.maxHeight) && data.maxHeight < listHeight) {
             newHeight = data.maxHeight;
