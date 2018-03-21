@@ -640,3 +640,9 @@ gj.timepicker.messages['es-es'] = {
     ok: 'OK',
     cancel: 'Cancelar'
 };
+gj.timepicker.messages['it-it'] = {
+    am: 'AM',
+    pm: 'PM',
+    ok: 'OK',
+    cancel: 'Annulla'
+};

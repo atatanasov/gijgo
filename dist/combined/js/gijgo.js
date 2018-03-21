@@ -13789,6 +13789,14 @@ gj.datepicker.config = {
          *        format: 'dd/mm/yyyy'
          *    });
          * </script>
+         * @example Italian <!-- datepicker -->
+         * <input id="datepicker" width="276" />
+         * <script>
+         *    $('#datepicker').datepicker({
+         *        locale: 'it-it',
+         *        format: 'dd/mm/yyyy'
+         *    });
+         * </script>
          */
         locale: 'en-us',
 

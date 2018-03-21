@@ -125,14 +125,14 @@
 
 /* Material Icons */
 .gj-checkbox-material-icons input[type="checkbox"]:checked + span:after {
-    content: "\E908";
+    content: "\e91f";
     font-size: 14px;
     font-weight: bold;
     white-space: pre;
 }
 
 .gj-checkbox-material-icons input[type="checkbox"]:indeterminate + span:after {
-    content: "\E905";
+    content: "\e921";
     font-size: 14px;
     font-weight: bold;
     white-space: pre;

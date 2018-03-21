@@ -44,14 +44,6 @@
     display: none;
 }
 
-.gj-mdl-icon-plus::after {
-    content: "\E145";
-}
-
-.gj-mdl-icon-minus::after {
-    content: "\E15B";
-}
-
 /** Material Design */
 .gj-button-md {
     background: 0 0;

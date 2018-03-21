@@ -44,14 +44,6 @@
     display: none;
 }
 
-.gj-mdl-icon-plus::after {
-    content: "\E145";
-}
-
-.gj-mdl-icon-minus::after {
-    content: "\E15B";
-}
-
 /** Material Design */
 .gj-button-md {
     background: 0 0;
@@ -346,8 +338,6 @@ ul.gj-list-md li.disabled>[data-role="wrapper"]>[data-role="display"] {
     -moz-osx-font-smoothing: grayscale;
 }
 
-
-
 .gj-icon.undo:before {
     content: "\e900";
 }
@@ -504,17 +494,9 @@ ul.gj-list-md li.disabled>[data-role="wrapper"]>[data-role="display"] {
     content: "\e926";
 }
 
-
 .gj-icon.event:before {
     content: "\e927";
 }
-
-
-
-
-
-
-
 .gj-draggable {
     cursor: move;
 }
@@ -1621,14 +1603,14 @@ ul.gj-list-md li.disabled > [data-role="wrapper"] > [data-role="expander"] {
 
 /* Material Icons */
 .gj-checkbox-material-icons input[type="checkbox"]:checked + span:after {
-    content: "\E908";
+    content: "\e91f";
     font-size: 14px;
     font-weight: bold;
     white-space: pre;
 }
 
 .gj-checkbox-material-icons input[type="checkbox"]:indeterminate + span:after {
-    content: "\E905";
+    content: "\e921";
     font-size: 14px;
     font-weight: bold;
     white-space: pre;

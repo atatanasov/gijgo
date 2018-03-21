@@ -10,37 +10,38 @@
     <link href="../../dist/modular/css/dropdown.css" rel="stylesheet" type="text/css">
     <link href="../../dist/modular/css/dialog.css" rel="stylesheet" type="text/css">
     <link href="../../dist/modular/css/datepicker.css" rel="stylesheet" type="text/css">
-    <link href="https://cdn.jsdelivr.net/npm/gijgo@1.9.1/combined/css/demo.min.css" rel="stylesheet" type="text/css" />
 
     <style>
-        .form-row {
-            display: flex;
-            margin-bottom: 29px;
-        }
-        .form-row:last-child {
-            margin-bottom: 0px;
-        }
+        .form-row { display: flex; margin-bottom: 29px; }
+        .form-row:last-child { margin-bottom: 0px; }
+        .margin-top-10 { margin-top: 10px; }
+        .float-left { float: left; }
+        .float-right { float: right; }
+        .display-inline { display: inline; }
+        .display-inline-block { display: inline-block; }
+        .width-200 { width: 200px; }
+        .clear-both { clear: both; }
     </style>
 
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script src="../../dist/combined/js/gijgo.js"></script>
 </head>
 <body>
-    <div class="gj-margin-top-10">
-        <div class="gj-float-left">
+    <div class="margin-top-10">
+        <div class="float-left">
             <form class="display-inline">
-                <input id="txtName" type="text" placeholder="Name..." class="gj-textbox-md gj-display-inline-block gj-width-200" />
-                <input id="txtNationality" type="text" placeholder="Nationality..." class="gj-textbox-md gj-display-inline-block gj-width-200" />
+                <input id="txtName" type="text" placeholder="Name..." class="gj-textbox-md display-inline-block width-200" />
+                <input id="txtNationality" type="text" placeholder="Nationality..." class="gj-textbox-md display-inline-block width-200" />
                 <button id="btnSearch" type="button" class="gj-button-md">Search</button>
                 <button id="btnClear" type="button" class="gj-button-md">Clear</button>
             </form>
         </div>
-        <div class="gj-float-right">
+        <div class="float-right">
             <button id="btnAdd" type="button" class="gj-button-md">Add New Record</button>
         </div>
     </div>
-    <div class="gj-clear-both"></div>
-    <div class="gj-margin-top-10">
+    <div class="clear-both"></div>
+    <div class="margin-top-10">
         <table id="grid"></table>
     </div>
 

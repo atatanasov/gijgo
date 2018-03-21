@@ -513,3 +513,7 @@ gj.dialog.messages['es-es'] = {
     Close: 'Cerrar',
     DefaultTitle: 'Titulo por defecto'
 };
+gj.dialog.messages['it-it'] = {
+    Close: 'Chiudi',
+    DefaultTitle: 'Dialogo'
+};

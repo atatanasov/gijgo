@@ -30,8 +30,6 @@
     -moz-osx-font-smoothing: grayscale;
 }
 
-
-
 .gj-icon.undo:before {
     content: "\e900";
 }
@@ -188,13 +186,6 @@
     content: "\e926";
 }
 
-
 .gj-icon.event:before {
     content: "\e927";
 }
-
-
-
-
-
-
