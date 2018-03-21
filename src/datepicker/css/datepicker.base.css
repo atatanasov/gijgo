@@ -1,20 +1,9 @@
-﻿.gj-datepicker {
-    position: relative;
-    display: table;
-}
-
-.gj-datepicker [role="input"] {
-    display: table-cell;
-    width: 100%;
-}
-
-.gj-datepicker [role="input"]::-ms-clear {
+﻿.gj-datepicker [role="input"]::-ms-clear {
     display: none;
 }
 
 .gj-datepicker [role="right-icon"] {
     cursor: pointer;
-    display: table-cell;
 }
 
 .gj-calendar {
@@ -53,6 +42,7 @@
     letter-spacing: .04em;
     line-height: 1;
     color: rgba(0,0,0,.87);
+    position: relative;
 }
 
 .gj-datepicker-md [role="right-icon"] {
@@ -60,6 +50,7 @@
     position: absolute;
     right: 0px;
     top: 0px;
+    font-size: 24px;
 }
 
 .gj-datepicker-md.small .gj-textbox-md {
@@ -166,7 +157,8 @@
 }
 
 /* Bootstrap */
-.gj-datepicker-bootstrap input:focus {
+.gj-datepicker-bootstrap :focus,
+.gj-datepicker-bootstrap :active {
     box-shadow: none;
 }
 
@@ -252,7 +244,7 @@
     border-bottom-right-radius: 4px;
     border-left: 0px;
     position: relative;
-    width: 38px;
+    /*width: 38px;*/
 }
 
 .gj-datepicker-bootstrap span[role="right-icon"].input-group-addon .gj-icon,
@@ -263,57 +255,37 @@
 }
 
 /* Bootstrap 4 */
-.gj-datepicker-bootstrap span[role="right-icon"].input-group-append,
-.gj-datepicker-bootstrap span[role="right-icon"].input-group-prepend {
+.gj-datepicker-bootstrap [role="right-icon"] button {
     width: 38px;
+    position: relative;
 }
 
-.gj-datepicker-bootstrap span[role="right-icon"] .input-group-text {
-    padding: 7px 8px 8px 30px;
-    border-left: 0px;
-    display: inline;
+.gj-datepicker-bootstrap.input-group-sm [role="right-icon"] button {
+    width: 30px;
 }
 
-.gj-datepicker-bootstrap.input-group-sm span[role="right-icon"] .input-group-text {
-    padding: 5px 8px 5px 24px;
+.gj-datepicker-bootstrap.input-group-lg [role="right-icon"] button {
+    width: 48px;
 }
 
-.gj-datepicker-bootstrap.input-group-lg span[role="right-icon"] .input-group-text {
-    padding: 9px 8px 10px 38px;
-}
-
-.gj-datepicker-bootstrap .input-group-text .gj-icon,
-.gj-datepicker-bootstrap .input-group-text .material-icons {
+.gj-datepicker-bootstrap [role="right-icon"] button .gj-icon,
+.gj-datepicker-bootstrap [role="right-icon"] button .material-icons {
     position: absolute;
-    right: 8px;
-    top: 8px;
-}
-
-.gj-datepicker-bootstrap.input-group-sm .input-group-text .gj-icon,
-.gj-datepicker-bootstrap.input-group-sm .input-group-text .material-icons {
-    top: 7px;
-    right: 13px;
-    font-size: 18px;
-}
-
-.gj-datepicker-bootstrap.input-group-lg .input-group-text .gj-icon,
-.gj-datepicker-bootstrap.input-group-lg .input-group-text .material-icons {
-    font-size: 32px;
-}
-
-.gj-datepicker-bootstrap .input-group-text .fa {
-    position: absolute;
-    right: 11px;
-    top: 8px;
     font-size: 21px;
-}
-
-.gj-datepicker-bootstrap.input-group-sm .input-group-text .fa {
-    font-size: 15px;
-    right: 15px;
-}
-
-.gj-datepicker-bootstrap.input-group-lg .input-group-text .fa {
-    font-size: 28px;
     top: 9px;
+    left: 9px;
+}
+
+.gj-datepicker-bootstrap.input-group-sm [role="right-icon"] button .gj-icon,
+.gj-datepicker-bootstrap.input-group-sm [role="right-icon"] button .material-icons {
+    top: 6px;
+    left: 6px;
+    font-size: 19px;
+}
+
+.gj-datepicker-bootstrap.input-group-lg [role="right-icon"] button .gj-icon,
+.gj-datepicker-bootstrap.input-group-lg [role="right-icon"] button .material-icons {
+    font-size: 27px;
+    top: 10px;
+    left: 10px;
 }

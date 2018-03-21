@@ -460,18 +460,20 @@ gj.core = {
             mainElHeight = gj.core.height(mainEl, true),
             childElHeight = gj.core.height(childEl, true),
             mainElWidth = gj.core.width(mainEl, true),
-            childElWidth = gj.core.width(childEl, true);
+            childElWidth = gj.core.width(childEl, true),
+            scrollY = window.scrollY || window.pageYOffset || 0,
+            scrollX = window.scrollX || window.pageXOffset || 0;
 
         if ((mainElRect.top + mainElHeight + childElHeight) > window.innerHeight && mainElRect.top > childElHeight) {
-            childEl.style.top = Math.round(mainElRect.top + window.scrollY - childElHeight - 3) + 'px';
+            childEl.style.top = Math.round(mainElRect.top + scrollY - childElHeight - 3) + 'px';
         } else {
-            childEl.style.top = Math.round(mainElRect.top + window.scrollY + mainElHeight + 3) + 'px';
+            childEl.style.top = Math.round(mainElRect.top + scrollY + mainElHeight + 3) + 'px';
         }
 
         if (mainElRect.left + childElWidth > document.body.clientWidth) {
-            childEl.style.left = Math.round(mainElRect.left + window.scrollX + mainElWidth - childElWidth) + 'px';
+            childEl.style.left = Math.round(mainElRect.left + scrollX + mainElWidth - childElWidth) + 'px';
         } else {
-            childEl.style.left = Math.round(mainElRect.left + window.scrollX) + 'px';
+            childEl.style.left = Math.round(mainElRect.left + scrollX) + 'px';
         }
     },
 
@@ -480,14 +482,14 @@ gj.core = {
 
         if (style.lineHeight === 'normal') {
             result = parseInt(style.height, 10);
-            result += parseInt(style.paddingTop, 10) + parseInt(style.paddingBottom, 10);
-            result += parseInt(style.borderTop, 10) + parseInt(style.borderBottom, 10);
+            result += parseInt(style.paddingTop || 0, 10) + parseInt(style.paddingBottom || 0, 10);
+            result += parseInt(style.borderTop || 0, 10) + parseInt(style.borderBottom || 0, 10);
         } else {
             result = parseInt(style.height, 10);
         }
 
         if (margin) {
-            result += parseInt(style.marginTop, 10) + parseInt(style.marginBottom, 10);
+            result += parseInt(style.marginTop || 0, 10) + parseInt(style.marginBottom || 0, 10);
         }
 
         return result;
@@ -498,14 +500,14 @@ gj.core = {
 
         if (style.lineHeight === 'normal') {
             result = parseInt(style.width, 10);
-            result += parseInt(style.paddingLeft, 10) + parseInt(style.paddingRight, 10);
-            result += parseInt(style.borderLeft, 10) + parseInt(style.borderRight, 10);
+            result += parseInt(style.paddingLeft || 0, 10) + parseInt(style.paddingRight || 0, 10);
+            result += parseInt(style.borderLeft || 0, 10) + parseInt(style.borderRight || 0, 10);
         } else {
             result = parseInt(style.width, 10);
         }
 
         if (margin) {
-            result += parseInt(style.marginLeft, 10) + parseInt(style.marginRight, 10);
+            result += parseInt(style.marginLeft || 0, 10) + parseInt(style.marginRight || 0, 10);
         }
 
         return result;

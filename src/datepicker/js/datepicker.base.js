@@ -156,21 +156,21 @@ gj.datepicker.config = {
          * @type String
          * @default 'mm/dd/yyyy'
          * @example Sample <!-- datepicker -->
-         * <input id="datepicker" value="2017-25-07" />
+         * <input id="datepicker" value="2017-25-07" width="312" />
          * <script>
          *     var datepicker = $('#datepicker').datepicker({
          *         format: 'yyyy-dd-mm'
          *     });
          * </script>
          * @example Short.Month.Format <!-- datepicker -->
-         * <input id="datepicker" value="10 Oct 2017" />
+         * <input id="datepicker" value="10 Oct 2017" width="312" />
          * <script>
          *     var datepicker = $('#datepicker').datepicker({
          *         format: 'dd mmm yyyy'
          *     });
          * </script>
          * @example Long.Month.Format <!-- datepicker -->
-         * <input id="datepicker" value="10 October 2017" />
+         * <input id="datepicker" value="10 October 2017" width="312" />
          * <script>
          *     var datepicker = $('#datepicker').datepicker({
          *         format: 'dd mmmm yyyy'
@@ -415,7 +415,7 @@ gj.datepicker.config = {
              * @type String
              * @default '<i class="gj-icon event" />'
              * @example Custom.Material.Icon <!-- materialicons, datepicker -->
-             * <input id="datepicker" />
+             * <input id="datepicker" width="312" />
              * <script>
              *     $('#datepicker').datepicker({
              *         icons: { 
@@ -444,10 +444,10 @@ gj.datepicker.config = {
              *     });
              * </script>
              */
-            rightIcon: '<i class="gj-icon event" />',
+            rightIcon: '<i class="gj-icon">event</i>',
 
-            previousMonth: '<i class="gj-icon chevron-left" />',
-            nextMonth: '<i class="gj-icon chevron-right" />'
+            previousMonth: '<i class="gj-icon chevron-left"></i>',
+            nextMonth: '<i class="gj-icon chevron-right"></i>'
         },
 
         fontSize: undefined,
@@ -456,76 +456,40 @@ gj.datepicker.config = {
          * @type 'small'|'default'|'large'
          * @default 'default'
          * @example Bootstrap.4 <!-- bootstrap4, datepicker -->
-         * <p><label for="datepicker-small">Small Size:</label> <input id="datepicker-small" width="220" /></p>
-         * <p><label for="datepicker-default">Default Size:</label> <input id="datepicker-default" width="220" /></p>
-         * <p><label for="datepicker-large">Large Size:</label> <input id="datepicker-large" width="220" /></p>
+         * <p><label for="datepicker-small">Small Size:</label> <input id="datepicker-small" width="220" value="03/20/2018" /></p>
+         * <p><label for="datepicker-default">Default Size:</label> <input id="datepicker-default" width="220" value="03/20/2018" /></p>
+         * <p><label for="datepicker-large">Large Size:</label> <input id="datepicker-large" width="220" value="03/20/2018" /></p>
          * <script>
-         *     $('#datepicker-small').datepicker({
-         *         uiLibrary: 'bootstrap4',
-         *         size: 'small'
-         *     });
-         *     $('#datepicker-default').datepicker({
-         *         uiLibrary: 'bootstrap4',
-         *         size: 'default'
-         *     });
-         *     $('#datepicker-large').datepicker({
-         *         uiLibrary: 'bootstrap4',
-         *         size: 'large'
-         *     });
+         *     $('#datepicker-small').datepicker({ uiLibrary: 'bootstrap4', size: 'small' });
+         *     $('#datepicker-default').datepicker({ uiLibrary: 'bootstrap4', size: 'default' });
+         *     $('#datepicker-large').datepicker({ uiLibrary: 'bootstrap4', size: 'large' });
          * </script>
          * @example Bootstrap.4.Font.Awesome <!-- bootstrap4, fontawesome, datepicker -->
-         * <p><label for="datepicker-small">Small Size:</label> <input id="datepicker-small" width="220" /></p>
-         * <p><label for="datepicker-default">Default Size:</label> <input id="datepicker-default" width="220" /></p>
-         * <p><label for="datepicker-large">Large Size:</label> <input id="datepicker-large" width="220" /></p>
+         * <p><label for="datepicker-small">Small Size:</label> <input id="datepicker-small" width="220" value="03/20/2018" /></p>
+         * <p><label for="datepicker-default">Default Size:</label> <input id="datepicker-default" width="220" value="03/20/2018" /></p>
+         * <p><label for="datepicker-large">Large Size:</label> <input id="datepicker-large" width="220" value="03/20/2018" /></p>
          * <script>
-         *     $('#datepicker-small').datepicker({
-         *         uiLibrary: 'bootstrap4',
-         *         iconsLibrary: 'fontawesome',
-         *         size: 'small'
-         *     });
-         *     $('#datepicker-default').datepicker({
-         *         uiLibrary: 'bootstrap4',
-         *         iconsLibrary: 'fontawesome',
-         *         size: 'default'
-         *     });
-         *     $('#datepicker-large').datepicker({
-         *         uiLibrary: 'bootstrap4',
-         *         iconsLibrary: 'fontawesome',
-         *         size: 'large'
-         *     });
+         *     $('#datepicker-small').datepicker({ uiLibrary: 'bootstrap4', iconsLibrary: 'fontawesome', size: 'small' });
+         *     $('#datepicker-default').datepicker({ uiLibrary: 'bootstrap4', iconsLibrary: 'fontawesome', size: 'default' });
+         *     $('#datepicker-large').datepicker({ uiLibrary: 'bootstrap4', iconsLibrary: 'fontawesome', size: 'large' });
          * </script>
          * @example Bootstrap.3 <!-- bootstrap, datepicker -->
-         * <p><label for="datepicker-small">Small Size:</label> <input id="datepicker-small" width="220" /></p>
-         * <p><label for="datepicker-default">Default Size:</label> <input id="datepicker-default" width="220" /></p>
-         * <p><label for="datepicker-large">Large Size:</label> <input id="datepicker-large" width="220" /></p>
+         * <p><label for="datepicker-small">Small Size:</label> <input id="datepicker-small" width="220" value="03/20/2018" /></p>
+         * <p><label for="datepicker-default">Default Size:</label> <input id="datepicker-default" width="220" value="03/20/2018" /></p>
+         * <p><label for="datepicker-large">Large Size:</label> <input id="datepicker-large" width="220" value="03/20/2018" /></p>
          * <script>
-         *     $('#datepicker-small').datepicker({
-         *         uiLibrary: 'bootstrap',
-         *         size: 'small'
-         *     });
-         *     $('#datepicker-default').datepicker({
-         *         uiLibrary: 'bootstrap',
-         *         size: 'default'
-         *     });
-         *     $('#datepicker-large').datepicker({
-         *         uiLibrary: 'bootstrap',
-         *         size: 'large'
-         *     });
+         *     $('#datepicker-small').datepicker({ uiLibrary: 'bootstrap', size: 'small' });
+         *     $('#datepicker-default').datepicker({ uiLibrary: 'bootstrap', size: 'default' });
+         *     $('#datepicker-large').datepicker({ uiLibrary: 'bootstrap', size: 'large' });
          * </script>
          * @example Material.Design <!-- datepicker -->
-         * <p><label for="datepicker-small">Small Size:</label> <input id="datepicker-small" width="220" /></p>
-         * <p><label for="datepicker-default">Default Size:</label> <input id="datepicker-default" width="220" /></p>
-         * <p><label for="datepicker-large">Large Size:</label> <input id="datepicker-large" width="220" /></p>
+         * <p><label for="datepicker-small">Small Size:</label> <input id="datepicker-small" width="220" value="03/20/2018" /></p>
+         * <p><label for="datepicker-default">Default Size:</label> <input id="datepicker-default" width="220" value="03/20/2018" /></p>
+         * <p><label for="datepicker-large">Large Size:</label> <input id="datepicker-large" width="220" value="03/20/2018" /></p>
          * <script>
-         *     $('#datepicker-small').datepicker({
-         *         size: 'small'
-         *     });
-         *     $('#datepicker-default').datepicker({
-         *         size: 'default'
-         *     });
-         *     $('#datepicker-large').datepicker({
-         *         size: 'large'
-         *     });
+         *     $('#datepicker-small').datepicker({ size: 'small' });
+         *     $('#datepicker-default').datepicker({ size: 'default' });
+         *     $('#datepicker-large').datepicker({ size: 'large' });
          * </script>
          */
         size: 'default',
@@ -550,7 +514,7 @@ gj.datepicker.config = {
     bootstrap4: {
         style: {
             wrapper: 'gj-datepicker gj-datepicker-bootstrap gj-unselectable input-group',
-            input: 'form-control',
+            input: 'form-control border',
             calendar: 'gj-calendar gj-calendar-bootstrap'
         },
         showOtherMonths: true
@@ -588,7 +552,7 @@ gj.datepicker.methods = {
         if (data.uiLibrary === 'bootstrap') {
             $rightIcon = $('<span class="input-group-addon">' + data.icons.rightIcon + '</span>');
         } else if (data.uiLibrary === 'bootstrap4') {
-            $rightIcon = $('<span class="input-group-append"><span class="input-group-text">' + data.icons.rightIcon + '</span></span>');
+            $rightIcon = $('<span class="input-group-append"><button class="btn btn-outline-secondary border-left-0 border" type="button">' + data.icons.rightIcon + '</button></span>');
         } else {
             $rightIcon = $(data.icons.rightIcon);
         }
@@ -607,7 +571,6 @@ gj.datepicker.methods = {
         $datepicker.val(data.value).addClass(data.style.input).attr('role', 'input');
 
         data.fontSize && $datepicker.css('font-size', data.fontSize);
-
         
         if (data.uiLibrary === 'bootstrap' || data.uiLibrary === 'bootstrap4') {
             if (data.size === 'small') {
@@ -1291,7 +1254,7 @@ gj.datepicker.events = {
      * @event change
      * @param {object} e - event data
      * @example sample <!-- datepicker -->
-     * <input id="datepicker" />
+     * <input id="datepicker" width="312" />
      * <script>
      *     $('#datepicker').datepicker({
      *         change: function (e) {
@@ -1309,7 +1272,7 @@ gj.datepicker.events = {
      * @event open
      * @param {object} e - event data
      * @example sample <!-- datepicker -->
-     * <input id="datepicker" />
+     * <input id="datepicker" width="312" />
      * <script>
      *     $('#datepicker').datepicker({
      *         open: function (e) {
@@ -1327,7 +1290,7 @@ gj.datepicker.events = {
      * @event close
      * @param {object} e - event data
      * @example sample <!-- datepicker -->
-     * <input id="datepicker" />
+     * <input id="datepicker" width="312" />
      * <script>
      *     $('#datepicker').datepicker({
      *         close: function (e) {
@@ -1352,14 +1315,14 @@ gj.datepicker.widget = function ($element, jsConfig) {
      * @example Get <!-- datepicker -->
      * <button class="gj-button-md" onclick="alert($datepicker.value())">Get Value</button>
      * <hr/>
-     * <input id="datepicker" />
+     * <input id="datepicker" width="312" />
      * <script>
      *     var $datepicker = $('#datepicker').datepicker();
      * </script>
      * @example Set <!-- datepicker -->
      * <button class="gj-button-md" onclick="$datepicker.value('08/01/2017')">Set Value</button>
      * <hr/>
-     * <input id="datepicker" />
+     * <input id="datepicker" width="312" />
      * <script>
      *     var $datepicker = $('#datepicker').datepicker();
      * </script>
@@ -1373,7 +1336,7 @@ gj.datepicker.widget = function ($element, jsConfig) {
      * @return jquery element
      * @example sample <!-- datepicker -->
      * <button class="gj-button-md" onclick="datepicker.destroy()">Destroy</button>
-     * <input id="datepicker" />
+     * <input id="datepicker" width="312" />
      * <script>
      *     var datepicker = $('#datepicker').datepicker();
      * </script>
@@ -1389,7 +1352,7 @@ gj.datepicker.widget = function ($element, jsConfig) {
      * <button class="gj-button-md" onclick="$datepicker.open()">Open</button>
      * <button class="gj-button-md" onclick="$datepicker.close()">Close</button>
      * <hr/>
-     * <input id="datepicker" />
+     * <input id="datepicker" width="312" />
      * <script>
      *     var $datepicker = $('#datepicker').datepicker();
      * </script>
@@ -1405,7 +1368,7 @@ gj.datepicker.widget = function ($element, jsConfig) {
      * <button class="gj-button-md" onclick="$datepicker.open()">Open</button>
      * <button class="gj-button-md" onclick="$datepicker.close()">Close</button>
      * <hr/>
-     * <input id="datepicker" />
+     * <input id="datepicker" width="312" />
      * <script>
      *     var $datepicker = $('#datepicker').datepicker();
      * </script>

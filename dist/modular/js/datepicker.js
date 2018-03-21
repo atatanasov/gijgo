@@ -50,10 +50,10 @@ gj.datepicker.config = {
         /** The language that needs to be in use.         */        locale: 'en-us',
 
         icons: {
-            /** datepicker icon definition.             */            rightIcon: '<i class="gj-icon event" />',
+            /** datepicker icon definition.             */            rightIcon: '<i class="gj-icon">event</i>',
 
-            previousMonth: '<i class="gj-icon chevron-left" />',
-            nextMonth: '<i class="gj-icon chevron-right" />'
+            previousMonth: '<i class="gj-icon chevron-left"></i>',
+            nextMonth: '<i class="gj-icon chevron-right"></i>'
         },
 
         fontSize: undefined,
@@ -80,7 +80,7 @@ gj.datepicker.config = {
     bootstrap4: {
         style: {
             wrapper: 'gj-datepicker gj-datepicker-bootstrap gj-unselectable input-group',
-            input: 'form-control',
+            input: 'form-control border',
             calendar: 'gj-calendar gj-calendar-bootstrap'
         },
         showOtherMonths: true
@@ -118,7 +118,7 @@ gj.datepicker.methods = {
         if (data.uiLibrary === 'bootstrap') {
             $rightIcon = $('<span class="input-group-addon">' + data.icons.rightIcon + '</span>');
         } else if (data.uiLibrary === 'bootstrap4') {
-            $rightIcon = $('<span class="input-group-append"><span class="input-group-text">' + data.icons.rightIcon + '</span></span>');
+            $rightIcon = $('<span class="input-group-append"><button class="btn btn-outline-secondary border-left-0 border" type="button">' + data.icons.rightIcon + '</button></span>');
         } else {
             $rightIcon = $(data.icons.rightIcon);
         }
@@ -137,7 +137,6 @@ gj.datepicker.methods = {
         $datepicker.val(data.value).addClass(data.style.input).attr('role', 'input');
 
         data.fontSize && $datepicker.css('font-size', data.fontSize);
-
         
         if (data.uiLibrary === 'bootstrap' || data.uiLibrary === 'bootstrap4') {
             if (data.size === 'small') {

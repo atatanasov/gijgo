@@ -22,12 +22,12 @@ gj.timepicker.config = {
          * @type number
          * @default undefined
          * @example JS.Config <!-- timepicker -->
-         * <input id="timepicker" />
+         * <input id="timepicker" width="312" />
          * <script>
          *    $('#timepicker').timepicker({ width: 280 });
          * </script>
          * @example HTML.Config <!-- timepicker -->
-         * <input id="timepicker" width="280" />
+         * <input id="timepicker" width="312" />
          * <script>
          *    $('#timepicker').timepicker();
          * </script>
@@ -82,7 +82,7 @@ gj.timepicker.config = {
          */
         footer: true,
 
-        /** Specifies the format, which is used to format the value of the DatePicker displayed in the input.
+        /** Specifies the format, which is used to format the value of the timepicker displayed in the input.
          * @additionalinfo <b>d</b> - Day of the month as digits; no leading zero for single-digit days.<br/>
          * <b>M</b> - Minutes; no leading zero for single-digit minutes.<br/>
          * <b>MM</b> - Minutes; leading zero for single-digit minutes.<br/>
@@ -95,7 +95,7 @@ gj.timepicker.config = {
          * @type String
          * @default 'MM:HH'
          * @example Sample <!-- timepicker -->
-         * <input id="timepicker" value="13.42" />
+         * <input id="timepicker" width="312" value="13.42" />
          * <script>
          *     var timepicker = $('#timepicker').timepicker({
          *         format: 'HH.MM'
@@ -201,6 +201,39 @@ gj.timepicker.config = {
          */
         locale: 'en-us',
 
+        /** The size of the timepicker input.
+         * @type 'small'|'default'|'large'
+         * @default 'default'
+         * @example Bootstrap.4 <!-- bootstrap4, timepicker -->
+         * <p><label for="timepicker-small">Small Size:</label> <input id="timepicker-small" width="220" value="15:20" /></p>
+         * <p><label for="timepicker-default">Default Size:</label> <input id="timepicker-default" width="220" value="15:20" /></p>
+         * <p><label for="timepicker-large">Large Size:</label> <input id="timepicker-large" width="220" value="15:20" /></p>
+         * <script>
+         *     $('#timepicker-small').timepicker({ uiLibrary: 'bootstrap4', size: 'small' });
+         *     $('#timepicker-default').timepicker({ uiLibrary: 'bootstrap4', size: 'default' });
+         *     $('#timepicker-large').timepicker({ uiLibrary: 'bootstrap4', size: 'large' });
+         * </script>
+         * @example Bootstrap.3 <!-- bootstrap, timepicker -->
+         * <p><label for="timepicker-small">Small Size:</label> <input id="timepicker-small" width="220" value="15:20" /></p>
+         * <p><label for="timepicker-default">Default Size:</label> <input id="timepicker-default" width="220" value="15:20" /></p>
+         * <p><label for="timepicker-large">Large Size:</label> <input id="timepicker-large" width="220" value="15:20" /></p>
+         * <script>
+         *     $('#timepicker-small').timepicker({ uiLibrary: 'bootstrap', size: 'small' });
+         *     $('#timepicker-default').timepicker({ uiLibrary: 'bootstrap', size: 'default' });
+         *     $('#timepicker-large').timepicker({ uiLibrary: 'bootstrap', size: 'large' });
+         * </script>
+         * @example Material.Design <!-- timepicker -->
+         * <p><label for="timepicker-small">Small Size:</label> <input id="timepicker-small" width="220" value="15:20" /></p>
+         * <p><label for="timepicker-default">Default Size:</label> <input id="timepicker-default" width="220" value="15:20" /></p>
+         * <p><label for="timepicker-large">Large Size:</label> <input id="timepicker-large" width="220" value="15:20" /></p>
+         * <script>
+         *     $('#timepicker-small').timepicker({ size: 'small' });
+         *     $('#timepicker-default').timepicker({ size: 'default' });
+         *     $('#timepicker-large').timepicker({ size: 'large' });
+         * </script>
+         */
+        size: 'default',
+
         icons: {
             rightIcon: '<i class="gj-icon clock" />'
         },
@@ -229,7 +262,7 @@ gj.timepicker.config = {
     bootstrap4: {
         style: {
             wrapper: 'gj-timepicker gj-timepicker-bootstrap gj-unselectable input-group',
-            input: 'form-control',
+            input: 'form-control border',
             clock: 'gj-clock gj-clock-bootstrap',
             footer: 'modal-footer',
             button: 'btn btn-default'
@@ -251,7 +284,7 @@ gj.timepicker.methods = {
         if (data.uiLibrary === 'bootstrap') {
             $rightIcon = $('<span class="input-group-addon">' + data.icons.rightIcon + '</span>');
         } else if (data.uiLibrary === 'bootstrap4') {
-            $rightIcon = $('<span class="input-group-append"><span class="input-group-text">' + data.icons.rightIcon + '</span></span>');
+            $rightIcon = $('<span class="input-group-append"><button class="btn btn-outline-secondary border-left-0 border" type="button">' + data.icons.rightIcon + '</button></span>');
         } else {
             $rightIcon = $(data.icons.rightIcon);
         }
@@ -270,6 +303,22 @@ gj.timepicker.methods = {
         $timepicker.val(data.value).addClass(data.style.input).attr('role', 'input');
 
         //data.fontSize && $timepicker.css('font-size', data.fontSize);
+
+        if (data.uiLibrary === 'bootstrap' || data.uiLibrary === 'bootstrap4') {
+            if (data.size === 'small') {
+                $wrapper.addClass('input-group-sm');
+                $timepicker.addClass('form-control-sm');
+            } else if (data.size === 'large') {
+                $wrapper.addClass('input-group-lg');
+                $timepicker.addClass('form-control-lg');
+            }
+        } else {
+            if (data.size === 'small') {
+                $wrapper.addClass('small');
+            } else if (data.size === 'large') {
+                $wrapper.addClass('large');
+            }
+        }
 
         $rightIcon.on('click', function (e) {
             var $clock = $('body').find('[role="clock"][guid="' + $timepicker.attr('data-guid') + '"]');
@@ -687,7 +736,7 @@ gj.timepicker.events = {
      * @event change
      * @param {object} e - event data
      * @example sample <!-- timepicker -->
-     * <input id="timepicker" />
+     * <input id="timepicker" width="312" />
      * <script>
      *     $('#timepicker').timepicker({
      *         change: function (e) {
@@ -705,7 +754,7 @@ gj.timepicker.events = {
      * @event open
      * @param {object} e - event data
      * @example sample <!-- timepicker -->
-     * <input id="timepicker" />
+     * <input id="timepicker" width="312" />
      * <script>
      *     $('#timepicker').timepicker({
      *         open: function (e) {
@@ -723,7 +772,7 @@ gj.timepicker.events = {
      * @event close
      * @param {object} e - event data
      * @example sample <!-- timepicker -->
-     * <input id="timepicker" />
+     * <input id="timepicker" width="312" />
      * <script>
      *     $('#timepicker').timepicker({
      *         close: function (e) {
@@ -748,16 +797,16 @@ gj.timepicker.widget = function ($element, jsConfig) {
      * @param {string} value - The value that needs to be selected.
      * @return string
      * @example Get <!-- timepicker -->
-     * <button class="gj-button-md" onclick="alert($timepicker.value())">Get Content</button>
+     * <button class="gj-button-md" onclick="alert($timepicker.value())">Get Value</button>
      * <hr/>
-     * <input id="timepicker" />
+     * <input id="timepicker" width="312" />
      * <script>
      *     var $timepicker = $('#timepicker').timepicker();
      * </script>
      * @example Set <!-- timepicker -->
      * <button class="gj-button-md" onclick="$timepicker.value('11:00')">Set Value</button>
      * <hr/>
-     * <input id="timepicker" />
+     * <input id="timepicker" width="312" />
      * <script>
      *     var $timepicker = $('#timepicker').timepicker();
      * </script>
@@ -771,7 +820,7 @@ gj.timepicker.widget = function ($element, jsConfig) {
      * @return jquery element
      * @example sample <!-- timepicker -->
      * <button class="gj-button-md" onclick="timepicker.destroy()">Destroy</button>
-     * <input id="timepicker" />
+     * <input id="timepicker" width="312" />
      * <script>
      *     var timepicker = $('#timepicker').timepicker();
      * </script>
@@ -787,7 +836,7 @@ gj.timepicker.widget = function ($element, jsConfig) {
      * <button class="gj-button-md" onclick="$timepicker.open()">Open</button>
      * <button class="gj-button-md" onclick="$timepicker.close()">Close</button>
      * <hr/>
-     * <input id="timepicker" />
+     * <input id="timepicker" width="312" />
      * <script>
      *     var $timepicker = $('#timepicker').timepicker({ modal: false, header: false, footer: false, mode: '24hr' });
      * </script>
@@ -803,7 +852,7 @@ gj.timepicker.widget = function ($element, jsConfig) {
      * <button class="gj-button-md" onclick="$timepicker.open()">Open</button>
      * <button class="gj-button-md" onclick="$timepicker.close()">Close</button>
      * <hr/>
-     * <input id="timepicker" />
+     * <input id="timepicker" width="312" />
      * <script>
      *     var $timepicker = $('#timepicker').timepicker({ modal: false, header: false, footer: false, mode: '24hr' });
      * </script>

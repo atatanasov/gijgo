@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Example</title>
+  <script src="../../dist/libraries/jquery/jquery.js"></script>
+  <script src="../../dist/modular/js/core.js" type="text/javascript"></script>
+  <link href="../../dist/modular/css/core.css" rel="stylesheet" type="text/css">
+  <link href="../../dist/libraries/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+  <link href="../../dist/modular/css/timepicker.css" rel="stylesheet" type="text/css">
+  <script src="../../dist/modular/js/timepicker.js"></script>
+</head>
+<body style="padding: 8px;">
+ <p><label for="timepicker-small">Small Size:</label> <input id="timepicker-small" width="220" value="15:20" /></p>
+ <p><label for="timepicker-default">Default Size:</label> <input id="timepicker-default" width="220" value="15:20" /></p>
+ <p><label for="timepicker-large">Large Size:</label> <input id="timepicker-large" width="220" value="15:20" /></p>
+ <script>
+     $('#timepicker-small').timepicker({ uiLibrary: 'bootstrap', size: 'small' });
+     $('#timepicker-default').timepicker({ uiLibrary: 'bootstrap', size: 'default' });
+     $('#timepicker-large').timepicker({ uiLibrary: 'bootstrap', size: 'large' });
+ </script>
+</body>
+</html>

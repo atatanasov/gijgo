@@ -29,7 +29,7 @@ gj.timepicker.config = {
 
         /** If set to true, add footer with ok and cancel buttons to the timepicker.         */        footer: true,
 
-        /** Specifies the format, which is used to format the value of the DatePicker displayed in the input.         */        format: 'HH:MM',
+        /** Specifies the format, which is used to format the value of the timepicker displayed in the input.         */        format: 'HH:MM',
 
         /** The name of the UI library that is going to be in use.         */        uiLibrary: 'materialdesign',
 
@@ -38,6 +38,8 @@ gj.timepicker.config = {
         /** The timepicker mode. Tells the component to display the picker in ampm (12hr) format or 24hr format.         */        mode: 'ampm',
 
         /** The language that needs to be in use.         */        locale: 'en-us',
+
+        /** The size of the timepicker input.         */        size: 'default',
 
         icons: {
             rightIcon: '<i class="gj-icon clock" />'
@@ -67,7 +69,7 @@ gj.timepicker.config = {
     bootstrap4: {
         style: {
             wrapper: 'gj-timepicker gj-timepicker-bootstrap gj-unselectable input-group',
-            input: 'form-control',
+            input: 'form-control border',
             clock: 'gj-clock gj-clock-bootstrap',
             footer: 'modal-footer',
             button: 'btn btn-default'
@@ -89,7 +91,7 @@ gj.timepicker.methods = {
         if (data.uiLibrary === 'bootstrap') {
             $rightIcon = $('<span class="input-group-addon">' + data.icons.rightIcon + '</span>');
         } else if (data.uiLibrary === 'bootstrap4') {
-            $rightIcon = $('<span class="input-group-append"><span class="input-group-text">' + data.icons.rightIcon + '</span></span>');
+            $rightIcon = $('<span class="input-group-append"><button class="btn btn-outline-secondary border-left-0 border" type="button">' + data.icons.rightIcon + '</button></span>');
         } else {
             $rightIcon = $(data.icons.rightIcon);
         }
@@ -108,6 +110,22 @@ gj.timepicker.methods = {
         $timepicker.val(data.value).addClass(data.style.input).attr('role', 'input');
 
         //data.fontSize && $timepicker.css('font-size', data.fontSize);
+
+        if (data.uiLibrary === 'bootstrap' || data.uiLibrary === 'bootstrap4') {
+            if (data.size === 'small') {
+                $wrapper.addClass('input-group-sm');
+                $timepicker.addClass('form-control-sm');
+            } else if (data.size === 'large') {
+                $wrapper.addClass('input-group-lg');
+                $timepicker.addClass('form-control-lg');
+            }
+        } else {
+            if (data.size === 'small') {
+                $wrapper.addClass('small');
+            } else if (data.size === 'large') {
+                $wrapper.addClass('large');
+            }
+        }
 
         $rightIcon.on('click', function (e) {
             var $clock = $('body').find('[role="clock"][guid="' + $timepicker.attr('data-guid') + '"]');

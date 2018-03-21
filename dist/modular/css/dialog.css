@@ -129,16 +129,16 @@
 }
 
 .gj-dialog-md-header {
-    padding: 24px 24px 0;
+    padding: 24px 24px 0px 24px;
+    font-family: "Roboto","Helvetica","Arial",sans-serif;
 }
 
 .gj-dialog-md-title {
     margin: 0;
-    font-size: 2.5rem;
-    line-height: 40px;
-    font-family: "Roboto","Helvetica","Arial",sans-serif;
     font-weight: 400;
-    display:inline;
+    display: inline;
+    line-height: 28px;
+    font-size: 20px;
 }
 
 .gj-dialog-md-close {
@@ -148,12 +148,12 @@
     background: 0 0;
     border: 0;
     float: right;
-    font-size: 2.5em;
-    line-height: 40px;
+    line-height: 28px;
+    font-size: 28px;
 }
 
 .gj-dialog-md-body {
-    padding: 20px 24px 24px;
+    padding: 20px 24px 24px 24px;
     color: rgba(0,0,0,.54);
     font-family: "Helvetica","Arial",sans-serif;
     font-size: 14px;

@@ -1,20 +1,9 @@
-.gj-timepicker {
-    position: relative;
-    display: table;
-}
-
-.gj-timepicker [role="input"] {
-    display: table-cell;
-    width: 100%;
-}
-
 .gj-timepicker [role="input"]::-ms-clear {
     display: none;
 }
 
 .gj-timepicker [role="right-icon"] {
     cursor: pointer;
-    display: table-cell;
 }
 
 .gj-clock {
@@ -141,6 +130,23 @@
     letter-spacing: .04em;
     line-height: 1;
     color: rgba(0,0,0,.87);
+    position: relative;
+}
+
+.gj-timepicker-md.small .gj-textbox-md {
+    font-size: 14px;
+}
+
+.gj-timepicker-md.small .gj-icon {
+    font-size: 22px;
+}
+
+.gj-timepicker-md.large .gj-textbox-md {
+    font-size: 18px;
+}
+
+.gj-timepicker-md.large .gj-icon {
+    font-size: 28px;
 }
 
 .gj-timepicker-md [role="right-icon"] {
@@ -148,6 +154,7 @@
     position: absolute;
     right: 0px;
     top: 0px;
+    font-size: 24px;
 }
 
 .gj-clock-md {
@@ -171,6 +178,11 @@
 }
 
 /* Bootstrap */
+.gj-timepicker-bootstrap :focus,
+.gj-timepicker-bootstrap :active {
+    box-shadow: none;
+}
+
 .gj-clock-bootstrap {
     border-radius: 4px;
     border: 1px solid #E0E0E0;
@@ -198,7 +210,7 @@
 }
 
 /* Bootstrap 3 */
-.gj-timepicker-bootstrap span[role="right-icon"].input-group-addon {
+.gj-timepicker-bootstrap .input-group-addon {
     border-top-left-radius: 0px;
     border-bottom-left-radius: 0px;
     border-top-right-radius: 4px;
@@ -208,35 +220,68 @@
     width: 38px;
 }
 
-.gj-timepicker-bootstrap span[role="right-icon"].input-group-addon .gj-icon,
-.gj-timepicker-bootstrap span[role="right-icon"].input-group-addon .material-icons {
+.gj-timepicker-bootstrap.input-group-sm .input-group-addon {
+    width: 30px;
+}
+
+.gj-timepicker-bootstrap.input-group-lg .input-group-addon {
+    width: 46px;
+}
+
+.gj-timepicker-bootstrap .input-group-addon .gj-icon,
+.gj-timepicker-bootstrap .input-group-addon .material-icons {
     position: absolute;
-    top: 4px;
-    left: 7px;
+    font-size: 21px;
+    top: 6px;
+    left: 8px;
+}
+
+.gj-timepicker-bootstrap.input-group-sm .input-group-addon .gj-icon,
+.gj-timepicker-bootstrap.input-group-sm .input-group-addon .material-icons {
+    font-size: 19px;
+    top: 5px;
+    left: 5px;
+}
+
+.gj-timepicker-bootstrap.input-group-lg .input-group-addon .gj-icon,
+.gj-timepicker-bootstrap.input-group-lg .input-group-addon .material-icons {
+    font-size: 27px;
+    top: 10px;
+    left: 10px;
 }
 
 /* Bootstrap 4 */
-.gj-timepicker-bootstrap span[role="right-icon"].input-group-append,
-.gj-timepicker-bootstrap span[role="right-icon"].input-group-prepend {
+.gj-timepicker-bootstrap [role="right-icon"] button {
     width: 38px;
+    position: relative;
 }
 
-.gj-timepicker-bootstrap span[role="right-icon"] .input-group-text {
-    padding: 7px 8px 8px 30px;
-    border-left: 0px;
-    display: inline;
+.gj-timepicker-bootstrap.input-group-sm [role="right-icon"] button {
+    width: 30px;
 }
 
-.gj-timepicker-bootstrap span[role="right-icon"] .input-group-text .gj-icon,
-.gj-timepicker-bootstrap span[role="right-icon"] .input-group-text .material-icons {
+.gj-timepicker-bootstrap.input-group-lg [role="right-icon"] button {
+    width: 48px;
+}
+
+.gj-timepicker-bootstrap [role="right-icon"] button .gj-icon,
+.gj-timepicker-bootstrap [role="right-icon"] button .material-icons {
     position: absolute;
-    right: 8px;
-    top: 8px;
-}
-
-.gj-timepicker-bootstrap span[role="right-icon"] .input-group-text .fa {
-    position: absolute;
-    right: 10px;
-    top: 7px;
     font-size: 21px;
+    top: 7px;
+    left: 9px;
+}
+
+.gj-timepicker-bootstrap.input-group-sm [role="right-icon"] button .gj-icon,
+.gj-timepicker-bootstrap.input-group-sm [role="right-icon"] button .material-icons {
+    top: 4px;
+    left: 6px;
+    font-size: 19px;
+}
+
+.gj-timepicker-bootstrap.input-group-lg [role="right-icon"] button .gj-icon,
+.gj-timepicker-bootstrap.input-group-lg [role="right-icon"] button .material-icons {
+    font-size: 27px;
+    top: 8px;
+    left: 10px;
 }
