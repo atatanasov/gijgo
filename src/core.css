@@ -57,7 +57,7 @@
     background: 0 0;
     border: none;
     border-radius: 2px;
-    color: rgba(0,0,0,.54);
+    color: rgba(0, 0, 0, 0.87);
     position: relative;
     height: 36px;
     margin: 0;
@@ -78,7 +78,6 @@
     text-align: center;
     line-height: 36px;
     vertical-align: middle;
-
     overflow: hidden;
     -webkit-user-select: none;
     -moz-user-select: none;
