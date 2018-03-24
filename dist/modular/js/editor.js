@@ -2,7 +2,7 @@
  * Gijgo Editor v1.9.3
  * http://gijgo.com/editor
  *
- * Copyright 2014, 2017 gijgo.com
+ * Copyright 2014, 2018 gijgo.com
  * Released under the MIT license
  */
 /* global window alert jQuery */

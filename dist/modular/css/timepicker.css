@@ -6,73 +6,50 @@
     cursor: pointer;
 }
 
-.gj-clock {
-    position: absolute;
-    z-index: 1202;
-    font-size: 16px;
-    font-weight: 400;
-    letter-spacing: .04em;
-    line-height: 1;
-    color: rgba(0,0,0,.87);
-    background-color: #FFFFFF;
-}
-
-.gj-clock .selected {
-    color: #fff;
-}
-
-.gj-clock [role="header"] {
+.gj-picker.timepicker [role="header"] {
+    font-size: 58px;
     color: rgba(255, 255, 255, 0.54);
     padding: 20px 0;
-    display: flex;
-    font-size: 58px;
-    background: #2196f3;
     line-height: 58px;
-    align-items: baseline;
-    user-select: none;
-    justify-content: center;
 }
 
-.gj-clock [role="header"] div {
+.gj-picker.timepicker [role="header"] div {
     cursor: pointer;
     width: 66px;
     text-align: right;
 }
 
-.gj-clock [role="header"] [role="mode"] {
+.gj-picker [role="header"] [role="mode"] {
     position: relative;
     width: 0px;
 }
 
-.gj-clock [role="header"] [role="mode"] span {
+.gj-picker [role="header"] [role="mode"] span {
     position: absolute;
     left: 7px;
     line-height: 18px;
     font-size: 18px;
 }
 
-.gj-clock [role="header"] [role="mode"] span[role="am"] {
+.gj-picker [role="header"] [role="mode"] span[role="am"] {
     top: 7px;
 }
 
-.gj-clock [role="header"] [role="mode"] span[role="pm"] {
+.gj-picker [role="header"] [role="mode"] span[role="pm"] {
     bottom: 7px;
 }
 
-.gj-clock [role="body"] {
-    padding: 10px;
-}
-
-.gj-clock [role="body"] [role="dial"] {
+.gj-picker [role="body"] [role="dial"] {
     width: 256px;
     color: rgba(0, 0, 0, 0.87);
     height: 256px;
     position: relative;
     background: #eeeeee;
     border-radius: 50%;
+    margin: 10px;
 }
 
-.gj-clock [role="body"] [role="hour"] {
+.gj-picker [role="body"] [role="hour"] {
     top: calc(50% - 16px);
     left: calc(50% - 16px);
     width: 32px;
@@ -86,11 +63,11 @@
     pointer-events: none;
 }
 
-.gj-clock [role="body"] [role="hour"].selected {
+.gj-picker [role="body"] [role="hour"].selected {
     color: rgba(255, 255, 255, 1);
 }
 
-.gj-clock [role="body"] [role="arrow"] {
+.gj-picker [role="body"] [role="arrow"] {
     top: calc(50% - 1px);
     left: 50%;
     width: calc(50% - 20px);
@@ -102,7 +79,7 @@
     width: calc(50% - 52px);
 }
 
-.gj-clock .arrow-begin {
+.gj-picker .arrow-begin {
     top: -3px;
     left: -4px;
     width: 8px;
@@ -111,7 +88,7 @@
     border-radius: 50%;
 }
 
-.gj-clock .arrow-end {
+.gj-picker .arrow-end {
     top: -15px;
     right: -16px;
     width: 0;
@@ -157,55 +134,41 @@
     font-size: 24px;
 }
 
-.gj-clock-md {
-    font-family: "Roboto","Helvetica","Arial",sans-serif;
-}
-
-.gj-clock-md .arrow-begin {
+.gj-picker-md .arrow-begin {
     background-color: #2196f3;
 }
-.gj-clock-md .arrow-end {
+.gj-picker-md .arrow-end {
     border: 16px solid #2196f3;
 }
 
-.gj-clock-md [role="body"] [role="arrow"] {
+.gj-picker-md [role="body"] [role="arrow"] {
     background-color: #2196f3;
 }
 
-.gj-clock-md [role="footer"] {
+.gj-picker-md [role="footer"] {
     float: right;
     padding: 10px;
 }
 
 /* Bootstrap */
-.gj-timepicker-bootstrap :focus,
-.gj-timepicker-bootstrap :active {
-    box-shadow: none;
-}
-
-.gj-clock-bootstrap {
-    border-radius: 4px;
-    border: 1px solid #E0E0E0;
-}
-
-.gj-clock-bootstrap .selected {
+.gj-picker-bootstrap .selected {
     color: #888;
 }
 
-.gj-clock-bootstrap [role="header"] {
+.gj-picker-bootstrap [role="header"] {
     background: #eee;
     color: #AAA;
 }
 
-.gj-clock-bootstrap [role="body"] [role="arrow"] {
+.gj-picker-bootstrap [role="body"] [role="arrow"] {
     background-color: #888;
 }
 
-.gj-clock-bootstrap .arrow-begin {
+.gj-picker-bootstrap .arrow-begin {
     background-color: #888;
 }
 
-.gj-clock-bootstrap .arrow-end {
+.gj-picker-bootstrap .arrow-end {
     border: 16px solid #888;
 }
 

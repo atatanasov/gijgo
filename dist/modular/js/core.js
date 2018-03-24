@@ -2,7 +2,7 @@
  * Gijgo JavaScript Library v1.9.3
  * http://gijgo.com/
  *
- * Copyright 2014, 2017 gijgo.com
+ * Copyright 2014, 2018 gijgo.com
  * Released under the MIT license
  */
 var gj = {};
@@ -412,13 +412,13 @@ gj.documentManager = {
     height: function (el, margin) {
         var result, style = window.getComputedStyle(el);
 
-        if (style.lineHeight === 'normal') {
+        //if (style.lineHeight === 'normal') {
             result = parseInt(style.height, 10);
             result += parseInt(style.paddingTop || 0, 10) + parseInt(style.paddingBottom || 0, 10);
             result += parseInt(style.borderTop || 0, 10) + parseInt(style.borderBottom || 0, 10);
-        } else {
-            result = parseInt(style.height, 10);
-        }
+        //} else {
+        //    result = parseInt(style.height, 10);
+        //}
 
         if (margin) {
             result += parseInt(style.marginTop || 0, 10) + parseInt(style.marginBottom || 0, 10);
@@ -430,13 +430,13 @@ gj.documentManager = {
     width: function (el, margin) {
         var result, style = window.getComputedStyle(el);
 
-        if (style.lineHeight === 'normal') {
+        //if (style.lineHeight === 'normal') {
             result = parseInt(style.width, 10);
             result += parseInt(style.paddingLeft || 0, 10) + parseInt(style.paddingRight || 0, 10);
             result += parseInt(style.borderLeft || 0, 10) + parseInt(style.borderRight || 0, 10);
-        } else {
-            result = parseInt(style.width, 10);
-        }
+        //} else {
+        //    result = parseInt(style.width, 10);
+        //}
 
         if (margin) {
             result += parseInt(style.marginLeft || 0, 10) + parseInt(style.marginRight || 0, 10);

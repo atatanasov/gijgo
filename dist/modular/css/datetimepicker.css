@@ -1,0 +1,41 @@
+.gj-picker.datetimepicker [role="header"] {
+    font-size: 36px;
+    padding: 10px 20px;
+    display: block;
+}
+
+.gj-picker.datetimepicker [role="header"] [role="date"] {
+    padding-bottom: 5px;
+    text-align: center;
+}
+
+.gj-picker-md [role="switch"] {
+    color: rgba(255, 255, 255, 0.54);
+    background: #2196f3;
+    align-items: baseline;
+    user-select: none;
+    position: relative;
+}
+
+.gj-picker-md [role="switch"] [role="calendarMode"] {
+    cursor: pointer;
+    position: absolute;
+    bottom: 3px;
+    left: 0px;
+}
+
+.gj-picker-md [role="switch"] [role="time"] {
+    width: 100%;
+    text-align: center;
+}
+
+.gj-picker-md [role="switch"] [role="calendarMode"] {
+    cursor: pointer;
+}
+
+.gj-picker-md [role="switch"] [role="clockMode"] {
+    position: absolute;
+    right: 0px;
+    bottom: 5px;
+    cursor: pointer;
+}
