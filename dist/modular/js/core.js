@@ -249,8 +249,14 @@ gj.documentManager = {
     messages: {
         'en-us': {
             monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-
-            monthShortNames: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+            monthShortNames: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],            
+            weekDaysMin: ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
+            weekDaysShort: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+            weekDays: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+            am: 'AM',
+            pm: 'PM',
+            ok: 'Ok',
+            cancel: 'Cancel'
         }
     },
 
@@ -299,7 +305,9 @@ gj.documentManager = {
     /**      */    formatDate: function (date, format, locale) {
         var result = '', separator, tmp,
             formatParts = format.split(/[\s,-\.//\:]+/),
-            separators = format.replace(/[shtdmyHTDMY]/g, '');
+            separators = format.split(/s+|M+|H+|h+|t+|T+|d+|m+|y+/);
+
+        separators = separators.splice(1, separators.length - 2);
 
         for (i = 0; i < formatParts.length; i++) {
             separator = (separators[i] || '');
@@ -339,8 +347,14 @@ gj.documentManager = {
                 case 'd':
                     result += date.getDate() + separator;
                     break;
-                case 'dd' :
+                case 'dd':
                     result += gj.core.pad(date.getDate()) + separator;
+                    break;
+                case 'ddd':
+                    result += gj.core.messages[locale || 'en-us'].weekDaysShort[date.getDay()] + separator;
+                    break;
+                case 'dddd':
+                    result += gj.core.messages[locale || 'en-us'].weekDays[date.getDay()] + separator;
                     break;
                 case 'm' :
                     result += (date.getMonth() + 1) + separator;
@@ -412,13 +426,13 @@ gj.documentManager = {
     height: function (el, margin) {
         var result, style = window.getComputedStyle(el);
 
-        //if (style.lineHeight === 'normal') {
+        if (style.boxSizing === 'border-box') { // border-box include padding and border within the height
+            result = parseInt(style.height, 10);
+        } else {
             result = parseInt(style.height, 10);
             result += parseInt(style.paddingTop || 0, 10) + parseInt(style.paddingBottom || 0, 10);
             result += parseInt(style.borderTop || 0, 10) + parseInt(style.borderBottom || 0, 10);
-        //} else {
-        //    result = parseInt(style.height, 10);
-        //}
+        }
 
         if (margin) {
             result += parseInt(style.marginTop || 0, 10) + parseInt(style.marginBottom || 0, 10);
@@ -430,13 +444,13 @@ gj.documentManager = {
     width: function (el, margin) {
         var result, style = window.getComputedStyle(el);
 
-        //if (style.lineHeight === 'normal') {
+        if (style.boxSizing === 'border-box') { // border-box include padding and border within the width
+            result = parseInt(style.width, 10);
+        } else {
             result = parseInt(style.width, 10);
             result += parseInt(style.paddingLeft || 0, 10) + parseInt(style.paddingRight || 0, 10);
             result += parseInt(style.borderLeft || 0, 10) + parseInt(style.borderRight || 0, 10);
-        //} else {
-        //    result = parseInt(style.width, 10);
-        //}
+        }
 
         if (margin) {
             result += parseInt(style.marginLeft || 0, 10) + parseInt(style.marginRight || 0, 10);
@@ -444,4 +458,81 @@ gj.documentManager = {
 
         return result;
     }
+};
+gj.core.messages['bg-bg'] = {
+    monthNames: ['Януари', 'Февруари', 'Март', 'Април', 'Май', 'Юни', 'Юли', 'Август', 'Септември', 'Октомври', 'Ноември', 'Декември'],
+    monthShortNames: ['Яну', 'Фев', 'Мар', 'Апр', 'Май', 'Юни', 'Юли', 'Авг', 'Сеп', 'ОКт', 'Ное', 'Дек'],
+    weekDaysMin: ['Н', 'П', 'В', 'С', 'Ч', 'П', 'С'],
+    weekDaysShort: ['Нед', 'Пон', 'Вто', 'Сря', 'Чет', 'Пет', 'Съб'],
+    weekDays: ['Неделя', 'Понеделник', 'Вторник', 'Сряда', 'Четвъртък', 'Петък', 'Събота'],
+    am: 'AM',
+    pm: 'PM',
+    ok: 'ОК',
+    cancel: 'Отказ'
+};
+gj.core.messages['fr-fr'] = {
+    monthNames: ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'],
+    monthShortNames: ['janv.', 'févr.', 'mars', 'avr.', 'mai', 'juin', 'juil.', 'août', 'sept.', 'oct.', 'nov.', 'déc.'],
+    weekDaysMin: ['D', 'L', 'M', 'M', 'J', 'V', 'S'],
+    weekDaysShort: ['dim.', 'lun.', 'mar.', 'mer.', 'jeu.', 'ven.', 'sam.'],
+    weekDays: ['dimanche', 'lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi'],
+    am: 'AM',
+    pm: 'PM',
+    ok: 'OK',
+    cancel: 'Annuler'
+};
+gj.core.messages['de-de'] = {
+    monthNames: ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'],
+    monthShortNames: ['Jan', 'Feb', 'Mär', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez'],
+    weekDaysMin: ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'],
+    weekDaysShort: ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'],
+    weekDays: ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'],
+    am: 'AM',
+    pm: 'PM',
+    ok: 'OK',
+    cancel: 'Abbrechen'
+};
+gj.core.messages['pt-br'] = {
+    monthNames: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
+    monthShortNames: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+    weekDaysMin: ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'],
+    weekDaysShort: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'],
+    weekDays: ['Domingo', 'Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado'],
+    am: 'AM',
+    pm: 'PM',
+    ok: 'OK',
+    cancel: 'Cancelar'
+};
+gj.core.messages['ru-ru'] = {
+    monthNames: ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
+    monthShortNames: ['Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июн', 'Июл', 'Авг', 'Сен', 'Окт', 'Ноя', 'Дек'],
+    weekDaysMin: ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'],
+    weekDaysShort: ['вск', 'пнд', 'втр', 'срд', 'чтв', 'птн', 'сбт'],
+    weekDays: ['воскресенье', 'понедельник', 'вторник', 'среда', 'четверг', 'пятница', 'суббота'],
+    am: 'AM',
+    pm: 'PM',
+    ok: 'ОК',
+    cancel: 'Отмена'
+};
+gj.core.messages['es-es'] = {
+    monthNames: ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'setiembre', 'octubre', 'noviembre', 'diciembre'],
+    monthShortNames: ['ene.', 'feb.', 'mar', 'abr.', 'may', 'jun', 'jul.', 'ago', 'set.', 'oct.', 'nov.', 'dic.'],
+    weekDaysMin: ['D', 'L', 'M', 'M', 'J', 'V', 'S'],
+    weekDaysShort: ['dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb'],
+    weekDays: ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'],
+    am: 'AM',
+    pm: 'PM',
+    ok: 'OK',
+    cancel: 'Cancelar'
+};
+gj.core.messages['it-it'] = {
+    monthNames: ['gennaio', 'febbraio', 'marzo', 'aprile', 'maggio', 'giugno', 'luglio', 'agosto', 'settembre', 'ottobre', 'novembre', 'dicembre'],
+    monthShortNames: ['gen.', 'feb.', 'mar.', 'apr.', 'mag.', 'giu.', 'lug.', 'ago.', 'set.', 'ott.', 'nov.', 'dic.'],
+    weekDaysMin: ['Do', 'Lu', 'Ma', 'Me', 'Gi', 'Ve', 'Sa'],
+    weekDaysShort: ['Dom', 'Lun', 'Mar', 'Mer', 'Gio', 'Ven','Sab'],
+    weekDays: ['Domenica', 'Lunedì', 'Martedì', 'Mercoledì', 'Giovedì', 'Venerdì', 'Sabato'],
+    am: 'AM',
+    pm: 'PM',
+    ok: 'OK',
+    cancel: 'Annulla'
 };

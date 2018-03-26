@@ -333,12 +333,16 @@ ul.gj-list-md li.disabled>[data-role="wrapper"]>[data-role="display"] {
     font-weight: 400;
     letter-spacing: .04em;
     line-height: 1;
-    border: 1px solid #E0E0E0;
     color: rgba(0,0,0,.87);
+    border: 1px solid #E0E0E0;
+}
+
+.gj-modal .gj-picker-md {
+    border: 0px;
 }
 
 .gj-picker-md [role="header"] {
-    color: #fff;
+    color: rgba(255, 255, 255, 0.54);
     display: flex;
     background: #2196f3;
     align-items: baseline;
@@ -346,15 +350,30 @@ ul.gj-list-md li.disabled>[data-role="wrapper"]>[data-role="display"] {
     justify-content: center;
 }
 
-/* Bootstrap */
-.gj-timepicker-bootstrap :focus,
-.gj-timepicker-bootstrap :active {
-    box-shadow: none;
+.gj-picker-md [role="footer"] {
+    float: right;
+    padding: 10px;
 }
 
+.gj-picker-md [role="footer"] button.gj-button-md {
+    color: #2196f3;
+    font-weight: bold;
+    font-size: 13px;
+}
+
+/* Bootstrap */
 .gj-picker-bootstrap {
     border-radius: 4px;
     border: 1px solid #E0E0E0;
+}
+
+.gj-picker-bootstrap .selected {
+    color: #888;
+}
+
+.gj-picker-bootstrap [role="header"] {
+    background: #eee;
+    color: #AAA;
 }
 @font-face {
     font-family: 'gijgo-material';
@@ -1954,9 +1973,30 @@ ul.gj-list-md li.disabled > [data-role="wrapper"] > [data-role="expander"] {
     font-size: 28px;
 }
 
+.gj-picker-md.datepicker [role="header"] {
+    padding: 20px 20px;
+    display: block;
+}
+
+.gj-picker-md.datepicker [role="header"] [role="year"] {
+    font-size: 17px;
+    padding-bottom: 5px;
+    cursor: pointer;
+}
+
+.gj-picker-md.datepicker [role="header"] [role="date"] {
+    font-size: 36px;
+    cursor: pointer;
+}
+
 .gj-picker-md div[role="navigator"] {
     height: 42px;
     line-height: 42px;
+}
+
+.gj-picker div[role="navigator"] div[role="period"] {
+    font-weight: bold;
+    font-size: 15px;
 }
 
 .gj-picker-md div[role="navigator"] div:first-child {
@@ -1983,9 +2023,12 @@ ul.gj-list-md li.disabled > [data-role="wrapper"] > [data-role="expander"] {
     right: 11px;
 }
 
+.gj-picker-md table thead {
+    color: #9E9E9E; /* Gray 500 */
+}
 
-.gj-picker-md table tr td div,
-.gj-picker-md table tr th div {
+.gj-picker-md table tr th div,
+.gj-picker-md table tr td div {
     display: block;
     width: 40px;
     height: 40px;
@@ -2010,14 +2053,9 @@ ul.gj-list-md li.disabled > [data-role="wrapper"] > [data-role="expander"] {
     color: rgba(0,0,0,.87);
 }
 
-.gj-picker-md table tr td.today div {
-    color: #1976D2;
-}
-
-.gj-picker-md table tr td.selected div {
-    color: #FFFFFF;
-    background: #1976D2; /* Blue 700 */
-    border-radius: 50%;
+.gj-picker-md table tr td.other-month div,
+.gj-picker-md table tr td.disabled div {
+    color: #BDBDBD; /* Gray 400 */
 }
 
 .gj-picker-md table tr td.focused div {
@@ -2025,9 +2063,18 @@ ul.gj-list-md li.disabled > [data-role="wrapper"] > [data-role="expander"] {
     border-radius: 50%;
 }
 
-.gj-picker-md table tr td.other-month div,
-.gj-picker-md table tr td.disabled div {
-    color: #BDBDBD; /* Gray 400 */
+.gj-picker-md table tr td.today div {
+    color: #1976D2;
+}
+
+.gj-picker-md table tr td.selected.gj-cursor-pointer div {
+    color: #FFFFFF;
+    background: #1976D2; /* Blue 700 */
+    border-radius: 50%;
+}
+
+.gj-picker-md table tr td.calendar-week div {
+    font-weight: bold;
 }
 
 /* Bootstrap */
@@ -2040,6 +2087,29 @@ ul.gj-list-md li.disabled > [data-role="wrapper"] > [data-role="expander"] {
     border: 1px solid rgba(0,0,0,0.15);
     border-radius: 4px;
     padding: 4px;
+}
+
+.gj-modal .gj-picker-bootstrap {
+    padding: 0px;
+}
+
+.gj-picker-bootstrap.datepicker [role="header"] {
+    padding: 10px 20px;
+    display: block;
+}
+
+.gj-picker-bootstrap.datepicker [role="header"] [role="year"] {
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.gj-picker-bootstrap.datepicker [role="header"] [role="date"] {
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.gj-modal .gj-picker-bootstrap.datepicker [role="body"] {
+    padding: 15px;
 }
 
 .gj-picker-bootstrap div[role="navigator"] {
@@ -2097,7 +2167,7 @@ ul.gj-list-md li.disabled > [data-role="wrapper"] > [data-role="expander"] {
     font-weight: bold;
 }
 
-.gj-picker-bootstrap table tr td.selected div  {
+.gj-picker-bootstrap table tr td.selected.gj-cursor-pointer div {
     color: #fff;
     background-color: #204d74;
     border-color: #122b40;
@@ -2178,9 +2248,13 @@ ul.gj-list-md li.disabled > [data-role="wrapper"] > [data-role="expander"] {
 
 .gj-picker.timepicker [role="header"] {
     font-size: 58px;
-    color: rgba(255, 255, 255, 0.54);
     padding: 20px 0;
     line-height: 58px;
+
+    display: flex;
+    align-items: baseline;
+    user-select: none;
+    justify-content: center;
 }
 
 .gj-picker.timepicker [role="header"] div {
@@ -2315,19 +2389,10 @@ ul.gj-list-md li.disabled > [data-role="wrapper"] > [data-role="expander"] {
     background-color: #2196f3;
 }
 
-.gj-picker-md [role="footer"] {
-    float: right;
-    padding: 10px;
-}
-
 /* Bootstrap */
-.gj-picker-bootstrap .selected {
-    color: #888;
-}
-
-.gj-picker-bootstrap [role="header"] {
-    background: #eee;
-    color: #AAA;
+.gj-timepicker-bootstrap :focus,
+.gj-timepicker-bootstrap :active {
+    box-shadow: none;
 }
 
 .gj-picker-bootstrap [role="body"] [role="arrow"] {

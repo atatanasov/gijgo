@@ -246,8 +246,14 @@ gj.core = {
     messages: {
         'en-us': {
             monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-
-            monthShortNames: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+            monthShortNames: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],            
+            weekDaysMin: ['S', 'M', 'T', 'W', 'T', 'F', 'S'],
+            weekDaysShort: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+            weekDays: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+            am: 'AM',
+            pm: 'PM',
+            ok: 'Ok',
+            cancel: 'Cancel'
         }
     },
 
@@ -363,11 +369,23 @@ gj.core = {
      * <script>
      *     $('#date').text(gj.core.formatDate(new Date(2017, 1, 3, 20, 43, 53), 'hh:MM TT'));
      * </script>
+     * @example Short.WeekDay
+     * <div id="date"></div>
+     * <script>
+     *     $('#date').text(gj.core.formatDate(new Date(2017, 1, 3), 'ddd, mmm dd'));
+     * </script>
+     * @example Full.WeekDay
+     * <div id="date"></div>
+     * <script>
+     *     $('#date').text(gj.core.formatDate(new Date(2017, 1, 3), 'dddd, mmm dd'));
+     * </script>
      */
     formatDate: function (date, format, locale) {
         var result = '', separator, tmp,
             formatParts = format.split(/[\s,-\.//\:]+/),
-            separators = format.replace(/[shtdmyHTDMY]/g, '');
+            separators = format.split(/s+|M+|H+|h+|t+|T+|d+|m+|y+/);
+
+        separators = separators.splice(1, separators.length - 2);
 
         for (i = 0; i < formatParts.length; i++) {
             separator = (separators[i] || '');
@@ -407,8 +425,14 @@ gj.core = {
                 case 'd':
                     result += date.getDate() + separator;
                     break;
-                case 'dd' :
+                case 'dd':
                     result += gj.core.pad(date.getDate()) + separator;
+                    break;
+                case 'ddd':
+                    result += gj.core.messages[locale || 'en-us'].weekDaysShort[date.getDay()] + separator;
+                    break;
+                case 'dddd':
+                    result += gj.core.messages[locale || 'en-us'].weekDays[date.getDay()] + separator;
                     break;
                 case 'm' :
                     result += (date.getMonth() + 1) + separator;
@@ -480,13 +504,13 @@ gj.core = {
     height: function (el, margin) {
         var result, style = window.getComputedStyle(el);
 
-        //if (style.lineHeight === 'normal') {
+        if (style.boxSizing === 'border-box') { // border-box include padding and border within the height
+            result = parseInt(style.height, 10);
+        } else {
             result = parseInt(style.height, 10);
             result += parseInt(style.paddingTop || 0, 10) + parseInt(style.paddingBottom || 0, 10);
             result += parseInt(style.borderTop || 0, 10) + parseInt(style.borderBottom || 0, 10);
-        //} else {
-        //    result = parseInt(style.height, 10);
-        //}
+        }
 
         if (margin) {
             result += parseInt(style.marginTop || 0, 10) + parseInt(style.marginBottom || 0, 10);
@@ -498,13 +522,13 @@ gj.core = {
     width: function (el, margin) {
         var result, style = window.getComputedStyle(el);
 
-        //if (style.lineHeight === 'normal') {
+        if (style.boxSizing === 'border-box') { // border-box include padding and border within the width
+            result = parseInt(style.width, 10);
+        } else {
             result = parseInt(style.width, 10);
             result += parseInt(style.paddingLeft || 0, 10) + parseInt(style.paddingRight || 0, 10);
             result += parseInt(style.borderLeft || 0, 10) + parseInt(style.borderRight || 0, 10);
-        //} else {
-        //    result = parseInt(style.width, 10);
-        //}
+        }
 
         if (margin) {
             result += parseInt(style.marginLeft || 0, 10) + parseInt(style.marginRight || 0, 10);

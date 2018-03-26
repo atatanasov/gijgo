@@ -12,11 +12,12 @@
   <script src="../../dist/modular/js/datepicker.js"></script>
 </head>
 <body style="padding: 8px;">
- <input id="datepicker" width="312" />
+ <input id="datepicker" width="220" />
  <script>
      $('#datepicker').datepicker({
-        value: '12/15/2017',
-        minDate: '12/12/2017',
+        format: 'yyyy-mm-dd',
+        value: '2017-12-15',
+        minDate: '2017-12-12',
         uiLibrary: 'bootstrap'
      });
  </script>

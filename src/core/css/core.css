@@ -333,12 +333,16 @@ ul.gj-list-md li.disabled>[data-role="wrapper"]>[data-role="display"] {
     font-weight: 400;
     letter-spacing: .04em;
     line-height: 1;
-    border: 1px solid #E0E0E0;
     color: rgba(0,0,0,.87);
+    border: 1px solid #E0E0E0;
+}
+
+.gj-modal .gj-picker-md {
+    border: 0px;
 }
 
 .gj-picker-md [role="header"] {
-    color: #fff;
+    color: rgba(255, 255, 255, 0.54);
     display: flex;
     background: #2196f3;
     align-items: baseline;
@@ -346,13 +350,28 @@ ul.gj-list-md li.disabled>[data-role="wrapper"]>[data-role="display"] {
     justify-content: center;
 }
 
-/* Bootstrap */
-.gj-timepicker-bootstrap :focus,
-.gj-timepicker-bootstrap :active {
-    box-shadow: none;
+.gj-picker-md [role="footer"] {
+    float: right;
+    padding: 10px;
 }
 
+.gj-picker-md [role="footer"] button.gj-button-md {
+    color: #2196f3;
+    font-weight: bold;
+    font-size: 13px;
+}
+
+/* Bootstrap */
 .gj-picker-bootstrap {
     border-radius: 4px;
     border: 1px solid #E0E0E0;
+}
+
+.gj-picker-bootstrap .selected {
+    color: #888;
+}
+
+.gj-picker-bootstrap [role="header"] {
+    background: #eee;
+    color: #AAA;
 }

@@ -8,9 +8,13 @@
 
 .gj-picker.timepicker [role="header"] {
     font-size: 58px;
-    color: rgba(255, 255, 255, 0.54);
     padding: 20px 0;
     line-height: 58px;
+
+    display: flex;
+    align-items: baseline;
+    user-select: none;
+    justify-content: center;
 }
 
 .gj-picker.timepicker [role="header"] div {
@@ -145,19 +149,10 @@
     background-color: #2196f3;
 }
 
-.gj-picker-md [role="footer"] {
-    float: right;
-    padding: 10px;
-}
-
 /* Bootstrap */
-.gj-picker-bootstrap .selected {
-    color: #888;
-}
-
-.gj-picker-bootstrap [role="header"] {
-    background: #eee;
-    color: #AAA;
+.gj-timepicker-bootstrap :focus,
+.gj-timepicker-bootstrap :active {
+    box-shadow: none;
 }
 
 .gj-picker-bootstrap [role="body"] [role="arrow"] {

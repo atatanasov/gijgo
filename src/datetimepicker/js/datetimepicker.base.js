@@ -159,7 +159,7 @@ gj.datetimepicker.methods = {
         });
 
         // Init header
-        $picker = $('body').children('[role="calendar"][guid="' + $datetimepicker.attr('data-guid') + '"]');
+        $picker = $('body').find('[role="calendar"][guid="' + $datetimepicker.attr('data-guid') + '"]');
         
         $header = $('<div role="header" />');
         $date = $('<div role="date" />');
@@ -207,7 +207,7 @@ gj.datetimepicker.methods = {
         } else {
             date = gj.core.parseDate(value, data.format, data.locale);
             if (date) {
-                $calendar = $('body').children('[role="calendar"][guid="' + $datetimepicker.attr('data-guid') + '"]');
+                $calendar = $('body').find('[role="calendar"][guid="' + $datetimepicker.attr('data-guid') + '"]');
                 gj.datepicker.methods.select($datetimepicker, $calendar, data.datepicker, date)();
             } else {
                 $datetimepicker.val('');

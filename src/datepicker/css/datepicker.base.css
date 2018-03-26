@@ -64,9 +64,30 @@
     font-size: 28px;
 }
 
+.gj-picker-md.datepicker [role="header"] {
+    padding: 20px 20px;
+    display: block;
+}
+
+.gj-picker-md.datepicker [role="header"] [role="year"] {
+    font-size: 17px;
+    padding-bottom: 5px;
+    cursor: pointer;
+}
+
+.gj-picker-md.datepicker [role="header"] [role="date"] {
+    font-size: 36px;
+    cursor: pointer;
+}
+
 .gj-picker-md div[role="navigator"] {
     height: 42px;
     line-height: 42px;
+}
+
+.gj-picker div[role="navigator"] div[role="period"] {
+    font-weight: bold;
+    font-size: 15px;
 }
 
 .gj-picker-md div[role="navigator"] div:first-child {
@@ -93,9 +114,12 @@
     right: 11px;
 }
 
+.gj-picker-md table thead {
+    color: #9E9E9E; /* Gray 500 */
+}
 
-.gj-picker-md table tr td div,
-.gj-picker-md table tr th div {
+.gj-picker-md table tr th div,
+.gj-picker-md table tr td div {
     display: block;
     width: 40px;
     height: 40px;
@@ -120,14 +144,9 @@
     color: rgba(0,0,0,.87);
 }
 
-.gj-picker-md table tr td.today div {
-    color: #1976D2;
-}
-
-.gj-picker-md table tr td.selected div {
-    color: #FFFFFF;
-    background: #1976D2; /* Blue 700 */
-    border-radius: 50%;
+.gj-picker-md table tr td.other-month div,
+.gj-picker-md table tr td.disabled div {
+    color: #BDBDBD; /* Gray 400 */
 }
 
 .gj-picker-md table tr td.focused div {
@@ -135,9 +154,18 @@
     border-radius: 50%;
 }
 
-.gj-picker-md table tr td.other-month div,
-.gj-picker-md table tr td.disabled div {
-    color: #BDBDBD; /* Gray 400 */
+.gj-picker-md table tr td.today div {
+    color: #1976D2;
+}
+
+.gj-picker-md table tr td.selected.gj-cursor-pointer div {
+    color: #FFFFFF;
+    background: #1976D2; /* Blue 700 */
+    border-radius: 50%;
+}
+
+.gj-picker-md table tr td.calendar-week div {
+    font-weight: bold;
 }
 
 /* Bootstrap */
@@ -150,6 +178,29 @@
     border: 1px solid rgba(0,0,0,0.15);
     border-radius: 4px;
     padding: 4px;
+}
+
+.gj-modal .gj-picker-bootstrap {
+    padding: 0px;
+}
+
+.gj-picker-bootstrap.datepicker [role="header"] {
+    padding: 10px 20px;
+    display: block;
+}
+
+.gj-picker-bootstrap.datepicker [role="header"] [role="year"] {
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.gj-picker-bootstrap.datepicker [role="header"] [role="date"] {
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.gj-modal .gj-picker-bootstrap.datepicker [role="body"] {
+    padding: 15px;
 }
 
 .gj-picker-bootstrap div[role="navigator"] {
@@ -207,7 +258,7 @@
     font-weight: bold;
 }
 
-.gj-picker-bootstrap table tr td.selected div  {
+.gj-picker-bootstrap table tr td.selected.gj-cursor-pointer div {
     color: #fff;
     background-color: #204d74;
     border-color: #122b40;

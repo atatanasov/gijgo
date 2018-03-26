@@ -41,13 +41,10 @@ gj.editor.messages['es-es'] = {
 };
 gj.core.messages['es-es'] = {
     monthNames: ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'setiembre', 'octubre', 'noviembre', 'diciembre'],
-    monthShortNames: ['ene.', 'feb.', 'mar', 'abr.', 'may', 'jun', 'jul.', 'ago', 'set.', 'oct.', 'nov.', 'dic.']
-};
-
-gj.datepicker.messages['es-es'] = {
-    weekDays: ['D', 'L', 'M', 'M', 'J', 'V', 'S']
-};
-gj.timepicker.messages['es-es'] = {
+    monthShortNames: ['ene.', 'feb.', 'mar', 'abr.', 'may', 'jun', 'jul.', 'ago', 'set.', 'oct.', 'nov.', 'dic.'],
+    weekDaysMin: ['D', 'L', 'M', 'M', 'J', 'V', 'S'],
+    weekDaysShort: ['dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb'],
+    weekDays: ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'],
     am: 'AM',
     pm: 'PM',
     ok: 'OK',

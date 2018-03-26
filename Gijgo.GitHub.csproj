@@ -566,12 +566,12 @@
     <Content Include="src\datepicker\css\datepicker.base.css" />
     <Content Include="src\datepicker\js\datepicker.base.js" />
     <Content Include="src\datepicker\js\header.txt" />
-    <Content Include="src\datepicker\js\messages\messages.bg-bg.js" />
-    <Content Include="src\datepicker\js\messages\messages.de-de.js" />
-    <Content Include="src\datepicker\js\messages\messages.es-es.js" />
-    <Content Include="src\datepicker\js\messages\messages.it-it.js" />
-    <Content Include="src\datepicker\js\messages\messages.pt-br.js" />
-    <Content Include="src\datepicker\js\messages\messages.ru-ru.js" />
+    <Content Include="src\core\js\messages\messages.bg-bg.js" />
+    <Content Include="src\core\js\messages\messages.de-de.js" />
+    <Content Include="src\core\js\messages\messages.es-es.js" />
+    <Content Include="src\core\js\messages\messages.it-it.js" />
+    <Content Include="src\core\js\messages\messages.pt-br.js" />
+    <Content Include="src\core\js\messages\messages.ru-ru.js" />
     <Content Include="src\datetimepicker\css\datetimepicker.base.css" />
     <Content Include="src\datetimepicker\js\datetimepicker.base.js" />
     <Content Include="src\datetimepicker\js\header.txt" />
@@ -690,13 +690,6 @@
     <Content Include="src\switch\js\switch.base.js" />
     <Content Include="src\timepicker\css\timepicker.base.css" />
     <Content Include="src\timepicker\js\header.txt" />
-    <Content Include="src\timepicker\js\messages\messages.bg-bg.js" />
-    <Content Include="src\timepicker\js\messages\messages.de-de.js" />
-    <Content Include="src\timepicker\js\messages\messages.es-es.js" />
-    <Content Include="src\timepicker\js\messages\messages.fr-fr.js" />
-    <Content Include="src\timepicker\js\messages\messages.it-it.js" />
-    <Content Include="src\timepicker\js\messages\messages.pt-br.js" />
-    <Content Include="src\timepicker\js\messages\messages.ru-ru.js" />
     <Content Include="src\timepicker\js\timepicker.base.js" />
     <Content Include="src\tree\css\tree.base.css" />
     <Content Include="src\tree\css\tree.dragAndDrop.css" />
@@ -707,8 +700,8 @@
     <Content Include="src\tree\js\tree.base.widget.js" />
     <Content Include="src\tree\js\tree.checkboxes.js" />
     <Content Include="src\tree\js\tree.lazyLoading.js" />
-    <Content Include="src\core.css" />
-    <Content Include="src\core.js" />
+    <Content Include="src\core\css\core.css" />
+    <Content Include="src\core\js\core.js" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />
@@ -739,7 +732,7 @@
     <Content Include="src\editor\js\messages\messages.bg-bg.js" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="src\datepicker\js\messages\messages.fr-fr.js" />
+    <Content Include="src\core\js\messages\messages.fr-fr.js" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="src\fonts\gijgo-material.ttf" />
