@@ -194,7 +194,7 @@
     cursor: pointer;
 }
 
-.gj-picker-bootstrap.datepicker [role="header"] [role="date"] {
+.gj-picker-bootstrap [role="header"] [role="date"] {
     font-size: 24px;
     cursor: pointer;
 }

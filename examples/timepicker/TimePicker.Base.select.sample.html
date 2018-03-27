@@ -8,16 +8,22 @@
   <script src="../../dist/modular/js/core.js" type="text/javascript"></script>
   <link href="../../dist/modular/css/core.css" rel="stylesheet" type="text/css">
   <link href="../../dist/modular/css/datepicker.css" rel="stylesheet" type="text/css">
-  <link href="../../dist/modular/css/timepicker.css" rel="stylesheet" type="text/css">
-  <link href="../../dist/modular/css/datetimepicker.css" rel="stylesheet" type="text/css">
   <script src="../../dist/modular/js/datepicker.js"></script>
-  <script src="../../dist/modular/js/timepicker.js"></script>
-  <script src="../../dist/modular/js/datetimepicker.js"></script>
 </head>
 <body style="padding: 8px;">
- <input id="input" value="05:50 2018-27-03" width="312" />
+ <input id="timepicker" width="312" />
  <script>
-     $('#input').datetimepicker({ format: 'HH:MM yyyy-dd-mm' });
+     $('#timepicker').timepicker({
+         modal: true,
+         header: true,
+         footer: true,
+         change: function (e) {
+             alert('Change is fired');
+         },
+         select: function (e, type) {
+             alert('Select from type of "' + type + '" is fired');
+         }
+     });
  </script>
 </body>
 </html>

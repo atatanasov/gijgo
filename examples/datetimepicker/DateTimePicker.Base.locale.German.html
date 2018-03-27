@@ -8,14 +8,18 @@
   <script src="../../dist/modular/js/core.js" type="text/javascript"></script>
   <link href="../../dist/modular/css/core.css" rel="stylesheet" type="text/css">
   <link href="../../dist/modular/css/datepicker.css" rel="stylesheet" type="text/css">
+  <link href="../../dist/modular/css/timepicker.css" rel="stylesheet" type="text/css">
+  <link href="../../dist/modular/css/datetimepicker.css" rel="stylesheet" type="text/css">
   <script src="../../dist/modular/js/datepicker.js"></script>
+  <script src="../../dist/modular/js/timepicker.js"></script>
+  <script src="../../dist/modular/js/datetimepicker.js"></script>
 </head>
 <body style="padding: 8px;">
- <input id="datepicker" width="276" />
+ <input id="input" width="276" />
  <script>
-    $('#datepicker').datepicker({
+    $('#input').datetimepicker({
         locale: 'de-de',
-        format: 'dd mmm yyyy'
+        format: 'HH:MM dd mmm yyyy'
     });
  </script>
 </body>

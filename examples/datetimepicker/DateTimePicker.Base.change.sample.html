@@ -15,11 +15,13 @@
   <script src="../../dist/modular/js/datetimepicker.js"></script>
 </head>
 <body style="padding: 8px;">
- <input id="datetimepicker" />
+ <input id="input" width="312" />
  <script>
-     $('#datetimepicker').datetimepicker({
+     $('#input').datetimepicker({
+         footer: true,
+         modal: true,
          change: function (e) {
-             console.log('Change is fired');
+             alert('Change is fired');
          }
      });
  </script>

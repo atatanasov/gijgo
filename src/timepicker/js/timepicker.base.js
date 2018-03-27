@@ -75,8 +75,7 @@ gj.timepicker.config = {
         footer: true,
 
         /** Specifies the format, which is used to format the value of the timepicker displayed in the input.
-         * @additionalinfo <b>d</b> - Day of the month as digits; no leading zero for single-digit days.<br/>
-         * <b>M</b> - Minutes; no leading zero for single-digit minutes.<br/>
+         * @additionalinfo <b>M</b> - Minutes; no leading zero for single-digit minutes.<br/>
          * <b>MM</b> - Minutes; leading zero for single-digit minutes.<br/>
          * <b>H</b> - The hour, using a 24-hour clock from 0 to 23; no leading zero for single-digit hours.<br/>
          * <b>HH</b> - The hour, using a 24-hour clock from 0 to 23; leading zero for single-digit hours.<br/>
@@ -336,8 +335,9 @@ gj.timepicker.methods = {
     },
 
     initMouse: function ($body, $input, $picker, data) {
+        $body.off();
         $body.on('mousedown', gj.timepicker.methods.mouseDownHandler($input, $picker));
-        $body.on('mousemove', gj.timepicker.methods.mouseMoveHandler($input, $picker));
+        $body.on('mousemove', gj.timepicker.methods.mouseMoveHandler($input, $picker, data));
         $body.on('mouseup', gj.timepicker.methods.mouseUpHandler($input, $picker, data));
     },
 
@@ -364,10 +364,10 @@ gj.timepicker.methods = {
 
         if (data.header) {
             $hour.on('click', function () {
-                gj.timepicker.methods.renderHours($timepicker, $clock);
+                gj.timepicker.methods.renderHours($timepicker, $clock, data);
             });
             $minute.on('click', function () {
-                gj.timepicker.methods.renderMinutes($timepicker, $clock);
+                gj.timepicker.methods.renderMinutes($timepicker, $clock, data);
             });
             $header.append($hour).append(':').append($minute);
             if (data.mode === 'ampm') {
@@ -476,8 +476,8 @@ gj.timepicker.methods = {
         }
     },
 
-    updateArrow: function(e, $timepicker, $clock) {
-        var mouseX, mouseY, rect, value, data = $timepicker.data();
+    updateArrow: function(e, $timepicker, $clock, data) {
+        var mouseX, mouseY, rect, value;
         mouseX = $timepicker.mouseX(e);
         mouseY = $timepicker.mouseY(e);
 
@@ -490,23 +490,16 @@ gj.timepicker.methods = {
             $clock.attr('minute', value);
         }
 
-        if (data.dialMode == 'hours') {
-            setTimeout(function () {
-                gj.timepicker.methods.renderMinutes($timepicker, $clock);
-            }, 1000);
-        } else if (data.dialMode == 'minutes' && $timepicker.data().footer == false) {
-            gj.timepicker.methods.setTime($timepicker, $clock)();
-        }
-
-        gj.timepicker.methods.select($timepicker, $clock);
+        gj.timepicker.methods.update($timepicker, $clock, data);
     },
 
-    select: function ($timepicker, $clock) {
-        var $arrow = $clock.find('[role="arrow"]'),
-            data = $timepicker.data(),
-            hour = gj.timepicker.methods.getHour($clock),
-            minute = gj.timepicker.methods.getMinute($clock);
+    update: function ($timepicker, $clock, data) {
+        var hour, minute, $arrow, visualHour, $header, $numbers;
 
+        // update the arrow
+        hour = gj.timepicker.methods.getHour($clock);
+        minute = gj.timepicker.methods.getMinute($clock);
+        $arrow = $clock.find('[role="arrow"]');
         if (data.dialMode == 'hours' && (hour == 0 || hour > 12) && data.mode === '24hr') {
             $arrow.css('width', 'calc(50% - 52px)');
         } else {
@@ -520,19 +513,9 @@ gj.timepicker.methods = {
         }
         $arrow.show();
 
-        gj.timepicker.methods.update($timepicker, $clock);
-    },
-
-    update: function ($timepicker, $clock) {
-        var data = $timepicker.data(),
-            hour = gj.timepicker.methods.getHour($clock),
-            visualHour = (data.mode === 'ampm' && hour > 12 ? hour - 12 : (hour == 0 ? 12 : hour)),
-            minute = gj.timepicker.methods.getMinute($clock),
-            $header = $clock.find('[role="header"]'),
-            $numbers = $clock.find('[role="body"] span');
-
-        $header.children('[role="hour"]').text(visualHour);
-        $header.children('[role="minute"]').text(gj.core.pad(minute));
+        // update the numbers
+        visualHour = (data.mode === 'ampm' && hour > 12 ? hour - 12 : (hour == 0 ? 12 : hour));
+        $numbers = $clock.find('[role="body"] span');
         $numbers.removeClass('selected');
         $numbers.filter(function (e) {
             if (data.dialMode == 'hours') {
@@ -541,15 +524,22 @@ gj.timepicker.methods = {
                 return parseInt($(this).text(), 10) == minute;
             }
         }).addClass('selected');
-        if (data.mode === 'ampm') {
-            if (hour >= 12) {
-                $header.find('[role="pm"]').addClass('selected');
-                $header.find('[role="am"]').removeClass('selected');
-            } else {
-                $header.find('[role="am"]').addClass('selected');
-                $header.find('[role="pm"]').removeClass('selected');
+
+        // update the header
+        if (data.header) {
+            $header = $clock.find('[role="header"]');
+            $header.find('[role="hour"]').text(visualHour);
+            $header.find('[role="minute"]').text(gj.core.pad(minute));
+            if (data.mode === 'ampm') {
+                if (hour >= 12) {
+                    $header.find('[role="pm"]').addClass('selected');
+                    $header.find('[role="am"]').removeClass('selected');
+                } else {
+                    $header.find('[role="am"]').addClass('selected');
+                    $header.find('[role="pm"]').removeClass('selected');
+                }
             }
-        }        
+        }
     },
 
     mouseDownHandler: function ($timepicker, $clock) {
@@ -558,26 +548,37 @@ gj.timepicker.methods = {
         }
     },
 
-    mouseMoveHandler: function ($timepicker, $clock) {
+    mouseMoveHandler: function ($timepicker, $clock, data) {
         return function (e) {
             if ($timepicker.mouseMove) {
-                gj.timepicker.methods.updateArrow(e, $timepicker, $clock);
+                gj.timepicker.methods.updateArrow(e, $timepicker, $clock, data);
             }
         }
     },
 
     mouseUpHandler: function ($timepicker, $clock, data) {
         return function (e) {
-            gj.timepicker.methods.updateArrow(e, $timepicker, $clock);
+            gj.timepicker.methods.updateArrow(e, $timepicker, $clock, data);
             $timepicker.mouseMove = false;
             if (!data.modal) {
                 clearTimeout($timepicker.timeout);
                 $timepicker.focus();
             }
+            if (data.dialMode == 'hours') {
+                setTimeout(function () {
+                    gj.timepicker.events.select($timepicker, 'hour');
+                    gj.timepicker.methods.renderMinutes($timepicker, $clock, data);
+                }, 1000);
+            } else if (data.dialMode == 'minutes') {
+                if (data.footer !== true && data.autoClose !== false) {
+                    gj.timepicker.methods.setTime($timepicker, $clock)();
+                }
+                gj.timepicker.events.select($timepicker, 'minute');
+            }
         }
     },
 
-    renderHours: function ($timepicker, $clock) {
+    renderHours: function ($timepicker, $clock, data) {
         var $dial, $body = $clock.find('[role="body"]');
 
         clearTimeout($timepicker.timeout);
@@ -598,7 +599,7 @@ gj.timepicker.methods = {
         $dial.append('<span role="hour" style="transform: translate(-93.5307px, -54px);">10</span>');
         $dial.append('<span role="hour" style="transform: translate(-54px, -93.5307px);">11</span>');
         $dial.append('<span role="hour" style="transform: translate(-1.98393e-14px, -108px);">12</span>');
-        if ($timepicker.data('mode') === '24hr') {
+        if (data.mode === '24hr') {
             $dial.append('<span role="hour" style="transform: translate(38px, -65.8179px);">13</span>');
             $dial.append('<span role="hour" style="transform: translate(65.8179px, -38px);">14</span>');
             $dial.append('<span role="hour" style="transform: translate(76px, 0px);">15</span>');
@@ -617,12 +618,12 @@ gj.timepicker.methods = {
         $clock.find('[role="header"] [role="hour"]').addClass('selected');
         $clock.find('[role="header"] [role="minute"]').removeClass('selected');
 
-        $timepicker.data('dialMode', 'hours');
+        data.dialMode = 'hours';
 
-        gj.timepicker.methods.select($timepicker, $clock);
+        gj.timepicker.methods.update($timepicker, $clock, data);
     },
 
-    renderMinutes: function ($timepicker, $clock) {
+    renderMinutes: function ($timepicker, $clock, data) {
         var $body = $clock.find('[role="body"]');
 
         clearTimeout($timepicker.timeout);
@@ -648,9 +649,9 @@ gj.timepicker.methods = {
         $clock.find('[role="header"] [role="hour"]').removeClass('selected');
         $clock.find('[role="header"] [role="minute"]').addClass('selected');
         
-        $timepicker.data('dialMode', 'minutes');
+        data.dialMode = 'minutes';
 
-        gj.timepicker.methods.select($timepicker, $clock);
+        gj.timepicker.methods.update($timepicker, $clock, data);
     },
 
     open: function ($timepicker) {
@@ -669,7 +670,7 @@ gj.timepicker.methods = {
         $clock.attr('hour', hour);
         $clock.attr('minute', time.getMinutes());
 
-        gj.timepicker.methods.renderHours($timepicker, $clock);
+        gj.timepicker.methods.renderHours($timepicker, $clock, data);
         $clock.show();
         $clock.closest('div[role="modal"]').show();
         if (data.modal) {
@@ -739,6 +740,32 @@ gj.timepicker.events = {
      */
     change: function ($timepicker) {
         return $timepicker.triggerHandler('change');
+    },
+
+    /**
+     * Triggered when new value is selected inside the picker.
+     *
+     * @event change
+     * @param {object} e - event data
+     * @param {string} type - The type of the selection. The options are hour and minute.
+     * @example sample <!-- datepicker -->
+     * <input id="timepicker" width="312" />
+     * <script>
+     *     $('#timepicker').timepicker({
+     *         modal: true,
+     *         header: true,
+     *         footer: true,
+     *         change: function (e) {
+     *             alert('Change is fired');
+     *         },
+     *         select: function (e, type) {
+     *             alert('Select from type of "' + type + '" is fired');
+     *         }
+     *     });
+     * </script>
+     */
+    select: function ($timepicker, type) {
+        return $timepicker.triggerHandler('select', [type]);
     },
 
     /**

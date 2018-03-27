@@ -17,7 +17,7 @@
 gj.datetimepicker.config = {
     base: {
 
-        datepicker: gj.datepicker.config.base,
+        /** The datepicker configuration options. Valid only for datepicker specific configuration options.         */        datepicker: gj.datepicker.config.base,
 
         timepicker: gj.timepicker.config.base,
 
@@ -32,17 +32,21 @@ gj.datetimepicker.config = {
         icons: {},
 
         style: {
-            calendar: 'gj-picker gj-picker-md datetimepicker'
+            calendar: 'gj-picker gj-picker-md datetimepicker gj-unselectable'
         }
     },
 
     bootstrap: {
-        style: {},
+        style: {
+            calendar: 'gj-picker gj-picker-bootstrap datetimepicker gj-unselectable'
+        },
         iconsLibrary: 'glyphicons'
     },
 
     bootstrap4: {
-        style: {}
+        style: {
+            calendar: 'gj-picker gj-picker-bootstrap datetimepicker gj-unselectable'
+        }
     }
 };
 
@@ -54,8 +58,30 @@ gj.datetimepicker.methods = {
         return this;
     },
 
+    getConfig: function (clientConfig, type) {
+        var config = gj.widget.prototype.getConfig.call(this, clientConfig, type);
+
+        uiLibrary = clientConfig.hasOwnProperty('uiLibrary') ? clientConfig.uiLibrary : config.uiLibrary;
+        if (gj.datepicker.config[uiLibrary]) {
+            $.extend(true, config.datepicker, gj.datepicker.config[uiLibrary]);
+        }
+        if (gj.timepicker.config[uiLibrary]) {
+            $.extend(true, config.timepicker, gj.timepicker.config[uiLibrary]);
+        }
+
+        iconsLibrary = clientConfig.hasOwnProperty('iconsLibrary') ? clientConfig.iconsLibrary : config.iconsLibrary;
+        if (gj.datepicker.config[iconsLibrary]) {
+            $.extend(true, config.datepicker, gj.datepicker.config[iconsLibrary]);
+        }
+        if (gj.timepicker.config[iconsLibrary]) {
+            $.extend(true, config.timepicker, gj.timepicker.config[iconsLibrary]);
+        }
+
+        return config;
+    },
+
     initialize: function ($datetimepicker) {
-        var $picker, $header, $time, $date,
+        var $picker, $header, $date, $time, date,
             $switch, $calendarMode, $clockMode,
             data = $datetimepicker.data();
 
@@ -65,54 +91,120 @@ gj.datetimepicker.methods = {
         data.datepicker.width = data.width;
         data.datepicker.format = data.format;
         data.datepicker.locale = data.locale;
+        data.datepicker.modal = data.modal;
+        data.datepicker.footer = data.footer;
         data.datepicker.style.calendar = data.style.calendar;
+        data.datepicker.value = data.value;
         data.datepicker.autoClose = false;
         gj.datepicker.methods.initialize($datetimepicker, data.datepicker);
-        $datetimepicker.on('change', function () {
-            gj.timepicker.methods.initMouse($picker.children('[role="body"]'), $datetimepicker, $picker, data.timepicker);
-            gj.timepicker.methods.renderHours($datetimepicker, $picker, data.timepicker);
+        $datetimepicker.on('select', function (e, type) {
+            var date, value;
+            if (type === 'day') {
+                gj.datetimepicker.methods.createShowHourHandler($datetimepicker, $picker, data)();
+            } else if (type === 'minute') {
+                if ($picker.attr('selectedDay') && data.footer !== true) {
+                    selectedDay = $picker.attr('selectedDay').split('-');
+                    date = new Date(selectedDay[0], selectedDay[1], selectedDay[2], $picker.attr('hour') || 0, $picker.attr('minute') || 0);
+                    value = gj.core.formatDate(date, data.format, data.locale);
+                    $datetimepicker.val(value);
+                    gj.datetimepicker.events.change($datetimepicker);
+                    gj.datetimepicker.methods.close($datetimepicker);
+                }
+            }
+        });
+        $datetimepicker.on('open', function () {
+            var $header = $picker.children('[role="header"]');
+            $header.find('[role="calendarMode"]').addClass("selected");
+            $header.find('[role="clockMode"]').removeClass("selected");
         });
 
-        // Init header
         $picker = $('body').find('[role="calendar"][guid="' + $datetimepicker.attr('data-guid') + '"]');
-        
-        $header = $('<div role="header" />');
-        $date = $('<div role="date" />');
-        $date.html(gj.core.formatDate(new Date(), 'dd mmm yy', data.locale));
-        $header.append($date);
-
-        $switch = $('<div role="switch"></div>');
-
-        $calendarMode = $('<i class="gj-icon selected" role="calendarMode">event</i>');
-        $calendarMode.on('click', function () {
-            this.classList.add("selected");
-            $clockMode[0].classList.remove("selected");
-            $picker.off();
-            gj.datepicker.methods.renderMonth($datetimepicker, $picker, data.datepicker);
-        });
-        $switch.append($calendarMode);
-
-        $time = $('<div role="time" />');
-        $time.html(gj.core.formatDate(new Date(), 'HH:MM', data.locale));
-        $switch.append($time);
-
-        $clockMode = $('<i class="gj-icon" role="clockMode">clock</i>');
-        $clockMode.on('click', function () {
-            this.classList.add("selected");
-            $calendarMode[0].classList.remove("selected");
-            gj.timepicker.methods.initMouse($picker.children('[role="body"]'), $datetimepicker, $picker, data.timepicker);
-            gj.timepicker.methods.renderHours($datetimepicker, $picker, data.timepicker);
-        });
-        $switch.append($clockMode);
-        $header.append($switch);
-
-        $picker.prepend($header);
+        date = data.value ? gj.core.parseDate(data.value, data.format, data.locale) : new Date();
+        $picker.attr('hour', date.getHours());
+        $picker.attr('minute', date.getMinutes());
 
         // Init timepicker
         data.timepicker.uiLibrary = data.uiLibrary;
         data.timepicker.iconsLibrary = data.iconsLibrary;
         data.timepicker.format = data.format;
         data.timepicker.locale = data.locale;
+        data.timepicker.header = true;
+        data.timepicker.footer = data.footer;
+        data.timepicker.size = data.size;
+        data.timepicker.mode = '24hr';
+        data.timepicker.autoClose = false;
+
+        // Init header        
+        $header = $('<div role="header" />');
+        $date = $('<div role="date" class="selected" />');
+        $date.on('click', gj.datetimepicker.methods.createShowDateHandler($datetimepicker, $picker, data));
+        $date.html(gj.core.formatDate(new Date(), 'ddd, mmm dd', data.locale));
+        $header.append($date);
+
+        $switch = $('<div role="switch"></div>');
+
+        $calendarMode = $('<i class="gj-icon selected" role="calendarMode">event</i>');
+        $calendarMode.on('click', gj.datetimepicker.methods.createShowDateHandler($datetimepicker, $picker, data));
+        $switch.append($calendarMode);
+
+        $time = $('<div role="time" />');
+        $time.append($('<div role="hour" />').on('click', gj.datetimepicker.methods.createShowHourHandler($datetimepicker, $picker, data)).html(gj.core.formatDate(new Date(), 'HH', data.locale)));
+        $time.append(':');
+        $time.append($('<div role="minute" />').on('click', gj.datetimepicker.methods.createShowMinuteHandler($datetimepicker, $picker, data)).html(gj.core.formatDate(new Date(), 'MM', data.locale)));
+        $switch.append($time);
+
+        $clockMode = $('<i class="gj-icon" role="clockMode">clock</i>');
+        $clockMode.on('click', gj.datetimepicker.methods.createShowHourHandler($datetimepicker, $picker, data));
+        $switch.append($clockMode);
+        $header.append($switch);
+
+        $picker.prepend($header);
+    },
+
+    createShowDateHandler: function ($datetimepicker, $picker, data) {
+        return function (e) {
+            var $header = $picker.children('[role="header"]');
+            $header.find('[role="calendarMode"]').addClass("selected");
+            $header.find('[role="date"]').addClass("selected");
+            $header.find('[role="clockMode"]').removeClass("selected");
+            $header.find('[role="hour"]').removeClass("selected");
+            $header.find('[role="minute"]').removeClass("selected");
+            gj.datepicker.methods.renderMonth($datetimepicker, $picker, data.datepicker);
+        };
+    },
+
+    createShowHourHandler: function ($datetimepicker, $picker, data) {
+        return function () {
+            var $header = $picker.children('[role="header"]');
+            $header.find('[role="calendarMode"]').removeClass("selected");
+            $header.find('[role="date"]').removeClass("selected");
+            $header.find('[role="clockMode"]').addClass("selected");
+            $header.find('[role="hour"]').addClass("selected");
+            $header.find('[role="minute"]').removeClass("selected");
+
+            gj.timepicker.methods.initMouse($picker.children('[role="body"]'), $datetimepicker, $picker, data.timepicker);
+            gj.timepicker.methods.renderHours($datetimepicker, $picker, data.timepicker);
+        };
+    },
+
+    createShowMinuteHandler: function ($datetimepicker, $picker, data) {
+        return function () {
+            var $header = $picker.children('[role="header"]');
+            $header.find('[role="calendarMode"]').removeClass("selected");
+            $header.find('[role="date"]').removeClass("selected");
+            $header.find('[role="clockMode"]').addClass("selected");
+            $header.find('[role="hour"]').removeClass("selected");
+            $header.find('[role="minute"]').addClass("selected");
+            gj.timepicker.methods.initMouse($picker.children('[role="body"]'), $datetimepicker, $picker, data.timepicker);
+            gj.timepicker.methods.renderMinutes($datetimepicker, $picker, data.timepicker);
+        };
+    },
+
+    close: function ($datetimepicker) {
+        var $calendar = $('body').find('[role="calendar"][guid="' + $datetimepicker.attr('data-guid') + '"]');
+        $calendar.hide();
+        $calendar.closest('div[role="modal"]').hide();
+        //gj.datepicker.events.close($datepicker);
     },
 
     value: function ($datetimepicker, value) {
@@ -123,7 +215,7 @@ gj.datetimepicker.methods = {
             date = gj.core.parseDate(value, data.format, data.locale);
             if (date) {
                 $calendar = $('body').find('[role="calendar"][guid="' + $datetimepicker.attr('data-guid') + '"]');
-                gj.datepicker.methods.select($datetimepicker, $calendar, data.datepicker, date)();
+                gj.datepicker.methods.dayClickHandler($datetimepicker, $calendar, data, date)();
             } else {
                 $datetimepicker.val('');
             }
@@ -132,12 +224,20 @@ gj.datetimepicker.methods = {
     },
 
     destroy: function ($datetimepicker) {
-        var data = $datetimepicker.data();
+        var data = $datetimepicker.data(),
+            $parent = $datetimepicker.parent(),
+            $picker = $('body').find('[role="calendar"][guid="' + $datetimepicker.attr('data-guid') + '"]');
         if (data) {
             $datetimepicker.off();
+            if ($picker.parent('[role="modal"]').length > 0) {
+                $picker.unwrap();
+            }
+            $picker.remove();
             $datetimepicker.removeData();
             $datetimepicker.removeAttr('data-type').removeAttr('data-guid').removeAttr('data-datetimepicker');
             $datetimepicker.removeClass();
+            $parent.children('[role="right-icon"]').remove();
+            $datetimepicker.unwrap();
         }
         return $datetimepicker;
     }
@@ -175,6 +275,8 @@ gj.datetimepicker.widget = function ($element, jsConfig) {
 
 gj.datetimepicker.widget.prototype = new gj.widget();
 gj.datetimepicker.widget.constructor = gj.datetimepicker.widget;
+
+gj.datetimepicker.widget.prototype.getConfig = gj.datetimepicker.methods.getConfig;
 
 (function ($) {
     $.fn.datetimepicker = function (method) {

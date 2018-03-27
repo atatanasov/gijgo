@@ -8,14 +8,16 @@
   <script src="../../dist/modular/js/core.js" type="text/javascript"></script>
   <link href="../../dist/modular/css/core.css" rel="stylesheet" type="text/css">
   <link href="../../dist/modular/css/datepicker.css" rel="stylesheet" type="text/css">
+  <link href="../../dist/modular/css/timepicker.css" rel="stylesheet" type="text/css">
+  <link href="../../dist/modular/css/datetimepicker.css" rel="stylesheet" type="text/css">
   <script src="../../dist/modular/js/datepicker.js"></script>
+  <script src="../../dist/modular/js/timepicker.js"></script>
+  <script src="../../dist/modular/js/datetimepicker.js"></script>
 </head>
 <body style="padding: 8px;">
- <input id="datepicker" value="10 October 2017" width="312" />
+ <input id="input" value="10 October 2017 05:50" width="312" />
  <script>
-     var datepicker = $('#datepicker').datepicker({
-         format: 'dd mmmm yyyy HH:MM'
-     });
+     $('#input').datetimepicker({ format: 'dd mmmm yyyy HH:MM' });
  </script>
 </body>
 </html>
