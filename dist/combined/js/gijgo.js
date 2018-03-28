@@ -14826,7 +14826,7 @@ gj.datepicker.events = {
     /**
      * Triggered when new value is selected inside the picker.
      *
-     * @event change
+     * @event select
      * @param {object} e - event data
      * @param {string} type - The type of the selection. The options are day, month, year or decade.
      * @example sample <!-- datepicker -->
@@ -15469,16 +15469,18 @@ gj.timepicker.methods = {
     },
 
     updateArrow: function(e, $timepicker, $clock, data) {
-        var mouseX, mouseY, rect, value;
-        mouseX = $timepicker.mouseX(e);
-        mouseY = $timepicker.mouseY(e);
+        var rect, value,
+            mouseX = $timepicker.mouseX(e),
+            mouseY = $timepicker.mouseY(e),
+            scrollY = window.scrollY || window.pageYOffset || 0,
+            scrollX = window.scrollX || window.pageXOffset || 0;
 
         rect = e.target.getBoundingClientRect();
         if (data.dialMode == 'hours') {
-            value = gj.timepicker.methods.getPointerValue(mouseX - rect.left, mouseY - rect.top, data.mode);
+            value = gj.timepicker.methods.getPointerValue(mouseX - scrollX - rect.left, mouseY - scrollY - rect.top, data.mode);
             $clock.attr('hour', data.mode === 'ampm' && $clock.attr('mode') === 'pm' && value < 12 ? value + 12 : value);
         } else if (data.dialMode == 'minutes') {
-            value = gj.timepicker.methods.getPointerValue(mouseX - rect.left, mouseY - rect.top, 'minutes');
+            value = gj.timepicker.methods.getPointerValue(mouseX - scrollX - rect.left, mouseY - scrollY - rect.top, 'minutes');
             $clock.attr('minute', value);
         }
 
@@ -15737,7 +15739,7 @@ gj.timepicker.events = {
     /**
      * Triggered when new value is selected inside the picker.
      *
-     * @event change
+     * @event select
      * @param {object} e - event data
      * @param {string} type - The type of the selection. The options are hour and minute.
      * @example sample <!-- datepicker -->

@@ -1419,7 +1419,7 @@ gj.datepicker.events = {
     /**
      * Triggered when new value is selected inside the picker.
      *
-     * @event change
+     * @event select
      * @param {object} e - event data
      * @param {string} type - The type of the selection. The options are day, month, year or decade.
      * @example sample <!-- datepicker -->
