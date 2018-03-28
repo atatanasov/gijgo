@@ -12460,6 +12460,9 @@ gj.editor.methods = {
         if ($body.length === 0) {
             $body = $('<div role="body"></div>');
             $(wrapper).append($body);
+            if ($editor[0].innerText) {
+                $body[0].innerHTML = $editor[0].innerText;
+            }
         }
         $body.attr('contenteditable', true);
         $body.on('keydown', function (e) {

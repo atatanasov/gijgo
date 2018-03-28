@@ -429,6 +429,7 @@
     <Content Include="examples\grid\index.html" />
     <Content Include="examples\tests\ajax-sourced-data.html" />
     <Content Include="examples\tests\tempdatepicker.html" />
+    <Content Include="examples\tests\tempeditor.html" />
     <Content Include="examples\tests\timepicker-positions.html" />
     <Content Include="examples\tests\datepicker-positions.html" />
     <Content Include="examples\tests\dropdown-positions.html" />
