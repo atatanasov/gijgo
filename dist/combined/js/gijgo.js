@@ -6052,13 +6052,12 @@ gj.grid.plugins.inlineEditing.config = {
              * @example Bootstrap.4 <!-- bootstrap4, grid, datepicker, dropdown, checkbox -->
              * <table id="grid"></table>
              * <script>
-             *     var countries = [ { value: 1, text: 'Bulgaria' } , { value: 2, text: 'Brazil' }, { value: 3, text: 'England' }, { value: 4, text: 'Germany' }, { value: 5, text: 'Colombia' }, { value: 6, text: 'Poland' } ];
              *     $('#grid').grid({
              *         uiLibrary: 'bootstrap4',
              *         dataSource: '/Players/Get',
              *         columns: [
              *             { field: 'Name', editor: true },
-             *             { field: 'CountryName', type: 'dropdown', editor: { dataSource: countries }, editField: 'CountryID' },
+             *             { field: 'CountryName', type: 'dropdown', editor: { dataSource: '/Locations/GetCountries', valueField: 'id' }, editField: 'CountryID' },
              *             { field: 'DateOfBirth', type: 'date', editor: true },
              *             { field: 'IsActive', title: 'Active?', type:'checkbox', editor: true, mode: 'editOnly', width: 80, align: 'center' }
              *         ]
@@ -6309,7 +6308,7 @@ gj.grid.plugins.inlineEditing.private = {
                     $editorContainer = $('<div data-role="edit" />');
                     $cell.append($editorContainer);
                 }
-                value = record[column.field];
+                value = record[column.editField || column.field];
                 $editorField = $editorContainer.find('input, select, textarea').first();
                 if ($editorField.length) {
                     column.type === 'checkbox' ? $editorField.prop('checked', value) : $editorField.val(value);
