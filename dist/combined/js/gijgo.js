@@ -1,5 +1,5 @@
 /*
- * Gijgo JavaScript Library v1.9.3
+ * Gijgo JavaScript Library v1.9.4
  * http://gijgo.com/
  *
  * Copyright 2014, 2018 gijgo.com
@@ -13078,21 +13078,35 @@ gj.dropdown.methods = {
     },
 
     setListPosition: function (presenter, list, data) {
-        var top, listHeight, presenterHeight, newHeight,
-            mainElRect = presenter.getBoundingClientRect();
-
-        gj.core.setChildPosition(presenter, list);
+        var top, listHeight, presenterHeight, newHeight, listElRect,
+            mainElRect = presenter.getBoundingClientRect(),
+            scrollY = window.scrollY || window.pageYOffset || 0,
+            scrollX = window.scrollX || window.pageXOffset || 0;
 
         // Reset list size
         list.style.overflow = '';
         list.style.overflowX = '';
         list.style.height = '';
 
+        gj.core.setChildPosition(presenter, list);
+
         listHeight = gj.core.height(list, true);
+        listElRect = list.getBoundingClientRect();
         presenterHeight = gj.core.height(presenter, true);
-        if (!isNaN(listHeight) && data.maxHeight === 'auto' && (mainElRect.top + listHeight + presenterHeight) > window.innerHeight) {
-            newHeight = window.innerHeight - mainElRect.top - presenterHeight - 3;
-        } else if (!isNaN(listHeight) && !isNaN(data.maxHeight) && data.maxHeight < listHeight) {
+        if (data.maxHeight === 'auto') {
+            if (mainElRect.top < listElRect.top) { // The list is located below the main element
+                if (mainElRect.top + listHeight + presenterHeight > window.innerHeight) {
+                    newHeight = window.innerHeight - mainElRect.top - presenterHeight - 3;
+                }
+            } else { // The list is located above the main element                
+                if (mainElRect.top - listHeight - 3 > 0) {
+                    list.style.top = Math.round(mainElRect.top + scrollY - listHeight - 3) + 'px';
+                } else {
+                    list.style.top = scrollY + 'px';
+                    newHeight = mainElRect.top - 3;
+                }
+            }
+        } else if (!isNaN(data.maxHeight) && data.maxHeight < listHeight) {
             newHeight = data.maxHeight;
         }
 

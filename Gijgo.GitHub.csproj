@@ -111,7 +111,9 @@
     <Content Include="examples\datepicker\DatePicker.Base.locale.Bulgarian.html" />
     <Content Include="examples\datepicker\DatePicker.Base.locale.French.html" />
     <Content Include="examples\datepicker\DatePicker.Base.locale.German.html" />
+    <Content Include="examples\datepicker\DatePicker.Base.locale.Italian.html" />
     <Content Include="examples\datepicker\DatePicker.Base.locale.Russian.html" />
+    <Content Include="examples\datepicker\DatePicker.Base.locale.Spanish.html" />
     <Content Include="examples\datepicker\DatePicker.Base.maxDate.Today.html" />
     <Content Include="examples\datepicker\DatePicker.Base.maxDate.Tomorrow.html" />
     <Content Include="examples\datepicker\DatePicker.Base.minDate.Bootstrap.4.html" />
@@ -209,6 +211,10 @@
     <Content Include="examples\dropdown\DropDown.Base.maxHeight.Auto.html" />
     <Content Include="examples\dropdown\DropDown.Base.maxHeight.Bootstrap.4.html" />
     <Content Include="examples\dropdown\DropDown.Base.maxHeight.Fixed.html" />
+    <Content Include="examples\dropdown\DropDown.Base.placeholder.Bootstrap.4.html" />
+    <Content Include="examples\dropdown\DropDown.Base.placeholder.Bootstrap.html" />
+    <Content Include="examples\dropdown\DropDown.Base.placeholder.HTML.Config.html" />
+    <Content Include="examples\dropdown\DropDown.Base.placeholder.JS.Config.html" />
     <Content Include="examples\dropdown\DropDown.Base.selectedField.sample.html" />
     <Content Include="examples\dropdown\DropDown.Base.textField.sample.html" />
     <Content Include="examples\dropdown\DropDown.Base.uiLibrary.Bootstrap.3.html" />
