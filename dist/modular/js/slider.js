@@ -57,7 +57,7 @@ gj.slider.methods = {
     },
 
     initialize: function (slider, data) {
-        var wrapper, track, handle;
+        var wrapper, track, handle, progress;
 
         slider.style.display = 'none';
 
@@ -91,10 +91,22 @@ gj.slider.methods = {
             wrapper.appendChild(handle);
         }
 
-        new gj.draggable.widget($(handle), { vertical: false, containment: wrapper });
-        //handle.addEventListener('mousedown', function () {
-        //    alert('Hello World');
-        //});
+        progress = slider.querySelector('[role="progress"]');
+        if (progress == null) {
+            progress = document.createElement('div');
+            progress.setAttribute('role', 'progress');
+            wrapper.appendChild(progress);
+        }
+        gj.core.addClasses(progress, data.style.progress);
+
+        new gj.draggable.widget($(handle), { vertical: false, containment: wrapper, drag: gj.slider.methods.createDragHandler(slider, handle, progress) });
+    },
+
+    createDragHandler: function (slider, handle, progress) {
+        return function (e, newPosition, mousePosition) {
+            progress.style.width = handle.offsetLeft + 'px';
+
+        };
     },
 
     destroy: function ($slider) {

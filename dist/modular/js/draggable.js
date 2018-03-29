@@ -41,8 +41,8 @@ gj.draggable.methods = {
 
             $dragEl.attr('draggable-dragging', true);
             $dragEl.removeAttr('draggable-x').removeAttr('draggable-y');
-            gj.documentManager.subscribeForEvent('touchmove', $dragEl.data('guid'), gj.draggable.methods.createMoveHandler($dragEl, data));
-            gj.documentManager.subscribeForEvent('mousemove', $dragEl.data('guid'), gj.draggable.methods.createMoveHandler($dragEl, data));
+            gj.documentManager.subscribeForEvent('touchmove', $dragEl.data('guid'), gj.draggable.methods.createMoveHandler($dragEl, $handleEl, data));
+            gj.documentManager.subscribeForEvent('mousemove', $dragEl.data('guid'), gj.draggable.methods.createMoveHandler($dragEl, $handleEl, data));
         });
 
         gj.documentManager.subscribeForEvent('mouseup', $dragEl.data('guid'), gj.draggable.methods.createUpHandler($dragEl));
@@ -68,60 +68,64 @@ gj.draggable.methods = {
         };
     },
 
-    createMoveHandler: function ($dragEl, data) {
+    createMoveHandler: function ($dragEl, $handleEl, data) {
         return function (e) {
-            var x, y, offsetX, offsetY, prevX, prevY;
+            var mouseX, mouseY, offsetX, offsetY, prevX, prevY, hp;
             if ($dragEl.attr('draggable-dragging') === 'true') {
-                x = Math.round($dragEl.mouseX(e));
-                y = Math.round($dragEl.mouseY(e));
+                mouseX = Math.round($dragEl.mouseX(e));
+                mouseY = Math.round($dragEl.mouseY(e));
                 prevX = $dragEl.attr('draggable-x');
                 prevY = $dragEl.attr('draggable-y');
                 if (prevX && prevY) {
-                    offsetX = data.horizontal ? x - parseInt(prevX, 10) : 0;
-                    offsetY = data.vertical ? y - parseInt(prevY, 10) : 0;
-                    if (false !== gj.draggable.events.drag($dragEl, offsetX, offsetY, x, y)) {
-                        gj.draggable.methods.move($dragEl[0], data, offsetX, offsetY);
-                    }
+                    offsetX = data.horizontal ? mouseX - parseInt(prevX, 10) : 0;
+                    offsetY = data.vertical ? mouseY - parseInt(prevY, 10) : 0;
+                    gj.draggable.methods.move($dragEl[0], data, offsetX, offsetY, mouseX, mouseY);
                 } else {
-                    gj.draggable.events.start($dragEl, x, y);
+                    gj.draggable.events.start($dragEl, mouseX, mouseY);
                 }
-                $dragEl.attr('draggable-x', x);
-                $dragEl.attr('draggable-y', y);
+                $dragEl.attr('draggable-x', mouseX);
+                $dragEl.attr('draggable-y', mouseY);
             }
         }
     },
 
-    move: function (dragEl, data, offsetX, offsetY) {
+    move: function (dragEl, data, offsetX, offsetY, mouseX, mouseY) {
         var contPosition, maxTop, maxLeft,
             position = gj.core.position(dragEl),
-            top = position.top + offsetY,
-            left = position.left + offsetX;
+            newTop = position.top + offsetY,
+            newLeft = position.left + offsetX;
 
         if (data.containment) {
             contPosition = gj.core.position(data.containment);
             maxTop = contPosition.top + gj.core.height(data.containment) - gj.core.height(dragEl);
             maxLeft = contPosition.left + gj.core.width(data.containment) - gj.core.width(dragEl);
-            if (top > contPosition.top && top < maxTop) {
-                dragEl.style.top = top + 'px';
+            if (newTop > contPosition.top && newTop < maxTop) {
+                if (contPosition.top >= mouseY || contPosition.bottom <= mouseY) {
+                    newTop = position.top;
+                }
             } else {
-                if (top <= contPosition.top) {
-                    dragEl.style.top = (contPosition.top + 1) + 'px';
+                if (newTop <= contPosition.top) {
+                    newTop = contPosition.top + 1;
                 } else {
-                    dragEl.style.top = (maxTop - 1) + 'px';
+                    newTop = maxTop - 1;
                 }
             }
-            if (left > contPosition.left && left < maxLeft) {
-                dragEl.style.left = left + 'px';
+            if (newLeft > contPosition.left && newLeft < maxLeft) {
+                if (contPosition.left >= mouseX || contPosition.right <= mouseX) {
+                    newLeft = position.left;
+                }
             } else {
-                if (left <= contPosition.left) {
-                    dragEl.style.left = (contPosition.left + 1) + 'px';
+                if (newLeft <= contPosition.left) {
+                    newLeft = contPosition.left + 1;
                 } else {
-                    dragEl.style.left = (maxLeft - 1) + 'px';
+                    newLeft = maxLeft - 1;
                 }
             }
-        } else {
-            dragEl.style.top = top + 'px';
-            dragEl.style.left = left + 'px';
+        }
+
+        if (false !== gj.draggable.events.drag($(dragEl), newTop, newLeft, mouseX, mouseY)) {
+            dragEl.style.top = newTop + 'px';
+            dragEl.style.left = newLeft + 'px';
         }
     },
 
@@ -141,8 +145,8 @@ gj.draggable.methods = {
 gj.draggable.events = {
     /**
      * Triggered while the mouse is moved during the dragging, immediately before the current move happens.
-     *     */    drag: function ($dragEl, offsetX, offsetY, mouseX, mouseY) {
-        return $dragEl.triggerHandler('drag', [{ top: offsetY, left: offsetX }, { top: mouseY, left: mouseX }]);
+     *     */    drag: function ($dragEl, newTop, newLeft, mouseX, mouseY) {
+        return $dragEl.triggerHandler('drag', [{ top: newTop, left: newLeft }, { x: mouseY, y: mouseX }]);
     },
 
     /**

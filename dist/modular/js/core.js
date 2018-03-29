@@ -477,10 +477,10 @@ gj.documentManager = {
             scrollLeft = window.pageXOffset || docEl.scrollLeft || body.scrollLeft,
             clientTop = docEl.clientTop || body.clientTop || 0,
             clientLeft = docEl.clientLeft || body.clientLeft || 0,
-            top = box.top + scrollTop - clientTop,
-            left = box.left + scrollLeft - clientLeft;
+            top = Math.round(box.top + scrollTop - clientTop),
+            left = Math.round(box.left + scrollLeft - clientLeft);
 
-        return { top: Math.round(top), left: Math.round(left) };
+        return { top: top, left: left, bottom: top + gj.core.height(elem), right: left + gj.core.width(elem) };
     }
 };
 gj.core.messages['bg-bg'] = {

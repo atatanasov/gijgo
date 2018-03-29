@@ -562,10 +562,10 @@ gj.core = {
             scrollLeft = window.pageXOffset || docEl.scrollLeft || body.scrollLeft,
             clientTop = docEl.clientTop || body.clientTop || 0,
             clientLeft = docEl.clientLeft || body.clientLeft || 0,
-            top = box.top + scrollTop - clientTop,
-            left = box.left + scrollLeft - clientLeft;
+            top = Math.round(box.top + scrollTop - clientTop),
+            left = Math.round(box.left + scrollLeft - clientLeft);
 
-        return { top: Math.round(top), left: Math.round(left) };
+        return { top: top, left: left, bottom: top + gj.core.height(elem), right: left + gj.core.width(elem) };
     }
 };
 /* global window alert jQuery */
@@ -1834,8 +1834,8 @@ gj.draggable.methods = {
 
             $dragEl.attr('draggable-dragging', true);
             $dragEl.removeAttr('draggable-x').removeAttr('draggable-y');
-            gj.documentManager.subscribeForEvent('touchmove', $dragEl.data('guid'), gj.draggable.methods.createMoveHandler($dragEl, data));
-            gj.documentManager.subscribeForEvent('mousemove', $dragEl.data('guid'), gj.draggable.methods.createMoveHandler($dragEl, data));
+            gj.documentManager.subscribeForEvent('touchmove', $dragEl.data('guid'), gj.draggable.methods.createMoveHandler($dragEl, $handleEl, data));
+            gj.documentManager.subscribeForEvent('mousemove', $dragEl.data('guid'), gj.draggable.methods.createMoveHandler($dragEl, $handleEl, data));
         });
 
         gj.documentManager.subscribeForEvent('mouseup', $dragEl.data('guid'), gj.draggable.methods.createUpHandler($dragEl));
@@ -1861,60 +1861,64 @@ gj.draggable.methods = {
         };
     },
 
-    createMoveHandler: function ($dragEl, data) {
+    createMoveHandler: function ($dragEl, $handleEl, data) {
         return function (e) {
-            var x, y, offsetX, offsetY, prevX, prevY;
+            var mouseX, mouseY, offsetX, offsetY, prevX, prevY, hp;
             if ($dragEl.attr('draggable-dragging') === 'true') {
-                x = Math.round($dragEl.mouseX(e));
-                y = Math.round($dragEl.mouseY(e));
+                mouseX = Math.round($dragEl.mouseX(e));
+                mouseY = Math.round($dragEl.mouseY(e));
                 prevX = $dragEl.attr('draggable-x');
                 prevY = $dragEl.attr('draggable-y');
                 if (prevX && prevY) {
-                    offsetX = data.horizontal ? x - parseInt(prevX, 10) : 0;
-                    offsetY = data.vertical ? y - parseInt(prevY, 10) : 0;
-                    if (false !== gj.draggable.events.drag($dragEl, offsetX, offsetY, x, y)) {
-                        gj.draggable.methods.move($dragEl[0], data, offsetX, offsetY);
-                    }
+                    offsetX = data.horizontal ? mouseX - parseInt(prevX, 10) : 0;
+                    offsetY = data.vertical ? mouseY - parseInt(prevY, 10) : 0;
+                    gj.draggable.methods.move($dragEl[0], data, offsetX, offsetY, mouseX, mouseY);
                 } else {
-                    gj.draggable.events.start($dragEl, x, y);
+                    gj.draggable.events.start($dragEl, mouseX, mouseY);
                 }
-                $dragEl.attr('draggable-x', x);
-                $dragEl.attr('draggable-y', y);
+                $dragEl.attr('draggable-x', mouseX);
+                $dragEl.attr('draggable-y', mouseY);
             }
         }
     },
 
-    move: function (dragEl, data, offsetX, offsetY) {
+    move: function (dragEl, data, offsetX, offsetY, mouseX, mouseY) {
         var contPosition, maxTop, maxLeft,
             position = gj.core.position(dragEl),
-            top = position.top + offsetY,
-            left = position.left + offsetX;
+            newTop = position.top + offsetY,
+            newLeft = position.left + offsetX;
 
         if (data.containment) {
             contPosition = gj.core.position(data.containment);
             maxTop = contPosition.top + gj.core.height(data.containment) - gj.core.height(dragEl);
             maxLeft = contPosition.left + gj.core.width(data.containment) - gj.core.width(dragEl);
-            if (top > contPosition.top && top < maxTop) {
-                dragEl.style.top = top + 'px';
+            if (newTop > contPosition.top && newTop < maxTop) {
+                if (contPosition.top >= mouseY || contPosition.bottom <= mouseY) {
+                    newTop = position.top;
+                }
             } else {
-                if (top <= contPosition.top) {
-                    dragEl.style.top = (contPosition.top + 1) + 'px';
+                if (newTop <= contPosition.top) {
+                    newTop = contPosition.top + 1;
                 } else {
-                    dragEl.style.top = (maxTop - 1) + 'px';
+                    newTop = maxTop - 1;
                 }
             }
-            if (left > contPosition.left && left < maxLeft) {
-                dragEl.style.left = left + 'px';
+            if (newLeft > contPosition.left && newLeft < maxLeft) {
+                if (contPosition.left >= mouseX || contPosition.right <= mouseX) {
+                    newLeft = position.left;
+                }
             } else {
-                if (left <= contPosition.left) {
-                    dragEl.style.left = (contPosition.left + 1) + 'px';
+                if (newLeft <= contPosition.left) {
+                    newLeft = contPosition.left + 1;
                 } else {
-                    dragEl.style.left = (maxLeft - 1) + 'px';
+                    newLeft = maxLeft - 1;
                 }
             }
-        } else {
-            dragEl.style.top = top + 'px';
-            dragEl.style.left = left + 'px';
+        }
+
+        if (false !== gj.draggable.events.drag($(dragEl), newTop, newLeft, mouseX, mouseY)) {
+            dragEl.style.top = newTop + 'px';
+            dragEl.style.left = newLeft + 'px';
         }
     },
 
@@ -1937,8 +1941,8 @@ gj.draggable.events = {
      *
      * @event drag
      * @param {object} e - event data
-     * @param {object} offset - Current offset position as { top, left } object.
-     * @param {object} mousePosition - Current mouse position as { top, left } object.
+     * @param {object} newPosition - New position of the draggable element as { top, left } object.
+     * @param {object} mousePosition - Current mouse position as { x, y } object.
      * @example sample <!-- draggable -->
      * <style>
      * .element { border: 1px solid #999; width: 300px; height: 200px; cursor: move; text-align: center; background-color: #DDD; }
@@ -1946,14 +1950,14 @@ gj.draggable.events = {
      * <div id="element" class="element gj-unselectable">drag me</div>
      * <script>
      *     $('#element').draggable({
-     *         drag: function (e, offset, mousePosition) {
-     *             $('body').append('<div>The drag event is fired. offset { top:' + offset.top + ', left: ' + offset.left + '}.</div>');
+     *         drag: function (e, newPosition, mousePosition) {
+     *             $('body').append('<div>The drag event is fired. New Element Position = { top:' + offset.top + ', left: ' + offset.left + '}.</div>');
      *         }
      *     });
      * </script>
      */
-    drag: function ($dragEl, offsetX, offsetY, mouseX, mouseY) {
-        return $dragEl.triggerHandler('drag', [{ top: offsetY, left: offsetX }, { top: mouseY, left: mouseX }]);
+    drag: function ($dragEl, newTop, newLeft, mouseX, mouseY) {
+        return $dragEl.triggerHandler('drag', [{ top: newTop, left: newLeft }, { x: mouseY, y: mouseX }]);
     },
 
     /**
@@ -2147,10 +2151,10 @@ gj.droppable.methods = {
     },
 
     isOver: function ($dropEl, mousePosition) {
-        var offsetTop = $dropEl.offset().top;// + parseInt($dropEl.css("border-top-width")) + parseInt($dropEl.css("margin-top")) + parseInt($dropEl.css("padding-top")),
-        offsetLeft = $dropEl.offset().left;// + parseInt($dropEl.css("border-left-width")) + parseInt($dropEl.css("margin-left")) + parseInt($dropEl.css("padding-left"));
-        return mousePosition.left > offsetLeft && mousePosition.left < (offsetLeft + $dropEl.outerWidth(true))
-            && mousePosition.top > offsetTop && mousePosition.top < (offsetTop + $dropEl.outerHeight(true));
+        var offsetTop = $dropEl.offset().top,
+            offsetLeft = $dropEl.offset().left;
+        return mousePosition.x > offsetLeft && mousePosition.x < (offsetLeft + $dropEl.outerWidth(true))
+            && mousePosition.y > offsetTop && mousePosition.y < (offsetTop + $dropEl.outerHeight(true));
     },
 
     destroy: function ($dropEl) {
@@ -8148,18 +8152,18 @@ gj.grid.plugins.resizableColumns = {
 
         createResizeHandle: function ($grid, $column, column) {
             var data = $grid.data();
-            return function (e, offset) {
+            return function (e, newPosition) {
                 var i, index, rows, cell, newWidth, nextWidth, currentWidth = parseInt($column.attr('width'), 10);
                 if (!currentWidth) {
                     currentWidth = $column.outerWidth();
                 }
-                if (offset && offset.left) {
-                    newWidth = currentWidth + offset.left;
+                if (newPosition.left) {
+                    newWidth = currentWidth + newPosition.left;
                     column.width = newWidth;
                     $column.attr('width', newWidth);
                     index = $column[0].cellIndex;
                     cell = $column[0].parentElement.children[index + 1];
-                    nextWidth = parseInt($(cell).attr('width'), 10) - offset.left;
+                    nextWidth = parseInt($(cell).attr('width'), 10) - newPosition.left;
                     cell.setAttribute('width', nextWidth);
                     if (data.resizableColumns) {
                         rows = $grid[0].tBodies[0].children;
@@ -11771,7 +11775,7 @@ gj.tree.plugins.dragAndDrop = {
                         $indicator, middle;
 	                if (!success && $wrapper.droppable('isOver', mousePosition)) {
 	                    middle = $wrapper.position().top + ($wrapper.outerHeight() / 2);
-	                    if (mousePosition.top < middle) {
+	                    if (mousePosition.y < middle) {
 	                        $wrapper.addClass(data.style.dropAbove).removeClass(data.style.dropBelow);
 	                    } else {
 	                        $wrapper.addClass(data.style.dropBelow).removeClass(data.style.dropAbove);
@@ -16562,7 +16566,7 @@ gj.slider.methods = {
     },
 
     initialize: function (slider, data) {
-        var wrapper, track, handle;
+        var wrapper, track, handle, progress;
 
         slider.style.display = 'none';
 
@@ -16596,10 +16600,22 @@ gj.slider.methods = {
             wrapper.appendChild(handle);
         }
 
-        new gj.draggable.widget($(handle), { vertical: false, containment: wrapper });
-        //handle.addEventListener('mousedown', function () {
-        //    alert('Hello World');
-        //});
+        progress = slider.querySelector('[role="progress"]');
+        if (progress == null) {
+            progress = document.createElement('div');
+            progress.setAttribute('role', 'progress');
+            wrapper.appendChild(progress);
+        }
+        gj.core.addClasses(progress, data.style.progress);
+
+        new gj.draggable.widget($(handle), { vertical: false, containment: wrapper, drag: gj.slider.methods.createDragHandler(slider, handle, progress) });
+    },
+
+    createDragHandler: function (slider, handle, progress) {
+        return function (e, newPosition, mousePosition) {
+            progress.style.width = handle.offsetLeft + 'px';
+
+        };
     },
 
     destroy: function ($slider) {

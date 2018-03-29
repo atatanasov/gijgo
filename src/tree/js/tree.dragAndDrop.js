@@ -172,7 +172,7 @@ gj.tree.plugins.dragAndDrop = {
                         $indicator, middle;
 	                if (!success && $wrapper.droppable('isOver', mousePosition)) {
 	                    middle = $wrapper.position().top + ($wrapper.outerHeight() / 2);
-	                    if (mousePosition.top < middle) {
+	                    if (mousePosition.y < middle) {
 	                        $wrapper.addClass(data.style.dropAbove).removeClass(data.style.dropBelow);
 	                    } else {
 	                        $wrapper.addClass(data.style.dropBelow).removeClass(data.style.dropAbove);
