@@ -457,6 +457,16 @@ gj.documentManager = {
         }
 
         return result;
+    },
+
+    addClasses: function (el, classes) {
+        var i, arr;
+        if (classes) {
+            arr = classes.split(' ');
+            for (i = 0; i < arr.length; i++) {
+                el.classList.add(arr[i]);
+            }
+        }
     }
 };
 gj.core.messages['bg-bg'] = {

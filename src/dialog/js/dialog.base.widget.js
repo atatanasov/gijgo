@@ -12,7 +12,7 @@ gj.dialog.widget = function ($element, jsConfig) {
      * @param {String} title - The dialog title.
      * @fires opening, opened
      * @return dialog
-     * @example Sample <!-- draggable.base, dialog.base, bootstrap -->
+     * @example Sample <!-- draggable, dialog.base, bootstrap -->
      * <div id="dialog" style="display: none">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
      * <button onclick="dialog.open()" class="gj-button-md">Open Dialog</button>
      * <script>
@@ -20,7 +20,7 @@ gj.dialog.widget = function ($element, jsConfig) {
      *         autoOpen: false
      *     });
      * </script>
-     * @example Title <!-- draggable.base, dialog.base, bootstrap -->
+     * @example Title <!-- draggable, dialog.base, bootstrap -->
      * <div id="dialog" style="display: none">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
      * <button onclick="dialog.open('Custom Text')" class="gj-button-md">Open Dialog</button>
      * <script>
@@ -38,7 +38,7 @@ gj.dialog.widget = function ($element, jsConfig) {
      * @method
      * @fires closing, closed
      * @return dialog
-     * @example sample <!-- draggable.base, dialog.base, bootstrap -->
+     * @example sample <!-- draggable, dialog.base, bootstrap -->
      * <div id="dialog" style="display: none">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
      * <button onclick="dialog.open()" class="gj-button-md">Open Dialog</button>
      * <button onclick="dialog.close()" class="gj-button-md">Close Dialog</button>
@@ -54,7 +54,7 @@ gj.dialog.widget = function ($element, jsConfig) {
      * Check if the dialog is currently open.
      * @method
      * @return boolean
-     * @example sample <!-- draggable.base, dialog.base, bootstrap -->
+     * @example sample <!-- draggable, dialog.base, bootstrap -->
      * <div id="dialog" style="display: none">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
      * <button onclick="dialog.open()" class="gj-button-md">Open Dialog</button>
      * <button onclick="dialog.close()" class="gj-button-md">Close Dialog</button>
@@ -72,7 +72,7 @@ gj.dialog.widget = function ($element, jsConfig) {
      * @method
      * @param {String} content - The content of the Dialog.
      * @return String|Dialog
-     * @example sample <!-- draggable.base, dialog.base, bootstrap -->
+     * @example sample <!-- draggable, dialog.base, bootstrap -->
      * <div id="dialog">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
      * <button onclick="alert(dialog.content())" class="btn btn-default">Get Content</button>
      * <button onclick="dialog.content('New Test Content Value')" class="btn btn-default">Set Content</button>
@@ -89,7 +89,7 @@ gj.dialog.widget = function ($element, jsConfig) {
      * @method
      * @param {boolean} keepHtml - If this flag is set to false, the dialog html markup will be removed from the HTML dom tree.
      * @return void
-     * @example Keep.HTML.Markup <!-- draggable.base, dialog.base -->
+     * @example Keep.HTML.Markup <!-- draggable, dialog.base -->
      * <div id="dialog" style="display: none">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
      * <button onclick="create()" class="gj-button-md">Create</button>
      * <button onclick="dialog.destroy()" class="gj-button-md">Destroy</button>
@@ -99,7 +99,7 @@ gj.dialog.widget = function ($element, jsConfig) {
      *         dialog = $('#dialog').dialog();
      *     }
      * </script>
-     * @example Remove.HTML.Markup <!-- draggable.base, dialog.base -->
+     * @example Remove.HTML.Markup <!-- draggable, dialog.base -->
      * <div id="dialog" style="display: none">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
      * <button onclick="create()" class="gj-button-md">Create</button>
      * <button onclick="dialog.destroy(false)" class="gj-button-md">Destroy</button>

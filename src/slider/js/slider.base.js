@@ -14,17 +14,6 @@ gj.slider = {
 gj.slider.config = {
     base: {
 
-        /** The maximum value of the Slider.
-         * @type number
-         * @default 10
-         * @example JS.Config <!-- slider -->
-         * <input id="slider" />
-         * <script>
-         *    $('#slider').slider({ max: 20 });
-         * </script>
-         */
-        max: 10,
-
         /** The minimum value of the Slider.
          * @type number
          * @default 0
@@ -35,6 +24,17 @@ gj.slider.config = {
          * </script>
          */
         min: 0,
+
+        /** The maximum value of the Slider.
+         * @type number
+         * @default 10
+         * @example JS.Config <!-- slider -->
+         * <input id="slider" />
+         * <script>
+         *    $('#slider').slider({ max: 20 });
+         * </script>
+         */
+        max: 10,
 
         /** The orientation of a Slider: "horizontal" or "vertical".
          * @type (horizontal|vertical)
@@ -92,16 +92,28 @@ gj.slider.config = {
 
         icons: {},
 
-        style: {}
+        style: {
+            wrapper: 'gj-slider gj-slider-md',
+            progress: undefined,
+            track: undefined
+        }
     },
 
     bootstrap: {
-        style: {},
+        style: {
+            wrapper: 'gj-slider gj-slider-bootstrap',
+            progress: 'progress-bar',
+            track: 'progress'
+        },
         iconsLibrary: 'glyphicons'
     },
 
     bootstrap4: {
-        style: {},
+        style: {
+            wrapper: 'gj-slider gj-slider-bootstrap',
+            progress: 'progress-bar',
+            track: 'progress'
+        },
         showOtherMonths: true
     }
 };
@@ -110,11 +122,49 @@ gj.slider.methods = {
     init: function (jsConfig) {
         gj.widget.prototype.init.call(this, jsConfig, 'slider');
         this.attr('data-slider', 'true');
-        gj.slider.methods.initialize(this);
+        gj.slider.methods.initialize(this[0], this.data());
         return this;
     },
 
-    initialize: function ($slider) {
+    initialize: function (slider, data) {
+        var wrapper, track, handle;
+
+        slider.style.display = 'none';
+
+        if (slider.parentElement.attributes.role !== 'wrapper') {
+            wrapper = document.createElement('div');
+            wrapper.setAttribute('role', 'wrapper');
+            slider.parentNode.insertBefore(wrapper, slider);
+            wrapper.appendChild(slider);
+        } else {
+            wrapper = slider.parentElement;
+        }
+
+        if (data.width) {
+            wrapper.style.width = data.width + 'px';
+        }
+        
+        gj.core.addClasses(wrapper, data.style.wrapper);
+
+        track = slider.querySelector('[role="track"]');
+        if (track == null) {
+            track = document.createElement('div');
+            track.setAttribute('role', 'track');
+            wrapper.appendChild(track);
+        }
+        gj.core.addClasses(track, data.style.track);
+
+        handle = slider.querySelector('[role="handle"]');
+        if (handle == null) {
+            handle = document.createElement('div');
+            handle.setAttribute('role', 'handle');
+            wrapper.appendChild(handle);
+        }
+
+        new gj.draggable.widget($(handle), { vertical: false });
+        //handle.addEventListener('mousedown', function () {
+        //    alert('Hello World');
+        //});
     },
 
     destroy: function ($slider) {

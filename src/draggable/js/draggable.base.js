@@ -13,7 +13,7 @@ gj.draggable.config = {
          * Only elements that descend from the draggable element are permitted.
          * @type jquery element
          * @default undefined
-         * @example sample <!-- draggable.base -->
+         * @example sample <!-- draggable -->
          * <style>
          * .element { border: 1px solid #999; width: 300px; height: 200px; }
          * .handle { background-color: #DDD; cursor: move; width: 200px; margin: 5px auto 0px auto; text-align: center; padding: 5px; }
@@ -32,7 +32,7 @@ gj.draggable.config = {
         /** If set to false, restricts dragging on vertical direction.
          * @type Boolean
          * @default true
-         * @example sample <!-- draggable.base -->
+         * @example sample <!-- draggable -->
          * <style>
          * .element { border: 1px solid #999; width: 300px; height: 200px; cursor: move; text-align: center; background-color: #DDD; }
          * </style>
@@ -51,7 +51,7 @@ gj.draggable.config = {
         /** If set to false, restricts dragging on horizontal direction.
          * @type Boolean
          * @default true
-         * @example sample <!-- draggable.base -->
+         * @example sample <!-- draggable -->
          * <style>
          * .element { border: 1px solid #999; width: 300px; height: 200px; cursor: move; text-align: center; background-color: #DDD; }
          * </style>
@@ -65,15 +65,35 @@ gj.draggable.config = {
          *     });
          * </script>
          */
-        horizontal: true
+        horizontal: true,
+
+        /** Constrains dragging to within the bounds of the specified element.
+         * @type object
+         * @default undefined
+         * @example sample <!-- draggable -->
+         * <style>
+         * .element { border: 1px solid #999; width: 300px; height: 200px; cursor: move; text-align: center; background-color: #DDD; }
+         * </style>
+         * <div id="element" class="element">
+         *     drag me<br/>
+         *     <i>(dragging on horizontal direction is disabled)</i>
+         * </div>
+         * <script>
+         *     $('#element').draggable({
+         *         horizontal: false
+         *     });
+         * </script>
+         */
+        containment: undefined
     }
 };
 
 gj.draggable.methods = {
     init: function (jsConfig) {
-        var $handleEl, $dragEl = this;
+        var $handleEl, data, $dragEl = this;
 
         gj.widget.prototype.init.call(this, jsConfig, 'draggable');
+        data = this.data();
         $dragEl.attr('data-draggable', 'true');
 
         $handleEl = gj.draggable.methods.getHandleElement($dragEl);
@@ -82,8 +102,8 @@ gj.draggable.methods = {
             $dragEl.attr('data-draggable-dragging', true);
             $dragEl.removeAttr('data-draggable-x').removeAttr('data-draggable-y');
             $dragEl.css('position', 'absolute');
-            gj.documentManager.subscribeForEvent('touchmove', $dragEl.data('guid'), gj.draggable.methods.createMoveHandler($dragEl));
-            gj.documentManager.subscribeForEvent('mousemove', $dragEl.data('guid'), gj.draggable.methods.createMoveHandler($dragEl));
+            gj.documentManager.subscribeForEvent('touchmove', $dragEl.data('guid'), gj.draggable.methods.createMoveHandler($dragEl, data));
+            gj.documentManager.subscribeForEvent('mousemove', $dragEl.data('guid'), gj.draggable.methods.createMoveHandler($dragEl, data));
         });
 
         gj.documentManager.subscribeForEvent('mouseup', $dragEl.data('guid'), gj.draggable.methods.createUpHandler($dragEl));
@@ -109,7 +129,7 @@ gj.draggable.methods = {
         };
     },
 
-    createMoveHandler: function ($dragEl) {
+    createMoveHandler: function ($dragEl, data) {
         return function (e) {
             var x, y, offsetX, offsetY, prevX, prevY;
             if ($dragEl.attr('data-draggable-dragging') === 'true') {
@@ -118,8 +138,9 @@ gj.draggable.methods = {
                 prevX = $dragEl.attr('data-draggable-x');
                 prevY = $dragEl.attr('data-draggable-y');
                 if (prevX && prevY) {                
-                    offsetX = $dragEl.data('horizontal') ? x - parseInt(prevX, 10) : 0;
-                    offsetY = $dragEl.data('vertical') ? y - parseInt(prevY, 10) : 0;
+                    offsetX = data.horizontal ? x - parseInt(prevX, 10) : 0;
+                    offsetY = data.vertical ? y - parseInt(prevY, 10) : 0;
+
                     if (false !== gj.draggable.events.drag($dragEl, offsetX, offsetY, x, y)) {
                         gj.draggable.methods.move($dragEl, offsetX, offsetY);
                     }
@@ -161,7 +182,7 @@ gj.draggable.events = {
      * @param {object} e - event data
      * @param {object} offset - Current offset position as { top, left } object.
      * @param {object} mousePosition - Current mouse position as { top, left } object.
-     * @example sample <!-- draggable.base -->
+     * @example sample <!-- draggable -->
      * <style>
      * .element { border: 1px solid #999; width: 300px; height: 200px; cursor: move; text-align: center; background-color: #DDD; }
      * </style>
@@ -183,7 +204,7 @@ gj.draggable.events = {
      *
      * @event start
      * @param {object} e - event data
-     * @example sample <!-- draggable.base -->
+     * @example sample <!-- draggable -->
      * <style>
      * .element { border: 1px solid #999; width: 300px; height: 200px; cursor: move; text-align: center; background-color: #DDD; }
      * </style>
@@ -208,7 +229,7 @@ gj.draggable.events = {
      * @event stop
      * @param {object} e - event data
      * @param {object} mousePosition - Current mouse position as { top, left } object.
-     * @example sample <!-- draggable.base -->
+     * @example sample <!-- draggable -->
      * <style>
      * .element { border: 1px solid #999; width: 300px; height: 200px; cursor: move; text-align: center; background-color: #DDD; }
      * </style>
@@ -236,7 +257,7 @@ gj.draggable.widget = function ($element, jsConfig) {
         /** Remove draggable functionality from the element.
          * @method
          * @return jquery element
-         * @example sample <!-- draggable.base -->
+         * @example sample <!-- draggable -->
          * <style>
          * .element { border: 1px solid #999; width: 300px; height: 200px; cursor: move; text-align: center; background-color: #DDD; }
          * </style>

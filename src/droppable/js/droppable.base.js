@@ -11,7 +11,7 @@ gj.droppable.config = {
     /** If specified, the class will be added to the droppable while draggable is being hovered over the droppable.
      * @type string
      * @default undefined
-     * @example sample <!-- droppable.base, draggable.base -->
+     * @example sample <!-- droppable, draggable -->
      * <style>
      * .draggable { border: 1px solid #999; width: 300px; height: 200px; text-align: center; }
      * .droppable { border: 1px solid #999; width: 300px; height: 200px; text-align: center; }
@@ -112,7 +112,7 @@ gj.droppable.events = {
     /** Triggered when a draggable element is dropped.
      * @event drop
      * @param {object} e - event data
-     * @example sample <!-- droppable.base, draggable.base -->
+     * @example sample <!-- droppable, draggable -->
      * <style>
      * .draggable { border: 1px solid #999; width: 300px; height: 200px; text-align: center; }
      * .droppable { border: 1px solid #999; width: 300px; height: 200px; text-align: center; }
@@ -133,7 +133,7 @@ gj.droppable.events = {
      * @event over
      * @param {object} e - event data
      * @param {object} mousePosition - Current mouse position as { top, left } object.
-     * @example sample <!-- droppable.base, draggable.base -->
+     * @example sample <!-- droppable, draggable -->
      * <style>
      * .draggable { border: 1px solid #999; width: 300px; height: 200px; text-align: center; }
      * .droppable { border: 1px solid #999; width: 300px; height: 200px; text-align: center; }
@@ -160,7 +160,7 @@ gj.droppable.events = {
     /** Triggered when a draggable element is dragged out of the droppable.
      * @event out
      * @param {object} e - event data
-     * @example sample <!-- droppable.base, draggable.base -->
+     * @example sample <!-- droppable, draggable -->
      * <style>
      * .draggable { border: 1px solid #999; width: 300px; height: 200px; text-align: center; }
      * .droppable { border: 1px solid #999; width: 300px; height: 200px; text-align: center; }
@@ -191,7 +191,7 @@ gj.droppable.widget = function ($element, jsConfig) {
     /** Removes the droppable functionality.
      * @method
      * @return jquery element
-     * @example sample <!-- draggable.base, droppable.base -->
+     * @example sample <!-- draggable, droppable -->
      * <button onclick="create()" class="gj-button-md">Create</button>
      * <button onclick="dropEl.destroy()" class="gj-button-md">Destroy</button>
      * <br/><br/>

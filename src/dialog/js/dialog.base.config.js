@@ -14,7 +14,7 @@ gj.dialog.config = {
          * If false, the dialog will stay hidden until the open() method is called.
          * @type boolean
          * @default true
-         * @example True <!-- dialog.base, draggable.base -->
+         * @example True <!-- dialog.base, draggable -->
          * <div id="dialog">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
          * <script>
          *     $("#dialog").dialog({
@@ -36,7 +36,7 @@ gj.dialog.config = {
         /** Specifies whether the dialog should have a close button in right part of dialog header.
          * @type boolean
          * @default true
-         * @example True <!-- dialog.base, draggable.base -->
+         * @example True <!-- dialog.base, draggable -->
          * <div id="dialog">
          *     <div data-role="header"><h4 data-role="title">Dialog</h4></div>
          *     <div data-role="body">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
@@ -51,7 +51,7 @@ gj.dialog.config = {
          *         height: 200
          *     });
          * </script>
-         * @example False <!-- dialog.base, draggable.base -->
+         * @example False <!-- dialog.base, draggable -->
          * <div id="dialog">
          *     <div data-role="header"><h4 data-role="title">Dialog</h4></div>
          *     <div data-role="body">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
@@ -78,7 +78,7 @@ gj.dialog.config = {
          *         closeOnEscape: true
          *     });
          * </script>
-         * @example False <!-- dialog.base, draggable.base -->
+         * @example False <!-- dialog.base, draggable -->
          * <div id="dialog" style="display: none">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
          * <script>
          *     $("#dialog").dialog({
@@ -91,14 +91,14 @@ gj.dialog.config = {
         /** If set to true, the dialog will be draggable by the title bar.
          * @type boolean
          * @default true
-         * @example True <!-- draggable.base, dialog.base -->
+         * @example True <!-- draggable, dialog.base -->
          * <div id="dialog">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
          * <script>
          *     $("#dialog").dialog({
          *         draggable: true
          *     });
          * </script>
-         * @example False <!-- draggable.base, dialog.base -->
+         * @example False <!-- draggable, dialog.base -->
          * <div id="dialog">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
          * <script>
          *     $("#dialog").dialog({
@@ -113,21 +113,21 @@ gj.dialog.config = {
          * The only supported string value is "auto" which will allow the dialog height to adjust based on its content.
          * @type (number|string)
          * @default "auto"
-         * @example Short.Text <!-- draggable.base, dialog.base -->
+         * @example Short.Text <!-- draggable, dialog.base -->
          * <div id="dialog">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
          * <script>
          *     $("#dialog").dialog({
          *         height: 200
          *     });
          * </script>
-         * @example Long.Text.Material.Design <!-- draggable.base, dialog.base -->
+         * @example Long.Text.Material.Design <!-- draggable, dialog.base -->
          * <div id="dialog">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus porttitor quam in magna vulputate, vitae laoreet odio ultrices. Phasellus at efficitur magna. Mauris purus dolor, egestas quis leo et, vulputate dictum mauris. Vivamus maximus lectus sollicitudin lorem blandit tempor. Maecenas eget posuere mi. Suspendisse id hendrerit nibh. Morbi eu odio euismod, venenatis ipsum in, egestas nunc. Mauris dignissim metus ac risus porta eleifend. Aliquam tempus libero orci, id placerat odio vehicula eu. Donec tincidunt justo dolor, sit amet tempus turpis varius sit amet. Suspendisse ut ex blandit, hendrerit enim tristique, iaculis ipsum. Vivamus venenatis dolor justo, eget scelerisque lacus dignissim quis. Duis imperdiet ex at aliquet cursus. Proin non ultricies leo. Fusce quam diam, laoreet quis fringilla vitae, viverra id magna. Nam laoreet sem in volutpat rhoncus.</div>
          * <script>
          *     $("#dialog").dialog({
          *         height: 350
          *     });
          * </script>
-         * @example Long.Text.Bootstrap3 <!-- bootstrap, draggable.base, dialog.base -->
+         * @example Long.Text.Bootstrap3 <!-- bootstrap, draggable, dialog.base -->
          * <div id="dialog">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus porttitor quam in magna vulputate, vitae laoreet odio ultrices. Phasellus at efficitur magna. Mauris purus dolor, egestas quis leo et, vulputate dictum mauris. Vivamus maximus lectus sollicitudin lorem blandit tempor. Maecenas eget posuere mi. Suspendisse id hendrerit nibh. Morbi eu odio euismod, venenatis ipsum in, egestas nunc. Mauris dignissim metus ac risus porta eleifend. Aliquam tempus libero orci, id placerat odio vehicula eu. Donec tincidunt justo dolor, sit amet tempus turpis varius sit amet. Suspendisse ut ex blandit, hendrerit enim tristique, iaculis ipsum. Vivamus venenatis dolor justo, eget scelerisque lacus dignissim quis. Duis imperdiet ex at aliquet cursus. Proin non ultricies leo. Fusce quam diam, laoreet quis fringilla vitae, viverra id magna. Nam laoreet sem in volutpat rhoncus.</div>
          * <script>
          *     $("#dialog").dialog({
@@ -135,7 +135,7 @@ gj.dialog.config = {
          *         uiLibrary: 'bootstrap'
          *     });
          * </script>
-         * @example Long.Text.Bootstrap4 <!-- bootstrap4, draggable.base, dialog.base -->
+         * @example Long.Text.Bootstrap4 <!-- bootstrap4, draggable, dialog.base -->
          * <div id="dialog">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus porttitor quam in magna vulputate, vitae laoreet odio ultrices. Phasellus at efficitur magna. Mauris purus dolor, egestas quis leo et, vulputate dictum mauris. Vivamus maximus lectus sollicitudin lorem blandit tempor. Maecenas eget posuere mi. Suspendisse id hendrerit nibh. Morbi eu odio euismod, venenatis ipsum in, egestas nunc. Mauris dignissim metus ac risus porta eleifend. Aliquam tempus libero orci, id placerat odio vehicula eu. Donec tincidunt justo dolor, sit amet tempus turpis varius sit amet. Suspendisse ut ex blandit, hendrerit enim tristique, iaculis ipsum. Vivamus venenatis dolor justo, eget scelerisque lacus dignissim quis. Duis imperdiet ex at aliquet cursus. Proin non ultricies leo. Fusce quam diam, laoreet quis fringilla vitae, viverra id magna. Nam laoreet sem in volutpat rhoncus.</div>
          * <script>
          *     $("#dialog").dialog({
@@ -149,7 +149,7 @@ gj.dialog.config = {
         /** The language that needs to be in use.
          * @type string
          * @default 'en-us'
-         * @example French.Default <!-- draggable.base, dialog.base-->
+         * @example French.Default <!-- draggable, dialog.base-->
          * <script src="../../dist/modular/dialog/js/messages/messages.fr-fr.js"></script>
          * <div id="dialog">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
          * <script>
@@ -158,7 +158,7 @@ gj.dialog.config = {
          *         locale: 'fr-fr'
          *     });
          * </script>
-         * @example French.Custom <!-- draggable.base, dialog.base -->
+         * @example French.Custom <!-- draggable, dialog.base -->
          * <script src="../../dist/modular/dialog/js/messages/messages.fr-fr.js"></script>
          * <div id="dialog">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
          * <script>
@@ -175,7 +175,7 @@ gj.dialog.config = {
         /** The maximum height in pixels to which the dialog can be resized.
          * @type number
          * @default undefined
-         * @example sample <!-- draggable.base, dialog.base -->
+         * @example sample <!-- draggable, dialog.base -->
          * <div id="dialog">The maximum height of this dialog is set to 300 px. Try to resize it for testing.</div>
          * <script>
          *     $("#dialog").dialog({
@@ -190,7 +190,7 @@ gj.dialog.config = {
         /** The maximum width in pixels to which the dialog can be resized.
          * @type number
          * @default undefined
-         * @example sample <!-- draggable.base, dialog.base -->
+         * @example sample <!-- draggable, dialog.base -->
          * <div id="dialog">The maximum width of this dialog is set to 400 px. Try to resize it for testing.</div>
          * <script>
          *     $("#dialog").dialog({
@@ -204,7 +204,7 @@ gj.dialog.config = {
         /** The minimum height in pixels to which the dialog can be resized.
          * @type number
          * @default undefined
-         * @example sample <!-- draggable.base, dialog.base -->
+         * @example sample <!-- draggable, dialog.base -->
          * <div id="dialog">The minimum height of this dialog is set to 200 px. Try to resize it for testing.</div>
          * <script>
          *     $("#dialog").dialog({
@@ -219,7 +219,7 @@ gj.dialog.config = {
         /** The minimum width in pixels to which the dialog can be resized.
          * @type number
          * @default undefined
-         * @example sample <!-- draggable.base, dialog.base -->
+         * @example sample <!-- draggable, dialog.base -->
          * <div id="dialog">The minimum width of this dialog is set to 200 px. Try to resize it for testing.</div>
          * <script>
          *     $("#dialog").dialog({
@@ -234,14 +234,14 @@ gj.dialog.config = {
          * Modal dialogs create an overlay below the dialog, but above other page elements and you can't interact with them.
          * @type boolean
          * @default false
-         * @example True.Material.Design <!-- draggable.base, dialog.base -->
+         * @example True.Material.Design <!-- draggable, dialog.base -->
          * <div id="dialog">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
          * <script>
          *     $("#dialog").dialog({
          *         modal: true
          *     });
          * </script>
-         * @example True.Bootstrap.4 <!-- bootstrap4, draggable.base, dialog.base -->
+         * @example True.Bootstrap.4 <!-- bootstrap4, draggable, dialog.base -->
          * <div id="dialog">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
          * <script>
          *     $("#dialog").dialog({
@@ -249,7 +249,7 @@ gj.dialog.config = {
          *         uiLibrary: 'bootstrap4'
          *     });
          * </script>
-         * @example False <!-- draggable.base, dialog.base, bootstrap -->
+         * @example False <!-- draggable, dialog.base, bootstrap -->
          * <div id="dialog">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
          * <script>
          *     $("#dialog").dialog({
@@ -262,14 +262,14 @@ gj.dialog.config = {
         /** If set to true, the dialog will be resizable.
          * @type boolean
          * @default false
-         * @example True <!-- draggable.base, dialog.base -->
+         * @example True <!-- draggable, dialog.base -->
          * <div id="dialog">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
          * <script>
          *     $("#dialog").dialog({
          *         resizable: true
          *     });
          * </script>
-         * @example False <!-- draggable.base, dialog.base -->
+         * @example False <!-- draggable, dialog.base -->
          * <div id="dialog">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
          * <script>
          *     $("#dialog").dialog({
@@ -282,7 +282,7 @@ gj.dialog.config = {
         /** If set to true, add vertical scroller to the dialog body.
          * @type Boolean
          * @default false
-         * @example Bootstrap.3 <!-- bootstrap, draggable.base, dialog.base -->
+         * @example Bootstrap.3 <!-- bootstrap, draggable, dialog.base -->
          * <div id="dialog">
          *     <div data-role="body">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus porttitor quam in magna vulputate, vitae laoreet odio ultrices. Phasellus at efficitur magna. Mauris purus dolor, egestas quis leo et, vulputate dictum mauris. Vivamus maximus lectus sollicitudin lorem blandit tempor. Maecenas eget posuere mi. Suspendisse id hendrerit nibh. Morbi eu odio euismod, venenatis ipsum in, egestas nunc. Mauris dignissim metus ac risus porta eleifend. Aliquam tempus libero orci, id placerat odio vehicula eu. Donec tincidunt justo dolor, sit amet tempus turpis varius sit amet. Suspendisse ut ex blandit, hendrerit enim tristique, iaculis ipsum. Vivamus venenatis dolor justo, eget scelerisque lacus dignissim quis. Duis imperdiet ex at aliquet cursus. Proin non ultricies leo. Fusce quam diam, laoreet quis fringilla vitae, viverra id magna. Nam laoreet sem in volutpat rhoncus.</div>
          *     <div data-role="footer">
@@ -297,7 +297,7 @@ gj.dialog.config = {
          *         uiLibrary: 'bootstrap'
          *     });
          * </script>
-         * @example Bootstrap.4 <!-- bootstrap4, draggable.base, dialog.base -->
+         * @example Bootstrap.4 <!-- bootstrap4, draggable, dialog.base -->
          * <div id="dialog">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus porttitor quam in magna vulputate, vitae laoreet odio ultrices. Phasellus at efficitur magna. Mauris purus dolor, egestas quis leo et, vulputate dictum mauris. Vivamus maximus lectus sollicitudin lorem blandit tempor. Maecenas eget posuere mi. Suspendisse id hendrerit nibh. Morbi eu odio euismod, venenatis ipsum in, egestas nunc. Mauris dignissim metus ac risus porta eleifend. Aliquam tempus libero orci, id placerat odio vehicula eu. Donec tincidunt justo dolor, sit amet tempus turpis varius sit amet. Suspendisse ut ex blandit, hendrerit enim tristique, iaculis ipsum. Vivamus venenatis dolor justo, eget scelerisque lacus dignissim quis. Duis imperdiet ex at aliquet cursus. Proin non ultricies leo. Fusce quam diam, laoreet quis fringilla vitae, viverra id magna. Nam laoreet sem in volutpat rhoncus.</div>
          * <script>
          *     $("#dialog").dialog({
@@ -306,7 +306,7 @@ gj.dialog.config = {
          *         uiLibrary: 'bootstrap'
          *     });
          * </script>
-         * @example Material.Design <!-- draggable.base, dialog.base -->
+         * @example Material.Design <!-- draggable, dialog.base -->
          * <div id="dialog">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus porttitor quam in magna vulputate, vitae laoreet odio ultrices. Phasellus at efficitur magna. Mauris purus dolor, egestas quis leo et, vulputate dictum mauris. Vivamus maximus lectus sollicitudin lorem blandit tempor. Maecenas eget posuere mi. Suspendisse id hendrerit nibh. Morbi eu odio euismod, venenatis ipsum in, egestas nunc. Mauris dignissim metus ac risus porta eleifend. Aliquam tempus libero orci, id placerat odio vehicula eu. Donec tincidunt justo dolor, sit amet tempus turpis varius sit amet. Suspendisse ut ex blandit, hendrerit enim tristique, iaculis ipsum. Vivamus venenatis dolor justo, eget scelerisque lacus dignissim quis. Duis imperdiet ex at aliquet cursus. Proin non ultricies leo. Fusce quam diam, laoreet quis fringilla vitae, viverra id magna. Nam laoreet sem in volutpat rhoncus.</div>
          * <script>
          *     $("#dialog").dialog({
@@ -321,7 +321,7 @@ gj.dialog.config = {
         /** The title of the dialog. Can be also set through the title attribute of the html element.
          * @type String
          * @default "Dialog"
-         * @example Js.Config <!-- draggable.base, dialog.base -->
+         * @example Js.Config <!-- draggable, dialog.base -->
          * <div id="dialog">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
          * <script>
          *     $("#dialog").dialog({
@@ -329,7 +329,7 @@ gj.dialog.config = {
          *         width: 400
          *     });
          * </script>
-         * @example Html.Config <!-- draggable.base, dialog.base -->
+         * @example Html.Config <!-- draggable, dialog.base -->
          * <div id="dialog" title="My Custom Title" width="400">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
          * <script>
          *     $("#dialog").dialog();
@@ -341,14 +341,14 @@ gj.dialog.config = {
          * @additionalinfo The css file for bootstrap should be manually included if you use bootstrap.
          * @type string (bootstrap|materialdesign)
          * @default undefined
-         * @example Bootstrap.3 <!-- draggable.base, dialog.base, bootstrap -->
+         * @example Bootstrap.3 <!-- draggable, dialog.base, bootstrap -->
          * <div id="dialog">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
          * <script>
          *     $("#dialog").dialog({
          *         uiLibrary: 'bootstrap'
          *     });
          * </script>
-         * @example Bootstrap.4 <!-- draggable.base, dialog.base, bootstrap4 -->
+         * @example Bootstrap.4 <!-- draggable, dialog.base, bootstrap4 -->
          * <div id="dialog">
          *     <div data-role="body">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
          *     <div data-role="footer">
@@ -361,7 +361,7 @@ gj.dialog.config = {
          *         uiLibrary: 'bootstrap4'
          *     });
          * </script>
-         * @example Material.Design <!-- draggable.base, dialog.base  -->
+         * @example Material.Design <!-- draggable, dialog.base  -->
          * <div id="dialog">
          *   <div data-role="body">
          *     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
@@ -384,14 +384,14 @@ gj.dialog.config = {
         /** The width of the dialog.
          * @type number
          * @default 300
-         * @example Fixed.Width <!-- draggable.base, dialog.base -->
+         * @example Fixed.Width <!-- draggable, dialog.base -->
          * <div id="dialog">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
          * <script>
          *     $("#dialog").dialog({
          *         width: 400
          *     });
          * </script>
-         * @example Auto.Width <!-- draggable.base, dialog.base -->
+         * @example Auto.Width <!-- draggable, dialog.base -->
          * <div id="dialog" title="Wikipedia">
          *   <img src="https://upload.wikimedia.org/wikipedia/en/thumb/8/80/Wikipedia-logo-v2.svg/1122px-Wikipedia-logo-v2.svg.png" width="420"/>
          * </div>

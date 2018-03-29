@@ -8,7 +8,7 @@ gj.tree.plugins.dragAndDrop = {
 			/** Enables drag and drop functionality for each node.
               * @type Boolean
               * @default undefined
-              * @example Material.Design <!-- draggable.base, droppable.base, tree -->
+              * @example Material.Design <!-- draggable, droppable, tree -->
               * <h3>Drag and Drop Tree Nodes</h3>
               * <div id="tree"></div>
               * <script>
@@ -17,7 +17,7 @@ gj.tree.plugins.dragAndDrop = {
               *         dragAndDrop: true
               *     });
               * </script>
-              * @example Bootstrap.3 <!-- bootstrap, draggable.base, droppable.base, tree -->
+              * @example Bootstrap.3 <!-- bootstrap, draggable, droppable, tree -->
               * <div class="container">
               *     <h3>Drag and Drop Tree Nodes</h3>
               *     <div id="tree"></div>
@@ -29,7 +29,7 @@ gj.tree.plugins.dragAndDrop = {
               *         uiLibrary: 'bootstrap'
               *     });
               * </script>
-              * @example Bootstrap.4 <!-- bootstrap4, draggable.base, droppable.base, tree -->
+              * @example Bootstrap.4 <!-- bootstrap4, draggable, droppable, tree -->
               * <div class="container">
               *     <h3>Drag and Drop Tree Nodes</h3>
               *     <div id="tree"></div>
@@ -280,7 +280,7 @@ gj.tree.plugins.dragAndDrop = {
          * @param {string} id - the id of the record
          * @param {object} parentId - the id of the new parend node
          * @param {object} orderNumber - the new order number
-         * @example Event.Sample <!-- draggable.base, droppable.base, tree -->
+         * @example Event.Sample <!-- draggable, droppable, tree -->
          * <div id="tree" data-source="/Locations/Get" data-drag-and-drop="true"></div>
          * <script>
          *     var tree = $('#tree').tree();

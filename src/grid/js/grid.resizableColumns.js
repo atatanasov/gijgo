@@ -8,7 +8,7 @@ gj.grid.plugins.resizableColumns = {
             /** If set to true, users can resize columns by dragging the edges (resize handles) of their header cells.
              * @type boolean
              * @default false
-             * @example Material.Design <!-- grid, draggable.base -->
+             * @example Material.Design <!-- grid, draggable -->
              * <table id="grid"></table>
              * <script>
              *     var grid = $('#grid').grid({
@@ -17,7 +17,7 @@ gj.grid.plugins.resizableColumns = {
              *         columns: [ { field: 'ID', width: 56 }, { field: 'Name', sortable: true }, { field: 'PlaceOfBirth' } ]
              *     });
              * </script>
-             * @example Bootstrap <!-- bootstrap, grid, draggable.base -->
+             * @example Bootstrap <!-- bootstrap, grid, draggable -->
              * <table id="grid"></table>
              * <script>
              *     var grid = $('#grid').grid({
@@ -27,7 +27,7 @@ gj.grid.plugins.resizableColumns = {
              *         columns: [ { field: 'ID', width: 34 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
              *     });
              * </script>
-             * @example Bootstrap.4 <!-- bootstrap4, grid, draggable.base -->
+             * @example Bootstrap.4 <!-- bootstrap4, grid, draggable -->
              * <table id="grid"></table>
              * <script>
              *     var grid = $('#grid').grid({
@@ -37,7 +37,7 @@ gj.grid.plugins.resizableColumns = {
              *         columns: [ { field: 'ID', width: 42 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
              *     });
              * </script>
-             * @example Bootstrap.4.FixedHeader <!-- bootstrap4, grid, draggable.base -->
+             * @example Bootstrap.4.FixedHeader <!-- bootstrap4, grid, draggable -->
              * <table id="grid" width="900"></table>
              * <script>
              *     var grid = $('#grid').grid({

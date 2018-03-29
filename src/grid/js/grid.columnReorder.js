@@ -8,7 +8,7 @@ gj.grid.plugins.columnReorder = {
             /** If set to true, enable column reordering with drag and drop.
              * @type boolean
              * @default false
-             * @example Material.Design <!-- grid, draggable.base, droppable.base -->
+             * @example Material.Design <!-- grid, draggable, droppable -->
              * <p>Drag and Drop column headers in order to reorder the columns.</p>
              * <table id="grid"></table>
              * <script>
@@ -18,7 +18,7 @@ gj.grid.plugins.columnReorder = {
              *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
              *     });
              * </script>
-             * @example Bootstrap <!-- bootstrap, grid, draggable.base, droppable.base -->
+             * @example Bootstrap <!-- bootstrap, grid, draggable, droppable -->
              * <p>Drag and Drop column headers in order to reorder the columns.</p>
              * <table id="grid"></table>
              * <script>
@@ -29,7 +29,7 @@ gj.grid.plugins.columnReorder = {
              *         columns: [ { field: 'ID', width: 36 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
              *     });
              * </script>
-             * @example Bootstrap.4 <!-- bootstrap4, grid, draggable.base, droppable.base -->
+             * @example Bootstrap.4 <!-- bootstrap4, grid, draggable, droppable -->
              * <p>Drag and Drop column headers in order to reorder the columns.</p>
              * <table id="grid"></table>
              * <script>

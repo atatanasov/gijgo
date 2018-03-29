@@ -17,15 +17,18 @@ gj.draggable.config = {
 
         /** If set to false, restricts dragging on vertical direction.         */        vertical: true,
 
-        /** If set to false, restricts dragging on horizontal direction.         */        horizontal: true
+        /** If set to false, restricts dragging on horizontal direction.         */        horizontal: true,
+
+        /** Constrains dragging to within the bounds of the specified element.         */        containment: undefined
     }
 };
 
 gj.draggable.methods = {
     init: function (jsConfig) {
-        var $handleEl, $dragEl = this;
+        var $handleEl, data, $dragEl = this;
 
         gj.widget.prototype.init.call(this, jsConfig, 'draggable');
+        data = this.data();
         $dragEl.attr('data-draggable', 'true');
 
         $handleEl = gj.draggable.methods.getHandleElement($dragEl);
@@ -34,8 +37,8 @@ gj.draggable.methods = {
             $dragEl.attr('data-draggable-dragging', true);
             $dragEl.removeAttr('data-draggable-x').removeAttr('data-draggable-y');
             $dragEl.css('position', 'absolute');
-            gj.documentManager.subscribeForEvent('touchmove', $dragEl.data('guid'), gj.draggable.methods.createMoveHandler($dragEl));
-            gj.documentManager.subscribeForEvent('mousemove', $dragEl.data('guid'), gj.draggable.methods.createMoveHandler($dragEl));
+            gj.documentManager.subscribeForEvent('touchmove', $dragEl.data('guid'), gj.draggable.methods.createMoveHandler($dragEl, data));
+            gj.documentManager.subscribeForEvent('mousemove', $dragEl.data('guid'), gj.draggable.methods.createMoveHandler($dragEl, data));
         });
 
         gj.documentManager.subscribeForEvent('mouseup', $dragEl.data('guid'), gj.draggable.methods.createUpHandler($dragEl));
@@ -61,7 +64,7 @@ gj.draggable.methods = {
         };
     },
 
-    createMoveHandler: function ($dragEl) {
+    createMoveHandler: function ($dragEl, data) {
         return function (e) {
             var x, y, offsetX, offsetY, prevX, prevY;
             if ($dragEl.attr('data-draggable-dragging') === 'true') {
@@ -70,8 +73,9 @@ gj.draggable.methods = {
                 prevX = $dragEl.attr('data-draggable-x');
                 prevY = $dragEl.attr('data-draggable-y');
                 if (prevX && prevY) {                
-                    offsetX = $dragEl.data('horizontal') ? x - parseInt(prevX, 10) : 0;
-                    offsetY = $dragEl.data('vertical') ? y - parseInt(prevY, 10) : 0;
+                    offsetX = data.horizontal ? x - parseInt(prevX, 10) : 0;
+                    offsetY = data.vertical ? y - parseInt(prevY, 10) : 0;
+
                     if (false !== gj.draggable.events.drag($dragEl, offsetX, offsetY, x, y)) {
                         gj.draggable.methods.move($dragEl, offsetX, offsetY);
                     }
