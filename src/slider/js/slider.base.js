@@ -161,7 +161,7 @@ gj.slider.methods = {
             wrapper.appendChild(handle);
         }
 
-        new gj.draggable.widget($(handle), { vertical: false });
+        new gj.draggable.widget($(handle), { vertical: false, containment: wrapper });
         //handle.addEventListener('mousedown', function () {
         //    alert('Hello World');
         //});

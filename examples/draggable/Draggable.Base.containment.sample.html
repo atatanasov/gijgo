@@ -11,15 +11,15 @@
 </head>
 <body style="padding: 8px;">
  <style>
+ .container { border: 1px solid #999; width: 600px; height: 600px; }
  .element { border: 1px solid #999; width: 300px; height: 200px; cursor: move; text-align: center; background-color: #DDD; }
  </style>
- <div id="element" class="element">
-     drag me<br/>
-     <i>(dragging on horizontal direction is disabled)</i>
+ <div id="container" class="container">
+     <div id="element" class="element">drag me</div>
  </div>
  <script>
      $('#element').draggable({
-         horizontal: false
+         containment: document.getElementById('container')
      });
  </script>
 </body>

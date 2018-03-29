@@ -467,6 +467,20 @@ gj.documentManager = {
                 el.classList.add(arr[i]);
             }
         }
+    },
+
+    position: function (elem) {
+        var box = elem.getBoundingClientRect(),
+            body = document.body,
+            docEl = document.documentElement,
+            scrollTop = window.pageYOffset || docEl.scrollTop || body.scrollTop,
+            scrollLeft = window.pageXOffset || docEl.scrollLeft || body.scrollLeft,
+            clientTop = docEl.clientTop || body.clientTop || 0,
+            clientLeft = docEl.clientLeft || body.clientLeft || 0,
+            top = box.top + scrollTop - clientTop,
+            left = box.left + scrollLeft - clientLeft;
+
+        return { top: Math.round(top), left: Math.round(left) };
     }
 };
 gj.core.messages['bg-bg'] = {
