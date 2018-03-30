@@ -469,9 +469,10 @@ gj.documentManager = {
         }
     },
 
-    position: function (elem) {
+    position: function (elem, padding, margin) {
         var box = elem.getBoundingClientRect(),
             body = document.body,
+            bodyStyle = window.getComputedStyle(body),
             docEl = document.documentElement,
             scrollTop = window.pageYOffset || docEl.scrollTop || body.scrollTop,
             scrollLeft = window.pageXOffset || docEl.scrollLeft || body.scrollLeft,
@@ -479,6 +480,15 @@ gj.documentManager = {
             clientLeft = docEl.clientLeft || body.clientLeft || 0,
             top = Math.round(box.top + scrollTop - clientTop),
             left = Math.round(box.left + scrollLeft - clientLeft);
+
+        if (padding) {
+            top += parseInt(bodyStyle.paddingTop || 0, 10);
+            left += parseInt(bodyStyle.paddingLeft || 0, 10);
+        }
+        if (margin) {
+            top += parseInt(bodyStyle.marginTop || 0, 10);
+            left += parseInt(bodyStyle.marginLeft || 0, 10);
+        }
 
         return { top: top, left: left, bottom: top + gj.core.height(elem), right: left + gj.core.width(elem) };
     }

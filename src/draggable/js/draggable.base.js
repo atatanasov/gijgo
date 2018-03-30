@@ -135,7 +135,7 @@ gj.draggable.methods = {
 
     createMoveHandler: function ($dragEl, $handleEl, data) {
         return function (e) {
-            var mouseX, mouseY, offsetX, offsetY, prevX, prevY, hp;
+            var mouseX, mouseY, offsetX, offsetY, prevX, prevY;
             if ($dragEl.attr('draggable-dragging') === 'true') {
                 mouseX = Math.round($dragEl.mouseX(e));
                 mouseY = Math.round($dragEl.mouseY(e));
@@ -229,7 +229,7 @@ gj.draggable.events = {
      * </script>
      */
     drag: function ($dragEl, newTop, newLeft, mouseX, mouseY) {
-        return $dragEl.triggerHandler('drag', [{ top: newTop, left: newLeft }, { x: mouseY, y: mouseX }]);
+        return $dragEl.triggerHandler('drag', [{ top: newTop, left: newLeft }, { x: mouseX, y: mouseY }]);
     },
 
     /**

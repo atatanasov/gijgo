@@ -554,9 +554,10 @@ gj.core = {
         }
     },
 
-    position: function (elem) {
+    position: function (elem, padding, margin) {
         var box = elem.getBoundingClientRect(),
             body = document.body,
+            bodyStyle = window.getComputedStyle(body),
             docEl = document.documentElement,
             scrollTop = window.pageYOffset || docEl.scrollTop || body.scrollTop,
             scrollLeft = window.pageXOffset || docEl.scrollLeft || body.scrollLeft,
@@ -564,6 +565,15 @@ gj.core = {
             clientLeft = docEl.clientLeft || body.clientLeft || 0,
             top = Math.round(box.top + scrollTop - clientTop),
             left = Math.round(box.left + scrollLeft - clientLeft);
+
+        if (padding) {
+            top += parseInt(bodyStyle.paddingTop || 0, 10);
+            left += parseInt(bodyStyle.paddingLeft || 0, 10);
+        }
+        if (margin) {
+            top += parseInt(bodyStyle.marginTop || 0, 10);
+            left += parseInt(bodyStyle.marginLeft || 0, 10);
+        }
 
         return { top: top, left: left, bottom: top + gj.core.height(elem), right: left + gj.core.width(elem) };
     }
@@ -1863,7 +1873,7 @@ gj.draggable.methods = {
 
     createMoveHandler: function ($dragEl, $handleEl, data) {
         return function (e) {
-            var mouseX, mouseY, offsetX, offsetY, prevX, prevY, hp;
+            var mouseX, mouseY, offsetX, offsetY, prevX, prevY;
             if ($dragEl.attr('draggable-dragging') === 'true') {
                 mouseX = Math.round($dragEl.mouseX(e));
                 mouseY = Math.round($dragEl.mouseY(e));
@@ -1957,7 +1967,7 @@ gj.draggable.events = {
      * </script>
      */
     drag: function ($dragEl, newTop, newLeft, mouseX, mouseY) {
-        return $dragEl.triggerHandler('drag', [{ top: newTop, left: newLeft }, { x: mouseY, y: mouseX }]);
+        return $dragEl.triggerHandler('drag', [{ top: newTop, left: newLeft }, { x: mouseX, y: mouseY }]);
     },
 
     /**
@@ -16608,15 +16618,72 @@ gj.slider.methods = {
         }
         gj.core.addClasses(progress, data.style.progress);
 
-        new gj.draggable.widget($(handle), { vertical: false, containment: wrapper, drag: gj.slider.methods.createDragHandler(slider, handle, progress) });
+        if (data.value) {
+            // TODO: slide to value
+        } else {
+            data.value = data.min;
+        }
+        
+        gj.documentManager.subscribeForEvent('mouseup', $(slider).data('guid'), gj.slider.methods.createMouseUpHandler(handle, data));
+        handle.addEventListener('mousedown', gj.slider.methods.createMouseDownHandler(handle, data));
+        gj.documentManager.subscribeForEvent('mousemove', $(slider).data('guid'), gj.slider.methods.createMouseMoveHandler(slider, track, handle, progress, data));
+        
+        //new gj.draggable.widget($(handle), { vertical: false, containment: wrapper, drag: gj.slider.methods.createDragHandler(slider, track, handle, progress, data) });
     },
 
-    createDragHandler: function (slider, handle, progress) {
-        return function (e, newPosition, mousePosition) {
-            progress.style.width = handle.offsetLeft + 'px';
-
-        };
+    createMouseUpHandler: function (handle, data) {
+        return function (e) {
+            handle.setAttribute('drag', 'false');
+        }
     },
+
+    createMouseDownHandler: function (handle, data) {
+        return function (e) {
+            handle.setAttribute('drag', 'true');
+        }
+    },
+
+    createMouseMoveHandler: function (slider, track, handle, progress, data) {
+        return function (e) {
+            var sliderPos, x, trackWidth, offset, stepSize, valuePos;
+            if (handle.getAttribute('drag') === 'true') {
+                sliderPos = gj.core.position(slider, true, true);
+                x = new gj.widget().mouseX(e) - sliderPos.left;
+
+                trackWidth = gj.core.width(track);
+                offset = gj.core.width(handle) / 2;
+                stepSize = trackWidth / (data.max - data.min);
+                valuePos = data.value * stepSize;
+
+                if (x >= offset && x <= (trackWidth + offset)) {
+                    if (x > valuePos + (stepSize / 2) || x < valuePos - (stepSize / 2)) {
+                        data.value = Math.round(x / stepSize);
+                        slider.value = data.value;
+                        handle.style.left = (data.value * stepSize) + 'px';
+
+                    }
+                }
+            }
+        }
+    },
+
+    //createDragHandler: function (slider, track, handle, progress, data) {
+    //    return function (e, newPosition, mousePosition) {
+    //        var sliderPos = gj.core.position(slider, true),
+    //            trackWidth = gj.core.width(track),
+    //            stepSize = trackWidth / (data.max - data.min),
+    //            valuePos = data.value * stepSize,
+    //            newWidth = Math.round(handle.offsetLeft) - sliderPos.left - 6;
+            
+    //        if ((mousePosition.x - sliderPos.left) > valuePos + (stepSize / 2) || (mousePosition.x - sliderPos.left) < valuePos - (stepSize / 2)) {
+    //            progress.style.width = newWidth + 'px';
+    //            console.log((mousePosition.x - sliderPos.left) + ' - ' + mousePosition.x + ' - ' + sliderPos.left + ' - ' + (valuePos + (stepSize / 2)))
+    //            return true;
+    //        } else {
+    //            return false;
+    //        }
+    //    };
+    //},
 
     destroy: function ($slider) {
         var data = $slider.data();
