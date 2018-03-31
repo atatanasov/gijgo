@@ -53,7 +53,7 @@ gj.slider.config = {
          * @type (horizontal|vertical)
          * @default horizontal
          */
-        // orientation: 'horizontal',
+        // TODO orientation
 
         /** The name of the UI library that is going to be in use.
          * @additionalinfo The css file for bootstrap should be manually included if you use bootstrap.
@@ -136,8 +136,7 @@ gj.slider.config = {
             wrapper: 'gj-slider gj-slider-bootstrap gj-slider-bootstrap-3',
             progress: 'progress-bar',
             track: 'progress'
-        },
-        iconsLibrary: 'glyphicons'
+        }
     },
 
     bootstrap4: {
@@ -145,8 +144,7 @@ gj.slider.config = {
             wrapper: 'gj-slider gj-slider-bootstrap gj-slider-bootstrap-4',
             progress: 'progress-bar',
             track: 'progress'
-        },
-        showOtherMonths: true
+        }
     }
 };
 
@@ -307,7 +305,7 @@ gj.slider.events = {
 
     /**
      * Fires when the user drags the drag handle to a new position.
-     * @event show
+     * @event slide
      * @param {object} e - event data
      * @param {object} value - The value of the slider.
      * @example sample <!-- slider -->

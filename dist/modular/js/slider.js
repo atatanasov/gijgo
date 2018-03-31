@@ -21,7 +21,7 @@ gj.slider.config = {
 
         /** The maximum value of the Slider.         */        max: 100,
 
-        /** The orientation of a Slider: "horizontal" or "vertical".         */        // orientation: 'horizontal',
+        /** The orientation of a Slider: "horizontal" or "vertical".         */        // TODO orientation
 
         /** The name of the UI library that is going to be in use.         */        uiLibrary: 'materialdesign',
 
@@ -41,8 +41,7 @@ gj.slider.config = {
             wrapper: 'gj-slider gj-slider-bootstrap gj-slider-bootstrap-3',
             progress: 'progress-bar',
             track: 'progress'
-        },
-        iconsLibrary: 'glyphicons'
+        }
     },
 
     bootstrap4: {
@@ -50,8 +49,7 @@ gj.slider.config = {
             wrapper: 'gj-slider gj-slider-bootstrap gj-slider-bootstrap-4',
             progress: 'progress-bar',
             track: 'progress'
-        },
-        showOtherMonths: true
+        }
     }
 };
 
