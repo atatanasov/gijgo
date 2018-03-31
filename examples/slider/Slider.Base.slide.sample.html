@@ -15,8 +15,8 @@
  <input id="slider" />
  <script>
      $('#slider').slider({
-         slide: function (e) {
-             console.log('Change is fired');
+         slide: function (e, value) {
+             console.log('Slide is fired. Value = ' + value);
          }
      });
  </script>

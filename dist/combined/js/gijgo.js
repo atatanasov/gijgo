@@ -16467,9 +16467,16 @@ gj.slider.config = {
          * @type number
          * @default 0
          * @example JS.Config <!-- slider -->
-         * <input id="slider" />
+         * <input id="slider" width="300" />
+         * Value: <span id="value"></span>
          * <script>
-         *    $('#slider').slider({ min: 5, max: 15 });
+         *    $('#slider').slider({
+         *        min: 5,
+         *        max: 15,
+         *        slide: function (e, value) {
+         *            document.getElementById('value').innerText = value;
+         *        }
+         *    });
          * </script>
          */
         min: 0,
@@ -16571,22 +16578,22 @@ gj.slider.methods = {
     init: function (jsConfig) {
         gj.widget.prototype.init.call(this, jsConfig, 'slider');
         this.attr('data-slider', 'true');
-        gj.slider.methods.initialize(this[0], this.data());
+        gj.slider.methods.initialize(this, this.data());
         return this;
     },
 
-    initialize: function (slider, data) {
+    initialize: function ($slider, data) {
         var wrapper, track, handle, progress;
 
-        slider.style.display = 'none';
+        $slider[0].style.display = 'none';
 
-        if (slider.parentElement.attributes.role !== 'wrapper') {
+        if ($slider[0].parentElement.attributes.role !== 'wrapper') {
             wrapper = document.createElement('div');
             wrapper.setAttribute('role', 'wrapper');
-            slider.parentNode.insertBefore(wrapper, slider);
-            wrapper.appendChild(slider);
+            $slider[0].parentNode.insertBefore(wrapper, $slider[0]);
+            wrapper.appendChild($slider[0]);
         } else {
-            wrapper = slider.parentElement;
+            wrapper = $slider[0].parentElement;
         }
 
         if (data.width) {
@@ -16595,7 +16602,7 @@ gj.slider.methods = {
         
         gj.core.addClasses(wrapper, data.style.wrapper);
 
-        track = slider.querySelector('[role="track"]');
+        track = $slider[0].querySelector('[role="track"]');
         if (track == null) {
             track = document.createElement('div');
             track.setAttribute('role', 'track');
@@ -16603,14 +16610,14 @@ gj.slider.methods = {
         }
         gj.core.addClasses(track, data.style.track);
 
-        handle = slider.querySelector('[role="handle"]');
+        handle = $slider[0].querySelector('[role="handle"]');
         if (handle == null) {
             handle = document.createElement('div');
             handle.setAttribute('role', 'handle');
             wrapper.appendChild(handle);
         }
 
-        progress = slider.querySelector('[role="progress"]');
+        progress = $slider[0].querySelector('[role="progress"]');
         if (progress == null) {
             progress = document.createElement('div');
             progress.setAttribute('role', 'progress');
@@ -16618,22 +16625,23 @@ gj.slider.methods = {
         }
         gj.core.addClasses(progress, data.style.progress);
 
-        if (data.value) {
-            // TODO: slide to value
-        } else {
+        if (!data.value) {
             data.value = data.min;
         }
+        gj.slider.methods.value($slider, data, data.value);
         
-        gj.documentManager.subscribeForEvent('mouseup', $(slider).data('guid'), gj.slider.methods.createMouseUpHandler(handle, data));
+        gj.documentManager.subscribeForEvent('mouseup', $slider.data('guid'), gj.slider.methods.createMouseUpHandler($slider, handle, data));
         handle.addEventListener('mousedown', gj.slider.methods.createMouseDownHandler(handle, data));
-        gj.documentManager.subscribeForEvent('mousemove', $(slider).data('guid'), gj.slider.methods.createMouseMoveHandler(slider, track, handle, progress, data));
+        gj.documentManager.subscribeForEvent('mousemove', $slider.data('guid'), gj.slider.methods.createMouseMoveHandler($slider, track, handle, progress, data));
         
-        //new gj.draggable.widget($(handle), { vertical: false, containment: wrapper, drag: gj.slider.methods.createDragHandler(slider, track, handle, progress, data) });
     },
 
-    createMouseUpHandler: function (handle, data) {
+    createMouseUpHandler: function ($slider, handle, data) {
         return function (e) {
-            handle.setAttribute('drag', 'false');
+            if (handle.getAttribute('drag') === 'true') {
+                handle.setAttribute('drag', 'false');
+                gj.slider.events.change($slider);
+            }
         }
     },
 
@@ -16643,47 +16651,41 @@ gj.slider.methods = {
         }
     },
 
-    createMouseMoveHandler: function (slider, track, handle, progress, data) {
+    createMouseMoveHandler: function ($slider, track, handle, progress, data) {
         return function (e) {
-            var sliderPos, x, trackWidth, offset, stepSize, valuePos;
+            var sliderPos, x, trackWidth, offset, stepSize, valuePos, newValue;
             if (handle.getAttribute('drag') === 'true') {
-                sliderPos = gj.core.position(slider, true, true);
+                sliderPos = gj.core.position($slider[0], true, true);
                 x = new gj.widget().mouseX(e) - sliderPos.left;
 
                 trackWidth = gj.core.width(track);
                 offset = gj.core.width(handle) / 2;
                 stepSize = trackWidth / (data.max - data.min);
-                valuePos = data.value * stepSize;
+                valuePos = (data.value - data.min) * stepSize;
 
                 if (x >= offset && x <= (trackWidth + offset)) {
                     if (x > valuePos + (stepSize / 2) || x < valuePos - (stepSize / 2)) {
-                        data.value = Math.round(x / stepSize);
-                        slider.value = data.value;
-                        handle.style.left = (data.value * stepSize) + 'px';
-
+                        newValue = Math.round(x / stepSize) + data.min;
+                        gj.slider.methods.value($slider, data, newValue);
                     }
                 }
             }
         }
     },
 
-    //createDragHandler: function (slider, track, handle, progress, data) {
-    //    return function (e, newPosition, mousePosition) {
-    //        var sliderPos = gj.core.position(slider, true),
-    //            trackWidth = gj.core.width(track),
-    //            stepSize = trackWidth / (data.max - data.min),
-    //            valuePos = data.value * stepSize,
-    //            newWidth = Math.round(handle.offsetLeft) - sliderPos.left - 6;
-            
-    //        if ((mousePosition.x - sliderPos.left) > valuePos + (stepSize / 2) || (mousePosition.x - sliderPos.left) < valuePos - (stepSize / 2)) {
-    //            progress.style.width = newWidth + 'px';
-    //            console.log((mousePosition.x - sliderPos.left) + ' - ' + mousePosition.x + ' - ' + sliderPos.left + ' - ' + (valuePos + (stepSize / 2)))
-    //            return true;
-    //        } else {
-    //            return false;
-    //        }
-    //    };
-    //},
+    value: function ($slider, data, value) {
+        var stepSize;
+        if (typeof (value) === undefined) {
+            return $slider[0].value;
+        } else {
+            $slider[0].setAttribute('value', value);
+            data.value = value;
+            stepSize = gj.core.width($slider.parent().children('[role="track"]')[0]) / (data.max - data.min);
+            $slider.parent().children('[role="handle"]')[0].style.left = ((value - data.min) * stepSize) + 'px';
+            gj.slider.events.slide($slider, value);
+            return $slider;
+        }
+    },
 
     destroy: function ($slider) {
         var data = $slider.data();
@@ -16721,18 +16723,19 @@ gj.slider.events = {
      * Fires when the user drags the drag handle to a new position.
      * @event show
      * @param {object} e - event data
+     * @param {object} value - The value of the slider.
      * @example sample <!-- slider -->
      * <input id="slider" />
      * <script>
      *     $('#slider').slider({
-     *         slide: function (e) {
-     *             console.log('Change is fired');
+     *         slide: function (e, value) {
+     *             console.log('Slide is fired. Value = ' + value);
      *         }
      *     });
      * </script>
      */
-    slide: function ($slider) {
-        return $slider.triggerHandler('slide');
+    slide: function ($slider, value) {
+        return $slider.triggerHandler('slide', [value]);
     }
 };
 
@@ -16760,7 +16763,7 @@ gj.slider.widget = function ($element, jsConfig) {
      * </script>
      */
     self.value = function (value) {
-        return methods.value(this, value);
+        return methods.value(this, this.data(), value);
     };
 
     /** Remove slider functionality from the element.
