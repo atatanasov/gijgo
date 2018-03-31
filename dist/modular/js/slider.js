@@ -1,3 +1,10 @@
+/*
+ * Gijgo Slider v1.9.5
+ * http://gijgo.com/slider
+ *
+ * Copyright 2014, 2018 gijgo.com
+ * Released under the MIT license
+ */
 /* global window alert jQuery gj */
 /**  */gj.slider = {
     plugins: {},

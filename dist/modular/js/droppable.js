@@ -1,5 +1,5 @@
 /*
- * Gijgo Droppable v1.9.4
+ * Gijgo Droppable v1.9.5
  * http://gijgo.com/droppable
  *
  * Copyright 2014, 2018 gijgo.com
