@@ -16485,28 +16485,24 @@ gj.slider.config = {
          * @type number
          * @default 10
          * @example JS.Config <!-- slider -->
-         * <input id="slider" />
+         * <input id="slider" width="300" />
+         * Value: <span id="value"></span>
          * <script>
-         *    $('#slider').slider({ max: 20 });
+         *    $('#slider').slider({
+         *        max: 20,
+         *        slide: function (e, value) {
+         *            document.getElementById('value').innerText = value;
+         *        }
+         *    });
          * </script>
          */
-        max: 10,
+        max: 100,
 
         /** The orientation of a Slider: "horizontal" or "vertical".
          * @type (horizontal|vertical)
          * @default horizontal
-         * @example horizontal <!-- slider -->
-         * <input id="slider" width="280" />
-         * <script>
-         *    $('#slider').slider({ orientation: 'horizontal' });
-         * </script>
-         * @example vertical <!-- slider -->
-         * <input id="slider" width="280" />
-         * <script>
-         *    $('#slider').slider({ orientation: 'vertical' });
-         * </script>
          */
-        orientation: 'horizontal',
+        // orientation: 'horizontal',
 
         /** The name of the UI library that is going to be in use.
          * @additionalinfo The css file for bootstrap should be manually included if you use bootstrap.
@@ -16514,18 +16510,36 @@ gj.slider.config = {
          * @default materialdesign
          * @example MaterialDesign <!-- slider -->
          * <input id="slider" width="300" />
+         * Value: <span id="value"></span>
          * <script>
-         *    $('#slider').slider({ uiLibrary: 'materialdesign' });
+         *    $('#slider').slider({
+         *        uiLibrary: 'materialdesign',
+         *        slide: function (e, value) {
+         *            document.getElementById('value').innerText = value;
+         *        }
+         *    });
          * </script>
          * @example Bootstrap.3 <!-- bootstrap, slider -->
          * <input id="slider" width="300" />
+         * Value: <span id="value"></span>
          * <script>
-         *     $('#slider').slider({ uiLibrary: 'bootstrap' });
+         *    $('#slider').slider({
+         *        uiLibrary: 'bootstrap',
+         *        slide: function (e, value) {
+         *            document.getElementById('value').innerText = value;
+         *        }
+         *    });
          * </script>
          * @example Bootstrap.4 <!-- bootstrap4, slider -->
          * <input id="slider" width="300" />
+         * Value: <span id="value"></span>
          * <script>
-         *     $('#slider').slider({ uiLibrary: 'bootstrap4' });
+         *    $('#slider').slider({
+         *        uiLibrary: 'bootstrap4',
+         *        slide: function (e, value) {
+         *            document.getElementById('value').innerText = value;
+         *        }
+         *    });
          * </script>
          */
         uiLibrary: 'materialdesign',
@@ -16535,13 +16549,24 @@ gj.slider.config = {
          * @default undefined
          * @example Javascript <!-- slider -->
          * <input id="slider" width="300" />
+         * Value: <span id="value"></span>
          * <script>
-         *    $('#slider').slider({ value: 3 });
+         *    $('#slider').slider({
+         *        value: 30,
+         *        slide: function (e, value) {
+         *            document.getElementById('value').innerText = value;
+         *        }
+         *    });
          * </script>
          * @example HTML <!-- slider -->
-         * <input id="slider" width="300" value="9" />
+         * <input id="slider" width="300" value="44" />
+         * Value: <span id="value"></span>
          * <script>
-         *     $('#slider').slider();
+         *    $('#slider').slider({
+         *        slide: function (e, value) {
+         *            document.getElementById('value').innerText = value;
+         *        }
+         *    });
          * </script>
          */
         value: undefined,
@@ -16557,7 +16582,7 @@ gj.slider.config = {
 
     bootstrap: {
         style: {
-            wrapper: 'gj-slider gj-slider-bootstrap',
+            wrapper: 'gj-slider gj-slider-bootstrap gj-slider-bootstrap-3',
             progress: 'progress-bar',
             track: 'progress'
         },
@@ -16566,7 +16591,7 @@ gj.slider.config = {
 
     bootstrap4: {
         style: {
-            wrapper: 'gj-slider gj-slider-bootstrap',
+            wrapper: 'gj-slider gj-slider-bootstrap gj-slider-bootstrap-4',
             progress: 'progress-bar',
             track: 'progress'
         },
@@ -16665,7 +16690,7 @@ gj.slider.methods = {
 
                 if (x >= offset && x <= (trackWidth + offset)) {
                     if (x > valuePos + (stepSize / 2) || x < valuePos - (stepSize / 2)) {
-                        newValue = Math.round(x / stepSize) + data.min;
+                        newValue = Math.round((x - offset) / stepSize) + data.min;
                         gj.slider.methods.value($slider, data, newValue);
                     }
                 }
@@ -16674,26 +16699,36 @@ gj.slider.methods = {
     },
 
     value: function ($slider, data, value) {
-        var stepSize;
-        if (typeof (value) === undefined) {
+        var stepSize, track, handle, progress;
+        if (typeof (value) === "undefined") {
             return $slider[0].value;
         } else {
             $slider[0].setAttribute('value', value);
             data.value = value;
-            stepSize = gj.core.width($slider.parent().children('[role="track"]')[0]) / (data.max - data.min);
-            $slider.parent().children('[role="handle"]')[0].style.left = ((value - data.min) * stepSize) + 'px';
+            track = $slider.parent().children('[role="track"]')[0]
+            stepSize = gj.core.width(track) / (data.max - data.min);
+            handle = $slider.parent().children('[role="handle"]')[0];
+            handle.style.left = ((value - data.min) * stepSize) + 'px';
+            progress = $slider.parent().children('[role="progress"]')[0];
+            progress.style.width = ((value - data.min) * stepSize) + 'px';
             gj.slider.events.slide($slider, value);
             return $slider;
         }
     },
 
     destroy: function ($slider) {
-        var data = $slider.data();
+        var data = $slider.data(),
+            $wrapper = $slider.parent();
         if (data) {
+            $wrapper.children('[role="track"]').remove();
+            $wrapper.children('[role="handle"]').remove();
+            $wrapper.children('[role="progress"]').remove();
+            $slider.unwrap();
             $slider.off();
             $slider.removeData();
             $slider.removeAttr('data-type').removeAttr('data-guid').removeAttr('data-slider');
             $slider.removeClass();
+            $slider.show();
         }
         return $slider;
     }
@@ -16706,11 +16741,11 @@ gj.slider.events = {
      * @event change
      * @param {object} e - event data
      * @example sample <!-- slider -->
-     * <input id="slider" />
+     * <input id="slider" width="300" />
      * <script>
-     *     $('#slider').slider({
+     *     var slider = $('#slider').slider({
      *         change: function (e) {
-     *             console.log('Change is fired');
+     *             alert('Change is fired. The new value is ' + slider.value());
      *         }
      *     });
      * </script>
@@ -16725,13 +16760,15 @@ gj.slider.events = {
      * @param {object} e - event data
      * @param {object} value - The value of the slider.
      * @example sample <!-- slider -->
-     * <input id="slider" />
+     * <input id="slider" width="300" />
+     * Value: <span id="value"></span>
      * <script>
-     *     $('#slider').slider({
-     *         slide: function (e, value) {
-     *             console.log('Slide is fired. Value = ' + value);
-     *         }
-     *     });
+     *    $('#slider').slider({
+     *        value: 30,
+     *        slide: function (e, value) {
+     *            document.getElementById('value').innerText = value;
+     *        }
+     *    });
      * </script>
      */
     slide: function ($slider, value) {
@@ -16750,14 +16787,14 @@ gj.slider.widget = function ($element, jsConfig) {
      * @example Get <!-- slider -->
      * <button class="gj-button-md" onclick="alert($slider.value())">Get Value</button>
      * <hr/>
-     * <input id="slider" />
+     * <input id="slider" width="300" />
      * <script>
      *     var $slider = $('#slider').slider();
      * </script>
      * @example Set <!-- slider -->
-     * <button class="gj-button-md" onclick="$slider.value(3)">Set Value</button>
+     * <button class="gj-button-md" onclick="$slider.value(77)">Set Value</button>
      * <hr/>
-     * <input id="slider" />
+     * <input id="slider" width="300"  />
      * <script>
      *     var $slider = $('#slider').slider();
      * </script>
@@ -16771,7 +16808,7 @@ gj.slider.widget = function ($element, jsConfig) {
      * @return jquery element
      * @example sample <!-- slider -->
      * <button class="gj-button-md" onclick="slider.destroy()">Destroy</button>
-     * <input id="slider" />
+     * <input id="slider" width="300" />
      * <script>
      *     var slider = $('#slider').slider();
      * </script>

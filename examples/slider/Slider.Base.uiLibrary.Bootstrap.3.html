@@ -14,8 +14,14 @@
 </head>
 <body style="padding: 8px;">
  <input id="slider" width="300" />
+ Value: <span id="value"></span>
  <script>
-     $('#slider').slider({ uiLibrary: 'bootstrap' });
+    $('#slider').slider({
+        uiLibrary: 'bootstrap',
+        slide: function (e, value) {
+            document.getElementById('value').innerText = value;
+        }
+    });
  </script>
 </body>
 </html>

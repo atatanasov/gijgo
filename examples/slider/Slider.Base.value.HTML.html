@@ -12,9 +12,14 @@
   <script src="../../dist/modular/js/slider.js"></script>
 </head>
 <body style="padding: 8px;">
- <input id="slider" width="300" value="9" />
+ <input id="slider" width="300" value="44" />
+ Value: <span id="value"></span>
  <script>
-     $('#slider').slider();
+    $('#slider').slider({
+        slide: function (e, value) {
+            document.getElementById('value').innerText = value;
+        }
+    });
  </script>
 </body>
 </html>

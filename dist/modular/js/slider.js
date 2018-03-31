@@ -12,9 +12,9 @@ gj.slider.config = {
 
         /** The minimum value of the Slider.         */        min: 0,
 
-        /** The maximum value of the Slider.         */        max: 10,
+        /** The maximum value of the Slider.         */        max: 100,
 
-        /** The orientation of a Slider: "horizontal" or "vertical".         */        orientation: 'horizontal',
+        /** The orientation of a Slider: "horizontal" or "vertical".         */        // orientation: 'horizontal',
 
         /** The name of the UI library that is going to be in use.         */        uiLibrary: 'materialdesign',
 
@@ -31,7 +31,7 @@ gj.slider.config = {
 
     bootstrap: {
         style: {
-            wrapper: 'gj-slider gj-slider-bootstrap',
+            wrapper: 'gj-slider gj-slider-bootstrap gj-slider-bootstrap-3',
             progress: 'progress-bar',
             track: 'progress'
         },
@@ -40,7 +40,7 @@ gj.slider.config = {
 
     bootstrap4: {
         style: {
-            wrapper: 'gj-slider gj-slider-bootstrap',
+            wrapper: 'gj-slider gj-slider-bootstrap gj-slider-bootstrap-4',
             progress: 'progress-bar',
             track: 'progress'
         },
@@ -139,7 +139,7 @@ gj.slider.methods = {
 
                 if (x >= offset && x <= (trackWidth + offset)) {
                     if (x > valuePos + (stepSize / 2) || x < valuePos - (stepSize / 2)) {
-                        newValue = Math.round(x / stepSize) + data.min;
+                        newValue = Math.round((x - offset) / stepSize) + data.min;
                         gj.slider.methods.value($slider, data, newValue);
                     }
                 }
@@ -148,26 +148,36 @@ gj.slider.methods = {
     },
 
     value: function ($slider, data, value) {
-        var stepSize;
-        if (typeof (value) === undefined) {
+        var stepSize, track, handle, progress;
+        if (typeof (value) === "undefined") {
             return $slider[0].value;
         } else {
             $slider[0].setAttribute('value', value);
             data.value = value;
-            stepSize = gj.core.width($slider.parent().children('[role="track"]')[0]) / (data.max - data.min);
-            $slider.parent().children('[role="handle"]')[0].style.left = ((value - data.min) * stepSize) + 'px';
+            track = $slider.parent().children('[role="track"]')[0]
+            stepSize = gj.core.width(track) / (data.max - data.min);
+            handle = $slider.parent().children('[role="handle"]')[0];
+            handle.style.left = ((value - data.min) * stepSize) + 'px';
+            progress = $slider.parent().children('[role="progress"]')[0];
+            progress.style.width = ((value - data.min) * stepSize) + 'px';
             gj.slider.events.slide($slider, value);
             return $slider;
         }
     },
 
     destroy: function ($slider) {
-        var data = $slider.data();
+        var data = $slider.data(),
+            $wrapper = $slider.parent();
         if (data) {
+            $wrapper.children('[role="track"]').remove();
+            $wrapper.children('[role="handle"]').remove();
+            $wrapper.children('[role="progress"]').remove();
+            $slider.unwrap();
             $slider.off();
             $slider.removeData();
             $slider.removeAttr('data-type').removeAttr('data-guid').removeAttr('data-slider');
             $slider.removeClass();
+            $slider.show();
         }
         return $slider;
     }

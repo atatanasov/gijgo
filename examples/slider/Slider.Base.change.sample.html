@@ -12,11 +12,11 @@
   <script src="../../dist/modular/js/slider.js"></script>
 </head>
 <body style="padding: 8px;">
- <input id="slider" />
+ <input id="slider" width="300" />
  <script>
-     $('#slider').slider({
+     var slider = $('#slider').slider({
          change: function (e) {
-             console.log('Change is fired');
+             alert('Change is fired. The new value is ' + slider.value());
          }
      });
  </script>

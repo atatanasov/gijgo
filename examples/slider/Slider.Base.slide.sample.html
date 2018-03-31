@@ -12,13 +12,15 @@
   <script src="../../dist/modular/js/slider.js"></script>
 </head>
 <body style="padding: 8px;">
- <input id="slider" />
+ <input id="slider" width="300" />
+ Value: <span id="value"></span>
  <script>
-     $('#slider').slider({
-         slide: function (e, value) {
-             console.log('Slide is fired. Value = ' + value);
-         }
-     });
+    $('#slider').slider({
+        value: 30,
+        slide: function (e, value) {
+            document.getElementById('value').innerText = value;
+        }
+    });
  </script>
 </body>
 </html>
