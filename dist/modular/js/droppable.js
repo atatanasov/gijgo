@@ -39,8 +39,8 @@ gj.droppable.methods = {
             if ($dropEl.isDragging) {
                 var hoverClass = $dropEl.data('hoverClass'),
                     mousePosition = {
-                        left: $dropEl.mouseX(e),
-                        top: $dropEl.mouseY(e)
+                        x: $dropEl.mouseX(e),
+                        y: $dropEl.mouseY(e)
                     },
                     newIsOver = gj.droppable.methods.isOver($dropEl, mousePosition);
                 if (newIsOver != $dropEl.isOver) {

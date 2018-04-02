@@ -2830,17 +2830,20 @@ gj.grid.plugins.inlineEditing.configure = function ($grid, fullConfig, clientCon
         createResizeHandle: function ($grid, $column, column) {
             var data = $grid.data();
             return function (e, newPosition) {
-                var i, index, rows, cell, newWidth, nextWidth, currentWidth = parseInt($column.attr('width'), 10);
+                var i, index, rows, cell, newWidth, nextWidth,
+                    currentWidth = parseInt($column.attr('width'), 10),
+                    position = gj.core.position(this),
+                    offset = { top: newPosition.top - position.top, left: newPosition.left - position.left };
                 if (!currentWidth) {
                     currentWidth = $column.outerWidth();
                 }
-                if (newPosition.left) {
-                    newWidth = currentWidth + newPosition.left;
+                if (offset.left) {
+                    newWidth = currentWidth + offset.left;
                     column.width = newWidth;
                     $column.attr('width', newWidth);
                     index = $column[0].cellIndex;
                     cell = $column[0].parentElement.children[index + 1];
-                    nextWidth = parseInt($(cell).attr('width'), 10) - newPosition.left;
+                    nextWidth = parseInt($(cell).attr('width'), 10) - offset.left;
                     cell.setAttribute('width', nextWidth);
                     if (data.resizableColumns) {
                         rows = $grid[0].tBodies[0].children;
