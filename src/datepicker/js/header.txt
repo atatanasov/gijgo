@@ -1,5 +1,5 @@
 ﻿/*
- * Gijgo DatePicker v1.9.5
+ * Gijgo DatePicker v1.9.6
  * http://gijgo.com/datepicker
  *
  * Copyright 2014, 2018 gijgo.com

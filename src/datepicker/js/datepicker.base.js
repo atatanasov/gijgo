@@ -504,7 +504,7 @@ gj.datepicker.config = {
         /** If set to true, the datepicker will have modal behavior.
          * @type Boolean
          * @default false
-         * @example True <!-- datepicker -->
+         * @example Material.Design <!-- datepicker -->
          * <input id="datepicker" width="312" />
          * <script>
          *    $('#datepicker').datepicker({ modal: true });
@@ -544,7 +544,7 @@ gj.datepicker.config = {
          * @example True <!-- datepicker -->
          * <input id="datepicker" width="312" />
          * <script>
-         *    $('#datepicker').datepicker({ footer: true, modal: true, header: true, showOtherMonths: true });
+         *    $('#datepicker').datepicker({ footer: true, modal: true, header: true });
          * </script>
          * @example False <!-- datepicker -->
          * <input id="datepicker" width="312" />

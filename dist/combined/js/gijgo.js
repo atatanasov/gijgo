@@ -1,5 +1,5 @@
 /*
- * Gijgo JavaScript Library v1.9.5
+ * Gijgo JavaScript Library v1.9.6
  * http://gijgo.com/
  *
  * Copyright 2014, 2018 gijgo.com
@@ -14021,7 +14021,7 @@ gj.datepicker.config = {
         /** If set to true, the datepicker will have modal behavior.
          * @type Boolean
          * @default false
-         * @example True <!-- datepicker -->
+         * @example Material.Design <!-- datepicker -->
          * <input id="datepicker" width="312" />
          * <script>
          *    $('#datepicker').datepicker({ modal: true });
@@ -14061,7 +14061,7 @@ gj.datepicker.config = {
          * @example True <!-- datepicker -->
          * <input id="datepicker" width="312" />
          * <script>
-         *    $('#datepicker').datepicker({ footer: true, modal: true, header: true, showOtherMonths: true });
+         *    $('#datepicker').datepicker({ footer: true, modal: true, header: true });
          * </script>
          * @example False <!-- datepicker -->
          * <input id="datepicker" width="312" />
@@ -16035,7 +16035,9 @@ gj.datetimepicker.config = {
          * @example Sample <!-- datetimepicker -->
          * <input id="datetimepicker" width="312" />
          * <script>
-         *    $('#datetimepicker').datetimepicker({ datepicker: { showOtherMonths: true, calendarWeeks: true } });
+         *    $('#datetimepicker').datetimepicker({
+         *        datepicker: { showOtherMonths: true, calendarWeeks: true }
+         *    });
          * </script>
          */
         datepicker: gj.datepicker.config.base,
@@ -16119,6 +16121,101 @@ gj.datetimepicker.config = {
          * </script>
          */
         format: 'HH:MM mm/dd/yyyy',
+
+        /** The width of the datetimepicker.
+         * @type number
+         * @default undefined
+         * @example JS.Config <!-- datetimepicker -->
+         * <input id="input" />
+         * <script>
+         *    $('#input').datetimepicker({ width: 312 });
+         * </script>
+         * @example HTML.Config <!-- datetimepicker -->
+         * <input id="input" width="312" />
+         * <script>
+         *    $('#input').datetimepicker();
+         * </script>
+         */
+        width: undefined,
+
+        /** If set to true, the datetimepicker will have modal behavior.
+         * @type Boolean
+         * @default false
+         * @example Material.Design <!-- datetimepicker -->
+         * <input id="input" width="312" />
+         * <script>
+         *    $('#input').datetimepicker({ modal: true });
+         * </script>
+         * @example Bootstrap <!-- bootstrap, datetimepicker -->
+         * <input id="input" width="220" />
+         * <script>
+         *    $('#input').datetimepicker({ uiLibrary: 'bootstrap', modal: true, footer: true });
+         * </script>
+         * @example Bootstrap.4 <!-- bootstrap4, datetimepicker -->
+         * <input id="input" width="234" />
+         * <script>
+         *    $('#input').datetimepicker({ uiLibrary: 'bootstrap4', modal: true, footer: true });
+         * </script>
+         */
+        modal: false,
+
+        /** If set to true, add footer with ok and cancel buttons to the datetimepicker.
+         * @type Boolean
+         * @default false
+         * @example True <!-- datetimepicker -->
+         * <input id="input" width="312" />
+         * <script>
+         *    $('#input').datetimepicker({ footer: true, modal: true, header: true });
+         * </script>
+         * @example False <!-- datetimepicker -->
+         * <input id="input" width="312" />
+         * <script>
+         *    $('#input').datetimepicker({ footer: false });
+         * </script>
+         */
+        footer: false,
+
+        /** The size of the datetimepicker input.
+         * @type 'small'|'default'|'large'
+         * @default 'default'
+         * @example Bootstrap.4 <!-- bootstrap4, datetimepicker -->
+         * <p><label for="small">Small Size:</label> <input id="small" width="234" value="10:20 03/20/2018" /></p>
+         * <p><label for="default">Default Size:</label> <input id="default" width="234" value="10:20 03/20/2018" /></p>
+         * <p><label for="large">Large Size:</label> <input id="large" width="234" value="10:20 03/20/2018" /></p>
+         * <script>
+         *     $('#small').datetimepicker({ uiLibrary: 'bootstrap4', size: 'small' });
+         *     $('#default').datetimepicker({ uiLibrary: 'bootstrap4', size: 'default' });
+         *     $('#large').datetimepicker({ uiLibrary: 'bootstrap4', size: 'large' });
+         * </script>
+         * @example Bootstrap.4.Font.Awesome <!-- bootstrap4, fontawesome, datetimepicker -->
+         * <p><label for="small">Small Size:</label> <input id="small" width="234" value="10:20 03/20/2018" /></p>
+         * <p><label for="default">Default Size:</label> <input id="default" width="234" value="10:20 03/20/2018" /></p>
+         * <p><label for="large">Large Size:</label> <input id="large" width="234" value="10:20 03/20/2018" /></p>
+         * <script>
+         *     $('#small').datetimepicker({ uiLibrary: 'bootstrap4', iconsLibrary: 'fontawesome', size: 'small' });
+         *     $('#default').datetimepicker({ uiLibrary: 'bootstrap4', iconsLibrary: 'fontawesome', size: 'default' });
+         *     $('#large').datetimepicker({ uiLibrary: 'bootstrap4', iconsLibrary: 'fontawesome', size: 'large' });
+         * </script>
+         * @example Bootstrap.3 <!-- bootstrap, datetimepicker -->
+         * <p><label for="small">Small Size:</label> <input id="small" width="220" value="10:20 03/20/2018" /></p>
+         * <p><label for="default">Default Size:</label> <input id="default" width="220" value="10:20 03/20/2018" /></p>
+         * <p><label for="large">Large Size:</label> <input id="large" width="220" value="10:20 03/20/2018" /></p>
+         * <script>
+         *     $('#small').datetimepicker({ uiLibrary: 'bootstrap', size: 'small' });
+         *     $('#default').datetimepicker({ uiLibrary: 'bootstrap', size: 'default' });
+         *     $('#large').datetimepicker({ uiLibrary: 'bootstrap', size: 'large' });
+         * </script>
+         * @example Material.Design <!-- datetimepicker -->
+         * <p><label for="small">Small Size:</label> <input id="small" width="276" value="10:20 03/20/2018" /></p>
+         * <p><label for="default">Default Size:</label> <input id="default" width="276" value="10:20 03/20/2018" /></p>
+         * <p><label for="large">Large Size:</label> <input id="large" width="276" value="10:20 03/20/2018" /></p>
+         * <script>
+         *     $('#small').datetimepicker({ size: 'small' });
+         *     $('#default').datetimepicker({ size: 'default' });
+         *     $('#large').datetimepicker({ size: 'large' });
+         * </script>
+         */
+        size: 'default',
         
         /** The language that needs to be in use.
          * @type string
@@ -16209,6 +16306,7 @@ gj.datetimepicker.methods = {
         data.datepicker.footer = data.footer;
         data.datepicker.style.calendar = data.style.calendar;
         data.datepicker.value = data.value;
+        data.datepicker.size = data.size;
         data.datepicker.autoClose = false;
         gj.datepicker.methods.initialize($datetimepicker, data.datepicker);
         $datetimepicker.on('select', function (e, type) {

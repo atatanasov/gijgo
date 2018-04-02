@@ -15,11 +15,9 @@
   <script src="../../dist/modular/js/datetimepicker.js"></script>
 </head>
 <body style="padding: 8px;">
- <input id="datetimepicker" width="312" />
+ <input id="input" width="312" />
  <script>
-    $('#datetimepicker').datetimepicker({
-        datepicker: { showOtherMonths: true, calendarWeeks: true }
-    });
+    $('#input').datetimepicker({ footer: true, modal: true, header: true });
  </script>
 </body>
 </html>

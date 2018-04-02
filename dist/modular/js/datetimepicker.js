@@ -1,5 +1,5 @@
 /*
- * Gijgo DateTimePicker v1.9.5
+ * Gijgo DateTimePicker v1.9.6
  * http://gijgo.com/datetimepicker
  *
  * Copyright 2014, 2018 gijgo.com
@@ -26,6 +26,14 @@ gj.datetimepicker.config = {
         /** The initial datetimepicker value.         */        value: undefined,
 
         /** Specifies the format, which is used to format the value of the DatePicker displayed in the input.         */        format: 'HH:MM mm/dd/yyyy',
+
+        /** The width of the datetimepicker.         */        width: undefined,
+
+        /** If set to true, the datetimepicker will have modal behavior.         */        modal: false,
+
+        /** If set to true, add footer with ok and cancel buttons to the datetimepicker.         */        footer: false,
+
+        /** The size of the datetimepicker input.         */        size: 'default',
         
         /** The language that needs to be in use.         */        locale: 'en-us',
 
@@ -95,6 +103,7 @@ gj.datetimepicker.methods = {
         data.datepicker.footer = data.footer;
         data.datepicker.style.calendar = data.style.calendar;
         data.datepicker.value = data.value;
+        data.datepicker.size = data.size;
         data.datepicker.autoClose = false;
         gj.datepicker.methods.initialize($datetimepicker, data.datepicker);
         $datetimepicker.on('select', function (e, type) {

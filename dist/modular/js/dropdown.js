@@ -1,5 +1,5 @@
 /*
- * Gijgo DropDown v1.9.5
+ * Gijgo DropDown v1.9.6
  * http://gijgo.com/dropdown
  *
  * Copyright 2014, 2018 gijgo.com

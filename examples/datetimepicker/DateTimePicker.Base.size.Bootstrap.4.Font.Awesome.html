@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Example</title>
+  <script src="../../dist/libraries/jquery/jquery.js"></script>
+  <script src="../../dist/modular/js/core.js" type="text/javascript"></script>
+  <link href="../../dist/modular/css/core.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+  <link href="../../dist/modular/css/datepicker.css" rel="stylesheet" type="text/css">
+  <link href="../../dist/modular/css/timepicker.css" rel="stylesheet" type="text/css">
+  <link href="../../dist/modular/css/datetimepicker.css" rel="stylesheet" type="text/css">
+  <script src="../../dist/modular/js/datepicker.js"></script>
+  <script src="../../dist/modular/js/timepicker.js"></script>
+  <script src="../../dist/modular/js/datetimepicker.js"></script>
+</head>
+<body style="padding: 8px;">
+ <p><label for="small">Small Size:</label> <input id="small" width="234" value="10:20 03/20/2018" /></p>
+ <p><label for="default">Default Size:</label> <input id="default" width="234" value="10:20 03/20/2018" /></p>
+ <p><label for="large">Large Size:</label> <input id="large" width="234" value="10:20 03/20/2018" /></p>
+ <script>
+     $('#small').datetimepicker({ uiLibrary: 'bootstrap4', iconsLibrary: 'fontawesome', size: 'small' });
+     $('#default').datetimepicker({ uiLibrary: 'bootstrap4', iconsLibrary: 'fontawesome', size: 'default' });
+     $('#large').datetimepicker({ uiLibrary: 'bootstrap4', iconsLibrary: 'fontawesome', size: 'large' });
+ </script>
+</body>
+</html>
