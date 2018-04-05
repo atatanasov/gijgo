@@ -471,6 +471,7 @@ gj.documentManager = {
 
     position: function (elem, padding, margin) {
         var box = elem.getBoundingClientRect(),
+            boxStyle = window.getComputedStyle(elem),
             body = document.body,
             bodyStyle = window.getComputedStyle(body),
             docEl = document.documentElement,
@@ -478,8 +479,8 @@ gj.documentManager = {
             scrollLeft = window.pageXOffset || docEl.scrollLeft || body.scrollLeft,
             clientTop = docEl.clientTop || body.clientTop || 0,
             clientLeft = docEl.clientLeft || body.clientLeft || 0,
-            top = Math.round(box.top + scrollTop - clientTop),
-            left = Math.round(box.left + scrollLeft - clientLeft);
+            top = Math.round(box.top + scrollTop - clientTop - parseInt(boxStyle.marginTop || 0, 10)),
+            left = Math.round(box.left + scrollLeft - clientLeft - parseInt(boxStyle.marginLeft || 0, 10));
 
         if (padding) {
             top += parseInt(bodyStyle.paddingTop || 0, 10);

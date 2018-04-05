@@ -556,6 +556,7 @@ gj.core = {
 
     position: function (elem, padding, margin) {
         var box = elem.getBoundingClientRect(),
+            boxStyle = window.getComputedStyle(elem),
             body = document.body,
             bodyStyle = window.getComputedStyle(body),
             docEl = document.documentElement,
@@ -563,8 +564,8 @@ gj.core = {
             scrollLeft = window.pageXOffset || docEl.scrollLeft || body.scrollLeft,
             clientTop = docEl.clientTop || body.clientTop || 0,
             clientLeft = docEl.clientLeft || body.clientLeft || 0,
-            top = Math.round(box.top + scrollTop - clientTop),
-            left = Math.round(box.left + scrollLeft - clientLeft);
+            top = Math.round(box.top + scrollTop - clientTop - parseInt(boxStyle.marginTop || 0, 10)),
+            left = Math.round(box.left + scrollLeft - clientLeft - parseInt(boxStyle.marginLeft || 0, 10));
 
         if (padding) {
             top += parseInt(bodyStyle.paddingTop || 0, 10);
@@ -1928,7 +1929,7 @@ gj.draggable.methods = {
             }
         }
 
-        if (false !== gj.draggable.events.drag($(dragEl), newTop, newLeft, mouseX, mouseY)) {
+        if (false !== gj.draggable.events.drag($(dragEl), newLeft, newTop, mouseX, mouseY)) {
             dragEl.style.top = newTop + 'px';
             dragEl.style.left = newLeft + 'px';
         }
@@ -1938,8 +1939,11 @@ gj.draggable.methods = {
         if ($dragEl.attr('data-draggable') === 'true') {
             gj.documentManager.unsubscribeForEvent('mouseup', $dragEl.data('guid'));
             $dragEl.removeData();
-            $dragEl.removeAttr('data-guid');
-            $dragEl.removeAttr('data-draggable');
+            $dragEl.removeAttr('data-guid').removeAttr('data-type').removeAttr('data-draggable');
+            $dragEl.removeAttr('draggable-x').removeAttr('draggable-y').removeAttr('draggable-dragging');
+            $dragEl[0].style.top = '';
+            $dragEl[0].style.left = '';
+            $dragEl[0].style.position = '';
             $dragEl.off('drag').off('start').off('stop');
             gj.draggable.methods.getHandleElement($dragEl).off('mousedown');
         }
@@ -1968,8 +1972,8 @@ gj.draggable.events = {
      *     });
      * </script>
      */
-    drag: function ($dragEl, newTop, newLeft, mouseX, mouseY) {
-        return $dragEl.triggerHandler('drag', [{ top: newTop, left: newLeft }, { x: mouseX, y: mouseY }]);
+    drag: function ($dragEl, newLeft, newTop, mouseX, mouseY) {
+        return $dragEl.triggerHandler('drag', [{ left: newLeft, top: newTop }, { x: mouseX, y: mouseY }]);
     },
 
     /**
@@ -8493,7 +8497,7 @@ gj.grid.plugins.export = {
 
                 for (i = 0; i < columns.length; i++) {
                     if (columns[i].hidden !== true) {
-                        line += '"' + (columns[i].title || columns[i].field) + '",';
+                        line += '"' + (columns[i].title || columns[i].field).replace(/<[^>]+>/g, ' ') + '",';
                     }
                 }
                 str += line.slice(0, line.length - 1) + '\r\n';
@@ -16088,8 +16092,7 @@ gj.datetimepicker.config = {
         value: undefined,
 
         /** Specifies the format, which is used to format the value of the DatePicker displayed in the input.
-         * @additionalinfo 
-         * <b>M</b> - Minutes; no leading zero for single-digit minutes.<br/>
+         * @additionalinfo <b>M</b> - Minutes; no leading zero for single-digit minutes.<br/>
          * <b>MM</b> - Minutes; leading zero for single-digit minutes.<br/>
          * <b>H</b> - The hour, using a 24-hour clock from 0 to 23; no leading zero for single-digit hours.<br/>
          * <b>HH</b> - The hour, using a 24-hour clock from 0 to 23; leading zero for single-digit hours.<br/>

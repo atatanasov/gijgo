@@ -3031,7 +3031,7 @@ gj.grid.plugins.inlineEditing.configure = function ($grid, fullConfig, clientCon
 
                 for (i = 0; i < columns.length; i++) {
                     if (columns[i].hidden !== true) {
-                        line += '"' + (columns[i].title || columns[i].field) + '",';
+                        line += '"' + (columns[i].title || columns[i].field).replace(/<[^>]+>/g, ' ') + '",';
                     }
                 }
                 str += line.slice(0, line.length - 1) + '\r\n';

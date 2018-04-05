@@ -123,7 +123,7 @@ gj.draggable.methods = {
             }
         }
 
-        if (false !== gj.draggable.events.drag($(dragEl), newTop, newLeft, mouseX, mouseY)) {
+        if (false !== gj.draggable.events.drag($(dragEl), newLeft, newTop, mouseX, mouseY)) {
             dragEl.style.top = newTop + 'px';
             dragEl.style.left = newLeft + 'px';
         }
@@ -133,8 +133,11 @@ gj.draggable.methods = {
         if ($dragEl.attr('data-draggable') === 'true') {
             gj.documentManager.unsubscribeForEvent('mouseup', $dragEl.data('guid'));
             $dragEl.removeData();
-            $dragEl.removeAttr('data-guid');
-            $dragEl.removeAttr('data-draggable');
+            $dragEl.removeAttr('data-guid').removeAttr('data-type').removeAttr('data-draggable');
+            $dragEl.removeAttr('draggable-x').removeAttr('draggable-y').removeAttr('draggable-dragging');
+            $dragEl[0].style.top = '';
+            $dragEl[0].style.left = '';
+            $dragEl[0].style.position = '';
             $dragEl.off('drag').off('start').off('stop');
             gj.draggable.methods.getHandleElement($dragEl).off('mousedown');
         }
@@ -145,8 +148,8 @@ gj.draggable.methods = {
 gj.draggable.events = {
     /**
      * Triggered while the mouse is moved during the dragging, immediately before the current move happens.
-     *     */    drag: function ($dragEl, newTop, newLeft, mouseX, mouseY) {
-        return $dragEl.triggerHandler('drag', [{ top: newTop, left: newLeft }, { x: mouseX, y: mouseY }]);
+     *     */    drag: function ($dragEl, newLeft, newTop, mouseX, mouseY) {
+        return $dragEl.triggerHandler('drag', [{ left: newLeft, top: newTop }, { x: mouseX, y: mouseY }]);
     },
 
     /**
