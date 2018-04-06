@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Example</title>
+  <script src="../../dist/libraries/jquery/jquery.js"></script>
+  <script src="../../dist/modular/js/core.js" type="text/javascript"></script>
+  <link href="../../dist/modular/css/core.css" rel="stylesheet" type="text/css">
+  <link href="../../dist/modular/css/datepicker.css" rel="stylesheet" type="text/css">
+  <link href="../../dist/modular/css/timepicker.css" rel="stylesheet" type="text/css">
+  <link href="../../dist/modular/css/datetimepicker.css" rel="stylesheet" type="text/css">
+  <link href="../../dist/modular/css/grid.css" rel="stylesheet" type="text/css">
+  <script src="../../dist/modular/js/datepicker.js"></script>
+  <script src="../../dist/modular/js/timepicker.js"></script>
+  <script src="../../dist/modular/js/datetimepicker.js"></script>
+  <script src="../../dist/modular/js/grid.js"></script>
+</head>
+<body style="padding: 8px;">
+ <table id="grid"></table>
+ <script>
+     var grid, data = [
+         { 'ID': 1, 'Date': '05/15/2018', 'Time': '21:12', 'DateTime': '21:12 05/15/2018' },
+         { 'ID': 2, 'Date': '05/16/2018', 'Time': '22:12', 'DateTime': '22:12 05/16/2018' },
+         { 'ID': 3, 'Date': '05/17/2018', 'Time': '23:12', 'DateTime': '23:12 05/17/2018' }
+     ];
+     grid = $('#grid').grid({
+         dataSource: data,
+         primaryKey: 'ID',
+         inlineEditing: { mode: 'command' },
+         columns: [
+             { field: 'ID', width: 56 },
+             { field: 'Date', type: 'date', format: 'mm/dd/yyyy', editor: true },
+             { field: 'Time', type: 'time', format: 'HH:MM', editor: true },
+             { field: 'DateTime', type: 'datetime', format: 'HH:MM mm/dd/yyyy', editor: true }
+         ]
+     });
+ </script>
+</body>
+</html>

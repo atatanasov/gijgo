@@ -462,7 +462,7 @@ gj.grid.methods = {
     },
 
     formatText: function (text, column) {
-        if (text && column.type === 'date') {
+        if (text && ['date', 'time', 'datetime'].indexOf(column.type) > -1) {
             text = gj.core.formatDate(gj.core.parseDate(text, column.format), column.format);
         } else {
             text = (typeof (text) === 'undefined' || text === null) ? '' : text.toString();

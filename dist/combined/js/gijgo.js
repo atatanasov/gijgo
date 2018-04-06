@@ -2603,7 +2603,7 @@ gj.grid.config = {
 
             /** Indicates the type of the column.
              * @alias column.type
-             * @type text|checkbox|icon
+             * @type text|checkbox|icon|date|time|datetime
              * @default 'text'
              * @example Bootstrap.3.Icon <!-- grid, bootstrap -->
              * <table id="grid"></table>
@@ -4334,7 +4334,7 @@ gj.grid.methods = {
     },
 
     formatText: function (text, column) {
-        if (text && column.type === 'date') {
+        if (text && ['date', 'time', 'datetime'].indexOf(column.type) > -1) {
             text = gj.core.formatDate(gj.core.parseDate(text, column.format), column.format);
         } else {
             text = (typeof (text) === 'undefined' || text === null) ? '' : text.toString();
@@ -6223,6 +6223,26 @@ gj.grid.plugins.inlineEditing.config = {
              *         pager: { limit: 3 }
              *     });
              * </script>
+             * @example DateTime <!-- datetimepicker, grid -->
+             * <table id="grid"></table>
+             * <script>
+             *     var grid, data = [
+             *         { 'ID': 1, 'Date': '05/15/2018', 'Time': '21:12', 'DateTime': '21:12 05/15/2018' },
+             *         { 'ID': 2, 'Date': '05/16/2018', 'Time': '22:12', 'DateTime': '22:12 05/16/2018' },
+             *         { 'ID': 3, 'Date': '05/17/2018', 'Time': '23:12', 'DateTime': '23:12 05/17/2018' }
+             *     ];
+             *     grid = $('#grid').grid({
+             *         dataSource: data,
+             *         primaryKey: 'ID',
+             *         inlineEditing: { mode: 'command' },
+             *         columns: [
+             *             { field: 'ID', width: 56 },
+             *             { field: 'Date', type: 'date', format: 'mm/dd/yyyy', editor: true },
+             *             { field: 'Time', type: 'time', format: 'HH:MM', editor: true },
+             *             { field: 'DateTime', type: 'datetime', format: 'HH:MM mm/dd/yyyy', editor: true }
+             *         ]
+             *     });
+             * </script>
              */
             mode: 'click',
                 
@@ -6420,13 +6440,23 @@ gj.grid.plugins.inlineEditing.private = {
                             $editorField = $('<input type="checkbox" />').prop('checked', value);
                             $editorContainer.append($editorField);
                             $editorField.checkbox(config);
-                        } else if ('date' === column.type && gj.datepicker) {
+                        } else if (('date' === column.type && gj.datepicker) || ('time' === column.type && gj.timepicker) || ('datetime' === column.type && gj.datetimepicker)) {
                             $editorField = $('<input type="text" width="100%"/>');
                             $editorContainer.append($editorField);
                             if (column.format) {
                                 config.format = column.format;
                             }
-                            $editorField = $editorField.datepicker(config);
+                            switch (column.type) {
+                                case 'date':
+                                    $editorField = $editorField.datepicker(config);
+                                    break;
+                                case 'time':
+                                    $editorField = $editorField.timepicker(config);
+                                    break;
+                                case 'datetime':
+                                    $editorField = $editorField.datetimepicker(config);
+                                    break;
+                            }
                             if ($editorField.value) {
                                 $editorField.value($displayContainer.html());
                             }
@@ -16423,7 +16453,7 @@ gj.datetimepicker.methods = {
     },
 
     value: function ($datetimepicker, value) {
-        var $calendar, date, data = $datetimepicker.data();
+        var $calendar, date, hour, data = $datetimepicker.data();
         if (typeof (value) === "undefined") {
             return $datetimepicker.val();
         } else {
@@ -16431,6 +16461,13 @@ gj.datetimepicker.methods = {
             if (date) {
                 $calendar = $('body').find('[role="calendar"][guid="' + $datetimepicker.attr('data-guid') + '"]');
                 gj.datepicker.methods.dayClickHandler($datetimepicker, $calendar, data, date)();
+                // Set Time
+                hour = date.getHours();
+                if (data.mode === 'ampm') {
+                    $calendar.attr('mode', hour > 12 ? 'pm' : 'am');
+                }
+                $calendar.attr('hour', hour);
+                $calendar.attr('minute', date.getMinutes());
             } else {
                 $datetimepicker.val('');
             }

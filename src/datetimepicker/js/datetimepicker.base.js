@@ -405,7 +405,7 @@ gj.datetimepicker.methods = {
     },
 
     value: function ($datetimepicker, value) {
-        var $calendar, date, data = $datetimepicker.data();
+        var $calendar, date, hour, data = $datetimepicker.data();
         if (typeof (value) === "undefined") {
             return $datetimepicker.val();
         } else {
@@ -413,6 +413,13 @@ gj.datetimepicker.methods = {
             if (date) {
                 $calendar = $('body').find('[role="calendar"][guid="' + $datetimepicker.attr('data-guid') + '"]');
                 gj.datepicker.methods.dayClickHandler($datetimepicker, $calendar, data, date)();
+                // Set Time
+                hour = date.getHours();
+                if (data.mode === 'ampm') {
+                    $calendar.attr('mode', hour > 12 ? 'pm' : 'am');
+                }
+                $calendar.attr('hour', hour);
+                $calendar.attr('minute', date.getMinutes());
             } else {
                 $datetimepicker.val('');
             }

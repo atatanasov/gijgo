@@ -272,7 +272,7 @@ gj.grid.config = {
 
             /** Indicates the type of the column.
              * @alias column.type
-             * @type text|checkbox|icon
+             * @type text|checkbox|icon|date|time|datetime
              * @default 'text'
              * @example Bootstrap.3.Icon <!-- grid, bootstrap -->
              * <table id="grid"></table>

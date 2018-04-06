@@ -724,7 +724,7 @@ gj.grid.methods = {
     },
 
     formatText: function (text, column) {
-        if (text && column.type === 'date') {
+        if (text && ['date', 'time', 'datetime'].indexOf(column.type) > -1) {
             text = gj.core.formatDate(gj.core.parseDate(text, column.format), column.format);
         } else {
             text = (typeof (text) === 'undefined' || text === null) ? '' : text.toString();
@@ -1761,13 +1761,23 @@ gj.grid.plugins.inlineEditing.private = {
                             $editorField = $('<input type="checkbox" />').prop('checked', value);
                             $editorContainer.append($editorField);
                             $editorField.checkbox(config);
-                        } else if ('date' === column.type && gj.datepicker) {
+                        } else if (('date' === column.type && gj.datepicker) || ('time' === column.type && gj.timepicker) || ('datetime' === column.type && gj.datetimepicker)) {
                             $editorField = $('<input type="text" width="100%"/>');
                             $editorContainer.append($editorField);
                             if (column.format) {
                                 config.format = column.format;
                             }
-                            $editorField = $editorField.datepicker(config);
+                            switch (column.type) {
+                                case 'date':
+                                    $editorField = $editorField.datepicker(config);
+                                    break;
+                                case 'time':
+                                    $editorField = $editorField.timepicker(config);
+                                    break;
+                                case 'datetime':
+                                    $editorField = $editorField.datetimepicker(config);
+                                    break;
+                            }
                             if ($editorField.value) {
                                 $editorField.value($displayContainer.html());
                             }

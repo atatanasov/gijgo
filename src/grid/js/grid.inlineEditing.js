@@ -184,6 +184,26 @@ gj.grid.plugins.inlineEditing.config = {
              *         pager: { limit: 3 }
              *     });
              * </script>
+             * @example DateTime <!-- datetimepicker, grid -->
+             * <table id="grid"></table>
+             * <script>
+             *     var grid, data = [
+             *         { 'ID': 1, 'Date': '05/15/2018', 'Time': '21:12', 'DateTime': '21:12 05/15/2018' },
+             *         { 'ID': 2, 'Date': '05/16/2018', 'Time': '22:12', 'DateTime': '22:12 05/16/2018' },
+             *         { 'ID': 3, 'Date': '05/17/2018', 'Time': '23:12', 'DateTime': '23:12 05/17/2018' }
+             *     ];
+             *     grid = $('#grid').grid({
+             *         dataSource: data,
+             *         primaryKey: 'ID',
+             *         inlineEditing: { mode: 'command' },
+             *         columns: [
+             *             { field: 'ID', width: 56 },
+             *             { field: 'Date', type: 'date', format: 'mm/dd/yyyy', editor: true },
+             *             { field: 'Time', type: 'time', format: 'HH:MM', editor: true },
+             *             { field: 'DateTime', type: 'datetime', format: 'HH:MM mm/dd/yyyy', editor: true }
+             *         ]
+             *     });
+             * </script>
              */
             mode: 'click',
                 
@@ -381,13 +401,23 @@ gj.grid.plugins.inlineEditing.private = {
                             $editorField = $('<input type="checkbox" />').prop('checked', value);
                             $editorContainer.append($editorField);
                             $editorField.checkbox(config);
-                        } else if ('date' === column.type && gj.datepicker) {
+                        } else if (('date' === column.type && gj.datepicker) || ('time' === column.type && gj.timepicker) || ('datetime' === column.type && gj.datetimepicker)) {
                             $editorField = $('<input type="text" width="100%"/>');
                             $editorContainer.append($editorField);
                             if (column.format) {
                                 config.format = column.format;
                             }
-                            $editorField = $editorField.datepicker(config);
+                            switch (column.type) {
+                                case 'date':
+                                    $editorField = $editorField.datepicker(config);
+                                    break;
+                                case 'time':
+                                    $editorField = $editorField.timepicker(config);
+                                    break;
+                                case 'datetime':
+                                    $editorField = $editorField.datetimepicker(config);
+                                    break;
+                            }
                             if ($editorField.value) {
                                 $editorField.value($displayContainer.html());
                             }
