@@ -207,7 +207,22 @@ gj.slider.methods = {
         gj.documentManager.subscribeForEvent('mouseup', $slider.data('guid'), gj.slider.methods.createMouseUpHandler($slider, handle, data));
         handle.addEventListener('mousedown', gj.slider.methods.createMouseDownHandler(handle, data));
         gj.documentManager.subscribeForEvent('mousemove', $slider.data('guid'), gj.slider.methods.createMouseMoveHandler($slider, track, handle, progress, data));
-        
+
+        handle.addEventListener('click', function (e) { e.stopPropagation(); });
+        wrapper.addEventListener('click', gj.slider.methods.createClickHandler($slider, track, handle, data));
+    },
+
+    createClickHandler: function ($slider, track, handle, data) {
+        return function (e) {
+            var sliderPos, x, stepSize, newValue;
+            if (handle.getAttribute('drag') !== 'true') {
+                sliderPos = gj.core.position($slider[0], true, true);
+                x = new gj.widget().mouseX(e) - sliderPos.left;
+                stepSize = gj.core.width(track) / (data.max - data.min);
+                newValue = Math.round(x / stepSize) + data.min;
+                gj.slider.methods.value($slider, data, newValue);
+            }
+        };
     },
 
     createMouseUpHandler: function ($slider, handle, data) {
