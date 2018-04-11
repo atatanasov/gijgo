@@ -82,8 +82,10 @@ gj.slider.config = {
          *    });
          * </script>
          * @example Bootstrap.4 <!-- bootstrap4, slider -->
-         * <input id="slider" width="300" />
-         * Value: <span id="value"></span>
+         * <div class="container" />
+         *     <input id="slider" width="300" />
+         *     Value: <span id="value"></span>
+         * </div>
          * <script>
          *    $('#slider').slider({
          *        uiLibrary: 'bootstrap4',
@@ -214,12 +216,13 @@ gj.slider.methods = {
 
     createClickHandler: function ($slider, track, handle, data) {
         return function (e) {
-            var sliderPos, x, stepSize, newValue;
+            var sliderPos, x, offset, stepSize, newValue;
             if (handle.getAttribute('drag') !== 'true') {
-                sliderPos = gj.core.position($slider[0], true, true);
+                sliderPos = gj.core.position($slider[0].parentElement);
                 x = new gj.widget().mouseX(e) - sliderPos.left;
+                offset = gj.core.width(handle) / 2;
                 stepSize = gj.core.width(track) / (data.max - data.min);
-                newValue = Math.round(x / stepSize) + data.min;
+                newValue = Math.round((x - offset) / stepSize) + data.min;
                 gj.slider.methods.value($slider, data, newValue);
             }
         };
@@ -244,7 +247,7 @@ gj.slider.methods = {
         return function (e) {
             var sliderPos, x, trackWidth, offset, stepSize, valuePos, newValue;
             if (handle.getAttribute('drag') === 'true') {
-                sliderPos = gj.core.position($slider[0], true, true);
+                sliderPos = gj.core.position($slider[0].parentElement);
                 x = new gj.widget().mouseX(e) - sliderPos.left;
 
                 trackWidth = gj.core.width(track);

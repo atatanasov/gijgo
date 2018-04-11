@@ -17,6 +17,8 @@ They are designed to saves you time and scales with your development process.
 8. [Dropdown](http://gijgo.com/dropdown)
 9. [Datepicker](http://gijgo.com/datepicker)
 10. [Timepicker](http://gijgo.com/timepicker)
+11. [DateTimePicker](http://gijgo.com/datetimepicker)
+12. [Slider](http://gijgo.com/slider)
 
 
 ### Top Examples
@@ -30,5 +32,7 @@ They are designed to saves you time and scales with your development process.
 6. [Bootstrap Datepicker](http://gijgo.com/datepicker/example/bootstrap)
 7. [Bootstrap 4 Datepicker](http://gijgo.com/datepicker/example/bootstrap-4)
 8. [Bootstrap 4 Timepicker](http://gijgo.com/timepicker/example/bootstrap-4)
-9. [Bootstrap 4 Checkbox](http://gijgo.com/checkbox/example/bootstrap-4)
-10. [Bootstrap 4 Table](http://gijgo.com/grid/demos/bootstrap-4-table)
+9. [Bootstrap 4 DateTimePicker](http://gijgo.com/datetimepicker/example/bootstrap-4)
+10. [Bootstrap 4 Checkbox](http://gijgo.com/checkbox/example/bootstrap-4)
+11. [Bootstrap 4 Table](http://gijgo.com/grid/demos/bootstrap-4-table)
+12. [Bootstrap 4 Slider](http://gijgo.com/slider/demos/bootstrap-4)

@@ -547,28 +547,25 @@ gj.core = {
         }
     },
 
-    position: function (elem, padding, margin) {
-        var box = elem.getBoundingClientRect(),
-            boxStyle = window.getComputedStyle(elem),
-            body = document.body,
-            bodyStyle = window.getComputedStyle(body),
-            docEl = document.documentElement,
-            scrollTop = window.pageYOffset || docEl.scrollTop || body.scrollTop,
-            scrollLeft = window.pageXOffset || docEl.scrollLeft || body.scrollLeft,
-            clientTop = docEl.clientTop || body.clientTop || 0,
-            clientLeft = docEl.clientLeft || body.clientLeft || 0,
-            top = Math.round(box.top + scrollTop - clientTop - parseInt(boxStyle.marginTop || 0, 10)),
-            left = Math.round(box.left + scrollLeft - clientLeft - parseInt(boxStyle.marginLeft || 0, 10));
+    position: function (el) {
+        var xScroll, yScroll, left = 0, top = 0,
+            height = gj.core.height(el),
+            width = gj.core.width(el);
 
-        if (padding) {
-            top += parseInt(bodyStyle.paddingTop || 0, 10);
-            left += parseInt(bodyStyle.paddingLeft || 0, 10);
-        }
-        if (margin) {
-            top += parseInt(bodyStyle.marginTop || 0, 10);
-            left += parseInt(bodyStyle.marginLeft || 0, 10);
+        while (el) {
+            if (el.tagName == "BODY") {
+                xScroll = el.scrollLeft || document.documentElement.scrollLeft;
+                yScroll = el.scrollTop || document.documentElement.scrollTop;
+                left += (el.offsetLeft - xScroll + el.clientLeft);
+                top += (el.offsetTop - yScroll + el.clientTop);
+            } else {
+                left += (el.offsetLeft - el.scrollLeft + el.clientLeft);
+                top += (el.offsetTop - el.scrollTop + el.clientTop);
+            }
+
+            el = el.offsetParent;
         }
 
-        return { top: top, left: left, bottom: top + gj.core.height(elem), right: left + gj.core.width(elem) };
+        return { top: top, left: left, bottom: top + height, right: left + width };
     }
 };
