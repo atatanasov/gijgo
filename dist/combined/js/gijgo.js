@@ -554,22 +554,6 @@ gj.core = {
         }
     },
 
-    top: function (elem) {
-        var result = elem.offsetTop;
-        if (elem.parentElement) {
-            result += gj.core.top(elem.parentElement);
-        }
-        return result;
-    },
-
-    left: function (elem) {
-        var result = elem.offsetLeft;
-        if (elem.parentElement) {
-            result += gj.core.left(elem.parentElement);
-        }
-        return result;
-    },
-
     position: function (el) {
         var xScroll, yScroll, left = 0, top = 0,
             height = gj.core.height(el),
