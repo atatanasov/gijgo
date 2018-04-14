@@ -574,6 +574,25 @@ gj.core = {
         }
 
         return { top: top, left: left, bottom: top + height, right: left + width };
+    },
+
+    setCaretAtEnd: function (elem) {
+        var elemLen;
+        if (elem) {
+            elemLen = elem.value.length;
+            if (document.selection) { // For IE Only
+                elem.focus();
+                var oSel = document.selection.createRange();
+                oSel.moveStart('character', -elemLen);
+                oSel.moveStart('character', elemLen);
+                oSel.moveEnd('character', 0);
+                oSel.select();
+            } else if (elem.selectionStart || elem.selectionStart == '0') { // Firefox/Chrome                
+                elem.selectionStart = elemLen;
+                elem.selectionEnd = elemLen;
+                elem.focus();
+            }
+        }
     }
 };
 /* global window alert jQuery */
@@ -6487,7 +6506,7 @@ gj.grid.plugins.inlineEditing.private = {
                     }
                 }
                 if ($editorField.prop('tagName').toUpperCase() === "INPUT" && $editorField.prop('type').toUpperCase() === 'TEXT') {
-                    gj.grid.plugins.inlineEditing.private.setCaretAtEnd($editorField[0]);
+                    gj.core.setCaretAtEnd($editorField[0]);
                 } else {
                     $editorField.focus();
                 }
@@ -6497,25 +6516,6 @@ gj.grid.plugins.inlineEditing.private = {
                 $cell.find('[role="delete"]').hide();
                 $cell.find('[role="update"]').show();
                 $cell.find('[role="cancel"]').show();
-            }
-        }
-    },
-
-    setCaretAtEnd: function (elem) {
-        var elemLen;
-        if (elem) {
-            elemLen = elem.value.length;
-            if (document.selection) { // For IE Only
-                elem.focus();
-                var oSel = document.selection.createRange();
-                oSel.moveStart('character', -elemLen);
-                oSel.moveStart('character', elemLen);
-                oSel.moveEnd('character', 0);
-                oSel.select();
-            } else if (elem.selectionStart || elem.selectionStart == '0') { // Firefox/Chrome                
-                elem.selectionStart = elemLen;
-                elem.selectionEnd = elemLen;
-                elem.focus();
             }
         }
     },
@@ -16542,6 +16542,38 @@ gj.datetimepicker.widget = function ($element, jsConfig) {
      */
     self.value = function (value) {
         return methods.value(this, value);
+    };
+
+    /** Open the calendar.
+     * @method
+     * @return datetimepicker
+     * @example Open.Close <!-- datetimepicker -->
+     * <button class="gj-button-md" onclick="$picker.open()">Open</button>
+     * <button class="gj-button-md" onclick="$picker.close()">Close</button>
+     * <hr/>
+     * <input id="input" width="312" />
+     * <script>
+     *     var $picker = $('#input').datetimepicker();
+     * </script>
+     */
+    self.open = function () {
+        gj.datepicker.methods.open(this, this.data().datepicker);
+    };
+
+    /** Close the calendar.
+     * @method
+     * @return datetimepicker
+     * @example Open.Close <!-- datetimepicker -->
+     * <button class="gj-button-md" onclick="$picker.open()">Open</button>
+     * <button class="gj-button-md" onclick="$picker.close()">Close</button>
+     * <hr/>
+     * <input id="input" width="312" />
+     * <script>
+     *     var $picker = $('#input').datetimepicker();
+     * </script>
+     */
+    self.close = function () {
+        gj.datepicker.methods.close(this);
     };
 
     /** Remove datetimepicker functionality from the element.

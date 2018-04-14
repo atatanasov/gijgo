@@ -1811,7 +1811,7 @@ gj.grid.plugins.inlineEditing.private = {
                     }
                 }
                 if ($editorField.prop('tagName').toUpperCase() === "INPUT" && $editorField.prop('type').toUpperCase() === 'TEXT') {
-                    gj.grid.plugins.inlineEditing.private.setCaretAtEnd($editorField[0]);
+                    gj.core.setCaretAtEnd($editorField[0]);
                 } else {
                     $editorField.focus();
                 }
@@ -1821,25 +1821,6 @@ gj.grid.plugins.inlineEditing.private = {
                 $cell.find('[role="delete"]').hide();
                 $cell.find('[role="update"]').show();
                 $cell.find('[role="cancel"]').show();
-            }
-        }
-    },
-
-    setCaretAtEnd: function (elem) {
-        var elemLen;
-        if (elem) {
-            elemLen = elem.value.length;
-            if (document.selection) { // For IE Only
-                elem.focus();
-                var oSel = document.selection.createRange();
-                oSel.moveStart('character', -elemLen);
-                oSel.moveStart('character', elemLen);
-                oSel.moveEnd('character', 0);
-                oSel.select();
-            } else if (elem.selectionStart || elem.selectionStart == '0') { // Firefox/Chrome                
-                elem.selectionStart = elemLen;
-                elem.selectionEnd = elemLen;
-                elem.focus();
             }
         }
     },

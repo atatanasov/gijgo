@@ -489,6 +489,25 @@ gj.documentManager = {
         }
 
         return { top: top, left: left, bottom: top + height, right: left + width };
+    },
+
+    setCaretAtEnd: function (elem) {
+        var elemLen;
+        if (elem) {
+            elemLen = elem.value.length;
+            if (document.selection) { // For IE Only
+                elem.focus();
+                var oSel = document.selection.createRange();
+                oSel.moveStart('character', -elemLen);
+                oSel.moveStart('character', elemLen);
+                oSel.moveEnd('character', 0);
+                oSel.select();
+            } else if (elem.selectionStart || elem.selectionStart == '0') { // Firefox/Chrome                
+                elem.selectionStart = elemLen;
+                elem.selectionEnd = elemLen;
+                elem.focus();
+            }
+        }
     }
 };
 gj.core.messages['bg-bg'] = {

@@ -277,6 +277,14 @@ gj.datetimepicker.widget = function ($element, jsConfig) {
         return methods.value(this, value);
     };
 
+    /** Open the calendar.     */    self.open = function () {
+        gj.datepicker.methods.open(this, this.data().datepicker);
+    };
+
+    /** Close the calendar.     */    self.close = function () {
+        gj.datepicker.methods.close(this);
+    };
+
     /** Remove datetimepicker functionality from the element.     */    self.destroy = function () {
         return methods.destroy(this);
     };

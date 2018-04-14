@@ -499,6 +499,38 @@ gj.datetimepicker.widget = function ($element, jsConfig) {
         return methods.value(this, value);
     };
 
+    /** Open the calendar.
+     * @method
+     * @return datetimepicker
+     * @example Open.Close <!-- datetimepicker -->
+     * <button class="gj-button-md" onclick="$picker.open()">Open</button>
+     * <button class="gj-button-md" onclick="$picker.close()">Close</button>
+     * <hr/>
+     * <input id="input" width="312" />
+     * <script>
+     *     var $picker = $('#input').datetimepicker();
+     * </script>
+     */
+    self.open = function () {
+        gj.datepicker.methods.open(this, this.data().datepicker);
+    };
+
+    /** Close the calendar.
+     * @method
+     * @return datetimepicker
+     * @example Open.Close <!-- datetimepicker -->
+     * <button class="gj-button-md" onclick="$picker.open()">Open</button>
+     * <button class="gj-button-md" onclick="$picker.close()">Close</button>
+     * <hr/>
+     * <input id="input" width="312" />
+     * <script>
+     *     var $picker = $('#input').datetimepicker();
+     * </script>
+     */
+    self.close = function () {
+        gj.datepicker.methods.close(this);
+    };
+
     /** Remove datetimepicker functionality from the element.
      * @method
      * @return jquery element
