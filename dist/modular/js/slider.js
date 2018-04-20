@@ -21,6 +21,8 @@ gj.slider.config = {
 
         /** The maximum value of the Slider.         */        max: 100,
 
+        /** The width of the slider.         */        width: undefined,
+
         /** The orientation of a Slider: "horizontal" or "vertical".         */        // TODO orientation
 
         /** The name of the UI library that is going to be in use.         */        uiLibrary: 'materialdesign',

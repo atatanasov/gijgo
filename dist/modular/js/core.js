@@ -261,7 +261,7 @@ gj.documentManager = {
     },
 
     /**      */    parseDate: function (value, format, locale) {
-        var i, year = 0, month = 0, date = 0, hour = 0, minute = 0, dateParts, formatParts, result;
+        var i, year = 0, month = 0, date = 1, hour = 0, minute = 0, dateParts, formatParts, result;
 
         if (value && typeof value === 'string') {
             if (/^\d+$/.test(value)) {

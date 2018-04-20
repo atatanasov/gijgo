@@ -52,9 +52,18 @@ gj.colorpicker.config = {
          */
         value: undefined,
 
-        icons: {},
+        icons: {
+            rightIcon: '<i class="gj-icon">event</i>'
+        },
 
-        style: {}
+        style: {
+            modal: 'gj-modal',
+            wrapper: 'gj-colorpicker gj-colorpicker-md gj-unselectable',
+            input: 'gj-textbox-md',
+            picker: 'gj-picker gj-picker-md colorpicker gj-unselectable',
+            footer: '',
+            button: 'gj-button-md'
+        }
     },
 
     bootstrap: {
@@ -68,13 +77,51 @@ gj.colorpicker.config = {
 
 gj.colorpicker.methods = {
     init: function (jsConfig) {
-        gj.widget.prototype.init.call(this, jsConfig, 'colorpicker');
+        gj.picker.widget.prototype.init.call(this, jsConfig, 'colorpicker', gj.colorpicker.methods);
         this.attr('data-colorpicker', 'true');
         gj.colorpicker.methods.initialize(this);
         return this;
     },
 
     initialize: function ($colorpicker) {
+    },
+
+    createPicker: function ($input, data) {
+        var $picker = $('<div role="picker" />').addClass(data.style.picker).attr('guid', $input.attr('data-guid'));
+
+        $picker.html('test');
+
+        $picker.hide();
+        $('body').append($picker);
+
+        return $picker;
+    },
+
+    open: function ($widget) {
+        var data = $widget.data(),
+            $picker = $('body').find('[role="picker"][guid="' + $widget.attr('data-guid') + '"]');
+
+        if ($widget.val()) {
+            $widget.value($widget.val());
+        }
+
+        $picker.show();
+        $picker.closest('div[role="modal"]').show();
+        if (data.modal) {
+            gj.core.center($picker);
+        } else {
+            gj.core.setChildPosition($widget[0], $picker[0]);
+            $widget.focus();
+        }
+        clearTimeout($widget.timeout);
+        gj.colorpicker.events.open($widget);
+    },
+
+    close: function ($widget) {
+        var $picker = $('body').find('[role="picker"][guid="' + $widget.attr('data-guid') + '"]');
+        $picker.hide();
+        $picker.closest('div[role="modal"]').hide();
+        gj.colorpicker.events.close($widget);
     },
 
     destroy: function ($colorpicker) {
@@ -242,7 +289,7 @@ gj.colorpicker.widget = function ($element, jsConfig) {
     return $element;
 };
 
-gj.colorpicker.widget.prototype = new gj.widget();
+gj.colorpicker.widget.prototype = new gj.picker.widget();
 gj.colorpicker.widget.constructor = gj.colorpicker.widget;
 
 (function ($) {

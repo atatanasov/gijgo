@@ -1536,7 +1536,7 @@ gj.datepicker.widget = function ($element, jsConfig) {
      * </script>
      */
     self.open = function () {
-        gj.datepicker.methods.open(this, this.data());
+        return methods.open(this, this.data());
     };
 
     /** Close the calendar.
@@ -1552,7 +1552,7 @@ gj.datepicker.widget = function ($element, jsConfig) {
      * </script>
      */
     self.close = function () {
-        gj.datepicker.methods.close(this);
+        return methods.close(this);
     };
 
     $.extend($element, self);

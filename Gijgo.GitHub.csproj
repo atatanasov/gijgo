@@ -627,7 +627,9 @@
     <Content Include="src\checkbox\css\checkbox.base.css" />
     <Content Include="src\checkbox\js\checkbox.base.js" />
     <Content Include="src\checkbox\js\header.txt" />
+    <Content Include="src\colorpicker\css\colorpicker.base.css" />
     <Content Include="src\colorpicker\js\colorpicker.base.js" />
+    <Content Include="src\colorpicker\js\header.txt" />
     <Content Include="src\datepicker\css\datepicker.base.css" />
     <Content Include="src\datepicker\js\datepicker.base.js" />
     <Content Include="src\datepicker\js\header.txt" />
@@ -750,6 +752,7 @@
     <Content Include="src\icons\vertical-align-bottom.svg" />
     <Content Include="src\icons\vertical-align-center.svg" />
     <Content Include="src\icons\vertical-align-top.svg" />
+    <Content Include="src\picker\js\picker.base.js" />
     <Content Include="src\slider\css\slider.base.css" />
     <Content Include="src\slider\js\header.txt" />
     <Content Include="src\slider\js\slider.base.js" />
@@ -771,7 +774,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />
-    <Folder Include="src\colorpicker\css\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="src\dialog\js\dialog.base.config.js" />

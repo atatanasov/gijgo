@@ -13,11 +13,9 @@
   <script src="../../dist/modular/js/colorpicker.js"></script>
 </head>
 <body style="padding: 8px;">
- <button class="gj-button-md" onclick="alert($slider.value())">Get Value</button>
- <hr/>
- <input id="slider" width="300" />
+ <input id="slider" />
  <script>
-     var $slider = $('#slider').slider();
+    $('#slider').slider({ width: 400 });
  </script>
 </body>
 </html>

@@ -49,6 +49,22 @@ gj.slider.config = {
          */
         max: 100,
 
+        /** The width of the slider.
+         * @type number
+         * @default undefined
+         * @example JS.Config <!-- slider -->
+         * <input id="slider" />
+         * <script>
+         *    $('#slider').slider({ width: 400 });
+         * </script>
+         * @example HTML.Config <!-- slider -->
+         * <input id="slider" width="400" />
+         * <script>
+         *    $('#slider').slider();
+         * </script>
+         */
+        width: undefined,
+
         /** The orientation of a Slider: "horizontal" or "vertical".
          * @type (horizontal|vertical)
          * @default horizontal

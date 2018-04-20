@@ -1,0 +1,7 @@
+﻿/*
+ * Gijgo ColorPicker v1.9.6
+ * http://gijgo.com/colorpicker
+ *
+ * Copyright 2014, 2018 gijgo.com
+ * Released under the MIT license
+ */

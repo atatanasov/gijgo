@@ -133,7 +133,7 @@ gj.dropdown.config = {
         maxHeight: 'auto',
 
         /** Placeholder. This label appear only if the value is not set yet.
-         * @type number
+         * @type string
          * @default undefined
          * @example JS.Config <!-- dropdown -->
          * <select id="dropdown"></select>
