@@ -14914,11 +14914,9 @@ gj.datepicker.methods = {
             return $datepicker.val();
         } else {
             date = gj.core.parseDate(value, data.format, data.locale);
-            if (date) {
+            if (date && date.getTime()) {
                 $calendar = $('body').find('[role="calendar"][guid="' + $datepicker.attr('data-guid') + '"]');
                 gj.datepicker.methods.dayClickHandler($datepicker, $calendar, data, date)();
-            } else {
-                $datepicker.val('');
             }            
             return $datepicker;
         }
