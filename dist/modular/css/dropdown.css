@@ -59,7 +59,7 @@
     background-color: #f5f5f5;
     color: #000;
     margin: 0px;
-    z-index: 1202;
+    z-index: 1203;
 }
 
 .gj-dropdown-list-md li:hover, .gj-dropdown-list-md li.active {
@@ -119,5 +119,5 @@
     top: 32px;
     left: 0px;
     margin: 0px;
-    z-index: 1202;
+    z-index: 1203;
 }

@@ -9,7 +9,7 @@
 
 .gj-slider [role="progress"] {
     position: absolute;
-    z-index: 1001;
+    z-index: 1203;
 }
 
 .gj-slider [role="handle"] {
@@ -66,7 +66,7 @@
     border: 0px solid transparent;
     border-radius: 50%;
     cursor: pointer;
-    z-index: 1002;
+    z-index: 1204;
 }
 
 /* Bootstrap */
@@ -95,7 +95,7 @@
     border: 0px solid transparent;
     border-radius: 50%;
     cursor: pointer;
-    z-index: 1002;
+    z-index: 1204;
 }
 
 .gj-slider-bootstrap-3 [role="handle"] {

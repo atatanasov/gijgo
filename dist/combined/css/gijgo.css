@@ -318,7 +318,7 @@ ul.gj-list-md li.disabled>[data-role="wrapper"]>[data-role="display"] {
 /* Picker */
 .gj-picker {
     position: absolute;
-    z-index: 1202;
+    z-index: 1203;
     background-color: #fff;
 }
 
@@ -1109,7 +1109,7 @@ span.gj-grid-column-resizer {
     width: 10px;
     top: -100px;
     height: 300px;
-    z-index: 1202;
+    z-index: 1203;
     cursor: e-resize;
 }
 
@@ -1845,7 +1845,7 @@ ul.gj-list-md li.disabled > [data-role="wrapper"] > [data-role="expander"] {
     background-color: #f5f5f5;
     color: #000;
     margin: 0px;
-    z-index: 1202;
+    z-index: 1203;
 }
 
 .gj-dropdown-list-md li:hover, .gj-dropdown-list-md li.active {
@@ -1905,7 +1905,7 @@ ul.gj-list-md li.disabled > [data-role="wrapper"] > [data-role="expander"] {
     top: 32px;
     left: 0px;
     margin: 0px;
-    z-index: 1202;
+    z-index: 1203;
 }
 .gj-datepicker [role="input"]::-ms-clear {
     display: none;

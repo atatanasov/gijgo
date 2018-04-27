@@ -318,7 +318,7 @@ ul.gj-list-md li.disabled>[data-role="wrapper"]>[data-role="display"] {
 /* Picker */
 .gj-picker {
     position: absolute;
-    z-index: 1202;
+    z-index: 1203;
     background-color: #fff;
 }
 

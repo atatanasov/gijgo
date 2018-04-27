@@ -487,10 +487,11 @@
     <Content Include="examples\slider\Slider.Base.value.Set.html" />
     <Content Include="examples\tests\ajax-sourced-data.html" />
     <Content Include="examples\tests\tempdatepicker.html" />
+    <Content Include="examples\tests\tempdialog.html" />
     <Content Include="examples\tests\tempeditor.html" />
-    <Content Include="examples\tests\timepicker-positions.html" />
-    <Content Include="examples\tests\datepicker-positions.html" />
-    <Content Include="examples\tests\dropdown-positions.html" />
+    <Content Include="examples\tests\positions-timepicker.html" />
+    <Content Include="examples\tests\positions-datepicker.html" />
+    <Content Include="examples\tests\positions-dropdown.html" />
     <Content Include="examples\tests\tempgrid.html" />
     <Content Include="examples\tests\temptree.html" />
     <Content Include="examples\timepicker\index.html" />
