@@ -594,6 +594,30 @@ gj.tree.widget = function ($element, jsConfig) {
     };
 
     /**
+     * Return an array with the names of all parents.
+     * @method
+     * @param {String} id - The id of the target node
+     * @return array
+     * @example sample <!-- tree -->
+     * Location: <div id="location" style="display: inline-block;"></div>
+     * <div id="tree"></div>
+     * <script>
+     *     var tree = $('#tree').tree({
+     *         dataSource: '/Locations/Get',
+     *         select: function (e, node, id) {
+     *             var parents = tree.parents(id);
+     *             $('#location').text(parents.join(' / ') + ' / ' + tree.getDataById(id).text);
+     *         }
+     *     });
+     * </script>
+     */
+    self.parents = function (id) {
+        var parents = [], data = this.data();
+        methods.pathFinder(data, data.records, id, parents);
+        return parents.reverse();
+    };
+
+    /**
      * Enable node from the tree.
      * @method
      * @param {Object} node - The node as jquery object.

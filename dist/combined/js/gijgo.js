@@ -10534,6 +10534,23 @@ gj.tree.methods = {
             $tree.removeClass().empty();
         }
         return $tree;
+    },
+
+    pathFinder: function (data, list, id, parents) {
+        var i, result = false;
+
+        for (i = 0; i < list.length; i++) {
+            if (list[i].id == id) {
+                result = true;
+                break;
+            } else if (gj.tree.methods.pathFinder(data, list[i].children, id, parents)) {
+                parents.push(list[i].data[data.textField]);
+                result = true;
+                break;
+            }
+        }
+
+        return result;
     }
 }
 /**
@@ -11129,6 +11146,30 @@ gj.tree.widget = function ($element, jsConfig) {
      */
     self.getChildren = function ($node, cascade) {
         return methods.getChildren(this, $node, cascade);
+    };
+
+    /**
+     * Return an array with the names of all parents.
+     * @method
+     * @param {String} id - The id of the target node
+     * @return array
+     * @example sample <!-- tree -->
+     * Location: <div id="location" style="display: inline-block;"></div>
+     * <div id="tree"></div>
+     * <script>
+     *     var tree = $('#tree').tree({
+     *         dataSource: '/Locations/Get',
+     *         select: function (e, node, id) {
+     *             var parents = tree.parents(id);
+     *             $('#location').text(parents.join(' / ') + ' / ' + tree.getDataById(id).text);
+     *         }
+     *     });
+     * </script>
+     */
+    self.parents = function (id) {
+        var parents = [], data = this.data();
+        methods.pathFinder(data, data.records, id, parents);
+        return parents.reverse();
     };
 
     /**

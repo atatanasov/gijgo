@@ -507,5 +507,22 @@ gj.tree.methods = {
             $tree.removeClass().empty();
         }
         return $tree;
+    },
+
+    pathFinder: function (data, list, id, parents) {
+        var i, result = false;
+
+        for (i = 0; i < list.length; i++) {
+            if (list[i].id == id) {
+                result = true;
+                break;
+            } else if (gj.tree.methods.pathFinder(data, list[i].children, id, parents)) {
+                parents.push(list[i].data[data.textField]);
+                result = true;
+                break;
+            }
+        }
+
+        return result;
     }
 }
