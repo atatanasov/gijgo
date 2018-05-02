@@ -51,8 +51,11 @@ gj.tree.plugins.lazyLoading = {
                     response = JSON.parse(response);
                 }
                 if (response && response.length) {
-                    $list = $('<ul />').addClass(data.style.list);
-                    $node.append($list);
+                    $list = $node.children('ul');
+                    if ($list.length === 0) {
+                        $list = $('<ul />').addClass(data.style.list);
+                        $node.append($list);
+                    }
                     for (i = 0; i < response.length; i++) {
                         $tree.addNode(response[i], $list);
                     }

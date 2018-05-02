@@ -7,19 +7,26 @@
     <script src="../../dist/combined/js/gijgo.js"></script>
 </head>
 <body>
-    <button onclick="tree.addNode({ Title: 'node1'})">Add node1</button>
+    <button onclick="add()">Add node1</button>
     <button onclick="tree.addNode({ Title: 'node1-1' }, tree.getNodeByText('node1'))">Add node1-1</button>
     <button onclick="alert(tree.getNodeByText('node1').html())">Get node1</button>
     <div id="tree"></div>
     <script>
+        var tree;
         $(document).ready(function () {
-            $('#tree').tree({
+            tree = $('#tree').tree({
                 primaryKey: 'id',
                 dataSource: '/Locations/LazyGet',
-                lazyLoading: true,
-                checkboxes: true
+                lazyLoading: true
             });
         });
+        function add() {
+            var nodeId = tree.getSelections()[0];
+            var parent = tree.getNodeById(nodeId);
+            tree.expand(parent);
+            tree.addNode({ id: 77, text: "new folder", url: "", lazy: true, icon: "" }, parent);
+        }
+
     </script>
 </body>
 </html>
