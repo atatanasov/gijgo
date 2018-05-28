@@ -76,11 +76,6 @@ gj.picker.methods = {
                 $input.focus();
             });
         }
-
-        // Picker Specific
-        //if (data.keyboardNavigation) {
-        //    $(document).on('keydown', gj.datepicker.methods.createKeyDownHandler($input, $calendar, data));
-        //}
     }
 };
 
@@ -102,6 +97,52 @@ gj.picker.widget.constructor = gj.picker.widget;
 gj.picker.widget.prototype.init = function (jsConfig, type, methods) {
     gj.widget.prototype.init.call(this, jsConfig, type);
     this.attr('data-' + type, 'true');
-    gj.picker.methods.initialize(this, this.data(), methods);
+    gj.picker.methods.initialize(this, this.data(), gj[type].methods);
+    return this;
+};
+
+gj.picker.widget.prototype.open = function (type) {
+    var data = this.data(),
+        $picker = $('body').find('[role="picker"][guid="' + this.attr('data-guid') + '"]');
+
+    $picker.show();
+    $picker.closest('div[role="modal"]').show();
+    if (data.modal) {
+        gj.core.center($picker);
+    } else {
+        gj.core.setChildPosition(this[0], $picker[0]);
+        this.focus();
+    }
+    clearTimeout(this.timeout);
+
+    gj[type].events.open(this);
+
+    return this;
+};
+
+gj.picker.widget.prototype.close = function (type) {
+    var $picker = $('body').find('[role="picker"][guid="' + this.attr('data-guid') + '"]');
+    $picker.hide();
+    $picker.closest('div[role="modal"]').hide();
+    gj[type].events.close(this);
+    return this;
+};
+
+gj.picker.widget.prototype.destroy = function (type) {
+    var data = this.data(),
+        $parent = this.parent(),
+        $picker = $('body').find('[role="picker"][guid="' + this.attr('data-guid') + '"]');
+    if (data) {
+        this.off();
+        if ($picker.parent('[role="modal"]').length > 0) {
+            $picker.unwrap();
+        }
+        $picker.remove();
+        this.removeData();
+        this.removeAttr('data-type').removeAttr('data-guid').removeAttr('data-' + type);
+        this.removeClass();
+        $parent.children('[role="right-icon"]').remove();
+        this.unwrap();
+    }
     return this;
 };

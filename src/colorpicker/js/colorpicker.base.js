@@ -77,8 +77,7 @@ gj.colorpicker.config = {
 
 gj.colorpicker.methods = {
     init: function (jsConfig) {
-        gj.picker.widget.prototype.init.call(this, jsConfig, 'colorpicker', gj.colorpicker.methods);
-        this.attr('data-colorpicker', 'true');
+        gj.picker.widget.prototype.init.call(this, jsConfig, 'colorpicker');
         gj.colorpicker.methods.initialize(this);
         return this;
     },
@@ -97,42 +96,11 @@ gj.colorpicker.methods = {
         return $picker;
     },
 
-    open: function ($widget) {
-        var data = $widget.data(),
-            $picker = $('body').find('[role="picker"][guid="' + $widget.attr('data-guid') + '"]');
-
-        if ($widget.val()) {
-            $widget.value($widget.val());
+    open: function ($input) {
+        if ($input.val()) {
+            $input.value($input.val());
         }
-
-        $picker.show();
-        $picker.closest('div[role="modal"]').show();
-        if (data.modal) {
-            gj.core.center($picker);
-        } else {
-            gj.core.setChildPosition($widget[0], $picker[0]);
-            $widget.focus();
-        }
-        clearTimeout($widget.timeout);
-        gj.colorpicker.events.open($widget);
-    },
-
-    close: function ($widget) {
-        var $picker = $('body').find('[role="picker"][guid="' + $widget.attr('data-guid') + '"]');
-        $picker.hide();
-        $picker.closest('div[role="modal"]').hide();
-        gj.colorpicker.events.close($widget);
-    },
-
-    destroy: function ($colorpicker) {
-        var data = $colorpicker.data();
-        if (data) {
-            $colorpicker.off();
-            $colorpicker.removeData();
-            $colorpicker.removeAttr('data-type').removeAttr('data-guid').removeAttr('data-colorpicker');
-            $colorpicker.removeClass();
-        }
-        return $colorpicker;
+        return gj.picker.widget.prototype.open.call($input, 'colorpicker');
     }
 };
 
@@ -250,7 +218,7 @@ gj.colorpicker.widget = function ($element, jsConfig) {
      * </script>
      */
     self.destroy = function () {
-        return methods.destroy(this);
+        return gj.picker.widget.prototype.destroy.call(this, 'colorpicker');
     };
 
     /** Opens the popup element with the color selector.
@@ -278,7 +246,7 @@ gj.colorpicker.widget = function ($element, jsConfig) {
      * </script>
      */
     self.close = function () {
-        return methods.close(this);
+        return gj.picker.widget.prototype.close.call(this, 'colorpicker');
     };
 
     $.extend($element, self);
