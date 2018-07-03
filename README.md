@@ -35,5 +35,5 @@ They are designed to saves you time and scales with your development process.
 9. [Bootstrap 4 Timepicker](http://gijgo.com/timepicker/example/bootstrap-4)
 10. [Bootstrap 4 DateTimePicker](http://gijgo.com/datetimepicker/example/bootstrap-4)
 11. [Bootstrap 4 Checkbox](http://gijgo.com/checkbox/example/bootstrap-4)
-12. [Bootstrap 4 Table] (http://gijgo.com/grid/demos/bootstrap-4-table)
+12. [Bootstrap 4 Table](http://gijgo.com/grid/demos/bootstrap-4-table)
 13. [Bootstrap 4 Slider](http://gijgo.com/slider/example/bootstrap-4)
