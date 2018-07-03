@@ -113,25 +113,25 @@
             },
             colorpicker: {
                 files: {
-                    'dist/modular/js/colorpicker.code.js': ['src/picker/js/picker.base.js', 'src/colorpicker/js/colorpicker.base.js'],
+                    'dist/modular/js/colorpicker.code.js': ['src/colorpicker/js/colorpicker.base.js'],
                     'dist/modular/css/colorpicker.code.css': ['src/colorpicker/css/colorpicker.base.css']
                 }
             },
             final: {
                 files: {
-                    'dist/modular/js/core.js': ['src/header.txt', 'src/core/js/core.js', 'src/core/js/messages/messages.bg-bg.js', 'src/core/js/messages/messages.fr-fr.js', 'src/core/js/messages/messages.de-de.js', 'src/core/js/messages/messages.pt-br.js', 'src/core/js/messages/messages.ru-ru.js', 'src/core/js/messages/messages.es-es.js', 'src/core/js/messages/messages.it-it.js'],
+                    'dist/modular/js/core.js': ['src/header.txt', 'src/core/js/core.js', 'src/picker/js/picker.base.js', 'src/core/js/messages/messages.bg-bg.js', 'src/core/js/messages/messages.fr-fr.js', 'src/core/js/messages/messages.de-de.js', 'src/core/js/messages/messages.pt-br.js', 'src/core/js/messages/messages.ru-ru.js', 'src/core/js/messages/messages.es-es.js', 'src/core/js/messages/messages.it-it.js', 'src/core/js/messages/messages.tr-tr.js'],
                     'dist/modular/css/core.css': ['src/core/css/core.css', 'src/icons/icons.css'],
                     'dist/modular/js/draggable.js': ['src/draggable/js/header.txt', 'dist/modular/js/draggable.code.js'],
                     'dist/modular/js/droppable.js': ['src/droppable/js/header.txt', 'dist/modular/js/droppable.code.js'],
-                    'dist/modular/js/dialog.js': ['src/dialog/js/header.txt', 'dist/modular/js/dialog.code.js', 'src/dialog/js/messages/messages.bg-bg.js', 'src/dialog/js/messages/messages.fr-fr.js', 'src/dialog/js/messages/messages.de-de.js', 'src/dialog/js/messages/messages.pt-br.js', 'src/dialog/js/messages/messages.ru-ru.js', 'src/dialog/js/messages/messages.es-es.js', 'src/dialog/js/messages/messages.it-it.js'],
+                    'dist/modular/js/dialog.js': ['src/dialog/js/header.txt', 'dist/modular/js/dialog.code.js', 'src/dialog/js/messages/messages.bg-bg.js', 'src/dialog/js/messages/messages.fr-fr.js', 'src/dialog/js/messages/messages.de-de.js', 'src/dialog/js/messages/messages.pt-br.js', 'src/dialog/js/messages/messages.ru-ru.js', 'src/dialog/js/messages/messages.es-es.js', 'src/dialog/js/messages/messages.it-it.js', 'src/dialog/js/messages/messages.tr-tr.js'],
                     'dist/modular/css/dialog.css': ['dist/modular/css/dialog.code.css'],
-                    'dist/modular/js/grid.js': ['src/grid/js/header.txt', 'dist/modular/js/grid.code.js', 'src/grid/js/messages/messages.bg-bg.js', 'src/grid/js/messages/messages.fr-fr.js', 'src/grid/js/messages/messages.de-de.js', 'src/grid/js/messages/messages.pt-br.js', 'src/grid/js/messages/messages.ru-ru.js', 'src/grid/js/messages/messages.es-es.js', 'src/grid/js/messages/messages.it-it.js'],
+                    'dist/modular/js/grid.js': ['src/grid/js/header.txt', 'dist/modular/js/grid.code.js', 'src/grid/js/messages/messages.bg-bg.js', 'src/grid/js/messages/messages.fr-fr.js', 'src/grid/js/messages/messages.de-de.js', 'src/grid/js/messages/messages.pt-br.js', 'src/grid/js/messages/messages.ru-ru.js', 'src/grid/js/messages/messages.es-es.js', 'src/grid/js/messages/messages.it-it.js', 'src/grid/js/messages/messages.tr-tr.js'],
                     'dist/modular/css/grid.css': ['dist/modular/css/grid.code.css'],
                     'dist/modular/js/tree.js': ['src/tree/js/header.txt', 'dist/modular/js/tree.code.js'],
                     'dist/modular/css/tree.css': ['dist/modular/css/tree.code.css'],
                     'dist/modular/js/checkbox.js': ['src/checkbox/js/header.txt', 'dist/modular/js/checkbox.code.js'],
                     'dist/modular/css/checkbox.css': ['dist/modular/css/checkbox.code.css'],
-                    'dist/modular/js/editor.js': ['src/editor/js/header.txt', 'dist/modular/js/editor.code.js', 'src/editor/js/messages/messages.bg-bg.js', 'src/editor/js/messages/messages.fr-fr.js', 'src/editor/js/messages/messages.de-de.js', 'src/editor/js/messages/messages.pt-br.js', 'src/editor/js/messages/messages.ru-ru.js', 'src/editor/js/messages/messages.es-es.js', 'src/editor/js/messages/messages.it-it.js'],
+                    'dist/modular/js/editor.js': ['src/editor/js/header.txt', 'dist/modular/js/editor.code.js', 'src/editor/js/messages/messages.bg-bg.js', 'src/editor/js/messages/messages.fr-fr.js', 'src/editor/js/messages/messages.de-de.js', 'src/editor/js/messages/messages.pt-br.js', 'src/editor/js/messages/messages.ru-ru.js', 'src/editor/js/messages/messages.es-es.js', 'src/editor/js/messages/messages.it-it.js', 'src/editor/js/messages/messages.tr-tr.js'],
                     'dist/modular/css/editor.css': ['dist/modular/css/editor.code.css'],
                     'dist/modular/js/dropdown.js': ['src/dropdown/js/header.txt', 'dist/modular/js/dropdown.code.js'],
                     'dist/modular/css/dropdown.css': ['dist/modular/css/dropdown.code.css'],
@@ -154,7 +154,8 @@
                     'dist/combined/js/messages/messages.pt-br.js': ['src/dialog/js/messages/messages.pt-br.js', 'src/grid/js/messages/messages.pt-br.js', 'src/editor/js/messages/messages.pt-br.js', 'src/core/js/messages/messages.pt-br.js'],
                     'dist/combined/js/messages/messages.ru-ru.js': ['src/dialog/js/messages/messages.ru-ru.js', 'src/grid/js/messages/messages.ru-ru.js', 'src/editor/js/messages/messages.ru-ru.js', 'src/core/js/messages/messages.ru-ru.js'],
                     'dist/combined/js/messages/messages.es-es.js': ['src/dialog/js/messages/messages.es-es.js', 'src/grid/js/messages/messages.es-es.js', 'src/editor/js/messages/messages.es-es.js', 'src/core/js/messages/messages.es-es.js'],
-                    'dist/combined/js/messages/messages.it-it.js': ['src/dialog/js/messages/messages.it-it.js', 'src/grid/js/messages/messages.it-it.js', 'src/editor/js/messages/messages.it-it.js', 'src/core/js/messages/messages.it-it.js']
+                    'dist/combined/js/messages/messages.it-it.js': ['src/dialog/js/messages/messages.it-it.js', 'src/grid/js/messages/messages.it-it.js', 'src/editor/js/messages/messages.it-it.js', 'src/core/js/messages/messages.it-it.js'],
+                    'dist/combined/js/messages/messages.tr-tr.js': ['src/dialog/js/messages/messages.tr-tr.js', 'src/grid/js/messages/messages.tr-tr.js', 'src/editor/js/messages/messages.tr-tr.js', 'src/core/js/messages/messages.tr-tr.js']
                 }
             }
         },
@@ -202,7 +203,8 @@
                     { 'dist/combined/js/messages/messages.pt-br.min.js': ['dist/combined/js/messages/messages.pt-br.js'] },
                     { 'dist/combined/js/messages/messages.ru-ru.min.js': ['dist/combined/js/messages/messages.ru-ru.js'] },
                     { 'dist/combined/js/messages/messages.es-es.min.js': ['dist/combined/js/messages/messages.es-es.js'] },
-                    { 'dist/combined/js/messages/messages.it-it.min.js': ['dist/combined/js/messages/messages.it-it.js'] }
+                    { 'dist/combined/js/messages/messages.it-it.min.js': ['dist/combined/js/messages/messages.it-it.js'] },
+                    { 'dist/combined/js/messages/messages.tr-tr.min.js': ['dist/combined/js/messages/messages.tr-tr.js'] }
                 ]
             },
             modular: {
