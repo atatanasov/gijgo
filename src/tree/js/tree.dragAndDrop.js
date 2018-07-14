@@ -189,10 +189,10 @@ gj.tree.plugins.dragAndDrop = {
                 $wrappers = gj.tree.plugins.dragAndDrop.private.getTargetWrappers($tree, $sourceNode),
 	            data = $tree.data();
 	        return function (e, mousePosition) {
-	            var success = false;
+                var success = false, record, $targetNode, $sourceParentNode;
 	            $(this).draggable('destroy').remove();
 	            $displays.each(function () {
-	                var $targetDisplay = $(this), $targetNode, $sourceParentNode, $ul;
+	                var $targetDisplay = $(this), $ul;
 	                if ($targetDisplay.droppable('isOver', mousePosition)) {
 	                    $targetNode = $targetDisplay.closest('li');
 	                    $sourceParentNode = $sourceNode.parent('ul').parent('li');
@@ -202,7 +202,14 @@ gj.tree.plugins.dragAndDrop = {
 	                        $targetNode.append($ul);
 	                    }
 	                    if (gj.tree.plugins.dragAndDrop.events.nodeDrop($tree, $sourceNode.data('id'), $targetNode.data('id'), $ul.children('li').length + 1) !== false) {
-	                        $ul.append($sourceNode);
+                            $ul.append($sourceNode);
+
+                            //BEGIN: Change node position inside the backend data
+                            record = $tree.getDataById($sourceNode.data('id'));
+                            gj.tree.methods.removeDataById($tree, $sourceNode.data('id'), data.records);
+                            $tree.getDataById($ul.parent().data('id'))[data.childrenField].push(record);
+                            //END
+
 	                        gj.tree.plugins.dragAndDrop.private.refresh($tree, $sourceNode, $targetNode, $sourceParentNode);
 	                    }
 	                    success = true;
@@ -212,20 +219,27 @@ gj.tree.plugins.dragAndDrop = {
 	            });
 	            if (!success) {
 	                $wrappers.each(function () {
-	                    var $targetWrapper = $(this), $targetNode, $sourceParentNode, prepend, orderNumber, sourceNodeId;
+	                    var $targetWrapper = $(this), prepend, orderNumber, sourceNodeId;
 	                    if ($targetWrapper.droppable('isOver', mousePosition)) {
 	                        $targetNode = $targetWrapper.closest('li');
 	                        $sourceParentNode = $sourceNode.parent('ul').parent('li');
-	                        prepend = mousePosition.top < ($targetWrapper.position().top + ($targetWrapper.outerHeight() / 2));
+	                        prepend = mousePosition.y < ($targetWrapper.position().top + ($targetWrapper.outerHeight() / 2));
 	                        sourceNodeId = $sourceNode.data('id');
 	                        orderNumber = $targetNode.prevAll('li:not([data-id="' + sourceNodeId + '"])').length + (prepend ? 1 : 2);
-	                        if (gj.tree.plugins.dragAndDrop.events.nodeDrop($tree, sourceNodeId, $targetNode.parent('ul').parent('li').data('id'), orderNumber) !== false) {
+                            if (gj.tree.plugins.dragAndDrop.events.nodeDrop($tree, sourceNodeId, $targetNode.parent('ul').parent('li').data('id'), orderNumber) !== false) {
+                                //BEGIN: Change node position inside the backend data
+                                record = $tree.getDataById($sourceNode.data('id'));
+                                gj.tree.methods.removeDataById($tree, $sourceNode.data('id'), data.records);
+                                $tree.getDataById($targetNode.parent().data('id'))[data.childrenField].splice($targetNode.index() + (prepend ? 0 : 1), 0, record);
+                                //END
+
 	                            if (prepend) {
-	                                $sourceNode.insertBefore($targetNode);
+                                    $sourceNode.insertBefore($targetNode);
 	                            } else {
 	                                $sourceNode.insertAfter($targetNode);
-	                            }
-	                            gj.tree.plugins.dragAndDrop.private.refresh($tree, $sourceNode, $targetNode, $sourceParentNode);
+                                }
+
+                                gj.tree.plugins.dragAndDrop.private.refresh($tree, $sourceNode, $targetNode, $sourceParentNode);
 	                        }
 	                        return false;
 	                    }

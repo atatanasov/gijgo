@@ -435,7 +435,7 @@ gj.tree.widget = function ($element, jsConfig) {
      * </script>
      */
     self.getAll = function () {
-        return methods.getAll(this, this.data('records'));
+        return this.data('records');
     };
 
     /**

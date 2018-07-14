@@ -2,22 +2,26 @@
 <head>
     <meta charset="utf-8" />
     <title>Treeview Example</title>
-    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
-    <link href="../../dist/combined/css/gijgo.css" rel="stylesheet" type="text/css">
-    <script src="../../dist/combined/js/gijgo.js"></script>
+    <script src="../../dist/libraries/jquery/jquery.min.js"></script>
+    <link href="../../dist/modular/css/core.css" rel="stylesheet" type="text/css">
+    <link href="../../dist/modular/css/tree.css" rel="stylesheet" type="text/css">
+    <script src="../../dist/modular/js/core.js"></script>
+    <script src="../../dist/modular/js/draggable.js"></script>
+    <script src="../../dist/modular/js/droppable.js"></script>
+    <script src="../../dist/modular/js/tree.js"></script>
 </head>
 <body>
-    <button onclick="add()">Add node1</button>
-    <button onclick="tree.addNode({ Title: 'node1-1' }, tree.getNodeByText('node1'))">Add node1-1</button>
-    <button onclick="alert(tree.getNodeByText('node1').html())">Get node1</button>
+    <button onclick="alert(JSON.stringify(tree.getAll()))">get all</button>
+    <button onclick="tree.addNode({ text: 'node1-1' }, tree.getNodeByText('node1'))">Add node1-1</button>
+    <button onclick="alert(tree.getNodeByText('node1-1').html())">Get node1</button>
     <div id="tree"></div>
     <script>
         var tree;
         $(document).ready(function () {
             tree = $('#tree').tree({
                 primaryKey: 'id',
-                dataSource: '/Locations/LazyGet',
-                lazyLoading: true
+                dataSource: '/Locations/Get',
+                dragAndDrop: true
             });
         });
         function add() {

@@ -10,12 +10,12 @@ table.gj-grid-md.gj-grid-scrollable {
 }
 
 table.gj-grid-md.gj-grid-scrollable tbody {
-    border-right: 1px solid rgba(0,0,0,.12);
-    border-bottom: 1px solid rgba(0,0,0,.12);
+    border-right: 1px solid #e0e0e0;
+    border-bottom: 1px solid #e0e0e0;
 }
 
 table.gj-grid-md.gj-grid-scrollable tfoot {
-    border-bottom: 1px solid rgba(0,0,0,.12);
+    border-bottom: 1px solid #e0e0e0;
 }
 
 /* Bootstrap 3 */

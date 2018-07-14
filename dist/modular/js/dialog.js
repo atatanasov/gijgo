@@ -519,3 +519,7 @@ gj.dialog.messages['it-it'] = {
     Close: 'Chiudi',
     DefaultTitle: 'Dialogo'
 };
+gj.dialog.messages['tr-tr'] = {
+    Close: 'Kapat',
+    DefaultTitle: 'Diyalog'
+};

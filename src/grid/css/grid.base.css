@@ -116,7 +116,7 @@ table.gj-grid-bootstrap tbody tr td div[data-role="display"] {
 /* Material Design Theme */
 .gj-grid-md {
     position: relative;
-    border: 1px solid rgba(0,0,0,.12);
+    border: 1px solid #e0e0e0;
     border-collapse: collapse;
     white-space: nowrap;
     font-size: 13px;
@@ -146,8 +146,8 @@ table.gj-grid-bootstrap tbody tr td div[data-role="display"] {
 .gj-grid-md td {
     position: relative;
     height: 48px;
-    border-top: 1px solid rgba(0,0,0,.12);
-    border-bottom: 1px solid rgba(0,0,0,.12);
+    border-top: 1px solid #e0e0e0;
+    border-bottom: 1px solid #e0e0e0;
     padding: 12px 18px;
     box-sizing: border-box;
     text-align: left;

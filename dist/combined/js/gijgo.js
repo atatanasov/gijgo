@@ -9684,6 +9684,8 @@ gj.tree.config = {
 
         autoGenId: 1,
 
+        autoGenFieldName: 'autoId_b5497cc5-7ef3-49f5-a7dc-4a932e1aee4a',
+
         indentation: 24,
 
         style: {
@@ -10057,35 +10059,33 @@ gj.tree.methods = {
     },
 
     render: function ($tree, response) {
+        var data;
         if (response) {
             if (typeof (response) === 'string' && JSON) {
                 response = JSON.parse(response);
             }
-            $tree.data('records', gj.tree.methods.getRecords($tree, response));
+            data = $tree.data();
+            data.records = response;
+            if (!data.primaryKey) {
+                gj.tree.methods.genAutoId(data, data.records);
+            }
             gj.tree.methods.loadData($tree);
         }
         return $tree;
     },
 
-    filter: function ($grid) {
-        return $grid.data().dataSource;
+    filter: function ($tree) {
+        return $tree.data().dataSource;
     },
 
-    getRecords: function ($tree, response) {
-        var i, id, nodeData, result = [],
-            data = $tree.data();
-        for (i = 0; i < response.length; i++) {
-            id = data.primaryKey && response[i][data.primaryKey] ? response[i][data.primaryKey] : data.autoGenId++;
-            nodeData = { id: id, data: response[i] };
-            if (response[i][data.childrenField] && response[i][data.childrenField].length) {
-                nodeData.children = gj.tree.methods.getRecords($tree, response[i][data.childrenField]);
-                delete response[i][data.childrenField];
-            } else {
-                nodeData.children = [];
+    genAutoId: function (data, records) {
+        var i;
+        for (i = 0; i < records.length; i++) {
+            records[i][data.autoGenFieldName] = data.autoGenId++;
+            if (records[i][data.childrenField] && records[i][data.childrenField].length) {
+                gj.tree.methods.genAutoId(data, records[i][data.childrenField]);
             }
-            result.push(nodeData);
         }
-        return result;
     },
 
     loadData: function ($tree) {
@@ -10104,12 +10104,13 @@ gj.tree.methods = {
     appendNode: function ($tree, $parent, nodeData, level, position) {
         var i, $node, $newParent, $span, $img,
             data = $tree.data(),
-            $node = $('<li data-id="' + nodeData.id + '" data-role="node" />').addClass(data.style.item),
+            id = data.primaryKey ? nodeData[data.primaryKey] : nodeData[data.autoGenFieldName];
+            $node = $('<li data-id="' + id + '" data-role="node" />').addClass(data.style.item),
             $wrapper = $('<div data-role="wrapper" />'),
             $expander = $('<span data-role="expander" data-mode="close"></span>').addClass(data.style.expander),
-            $display = $('<span data-role="display">' + nodeData.data[data.textField] + '</span>'),
-            hasChildren = typeof (nodeData.data[data.hasChildrenField]) !== 'undefined' && nodeData.data[data.hasChildrenField].toString().toLowerCase() === 'true',
-            disabled = typeof (nodeData.data[data.disabledField]) !== 'undefined' && nodeData.data[data.disabledField].toString().toLowerCase() === 'true';
+            $display = $('<span data-role="display">' + nodeData[data.textField] + '</span>'),
+            hasChildren = typeof (nodeData[data.hasChildrenField]) !== 'undefined' && nodeData[data.hasChildrenField].toString().toLowerCase() === 'true',
+            disabled = typeof (nodeData[data.disabledField]) !== 'undefined' && nodeData[data.disabledField].toString().toLowerCase() === 'true';
 
         if (data.indentation) {
             $wrapper.append('<span data-role="spacer" style="width: ' + (data.indentation * (level - 1)) + 'px;"></span>');
@@ -10131,32 +10132,35 @@ gj.tree.methods = {
             $parent.append($node);
         }
 
-        if (nodeData.children.length || hasChildren) {
+        if (data.imageCssClassField && nodeData[data.imageCssClassField]) {
+            $span = $('<span data-role="image"><span class="' + nodeData[data.imageCssClassField] + '"></span></span>');
+            $span.insertBefore($display);
+        } else if (data.imageUrlField && nodeData[data.imageUrlField]) {
+            $span = $('<span data-role="image"></span>');
+            $span.insertBefore($display);
+            $img = $('<img src="' + nodeData[data.imageUrlField] + '"></img>');
+            $img.attr('width', $span.width()).attr('height', $span.height());
+            $span.append($img);
+        } else if (data.imageHtmlField && nodeData[data.imageHtmlField]) {
+            $span = $('<span data-role="image">' + nodeData[data.imageHtmlField] + '</span>');
+            $span.insertBefore($display);
+        }
+
+        if ((nodeData[data.childrenField] && nodeData[data.childrenField].length) || hasChildren) {
             $expander.empty().append(data.icons.expand);
             $newParent = $('<ul />').addClass(data.style.list).addClass('gj-hidden');
             $node.append($newParent);
 
-            for (i = 0; i < nodeData.children.length; i++) {
-                gj.tree.methods.appendNode($tree, $newParent, nodeData.children[i], level + 1);
+            if (nodeData[data.childrenField] && nodeData[data.childrenField].length) {
+                for (i = 0; i < nodeData[data.childrenField].length; i++) {
+                    gj.tree.methods.appendNode($tree, $newParent, nodeData[data.childrenField][i], level + 1);
+                }
             }
         } else {
             data.style.leafIcon ? $expander.addClass(data.style.leafIcon) : $expander.html('&nbsp;');
         }
 
-        if (data.imageCssClassField && nodeData.data[data.imageCssClassField]) {
-            $('<span data-role="image"><span class="' + nodeData.data[data.imageCssClassField] + '"></span></span>').insertBefore($display);
-        } else if (data.imageUrlField && nodeData.data[data.imageUrlField]) {
-            $span = $('<span data-role="image"></span>');
-            $span.insertBefore($display);
-            $img = $('<img src="' + nodeData.data[data.imageUrlField] + '"></img>');
-            $img.attr('width', $span.width()).attr('height', $span.height());
-            $span.append($img);
-        } else if (data.imageHtmlField && nodeData.data[data.imageHtmlField]) {
-            $span = $('<span data-role="image">' + nodeData.data[data.imageHtmlField] + '</span>');
-            $span.insertBefore($display);
-        }
-
-        gj.tree.events.nodeDataBound($tree, $node, nodeData.id, nodeData.data);
+        gj.tree.events.nodeDataBound($tree, $node, nodeData.id, nodeData);
     },
 
     expanderClickHandler: function ($tree) {
@@ -10306,14 +10310,17 @@ gj.tree.methods = {
         return result;
     },
 
-    getById: function ($tree, id, records) {
-        var i, result = undefined;
+    getDataById: function ($tree, id, records) {
+        var i, data = $tree.data(), result = undefined;
         for (i = 0; i < records.length; i++) {
-            if (id == records[i].id) {
+            if (data.primaryKey && records[i][data.primaryKey] == id) {
                 result = records[i];
                 break;
-            } else if (records[i].children && records[i].children.length) {
-                result = gj.tree.methods.getById($tree, id, records[i].children);
+            } else if (records[i][data.autoGenFieldName] == id) {
+                result = records[i];
+                break;
+            } else if (records[i][data.childrenField] && records[i][data.childrenField].length) {
+                result = gj.tree.methods.getDataById($tree, id, records[i][data.childrenField]);
                 if (result) {
                     break;
                 }
@@ -10322,21 +10329,16 @@ gj.tree.methods = {
         return result;
     },
 
-    getDataById: function ($tree, id, records) {
-        var result = gj.tree.methods.getById($tree, id, records);
-        return result ? result.data : result;
-    },
-
     getDataByText: function ($tree, text, records) {
         var i, id,
             result = undefined,
             data = $tree.data();
         for (i = 0; i < records.length; i++) {
-            if (text === records[i].data[data.textField]) {
-                result = records[i].data;
+            if (text === records[i][data.textField]) {
+                result = records[i];
                 break;
-            } else if (records[i].children && records[i].children.length) {
-                result = gj.tree.methods.getDataByText($tree, text, records[i].children);
+            } else if (records[i][data.childrenField] && records[i][data.childrenField].length) {
+                result = gj.tree.methods.getDataByText($tree, text, records[i][data.childrenField]);
                 if (result) {
                     break;
                 }
@@ -10387,41 +10389,32 @@ gj.tree.methods = {
         return $result;
     },
 
-    getAll: function ($tree, records) {
-        var i, $node, id, targetRecord,
-            result = [],
-            childrenField = $tree.data('childrenField');
-
-        for (i = 0; i < records.length; i++) {
-            targetRecord = JSON.parse(JSON.stringify(records[i].data));
-            if (records[i].children.length) {
-                targetRecord[childrenField] = gj.tree.methods.getAll($tree, records[i].children);
-            }
-            result.push(targetRecord);
-        }
-        return result;
-    },
-
-    addNode: function ($tree, data, $parent, position) {
-        var level,
-            newNodeData = gj.tree.methods.getRecords($tree, [data])[0];
+    addNode: function ($tree, nodeData, $parent, position) {
+        var level, record, data = $tree.data();
 
         if (!$parent || !$parent.length) {
             $parent = $tree.children('ul');
-            $tree.data('records').push(newNodeData);
+            $tree.data('records').push(nodeData);
         } else {
             if ($parent[0].tagName.toLowerCase() === 'li') {
                 if ($parent.children('ul').length === 0) {
-                    $parent.find('[data-role="expander"]').empty().append($tree.data().icons.collapse);
-                    $parent.append($('<ul />').addClass($tree.data().style.list));
+                    $parent.find('[data-role="expander"]').empty().append(data.icons.collapse);
+                    $parent.append($('<ul />').addClass(data.style.list));
                 }
                 $parent = $parent.children('ul');
             }
-            gj.tree.methods.getById($tree, $parent.parent().data('id'), $tree.data('records')).children.push(newNodeData);
+            record = $tree.getDataById($parent.parent().data('id'));
+            if (!record[data.childrenField]) {
+                record[data.childrenField] = [];
+            }
+            record[data.childrenField].push(nodeData);
         }
         level = $parent.parentsUntil('[data-type="tree"]', 'ul').length + 1;
+        if (!data.primaryKey) {
+            gj.tree.methods.genAutoId(data, [nodeData]);
+        }
 
-        gj.tree.methods.appendNode($tree, $parent, newNodeData, level, position);
+        gj.tree.methods.appendNode($tree, $parent, nodeData, level, position);
 
         return $tree;
     },
@@ -10433,13 +10426,16 @@ gj.tree.methods = {
     },
 
     removeDataById: function ($tree, id, records) {
-        var i;
+        var i, data = $tree.data();
         for (i = 0; i < records.length; i++) {
-            if (id == records[i].id) {
+            if (data.primaryKey && records[i][data.primaryKey] == id) {
                 records.splice(i, 1);
                 break;
-            } else if (records[i].children && records[i].children.length) {
-                gj.tree.methods.removeDataById($tree, id, records[i].children);
+            } else if (records[i][data.autoGenFieldName] == id) {
+                records.splice(i, 1);
+                break;
+            } else if (records[i][data.childrenField] && records[i][data.childrenField].length) {
+                gj.tree.methods.removeDataById($tree, id, records[i][data.childrenField]);
             }
         }
     },
@@ -10543,7 +10539,7 @@ gj.tree.methods = {
             if (list[i].id == id) {
                 result = true;
                 break;
-            } else if (gj.tree.methods.pathFinder(data, list[i].children, id, parents)) {
+            } else if (gj.tree.methods.pathFinder(data, list[i][data.childrenField], id, parents)) {
                 parents.push(list[i].data[data.textField]);
                 result = true;
                 break;
@@ -10990,7 +10986,7 @@ gj.tree.widget = function ($element, jsConfig) {
      * </script>
      */
     self.getAll = function () {
-        return methods.getAll(this, this.data('records'));
+        return this.data('records');
     };
 
     /**
@@ -11880,10 +11876,10 @@ gj.tree.plugins.dragAndDrop = {
                 $wrappers = gj.tree.plugins.dragAndDrop.private.getTargetWrappers($tree, $sourceNode),
 	            data = $tree.data();
 	        return function (e, mousePosition) {
-	            var success = false;
+                var success = false, record, $targetNode, $sourceParentNode;
 	            $(this).draggable('destroy').remove();
 	            $displays.each(function () {
-	                var $targetDisplay = $(this), $targetNode, $sourceParentNode, $ul;
+	                var $targetDisplay = $(this), $ul;
 	                if ($targetDisplay.droppable('isOver', mousePosition)) {
 	                    $targetNode = $targetDisplay.closest('li');
 	                    $sourceParentNode = $sourceNode.parent('ul').parent('li');
@@ -11893,7 +11889,14 @@ gj.tree.plugins.dragAndDrop = {
 	                        $targetNode.append($ul);
 	                    }
 	                    if (gj.tree.plugins.dragAndDrop.events.nodeDrop($tree, $sourceNode.data('id'), $targetNode.data('id'), $ul.children('li').length + 1) !== false) {
-	                        $ul.append($sourceNode);
+                            $ul.append($sourceNode);
+
+                            //BEGIN: Change node position inside the backend data
+                            record = $tree.getDataById($sourceNode.data('id'));
+                            gj.tree.methods.removeDataById($tree, $sourceNode.data('id'), data.records);
+                            $tree.getDataById($ul.parent().data('id'))[data.childrenField].push(record);
+                            //END
+
 	                        gj.tree.plugins.dragAndDrop.private.refresh($tree, $sourceNode, $targetNode, $sourceParentNode);
 	                    }
 	                    success = true;
@@ -11903,20 +11906,27 @@ gj.tree.plugins.dragAndDrop = {
 	            });
 	            if (!success) {
 	                $wrappers.each(function () {
-	                    var $targetWrapper = $(this), $targetNode, $sourceParentNode, prepend, orderNumber, sourceNodeId;
+	                    var $targetWrapper = $(this), prepend, orderNumber, sourceNodeId;
 	                    if ($targetWrapper.droppable('isOver', mousePosition)) {
 	                        $targetNode = $targetWrapper.closest('li');
 	                        $sourceParentNode = $sourceNode.parent('ul').parent('li');
-	                        prepend = mousePosition.top < ($targetWrapper.position().top + ($targetWrapper.outerHeight() / 2));
+	                        prepend = mousePosition.y < ($targetWrapper.position().top + ($targetWrapper.outerHeight() / 2));
 	                        sourceNodeId = $sourceNode.data('id');
 	                        orderNumber = $targetNode.prevAll('li:not([data-id="' + sourceNodeId + '"])').length + (prepend ? 1 : 2);
-	                        if (gj.tree.plugins.dragAndDrop.events.nodeDrop($tree, sourceNodeId, $targetNode.parent('ul').parent('li').data('id'), orderNumber) !== false) {
+                            if (gj.tree.plugins.dragAndDrop.events.nodeDrop($tree, sourceNodeId, $targetNode.parent('ul').parent('li').data('id'), orderNumber) !== false) {
+                                //BEGIN: Change node position inside the backend data
+                                record = $tree.getDataById($sourceNode.data('id'));
+                                gj.tree.methods.removeDataById($tree, $sourceNode.data('id'), data.records);
+                                $tree.getDataById($targetNode.parent().data('id'))[data.childrenField].splice($targetNode.index() + (prepend ? 0 : 1), 0, record);
+                                //END
+
 	                            if (prepend) {
-	                                $sourceNode.insertBefore($targetNode);
+                                    $sourceNode.insertBefore($targetNode);
 	                            } else {
 	                                $sourceNode.insertAfter($targetNode);
-	                            }
-	                            gj.tree.plugins.dragAndDrop.private.refresh($tree, $sourceNode, $targetNode, $sourceParentNode);
+                                }
+
+                                gj.tree.plugins.dragAndDrop.private.refresh($tree, $sourceNode, $targetNode, $sourceParentNode);
 	                        }
 	                        return false;
 	                    }
@@ -15438,75 +15448,12 @@ gj.timepicker.config = {
 
 gj.timepicker.methods = {
     init: function (jsConfig) {
-        gj.widget.prototype.init.call(this, jsConfig, 'timepicker');
-        this.attr('data-timepicker', 'true');
-        gj.timepicker.methods.initialize(this, this.data());
-        gj.timepicker.methods.createClock(this);
+        gj.picker.widget.prototype.init.call(this, jsConfig, 'timepicker');
         return this;
     },
 
-    initialize: function ($timepicker, data) {
-        var $calendar, $rightIcon, $wrapper = $timepicker.parent('div[role="wrapper"]');
+    initialize: function () {
 
-        if (data.uiLibrary === 'bootstrap') {
-            $rightIcon = $('<span class="input-group-addon">' + data.icons.rightIcon + '</span>');
-        } else if (data.uiLibrary === 'bootstrap4') {
-            $rightIcon = $('<span class="input-group-append"><button class="btn btn-outline-secondary border-left-0 border" type="button">' + data.icons.rightIcon + '</button></span>');
-        } else {
-            $rightIcon = $(data.icons.rightIcon);
-        }
-
-        $rightIcon.attr('role', 'right-icon');
-        if ($wrapper.length === 0) {
-            $wrapper = $('<div role="wrapper" />').addClass(data.style.wrapper); // The css class needs to be added before the wrapping, otherwise doesn't work.
-            $timepicker.wrap($wrapper);
-        } else {
-            $wrapper.addClass(data.style.wrapper);
-        }
-        $wrapper = $timepicker.parent('div[role="wrapper"]');
-
-        data.width && $wrapper.css('width', data.width);
-
-        $timepicker.val(data.value).addClass(data.style.input).attr('role', 'input');
-
-        //data.fontSize && $timepicker.css('font-size', data.fontSize);
-
-        if (data.uiLibrary === 'bootstrap' || data.uiLibrary === 'bootstrap4') {
-            if (data.size === 'small') {
-                $wrapper.addClass('input-group-sm');
-                $timepicker.addClass('form-control-sm');
-            } else if (data.size === 'large') {
-                $wrapper.addClass('input-group-lg');
-                $timepicker.addClass('form-control-lg');
-            }
-        } else {
-            if (data.size === 'small') {
-                $wrapper.addClass('small');
-            } else if (data.size === 'large') {
-                $wrapper.addClass('large');
-            }
-        }
-
-        $rightIcon.on('click', function (e) {
-            var $clock = $('body').find('[role="clock"][guid="' + $timepicker.attr('data-guid') + '"]');
-            if ($clock.is(':visible')) {
-                gj.timepicker.methods.close($timepicker);
-            } else {
-                gj.timepicker.methods.open($timepicker);
-            }
-        });
-
-        if (data.footer === false) {
-            $timepicker.on('blur', function () {
-                $timepicker.timeout = setTimeout(function () {
-                    if (!$timepicker.mouseMove) {
-                        gj.timepicker.methods.close($timepicker);
-                    }
-                }, 500);
-            });
-        }
-
-        $wrapper.append($rightIcon);
     },
 
     initMouse: function ($body, $input, $picker, data) {
@@ -15516,9 +15463,9 @@ gj.timepicker.methods = {
         $body.on('mouseup', gj.timepicker.methods.mouseUpHandler($input, $picker, data));
     },
 
-    createClock: function ($timepicker) {
+    createPicker: function ($timepicker) {
         var date, data = $timepicker.data(),
-            $clock = $('<div role="clock" />').addClass(data.style.clock).attr('guid', $timepicker.attr('data-guid')),
+            $clock = $('<div role="picker" />').addClass(data.style.clock).attr('guid', $timepicker.attr('data-guid')),
             $hour = $('<div role="hour" />'),
             $minute = $('<div role="minute" />'),
             $header = $('<div role="header" />'),
@@ -15833,7 +15780,7 @@ gj.timepicker.methods = {
 
     open: function ($timepicker) {
         var time, hour, data = $timepicker.data(),
-            $clock = $('body').find('[role="clock"][guid="' + $timepicker.attr('data-guid') + '"]');
+            $clock = $('body').find('[role="picker"][guid="' + $timepicker.attr('data-guid') + '"]');
 
         if ($timepicker.value()) {
             time = gj.core.parseDate($timepicker.value(), data.format, data.locale);
@@ -15848,23 +15795,8 @@ gj.timepicker.methods = {
         $clock.attr('minute', time.getMinutes());
 
         gj.timepicker.methods.renderHours($timepicker, $clock, data);
-        $clock.show();
-        $clock.closest('div[role="modal"]').show();
-        if (data.modal) {
-            gj.core.center($clock);
-        } else {
-            gj.core.setChildPosition($timepicker[0], $clock[0]);
-            $timepicker.focus();
-        }
-        gj.timepicker.events.open($timepicker);
-        return $timepicker;
-    },
 
-    close: function ($timepicker) {
-        var $clock = $('body').find('[role="clock"][guid="' + $timepicker.attr('data-guid') + '"]');
-        $clock.hide();
-        $clock.closest('div[role="modal"]').hide();
-        gj.timepicker.events.close($timepicker);
+        gj.picker.widget.prototype.open.call($timepicker, 'timepicker');
         return $timepicker;
     },
 
@@ -15877,25 +15809,6 @@ gj.timepicker.methods = {
             gj.timepicker.events.change($timepicker);
             return $timepicker;
         }
-    },
-
-    destroy: function ($timepicker) {
-        var data = $timepicker.data(),
-            $parent = $timepicker.parent(),
-            $clock = $('body').find('[role="clock"][guid="' + $timepicker.attr('data-guid') + '"]');
-        if (data) {
-            $timepicker.off();
-            if ($clock.parent('[role="modal"]').length > 0) {
-                $clock.unwrap();
-            }
-            $clock.remove();
-            $timepicker.removeData();
-            $timepicker.removeAttr('data-type').removeAttr('data-guid').removeAttr('data-timepicker');
-            $timepicker.removeClass();
-            $parent.children('[role="right-icon"]').remove();
-            $timepicker.unwrap();
-        }
-        return $timepicker;
     }
 };
 
@@ -16022,7 +15935,7 @@ gj.timepicker.widget = function ($element, jsConfig) {
      * </script>
      */
     self.destroy = function () {
-        return methods.destroy(this);
+        return gj.picker.widget.prototype.destroy.call(this, 'timepicker');
     };
 
     /** Open the clock.
@@ -16054,7 +15967,7 @@ gj.timepicker.widget = function ($element, jsConfig) {
      * </script>
      */
     self.close = function () {
-        return gj.timepicker.methods.close(this);
+        return gj.picker.widget.prototype.close.call(this, 'timepicker');
     };
 
     $.extend($element, self);
@@ -16065,7 +15978,7 @@ gj.timepicker.widget = function ($element, jsConfig) {
     return $element;
 };
 
-gj.timepicker.widget.prototype = new gj.widget();
+gj.timepicker.widget.prototype = new gj.picker.widget();
 gj.timepicker.widget.constructor = gj.timepicker.widget;
 
 (function ($) {
@@ -17092,114 +17005,6 @@ gj.slider.widget.constructor = gj.slider.widget;
         }
     };
 })(jQuery);
-gj.picker = {
-    messages: {
-        'en-us': {
-        }
-    }
-};
-
-gj.picker.methods = {
-
-    initialize: function ($input, data, methods) {
-        var $calendar, $rightIcon,
-            $picker = methods.createPicker($input, data),
-            $wrapper = $input.parent('div[role="wrapper"]');
-
-        if (data.uiLibrary === 'bootstrap') {
-            $rightIcon = $('<span class="input-group-addon">' + data.icons.rightIcon + '</span>');
-        } else if (data.uiLibrary === 'bootstrap4') {
-            $rightIcon = $('<span class="input-group-append"><button class="btn btn-outline-secondary border-left-0" type="button">' + data.icons.rightIcon + '</button></span>');
-        } else {
-            $rightIcon = $(data.icons.rightIcon);
-        }
-        $rightIcon.attr('role', 'right-icon');
-
-        if ($wrapper.length === 0) {
-            $wrapper = $('<div role="wrapper" />').addClass(data.style.wrapper); // The css class needs to be added before the wrapping, otherwise doesn't work.
-            $input.wrap($wrapper);
-        } else {
-            $wrapper.addClass(data.style.wrapper);
-        }
-        $wrapper = $input.parent('div[role="wrapper"]');
-
-        data.width && $wrapper.css('width', data.width);
-
-        $input.val(data.value).addClass(data.style.input).attr('role', 'input');
-
-        data.fontSize && $input.css('font-size', data.fontSize);
-
-        if (data.uiLibrary === 'bootstrap' || data.uiLibrary === 'bootstrap4') {
-            if (data.size === 'small') {
-                $wrapper.addClass('input-group-sm');
-                $input.addClass('form-control-sm');
-            } else if (data.size === 'large') {
-                $wrapper.addClass('input-group-lg');
-                $input.addClass('form-control-lg');
-            }
-        } else {
-            if (data.size === 'small') {
-                $wrapper.addClass('small');
-            } else if (data.size === 'large') {
-                $wrapper.addClass('large');
-            }
-        }
-
-        $rightIcon.on('click', function (e) {
-            if ($picker.is(':visible')) {
-                $input.close();
-            } else {
-                $input.open();
-            }
-        });
-        $wrapper.append($rightIcon);
-
-        if (data.footer !== true) {
-            $input.on('blur', function () {
-                $input.timeout = setTimeout(function () {
-                    $input.close();
-                }, 500);
-            });
-            $picker.mousedown(function () {
-                clearTimeout($input.timeout);
-                $input.focus();
-                return false;
-            });
-            $picker.on('click', function () {
-                clearTimeout($input.timeout);
-                $input.focus();
-            });
-        }
-
-        // Picker Specific
-        //if (data.keyboardNavigation) {
-        //    $(document).on('keydown', gj.datepicker.methods.createKeyDownHandler($input, $calendar, data));
-        //}
-    }
-};
-
-
-gj.picker.widget = function ($element, jsConfig) {
-    var self = this,
-        methods = gj.picker.methods;
-
-    self.destroy = function () {
-        return methods.destroy(this);
-    };
-
-    return $element;
-};
-
-gj.picker.widget.prototype = new gj.widget();
-gj.picker.widget.constructor = gj.picker.widget;
-
-gj.picker.widget.prototype.init = function (jsConfig, type, methods) {
-    gj.widget.prototype.init.call(this, jsConfig, type);
-    this.attr('data-' + type, 'true');
-    gj.picker.methods.initialize(this, this.data(), methods);
-    return this;
-};
-
 /* global window alert jQuery gj */
 /**
   * @widget ColorPicker
@@ -17279,8 +17084,7 @@ gj.colorpicker.config = {
 
 gj.colorpicker.methods = {
     init: function (jsConfig) {
-        gj.picker.widget.prototype.init.call(this, jsConfig, 'colorpicker', gj.colorpicker.methods);
-        this.attr('data-colorpicker', 'true');
+        gj.picker.widget.prototype.init.call(this, jsConfig, 'colorpicker');
         gj.colorpicker.methods.initialize(this);
         return this;
     },
@@ -17299,42 +17103,11 @@ gj.colorpicker.methods = {
         return $picker;
     },
 
-    open: function ($widget) {
-        var data = $widget.data(),
-            $picker = $('body').find('[role="picker"][guid="' + $widget.attr('data-guid') + '"]');
-
-        if ($widget.val()) {
-            $widget.value($widget.val());
+    open: function ($input) {
+        if ($input.val()) {
+            $input.value($input.val());
         }
-
-        $picker.show();
-        $picker.closest('div[role="modal"]').show();
-        if (data.modal) {
-            gj.core.center($picker);
-        } else {
-            gj.core.setChildPosition($widget[0], $picker[0]);
-            $widget.focus();
-        }
-        clearTimeout($widget.timeout);
-        gj.colorpicker.events.open($widget);
-    },
-
-    close: function ($widget) {
-        var $picker = $('body').find('[role="picker"][guid="' + $widget.attr('data-guid') + '"]');
-        $picker.hide();
-        $picker.closest('div[role="modal"]').hide();
-        gj.colorpicker.events.close($widget);
-    },
-
-    destroy: function ($colorpicker) {
-        var data = $colorpicker.data();
-        if (data) {
-            $colorpicker.off();
-            $colorpicker.removeData();
-            $colorpicker.removeAttr('data-type').removeAttr('data-guid').removeAttr('data-colorpicker');
-            $colorpicker.removeClass();
-        }
-        return $colorpicker;
+        return gj.picker.widget.prototype.open.call($input, 'colorpicker');
     }
 };
 
@@ -17452,7 +17225,7 @@ gj.colorpicker.widget = function ($element, jsConfig) {
      * </script>
      */
     self.destroy = function () {
-        return methods.destroy(this);
+        return gj.picker.widget.prototype.destroy.call(this, 'colorpicker');
     };
 
     /** Opens the popup element with the color selector.
@@ -17480,7 +17253,7 @@ gj.colorpicker.widget = function ($element, jsConfig) {
      * </script>
      */
     self.close = function () {
-        return methods.close(this);
+        return gj.picker.widget.prototype.close.call(this, 'colorpicker');
     };
 
     $.extend($element, self);

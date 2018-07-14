@@ -71,75 +71,12 @@ gj.timepicker.config = {
 
 gj.timepicker.methods = {
     init: function (jsConfig) {
-        gj.widget.prototype.init.call(this, jsConfig, 'timepicker');
-        this.attr('data-timepicker', 'true');
-        gj.timepicker.methods.initialize(this, this.data());
-        gj.timepicker.methods.createClock(this);
+        gj.picker.widget.prototype.init.call(this, jsConfig, 'timepicker');
         return this;
     },
 
-    initialize: function ($timepicker, data) {
-        var $calendar, $rightIcon, $wrapper = $timepicker.parent('div[role="wrapper"]');
+    initialize: function () {
 
-        if (data.uiLibrary === 'bootstrap') {
-            $rightIcon = $('<span class="input-group-addon">' + data.icons.rightIcon + '</span>');
-        } else if (data.uiLibrary === 'bootstrap4') {
-            $rightIcon = $('<span class="input-group-append"><button class="btn btn-outline-secondary border-left-0 border" type="button">' + data.icons.rightIcon + '</button></span>');
-        } else {
-            $rightIcon = $(data.icons.rightIcon);
-        }
-
-        $rightIcon.attr('role', 'right-icon');
-        if ($wrapper.length === 0) {
-            $wrapper = $('<div role="wrapper" />').addClass(data.style.wrapper); // The css class needs to be added before the wrapping, otherwise doesn't work.
-            $timepicker.wrap($wrapper);
-        } else {
-            $wrapper.addClass(data.style.wrapper);
-        }
-        $wrapper = $timepicker.parent('div[role="wrapper"]');
-
-        data.width && $wrapper.css('width', data.width);
-
-        $timepicker.val(data.value).addClass(data.style.input).attr('role', 'input');
-
-        //data.fontSize && $timepicker.css('font-size', data.fontSize);
-
-        if (data.uiLibrary === 'bootstrap' || data.uiLibrary === 'bootstrap4') {
-            if (data.size === 'small') {
-                $wrapper.addClass('input-group-sm');
-                $timepicker.addClass('form-control-sm');
-            } else if (data.size === 'large') {
-                $wrapper.addClass('input-group-lg');
-                $timepicker.addClass('form-control-lg');
-            }
-        } else {
-            if (data.size === 'small') {
-                $wrapper.addClass('small');
-            } else if (data.size === 'large') {
-                $wrapper.addClass('large');
-            }
-        }
-
-        $rightIcon.on('click', function (e) {
-            var $clock = $('body').find('[role="clock"][guid="' + $timepicker.attr('data-guid') + '"]');
-            if ($clock.is(':visible')) {
-                gj.timepicker.methods.close($timepicker);
-            } else {
-                gj.timepicker.methods.open($timepicker);
-            }
-        });
-
-        if (data.footer === false) {
-            $timepicker.on('blur', function () {
-                $timepicker.timeout = setTimeout(function () {
-                    if (!$timepicker.mouseMove) {
-                        gj.timepicker.methods.close($timepicker);
-                    }
-                }, 500);
-            });
-        }
-
-        $wrapper.append($rightIcon);
     },
 
     initMouse: function ($body, $input, $picker, data) {
@@ -149,9 +86,9 @@ gj.timepicker.methods = {
         $body.on('mouseup', gj.timepicker.methods.mouseUpHandler($input, $picker, data));
     },
 
-    createClock: function ($timepicker) {
+    createPicker: function ($timepicker) {
         var date, data = $timepicker.data(),
-            $clock = $('<div role="clock" />').addClass(data.style.clock).attr('guid', $timepicker.attr('data-guid')),
+            $clock = $('<div role="picker" />').addClass(data.style.clock).attr('guid', $timepicker.attr('data-guid')),
             $hour = $('<div role="hour" />'),
             $minute = $('<div role="minute" />'),
             $header = $('<div role="header" />'),
@@ -466,7 +403,7 @@ gj.timepicker.methods = {
 
     open: function ($timepicker) {
         var time, hour, data = $timepicker.data(),
-            $clock = $('body').find('[role="clock"][guid="' + $timepicker.attr('data-guid') + '"]');
+            $clock = $('body').find('[role="picker"][guid="' + $timepicker.attr('data-guid') + '"]');
 
         if ($timepicker.value()) {
             time = gj.core.parseDate($timepicker.value(), data.format, data.locale);
@@ -481,23 +418,8 @@ gj.timepicker.methods = {
         $clock.attr('minute', time.getMinutes());
 
         gj.timepicker.methods.renderHours($timepicker, $clock, data);
-        $clock.show();
-        $clock.closest('div[role="modal"]').show();
-        if (data.modal) {
-            gj.core.center($clock);
-        } else {
-            gj.core.setChildPosition($timepicker[0], $clock[0]);
-            $timepicker.focus();
-        }
-        gj.timepicker.events.open($timepicker);
-        return $timepicker;
-    },
 
-    close: function ($timepicker) {
-        var $clock = $('body').find('[role="clock"][guid="' + $timepicker.attr('data-guid') + '"]');
-        $clock.hide();
-        $clock.closest('div[role="modal"]').hide();
-        gj.timepicker.events.close($timepicker);
+        gj.picker.widget.prototype.open.call($timepicker, 'timepicker');
         return $timepicker;
     },
 
@@ -510,25 +432,6 @@ gj.timepicker.methods = {
             gj.timepicker.events.change($timepicker);
             return $timepicker;
         }
-    },
-
-    destroy: function ($timepicker) {
-        var data = $timepicker.data(),
-            $parent = $timepicker.parent(),
-            $clock = $('body').find('[role="clock"][guid="' + $timepicker.attr('data-guid') + '"]');
-        if (data) {
-            $timepicker.off();
-            if ($clock.parent('[role="modal"]').length > 0) {
-                $clock.unwrap();
-            }
-            $clock.remove();
-            $timepicker.removeData();
-            $timepicker.removeAttr('data-type').removeAttr('data-guid').removeAttr('data-timepicker');
-            $timepicker.removeClass();
-            $parent.children('[role="right-icon"]').remove();
-            $timepicker.unwrap();
-        }
-        return $timepicker;
     }
 };
 
@@ -567,7 +470,7 @@ gj.timepicker.widget = function ($element, jsConfig) {
     };
 
     /** Remove timepicker functionality from the element.     */    self.destroy = function () {
-        return methods.destroy(this);
+        return gj.picker.widget.prototype.destroy.call(this, 'timepicker');
     };
 
     /** Open the clock.     */    self.open = function () {
@@ -575,7 +478,7 @@ gj.timepicker.widget = function ($element, jsConfig) {
     };
 
     /** Close the clock.     */    self.close = function () {
-        return gj.timepicker.methods.close(this);
+        return gj.picker.widget.prototype.close.call(this, 'timepicker');
     };
 
     $.extend($element, self);
@@ -586,7 +489,7 @@ gj.timepicker.widget = function ($element, jsConfig) {
     return $element;
 };
 
-gj.timepicker.widget.prototype = new gj.widget();
+gj.timepicker.widget.prototype = new gj.picker.widget();
 gj.timepicker.widget.constructor = gj.timepicker.widget;
 
 (function ($) {

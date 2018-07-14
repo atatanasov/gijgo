@@ -474,6 +474,8 @@ gj.tree.config = {
 
         autoGenId: 1,
 
+        autoGenFieldName: 'autoId_b5497cc5-7ef3-49f5-a7dc-4a932e1aee4a',
+
         indentation: 24,
 
         style: {

@@ -18,9 +18,9 @@ div.gj-grid-wrapper div.gj-grid-md-toolbar {
     font-family: "Helvetica","Arial",sans-serif;
     background-color: rgb(255, 255, 255);
     
-    border-top: 1px solid rgba(0,0,0,.12);
-    border-left: 1px solid rgba(0,0,0,.12);
-    border-right: 1px solid rgba(0,0,0,.12);
+    border-top: 1px solid #e0e0e0;
+    border-left: 1px solid #e0e0e0;
+    border-right: 1px solid #e0e0e0;
     border-bottom: 0px;
     border-collapse: collapse;
 

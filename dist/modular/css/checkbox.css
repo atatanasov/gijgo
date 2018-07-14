@@ -156,6 +156,9 @@
 .gj-checkbox-fontawesome .fa {
     font-size: 14px;
 }
+.gj-checkbox-bootstrap.gj-checkbox-fontawesome .fa {
+    line-height: 18px;
+}
 
 .gj-checkbox-fontawesome input[type="checkbox"]:checked + span:before {
     content: "\f00c ";
