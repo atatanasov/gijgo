@@ -1,5 +1,5 @@
 /*
- * Gijgo TimePicker v1.9.6
+ * Gijgo TimePicker v1.9.7
  * http://gijgo.com/timepicker
  *
  * Copyright 2014, 2018 gijgo.com
