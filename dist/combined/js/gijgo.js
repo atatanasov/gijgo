@@ -14691,28 +14691,25 @@ gj.datepicker.methods = {
             var date, month, year, decade, century,
                 $calendar = $('body').find('[role="calendar"][guid="' + $datepicker.attr('data-guid') + '"]');
 
+            year = parseInt($calendar.attr('year'), 10);
             switch ($calendar.attr('type')) {
                 case 'month':
                     month = parseInt($calendar.attr('month'), 10);
-                    year = parseInt($calendar.attr('year'), 10);
                     date = gj.datepicker.methods.getPrevMonth(month, year);
                     $calendar.attr('month', date.month);
                     $calendar.attr('year', date.year);
                     gj.datepicker.methods.renderMonth($datepicker, $calendar, data);
                     break;
                 case 'year':
-                    year = parseInt($calendar.attr('year'), 10);
                     $calendar.attr('year', year - 1);
                     gj.datepicker.methods.renderYear($datepicker, $calendar, data);
                     break;
                 case 'decade':
-                    year = parseInt($calendar.attr('year'), 10);
                     decade = year - (year % 10);
                     $calendar.attr('year', decade - 10);
                     gj.datepicker.methods.renderDecade($datepicker, $calendar, data);
                     break;
                 case 'century':
-                    year = parseInt($calendar.attr('year'), 10);
                     century = year - (year % 100);
                     $calendar.attr('year', century - 100);
                     gj.datepicker.methods.renderCentury($datepicker, $calendar, data);
@@ -14726,28 +14723,25 @@ gj.datepicker.methods = {
             var date, month, year, decade, century,
                 $calendar = $('body').find('[role="calendar"][guid="' + $datepicker.attr('data-guid') + '"]');
 
+            year = parseInt($calendar.attr('year'), 10);
             switch ($calendar.attr('type')) {
                 case 'month':
                     month = parseInt($calendar.attr('month'), 10);
-                    year = parseInt($calendar.attr('year'), 10);
                     date = gj.datepicker.methods.getNextMonth(month, year);
                     $calendar.attr('month', date.month);
                     $calendar.attr('year', date.year);
                     gj.datepicker.methods.renderMonth($datepicker, $calendar, data);
                     break;
                 case 'year':
-                    year = parseInt($calendar.attr('year'), 10);
                     $calendar.attr('year', year + 1);
                     gj.datepicker.methods.renderYear($datepicker, $calendar, data);
                     break;
                 case 'decade':
-                    year = parseInt($calendar.attr('year'), 10);
                     decade = year - (year % 10);
                     $calendar.attr('year', decade + 10);
                     gj.datepicker.methods.renderDecade($datepicker, $calendar, data);
                     break;
                 case 'century':
-                    year = parseInt($calendar.attr('year'), 10);
                     century = year - (year % 100);
                     $calendar.attr('year', century + 100);
                     gj.datepicker.methods.renderCentury($datepicker, $calendar, data);
@@ -14835,10 +14829,14 @@ gj.datepicker.methods = {
     },
 
     open: function ($datepicker, data) {
-        var $calendar = $('body').find('[role="calendar"][guid="' + $datepicker.attr('data-guid') + '"]');
+        var date, $calendar = $('body').find('[role="calendar"][guid="' + $datepicker.attr('data-guid') + '"]');
 
         if ($datepicker.val()) {
             $datepicker.value($datepicker.val());
+        } else {
+            date = new Date();
+            $calendar.attr("month", date.getMonth());
+            $calendar.attr("year", date.getFullYear());
         }
 
         switch ($calendar.attr('type')) {
