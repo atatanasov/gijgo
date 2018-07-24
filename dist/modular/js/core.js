@@ -1,5 +1,5 @@
 /*
- * Gijgo JavaScript Library v1.9.7
+ * Gijgo JavaScript Library v1.9.9
  * http://gijgo.com/
  *
  * Copyright 2014, 2018 gijgo.com
