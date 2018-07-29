@@ -73,6 +73,19 @@
     <Content Include="examples\checkbox\Checkbox.Base.uiLibrary.Bootstrap.4.html" />
     <Content Include="examples\checkbox\Checkbox.Base.uiLibrary.Material.Design.html" />
     <Content Include="examples\checkbox\index.html" />
+    <Content Include="examples\colorpicker\ColorPicker.Base.change.sample.html" />
+    <Content Include="examples\colorpicker\ColorPicker.Base.close.sample.html" />
+    <Content Include="examples\colorpicker\ColorPicker.Base.destroy.sample.html" />
+    <Content Include="examples\colorpicker\ColorPicker.Base.open.sample.html" />
+    <Content Include="examples\colorpicker\ColorPicker.Base.select.sample.html" />
+    <Content Include="examples\colorpicker\ColorPicker.Base.uiLibrary.Bootstrap.3.html" />
+    <Content Include="examples\colorpicker\ColorPicker.Base.uiLibrary.Bootstrap.4.html" />
+    <Content Include="examples\colorpicker\ColorPicker.Base.uiLibrary.MaterialDesign.html" />
+    <Content Include="examples\colorpicker\ColorPicker.Base.value.Get.html" />
+    <Content Include="examples\colorpicker\ColorPicker.Base.value.HTML.html" />
+    <Content Include="examples\colorpicker\ColorPicker.Base.value.Javascript.html" />
+    <Content Include="examples\colorpicker\ColorPicker.Base.value.Set.html" />
+    <Content Include="examples\colorpicker\index.html" />
     <Content Include="examples\core\Core.Base.formatDate.1.html" />
     <Content Include="examples\core\Core.Base.formatDate.2.html" />
     <Content Include="examples\core\Core.Base.formatDate.3.html" />
@@ -475,8 +488,6 @@
     <Content Include="examples\slider\Slider.Base.destroy.sample.html" />
     <Content Include="examples\slider\Slider.Base.max.JS.Config.html" />
     <Content Include="examples\slider\Slider.Base.min.JS.Config.html" />
-    <Content Include="examples\slider\Slider.Base.orientation.horizontal.html" />
-    <Content Include="examples\slider\Slider.Base.orientation.vertical.html" />
     <Content Include="examples\slider\Slider.Base.slide.sample.html" />
     <Content Include="examples\slider\Slider.Base.uiLibrary.Bootstrap.3.html" />
     <Content Include="examples\slider\Slider.Base.uiLibrary.Bootstrap.4.html" />
@@ -485,6 +496,8 @@
     <Content Include="examples\slider\Slider.Base.value.HTML.html" />
     <Content Include="examples\slider\Slider.Base.value.Javascript.html" />
     <Content Include="examples\slider\Slider.Base.value.Set.html" />
+    <Content Include="examples\slider\Slider.Base.width.HTML.Config.html" />
+    <Content Include="examples\slider\Slider.Base.width.JS.Config.html" />
     <Content Include="examples\tests\ajax-sourced-data.html" />
     <Content Include="examples\tests\tempdatepicker.html" />
     <Content Include="examples\tests\tempdialog.html" />
@@ -493,6 +506,7 @@
     <Content Include="examples\tests\positions-datepicker.html" />
     <Content Include="examples\tests\positions-dropdown.html" />
     <Content Include="examples\tests\tempgrid.html" />
+    <Content Include="examples\tests\tempslider.html" />
     <Content Include="examples\tests\temptree.html" />
     <Content Include="examples\timepicker\index.html" />
     <Content Include="examples\timepicker\TimePicker.Base.change.sample.html" />

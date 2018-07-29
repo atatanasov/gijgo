@@ -1,5 +1,5 @@
 /*
- * Gijgo Slider v1.9.7
+ * Gijgo Slider v1.9.9
  * http://gijgo.com/slider
  *
  * Copyright 2014, 2018 gijgo.com
