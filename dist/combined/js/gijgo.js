@@ -1,5 +1,5 @@
 /*
- * Gijgo JavaScript Library v1.9.9
+ * Gijgo JavaScript Library v1.9.10
  * http://gijgo.com/
  *
  * Copyright 2014, 2018 gijgo.com
@@ -516,7 +516,7 @@ gj.core = {
         } else {
             result = parseInt(style.height, 10);
             result += parseInt(style.paddingTop || 0, 10) + parseInt(style.paddingBottom || 0, 10);
-            result += parseInt(style.borderTop || 0, 10) + parseInt(style.borderBottom || 0, 10);
+            result += parseInt(style.borderTopWidth || 0, 10) + parseInt(style.borderBottomWidth || 0, 10);
         }
 
         if (margin) {
@@ -534,7 +534,7 @@ gj.core = {
         } else {
             result = parseInt(style.width, 10);
             result += parseInt(style.paddingLeft || 0, 10) + parseInt(style.paddingRight || 0, 10);
-            result += parseInt(style.borderLeft || 0, 10) + parseInt(style.borderRight || 0, 10);
+            result += parseInt(style.borderLeftWidth || 0, 10) + parseInt(style.borderRightWidth || 0, 10);
         }
 
         if (margin) {
@@ -563,11 +563,11 @@ gj.core = {
             if (el.tagName == "BODY") {
                 xScroll = el.scrollLeft || document.documentElement.scrollLeft;
                 yScroll = el.scrollTop || document.documentElement.scrollTop;
-                left += (el.offsetLeft - xScroll + el.clientLeft);
-                top += (el.offsetTop - yScroll + el.clientTop);
+                left += el.offsetLeft - xScroll; // + el.clientLeft);
+                top += el.offsetTop - yScroll; // + el.clientTop);
             } else {
-                left += (el.offsetLeft - el.scrollLeft + el.clientLeft);
-                top += (el.offsetTop - el.scrollTop + el.clientTop);
+                left += el.offsetLeft - el.scrollLeft; // + el.clientLeft;
+                top += el.offsetTop - el.scrollTop; // + el.clientTop;
             }
 
             el = el.offsetParent;
@@ -2131,7 +2131,7 @@ gj.draggable.events = {
      * <script>
      *     $('#element').draggable({
      *         drag: function (e, newPosition, mousePosition) {
-     *             $('body').append('<div>The drag event is fired. New Element Position = { top:' + offset.top + ', left: ' + offset.left + '}.</div>');
+     *             $('body').append('<div>The drag event is fired. New Element Position = { top:' + newPosition.top + ', left: ' + newPosition.left + '}.</div>');
      *         }
      *     });
      * </script>
@@ -12024,7 +12024,7 @@ gj.tree.plugins.dragAndDrop = {
                 $wrappers = gj.tree.plugins.dragAndDrop.private.getTargetWrappers($tree, $sourceNode),
 	            data = $tree.data();
 	        return function (e, mousePosition) {
-                var success = false, record, $targetNode, $sourceParentNode;
+                var success = false, record, $targetNode, $sourceParentNode, parent;
 	            $(this).draggable('destroy').remove();
 	            $displays.each(function () {
 	                var $targetDisplay = $(this), $ul;
@@ -12042,7 +12042,11 @@ gj.tree.plugins.dragAndDrop = {
                             //BEGIN: Change node position inside the backend data
                             record = $tree.getDataById($sourceNode.data('id'));
                             gj.tree.methods.removeDataById($tree, $sourceNode.data('id'), data.records);
-                            $tree.getDataById($ul.parent().data('id'))[data.childrenField].push(record);
+                            parent = $tree.getDataById($ul.parent().data('id'));
+                            if (parent[data.childrenField] === undefined) {
+                                parent[data.childrenField] = [];
+                            }
+                            parent[data.childrenField].push(record);
                             //END
 
 	                        gj.tree.plugins.dragAndDrop.private.refresh($tree, $sourceNode, $targetNode, $sourceParentNode);

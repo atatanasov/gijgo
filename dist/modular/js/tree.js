@@ -1,5 +1,5 @@
 /*
- * Gijgo Tree v1.9.9
+ * Gijgo Tree v1.9.10
  * http://gijgo.com/tree
  *
  * Copyright 2014, 2018 gijgo.com
@@ -1187,7 +1187,7 @@ gj.tree.widget.constructor = gj.tree.widget;
                 $wrappers = gj.tree.plugins.dragAndDrop.private.getTargetWrappers($tree, $sourceNode),
 	            data = $tree.data();
 	        return function (e, mousePosition) {
-                var success = false, record, $targetNode, $sourceParentNode;
+                var success = false, record, $targetNode, $sourceParentNode, parent;
 	            $(this).draggable('destroy').remove();
 	            $displays.each(function () {
 	                var $targetDisplay = $(this), $ul;
@@ -1205,7 +1205,11 @@ gj.tree.widget.constructor = gj.tree.widget;
                             //BEGIN: Change node position inside the backend data
                             record = $tree.getDataById($sourceNode.data('id'));
                             gj.tree.methods.removeDataById($tree, $sourceNode.data('id'), data.records);
-                            $tree.getDataById($ul.parent().data('id'))[data.childrenField].push(record);
+                            parent = $tree.getDataById($ul.parent().data('id'));
+                            if (parent[data.childrenField] === undefined) {
+                                parent[data.childrenField] = [];
+                            }
+                            parent[data.childrenField].push(record);
                             //END
 
 	                        gj.tree.plugins.dragAndDrop.private.refresh($tree, $sourceNode, $targetNode, $sourceParentNode);

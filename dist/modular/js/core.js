@@ -1,5 +1,5 @@
 /*
- * Gijgo JavaScript Library v1.9.9
+ * Gijgo JavaScript Library v1.9.10
  * http://gijgo.com/
  *
  * Copyright 2014, 2018 gijgo.com
@@ -431,7 +431,7 @@ gj.documentManager = {
         } else {
             result = parseInt(style.height, 10);
             result += parseInt(style.paddingTop || 0, 10) + parseInt(style.paddingBottom || 0, 10);
-            result += parseInt(style.borderTop || 0, 10) + parseInt(style.borderBottom || 0, 10);
+            result += parseInt(style.borderTopWidth || 0, 10) + parseInt(style.borderBottomWidth || 0, 10);
         }
 
         if (margin) {
@@ -449,7 +449,7 @@ gj.documentManager = {
         } else {
             result = parseInt(style.width, 10);
             result += parseInt(style.paddingLeft || 0, 10) + parseInt(style.paddingRight || 0, 10);
-            result += parseInt(style.borderLeft || 0, 10) + parseInt(style.borderRight || 0, 10);
+            result += parseInt(style.borderLeftWidth || 0, 10) + parseInt(style.borderRightWidth || 0, 10);
         }
 
         if (margin) {
@@ -478,11 +478,11 @@ gj.documentManager = {
             if (el.tagName == "BODY") {
                 xScroll = el.scrollLeft || document.documentElement.scrollLeft;
                 yScroll = el.scrollTop || document.documentElement.scrollTop;
-                left += (el.offsetLeft - xScroll + el.clientLeft);
-                top += (el.offsetTop - yScroll + el.clientTop);
+                left += el.offsetLeft - xScroll; // + el.clientLeft);
+                top += el.offsetTop - yScroll; // + el.clientTop);
             } else {
-                left += (el.offsetLeft - el.scrollLeft + el.clientLeft);
-                top += (el.offsetTop - el.scrollTop + el.clientTop);
+                left += el.offsetLeft - el.scrollLeft; // + el.clientLeft;
+                top += el.offsetTop - el.scrollTop; // + el.clientTop;
             }
 
             el = el.offsetParent;

@@ -226,7 +226,7 @@ gj.draggable.events = {
      * <script>
      *     $('#element').draggable({
      *         drag: function (e, newPosition, mousePosition) {
-     *             $('body').append('<div>The drag event is fired. New Element Position = { top:' + offset.top + ', left: ' + offset.left + '}.</div>');
+     *             $('body').append('<div>The drag event is fired. New Element Position = { top:' + newPosition.top + ', left: ' + newPosition.left + '}.</div>');
      *         }
      *     });
      * </script>

@@ -1,5 +1,5 @@
 /*
- * Gijgo ColorPicker v1.9.9
+ * Gijgo ColorPicker v1.9.10
  * http://gijgo.com/colorpicker
  *
  * Copyright 2014, 2018 gijgo.com
