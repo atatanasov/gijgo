@@ -131,6 +131,7 @@ gj.tree.plugins.checkboxes = {
                     gj.tree.plugins.checkboxes.private.updateChildrenState($node, state);
                     gj.tree.plugins.checkboxes.private.updateParentState($node, state);
                 }
+                gj.tree.plugins.checkboxes.events.changed($tree, $node, record, $checkbox.state());
             });
             $expander.after($wrapper);
         },
@@ -334,6 +335,25 @@ gj.tree.plugins.checkboxes = {
          */
         checkboxChange: function ($tree, $node, record, state) {
             return $tree.triggerHandler('checkboxChange', [$node, record, state]);
+        },
+        /**
+         * Event fires when the checkbox state is changed, but only once per click.
+         * @event changed
+         * @param {object} e - event data
+         * @param {object} $node - the node object as jQuery element
+         * @param {object} record - the record data
+         * @param {string} state - the new state of the checkbox
+         * @example Event.Sample <!-- checkbox, tree -->
+         * <div id="tree" data-source="/Locations/Get" data-checkboxes="true"></div>
+         * <script>
+         *     var tree = $('#tree').tree();
+         *     tree.on('changed', function (e, $node, record, state) {
+         *         alert('This is only triggered once and the new state of record ' + record.text + ' is ' + state);
+         *     });
+         * </script>
+         */
+        changed: function($tree, $node, record, state){
+            return $tree.triggerHandler('changed', [$node, record, state]);
         }
     },
 
