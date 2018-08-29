@@ -112,7 +112,7 @@ gj.grid.plugins.export = {
             var datatobeexported = escape(this.getCSV(includeAllRecords));
           
           
-            var blob = new Blob([this.getCSV(includeAllRecords)], { type: 'text/csv;charset=utf-8;' });
+            var blob = new Blob([datatobeexported], { type: 'text/csv;charset=utf-8;' });
             var url = URL.createObjectURL(blob);
             
             link.href = url;
