@@ -110,7 +110,7 @@ gj.grid.plugins.export = {
             document.body.appendChild(link);
             link.download = filename || 'griddata.csv';
             var datatobeexported = escape(this.getCSV(includeAllRecords));
-            debugger;
+          
           
             var blob = new Blob([this.getCSV(includeAllRecords)], { type: 'text/csv;charset=utf-8;' });
             var url = URL.createObjectURL(blob);
