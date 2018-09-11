@@ -371,16 +371,18 @@ var writer = {
         var i, libs, local = true, result = '<head>\r\n';
         result += '  <meta charset="utf-8">\r\n';
         result += '  <meta name="viewport" content="width=device-width, initial-scale=1">\r\n';
-        result += '  <title>Example</title>\r\n';
-        if (local) {
-            result += '  <script src="../../dist/libraries/jquery/jquery.js"></script>\r\n';
-        } else {
-            result += '  <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous" ></script >\r\n';
-        }
-        result += '  <script src="../../dist/modular/js/core.js" type="text/javascript"></script>\r\n';
-        result += '  <link href="../../dist/modular/css/core.css" rel="stylesheet" type="text/css">\r\n';
         if (libs) {
             names = libs.replace('<!--', '').replace('-->', '').trim().split(',');
+            result += '  <title>Example</title>\r\n';
+            if (names.indexOf(' nojquery') == -1 && names.indexOf(' nojquery ') == -1 && names.indexOf('nojquery ') == -1 && names.indexOf('nojquery') == -1) {
+                if (local) {
+                    result += '  <script src="../../dist/libraries/jquery/jquery.js"></script>\r\n';
+                } else {
+                    result += '  <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous" ></script >\r\n';
+                }
+            }
+            result += '  <script src="../../dist/modular/js/core.js" type="text/javascript"></script>\r\n';
+            result += '  <link href="../../dist/modular/css/core.css" rel="stylesheet" type="text/css">\r\n';
             for (i = 0; i < names.length; i++) {
                 //include css files
                 switch (names[i].trim()) {
@@ -478,6 +480,7 @@ var writer = {
                     case 'slider':
                         result += '  <script src="../../dist/modular/js/draggable.js"></script>\r\n';
                         result += '  <script src="../../dist/modular/js/slider.js"></script>\r\n';
+                        break;
                     case 'colorpicker':
                         result += '  <script src="../../dist/modular/js/colorpicker.js"></script>\r\n';
                         break;

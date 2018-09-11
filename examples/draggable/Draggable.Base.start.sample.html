@@ -17,7 +17,7 @@
    drag me
  </div>
  <script>
-     $('#element').draggable({
+     new GijgoDraggable(document.getElementById('element'), {
          start: function (e, mousePosition) {
              $('body').append('<div>The start event is fired. mousePosition { x:' + mousePosition.x + ', y: ' + mousePosition.y + '}.</div>');
          }

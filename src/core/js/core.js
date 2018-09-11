@@ -49,6 +49,17 @@ gj.widget = function () {
         }
         return null;
     };
+
+    self.extend = function () {
+        for (var i = 1; i < arguments.length; i++) {
+            for (var key in arguments[i]) {
+                if (arguments[i].hasOwnProperty(key)) {
+                    arguments[0][key] = arguments[i][key];
+                }
+            }
+        }
+        return arguments[0];
+    };
 };
 
 gj.widget.prototype.init = function (jsConfig, type) {
@@ -137,6 +148,115 @@ gj.widget.prototype.getHTMLConfig = function () {
     return result;
 };
 
+window.gijgoStorage = {
+    _storage: new WeakMap(),
+    put: function (el, key, obj) {
+        if (!this._storage.has(key)) {
+            this._storage.set(el, new Map());
+        }
+        this._storage.get(el).set(key, obj);
+    },
+    get: function (el, key) {
+        return this._storage.get(el).get(key);
+    },
+    has: function (el, key) {
+        return this._storage.get(el).has(key);
+    },
+    remove: function (el, key) {
+        var ret = this._storage.get(el).delete(key);
+        if (!this._storage.get(key).size === 0) {
+            this._storage.delete(el);
+        }
+        return ret;
+    }
+}
+
+gj.widget.prototype.initJS = function (jsConfig, type) {
+    var option, clientConfig, fullConfig;
+
+    this.element.setAttribute('data-type', type);
+    clientConfig = this.extend({}, this.getHTMLConfigJS() || {});
+    this.extend(clientConfig, jsConfig || {});
+    fullConfig = this.getConfigJS(clientConfig, type);
+    this.element.setAttribute('data-guid', fullConfig.guid);
+    gijgoStorage.put(this.element, 'gijgo', fullConfig);
+
+    // Initialize events configured as options
+    for (option in fullConfig) {
+        if (gj[type].events.hasOwnProperty(option)) {
+            this.element.addEventListener(option, fullConfig[option]);
+            delete fullConfig[option];
+        }
+    }
+
+    // Initialize all plugins
+    for (plugin in gj[type].plugins) {
+        if (gj[type].plugins.hasOwnProperty(plugin)) {
+            gj[type].plugins[plugin].configure(this, fullConfig, clientConfig);
+        }
+    }
+
+    return this;
+};
+
+gj.widget.prototype.getConfigJS = function (clientConfig, type) {
+    var config, uiLibrary, iconsLibrary, plugin;
+
+    config = this.extend({}, gj[type].config.base);
+
+    uiLibrary = clientConfig.hasOwnProperty('uiLibrary') ? clientConfig.uiLibrary : config.uiLibrary;
+    if (gj[type].config[uiLibrary]) {
+        this.extend(config, gj[type].config[uiLibrary]);
+    }
+
+    iconsLibrary = clientConfig.hasOwnProperty('iconsLibrary') ? clientConfig.iconsLibrary : config.iconsLibrary;
+    if (gj[type].config[iconsLibrary]) {
+        this.extend(config, gj[type].config[iconsLibrary]);
+    }
+
+    for (plugin in gj[type].plugins) {
+        if (gj[type].plugins.hasOwnProperty(plugin)) {
+            this.extend(config, gj[type].plugins[plugin].config.base);
+            if (gj[type].plugins[plugin].config[uiLibrary]) {
+                this.extend(config, gj[type].plugins[plugin].config[uiLibrary]);
+            }
+            if (gj[type].plugins[plugin].config[iconsLibrary]) {
+                this.extend(config, gj[type].plugins[plugin].config[iconsLibrary]);
+            }
+        }
+    }
+
+    this.extend(config, clientConfig);
+
+    if (!config.guid) {
+        config.guid = this.generateGUID();
+    }
+
+    return config;
+}
+
+gj.widget.prototype.getHTMLConfigJS = function () {
+    var result = {},
+        attrs = this.element.attributes;
+    if (attrs['width']) {
+        result.width = attrs['width'].value;
+    }
+    if (attrs['height']) {
+        result.height = attrs['height'].value;
+    }
+    if (attrs['value']) {
+        result.value = attrs['value'].value;
+    }
+    if (attrs['align']) {
+        result.align = attrs['align'].value;
+    }
+    if (result && result.source) {
+        result.dataSource = result.source;
+        delete result.source;
+    }
+    return result;
+};
+
 gj.widget.prototype.createDoneHandler = function () {
     var $widget = this;
     return function (response) {
@@ -148,7 +268,6 @@ gj.widget.prototype.createDoneHandler = function () {
 };
 
 gj.widget.prototype.createErrorHandler = function () {
-    var $widget = this;
     return function (response) {
         if (response && response.statusText && response.statusText !== 'abort') {
             alert(response.statusText);
@@ -200,7 +319,7 @@ gj.documentManager = {
     subscribeForEvent: function (eventName, widgetId, callback) {
         if (!gj.documentManager.events[eventName] || gj.documentManager.events[eventName].length === 0) {
             gj.documentManager.events[eventName] = [{ widgetId: widgetId, callback: callback }];
-            $(document).on(eventName, gj.documentManager.executeCallbacks);
+            document.addEventListener(eventName, gj.documentManager.executeCallbacks);
         } else if (!gj.documentManager.events[eventName][widgetId]) {
             gj.documentManager.events[eventName].push({ widgetId: widgetId, callback: callback });
         } else {
@@ -226,7 +345,7 @@ gj.documentManager = {
                     events.splice(i, 1);
                     success = true;
                     if (events.length === 0) {
-                        $(document).off(eventName);
+                        document.removeEventListener(eventName, gj.documentManager.executeCallbacks);
                         delete gj.documentManager.events[eventName];
                     }
                 }

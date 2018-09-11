@@ -500,6 +500,7 @@
     <Content Include="examples\slider\Slider.Base.width.JS.Config.html" />
     <Content Include="examples\tests\ajax-sourced-data.html" />
     <Content Include="examples\tests\tempdatepicker.html" />
+    <Content Include="examples\tests\tempdropdown.html" />
     <Content Include="examples\tests\tempdialog.html" />
     <Content Include="examples\tests\tempeditor.html" />
     <Content Include="examples\tests\positions-timepicker.html" />
