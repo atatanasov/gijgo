@@ -13697,7 +13697,7 @@ gj.dropdown.methods = {
             data.parentScrollHandler = function () {
                 gj.dropdown.methods.setListPosition($presenter[0], $list[0], data);
             };
-            scrollParentEl.addEventListener('scroll', data.parentScrollHandler);
+            gj.dropdown.methods.addParentsScrollListener(scrollParentEl, data.parentScrollHandler);
         }
     },
 
@@ -13707,9 +13707,24 @@ gj.dropdown.methods = {
             scrollParentEl = gj.core.getScrollParent($dropdown[0]);
         $expander.html(data.icons.dropdown);
         if (scrollParentEl && data.parentScrollHandler) {
-            scrollParentEl.removeEventListener('scroll', data.parentScrollHandler);
+            gj.dropdown.methods.removeParentsScrollListener(scrollParentEl, data.parentScrollHandler);
         }
         $list.hide();
+    },
+
+    addParentsScrollListener: function (el, handler) {
+        var scrollParentEl = gj.core.getScrollParent(el);
+        el.addEventListener('scroll', handler);
+        if (scrollParentEl) {
+            gj.dropdown.methods.addParentsScrollListener(scrollParentEl, handler);
+        }
+    },
+    removeParentsScrollListener: function (el, handler) {
+        var scrollParentEl = gj.core.getScrollParent(el);
+        el.removeEventListener('scroll', handler);
+        if (scrollParentEl) {
+            gj.dropdown.methods.removeParentsScrollListener(scrollParentEl, handler);
+        }
     },
 
     select: function ($dropdown, value) {
