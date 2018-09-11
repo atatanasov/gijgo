@@ -628,7 +628,6 @@ gj.documentManager = {
             }
         }
     },
-
     getScrollParent: function (node) {
         if (node == null) {
             return null;
