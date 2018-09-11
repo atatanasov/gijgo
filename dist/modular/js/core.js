@@ -508,6 +508,16 @@ gj.documentManager = {
                 elem.focus();
             }
         }
+    },
+
+    getScrollParent: function (node) {
+        if (node == null) {
+            return null;
+        } else if (node.scrollHeight > node.clientHeight) {
+            return node;
+        } else {
+            return gj.core.getScrollParent(node.parentNode);
+        }
     }
 };
 gj.picker = {
