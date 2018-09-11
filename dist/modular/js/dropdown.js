@@ -311,7 +311,7 @@ gj.dropdown.methods = {
     },
 
     addParentsScrollListener: function (el, handler) {
-        var scrollParentEl = gj.core.getScrollParent(el);
+        var scrollParentEl = gj.core.getScrollParent(el.parentNode);
         el.addEventListener('scroll', handler);
         if (scrollParentEl) {
             gj.dropdown.methods.addParentsScrollListener(scrollParentEl, handler);
@@ -319,7 +319,7 @@ gj.dropdown.methods = {
     },
 
     removeParentsScrollListener: function (el, handler) {
-        var scrollParentEl = gj.core.getScrollParent(el);
+        var scrollParentEl = gj.core.getScrollParent(el.parentNode);
         el.removeEventListener('scroll', handler);
         if (scrollParentEl) {
             gj.dropdown.methods.removeParentsScrollListener(scrollParentEl, handler);
