@@ -482,6 +482,7 @@ gj.dropdown.methods = {
             });
             if (selections.length === 0) {
                 $dropdown.prepend('<option value=""></option>');
+                $dropdown[0].selectedIndex = 0;
                 if (data.placeholder) {
                     $display[0].innerHTML = '<span class="placeholder">' + data.placeholder + '</span>';
                 }
@@ -509,17 +510,28 @@ gj.dropdown.methods = {
     open: function ($dropdown, $list) {
         var data = $dropdown.data(),
             $expander = $dropdown.parent().find('[role="expander"]'),
-            $presenter = $dropdown.parent().find('[role="presenter"]');
+            $presenter = $dropdown.parent().find('[role="presenter"]'),
+            scrollParentEl = gj.core.getScrollParent($dropdown[0]);
         $list.css('width', gj.core.width($presenter[0]));
         $list.show();
         gj.dropdown.methods.setListPosition($presenter[0], $list[0], data);
         $expander.html(data.icons.dropup);
+        if (scrollParentEl) {
+            data.parentScrollHandler = function () {
+                gj.dropdown.methods.setListPosition($presenter[0], $list[0], data);
+            };
+            scrollParentEl.addEventListener('scroll', data.parentScrollHandler);
+        }
     },
 
     close: function ($dropdown, $list) {
         var data = $dropdown.data(),
-            $expander = $dropdown.parent().find('[role="expander"]');
+            $expander = $dropdown.parent().find('[role="expander"]'),
+            scrollParentEl = gj.core.getScrollParent($dropdown[0]);
         $expander.html(data.icons.dropdown);
+        if (scrollParentEl && data.parentScrollHandler) {
+            scrollParentEl.removeEventListener('scroll', data.parentScrollHandler);
+        }
         $list.hide();
     },
 
@@ -578,7 +590,7 @@ gj.dropdown.methods = {
             }
             $dropdown.show();
         }
-        return $tree;
+        return $dropdown;
     }
 };
 
