@@ -37,3 +37,14 @@ They are designed to saves you time and scales with your development process.
 11. [Bootstrap 4 Checkbox](http://gijgo.com/checkbox/example/bootstrap-4)
 12. [Bootstrap 4 Table](http://gijgo.com/grid/demos/bootstrap-4-table)
 13. [Bootstrap 4 Slider](http://gijgo.com/slider/example/bootstrap-4)
+
+### How To Contribute
+
+1. Open Node.js command prompt and navigate to the folder where you want to download the code
+2. Run "git clone https://github.com/atatanasov/gijgo.git" to download the code
+3. Run "npm install"
+4. Run "npm install -g grunt-cli"
+5. Run "grunt". Grunt is going to rebuild the project and all examples if you change something in the code
+6. Open second Node.js command prompt and navigate to the folder with the code
+7. Run "node app.js" in order to start the website with examples on http://localhost:4000/
+8. Open the code with your favourite IDE and review your changes on http://localhost:4000/
