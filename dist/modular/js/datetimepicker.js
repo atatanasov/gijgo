@@ -232,6 +232,7 @@ gj.datetimepicker.methods = {
                 }
                 $calendar.attr('hour', hour);
                 $calendar.attr('minute', date.getMinutes());
+                $datetimepicker.val(value);
             } else {
                 $datetimepicker.val('');
             }
