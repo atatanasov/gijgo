@@ -6608,7 +6608,6 @@ gj.grid.plugins.inlineEditing.private = {
                             break;
                         default:
                             $editorField.val(value);
-                            break;
                     }
                 } else {
                     if (typeof (column.editor) === 'function') {
