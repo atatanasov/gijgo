@@ -1747,7 +1747,17 @@ gj.grid.plugins.inlineEditing.private = {
                 value = record[column.editField || column.field];
                 $editorField = $editorContainer.find('input, select, textarea').first();
                 if ($editorField.length) {
-                    column.type === 'checkbox' ? $editorField.prop('checked', value) : $editorField.val(value);
+                    switch (column.type) {
+                        case 'checkbox':
+                            $editorField.prop('checked', value);
+                            break;
+                        case 'dropdown':
+                            $editorField = $editorField.dropdown('value', value);
+                            break;
+                        default:
+                            $editorField.val(value);
+                            break;
+                    }
                 } else {
                     if (typeof (column.editor) === 'function') {
                         column.editor($editorContainer, value, record);

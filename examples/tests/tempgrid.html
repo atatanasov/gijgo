@@ -9,17 +9,53 @@
     <link href="../../dist/modular/css/core.css" rel="stylesheet" type="text/css">
     <link href="../../dist/modular/css/grid.css" rel="stylesheet" type="text/css">
     <link href="../../dist/modular/css/dropdown.css" rel="stylesheet" type="text/css">
+    <link href="../../dist/modular/css/checkbox.css" rel="stylesheet" type="text/css">
+    <link href="../../dist/modular/css/datepicker.css" rel="stylesheet" type="text/css">
     <script src="../../dist/modular/js/grid.js"></script>
     <script src="../../dist/modular/js/dropdown.js"></script>
+    <script src="../../dist/modular/js/checkbox.js"></script>
+    <script src="../../dist/modular/js/datepicker.js"></script>
 </head>
-<body style="padding-top: 1500px; padding-bottom: 1500px;">
+<body>
     <table id="grid"></table>
     <script>
-        var grid = $('#grid').grid({
-            dataSource: '/Players/Get',
-            uiLibrary: 'materialdesign',
-            columns: [{ field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' }],
-            pager: { limit: 2, sizes: [2, 5, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100] }
+        $(document).ready(function () {
+            var grid, countries;
+            grid = $('#grid').grid({
+                dataSource: '/Players/Get',
+                primaryKey: 'ID',
+                inlineEditing: { mode: 'command' },
+                columns: [
+                    { field: 'ID', width: 44 },
+                    { field: 'Name', editor: true },
+                    { field: 'CountryName', title: 'Nationality', type: 'dropdown', editField: 'CountryID', editor: { dataSource: '/Locations/GetCountries', valueField: 'id' } },
+                    { field: 'DateOfBirth', type: 'date', editor: true },
+                    { field: 'IsActive', title: 'Active?', type: 'checkbox', editor: true, width: 90, align: 'center' }
+                ],
+                pager: { limit: 5 }
+            });
+            grid.on('rowDataChanged', function (e, id, record) {
+                // Clone the record in new object where you can format the data to format that is supported by the backend.
+                var data = $.extend(true, {}, record);
+                // Format the date to format that is supported by the backend.
+                data.DateOfBirth = gj.core.parseDate(record.DateOfBirth, 'mm/dd/yyyy').toISOString();
+                // Post the data to the server
+                $.ajax({ url: '/Players/Save', data: { record: data }, method: 'POST' })
+                    .fail(function () {
+                        alert('Failed to save.');
+                    });
+            });
+            grid.on('rowRemoving', function (e, $row, id, record) {
+                if (confirm('Are you sure?')) {
+                    $.ajax({ url: '/Players/Delete', data: { id: id }, method: 'POST' })
+                        .done(function () {
+                            grid.reload();
+                        })
+                        .fail(function () {
+                            alert('Failed to delete.');
+                        });
+                }
+            });
         });
     </script>
 </body>
