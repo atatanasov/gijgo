@@ -6,7 +6,9 @@
  * Released under the MIT license
  */
 /* global window alert jQuery */
-/**  */gj.editor = {
+/** 
+ */
+gj.editor = {
     plugins: {},
     messages: {}
 };
@@ -14,15 +16,25 @@
 gj.editor.config = {
     base: {
 
-        /** The height of the editor. Numeric values are treated as pixels.         */        height: 300,
+        /** The height of the editor. Numeric values are treated as pixels.
+         */
+        height: 300,
 
-        /** The width of the editor. Numeric values are treated as pixels.         */        width: undefined,
+        /** The width of the editor. Numeric values are treated as pixels.
+         */
+        width: undefined,
 
-        /** The name of the UI library that is going to be in use. Currently we support only Material Design and Bootstrap.          */        uiLibrary: 'materialdesign',
+        /** The name of the UI library that is going to be in use. Currently we support only Material Design and Bootstrap. 
+         */
+        uiLibrary: 'materialdesign',
 
-        /** The name of the icons library that is going to be in use. Currently we support Material Icons and Font Awesome.         */        iconsLibrary: 'materialicons',
+        /** The name of the icons library that is going to be in use. Currently we support Material Icons and Font Awesome.
+         */
+        iconsLibrary: 'materialicons',
 
-        /** The language that needs to be in use.         */        locale: 'en-us',
+        /** The language that needs to be in use.
+         */
+        locale: 'en-us',
 
         buttons: undefined,
 
@@ -134,7 +146,7 @@ gj.editor.methods = {
         }
         $body.attr('contenteditable', true);
         $body.on('keydown', function (e) {
-            var key = event.keyCode || event.charCode;
+            var key = e.keyCode || e.charCode;
             if (gj.editor.events.changing($editor) === false && key !== 8 && key !== 46) {
                 e.preventDefault();
             }
@@ -246,13 +258,17 @@ gj.editor.events = {
 
     /**
      * Event fires before change of text in the editor.
-     *     */    changing: function ($editor) {
+     *
+     */
+    changing: function ($editor) {
         return $editor.triggerHandler('changing');
     },
 
     /**
      * Event fires after change of text in the editor.
-     *     */    changed: function ($editor) {
+     *
+     */
+    changed: function ($editor) {
         return $editor.triggerHandler('changed');
     }
 };
@@ -261,11 +277,15 @@ gj.editor.widget = function ($element, jsConfig) {
     var self = this,
         methods = gj.editor.methods;
 
-    /** Get or set html content in the body.     */    self.content = function (html) {
+    /** Get or set html content in the body.
+     */
+    self.content = function (html) {
         return methods.content(this, html);
     };
 
-    /** Remove editor functionality from the element.     */    self.destroy = function () {
+    /** Remove editor functionality from the element.
+     */
+    self.destroy = function () {
         return methods.destroy(this);
     };
 
