@@ -84,7 +84,7 @@ gj.tree.methods = {
             disabled = typeof (nodeData[data.disabledField]) !== 'undefined' && nodeData[data.disabledField].toString().toLowerCase() === 'true';
 
         if (data.indentation) {
-            $wrapper.append('<span data-role="spacer" style="width: ' + (data.indentation * (level - 1)) + 'px;"></span>');
+            $wrapper.append($('<span data-role="spacer">').css('width', (data.indentation * (level - 1)) + 'px'));
         }
 
         if (disabled) {
