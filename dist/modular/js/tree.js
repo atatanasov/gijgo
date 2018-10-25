@@ -892,29 +892,34 @@ gj.tree.widget.constructor = gj.tree.widget;
         },
 
         nodeDataBound: function ($tree, $node, id, record) {
-            var data = $tree.data(),
-                $expander = $node.find('> [data-role="wrapper"] > [data-role="expander"]'),
-                $checkbox = $('<input type="checkbox"/>'),
-                $wrapper = $('<span data-role="checkbox"></span>').append($checkbox),
+            var data, $expander, $checkbox, $wrapper, disabled;
+
+            if ($node.find('> [data-role="wrapper"] > [data-role="checkbox"]').length === 0) {
+                data = $tree.data();
+                $expander = $node.find('> [data-role="wrapper"] > [data-role="expander"]');
+                $checkbox = $('<input type="checkbox"/>');
+                $wrapper = $('<span data-role="checkbox"></span>').append($checkbox);
                 disabled = typeof (record[data.disabledField]) !== 'undefined' && record[data.disabledField].toString().toLowerCase() === 'true';
-            $checkbox = $checkbox.checkbox({
-                uiLibrary: data.uiLibrary,
-                iconsLibrary: data.iconsLibrary,
-                change: function (e, state) {
-                    gj.tree.plugins.checkboxes.events.checkboxChange($tree, $node, record, $checkbox.state());
-                }
-            });
-            disabled && $checkbox.prop('disabled', true);
-            record[data.checkedField] && $checkbox.state('checked');
-            $checkbox.on('click', function (e) {
-                var $node = $checkbox.closest('li'),
-                    state = $checkbox.state();
-                if (data.cascadeCheck) {
-                    gj.tree.plugins.checkboxes.private.updateChildrenState($node, state);
-                    gj.tree.plugins.checkboxes.private.updateParentState($node, state);
-                }
-            });
-            $expander.after($wrapper);
+
+                $checkbox = $checkbox.checkbox({
+                    uiLibrary: data.uiLibrary,
+                    iconsLibrary: data.iconsLibrary,
+                    change: function (e, state) {
+                        gj.tree.plugins.checkboxes.events.checkboxChange($tree, $node, record, $checkbox.state());
+                    }
+                });
+                disabled && $checkbox.prop('disabled', true);
+                record[data.checkedField] && $checkbox.state('checked');
+                $checkbox.on('click', function (e) {
+                    var $node = $checkbox.closest('li'),
+                        state = $checkbox.state();
+                    if (data.cascadeCheck) {
+                        gj.tree.plugins.checkboxes.private.updateChildrenState($node, state);
+                        gj.tree.plugins.checkboxes.private.updateParentState($node, state);
+                    }
+                });
+                $expander.after($wrapper);
+            }
         },
 
         updateParentState: function ($node, state) {
