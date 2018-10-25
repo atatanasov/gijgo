@@ -134,7 +134,7 @@ gj.editor.methods = {
         }
         $body.attr('contenteditable', true);
         $body.on('keydown', function (e) {
-            var key = event.keyCode || event.charCode;
+            var key = e.keyCode || e.charCode;
             if (gj.editor.events.changing($editor) === false && key !== 8 && key !== 46) {
                 e.preventDefault();
             }
@@ -297,6 +297,7 @@ gj.editor.widget.constructor = gj.editor.widget;
         }
     };
 })(jQuery);
+
 gj.editor.messages['en-us'] = {
     bold: 'Bold',
     italic: 'Italic',

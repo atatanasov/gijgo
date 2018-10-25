@@ -10415,7 +10415,7 @@ gj.tree.methods = {
             disabled = typeof (nodeData[data.disabledField]) !== 'undefined' && nodeData[data.disabledField].toString().toLowerCase() === 'true';
 
         if (data.indentation) {
-            $wrapper.append('<span data-role="spacer" style="width: ' + (data.indentation * (level - 1)) + 'px;"></span>');
+            $wrapper.append($('<span data-role="spacer">').css('width', (data.indentation * (level - 1)) + 'px'));
         }
 
         if (disabled) {
@@ -11741,29 +11741,35 @@ gj.tree.plugins.checkboxes = {
         },
 
         nodeDataBound: function ($tree, $node, id, record) {
-            var data = $tree.data(),
-                $expander = $node.find('> [data-role="wrapper"] > [data-role="expander"]'),
-                $checkbox = $('<input type="checkbox"/>'),
-                $wrapper = $('<span data-role="checkbox"></span>').append($checkbox),
+            var data, $expander, $checkbox, $wrapper, disabled;
+            
+            if ($node.find('> [data-role="wrapper"] > [data-role="checkbox"]').length === 0)
+            {
+                data = $tree.data();
+                $expander = $node.find('> [data-role="wrapper"] > [data-role="expander"]');
+                $checkbox = $('<input type="checkbox"/>');
+                $wrapper = $('<span data-role="checkbox"></span>').append($checkbox);
                 disabled = typeof (record[data.disabledField]) !== 'undefined' && record[data.disabledField].toString().toLowerCase() === 'true';
-            $checkbox = $checkbox.checkbox({
-                uiLibrary: data.uiLibrary,
-                iconsLibrary: data.iconsLibrary,
-                change: function (e, state) {
-                    gj.tree.plugins.checkboxes.events.checkboxChange($tree, $node, record, $checkbox.state());
-                }
-            });
-            disabled && $checkbox.prop('disabled', true);
-            record[data.checkedField] && $checkbox.state('checked');
-            $checkbox.on('click', function (e) {
-                var $node = $checkbox.closest('li'),
-                    state = $checkbox.state();
-                if (data.cascadeCheck) {
-                    gj.tree.plugins.checkboxes.private.updateChildrenState($node, state);
-                    gj.tree.plugins.checkboxes.private.updateParentState($node, state);
-                }
-            });
-            $expander.after($wrapper);
+
+                $checkbox = $checkbox.checkbox({
+                    uiLibrary: data.uiLibrary,
+                    iconsLibrary: data.iconsLibrary,
+                    change: function (e, state) {
+                        gj.tree.plugins.checkboxes.events.checkboxChange($tree, $node, record, $checkbox.state());
+                    }
+                });
+                disabled && $checkbox.prop('disabled', true);
+                record[data.checkedField] && $checkbox.state('checked');
+                $checkbox.on('click', function (e) {
+                    var $node = $checkbox.closest('li'),
+                        state = $checkbox.state();
+                    if (data.cascadeCheck) {
+                        gj.tree.plugins.checkboxes.private.updateChildrenState($node, state);
+                        gj.tree.plugins.checkboxes.private.updateParentState($node, state);
+                    }
+                });
+                $expander.after($wrapper);
+            }
         },
 
         updateParentState: function ($node, state) {
@@ -12951,7 +12957,7 @@ gj.editor.methods = {
         }
         $body.attr('contenteditable', true);
         $body.on('keydown', function (e) {
-            var key = event.keyCode || event.charCode;
+            var key = e.keyCode || e.charCode;
             if (gj.editor.events.changing($editor) === false && key !== 8 && key !== 46) {
                 e.preventDefault();
             }
@@ -13168,6 +13174,7 @@ gj.editor.widget.constructor = gj.editor.widget;
         }
     };
 })(jQuery);
+
 gj.editor.messages['en-us'] = {
     bold: 'Bold',
     italic: 'Italic',
@@ -16040,33 +16047,33 @@ gj.timepicker.methods = {
         $body.empty();
         $dial = $('<div role="dial"></div>');
 
-        $dial.append('<div role="arrow" style="transform: rotate(-90deg); display: none;"><div class="arrow-begin"></div><div class="arrow-end"></div></div>');
+        $dial.append($('<div role="arrow">').css('transform', 'rotate(-90deg)').css('display', 'none').append('<div class="arrow-begin"></div><div class="arrow-end"></div>'));
 
-        $dial.append('<span role="hour" style="transform: translate(54px, -93.5307px);">1</span>');
-        $dial.append('<span role="hour" style="transform: translate(93.5307px, -54px);">2</span>');
-        $dial.append('<span role="hour" style="transform: translate(108px, 0px);">3</span>');
-        $dial.append('<span role="hour" style="transform: translate(93.5307px, 54px);">4</span>');
-        $dial.append('<span role="hour" style="transform: translate(54px, 93.5307px);">5</span>');
-        $dial.append('<span role="hour" style="transform: translate(6.61309e-15px, 108px);">6</span>');
-        $dial.append('<span role="hour" style="transform: translate(-54px, 93.5307px);">7</span>');
-        $dial.append('<span role="hour" style="transform: translate(-93.5307px, 54px);">8</span>');
-        $dial.append('<span role="hour" style="transform: translate(-108px, 1.32262e-14px);">9</span>');
-        $dial.append('<span role="hour" style="transform: translate(-93.5307px, -54px);">10</span>');
-        $dial.append('<span role="hour" style="transform: translate(-54px, -93.5307px);">11</span>');
-        $dial.append('<span role="hour" style="transform: translate(-1.98393e-14px, -108px);">12</span>');
+        $dial.append($('<span role="hour">1</span>').css('transform', 'translate(54px, -93.5307px)'));
+        $dial.append($('<span role="hour">2</span>').css('transform', 'translate(93.5307px, -54px)'));
+        $dial.append($('<span role="hour">3</span>').css('transform', 'translate(108px, 0px)'));
+        $dial.append($('<span role="hour">4</span>').css('transform', 'translate(93.5307px, 54px)'));
+        $dial.append($('<span role="hour">5</span>').css('transform', 'translate(54px, 93.5307px)'));
+        $dial.append($('<span role="hour">6</span>').css('transform', 'translate(6.61309e-15px, 108px)'));
+        $dial.append($('<span role="hour">7</span>').css('transform', 'translate(-54px, 93.5307px)'));
+        $dial.append($('<span role="hour">8</span>').css('transform', 'translate(-93.5307px, 54px)'));
+        $dial.append($('<span role="hour">9</span>').css('transform', 'translate(-108px, 1.32262e-14px)'));
+        $dial.append($('<span role="hour">10</span>').css('transform', 'translate(-93.5307px, -54px)'));
+        $dial.append($('<span role="hour">11</span>').css('transform', 'translate(-54px, -93.5307px)'));
+        $dial.append($('<span role="hour">12</span>').css('transform', 'translate(-1.98393e-14px, -108px)'));
         if (data.mode === '24hr') {
-            $dial.append('<span role="hour" style="transform: translate(38px, -65.8179px);">13</span>');
-            $dial.append('<span role="hour" style="transform: translate(65.8179px, -38px);">14</span>');
-            $dial.append('<span role="hour" style="transform: translate(76px, 0px);">15</span>');
-            $dial.append('<span role="hour" style="transform: translate(65.8179px, 38px);">16</span>');
-            $dial.append('<span role="hour" style="transform: translate(38px, 65.8179px);">17</span>');
-            $dial.append('<span role="hour" style="transform: translate(4.65366e-15px, 76px);">18</span>');
-            $dial.append('<span role="hour" style="transform: translate(-38px, 65.8179px);">19</span>');
-            $dial.append('<span role="hour" style="transform: translate(-65.8179px, 38px);">20</span>');
-            $dial.append('<span role="hour" style="transform: translate(-76px, 9.30732e-15px);">21</span>');
-            $dial.append('<span role="hour" style="transform: translate(-65.8179px, -38px);">22</span>');
-            $dial.append('<span role="hour" style="transform: translate(-38px, -65.8179px);">23</span>');
-            $dial.append('<span role="hour" style="transform: translate(-1.3961e-14px, -76px);">00</span>');
+            $dial.append($('<span role="hour">13</span>').css('transform', 'translate(38px, -65.8179px)'));
+            $dial.append($('<span role="hour">14</span>').css('transform', 'translate(65.8179px, -38px)'));
+            $dial.append($('<span role="hour">15</span>').css('transform', 'translate(76px, 0px)'));
+            $dial.append($('<span role="hour">16</span>').css('transform', 'translate(65.8179px, 38px)'));
+            $dial.append($('<span role="hour">17</span>').css('transform', 'translate(38px, 65.8179px)'));
+            $dial.append($('<span role="hour">18</span>').css('transform', 'translate(4.65366e-15px, 76px)'));
+            $dial.append($('<span role="hour">19</span>').css('transform', 'translate(-38px, 65.8179px)'));
+            $dial.append($('<span role="hour">20</span>').css('transform', 'translate(-65.8179px, 38px)'));
+            $dial.append($('<span role="hour">21</span>').css('transform', 'translate(-76px, 9.30732e-15px)'));
+            $dial.append($('<span role="hour">22</span>').css('transform', 'translate(-65.8179px, -38px)'));
+            $dial.append($('<span role="hour">23</span>').css('transform', 'translate(-38px, -65.8179px)'));
+            $dial.append($('<span role="hour">00</span>').css('transform', 'translate(-1.3961e-14px, -76px)'));
         }
         $body.append($dial);
 
@@ -16085,20 +16092,20 @@ gj.timepicker.methods = {
         $body.empty();
         $dial = $('<div role="dial"></div>');
 
-        $dial.append('<div role="arrow" style="transform: rotate(-90deg); display: none;"><div class="arrow-begin"></div><div class="arrow-end"></div></div>');
+        $dial.append($('<div role="arrow" style="">').css('transform', 'rotate(-90deg)').css('display', 'none').append('<div class="arrow-begin"></div><div class="arrow-end"></div>'));
 
-        $dial.append('<span role="hour" style="transform: translate(54px, -93.5307px);">5</span>');
-        $dial.append('<span role="hour" style="transform: translate(93.5307px, -54px);">10</span>');
-        $dial.append('<span role="hour" style="transform: translate(108px, 0px);">15</span>');
-        $dial.append('<span role="hour" style="transform: translate(93.5307px, 54px);">20</span>');
-        $dial.append('<span role="hour" style="transform: translate(54px, 93.5307px);">25</span>');
-        $dial.append('<span role="hour" style="transform: translate(6.61309e-15px, 108px);">30</span>');
-        $dial.append('<span role="hour" style="transform: translate(-54px, 93.5307px);">35</span>');
-        $dial.append('<span role="hour" style="transform: translate(-93.5307px, 54px);">40</span>');
-        $dial.append('<span role="hour" style="transform: translate(-108px, 1.32262e-14px);">45</span>');
-        $dial.append('<span role="hour" style="transform: translate(-93.5307px, -54px);">50</span>');
-        $dial.append('<span role="hour" style="transform: translate(-54px, -93.5307px);">55</span>');
-        $dial.append('<span role="hour" style="transform: translate(-1.98393e-14px, -108px);">00</span>');
+        $dial.append($('<span role="hour">5</span>').css('transform', 'translate(54px, -93.5307px)'));
+        $dial.append($('<span role="hour">10</span>').css('transform', 'translate(93.5307px, -54px)'));
+        $dial.append($('<span role="hour">15</span>').css('transform', 'translate(108px, 0px)'));
+        $dial.append($('<span role="hour">20</span>').css('transform', 'translate(93.5307px, 54px)'));
+        $dial.append($('<span role="hour">25</span>').css('transform', 'translate(54px, 93.5307px)'));
+        $dial.append($('<span role="hour">30</span>').css('transform', 'translate(6.61309e-15px, 108px)'));
+        $dial.append($('<span role="hour">35</span>').css('transform', 'translate(-54px, 93.5307px)'));
+        $dial.append($('<span role="hour">40</span>').css('transform', 'translate(-93.5307px, 54px)'));
+        $dial.append($('<span role="hour">45</span>').css('transform', 'translate(-108px, 1.32262e-14px)'));
+        $dial.append($('<span role="hour">50</span>').css('transform', 'translate(-93.5307px, -54px)'));
+        $dial.append($('<span role="hour">55</span>').css('transform', 'translate(-54px, -93.5307px)'));
+        $dial.append($('<span role="hour">00</span>').css('transform', 'translate(-1.98393e-14px, -108px)'));
         $body.append($dial);
 
         $clock.find('[role="header"] [role="hour"]').removeClass('selected');
