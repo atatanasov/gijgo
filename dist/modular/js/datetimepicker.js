@@ -1,5 +1,5 @@
 /*
- * Gijgo DateTimePicker v1.9.10
+ * Gijgo DateTimePicker v1.9.11
  * http://gijgo.com/datetimepicker
  *
  * Copyright 2014, 2018 gijgo.com
