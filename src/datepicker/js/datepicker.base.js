@@ -554,6 +554,38 @@ gj.datepicker.config = {
          */
         footer: false,
 
+        /** If set to true, show datepicker on input focus.
+         * @type Boolean
+         * @default true
+         * @example True <!-- datepicker -->
+         * <input id="datepicker" width="312" />
+         * <script>
+         *    $('#datepicker').datepicker({ showOnFocus: true, showRightIcon: false });
+         * </script>
+         * @example False <!-- datepicker -->
+         * <input id="datepicker" width="312" />
+         * <script>
+         *    $('#datepicker').datepicker({ showOnFocus: false });
+         * </script>
+         */
+        showOnFocus: true,
+
+        /** If set to true, show datepicker icon on the right side of the input.
+         * @type Boolean
+         * @default true
+         * @example False <!-- datepicker -->
+         * <input id="datepicker" width="312" />
+         * <script>
+         *    $('#datepicker').datepicker({ showOnFocus: true, showRightIcon: false });
+         * </script>
+         * @example True <!-- datepicker -->
+         * <input id="datepicker" width="312" />
+         * <script>
+         *    $('#datepicker').datepicker({ showRightIcon: true });
+         * </script>
+         */
+        showRightIcon: true,
+
         style: {
             modal: 'gj-modal',
             wrapper: 'gj-datepicker gj-datepicker-md gj-unselectable',
@@ -616,15 +648,6 @@ gj.datepicker.methods = {
         var $calendar, $rightIcon,
             $wrapper = $datepicker.parent('div[role="wrapper"]');
 
-        if (data.uiLibrary === 'bootstrap') {
-            $rightIcon = $('<span class="input-group-addon">' + data.icons.rightIcon + '</span>');
-        } else if (data.uiLibrary === 'bootstrap4') {
-            $rightIcon = $('<span class="input-group-append"><button class="btn btn-outline-secondary border-left-0" type="button">' + data.icons.rightIcon + '</button></span>');
-        } else {
-            $rightIcon = $(data.icons.rightIcon);
-        }
-
-        $rightIcon.attr('role', 'right-icon');
         if ($wrapper.length === 0) {
             $wrapper = $('<div role="wrapper" />').addClass(data.style.wrapper); // The css class needs to be added before the wrapping, otherwise doesn't work.
             $datepicker.wrap($wrapper);
@@ -655,15 +678,31 @@ gj.datepicker.methods = {
             }
         }
 
-        $rightIcon.on('click', function (e) {
-            var $calendar = $('body').find('[role="calendar"][guid="' + $datepicker.attr('data-guid') + '"]');
-            if ($calendar.is(':visible')) {
-                gj.datepicker.methods.close($datepicker);
+        if (data.showRightIcon) {
+            if (data.uiLibrary === 'bootstrap') {
+                $rightIcon = $('<span class="input-group-addon">' + data.icons.rightIcon + '</span>');
+            } else if (data.uiLibrary === 'bootstrap4') {
+                $rightIcon = $('<span class="input-group-append"><button class="btn btn-outline-secondary border-left-0" type="button">' + data.icons.rightIcon + '</button></span>');
             } else {
-                gj.datepicker.methods.open($datepicker, data);
+                $rightIcon = $(data.icons.rightIcon);
             }
-        });
-        $wrapper.append($rightIcon);
+            $rightIcon.attr('role', 'right-icon');
+            $rightIcon.on('click', function (e) {
+                var $calendar = $('body').find('[role="calendar"][guid="' + $datepicker.attr('data-guid') + '"]');
+                if ($calendar.is(':visible')) {
+                    gj.datepicker.methods.close($datepicker);
+                } else {
+                    gj.datepicker.methods.open($datepicker, data);
+                }
+            });
+            $wrapper.append($rightIcon);
+        }
+
+        if (data.showOnFocus) {
+            $datepicker.on('focus', function () {
+                gj.datepicker.methods.open($datepicker, data);
+            });
+        }
 
         $calendar = gj.datepicker.methods.createCalendar($datepicker, data);
 
@@ -675,12 +714,12 @@ gj.datepicker.methods = {
             });
             $calendar.mousedown(function () {
                 clearTimeout($datepicker.timeout);
-                $datepicker.focus();
+                document.activeElement !== $datepicker[0] && $datepicker.focus();
                 return false;
             });
             $calendar.on('click', function () {
                 clearTimeout($datepicker.timeout);
-                $datepicker.focus();
+                document.activeElement !== $datepicker[0] && $datepicker.focus();
             });
         }
 
@@ -1258,7 +1297,7 @@ gj.datepicker.methods = {
             gj.core.center($calendar);
         } else {
             gj.core.setChildPosition($datepicker[0], $calendar[0]);
-            $datepicker.focus();
+            document.activeElement !== $datepicker[0] && $datepicker.focus();
         }
         clearTimeout($datepicker.timeout);
         gj.datepicker.events.open($datepicker);
