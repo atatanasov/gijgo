@@ -1406,6 +1406,8 @@ gj.datepicker.methods = {
             if (date && date.getTime()) {
                 $calendar = $('body').find('[role="calendar"][guid="' + $datepicker.attr('data-guid') + '"]');
                 gj.datepicker.methods.dayClickHandler($datepicker, $calendar, data, date)();
+            } else {
+                $datepicker.val('');
             }
             return $datepicker;
         }

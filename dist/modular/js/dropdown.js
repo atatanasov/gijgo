@@ -330,14 +330,21 @@ gj.dropdown.methods = {
         var data = $dropdown.data(),
             $list = $('body').children('[role="list"][guid="' + $dropdown.attr('data-guid') + '"]'),
             $item = $list.children('li[value="' + value + '"]'),
+            $display = $dropdown.next('[role="presenter"]').find('[role="display"]'),
             record = gj.dropdown.methods.getRecordByValue($dropdown, value);
+
+        $list.children('li').removeClass(data.style.active);
         if (record) {
-            $list.children('li').removeClass(data.style.active);
             $item.addClass(data.style.active);
             $dropdown[0].value = value;
-            $dropdown.next('[role="presenter"]').find('[role="display"]').html(record[data.textField]);
-            gj.dropdown.events.change($dropdown);
+            $display[0].innerHTML = record[data.textField];
+        } else {
+            if (data.placeholder) {
+                $display[0].innerHTML = '<span class="placeholder">' + data.placeholder + '</span>';
+            }
+            $dropdown[0].value = '';
         }
+        gj.dropdown.events.change($dropdown);
         gj.dropdown.methods.close($dropdown, $list);
         return $dropdown;
     },
