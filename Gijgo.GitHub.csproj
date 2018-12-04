@@ -142,14 +142,18 @@
     <Content Include="examples\datepicker\DatePicker.Base.minDate.Yesterday.html" />
     <Content Include="examples\datepicker\DatePicker.Base.modal.Bootstrap.4.html" />
     <Content Include="examples\datepicker\DatePicker.Base.modal.Bootstrap.html" />
-    <Content Include="examples\datepicker\DatePicker.Base.modal.True.html" />
+    <Content Include="examples\datepicker\DatePicker.Base.modal.Material.Design.html" />
     <Content Include="examples\datepicker\DatePicker.Base.open.Open.Close.html" />
     <Content Include="examples\datepicker\DatePicker.Base.open.sample.html" />
     <Content Include="examples\datepicker\DatePicker.Base.select.sample.html" />
     <Content Include="examples\datepicker\DatePicker.Base.selectOtherMonths.False.html" />
     <Content Include="examples\datepicker\DatePicker.Base.selectOtherMonths.True.html" />
+    <Content Include="examples\datepicker\DatePicker.Base.showOnFocus.False.html" />
+    <Content Include="examples\datepicker\DatePicker.Base.showOnFocus.True.html" />
     <Content Include="examples\datepicker\DatePicker.Base.showOtherMonths.False.html" />
     <Content Include="examples\datepicker\DatePicker.Base.showOtherMonths.True.html" />
+    <Content Include="examples\datepicker\DatePicker.Base.showRightIcon.False.html" />
+    <Content Include="examples\datepicker\DatePicker.Base.showRightIcon.True.html" />
     <Content Include="examples\datepicker\DatePicker.Base.size.Bootstrap.3.html" />
     <Content Include="examples\datepicker\DatePicker.Base.size.Bootstrap.4.Font.Awesome.html" />
     <Content Include="examples\datepicker\DatePicker.Base.size.Bootstrap.4.html" />
@@ -500,6 +504,7 @@
     <Content Include="examples\slider\Slider.Base.width.JS.Config.html" />
     <Content Include="examples\tests\ajax-sourced-data.html" />
     <Content Include="examples\tests\tempdatepicker.html" />
+    <Content Include="examples\tests\tempdatetimepicker.html" />
     <Content Include="examples\tests\tempdropdown.html" />
     <Content Include="examples\tests\tempdialog.html" />
     <Content Include="examples\tests\tempeditor.html" />
