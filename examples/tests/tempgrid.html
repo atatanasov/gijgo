@@ -9,58 +9,16 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <link href="../../dist/combined/css/gijgo.css" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css" />
-    <style>
-        .gj-display-none {
-            display: none;
-        }
-        .form-row {
-            display: flex;
-            margin-bottom: 29px;
-        }
-
-            .form-row:last-child {
-                margin-bottom: 0px;
-            }
-
-        .margin-top-10 {
-            margin-top: 10px;
-        }
-
-        .float-left {
-            float: left;
-        }
-
-        .float-right {
-            float: right;
-        }
-
-        .display-inline {
-            display: inline;
-        }
-
-        .display-inline-block {
-            display: inline-block;
-        }
-
-        .width-200 {
-            width: 200px;
-        }
-
-        .clear-both {
-            clear: both;
-        }
-    </style>
 </head>
 <body style="padding: 8px;">
-    <button onclick="grid.downloadCSV('myfilename.csv')" class="gj-button-md">Download CSV</button>
-    <br /><br />
     <table id="grid"></table>
-    <script>
-        var grid = $('#grid').grid({
-            dataSource: '/Players/Get',
-            uiLibrary: 'materialdesign',
-            detailTemplate: '<div style="text-align: left"><b>Place Of Birth:</b> {PlaceOfBirth}</div>',
-            columns: [{ field: 'ID', width: 56 }, { field: 'Name' }, { field: 'DateOfBirth', type: 'date' }]
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#grid').grid({
+                dataSource: '/Players/Get',
+                headerFilter: true,
+                columns: [{ field: 'ID', width: 56, filterable: false }, { field: 'Name' }, { field: 'PlaceOfBirth' }]
+            });
         });
     </script>
 </body>
