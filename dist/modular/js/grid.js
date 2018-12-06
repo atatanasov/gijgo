@@ -3031,7 +3031,7 @@ gj.grid.plugins.inlineEditing.configure = function ($grid, fullConfig, clientCon
             if (records.length) {
 
                 for (i = 0; i < columns.length; i++) {
-                    if (columns[i].hidden !== true) {
+                    if (gj.grid.plugins.export.public.isColumnApplicable(columns[i])) {
                         line += '"' + (columns[i].title || columns[i].field).replace(/<[^>]+>/g, ' ') + '",';
                     }
                 }
@@ -3041,7 +3041,7 @@ gj.grid.plugins.inlineEditing.configure = function ($grid, fullConfig, clientCon
                     line = '';
 
                     for (j = 0; j < columns.length; j++) {
-                        if (columns[j].hidden !== true) {
+                        if (gj.grid.plugins.export.public.isColumnApplicable(columns[j])) {
                             line += '"' + records[i][columns[j].field] + '",';
                         }
                     }                    
@@ -3061,6 +3061,10 @@ gj.grid.plugins.inlineEditing.configure = function ($grid, fullConfig, clientCon
             link.click();
             document.body.removeChild(link);
             return this;
+        },
+
+        isColumnApplicable: function (column) {
+            return column.hidden !== true && !column.role;
         }
     },
 

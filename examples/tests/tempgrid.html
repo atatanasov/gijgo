@@ -51,55 +51,17 @@
         }
     </style>
 </head>
-<body>
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-xs-12">
-                <table id="grid"></table>
-            </div>
-        </div>
-    </div>
-    <script type="text/javascript">
-        $(document).ready(function () {
-            var grid, countries;
-            grid = $('#grid').grid({
-                dataSource: '/Players/Get',
-                uiLibrary: 'bootstrap4',
-                primaryKey: 'ID',
-                inlineEditing: { mode: 'command' },
-                columns: [
-                    { field: 'ID', width: 44 },
-                    { field: 'Name', editor: true },
-                    { field: 'CountryName', title: 'Nationality', type: 'dropdown', editField: 'CountryID', editor: { dataSource: '/Locations/GetCountries', valueField: 'id' } },
-                    { field: 'DateOfBirth', type: 'date', editor: true },
-                    { field: 'IsActive', title: 'Active?', type: 'checkbox', editor: true, width: 90, align: 'center' }
-                ],
-                pager: { limit: 5 }
-            });
-            grid.on('rowDataChanged', function (e, id, record) {
-                // Clone the record in new object where you can format the data to format that is supported by the backend.
-                var data = $.extend(true, {}, record);
-                // Format the date to format that is supported by the backend.
-                data.DateOfBirth = gj.core.parseDate(record.DateOfBirth, 'mm/dd/yyyy').toISOString();
-                // Post the data to the server
-                $.ajax({ url: '/Players/Save', data: { record: data }, method: 'POST' })
-                    .fail(function () {
-                        alert('Failed to save.');
-                    });
-            });
-            grid.on('rowRemoving', function (e, $row, id, record) {
-                if (confirm('Are you sure?')) {
-                    $.ajax({ url: '/Players/Delete', data: { id: id }, method: 'POST' })
-                        .done(function () {
-                            grid.reload();
-                        })
-                        .fail(function () {
-                            alert('Failed to delete.');
-                        });
-                }
-            });
+<body style="padding: 8px;">
+    <button onclick="grid.downloadCSV('myfilename.csv')" class="gj-button-md">Download CSV</button>
+    <br /><br />
+    <table id="grid"></table>
+    <script>
+        var grid = $('#grid').grid({
+            dataSource: '/Players/Get',
+            uiLibrary: 'materialdesign',
+            detailTemplate: '<div style="text-align: left"><b>Place Of Birth:</b> {PlaceOfBirth}</div>',
+            columns: [{ field: 'ID', width: 56 }, { field: 'Name' }, { field: 'DateOfBirth', type: 'date' }]
         });
     </script>
 </body>
-
 </html>
