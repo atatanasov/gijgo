@@ -61,6 +61,10 @@ gj.datepicker.config = {
 
         /** If set to true, add footer with ok and cancel buttons to the datepicker.         */        footer: false,
 
+        /** If set to true, show datepicker on input focus.         */        showOnFocus: true,
+
+        /** If set to true, show datepicker icon on the right side of the input.         */        showRightIcon: true,
+
         style: {
             modal: 'gj-modal',
             wrapper: 'gj-datepicker gj-datepicker-md gj-unselectable',
@@ -123,15 +127,6 @@ gj.datepicker.methods = {
         var $calendar, $rightIcon,
             $wrapper = $datepicker.parent('div[role="wrapper"]');
 
-        if (data.uiLibrary === 'bootstrap') {
-            $rightIcon = $('<span class="input-group-addon">' + data.icons.rightIcon + '</span>');
-        } else if (data.uiLibrary === 'bootstrap4') {
-            $rightIcon = $('<span class="input-group-append"><button class="btn btn-outline-secondary border-left-0" type="button">' + data.icons.rightIcon + '</button></span>');
-        } else {
-            $rightIcon = $(data.icons.rightIcon);
-        }
-
-        $rightIcon.attr('role', 'right-icon');
         if ($wrapper.length === 0) {
             $wrapper = $('<div role="wrapper" />').addClass(data.style.wrapper); // The css class needs to be added before the wrapping, otherwise doesn't work.
             $datepicker.wrap($wrapper);
@@ -162,15 +157,31 @@ gj.datepicker.methods = {
             }
         }
 
-        $rightIcon.on('click', function (e) {
-            var $calendar = $('body').find('[role="calendar"][guid="' + $datepicker.attr('data-guid') + '"]');
-            if ($calendar.is(':visible')) {
-                gj.datepicker.methods.close($datepicker);
+        if (data.showRightIcon) {
+            if (data.uiLibrary === 'bootstrap') {
+                $rightIcon = $('<span class="input-group-addon">' + data.icons.rightIcon + '</span>');
+            } else if (data.uiLibrary === 'bootstrap4') {
+                $rightIcon = $('<span class="input-group-append"><button class="btn btn-outline-secondary border-left-0" type="button">' + data.icons.rightIcon + '</button></span>');
             } else {
-                gj.datepicker.methods.open($datepicker, data);
+                $rightIcon = $(data.icons.rightIcon);
             }
-        });
-        $wrapper.append($rightIcon);
+            $rightIcon.attr('role', 'right-icon');
+            $rightIcon.on('click', function (e) {
+                var $calendar = $('body').find('[role="calendar"][guid="' + $datepicker.attr('data-guid') + '"]');
+                if ($calendar.is(':visible')) {
+                    gj.datepicker.methods.close($datepicker);
+                } else {
+                    gj.datepicker.methods.open($datepicker, data);
+                }
+            });
+            $wrapper.append($rightIcon);
+        }
+
+        if (data.showOnFocus) {
+            $datepicker.on('focus', function () {
+                gj.datepicker.methods.open($datepicker, data);
+            });
+        }
 
         $calendar = gj.datepicker.methods.createCalendar($datepicker, data);
 
@@ -182,12 +193,12 @@ gj.datepicker.methods = {
             });
             $calendar.mousedown(function () {
                 clearTimeout($datepicker.timeout);
-                $datepicker.focus();
+                document.activeElement !== $datepicker[0] && $datepicker.focus();
                 return false;
             });
             $calendar.on('click', function () {
                 clearTimeout($datepicker.timeout);
-                $datepicker.focus();
+                document.activeElement !== $datepicker[0] && $datepicker.focus();
             });
         }
 
@@ -765,7 +776,7 @@ gj.datepicker.methods = {
             gj.core.center($calendar);
         } else {
             gj.core.setChildPosition($datepicker[0], $calendar[0]);
-            $datepicker.focus();
+            document.activeElement !== $datepicker[0] && $datepicker.focus();
         }
         clearTimeout($datepicker.timeout);
         gj.datepicker.events.open($datepicker);
@@ -874,6 +885,8 @@ gj.datepicker.methods = {
             if (date && date.getTime()) {
                 $calendar = $('body').find('[role="calendar"][guid="' + $datepicker.attr('data-guid') + '"]');
                 gj.datepicker.methods.dayClickHandler($datepicker, $calendar, data, date)();
+            } else {
+                $datepicker.val('');
             }
             return $datepicker;
         }

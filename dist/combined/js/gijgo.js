@@ -56,6 +56,17 @@ gj.widget = function () {
         }
         return null;
     };
+
+    self.extend = function () {
+        for (var i = 1; i < arguments.length; i++) {
+            for (var key in arguments[i]) {
+                if (arguments[i].hasOwnProperty(key)) {
+                    arguments[0][key] = arguments[i][key];
+                }
+            }
+        }
+        return arguments[0];
+    };
 };
 
 gj.widget.prototype.init = function (jsConfig, type) {
@@ -144,6 +155,115 @@ gj.widget.prototype.getHTMLConfig = function () {
     return result;
 };
 
+window.gijgoStorage = {
+    _storage: new WeakMap(),
+    put: function (el, key, obj) {
+        if (!this._storage.has(key)) {
+            this._storage.set(el, new Map());
+        }
+        this._storage.get(el).set(key, obj);
+    },
+    get: function (el, key) {
+        return this._storage.get(el).get(key);
+    },
+    has: function (el, key) {
+        return this._storage.get(el).has(key);
+    },
+    remove: function (el, key) {
+        var ret = this._storage.get(el).delete(key);
+        if (!this._storage.get(key).size === 0) {
+            this._storage.delete(el);
+        }
+        return ret;
+    }
+}
+
+gj.widget.prototype.initJS = function (jsConfig, type) {
+    var option, clientConfig, fullConfig;
+
+    this.element.setAttribute('data-type', type);
+    clientConfig = this.extend({}, this.getHTMLConfigJS() || {});
+    this.extend(clientConfig, jsConfig || {});
+    fullConfig = this.getConfigJS(clientConfig, type);
+    this.element.setAttribute('data-guid', fullConfig.guid);
+    gijgoStorage.put(this.element, 'gijgo', fullConfig);
+
+    // Initialize events configured as options
+    for (option in fullConfig) {
+        if (gj[type].events.hasOwnProperty(option)) {
+            this.element.addEventListener(option, fullConfig[option]);
+            delete fullConfig[option];
+        }
+    }
+
+    // Initialize all plugins
+    for (plugin in gj[type].plugins) {
+        if (gj[type].plugins.hasOwnProperty(plugin)) {
+            gj[type].plugins[plugin].configure(this, fullConfig, clientConfig);
+        }
+    }
+
+    return this;
+};
+
+gj.widget.prototype.getConfigJS = function (clientConfig, type) {
+    var config, uiLibrary, iconsLibrary, plugin;
+
+    config = this.extend({}, gj[type].config.base);
+
+    uiLibrary = clientConfig.hasOwnProperty('uiLibrary') ? clientConfig.uiLibrary : config.uiLibrary;
+    if (gj[type].config[uiLibrary]) {
+        this.extend(config, gj[type].config[uiLibrary]);
+    }
+
+    iconsLibrary = clientConfig.hasOwnProperty('iconsLibrary') ? clientConfig.iconsLibrary : config.iconsLibrary;
+    if (gj[type].config[iconsLibrary]) {
+        this.extend(config, gj[type].config[iconsLibrary]);
+    }
+
+    for (plugin in gj[type].plugins) {
+        if (gj[type].plugins.hasOwnProperty(plugin)) {
+            this.extend(config, gj[type].plugins[plugin].config.base);
+            if (gj[type].plugins[plugin].config[uiLibrary]) {
+                this.extend(config, gj[type].plugins[plugin].config[uiLibrary]);
+            }
+            if (gj[type].plugins[plugin].config[iconsLibrary]) {
+                this.extend(config, gj[type].plugins[plugin].config[iconsLibrary]);
+            }
+        }
+    }
+
+    this.extend(config, clientConfig);
+
+    if (!config.guid) {
+        config.guid = this.generateGUID();
+    }
+
+    return config;
+}
+
+gj.widget.prototype.getHTMLConfigJS = function () {
+    var result = {},
+        attrs = this.element.attributes;
+    if (attrs['width']) {
+        result.width = attrs['width'].value;
+    }
+    if (attrs['height']) {
+        result.height = attrs['height'].value;
+    }
+    if (attrs['value']) {
+        result.value = attrs['value'].value;
+    }
+    if (attrs['align']) {
+        result.align = attrs['align'].value;
+    }
+    if (result && result.source) {
+        result.dataSource = result.source;
+        delete result.source;
+    }
+    return result;
+};
+
 gj.widget.prototype.createDoneHandler = function () {
     var $widget = this;
     return function (response) {
@@ -155,7 +275,6 @@ gj.widget.prototype.createDoneHandler = function () {
 };
 
 gj.widget.prototype.createErrorHandler = function () {
-    var $widget = this;
     return function (response) {
         if (response && response.statusText && response.statusText !== 'abort') {
             alert(response.statusText);
@@ -207,7 +326,7 @@ gj.documentManager = {
     subscribeForEvent: function (eventName, widgetId, callback) {
         if (!gj.documentManager.events[eventName] || gj.documentManager.events[eventName].length === 0) {
             gj.documentManager.events[eventName] = [{ widgetId: widgetId, callback: callback }];
-            $(document).on(eventName, gj.documentManager.executeCallbacks);
+            document.addEventListener(eventName, gj.documentManager.executeCallbacks);
         } else if (!gj.documentManager.events[eventName][widgetId]) {
             gj.documentManager.events[eventName].push({ widgetId: widgetId, callback: callback });
         } else {
@@ -233,7 +352,7 @@ gj.documentManager = {
                     events.splice(i, 1);
                     success = true;
                     if (events.length === 0) {
-                        $(document).off(eventName);
+                        document.removeEventListener(eventName, gj.documentManager.executeCallbacks);
                         delete gj.documentManager.events[eventName];
                     }
                 }
@@ -592,6 +711,15 @@ gj.core = {
                 elem.selectionEnd = elemLen;
                 elem.focus();
             }
+        }
+    },
+    getScrollParent: function (node) {
+        if (node == null) {
+            return null;
+        } else if (node.scrollHeight > node.clientHeight) {
+            return node;
+        } else {
+            return gj.core.getScrollParent(node.parentNode);
         }
     }
 };
@@ -1918,7 +2046,7 @@ gj.draggable.config = {
          * Only elements that descend from the draggable element are permitted.
          * @type jquery element
          * @default undefined
-         * @example sample <!-- draggable -->
+         * @example sample <!-- nojquery, draggable -->
          * <style>
          * .element { border: 1px solid #999; width: 300px; height: 200px; }
          * .handle { background-color: #DDD; cursor: move; width: 200px; margin: 5px auto 0px auto; text-align: center; padding: 5px; }
@@ -1927,8 +2055,8 @@ gj.draggable.config = {
          *   <div id="handle" class="handle">Handle for dragging</div>
          * </div>
          * <script>
-         *     $('#element').draggable({
-         *         handle: $('#handle')
+         *     new GijgoDraggable(document.getElementById('element'), {
+         *         handle: document.getElementById('handle')
          *     });
          * </script>
          */
@@ -1937,7 +2065,7 @@ gj.draggable.config = {
         /** If set to false, restricts dragging on vertical direction.
          * @type Boolean
          * @default true
-         * @example sample <!-- draggable -->
+         * @example sample <!-- nojquery, draggable -->
          * <style>
          * .element { border: 1px solid #999; width: 300px; height: 200px; cursor: move; text-align: center; background-color: #DDD; }
          * </style>
@@ -1946,7 +2074,7 @@ gj.draggable.config = {
          *     <i>(dragging on vertical direction is disabled)</i>
          * </div>
          * <script>
-         *     $('#element').draggable({
+         *     new GijgoDraggable(document.getElementById('element'), {
          *         vertical: false
          *     });
          * </script>
@@ -1956,7 +2084,7 @@ gj.draggable.config = {
         /** If set to false, restricts dragging on horizontal direction.
          * @type Boolean
          * @default true
-         * @example sample <!-- draggable -->
+         * @example sample <!-- nojquery, draggable -->
          * <style>
          * .element { border: 1px solid #999; width: 300px; height: 200px; cursor: move; text-align: center; background-color: #DDD; }
          * </style>
@@ -1965,7 +2093,7 @@ gj.draggable.config = {
          *     <i>(dragging on horizontal direction is disabled)</i>
          * </div>
          * <script>
-         *     $('#element').draggable({
+         *     new GijgoDraggable(document.getElementById('element'), {
          *         horizontal: false
          *     });
          * </script>
@@ -1975,7 +2103,7 @@ gj.draggable.config = {
         /** Constrains dragging to within the bounds of the specified element.
          * @type Element
          * @default undefined
-         * @example sample <!-- draggable -->
+         * @example sample <!-- nojquery, draggable -->
          * <style>
          * .container { border: 1px solid #999; width: 600px; height: 600px; }
          * .element { border: 1px solid #999; width: 300px; height: 200px; cursor: move; text-align: center; background-color: #DDD; }
@@ -1984,7 +2112,7 @@ gj.draggable.config = {
          *     <div id="element" class="element">drag me</div>
          * </div>
          * <script>
-         *     $('#element').draggable({
+         *     new GijgoDraggable(document.getElementById('element'), {
          *         containment: document.getElementById('container')
          *     });
          * </script>
@@ -1995,66 +2123,71 @@ gj.draggable.config = {
 
 gj.draggable.methods = {
     init: function (jsConfig) {
-        var $handleEl, data, $dragEl = this;
+        var handleEl, data, dragEl = this.element;
 
-        gj.widget.prototype.init.call(this, jsConfig, 'draggable');
-        data = this.data();
-        $dragEl.attr('data-draggable', 'true');
+        gj.widget.prototype.initJS.call(this, jsConfig, 'draggable');
+        data = gijgoStorage.get(dragEl, 'gijgo');
+        dragEl.setAttribute('data-draggable', 'true');
 
-        $handleEl = gj.draggable.methods.getHandleElement($dragEl);
+        handleEl = gj.draggable.methods.getHandleElement(dragEl, data);
 
-        $handleEl.on('touchstart mousedown', function (e) {
-            var position = gj.core.position($dragEl[0]);
-            $dragEl[0].style.top = position.top + 'px';
-            $dragEl[0].style.left = position.left + 'px';
-            $dragEl[0].style.position = 'fixed';
+        handleEl.addEventListener('mousedown', gj.draggable.methods.createDownHandle(this, dragEl, data));
+        handleEl.addEventListener('touchstart', gj.draggable.methods.createDownHandle(this, dragEl, data));
 
-            $dragEl.attr('draggable-dragging', true);
-            $dragEl.removeAttr('draggable-x').removeAttr('draggable-y');
-            gj.documentManager.subscribeForEvent('touchmove', $dragEl.data('guid'), gj.draggable.methods.createMoveHandler($dragEl, $handleEl, data));
-            gj.documentManager.subscribeForEvent('mousemove', $dragEl.data('guid'), gj.draggable.methods.createMoveHandler($dragEl, $handleEl, data));
-        });
+        gj.documentManager.subscribeForEvent('mouseup', data.guid, gj.draggable.methods.createUpHandler(this, dragEl, data));
+        gj.documentManager.subscribeForEvent('touchend', data.guid, gj.draggable.methods.createUpHandler(this, dragEl, data));
+        gj.documentManager.subscribeForEvent('touchcancel', data.guid, gj.draggable.methods.createUpHandler(this, dragEl, data));
 
-        gj.documentManager.subscribeForEvent('mouseup', $dragEl.data('guid'), gj.draggable.methods.createUpHandler($dragEl));
-        gj.documentManager.subscribeForEvent('touchend', $dragEl.data('guid'), gj.draggable.methods.createUpHandler($dragEl));
-        gj.documentManager.subscribeForEvent('touchcancel', $dragEl.data('guid'), gj.draggable.methods.createUpHandler($dragEl));
-
-        return $dragEl;
+        return this;
     },
 
-    getHandleElement: function ($dragEl) {
-        var $handle = $dragEl.data('handle');
-        return ($handle && $handle.length) ? $handle : $dragEl;
-    },
-
-    createUpHandler: function ($dragEl) {
+    createDownHandle: function (widget, dragEl, data) {
         return function (e) {
-            if ($dragEl.attr('draggable-dragging') === 'true') {
-                $dragEl.attr('draggable-dragging', false);
-                gj.documentManager.unsubscribeForEvent('mousemove', $dragEl.data('guid'));
-                gj.documentManager.unsubscribeForEvent('touchmove', $dragEl.data('guid'));
-                gj.draggable.events.stop($dragEl, { x: $dragEl.mouseX(e), y: $dragEl.mouseY(e) });
+            var position = gj.core.position(dragEl);
+            dragEl.style.top = position.top + 'px';
+            dragEl.style.left = position.left + 'px';
+            dragEl.style.position = 'fixed';
+
+            dragEl.setAttribute('draggable-dragging', true);
+            dragEl.removeAttribute('draggable-x');
+            dragEl.removeAttribute('draggable-y');
+            gj.documentManager.subscribeForEvent('touchmove', data.guid, gj.draggable.methods.createMoveHandler(widget, dragEl, data));
+            gj.documentManager.subscribeForEvent('mousemove', data.guid, gj.draggable.methods.createMoveHandler(widget, dragEl, data));
+        }
+    },
+
+    getHandleElement: function (dragEl, data) {
+        return data.handle ? data.handle : dragEl;
+    },
+
+    createUpHandler: function (widget, dragEl, data) {
+        return function (e) {
+            if (dragEl.getAttribute('draggable-dragging') === 'true') {
+                dragEl.setAttribute('draggable-dragging', false);
+                gj.documentManager.unsubscribeForEvent('mousemove', data.guid);
+                gj.documentManager.unsubscribeForEvent('touchmove', data.guid);
+                gj.draggable.events.stop(dragEl, { x: widget.mouseX(e), y: widget.mouseY(e) });
             }
         };
     },
 
-    createMoveHandler: function ($dragEl, $handleEl, data) {
+    createMoveHandler: function (widget, dragEl, data) {
         return function (e) {
             var mouseX, mouseY, offsetX, offsetY, prevX, prevY;
-            if ($dragEl.attr('draggable-dragging') === 'true') {
-                mouseX = Math.round($dragEl.mouseX(e));
-                mouseY = Math.round($dragEl.mouseY(e));
-                prevX = $dragEl.attr('draggable-x');
-                prevY = $dragEl.attr('draggable-y');
+            if (dragEl.getAttribute('draggable-dragging') === 'true') {
+                mouseX = Math.round(widget.mouseX(e));
+                mouseY = Math.round(widget.mouseY(e));
+                prevX = dragEl.getAttribute('draggable-x');
+                prevY = dragEl.getAttribute('draggable-y');
                 if (prevX && prevY) {
                     offsetX = data.horizontal ? mouseX - parseInt(prevX, 10) : 0;
                     offsetY = data.vertical ? mouseY - parseInt(prevY, 10) : 0;
-                    gj.draggable.methods.move($dragEl[0], data, offsetX, offsetY, mouseX, mouseY);
+                    gj.draggable.methods.move(dragEl, data, offsetX, offsetY, mouseX, mouseY);
                 } else {
-                    gj.draggable.events.start($dragEl, mouseX, mouseY);
+                    gj.draggable.events.start(dragEl, mouseX, mouseY);
                 }
-                $dragEl.attr('draggable-x', mouseX);
-                $dragEl.attr('draggable-y', mouseY);
+                dragEl.setAttribute('draggable-x', mouseX);
+                dragEl.setAttribute('draggable-y', mouseY);
             }
         }
     },
@@ -2093,25 +2226,33 @@ gj.draggable.methods = {
             }
         }
 
-        if (false !== gj.draggable.events.drag($(dragEl), newLeft, newTop, mouseX, mouseY)) {
+        if (false !== gj.draggable.events.drag(dragEl, newLeft, newTop, mouseX, mouseY)) {
             dragEl.style.top = newTop + 'px';
             dragEl.style.left = newLeft + 'px';
         }
     },
 
-    destroy: function ($dragEl) {
-        if ($dragEl.attr('data-draggable') === 'true') {
-            gj.documentManager.unsubscribeForEvent('mouseup', $dragEl.data('guid'));
-            $dragEl.removeData();
-            $dragEl.removeAttr('data-guid').removeAttr('data-type').removeAttr('data-draggable');
-            $dragEl.removeAttr('draggable-x').removeAttr('draggable-y').removeAttr('draggable-dragging');
-            $dragEl[0].style.top = '';
-            $dragEl[0].style.left = '';
-            $dragEl[0].style.position = '';
-            $dragEl.off('drag').off('start').off('stop');
-            gj.draggable.methods.getHandleElement($dragEl).off('mousedown');
+    destroy: function (dragEl) {
+        if (dragEl.getAttribute('data-draggable') === 'true') {
+            gj.documentManager.unsubscribeForEvent('mouseup', data.guid);
+            gijgoStorage.remove(dragEl, 'gijgo');
+            dragEl.removeAttribute('data-guid');
+            dragEl.removeAttribute('data-type');
+            dragEl.removeAttribute('data-draggable');
+            dragEl.removeAttribute('draggable-x');
+            dragEl.removeAttribute('draggable-y');
+            dragEl.removeAttribute('draggable-dragging');
+            dragEl.style.top = '';
+            dragEl.style.left = '';
+            dragEl.style.position = '';
+            dragEl.removeEventListener('drag');
+            dragEl.removeEventListener('start');
+            dragEl.removeEventListener('stop');
+            var handle = gj.draggable.methods.getHandleElement(dragEl, data);
+            handle.removeEventListener('mousedown');
+            handle.removeEventListener('touchstart');
         }
-        return $dragEl;
+        return dragEl;
     }
 };
 
@@ -2129,15 +2270,17 @@ gj.draggable.events = {
      * </style>
      * <div id="element" class="element gj-unselectable">drag me</div>
      * <script>
-     *     $('#element').draggable({
-     *         drag: function (e, newPosition, mousePosition) {
-     *             $('body').append('<div>The drag event is fired. New Element Position = { top:' + newPosition.top + ', left: ' + newPosition.left + '}.</div>');
-     *         }
+     *     var obj = new GijgoDraggable(document.getElementById('element'));
+     *     obj.element.addEventListener('drag', function (e) {
+     *         $('body').append('<div>The drag event is fired. New Element Position = { top:' + e.newPosition.top + ', left: ' + e.newPosition.left + '}.</div>');
      *     });
      * </script>
      */
-    drag: function ($dragEl, newLeft, newTop, mouseX, mouseY) {
-        return $dragEl.triggerHandler('drag', [{ left: newLeft, top: newTop }, { x: mouseX, y: mouseY }]);
+    drag: function (el, newLeft, newTop, mouseX, mouseY) {
+        var event = new Event('drag');
+        event.newPosition = { left: newLeft, top: newTop };
+        event.mousePosition = { x: mouseX, y: mouseY };
+        return el.dispatchEvent(event);
     },
 
     /**
@@ -2154,15 +2297,15 @@ gj.draggable.events = {
      *   drag me
      * </div>
      * <script>
-     *     $('#element').draggable({
+     *     new GijgoDraggable(document.getElementById('element'), {
      *         start: function (e, mousePosition) {
      *             $('body').append('<div>The start event is fired. mousePosition { x:' + mousePosition.x + ', y: ' + mousePosition.y + '}.</div>');
      *         }
      *     });
      * </script>
      */
-    start: function ($dragEl, mouseX, mouseY) {
-        $dragEl.triggerHandler('start', [{ x: mouseX, y: mouseY }]);
+    start: function (el, mouseX, mouseY) {
+        return el.dispatchEvent(new CustomEvent('start', { x: mouseX, y: mouseY }));
     },
 
     /**
@@ -2179,69 +2322,71 @@ gj.draggable.events = {
      *   drag me
      * </div>
      * <script>
-     *     $('#element').draggable({
-     *         stop: function (e, offset) {
-     *             $('body').append('<div>The stop event is fired.</div>');
-     *         }
+     *     var obj = new GijgoDraggable(document.getElementById('element'));
+     *     obj.addEventListener('stop', function (e) {
+     *         $('body').append('<div>The stop event is fired.</div>');
      *     });
      * </script>
      */
-    stop: function ($dragEl, mousePosition) {
-        $dragEl.triggerHandler('stop', [mousePosition]);
+    stop: function (el, mousePosition) {
+        return el.dispatchEvent(new CustomEvent('stop', mousePosition));
     }
 };
 
-gj.draggable.widget = function ($element, jsConfig) {
+GijgoDraggable = function (element, jsConfig) {
     var self = this,
         methods = gj.draggable.methods;
 
-    if (!$element.destroy) {
-        /** Remove draggable functionality from the element.
-         * @method
-         * @return jquery element
-         * @example sample <!-- draggable -->
-         * <style>
-         * .element { border: 1px solid #999; width: 300px; height: 200px; cursor: move; text-align: center; background-color: #DDD; }
-         * </style>
-         * <button onclick="dragEl.destroy()" class="gj-button-md">Destroy</button>
-         * <div id="element" class="element">Drag Me</div>
-         * <script>
-         *     var dragEl = $('#element').draggable();
-         * </script>
-         */
-        self.destroy = function () {
-            return methods.destroy(this);
-        };
+    self.element = element;
+    
+    /** Remove draggable functionality from the element.
+        * @method
+        * @return jquery element
+        * @example sample <!-- draggable -->
+        * <style>
+        * .element { border: 1px solid #999; width: 300px; height: 200px; cursor: move; text-align: center; background-color: #DDD; }
+        * </style>
+        * <button onclick="dragEl.destroy()" class="gj-button-md">Destroy</button>
+        * <div id="element" class="element">Drag Me</div>
+        * <script>
+        *     var dragEl = $('#element').draggable();
+        * </script>
+        */
+    self.destroy = function () {
+        return methods.destroy(this);
+    };
+
+    //$.extend($element, self);
+    if ('true' !== element.getAttribute('data-draggable')) {
+        methods.init.call(self, jsConfig);
     }
 
-    $.extend($element, self);
-    if ('true' !== $element.attr('data-draggable')) {
-        methods.init.call($element, jsConfig);
-    }
-
-    return $element;
+    return self;
 };
 
-gj.draggable.widget.prototype = new gj.widget();
-gj.draggable.widget.constructor = gj.draggable.widget;
+GijgoDraggable.prototype = new gj.widget();
+GijgoDraggable.constructor = GijgoDraggable;
 
-(function ($) {
-    $.fn.draggable = function (method) {
-        var $widget;
-        if (this && this.length) {
-            if (typeof method === 'object' || !method) {
-                return new gj.draggable.widget(this, method);
-            } else {
-                $widget = new gj.draggable.widget(this, null);
-                if ($widget[method]) {
-                    return $widget[method].apply(this, Array.prototype.slice.call(arguments, 1));
+
+if (typeof (jQuery) !== "undefined") {
+    (function ($) {
+        $.fn.draggable = function (method) {
+            var $widget;
+            if (this && this.length) {
+                if (typeof method === 'object' || !method) {
+                    return new GijgoDraggable(this[0], method);
                 } else {
-                    throw 'Method ' + method + ' does not exist.';
+                    $widget = new GijgoDraggable(this[0], null);
+                    if ($widget[method]) {
+                        return $widget[method].apply(this[0], Array.prototype.slice.call(arguments, 1));
+                    } else {
+                        throw 'Method ' + method + ' does not exist.';
+                    }
                 }
             }
-        }
-    };
-})(jQuery);
+        };
+    })(jQuery);
+}
 /* global window alert jQuery */
 /** 
  * @widget Droppable 
@@ -6590,7 +6735,16 @@ gj.grid.plugins.inlineEditing.private = {
                 value = record[column.editField || column.field];
                 $editorField = $editorContainer.find('input, select, textarea').first();
                 if ($editorField.length) {
-                    column.type === 'checkbox' ? $editorField.prop('checked', value) : $editorField.val(value);
+                    switch (column.type) {
+                        case 'checkbox':
+                            $editorField.prop('checked', value);
+                            break;
+                        case 'dropdown':
+                            $editorField = $editorField.dropdown('value', value);
+                            break;
+                        default:
+                            $editorField.val(value);
+                    }
                 } else {
                     if (typeof (column.editor) === 'function') {
                         column.editor($editorContainer, value, record);
@@ -6600,6 +6754,7 @@ gj.grid.plugins.inlineEditing.private = {
                         config.uiLibrary = data.uiLibrary;
                         config.iconsLibrary = data.iconsLibrary;
                         config.fontSize = $grid.css('font-size');
+                        config.showOnFocus = false;
                         if ('checkbox' === column.type && gj.checkbox) {
                             $editorField = $('<input type="checkbox" />').prop('checked', value);
                             $editorContainer.append($editorField);
@@ -8671,7 +8826,7 @@ gj.grid.plugins.export = {
             if (records.length) {
 
                 for (i = 0; i < columns.length; i++) {
-                    if (columns[i].hidden !== true) {
+                    if (gj.grid.plugins.export.public.isColumnApplicable(columns[i])) {
                         line += '"' + (columns[i].title || columns[i].field).replace(/<[^>]+>/g, ' ') + '",';
                     }
                 }
@@ -8681,7 +8836,7 @@ gj.grid.plugins.export = {
                     line = '';
 
                     for (j = 0; j < columns.length; j++) {
-                        if (columns[j].hidden !== true) {
+                        if (gj.grid.plugins.export.public.isColumnApplicable(columns[j])) {
                             line += '"' + records[i][columns[j].field] + '",';
                         }
                     }                    
@@ -8736,6 +8891,10 @@ gj.grid.plugins.export = {
             link.click();
             document.body.removeChild(link);
             return this;
+        },
+
+        isColumnApplicable: function (column) {
+            return column.hidden !== true && !column.role;
         }
     },
 
@@ -10261,7 +10420,7 @@ gj.tree.methods = {
             disabled = typeof (nodeData[data.disabledField]) !== 'undefined' && nodeData[data.disabledField].toString().toLowerCase() === 'true';
 
         if (data.indentation) {
-            $wrapper.append('<span data-role="spacer" style="width: ' + (data.indentation * (level - 1)) + 'px;"></span>');
+            $wrapper.append($('<span data-role="spacer">').css('width', (data.indentation * (level - 1)) + 'px'));
         }
 
         if (disabled) {
@@ -11587,29 +11746,35 @@ gj.tree.plugins.checkboxes = {
         },
 
         nodeDataBound: function ($tree, $node, id, record) {
-            var data = $tree.data(),
-                $expander = $node.find('> [data-role="wrapper"] > [data-role="expander"]'),
-                $checkbox = $('<input type="checkbox"/>'),
-                $wrapper = $('<span data-role="checkbox"></span>').append($checkbox),
+            var data, $expander, $checkbox, $wrapper, disabled;
+            
+            if ($node.find('> [data-role="wrapper"] > [data-role="checkbox"]').length === 0)
+            {
+                data = $tree.data();
+                $expander = $node.find('> [data-role="wrapper"] > [data-role="expander"]');
+                $checkbox = $('<input type="checkbox"/>');
+                $wrapper = $('<span data-role="checkbox"></span>').append($checkbox);
                 disabled = typeof (record[data.disabledField]) !== 'undefined' && record[data.disabledField].toString().toLowerCase() === 'true';
-            $checkbox = $checkbox.checkbox({
-                uiLibrary: data.uiLibrary,
-                iconsLibrary: data.iconsLibrary,
-                change: function (e, state) {
-                    gj.tree.plugins.checkboxes.events.checkboxChange($tree, $node, record, $checkbox.state());
-                }
-            });
-            disabled && $checkbox.prop('disabled', true);
-            record[data.checkedField] && $checkbox.state('checked');
-            $checkbox.on('click', function (e) {
-                var $node = $checkbox.closest('li'),
-                    state = $checkbox.state();
-                if (data.cascadeCheck) {
-                    gj.tree.plugins.checkboxes.private.updateChildrenState($node, state);
-                    gj.tree.plugins.checkboxes.private.updateParentState($node, state);
-                }
-            });
-            $expander.after($wrapper);
+
+                $checkbox = $checkbox.checkbox({
+                    uiLibrary: data.uiLibrary,
+                    iconsLibrary: data.iconsLibrary,
+                    change: function (e, state) {
+                        gj.tree.plugins.checkboxes.events.checkboxChange($tree, $node, record, $checkbox.state());
+                    }
+                });
+                disabled && $checkbox.prop('disabled', true);
+                record[data.checkedField] && $checkbox.state('checked');
+                $checkbox.on('click', function (e) {
+                    var $node = $checkbox.closest('li'),
+                        state = $checkbox.state();
+                    if (data.cascadeCheck) {
+                        gj.tree.plugins.checkboxes.private.updateChildrenState($node, state);
+                        gj.tree.plugins.checkboxes.private.updateParentState($node, state);
+                    }
+                });
+                $expander.after($wrapper);
+            }
         },
 
         updateParentState: function ($node, state) {
@@ -12797,7 +12962,7 @@ gj.editor.methods = {
         }
         $body.attr('contenteditable', true);
         $body.on('keydown', function (e) {
-            var key = event.keyCode || event.charCode;
+            var key = e.keyCode || e.charCode;
             if (gj.editor.events.changing($editor) === false && key !== 8 && key !== 46) {
                 e.preventDefault();
             }
@@ -13014,6 +13179,7 @@ gj.editor.widget.constructor = gj.editor.widget;
         }
     };
 })(jQuery);
+
 gj.editor.messages['en-us'] = {
     bold: 'Bold',
     italic: 'Italic',
@@ -13497,7 +13663,7 @@ gj.dropdown.methods = {
                 var value = this[data.valueField],
                     text = this[data.textField],
                     selected = this[data.selectedField] && this[data.selectedField].toString().toLowerCase() === 'true',
-                    $item, i;
+                    i, $item;
 
                 $item = $('<li value="' + value + '"><div data-role="wrapper"><span data-role="display">' + text + '</span></div></li>');
                 $item.addClass(data.style.item);
@@ -13514,6 +13680,7 @@ gj.dropdown.methods = {
             });
             if (selections.length === 0) {
                 $dropdown.prepend('<option value=""></option>');
+                $dropdown[0].selectedIndex = 0;
                 if (data.placeholder) {
                     $display[0].innerHTML = '<span class="placeholder">' + data.placeholder + '</span>';
                 }
@@ -13541,32 +13708,65 @@ gj.dropdown.methods = {
     open: function ($dropdown, $list) {
         var data = $dropdown.data(),
             $expander = $dropdown.parent().find('[role="expander"]'),
-            $presenter = $dropdown.parent().find('[role="presenter"]');
+            $presenter = $dropdown.parent().find('[role="presenter"]'),
+            scrollParentEl = gj.core.getScrollParent($dropdown[0]);
         $list.css('width', gj.core.width($presenter[0]));
         $list.show();
         gj.dropdown.methods.setListPosition($presenter[0], $list[0], data);
         $expander.html(data.icons.dropup);
+        if (scrollParentEl) {
+            data.parentScrollHandler = function () {
+                gj.dropdown.methods.setListPosition($presenter[0], $list[0], data);
+            };
+            gj.dropdown.methods.addParentsScrollListener(scrollParentEl, data.parentScrollHandler);
+        }
     },
 
     close: function ($dropdown, $list) {
         var data = $dropdown.data(),
-            $expander = $dropdown.parent().find('[role="expander"]');
+            $expander = $dropdown.parent().find('[role="expander"]'),
+            scrollParentEl = gj.core.getScrollParent($dropdown[0]);
         $expander.html(data.icons.dropdown);
+        if (scrollParentEl && data.parentScrollHandler) {
+            gj.dropdown.methods.removeParentsScrollListener(scrollParentEl, data.parentScrollHandler);
+        }
         $list.hide();
+    },
+
+    addParentsScrollListener: function (el, handler) {
+        var scrollParentEl = gj.core.getScrollParent(el.parentNode);
+        el.addEventListener('scroll', handler);
+        if (scrollParentEl) {
+            gj.dropdown.methods.addParentsScrollListener(scrollParentEl, handler);
+        }
+    },
+    removeParentsScrollListener: function (el, handler) {
+        var scrollParentEl = gj.core.getScrollParent(el.parentNode);
+        el.removeEventListener('scroll', handler);
+        if (scrollParentEl) {
+            gj.dropdown.methods.removeParentsScrollListener(scrollParentEl, handler);
+        }
     },
 
     select: function ($dropdown, value) {
         var data = $dropdown.data(),
             $list = $('body').children('[role="list"][guid="' + $dropdown.attr('data-guid') + '"]'),
             $item = $list.children('li[value="' + value + '"]'),
+            $display = $dropdown.next('[role="presenter"]').find('[role="display"]'),
             record = gj.dropdown.methods.getRecordByValue($dropdown, value);
+
+        $list.children('li').removeClass(data.style.active);
         if (record) {
-            $list.children('li').removeClass(data.style.active);
             $item.addClass(data.style.active);
             $dropdown[0].value = value;
-            $dropdown.next('[role="presenter"]').find('[role="display"]').html(record[data.textField]);
-            gj.dropdown.events.change($dropdown);
+            $display[0].innerHTML = record[data.textField];
+        } else {
+            if (data.placeholder) {
+                $display[0].innerHTML = '<span class="placeholder">' + data.placeholder + '</span>';
+            }
+            $dropdown[0].value = '';
         }
+        gj.dropdown.events.change($dropdown);
         gj.dropdown.methods.close($dropdown, $list);
         return $dropdown;
     },
@@ -13610,7 +13810,7 @@ gj.dropdown.methods = {
             }
             $dropdown.show();
         }
-        return $tree;
+        return $dropdown;
     }
 };
 
@@ -14308,6 +14508,38 @@ gj.datepicker.config = {
          */
         footer: false,
 
+        /** If set to true, show datepicker on input focus.
+         * @type Boolean
+         * @default true
+         * @example True <!-- datepicker -->
+         * <input id="datepicker" width="312" />
+         * <script>
+         *    $('#datepicker').datepicker({ showOnFocus: true, showRightIcon: false });
+         * </script>
+         * @example False <!-- datepicker -->
+         * <input id="datepicker" width="312" />
+         * <script>
+         *    $('#datepicker').datepicker({ showOnFocus: false });
+         * </script>
+         */
+        showOnFocus: true,
+
+        /** If set to true, show datepicker icon on the right side of the input.
+         * @type Boolean
+         * @default true
+         * @example False <!-- datepicker -->
+         * <input id="datepicker" width="312" />
+         * <script>
+         *    $('#datepicker').datepicker({ showOnFocus: true, showRightIcon: false });
+         * </script>
+         * @example True <!-- datepicker -->
+         * <input id="datepicker" width="312" />
+         * <script>
+         *    $('#datepicker').datepicker({ showRightIcon: true });
+         * </script>
+         */
+        showRightIcon: true,
+
         style: {
             modal: 'gj-modal',
             wrapper: 'gj-datepicker gj-datepicker-md gj-unselectable',
@@ -14370,15 +14602,6 @@ gj.datepicker.methods = {
         var $calendar, $rightIcon,
             $wrapper = $datepicker.parent('div[role="wrapper"]');
 
-        if (data.uiLibrary === 'bootstrap') {
-            $rightIcon = $('<span class="input-group-addon">' + data.icons.rightIcon + '</span>');
-        } else if (data.uiLibrary === 'bootstrap4') {
-            $rightIcon = $('<span class="input-group-append"><button class="btn btn-outline-secondary border-left-0" type="button">' + data.icons.rightIcon + '</button></span>');
-        } else {
-            $rightIcon = $(data.icons.rightIcon);
-        }
-
-        $rightIcon.attr('role', 'right-icon');
         if ($wrapper.length === 0) {
             $wrapper = $('<div role="wrapper" />').addClass(data.style.wrapper); // The css class needs to be added before the wrapping, otherwise doesn't work.
             $datepicker.wrap($wrapper);
@@ -14409,15 +14632,31 @@ gj.datepicker.methods = {
             }
         }
 
-        $rightIcon.on('click', function (e) {
-            var $calendar = $('body').find('[role="calendar"][guid="' + $datepicker.attr('data-guid') + '"]');
-            if ($calendar.is(':visible')) {
-                gj.datepicker.methods.close($datepicker);
+        if (data.showRightIcon) {
+            if (data.uiLibrary === 'bootstrap') {
+                $rightIcon = $('<span class="input-group-addon">' + data.icons.rightIcon + '</span>');
+            } else if (data.uiLibrary === 'bootstrap4') {
+                $rightIcon = $('<span class="input-group-append"><button class="btn btn-outline-secondary border-left-0" type="button">' + data.icons.rightIcon + '</button></span>');
             } else {
-                gj.datepicker.methods.open($datepicker, data);
+                $rightIcon = $(data.icons.rightIcon);
             }
-        });
-        $wrapper.append($rightIcon);
+            $rightIcon.attr('role', 'right-icon');
+            $rightIcon.on('click', function (e) {
+                var $calendar = $('body').find('[role="calendar"][guid="' + $datepicker.attr('data-guid') + '"]');
+                if ($calendar.is(':visible')) {
+                    gj.datepicker.methods.close($datepicker);
+                } else {
+                    gj.datepicker.methods.open($datepicker, data);
+                }
+            });
+            $wrapper.append($rightIcon);
+        }
+
+        if (data.showOnFocus) {
+            $datepicker.on('focus', function () {
+                gj.datepicker.methods.open($datepicker, data);
+            });
+        }
 
         $calendar = gj.datepicker.methods.createCalendar($datepicker, data);
 
@@ -14429,12 +14668,12 @@ gj.datepicker.methods = {
             });
             $calendar.mousedown(function () {
                 clearTimeout($datepicker.timeout);
-                $datepicker.focus();
+                document.activeElement !== $datepicker[0] && $datepicker.focus();
                 return false;
             });
             $calendar.on('click', function () {
                 clearTimeout($datepicker.timeout);
-                $datepicker.focus();
+                document.activeElement !== $datepicker[0] && $datepicker.focus();
             });
         }
 
@@ -15012,7 +15251,7 @@ gj.datepicker.methods = {
             gj.core.center($calendar);
         } else {
             gj.core.setChildPosition($datepicker[0], $calendar[0]);
-            $datepicker.focus();
+            document.activeElement !== $datepicker[0] && $datepicker.focus();
         }
         clearTimeout($datepicker.timeout);
         gj.datepicker.events.open($datepicker);
@@ -15121,6 +15360,8 @@ gj.datepicker.methods = {
             if (date && date.getTime()) {
                 $calendar = $('body').find('[role="calendar"][guid="' + $datepicker.attr('data-guid') + '"]');
                 gj.datepicker.methods.dayClickHandler($datepicker, $calendar, data, date)();
+            } else {
+                $datepicker.val('');
             }
             return $datepicker;
         }
@@ -15859,33 +16100,33 @@ gj.timepicker.methods = {
         $body.empty();
         $dial = $('<div role="dial"></div>');
 
-        $dial.append('<div role="arrow" style="transform: rotate(-90deg); display: none;"><div class="arrow-begin"></div><div class="arrow-end"></div></div>');
+        $dial.append($('<div role="arrow">').css('transform', 'rotate(-90deg)').css('display', 'none').append('<div class="arrow-begin"></div><div class="arrow-end"></div>'));
 
-        $dial.append('<span role="hour" style="transform: translate(54px, -93.5307px);">1</span>');
-        $dial.append('<span role="hour" style="transform: translate(93.5307px, -54px);">2</span>');
-        $dial.append('<span role="hour" style="transform: translate(108px, 0px);">3</span>');
-        $dial.append('<span role="hour" style="transform: translate(93.5307px, 54px);">4</span>');
-        $dial.append('<span role="hour" style="transform: translate(54px, 93.5307px);">5</span>');
-        $dial.append('<span role="hour" style="transform: translate(6.61309e-15px, 108px);">6</span>');
-        $dial.append('<span role="hour" style="transform: translate(-54px, 93.5307px);">7</span>');
-        $dial.append('<span role="hour" style="transform: translate(-93.5307px, 54px);">8</span>');
-        $dial.append('<span role="hour" style="transform: translate(-108px, 1.32262e-14px);">9</span>');
-        $dial.append('<span role="hour" style="transform: translate(-93.5307px, -54px);">10</span>');
-        $dial.append('<span role="hour" style="transform: translate(-54px, -93.5307px);">11</span>');
-        $dial.append('<span role="hour" style="transform: translate(-1.98393e-14px, -108px);">12</span>');
+        $dial.append($('<span role="hour">1</span>').css('transform', 'translate(54px, -93.5307px)'));
+        $dial.append($('<span role="hour">2</span>').css('transform', 'translate(93.5307px, -54px)'));
+        $dial.append($('<span role="hour">3</span>').css('transform', 'translate(108px, 0px)'));
+        $dial.append($('<span role="hour">4</span>').css('transform', 'translate(93.5307px, 54px)'));
+        $dial.append($('<span role="hour">5</span>').css('transform', 'translate(54px, 93.5307px)'));
+        $dial.append($('<span role="hour">6</span>').css('transform', 'translate(6.61309e-15px, 108px)'));
+        $dial.append($('<span role="hour">7</span>').css('transform', 'translate(-54px, 93.5307px)'));
+        $dial.append($('<span role="hour">8</span>').css('transform', 'translate(-93.5307px, 54px)'));
+        $dial.append($('<span role="hour">9</span>').css('transform', 'translate(-108px, 1.32262e-14px)'));
+        $dial.append($('<span role="hour">10</span>').css('transform', 'translate(-93.5307px, -54px)'));
+        $dial.append($('<span role="hour">11</span>').css('transform', 'translate(-54px, -93.5307px)'));
+        $dial.append($('<span role="hour">12</span>').css('transform', 'translate(-1.98393e-14px, -108px)'));
         if (data.mode === '24hr') {
-            $dial.append('<span role="hour" style="transform: translate(38px, -65.8179px);">13</span>');
-            $dial.append('<span role="hour" style="transform: translate(65.8179px, -38px);">14</span>');
-            $dial.append('<span role="hour" style="transform: translate(76px, 0px);">15</span>');
-            $dial.append('<span role="hour" style="transform: translate(65.8179px, 38px);">16</span>');
-            $dial.append('<span role="hour" style="transform: translate(38px, 65.8179px);">17</span>');
-            $dial.append('<span role="hour" style="transform: translate(4.65366e-15px, 76px);">18</span>');
-            $dial.append('<span role="hour" style="transform: translate(-38px, 65.8179px);">19</span>');
-            $dial.append('<span role="hour" style="transform: translate(-65.8179px, 38px);">20</span>');
-            $dial.append('<span role="hour" style="transform: translate(-76px, 9.30732e-15px);">21</span>');
-            $dial.append('<span role="hour" style="transform: translate(-65.8179px, -38px);">22</span>');
-            $dial.append('<span role="hour" style="transform: translate(-38px, -65.8179px);">23</span>');
-            $dial.append('<span role="hour" style="transform: translate(-1.3961e-14px, -76px);">00</span>');
+            $dial.append($('<span role="hour">13</span>').css('transform', 'translate(38px, -65.8179px)'));
+            $dial.append($('<span role="hour">14</span>').css('transform', 'translate(65.8179px, -38px)'));
+            $dial.append($('<span role="hour">15</span>').css('transform', 'translate(76px, 0px)'));
+            $dial.append($('<span role="hour">16</span>').css('transform', 'translate(65.8179px, 38px)'));
+            $dial.append($('<span role="hour">17</span>').css('transform', 'translate(38px, 65.8179px)'));
+            $dial.append($('<span role="hour">18</span>').css('transform', 'translate(4.65366e-15px, 76px)'));
+            $dial.append($('<span role="hour">19</span>').css('transform', 'translate(-38px, 65.8179px)'));
+            $dial.append($('<span role="hour">20</span>').css('transform', 'translate(-65.8179px, 38px)'));
+            $dial.append($('<span role="hour">21</span>').css('transform', 'translate(-76px, 9.30732e-15px)'));
+            $dial.append($('<span role="hour">22</span>').css('transform', 'translate(-65.8179px, -38px)'));
+            $dial.append($('<span role="hour">23</span>').css('transform', 'translate(-38px, -65.8179px)'));
+            $dial.append($('<span role="hour">00</span>').css('transform', 'translate(-1.3961e-14px, -76px)'));
         }
         $body.append($dial);
 
@@ -15904,20 +16145,20 @@ gj.timepicker.methods = {
         $body.empty();
         $dial = $('<div role="dial"></div>');
 
-        $dial.append('<div role="arrow" style="transform: rotate(-90deg); display: none;"><div class="arrow-begin"></div><div class="arrow-end"></div></div>');
+        $dial.append($('<div role="arrow" style="">').css('transform', 'rotate(-90deg)').css('display', 'none').append('<div class="arrow-begin"></div><div class="arrow-end"></div>'));
 
-        $dial.append('<span role="hour" style="transform: translate(54px, -93.5307px);">5</span>');
-        $dial.append('<span role="hour" style="transform: translate(93.5307px, -54px);">10</span>');
-        $dial.append('<span role="hour" style="transform: translate(108px, 0px);">15</span>');
-        $dial.append('<span role="hour" style="transform: translate(93.5307px, 54px);">20</span>');
-        $dial.append('<span role="hour" style="transform: translate(54px, 93.5307px);">25</span>');
-        $dial.append('<span role="hour" style="transform: translate(6.61309e-15px, 108px);">30</span>');
-        $dial.append('<span role="hour" style="transform: translate(-54px, 93.5307px);">35</span>');
-        $dial.append('<span role="hour" style="transform: translate(-93.5307px, 54px);">40</span>');
-        $dial.append('<span role="hour" style="transform: translate(-108px, 1.32262e-14px);">45</span>');
-        $dial.append('<span role="hour" style="transform: translate(-93.5307px, -54px);">50</span>');
-        $dial.append('<span role="hour" style="transform: translate(-54px, -93.5307px);">55</span>');
-        $dial.append('<span role="hour" style="transform: translate(-1.98393e-14px, -108px);">00</span>');
+        $dial.append($('<span role="hour">5</span>').css('transform', 'translate(54px, -93.5307px)'));
+        $dial.append($('<span role="hour">10</span>').css('transform', 'translate(93.5307px, -54px)'));
+        $dial.append($('<span role="hour">15</span>').css('transform', 'translate(108px, 0px)'));
+        $dial.append($('<span role="hour">20</span>').css('transform', 'translate(93.5307px, 54px)'));
+        $dial.append($('<span role="hour">25</span>').css('transform', 'translate(54px, 93.5307px)'));
+        $dial.append($('<span role="hour">30</span>').css('transform', 'translate(6.61309e-15px, 108px)'));
+        $dial.append($('<span role="hour">35</span>').css('transform', 'translate(-54px, 93.5307px)'));
+        $dial.append($('<span role="hour">40</span>').css('transform', 'translate(-93.5307px, 54px)'));
+        $dial.append($('<span role="hour">45</span>').css('transform', 'translate(-108px, 1.32262e-14px)'));
+        $dial.append($('<span role="hour">50</span>').css('transform', 'translate(-93.5307px, -54px)'));
+        $dial.append($('<span role="hour">55</span>').css('transform', 'translate(-54px, -93.5307px)'));
+        $dial.append($('<span role="hour">00</span>').css('transform', 'translate(-1.98393e-14px, -108px)'));
         $body.append($dial);
 
         $clock.find('[role="header"] [role="hour"]').removeClass('selected');
@@ -16570,6 +16811,7 @@ gj.datetimepicker.methods = {
                 }
                 $calendar.attr('hour', hour);
                 $calendar.attr('minute', date.getMinutes());
+                $datetimepicker.value(value);
             } else {
                 $datetimepicker.val('');
             }
@@ -16895,24 +17137,24 @@ gj.slider.config = {
 
 gj.slider.methods = {
     init: function (jsConfig) {
-        gj.widget.prototype.init.call(this, jsConfig, 'slider');
-        this.attr('data-slider', 'true');
-        gj.slider.methods.initialize(this, this.data());
+        gj.widget.prototype.initJS.call(this, jsConfig, 'slider');
+        this.element.setAttribute('data-slider', 'true');
+        gj.slider.methods.initialize(this.element, gijgoStorage.get(this.element, 'gijgo'));
         return this;
     },
 
-    initialize: function ($slider, data) {
+    initialize: function (el, data) {
         var wrapper, track, handle, progress;
 
-        $slider[0].style.display = 'none';
+        el.style.display = 'none';
 
-        if ($slider[0].parentElement.attributes.role !== 'wrapper') {
+        if (el.parentElement.attributes.role !== 'wrapper') {
             wrapper = document.createElement('div');
             wrapper.setAttribute('role', 'wrapper');
-            $slider[0].parentNode.insertBefore(wrapper, $slider[0]);
-            wrapper.appendChild($slider[0]);
+            el.parentNode.insertBefore(wrapper, el);
+            wrapper.appendChild(el);
         } else {
-            wrapper = $slider[0].parentElement;
+            wrapper = el.parentElement;
         }
 
         if (data.width) {
@@ -16921,7 +17163,7 @@ gj.slider.methods = {
         
         gj.core.addClasses(wrapper, data.style.wrapper);
 
-        track = $slider[0].querySelector('[role="track"]');
+        track = el.querySelector('[role="track"]');
         if (track == null) {
             track = document.createElement('div');
             track.setAttribute('role', 'track');
@@ -16929,14 +17171,14 @@ gj.slider.methods = {
         }
         gj.core.addClasses(track, data.style.track);
 
-        handle = $slider[0].querySelector('[role="handle"]');
+        handle = el.querySelector('[role="handle"]');
         if (handle == null) {
             handle = document.createElement('div');
             handle.setAttribute('role', 'handle');
             wrapper.appendChild(handle);
         }
 
-        progress = $slider[0].querySelector('[role="progress"]');
+        progress = el.querySelector('[role="progress"]');
         if (progress == null) {
             progress = document.createElement('div');
             progress.setAttribute('role', 'progress');
@@ -16947,35 +17189,35 @@ gj.slider.methods = {
         if (!data.value) {
             data.value = data.min;
         }
-        gj.slider.methods.value($slider, data, data.value);
+        gj.slider.methods.value(el, data, data.value);
         
-        gj.documentManager.subscribeForEvent('mouseup', $slider.data('guid'), gj.slider.methods.createMouseUpHandler($slider, handle, data));
+        gj.documentManager.subscribeForEvent('mouseup', data.guid, gj.slider.methods.createMouseUpHandler(el, handle, data));
         handle.addEventListener('mousedown', gj.slider.methods.createMouseDownHandler(handle, data));
-        gj.documentManager.subscribeForEvent('mousemove', $slider.data('guid'), gj.slider.methods.createMouseMoveHandler($slider, track, handle, progress, data));
+        gj.documentManager.subscribeForEvent('mousemove', data.guid, gj.slider.methods.createMouseMoveHandler(el, track, handle, progress, data));
 
         handle.addEventListener('click', function (e) { e.stopPropagation(); });
-        wrapper.addEventListener('click', gj.slider.methods.createClickHandler($slider, track, handle, data));
+        wrapper.addEventListener('click', gj.slider.methods.createClickHandler(el, track, handle, data));
     },
 
-    createClickHandler: function ($slider, track, handle, data) {
+    createClickHandler: function (el, track, handle, data) {
         return function (e) {
             var sliderPos, x, offset, stepSize, newValue;
             if (handle.getAttribute('drag') !== 'true') {
-                sliderPos = gj.core.position($slider[0].parentElement);
+                sliderPos = gj.core.position(el.parentElement);
                 x = new gj.widget().mouseX(e) - sliderPos.left;
                 offset = gj.core.width(handle) / 2;
                 stepSize = gj.core.width(track) / (data.max - data.min);
                 newValue = Math.round((x - offset) / stepSize) + data.min;
-                gj.slider.methods.value($slider, data, newValue);
+                gj.slider.methods.value(el, data, newValue);
             }
         };
     },
 
-    createMouseUpHandler: function ($slider, handle, data) {
+    createMouseUpHandler: function (el, handle, data) {
         return function (e) {
             if (handle.getAttribute('drag') === 'true') {
                 handle.setAttribute('drag', 'false');
-                gj.slider.events.change($slider);
+                gj.slider.events.change(el);
             }
         }
     },
@@ -16986,11 +17228,11 @@ gj.slider.methods = {
         }
     },
 
-    createMouseMoveHandler: function ($slider, track, handle, progress, data) {
+    createMouseMoveHandler: function (el, track, handle, progress, data) {
         return function (e) {
             var sliderPos, x, trackWidth, offset, stepSize, valuePos, newValue;
             if (handle.getAttribute('drag') === 'true') {
-                sliderPos = gj.core.position($slider[0].parentElement);
+                sliderPos = gj.core.position(el.parentElement);
                 x = new gj.widget().mouseX(e) - sliderPos.left;
 
                 trackWidth = gj.core.width(track);
@@ -17001,44 +17243,46 @@ gj.slider.methods = {
                 if (x >= offset && x <= (trackWidth + offset)) {
                     if (x > valuePos + (stepSize / 2) || x < valuePos - (stepSize / 2)) {
                         newValue = Math.round((x - offset) / stepSize) + data.min;
-                        gj.slider.methods.value($slider, data, newValue);
+                        gj.slider.methods.value(el, data, newValue);
                     }
                 }
             }
         }
     },
 
-    value: function ($slider, data, value) {
+    value: function (el, data, value) {
         var stepSize, track, handle, progress;
         if (typeof (value) === "undefined") {
-            return $slider[0].value;
+            return el.value;
         } else {
-            $slider[0].setAttribute('value', value);
+            el.setAttribute('value', value);
             data.value = value;
-            track = $slider.parent().children('[role="track"]')[0]
+            track = el.parentElement.querySelector('[role="track"]')
             stepSize = gj.core.width(track) / (data.max - data.min);
-            handle = $slider.parent().children('[role="handle"]')[0];
+            handle = el.parentElement.querySelector('[role="handle"]');
             handle.style.left = ((value - data.min) * stepSize) + 'px';
-            progress = $slider.parent().children('[role="progress"]')[0];
+            progress = el.parentElement.querySelector('[role="progress"]');
             progress.style.width = ((value - data.min) * stepSize) + 'px';
-            gj.slider.events.slide($slider, value);
-            return $slider;
+            gj.slider.events.slide(el, value);
+            return el;
         }
     },
 
-    destroy: function ($slider) {
-        var data = $slider.data(),
-            $wrapper = $slider.parent();
+    destroy: function (el) {
+        var data = $(el).data(),
+            wrapper = el.parentElement;
         if (data) {
-            $wrapper.children('[role="track"]').remove();
-            $wrapper.children('[role="handle"]').remove();
-            $wrapper.children('[role="progress"]').remove();
-            $slider.unwrap();
-            $slider.off();
-            $slider.removeData();
-            $slider.removeAttr('data-type').removeAttr('data-guid').removeAttr('data-slider');
-            $slider.removeClass();
-            $slider.show();
+            wrapper.removeChild(wrapper.querySelector('[role="track"]'));
+            wrapper.removeChild(wrapper.querySelector('[role="handle"]'));
+            wrapper.removeChild(wrapper.querySelector('[role="progress"]'));
+            $(el).unwrap();
+            $(el).off();
+            $(el).removeData();
+            el.removeAttribute('data-type');
+            el.removeAttribute('data-guid')
+            el.removeAttribute('data-slider');
+            el.removeAttribute('class');
+            el.style.display = 'block';
         }
         return $slider;
     }
@@ -17050,18 +17294,18 @@ gj.slider.events = {
      *
      * @event change
      * @param {object} e - event data
-     * @example sample <!-- slider -->
+     * @example sample <!-- nojquery, slider -->
      * <input id="slider" width="300" />
      * <script>
-     *     var slider = $('#slider').slider({
+     *     new GijgoSlider(document.getElementById('slider'), {
      *         change: function (e) {
      *             alert('Change is fired. The new value is ' + slider.value());
      *         }
      *     });
      * </script>
      */
-    change: function ($slider) {
-        return $slider.triggerHandler('change');
+    change: function (el) {
+        return el.dispatchEvent(new Event('change'));
     },
 
     /**
@@ -17081,14 +17325,16 @@ gj.slider.events = {
      *    });
      * </script>
      */
-    slide: function ($slider, value) {
-        return $slider.triggerHandler('slide', [value]);
+    slide: function (el, value) {
+        return el.dispatchEvent(new CustomEvent('slide', { 'value': value }));
     }
 };
 
-gj.slider.widget = function ($element, jsConfig) {
+GijgoSlider = function (element, jsConfig) {
     var self = this,
         methods = gj.slider.methods;
+
+    self.element = element;
 
     /** Gets or sets the value of the slider.
      * @method
@@ -17110,7 +17356,7 @@ gj.slider.widget = function ($element, jsConfig) {
      * </script>
      */
     self.value = function (value) {
-        return methods.value(this, this.data(), value);
+        return methods.value(this.element, gijgoStorage.get(this.element, 'gijgo'), value);
     };
 
     /** Remove slider functionality from the element.
@@ -17124,37 +17370,39 @@ gj.slider.widget = function ($element, jsConfig) {
      * </script>
      */
     self.destroy = function () {
-        return methods.destroy(this);
+        return methods.destroy(this.element);
     };
 
-    $.extend($element, self);
-    if ('true' !== $element.attr('data-slider')) {
-        methods.init.call($element, jsConfig);
+    //$.extend(element, self);
+    if ('true' !== element.getAttribute('data-slider')) {
+        methods.init.call(self, jsConfig);
     }
 
-    return $element;
+    return self;
 };
 
-gj.slider.widget.prototype = new gj.widget();
-gj.slider.widget.constructor = gj.slider.widget;
+GijgoSlider.prototype = new gj.widget();
+GijgoSlider.constructor = GijgoSlider;
 
-(function ($) {
-    $.fn.slider = function (method) {
-        var $widget;
-        if (this && this.length) {
-            if (typeof method === 'object' || !method) {
-                return new gj.slider.widget(this, method);
-            } else {
-                $widget = new gj.slider.widget(this, null);
-                if ($widget[method]) {
-                    return $widget[method].apply(this, Array.prototype.slice.call(arguments, 1));
+if (typeof (jQuery) !== "undefined") {
+    (function ($) {
+        $.fn.slider = function (method) {
+            var $widget;
+            if (this && this.length) {
+                if (typeof method === 'object' || !method) {
+                    return new GijgoSlider(this[0], method);
                 } else {
-                    throw 'Method ' + method + ' does not exist.';
+                    $widget = new GijgoSlider(this[0], null);
+                    if ($widget[method]) {
+                        return $widget[method].apply(this[0], Array.prototype.slice.call(arguments, 1));
+                    } else {
+                        throw 'Method ' + method + ' does not exist.';
+                    }
                 }
             }
-        }
-    };
-})(jQuery);
+        };
+    })(jQuery);
+}
 /* global window alert jQuery gj */
 /**
   * @widget ColorPicker

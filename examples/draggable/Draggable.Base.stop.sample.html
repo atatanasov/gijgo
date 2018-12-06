@@ -17,10 +17,9 @@
    drag me
  </div>
  <script>
-     $('#element').draggable({
-         stop: function (e, offset) {
-             $('body').append('<div>The stop event is fired.</div>');
-         }
+     var obj = new GijgoDraggable(document.getElementById('element'));
+     obj.addEventListener('stop', function (e) {
+         $('body').append('<div>The stop event is fired.</div>');
      });
  </script>
 </body>

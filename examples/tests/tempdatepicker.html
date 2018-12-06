@@ -15,7 +15,14 @@
 <body style="padding: 8px;">
     <input id="datepicker" width="234" type="text" />
     <script>
-        $('#datepicker').datepicker({ format: 'mmmm yyyy' });
+        $('#datepicker').datepicker({
+
+            locale: 'it-it',
+            format: 'dd mmm yyyy',
+            value: '12 Dic 2018',
+            minDate: '12 Dic 2017',
+            uiLibrary: 'bootstrap4'
+        });
     </script>
 </body>
 </html>

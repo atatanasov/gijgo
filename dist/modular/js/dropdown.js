@@ -240,7 +240,7 @@ gj.dropdown.methods = {
                 var value = this[data.valueField],
                     text = this[data.textField],
                     selected = this[data.selectedField] && this[data.selectedField].toString().toLowerCase() === 'true',
-                    $item, i;
+                    i, $item;
 
                 $item = $('<li value="' + value + '"><div data-role="wrapper"><span data-role="display">' + text + '</span></div></li>');
                 $item.addClass(data.style.item);
@@ -257,6 +257,7 @@ gj.dropdown.methods = {
             });
             if (selections.length === 0) {
                 $dropdown.prepend('<option value=""></option>');
+                $dropdown[0].selectedIndex = 0;
                 if (data.placeholder) {
                     $display[0].innerHTML = '<span class="placeholder">' + data.placeholder + '</span>';
                 }
@@ -284,32 +285,65 @@ gj.dropdown.methods = {
     open: function ($dropdown, $list) {
         var data = $dropdown.data(),
             $expander = $dropdown.parent().find('[role="expander"]'),
-            $presenter = $dropdown.parent().find('[role="presenter"]');
+            $presenter = $dropdown.parent().find('[role="presenter"]'),
+            scrollParentEl = gj.core.getScrollParent($dropdown[0]);
         $list.css('width', gj.core.width($presenter[0]));
         $list.show();
         gj.dropdown.methods.setListPosition($presenter[0], $list[0], data);
         $expander.html(data.icons.dropup);
+        if (scrollParentEl) {
+            data.parentScrollHandler = function () {
+                gj.dropdown.methods.setListPosition($presenter[0], $list[0], data);
+            };
+            gj.dropdown.methods.addParentsScrollListener(scrollParentEl, data.parentScrollHandler);
+        }
     },
 
     close: function ($dropdown, $list) {
         var data = $dropdown.data(),
-            $expander = $dropdown.parent().find('[role="expander"]');
+            $expander = $dropdown.parent().find('[role="expander"]'),
+            scrollParentEl = gj.core.getScrollParent($dropdown[0]);
         $expander.html(data.icons.dropdown);
+        if (scrollParentEl && data.parentScrollHandler) {
+            gj.dropdown.methods.removeParentsScrollListener(scrollParentEl, data.parentScrollHandler);
+        }
         $list.hide();
+    },
+
+    addParentsScrollListener: function (el, handler) {
+        var scrollParentEl = gj.core.getScrollParent(el.parentNode);
+        el.addEventListener('scroll', handler);
+        if (scrollParentEl) {
+            gj.dropdown.methods.addParentsScrollListener(scrollParentEl, handler);
+        }
+    },
+    removeParentsScrollListener: function (el, handler) {
+        var scrollParentEl = gj.core.getScrollParent(el.parentNode);
+        el.removeEventListener('scroll', handler);
+        if (scrollParentEl) {
+            gj.dropdown.methods.removeParentsScrollListener(scrollParentEl, handler);
+        }
     },
 
     select: function ($dropdown, value) {
         var data = $dropdown.data(),
             $list = $('body').children('[role="list"][guid="' + $dropdown.attr('data-guid') + '"]'),
             $item = $list.children('li[value="' + value + '"]'),
+            $display = $dropdown.next('[role="presenter"]').find('[role="display"]'),
             record = gj.dropdown.methods.getRecordByValue($dropdown, value);
+
+        $list.children('li').removeClass(data.style.active);
         if (record) {
-            $list.children('li').removeClass(data.style.active);
             $item.addClass(data.style.active);
             $dropdown[0].value = value;
-            $dropdown.next('[role="presenter"]').find('[role="display"]').html(record[data.textField]);
-            gj.dropdown.events.change($dropdown);
+            $display[0].innerHTML = record[data.textField];
+        } else {
+            if (data.placeholder) {
+                $display[0].innerHTML = '<span class="placeholder">' + data.placeholder + '</span>';
+            }
+            $dropdown[0].value = '';
         }
+        gj.dropdown.events.change($dropdown);
         gj.dropdown.methods.close($dropdown, $list);
         return $dropdown;
     },
@@ -353,7 +387,7 @@ gj.dropdown.methods = {
             }
             $dropdown.show();
         }
-        return $tree;
+        return $dropdown;
     }
 };
 

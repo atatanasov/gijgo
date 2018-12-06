@@ -1747,7 +1747,16 @@ gj.grid.plugins.inlineEditing.private = {
                 value = record[column.editField || column.field];
                 $editorField = $editorContainer.find('input, select, textarea').first();
                 if ($editorField.length) {
-                    column.type === 'checkbox' ? $editorField.prop('checked', value) : $editorField.val(value);
+                    switch (column.type) {
+                        case 'checkbox':
+                            $editorField.prop('checked', value);
+                            break;
+                        case 'dropdown':
+                            $editorField = $editorField.dropdown('value', value);
+                            break;
+                        default:
+                            $editorField.val(value);
+                    }
                 } else {
                     if (typeof (column.editor) === 'function') {
                         column.editor($editorContainer, value, record);
@@ -1757,6 +1766,7 @@ gj.grid.plugins.inlineEditing.private = {
                         config.uiLibrary = data.uiLibrary;
                         config.iconsLibrary = data.iconsLibrary;
                         config.fontSize = $grid.css('font-size');
+                        config.showOnFocus = false;
                         if ('checkbox' === column.type && gj.checkbox) {
                             $editorField = $('<input type="checkbox" />').prop('checked', value);
                             $editorContainer.append($editorField);
@@ -3021,7 +3031,7 @@ gj.grid.plugins.inlineEditing.configure = function ($grid, fullConfig, clientCon
             if (records.length) {
 
                 for (i = 0; i < columns.length; i++) {
-                    if (columns[i].hidden !== true) {
+                    if (gj.grid.plugins.export.public.isColumnApplicable(columns[i])) {
                         line += '"' + (columns[i].title || columns[i].field).replace(/<[^>]+>/g, ' ') + '",';
                     }
                 }
@@ -3031,7 +3041,7 @@ gj.grid.plugins.inlineEditing.configure = function ($grid, fullConfig, clientCon
                     line = '';
 
                     for (j = 0; j < columns.length; j++) {
-                        if (columns[j].hidden !== true) {
+                        if (gj.grid.plugins.export.public.isColumnApplicable(columns[j])) {
                             line += '"' + records[i][columns[j].field] + '",';
                         }
                     }                    
@@ -3051,6 +3061,10 @@ gj.grid.plugins.inlineEditing.configure = function ($grid, fullConfig, clientCon
             link.click();
             document.body.removeChild(link);
             return this;
+        },
+
+        isColumnApplicable: function (column) {
+            return column.hidden !== true && !column.role;
         }
     },
 

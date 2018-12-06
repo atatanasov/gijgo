@@ -142,14 +142,18 @@
     <Content Include="examples\datepicker\DatePicker.Base.minDate.Yesterday.html" />
     <Content Include="examples\datepicker\DatePicker.Base.modal.Bootstrap.4.html" />
     <Content Include="examples\datepicker\DatePicker.Base.modal.Bootstrap.html" />
-    <Content Include="examples\datepicker\DatePicker.Base.modal.True.html" />
+    <Content Include="examples\datepicker\DatePicker.Base.modal.Material.Design.html" />
     <Content Include="examples\datepicker\DatePicker.Base.open.Open.Close.html" />
     <Content Include="examples\datepicker\DatePicker.Base.open.sample.html" />
     <Content Include="examples\datepicker\DatePicker.Base.select.sample.html" />
     <Content Include="examples\datepicker\DatePicker.Base.selectOtherMonths.False.html" />
     <Content Include="examples\datepicker\DatePicker.Base.selectOtherMonths.True.html" />
+    <Content Include="examples\datepicker\DatePicker.Base.showOnFocus.False.html" />
+    <Content Include="examples\datepicker\DatePicker.Base.showOnFocus.True.html" />
     <Content Include="examples\datepicker\DatePicker.Base.showOtherMonths.False.html" />
     <Content Include="examples\datepicker\DatePicker.Base.showOtherMonths.True.html" />
+    <Content Include="examples\datepicker\DatePicker.Base.showRightIcon.False.html" />
+    <Content Include="examples\datepicker\DatePicker.Base.showRightIcon.True.html" />
     <Content Include="examples\datepicker\DatePicker.Base.size.Bootstrap.3.html" />
     <Content Include="examples\datepicker\DatePicker.Base.size.Bootstrap.4.Font.Awesome.html" />
     <Content Include="examples\datepicker\DatePicker.Base.size.Bootstrap.4.html" />
@@ -367,6 +371,8 @@
     <Content Include="examples\grid\Grid.Base.getSelected.sample.html" />
     <Content Include="examples\grid\Grid.Base.getSelections.With.Primary.Ket.html" />
     <Content Include="examples\grid\Grid.Base.getSelections.Without.Primary.Ket.html" />
+    <Content Include="examples\grid\Grid.Base.headerRowHeight.AutoGrow.html" />
+    <Content Include="examples\grid\Grid.Base.headerRowHeight.Fixed.html" />
     <Content Include="examples\grid\Grid.Base.hideColumn.sample.html" />
     <Content Include="examples\grid\Grid.Base.iconsLibrary.Font.Awesome.html" />
     <Content Include="examples\grid\Grid.Base.initialized.sample.html" />
@@ -412,6 +418,10 @@
     <Content Include="examples\grid\Grid.ExpandCollapseRows.icons.collapseRow.Plus.Minus.Icons.html" />
     <Content Include="examples\grid\Grid.ExpandCollapseRows.icons.expandRow.Plus.Minus.Icons.html" />
     <Content Include="examples\grid\Grid.ExpandCollapseRows.keepExpandedRows.True.html" />
+    <Content Include="examples\grid\Grid.Export.downloadCSV.Local.Data.html" />
+    <Content Include="examples\grid\Grid.Export.downloadCSV.Remote.Data.html" />
+    <Content Include="examples\grid\Grid.Export.getCSV.Local.Data.html" />
+    <Content Include="examples\grid\Grid.Export.getCSV.Remote.Data.html" />
     <Content Include="examples\grid\Grid.FixedHeader.fixedHeader.Bootstrap.3.With.Pager.html" />
     <Content Include="examples\grid\Grid.FixedHeader.fixedHeader.Bootstrap.3.Without.Pager.html" />
     <Content Include="examples\grid\Grid.FixedHeader.fixedHeader.Bootstrap.4.html" />
@@ -444,6 +454,7 @@
     <Content Include="examples\grid\Grid.InlineEditing.inlineEditing.managementColumn.False.html" />
     <Content Include="examples\grid\Grid.InlineEditing.inlineEditing.managementColumn.True.html" />
     <Content Include="examples\grid\Grid.InlineEditing.inlineEditing.mode.Command.html" />
+    <Content Include="examples\grid\Grid.InlineEditing.inlineEditing.mode.DateTime.html" />
     <Content Include="examples\grid\Grid.InlineEditing.inlineEditing.mode.Double.Click.html" />
     <Content Include="examples\grid\Grid.InlineEditing.rowDataChanged.sample.html" />
     <Content Include="examples\grid\Grid.InlineEditing.update.Update.Row.html" />
@@ -500,6 +511,7 @@
     <Content Include="examples\slider\Slider.Base.width.JS.Config.html" />
     <Content Include="examples\tests\ajax-sourced-data.html" />
     <Content Include="examples\tests\tempdatepicker.html" />
+    <Content Include="examples\tests\tempdropdown.html" />
     <Content Include="examples\tests\tempdialog.html" />
     <Content Include="examples\tests\tempeditor.html" />
     <Content Include="examples\tests\positions-timepicker.html" />
