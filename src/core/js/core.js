@@ -304,8 +304,13 @@ gj.core = {
             } else if (value.indexOf('/Date(') > -1) {
                 result = new Date(parseInt(value.substr(6), 10));
             } else if (value) {
-                dateParts = value.split(/[\s,-\.//\:]+/);
                 formatParts = format.split(/[\s,-\.//\:]+/);
+                // Split only by spaces
+                dateParts = value.split(/[\s]+/);
+                // Split by other chars if the split by spaces doesn't work
+                if (dateParts.length != formatParts.length) {
+                    dateParts = value.split(/[\s,-\.//\:]+/);
+                }
                 for (i = 0; i < formatParts.length; i++) {
                     if (['d', 'dd'].indexOf(formatParts[i]) > -1) {
                         date = parseInt(dateParts[i], 10);

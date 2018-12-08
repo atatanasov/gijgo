@@ -1,46 +1,46 @@
 {
-  "name": "gijgo",
-  "version": "1.9.11",
-  "description": "Gijgo is a set of free open source javascript controls distributed under MIT License with built-in support for Bootstrap and Material Design",
-  "main": [
-    "./dist/combined/js/gijgo.js",
-    "./dist/combined/css/gijgo.css"
+  'name': 'gijgo',
+  'version': '1.9.11',
+  'description': 'Gijgo is a set of free open source javascript controls distributed under MIT License with built-in support for Bootstrap and Material Design',
+  'main': [
+    './dist/combined/js/gijgo.js',
+    './dist/combined/css/gijgo.css'
   ],
-  "homepage": "http://gijgo.com",
-  "keywords": [
-    "jquery",
-    "gijgo",
-    "javascript",
-    "plugin",
-    "grid",
-    "datagrid",
-    "table",
-    "dialog",
-    "modal",
-    "draggable",
-    "droppable",
-    "tree"
+  'homepage': 'http://gijgo.com',
+  'keywords': [
+    'jquery',
+    'gijgo',
+    'javascript',
+    'plugin',
+    'grid',
+    'datagrid',
+    'table',
+    'dialog',
+    'modal',
+    'draggable',
+    'droppable',
+    'tree'
   ],
-  "authors": [
-    "Atanas Atanasov <nascovt@gmail.com>"
+  'authors': [
+    'Atanas Atanasov <atanas.nk.atanasov@gmail.com>'
   ],
-  "license": "MIT",
-  "dependencies": {
-    "jquery": "~1.9.1"
+  'license': 'MIT',
+  'dependencies': {
+    'jquery': '~1.9.1'
   },
-  "ignore": [
-    "bin",
-    "obj",
-    "Properties",
-    "Gijgo.GitHub.csproj",
-    "src",
-    "JSLintNet.json",
-    "Gruntfile.js",
-    "package.json",
-    "bower.json",
-    "README.md",
-    "node_modules",
-    "bower_components",
-    "**/.*"
+  'ignore': [
+    'bin',
+    'obj',
+    'Properties',
+    'Gijgo.GitHub.csproj',
+    'src',
+    'JSLintNet.json',
+    'Gruntfile.js',
+    'package.json',
+    'bower.json',
+    'README.md',
+    'node_modules',
+    'bower_components',
+    '**/.*'
   ]
 }
