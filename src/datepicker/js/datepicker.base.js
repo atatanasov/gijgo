@@ -850,8 +850,12 @@ gj.datepicker.methods = {
         year = parseInt($calendar.attr('year'), 10);
 
         $calendar.attr('type', 'month');
-        $calendar.find('div[role="period"]').text(gj.core.messages[data.locale].monthNames[month] + ' ' + year);
-
+        if (gj.core.messages[data.locale].titleFun) {
+            $calendar.find('div[role="period"]').text(gj.core.messages[data.locale].titleFun(year, gj.core.messages[dat\
+a.locale].monthNames[month]));
+        } else {
+            $calendar.find('div[role="period"]').text(gj.core.messages[data.locale].monthNames[month] + ' ' + year);
+        }
         daysInMonth = new Array(31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31);
         if (year % 4 == 0 && year != 1900) {
             daysInMonth[1] = 29;
