@@ -388,8 +388,13 @@ gj.documentManager = {
             } else if (value.indexOf('/Date(') > -1) {
                 result = new Date(parseInt(value.substr(6), 10));
             } else if (value) {
-                dateParts = value.split(/[\s,-\.//\:]+/);
                 formatParts = format.split(/[\s,-\.//\:]+/);
+                // Split only by spaces
+                dateParts = value.split(/[\s]+/);
+                // Split by other chars if the split by spaces doesn't work
+                if (dateParts.length != formatParts.length) {
+                    dateParts = value.split(/[\s,-\.//\:]+/);
+                }
                 for (i = 0; i < formatParts.length; i++) {
                     if (['d', 'dd'].indexOf(formatParts[i]) > -1) {
                         date = parseInt(dateParts[i], 10);
@@ -865,11 +870,11 @@ gj.core.messages['it-it'] = {
     cancel: 'Annulla'
 };
 gj.core.messages['tr-tr'] = {
-    monthNames: ['ocak', 'şubat', 'mart', 'nisan', 'mayıs', 'haziran', 'temmuz', 'ağustos', 'eylül', 'ekim', 'kasım', 'aralık'],
-    monthShortNames: ['oca', 'şub', 'mar', 'nis', 'may', 'haz', 'tem', 'ağu', 'eyl', 'eki', 'kas', 'ara'],
-    weekDaysMin: ['P', 'S', 'Ç', 'P', 'C', 'C', 'P'],
-    weekDaysShort: ['pzt.', 'sl.', 'çar.', 'per.', 'cum.', 'cmt.', 'paz.'],
-    weekDays: ['pazartesi', 'salı', 'çarşamba', 'perşembe', 'cuma', 'cumartesi', 'pazar'],
+    monthNames: ['Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran', 'Temmuz', 'Ağustos', 'Eylül', 'Ekim', 'Kasım', 'Aralık'],
+    monthShortNames: ['Oca', 'Şub', 'Mar', 'Nis', 'May', 'Haz', 'Tem', 'Ağu', 'Eyl', 'Eki', 'Kas', 'Ara'],
+    weekDaysMin: ['P', 'P', 'S', 'Ç', 'P', 'C', 'C'],
+    weekDaysShort: ['Pz', 'Pzt', 'Sal', 'Çrş', 'Prş', 'Cu', 'Cts'],
+    weekDays: ['Pazar', 'Pazartesi', 'Salı', 'Çarşamba', 'Perşembe', 'Cuma', 'Cumartesi'],
     am: 'AM',
     pm: 'PM',
     ok: 'Tamam',
