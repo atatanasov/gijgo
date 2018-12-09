@@ -48,5 +48,6 @@ gj.core.messages['bg-bg'] = {
     am: 'AM',
     pm: 'PM',
     ok: 'ОК',
-    cancel: 'Отказ'
+    cancel: 'Отказ',
+    titleFormat: 'mmmm yyyy'
 };

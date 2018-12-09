@@ -413,6 +413,30 @@ gj.datepicker.config = {
          *        format: 'dd/mm/yyyy'
          *    });
          * </script>
+         * @example Japanise <!-- datepicker -->
+         * <input id="datepicker" width="276" />
+         * <script>
+         *    $('#datepicker').datepicker({
+         *        locale: 'ja-jp',
+         *        format: 'dd mmmm yyyy'
+         *    });
+         * </script>
+         * @example Chinise_Simplified <!-- datepicker -->
+         * <input id="datepicker" width="276" />
+         * <script>
+         *    $('#datepicker').datepicker({
+         *        locale: 'zh-cn',
+         *        format: 'dd mmmm yyyy'
+         *    });
+         * </script>
+         * @example Chinise_Traditional <!-- datepicker -->
+         * <input id="datepicker" width="276" />
+         * <script>
+         *    $('#datepicker').datepicker({
+         *        locale: 'zh-tw',
+         *        format: 'dd mmmm yyyy'
+         *    });
+         * </script>
          */
         locale: 'en-us',
 
@@ -841,7 +865,8 @@ gj.datepicker.methods = {
         var weekDay, selectedDay, day, month, year, daysInMonth, total, firstDayPosition, i, now, prevMonth, nextMonth, $cell, $day, date,
             $body = $calendar.children('[role="body"]'),
             $table = $('<table/>'),
-            $tbody = $('<tbody/>');
+            $tbody = $('<tbody/>'),
+            period = gj.core.messages[data.locale].titleFormat;
         
         $body.off().empty();
         gj.datepicker.methods.createNavigation($datepicker, $body, $table, data);
@@ -850,8 +875,8 @@ gj.datepicker.methods = {
         year = parseInt($calendar.attr('year'), 10);
 
         $calendar.attr('type', 'month');
-        $calendar.find('div[role="period"]').text(gj.core.messages[data.locale].monthNames[month] + ' ' + year);
-
+        period = period.replace('mmmm', gj.core.messages[data.locale].monthNames[month]).replace('yyyy', year);
+        $calendar.find('div[role="period"]').text(period);
         daysInMonth = new Array(31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31);
         if (year % 4 == 0 && year != 1900) {
             daysInMonth[1] = 29;

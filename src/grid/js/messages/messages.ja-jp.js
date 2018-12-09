@@ -1,0 +1,21 @@
+﻿gj.grid.messages['ja-jp'] = {
+    First: '最初',
+    Previous: '前',
+    Next: '次',
+    Last: '最後',
+    Page: 'ページ',
+    FirstPageTooltip: '最初のページ',
+    PreviousPageTooltip: '前のページ',
+    NextPageTooltip: '次のページ',
+    LastPageTooltip: '最後のページ',
+    Refresh: 'リフレッシュ',
+    Of: 'の',
+    DisplayingRecords: '結果',
+    RowsPerPage: 'ページあたり行数:',
+    Edit: '編集',
+    Delete: '削除',
+    Update: '更新',
+    Cancel: 'キャンセル',
+    NoRecordsFound: 'レコードが見つかりません',
+    Loading: '読み込み中...'
+};

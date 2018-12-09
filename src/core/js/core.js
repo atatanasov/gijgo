@@ -253,7 +253,8 @@ gj.core = {
             am: 'AM',
             pm: 'PM',
             ok: 'Ok',
-            cancel: 'Cancel'
+            cancel: 'Cancel',
+            titleFormat: 'mmmm yyyy'
         }
     },
 

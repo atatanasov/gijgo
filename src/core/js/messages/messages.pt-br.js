@@ -7,5 +7,6 @@
     am: 'AM',
     pm: 'PM',
     ok: 'OK',
-    cancel: 'Cancelar'
+    cancel: 'Cancelar',
+    titleFormat: 'mmmm yyyy'
 };
