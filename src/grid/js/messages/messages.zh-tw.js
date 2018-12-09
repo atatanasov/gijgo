@@ -1,0 +1,21 @@
+﻿gj.grid.messages['zh-tw'] = {
+    First: '首',
+    Previous: '上一個',
+    Next: '下一個',
+    Last: '尾',
+    Page: '頁',
+    FirstPageTooltip: '首頁',
+    PreviousPageTooltip: '上一頁',
+    NextPageTooltip: '下一頁',
+    LastPageTooltip: '尾頁',
+    Refresh: '刷新',
+    Of: '的',
+    DisplayingRecords: '正在顯示記錄',
+    RowsPerPage: '行每頁',
+    Edit: '編輯',
+    Delete: '刪除',
+    Update: '更新',
+    Cancel: '取消',
+    NoRecordsFound: '找不到記錄。',
+    Loading: '正在加載……'
+};

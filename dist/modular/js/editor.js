@@ -442,3 +442,51 @@ gj.editor.messages['tr-tr'] = {
     undo: 'Geri Al',
     redo: 'İleri Al'
 };
+gj.editor.messages['ja-jp'] = {
+    bold: '太字',
+    italic: '斜体',
+    strikethrough: '打消し線',
+    underline: '下線',
+    listBulleted: '箇条書き',
+    listNumbered: '番号付き箇条書き',
+    indentDecrease: 'インデントを減らす',
+    indentIncrease: 'インデントを増やす',
+    alignLeft: '左揃え',
+    alignCenter: '中央揃え',
+    alignRight: '右揃え',
+    alignJustify: '両端揃え',
+    undo: '元に戻す',
+    redo: 'やり直し'
+};
+gj.editor.messages['zh-cn'] = {
+    bold: '粗体',
+    italic: '斜体',
+    strikethrough: '删除线',
+    underline: '下划线',
+    listBulleted: '无序列表',
+    listNumbered: '有序列表',
+    indentDecrease: '减少缩进',
+    indentIncrease: '增加缩进',
+    alignLeft: '左对齐',
+    alignCenter: '居中',
+    alignRight: '右对齐',
+    alignJustify: '两端对齐',
+    undo: '撤销',
+    redo: '重做'
+};
+gj.editor.messages['zh-tw'] = {
+    bold: '粗體',
+    italic: '斜體',
+    strikethrough: '刪除線',
+    underline: '下劃線',
+    listBulleted: '無序列表',
+    listNumbered: '有序列表',
+    indentDecrease: '減少縮進',
+    indentIncrease: '增加縮進',
+    alignLeft: '左對齊',
+    alignCenter: '居中',
+    alignRight: '右對齊',
+    alignJustify: '兩端對齊',
+    undo: '撤銷',
+    redo: '重做'
+};

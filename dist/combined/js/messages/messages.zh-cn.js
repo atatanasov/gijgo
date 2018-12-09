@@ -1,8 +1,8 @@
-gj.dialog.messages['chn-sim'] = {
+gj.dialog.messages['zh-cn'] = {
     Close: '关闭',
     DefaultTitle: '对话框'
 };
-gj.grid.messages['chn-sim'] = {
+gj.grid.messages['zh-cn'] = {
     First: '首',
     Previous: '上一个',
     Next: '下一个',
@@ -23,7 +23,7 @@ gj.grid.messages['chn-sim'] = {
     NoRecordsFound: '找不到记录。',
     Loading: '正在加载……'
 };
-gj.editor.messages['chn-sim'] = {
+gj.editor.messages['zh-cn'] = {
     bold: '粗体',
     italic: '斜体',
     strikethrough: '删除线',
@@ -39,7 +39,7 @@ gj.editor.messages['chn-sim'] = {
     undo: '撤销',
     redo: '重做'
 };
-gj.core.messages['chn-sim'] = {
+gj.core.messages['zh-cn'] = {
     monthNames: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
     monthShortNames: ['01.', '02.', '03.', '04.', '05.', '06.', '07.', '08.', '09.', '10.', '11.', '12.'],
     weekDaysMin: ['日', '一', '二', '三', '四', '五', '六'],
@@ -49,7 +49,5 @@ gj.core.messages['chn-sim'] = {
     pm: '下午',
     ok: '确认',
     cancel: '取消',
-    titleFun: function (year, month) {
-        return year + '年' + month;
-    },
+    titleFormat: 'yyyy年mmmm'
 };

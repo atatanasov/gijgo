@@ -7,5 +7,6 @@
     am: 'AM',
     pm: 'PM',
     ok: 'Tamam',
-    cancel: 'İptal'
+    cancel: 'İptal',
+    titleFormat: 'mmmm yyyy'
 };

@@ -375,7 +375,8 @@ gj.documentManager = {
             am: 'AM',
             pm: 'PM',
             ok: 'Ok',
-            cancel: 'Cancel'
+            cancel: 'Cancel',
+            titleFormat: 'mmmm yyyy'
         }
     },
 
@@ -800,7 +801,8 @@ gj.core.messages['bg-bg'] = {
     am: 'AM',
     pm: 'PM',
     ok: 'ОК',
-    cancel: 'Отказ'
+    cancel: 'Отказ',
+    titleFormat: 'mmmm yyyy'
 };
 gj.core.messages['fr-fr'] = {
     monthNames: ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'],
@@ -811,7 +813,8 @@ gj.core.messages['fr-fr'] = {
     am: 'AM',
     pm: 'PM',
     ok: 'OK',
-    cancel: 'Annuler'
+    cancel: 'Annuler',
+    titleFormat: 'mmmm yyyy'
 };
 gj.core.messages['de-de'] = {
     monthNames: ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'],
@@ -822,7 +825,8 @@ gj.core.messages['de-de'] = {
     am: 'AM',
     pm: 'PM',
     ok: 'OK',
-    cancel: 'Abbrechen'
+    cancel: 'Abbrechen',
+    titleFormat: 'mmmm yyyy'
 };
 gj.core.messages['pt-br'] = {
     monthNames: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
@@ -833,7 +837,8 @@ gj.core.messages['pt-br'] = {
     am: 'AM',
     pm: 'PM',
     ok: 'OK',
-    cancel: 'Cancelar'
+    cancel: 'Cancelar',
+    titleFormat: 'mmmm yyyy'
 };
 gj.core.messages['ru-ru'] = {
     monthNames: ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
@@ -844,7 +849,8 @@ gj.core.messages['ru-ru'] = {
     am: 'AM',
     pm: 'PM',
     ok: 'ОК',
-    cancel: 'Отмена'
+    cancel: 'Отмена',
+    titleFormat: 'mmmm yyyy'
 };
 gj.core.messages['es-es'] = {
     monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
@@ -855,7 +861,8 @@ gj.core.messages['es-es'] = {
     am: 'AM',
     pm: 'PM',
     ok: 'OK',
-    cancel: 'Cancelar'
+    cancel: 'Cancelar',
+    titleFormat: 'mmmm yyyy'
 };
 
 gj.core.messages['it-it'] = {
@@ -867,7 +874,8 @@ gj.core.messages['it-it'] = {
     am: 'AM',
     pm: 'PM',
     ok: 'OK',
-    cancel: 'Annulla'
+    cancel: 'Annulla',
+    titleFormat: 'mmmm yyyy'
 };
 gj.core.messages['tr-tr'] = {
     monthNames: ['Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran', 'Temmuz', 'Ağustos', 'Eylül', 'Ekim', 'Kasım', 'Aralık'],
@@ -878,5 +886,45 @@ gj.core.messages['tr-tr'] = {
     am: 'AM',
     pm: 'PM',
     ok: 'Tamam',
-    cancel: 'İptal'
+    cancel: 'İptal',
+    titleFormat: 'mmmm yyyy'
 };
+gj.core.messages['ja-jp'] = {
+    monthNames: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
+    monthShortNames: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
+    weekDaysMin: ['日', '月', '火', '水', '木', '金', '土'],
+    weekDaysShort: ['日', '月', '火', '水', '木', '金', '土'],
+    weekDays: ['日曜', '月曜', '火曜', '水曜', '木曜', '金曜', '土曜'],
+    am: '午前',
+    pm: '午後',
+    ok: 'OK',
+    cancel: 'キャンセル',
+    titleFormat: 'yyyy年mmmm'
+};
+
+gj.core.messages['zh-cn'] = {
+    monthNames: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
+    monthShortNames: ['01.', '02.', '03.', '04.', '05.', '06.', '07.', '08.', '09.', '10.', '11.', '12.'],
+    weekDaysMin: ['日', '一', '二', '三', '四', '五', '六'],
+    weekDaysShort: ['周日', '周一', '周二', '周三', '周四', '周五', '周六'],
+    weekDays: ['星期天', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'],
+    am: '上午',
+    pm: '下午',
+    ok: '确认',
+    cancel: '取消',
+    titleFormat: 'yyyy年mmmm'
+};
+
+gj.core.messages['zh-tw'] = {
+    monthNames: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
+    monthShortNames: ['01.', '02.', '03.', '04.', '05.', '06.', '07.', '08.', '09.', '10.', '11.', '12.'],
+    weekDaysMin: ['日', '一', '二', '三', '四', '五', '六'],
+    weekDaysShort: ['周日', '周一', '周二', '周三', '周四', '周五', '周六'],
+    weekDays: ['星期天', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'],
+    am: '上午',
+    pm: '下午',
+    ok: '確認',
+    cancel: '取消',
+    titleFormat: 'yyyy年mmmm'
+};
+

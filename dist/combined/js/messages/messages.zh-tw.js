@@ -1,8 +1,8 @@
-gj.dialog.messages['chn-trd'] = {
+gj.dialog.messages['zh-tw'] = {
     Close: '關閉',
     DefaultTitle: '對話框'
 };
-gj.grid.messages['chn-trd'] = {
+gj.grid.messages['zh-tw'] = {
     First: '首',
     Previous: '上一個',
     Next: '下一個',
@@ -23,7 +23,7 @@ gj.grid.messages['chn-trd'] = {
     NoRecordsFound: '找不到記錄。',
     Loading: '正在加載……'
 };
-gj.editor.messages['chn-trd'] = {
+gj.editor.messages['zh-tw'] = {
     bold: '粗體',
     italic: '斜體',
     strikethrough: '刪除線',
@@ -39,7 +39,7 @@ gj.editor.messages['chn-trd'] = {
     undo: '撤銷',
     redo: '重做'
 };
-gj.core.messages['chn-trd'] = {
+gj.core.messages['zh-tw'] = {
     monthNames: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
     monthShortNames: ['01.', '02.', '03.', '04.', '05.', '06.', '07.', '08.', '09.', '10.', '11.', '12.'],
     weekDaysMin: ['日', '一', '二', '三', '四', '五', '六'],
@@ -49,7 +49,5 @@ gj.core.messages['chn-trd'] = {
     pm: '下午',
     ok: '確認',
     cancel: '取消',
-    titleFun: function (year, month) {
-        return year + '年' + month;
-    },
+    titleFormat: 'yyyy年mmmm'
 };

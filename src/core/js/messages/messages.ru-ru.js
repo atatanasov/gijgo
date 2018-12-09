@@ -7,5 +7,6 @@
     am: 'AM',
     pm: 'PM',
     ok: 'ОК',
-    cancel: 'Отмена'
+    cancel: 'Отмена',
+    titleFormat: 'mmmm yyyy'
 };

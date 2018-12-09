@@ -523,3 +523,15 @@ gj.dialog.messages['tr-tr'] = {
     Close: 'Kapat',
     DefaultTitle: 'Diyalog'
 };
+gj.dialog.messages['ja-jp'] = {
+    Close: '閉じる',
+    DefaultTitle: 'ダイアログ'
+};
+gj.dialog.messages['zh-cn'] = {
+    Close: '关闭',
+    DefaultTitle: '对话框'
+};
+gj.dialog.messages['zh-tw'] = {
+    Close: '關閉',
+    DefaultTitle: '對話框'
+};

@@ -48,5 +48,6 @@ gj.core.messages['fr-fr'] = {
     am: 'AM',
     pm: 'PM',
     ok: 'OK',
-    cancel: 'Annuler'
+    cancel: 'Annuler',
+    titleFormat: 'mmmm yyyy'
 };
