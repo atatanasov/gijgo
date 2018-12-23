@@ -512,6 +512,10 @@ gj.core = {
 
         if (style.boxSizing === 'border-box') { // border-box include padding and border within the height
             result = parseInt(style.height, 10);
+            if (gj.core.isIE()) {
+                result += parseInt(style.paddingTop || 0, 10) + parseInt(style.paddingBottom || 0, 10);
+                result += parseInt(style.borderTopWidth || 0, 10) + parseInt(style.borderBottomWidth || 0, 10);
+            }
         } else {
             result = parseInt(style.height, 10);
             result += parseInt(style.paddingTop || 0, 10) + parseInt(style.paddingBottom || 0, 10);
