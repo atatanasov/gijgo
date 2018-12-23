@@ -13,16 +13,15 @@
     <script src="../../dist/modular/js/datepicker.js"></script>
 </head>
 <body style="padding: 8px;">
-    <input id="datepicker" width="234" type="text" />
+
+    <input id="datepicker" width="234" type="text" required />
     <script>
         $('#datepicker').datepicker({
 
-            locale: 'it-it',
-            format: 'dd mmm yyyy',
-            value: '12 Dic 2018',
-            minDate: '12 Dic 2017',
+            disableDates: [new Date(2018, 11, 24), '12/27/2018'],
             uiLibrary: 'bootstrap4'
         });
     </script>
+
 </body>
 </html>

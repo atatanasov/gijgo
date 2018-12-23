@@ -222,6 +222,15 @@ gj.datetimepicker.config = {
          *        datepicker: { weekStartDay: 1 }
          *    });
          * </script>
+         * @example Chinise_Simplified <!-- datetimepicker -->
+         * <input id="input" width="276" />
+         * <script>
+         *    $('#input').datetimepicker({
+         *        locale: 'zh-cn',
+         *        format: 'HH:MM dd mmm yyyy',
+         *        datepicker: { weekStartDay: 1 }
+         *    });
+         * </script>
          */
         locale: 'en-us',
 
