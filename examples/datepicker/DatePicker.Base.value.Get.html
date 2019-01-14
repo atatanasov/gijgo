@@ -11,11 +11,11 @@
   <script src="../../dist/modular/js/datepicker.js"></script>
 </head>
 <body style="padding: 8px;">
- <button class="gj-button-md" onclick="alert($datepicker.value())">Get Value</button>
+ <button class="gj-button-md" onclick="alert(datepicker.value())">Get Value</button>
  <hr/>
  <input id="datepicker" width="312" />
  <script>
-     var $datepicker = $('#datepicker').datepicker();
+     var datepicker = new GijgoDatePicker(document.getElementById('datepicker'));
  </script>
 </body>
 </html>

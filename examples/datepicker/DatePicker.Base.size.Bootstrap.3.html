@@ -4,7 +4,6 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Example</title>
-  <script src="../../dist/libraries/jquery/jquery.js"></script>
   <script src="../../dist/modular/js/core.js" type="text/javascript"></script>
   <link href="../../dist/modular/css/core.css" rel="stylesheet" type="text/css">
   <link href="../../dist/libraries/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
@@ -12,13 +11,13 @@
   <script src="../../dist/modular/js/datepicker.js"></script>
 </head>
 <body style="padding: 8px;">
- <p><label for="datepicker-small">Small Size:</label> <input id="datepicker-small" width="220" value="03/20/2018" /></p>
- <p><label for="datepicker-default">Default Size:</label> <input id="datepicker-default" width="220" value="03/20/2018" /></p>
- <p><label for="datepicker-large">Large Size:</label> <input id="datepicker-large" width="220" value="03/20/2018" /></p>
+ <p><label for="datepicker-small">Small Size:</label> <input id="datepicker-small" width="220" value="03/20/2019" /></p>
+ <p><label for="datepicker-default">Default Size:</label> <input id="datepicker-default" width="220" value="03/20/2019" /></p>
+ <p><label for="datepicker-large">Large Size:</label> <input id="datepicker-large" width="220" value="03/20/2019" /></p>
  <script>
-     $('#datepicker-small').datepicker({ uiLibrary: 'bootstrap', size: 'small' });
-     $('#datepicker-default').datepicker({ uiLibrary: 'bootstrap', size: 'default' });
-     $('#datepicker-large').datepicker({ uiLibrary: 'bootstrap', size: 'large' });
+     new GijgoDatePicker(document.getElementById('datepicker-small'), { uiLibrary: 'bootstrap', size: 'small' });
+     new GijgoDatePicker(document.getElementById('datepicker-default'), { uiLibrary: 'bootstrap', size: 'default' });
+     new GijgoDatePicker(document.getElementById('datepicker-large'), { uiLibrary: 'bootstrap', size: 'large' });
  </script>
 </body>
 </html>

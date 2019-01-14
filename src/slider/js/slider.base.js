@@ -300,7 +300,7 @@ gj.slider.methods = {
     },
 
     destroy: function (el) {
-        var data = $(el).data(),
+        var data = gijgoStorage.get(el, 'gijgo'),
             wrapper = el.parentElement;
         if (data) {
             wrapper.removeChild(wrapper.querySelector('[role="track"]'));
@@ -308,7 +308,7 @@ gj.slider.methods = {
             wrapper.removeChild(wrapper.querySelector('[role="progress"]'));
             $(el).unwrap();
             $(el).off();
-            $(el).removeData();
+            gijgoStorage.remove(el, 'gijgo');
             el.removeAttribute('data-type');
             el.removeAttribute('data-guid')
             el.removeAttribute('data-slider');

@@ -216,7 +216,7 @@ gj.dialog.methods = {
             });            
         }
 
-        gj.core.center($dialog);
+        gj.core.center($dialog[0]);
 
         if (data.modal) {
             $dialog.wrapAll('<div data-role="modal" class="' + data.style.modal + '"/>');

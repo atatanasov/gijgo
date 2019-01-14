@@ -11,11 +11,12 @@
   <script src="../../dist/modular/js/datepicker.js"></script>
 </head>
 <body style="padding: 8px;">
- <button class="gj-button-md" onclick="datepicker.value('03/01/2019')">Set Value</button>
- <hr/>
  <input id="datepicker" width="312" />
  <script>
-     var datepicker = new GijgoDatePicker(document.getElementById('datepicker'));
+     new GijgoDatePicker(document.getElementById('datepicker'), {
+        showOtherMonths: true,
+        selectOtherMonths: false
+     });
  </script>
 </body>
 </html>

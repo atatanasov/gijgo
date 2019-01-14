@@ -4,16 +4,15 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Example</title>
-  <script src="../../dist/libraries/jquery/jquery.js"></script>
   <script src="../../dist/modular/js/core.js" type="text/javascript"></script>
   <link href="../../dist/modular/css/core.css" rel="stylesheet" type="text/css">
   <link href="../../dist/modular/css/datepicker.css" rel="stylesheet" type="text/css">
   <script src="../../dist/modular/js/datepicker.js"></script>
 </head>
 <body style="padding: 8px;">
- <input id="datepicker" width="312" value="01/01/2018" />
+ <input id="datepicker" width="312" value="01/01/2019" />
  <script>
-     $('#datepicker').datepicker();
+     new GijgoDatePicker(document.getElementById('datepicker'));
  </script>
 </body>
 </html>

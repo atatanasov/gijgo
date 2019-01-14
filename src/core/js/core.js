@@ -54,7 +54,11 @@ gj.widget = function () {
         for (var i = 1; i < arguments.length; i++) {
             for (var key in arguments[i]) {
                 if (arguments[i].hasOwnProperty(key)) {
-                    arguments[0][key] = arguments[i][key];
+                    if (typeof arguments[0][key] === 'object') {
+                        arguments[0][key] = this.extend(arguments[0][key], arguments[i][key]);
+                    } else {
+                        arguments[0][key] = arguments[i][key];
+                    }
                 }
             }
         }
@@ -592,12 +596,12 @@ gj.core = {
         return val;
     },
 
-    center: function ($dialog) {
-        var left = ($(window).width() / 2) - ($dialog.width() / 2),
-            top = ($(window).height() / 2) - ($dialog.height() / 2);
-        $dialog.css('position', 'absolute');
-        $dialog.css('left', left > 0 ? left : 0);
-        $dialog.css('top', top > 0 ? top : 0);
+    center: function (element) {
+        var left = (window.innerWidth / 2) - (gj.core.width(element, true) / 2),
+            top = (window.innerHeight / 2) - (gj.core.height(element, true) / 2);
+        element.style.position = 'absolute';
+        element.style.left = (left > 0 ? left : 0) + 'px';
+        element.style.top = (top > 0 ? top : 0) + 'px';
     },
 
     isIE: function () {
@@ -674,6 +678,12 @@ gj.core = {
                 el.classList.add(arr[i]);
             }
         }
+    },
+
+    createElement: function (htmlString) {
+        var div = document.createElement('div');
+        div.innerHTML = htmlString.trim();
+        return div.firstChild;
     },
 
     position: function (el) {

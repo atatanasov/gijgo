@@ -7,80 +7,102 @@
 
 gj.picker.methods = {
 
-    initialize: function ($input, data, methods) {
-        var $calendar, $rightIcon,
-            $picker = methods.createPicker($input, data),
-            $wrapper = $input.parent('div[role="wrapper"]');
+    initialize: function (input, data, methods) {
+        var rightIcon, wrapper, 
+            picker = methods.createPicker(input, data);
 
-        if (data.uiLibrary === 'bootstrap') {
-            $rightIcon = $('<span class="input-group-addon">' + data.icons.rightIcon + '</span>');
-        } else if (data.uiLibrary === 'bootstrap4') {
-            $rightIcon = $('<span class="input-group-append"><button class="btn btn-outline-secondary border-left-0" type="button">' + data.icons.rightIcon + '</button></span>');
+        if (input.parentElement.attributes.role !== 'wrapper') {
+            wrapper = document.createElement('div');
+            wrapper.setAttribute('role', 'wrapper');
+            input.parentNode.insertBefore(wrapper, input);
+            wrapper.appendChild(input);
         } else {
-            $rightIcon = $(data.icons.rightIcon);
+            wrapper = input.parentElement;
         }
-        $rightIcon.attr('role', 'right-icon');
 
-        if ($wrapper.length === 0) {
-            $wrapper = $('<div role="wrapper" />').addClass(data.style.wrapper); // The css class needs to be added before the wrapping, otherwise doesn't work.
-            $input.wrap($wrapper);
-        } else {
-            $wrapper.addClass(data.style.wrapper);
+        gj.core.addClasses(wrapper, data.style.wrapper);
+
+        if (data.width) {
+            wrapper.style.width = data.width + 'px';
         }
-        $wrapper = $input.parent('div[role="wrapper"]');
 
-        data.width && $wrapper.css('width', data.width);
+        input.value = data.value || '';
+        gj.core.addClasses(input, data.style.input);
+        input.setAttribute('role', 'input');
 
-        $input.val(data.value).addClass(data.style.input).attr('role', 'input');
-
-        data.fontSize && $input.css('font-size', data.fontSize);
+        if (data.fontSize) {
+            input.style.fontSize = data.fontSize;
+        }
 
         if (data.uiLibrary === 'bootstrap' || data.uiLibrary === 'bootstrap4') {
             if (data.size === 'small') {
-                $wrapper.addClass('input-group-sm');
-                $input.addClass('form-control-sm');
+                wrapper.classList.add('input-group-sm');
+                input.classList.add('form-control-sm');
             } else if (data.size === 'large') {
-                $wrapper.addClass('input-group-lg');
-                $input.addClass('form-control-lg');
+                wrapper.classList.add('input-group-lg');
+                input.classList.add('form-control-lg');
             }
         } else {
             if (data.size === 'small') {
-                $wrapper.addClass('small');
+                wrapper.classList.add('small');
             } else if (data.size === 'large') {
-                $wrapper.addClass('large');
+                wrapper.classList.add('large');
             }
         }
 
-        $rightIcon.on('click', function (e) {
-            if ($picker.is(':visible')) {
-                $input.close();
+        if (data.showRightIcon) {
+            if (data.uiLibrary === 'bootstrap') {
+                rightIcon = document.createElement('span');
+                rightIcon.classList.add('input-group-addon');
+                rightIcon.innerHTML = data.icons.rightIcon;
+            } else if (data.uiLibrary === 'bootstrap4') {
+                rightIcon = document.createElement('span');
+                rightIcon.classList.add('input-group-append');
+                rightIcon.innerHTML = '<button class="btn btn-outline-secondary border-left-0" type="button">' + data.icons.rightIcon + '</button>';
             } else {
-                $input.open();
+                rightIcon = gj.core.createElement(data.icons.rightIcon);
             }
-        });
-        $wrapper.append($rightIcon);
+            rightIcon.setAttribute('role', 'right-icon');
+            rightIcon.addEventListener('click', function (e) {
+                var calendar = document.body.querySelector('[role="calendar"][guid="' + input.getAttribute('data-guid') + '"]');
+                if (window.getComputedStyle(calendar).display === 'none') {
+                    gj.datepicker.methods.open(picker, data);
+                } else {
+                    gj.datepicker.methods.close(picker);
+                }
+            });
+            wrapper.appendChild(rightIcon);
+        }
+
+        if (data.showOnFocus) {
+            input.addEventListener('focus', function () {
+                gj.datepicker.methods.open(picker, data);
+            });
+        }
+
+        calendar = gj.datepicker.methods.createCalendar(picker, data);
 
         if (data.footer !== true) {
-            $input.on('blur', function () {
-                $input.timeout = setTimeout(function () {
-                    $input.close();
+            input.addEventListener('blur', function () {
+                picker.timeout = setTimeout(function () {
+                    gj.datepicker.methods.close(picker);
                 }, 500);
             });
-            $picker.mousedown(function () {
-                clearTimeout($input.timeout);
-                $input.focus();
+            calendar.addEventListener('mousedown', function () {
+                clearTimeout(picker.timeout);
+                document.activeElement !== input && input.focus();
                 return false;
             });
-            $picker.on('click', function () {
-                clearTimeout($input.timeout);
-                $input.focus();
+            calendar.addEventListener('click', function () {
+                clearTimeout(picker.timeout);
+                document.activeElement !== input && input.focus();
             });
         }
     }
 };
 
 
-gj.picker.widget = function ($element, jsConfig) {
+gj.picker.widget = function (element, jsConfig) {
     var self = this,
         methods = gj.picker.methods;
 
@@ -88,30 +110,30 @@ gj.picker.widget = function ($element, jsConfig) {
         return methods.destroy(this);
     };
 
-    return $element;
+    return element;
 };
 
 gj.picker.widget.prototype = new gj.widget();
 gj.picker.widget.constructor = gj.picker.widget;
 
 gj.picker.widget.prototype.init = function (jsConfig, type, methods) {
-    gj.widget.prototype.init.call(this, jsConfig, type);
-    this.attr('data-' + type, 'true');
-    gj.picker.methods.initialize(this, this.data(), gj[type].methods);
+    gj.widget.prototype.initJS.call(this, jsConfig, type);
+    this.element.setAttribute('data-' + type, 'true');
+    gj.picker.methods.initialize(this, gijgoStorage.get(this.element, 'gijgo'), gj[type].methods);
     return this;
 };
 
 gj.picker.widget.prototype.open = function (type) {
-    var data = this.data(),
-        $picker = $('body').find('[role="picker"][guid="' + this.attr('data-guid') + '"]');
+    var data = gijgoStorage.get(this.element, 'gijgo'),
+        picker = document.body.querySelector('[role="picker"][guid="' + this.getAttribute('data-guid') + '"]');
 
-    $picker.show();
-    $picker.closest('div[role="modal"]').show();
+    picker.style.display = 'block';
     if (data.modal) {
-        gj.core.center($picker);
+        calendar.parentElement.style.display = 'block';
+        gj.core.center(picker);
     } else {
-        gj.core.setChildPosition(this[0], $picker[0]);
-        this.focus();
+        gj.core.setChildPosition(this.element, picker);
+        document.activeElement !== this.element && this.element.focus();
     }
     clearTimeout(this.timeout);
 
@@ -121,28 +143,32 @@ gj.picker.widget.prototype.open = function (type) {
 };
 
 gj.picker.widget.prototype.close = function (type) {
-    var $picker = $('body').find('[role="picker"][guid="' + this.attr('data-guid') + '"]');
-    $picker.hide();
-    $picker.closest('div[role="modal"]').hide();
+    var data = gijgoStorage.get(this.element, 'gijgo'),
+        picker = document.body.querySelector('[role="picker"][guid="' + this.getAttribute('data-guid') + '"]');
+    picker.style.display = 'none';
+    if (data.modal) {
+        picker.parentElement.style.display = 'none';
+    }
     gj[type].events.close(this);
     return this;
 };
 
 gj.picker.widget.prototype.destroy = function (type) {
-    var data = this.data(),
-        $parent = this.parent(),
-        $picker = $('body').find('[role="picker"][guid="' + this.attr('data-guid') + '"]');
+    var data = gijgoStorage.get(this.element, 'gijgo'),
+        parent = this.element.parentElement,
+        picker = document.body.querySelector('[role="picker"][guid="' + this.getAttribute('data-guid') + '"]');
     if (data) {
-        this.off();
-        if ($picker.parent('[role="modal"]').length > 0) {
-            $picker.unwrap();
+        //this.off();
+        if (parent.getAttribute('role') === 'modal') {
+            this.element.outerHTML = this.element.innerHTML;
         }
-        $picker.remove();
-        this.removeData();
-        this.removeAttr('data-type').removeAttr('data-guid').removeAttr('data-' + type);
-        this.removeClass();
-        $parent.children('[role="right-icon"]').remove();
-        this.unwrap();
+        gijgoStorage.remove(this.element, 'gijgo');
+        this.element.removeAttribute('data-type');
+        this.element.removeAttribute('data-guid');
+        this.element.removeAttribute('data-datepicker');
+        this.element.removeAttribute('class');
+        this.element.removeChild(this.element.querySelector('[role="right-icon"]'));
+        picker.parentNode.removeChild(picker);
     }
     return this;
 };

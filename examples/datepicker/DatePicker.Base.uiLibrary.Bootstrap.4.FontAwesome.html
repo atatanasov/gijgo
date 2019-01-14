@@ -4,7 +4,6 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Example</title>
-  <script src="../../dist/libraries/jquery/jquery.js"></script>
   <script src="../../dist/modular/js/core.js" type="text/javascript"></script>
   <link href="../../dist/modular/css/core.css" rel="stylesheet" type="text/css">
   <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
@@ -15,7 +14,7 @@
 <body style="padding: 8px;">
  <input id="datepicker" width="234" />
  <script>
-     $('#datepicker').datepicker({ uiLibrary: 'bootstrap4', iconsLibrary: 'fontawesome' });
+     new GijgoDatePicker(document.getElementById('datepicker'), { uiLibrary: 'bootstrap4', iconsLibrary: 'fontawesome' });
  </script>
 </body>
 </html>
