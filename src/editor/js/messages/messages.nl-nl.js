@@ -1,4 +1,4 @@
-﻿gj.editor.messages['en-us'] = {
+﻿gj.editor.messages['nl-nl'] = {
     bold: 'Vet',
     italic: 'Cursief',
     strikethrough: 'Doorgestreept',
