@@ -667,9 +667,9 @@ gj.picker = {
 
 gj.picker.methods = {
 
-    initialize: function (input, data, methods) {
-        var rightIcon, wrapper, 
-            picker = methods.createPicker(input, data);
+    initialize: function (picker, data, methods) {
+        var rightIcon, wrapper, input = picker.element,
+            popup = methods.createPopup(input, data);
 
         if (input.parentElement.attributes.role !== 'wrapper') {
             wrapper = document.createElement('div');
@@ -724,11 +724,10 @@ gj.picker.methods = {
             }
             rightIcon.setAttribute('role', 'right-icon');
             rightIcon.addEventListener('click', function (e) {
-                var calendar = document.body.querySelector('[role="calendar"][guid="' + input.getAttribute('data-guid') + '"]');
-                if (window.getComputedStyle(calendar).display === 'none') {
-                    gj.datepicker.methods.open(picker, data);
+                if (window.getComputedStyle(picker.element).display === 'none') {
+                    methods.open(picker, data);
                 } else {
-                    gj.datepicker.methods.close(picker);
+                    methods.close(picker);
                 }
             });
             wrapper.appendChild(rightIcon);
@@ -736,24 +735,22 @@ gj.picker.methods = {
 
         if (data.showOnFocus) {
             input.addEventListener('focus', function () {
-                gj.datepicker.methods.open(picker, data);
+                methods.open(picker, data);
             });
         }
-
-        calendar = gj.datepicker.methods.createCalendar(picker, data);
 
         if (data.footer !== true) {
             input.addEventListener('blur', function () {
                 picker.timeout = setTimeout(function () {
-                    gj.datepicker.methods.close(picker);
+                    methods.close(picker);
                 }, 500);
             });
-            calendar.addEventListener('mousedown', function () {
+            popup.addEventListener('mousedown', function () {
                 clearTimeout(picker.timeout);
                 document.activeElement !== input && input.focus();
                 return false;
             });
-            calendar.addEventListener('click', function () {
+            popup.addEventListener('click', function () {
                 clearTimeout(picker.timeout);
                 document.activeElement !== input && input.focus();
             });
@@ -789,7 +786,7 @@ gj.picker.widget.prototype.open = function (type) {
 
     picker.style.display = 'block';
     if (data.modal) {
-        calendar.parentElement.style.display = 'block';
+        picker.parentElement.style.display = 'block';
         gj.core.center(picker);
     } else {
         gj.core.setChildPosition(this.element, picker);
