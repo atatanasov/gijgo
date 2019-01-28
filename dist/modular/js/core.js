@@ -669,7 +669,7 @@ gj.picker.methods = {
 
     initialize: function (picker, data, methods) {
         var rightIcon, wrapper, input = picker.element,
-            popup = methods.createPopup(input, data);
+            popup = methods.createPopup(picker, data);
 
         if (input.parentElement.attributes.role !== 'wrapper') {
             wrapper = document.createElement('div');
@@ -724,10 +724,10 @@ gj.picker.methods = {
             }
             rightIcon.setAttribute('role', 'right-icon');
             rightIcon.addEventListener('click', function (e) {
-                if (window.getComputedStyle(picker.element).display === 'none') {
-                    methods.open(picker, data);
+                if (window.getComputedStyle(popup).display === 'none') {
+                    picker.open();
                 } else {
-                    methods.close(picker);
+                    picker.close();
                 }
             });
             wrapper.appendChild(rightIcon);
@@ -782,7 +782,7 @@ gj.picker.widget.prototype.init = function (jsConfig, type, methods) {
 
 gj.picker.widget.prototype.open = function (type) {
     var data = gijgoStorage.get(this.element, 'gijgo'),
-        picker = document.body.querySelector('[role="picker"][guid="' + this.getAttribute('data-guid') + '"]');
+        picker = document.body.querySelector('[role="picker"][guid="' + this.element.getAttribute('data-guid') + '"]');
 
     picker.style.display = 'block';
     if (data.modal) {
@@ -794,19 +794,19 @@ gj.picker.widget.prototype.open = function (type) {
     }
     clearTimeout(this.timeout);
 
-    gj[type].events.open(this);
+    gj[type].events.open(this.element);
 
     return this;
 };
 
 gj.picker.widget.prototype.close = function (type) {
     var data = gijgoStorage.get(this.element, 'gijgo'),
-        picker = document.body.querySelector('[role="picker"][guid="' + this.getAttribute('data-guid') + '"]');
+        picker = document.body.querySelector('[role="picker"][guid="' + this.element.getAttribute('data-guid') + '"]');
     picker.style.display = 'none';
     if (data.modal) {
         picker.parentElement.style.display = 'none';
     }
-    gj[type].events.close(this);
+    gj[type].events.close(this.element);
     return this;
 };
 

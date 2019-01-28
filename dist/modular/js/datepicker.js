@@ -143,7 +143,7 @@ gj.datepicker.methods = {
 
         picker.element.value = data.value || '';
         gj.core.addClasses(picker.element, data.style.input);
-        picker.element.setAttribute('role', 'input');
+        wrapper.setAttribute('role', 'input');
 
         if (data.fontSize) {
             picker.element.style.fontSize = data.fontSize;
