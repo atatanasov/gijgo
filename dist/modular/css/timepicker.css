@@ -23,6 +23,10 @@
     text-align: right;
 }
 
+.gj-picker.timepicker [role="header"] div[role="hour"] {
+    margin-left: 62px;
+}
+
 .gj-picker [role="header"] [role="mode"] {
     position: relative;
     width: 0px;

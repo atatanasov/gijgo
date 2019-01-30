@@ -27,7 +27,7 @@ gj.timepicker.config = {
 
         /** The initial timepicker value.         */        value: undefined,
 
-        /** The timepicker mode. Tells the component to display the picker in ampm (12hr) format or 24hr format.         */        mode: 'ampm',
+        /** The timepicker mode. Tells the component to display the picker in ampm (12hr) format or 24hr format.         */        mode: '24hr',
 
         /** The language that needs to be in use.         */        locale: 'en-us',
 
@@ -84,7 +84,7 @@ gj.timepicker.methods = {
     },
 
     initMouse: function (body, input, picker, data) {
-        body.parentNode.replaceChild(body.cloneNode(true), body); // remove all event listeners
+        //body = body.parentNode.replaceChild(body.cloneNode(true), body); // remove all event listeners
         body.addEventListener('mousedown', gj.timepicker.methods.mouseDownHandler(picker));
         body.addEventListener('mousemove', gj.timepicker.methods.mouseMoveHandler(input, picker, data));
         body.addEventListener('mouseup', gj.timepicker.methods.mouseUpHandler(input, picker, data));
@@ -205,7 +205,7 @@ gj.timepicker.methods = {
             gj.core.center(clock);
         }
 
-        gj.timepicker.methods.initMouse(body, picker.element, clock, data);
+        gj.timepicker.methods.initMouse(body, picker, clock, data);
 
         return clock;
     },
@@ -262,10 +262,10 @@ gj.timepicker.methods = {
         }
     },
 
-    updateArrow: function(e, timepicker, clock, data) {
+    updateArrow: function(e, picker, clock, data) {
         var rect, value,
-            mouseX = timepicker.mouseX(e),
-            mouseY = timepicker.mouseY(e),
+            mouseX = picker.mouseX(e),
+            mouseY = picker.mouseY(e),
             scrollY = window.scrollY || window.pageYOffset || 0,
             scrollX = window.scrollX || window.pageXOffset || 0;
 
@@ -278,10 +278,10 @@ gj.timepicker.methods = {
             clock.setAttribute('minute', value);
         }
 
-        gj.timepicker.methods.update(timepicker, clock, data);
+        gj.timepicker.methods.update(picker, clock, data);
     },
 
-    update: function (timepicker, clock, data) {
+    update: function (picker, clock, data) {
         var hour, minute, arrow, visualHour, header, numbers, i, number;
 
         // update the arrow
@@ -305,13 +305,13 @@ gj.timepicker.methods = {
         visualHour = (data.mode === 'ampm' && hour > 12 ? hour - 12 : (hour == 0 ? 12 : hour));
         numbers = clock.querySelectorAll('[role="body"] span');
         for (i = 0; i < numbers.length; i++) {
-            number = parseInt(numbers[0].innerText, 10);
-            if (data.dialMode == 'hours' && number == visualHour) {
-                numbers[0].classList.add('selected');
-            } else if (data.dialMode == 'minutes' && number == minute) {
-                numbers[0].classList.add('selected');
+            number = parseInt(numbers[i].innerText, 10);
+            if (data.dialMode === 'hours' && number === visualHour) {
+                numbers[i].classList.add('selected');
+            } else if (data.dialMode === 'minutes' && number === minute) {
+                numbers[i].classList.add('selected');
             } else {
-                numbers[0].classList.remove('selected');
+                numbers[i].classList.remove('selected');
             }
         }
 
@@ -356,14 +356,14 @@ gj.timepicker.methods = {
             }
             if (data.dialMode == 'hours') {
                 setTimeout(function () {
-                    gj.timepicker.events.select(picker, 'hour');
+                    gj.timepicker.events.select(picker.element, 'hour');
                     gj.timepicker.methods.renderMinutes(picker, clock, data);
                 }, 1000);
             } else if (data.dialMode == 'minutes') {
                 if (data.footer !== true && data.autoClose !== false) {
                     gj.timepicker.methods.setTime(picker, clock)();
                 }
-                gj.timepicker.events.select(picker, 'minute');
+                gj.timepicker.events.select(picker.element, 'minute');
             }
         }
     },
@@ -409,8 +409,10 @@ gj.timepicker.methods = {
         }
         body.appendChild(dial);
 
-        clock.querySelector('[role="header"] [role="hour"]').classList.add('selected');
-        clock.querySelector('[role="header"] [role="minute"]').classList.remove('selected');
+        if (data.header) {
+            clock.querySelector('[role="header"] [role="hour"]').classList.add('selected');
+            clock.querySelector('[role="header"] [role="minute"]').classList.remove('selected');
+        }
 
         data.dialMode = 'hours';
 
@@ -447,8 +449,10 @@ gj.timepicker.methods = {
         dial.appendChild(gj.core.createElement('<span role="hour" style="transform: translate(-1.98393e-14px, -108px)">00</span>'));
         body.appendChild(dial);
 
-        clock.querySelector('[role="header"] [role="hour"]').classList.remove('selected');
-        clock.querySelector('[role="header"] [role="minute"]').classList.add('selected');
+        if (data.header) {
+            clock.querySelector('[role="header"] [role="hour"]').classList.remove('selected');
+            clock.querySelector('[role="header"] [role="minute"]').classList.add('selected');
+        }
         
         data.dialMode = 'minutes';
 

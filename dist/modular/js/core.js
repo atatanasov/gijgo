@@ -725,8 +725,10 @@ gj.picker.methods = {
             rightIcon.setAttribute('role', 'right-icon');
             rightIcon.addEventListener('click', function (e) {
                 if (window.getComputedStyle(popup).display === 'none') {
+                    //methods.open(picker, data);
                     picker.open();
                 } else {
+                    //methods.close(picker);
                     picker.close();
                 }
             });
