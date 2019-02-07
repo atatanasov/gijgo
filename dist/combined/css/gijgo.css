@@ -866,6 +866,10 @@ table.gj-grid-bootstrap tbody tr td div[data-role="display"] {
     padding-top: 2px;
 }
 
+.gj-grid-bootstrap-4 tbody tr.active {
+    background-color: rgba(0,0,0,.075);
+}
+
 /* Material Design Theme */
 .gj-grid-md {
     position: relative;
