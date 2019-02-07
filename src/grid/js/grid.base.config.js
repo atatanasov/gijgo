@@ -337,7 +337,7 @@ gj.grid.config = {
              *         dataSource: '/Players/Get',
              *         uiLibrary: 'bootstrap4',
              *         columns: [
-             *             { field: 'ID', width: 34 },
+             *             { field: 'ID', width: 46 },
              *             { field: 'Name', title: 'Player' },
              *             { field: 'PlaceOfBirth', title: 'Place of Birth' },
              *             { title: 'Active?', field: 'IsActive', width: 80, type: 'checkbox', align: 'center' }
