@@ -1,8 +1,8 @@
 /*
- * Gijgo JavaScript Library v1.9.11
+ * Gijgo JavaScript Library v1.9.13
  * http://gijgo.com/
  *
- * Copyright 2014, 2018 gijgo.com
+ * Copyright 2014, 2019 gijgo.com
  * Released under the MIT license
  */
 var gj = {};

@@ -1,8 +1,8 @@
 /*
- * Gijgo TimePicker v1.9.11
+ * Gijgo TimePicker v1.9.13
  * http://gijgo.com/timepicker
  *
- * Copyright 2014, 2018 gijgo.com
+ * Copyright 2014, 2019 gijgo.com
  * Released under the MIT license
  */
 /* global window alert jQuery gj */
