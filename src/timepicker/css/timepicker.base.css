@@ -212,6 +212,7 @@
 .gj-timepicker-bootstrap [role="right-icon"] button {
     width: 38px;
     position: relative;
+    border: 1px solid #ced4da;
 }
 
 .gj-timepicker-bootstrap.input-group-sm [role="right-icon"] button {
@@ -226,13 +227,13 @@
 .gj-timepicker-bootstrap [role="right-icon"] button .material-icons {
     position: absolute;
     font-size: 21px;
-    top: 7px;
+    top: 9px;
     left: 9px;
 }
 
 .gj-timepicker-bootstrap.input-group-sm [role="right-icon"] button .gj-icon,
 .gj-timepicker-bootstrap.input-group-sm [role="right-icon"] button .material-icons {
-    top: 4px;
+    top: 6px;
     left: 6px;
     font-size: 19px;
 }
@@ -240,6 +241,6 @@
 .gj-timepicker-bootstrap.input-group-lg [role="right-icon"] button .gj-icon,
 .gj-timepicker-bootstrap.input-group-lg [role="right-icon"] button .material-icons {
     font-size: 27px;
-    top: 8px;
+    top: 10px;
     left: 10px;
 }

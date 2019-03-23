@@ -16131,7 +16131,7 @@ gj.timepicker.events = {
      * @event select
      * @param {object} e - event data
      * @param {string} type - The type of the selection. The options are hour and minute.
-     * @example sample <!-- datepicker -->
+     * @example sample <!-- timepicker -->
      * <input id="timepicker" width="312" />
      * <script>
      *     $('#timepicker').timepicker({
