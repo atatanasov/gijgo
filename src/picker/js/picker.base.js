@@ -65,10 +65,8 @@ gj.picker.methods = {
             rightIcon.setAttribute('role', 'right-icon');
             rightIcon.addEventListener('click', function (e) {
                 if (window.getComputedStyle(popup).display === 'none') {
-                    //methods.open(picker, data);
                     picker.open();
                 } else {
-                    //methods.close(picker);
                     picker.close();
                 }
             });
@@ -84,7 +82,7 @@ gj.picker.methods = {
         if (data.footer !== true) {
             input.addEventListener('blur', function () {
                 picker.timeout = setTimeout(function () {
-                    methods.close(picker);
+                    picker.close();
                 }, 500);
             });
             popup.addEventListener('mousedown', function () {
