@@ -1,0 +1,21 @@
+﻿gj.grid.messages['cs-cz'] = {
+    First: 'První',
+    Previous: 'Předchozí',
+    Next: 'Další',
+    Last: 'Poslední',
+    Page: 'Stránka',
+    FirstPageTooltip: 'První stránka',
+    PreviousPageTooltip: 'Předchozí stránka',
+    NextPageTooltip: 'Další stránka',
+    LastPageTooltip: 'Poslední stránka',
+    Refresh: 'Obnovit',
+    Of: 'od',
+    DisplayingRecords: 'Zobrazit záznamy',
+    RowsPerPage: 'Řádků na stránku:',
+    Edit: 'Upravit',
+    Delete: 'Smazat',
+    Update: 'Obnovit',
+    Cancel: 'Zrušit',
+    NoRecordsFound: 'Nebyly nalezeny žádné záznamy.',
+    Loading: 'Načítání...'
+};
