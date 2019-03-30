@@ -18,7 +18,7 @@ gj.grid.messages['cs-cz'] = {
     RowsPerPage: 'Řádků na stránku:',
     Edit: 'Upravit',
     Delete: 'Smazat',
-    Update: 'Obnovit',
+    Update: 'Upravit',
     Cancel: 'Zrušit',
     NoRecordsFound: 'Nebyly nalezeny žádné záznamy.',
     Loading: 'Načítání...'
@@ -37,7 +37,7 @@ gj.editor.messages['cs-cz'] = {
 	alignRight: 'Zarovnat doprava',
 	alignJustify: 'Zarovnat po šířce',
 	undo: 'Zpět',
-	redo: 'Další'
+	redo: 'Znovu'
 };
 gj.core.messages['cs-cz'] = {
     monthNames: ['Leden', 'Únor', 'Březen', 'Duben', 'Květen', 'Červen', 'Červenec', 'Srpen', 'Září', 'Říjen', 'Listopad', 'Prosinec'],

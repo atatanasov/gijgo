@@ -14,7 +14,7 @@
     RowsPerPage: 'Řádků na stránku:',
     Edit: 'Upravit',
     Delete: 'Smazat',
-    Update: 'Obnovit',
+    Update: 'Upravit',
     Cancel: 'Zrušit',
     NoRecordsFound: 'Nebyly nalezeny žádné záznamy.',
     Loading: 'Načítání...'
