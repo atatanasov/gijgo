@@ -76,11 +76,11 @@ gj.widget = function () {
 gj.widget.prototype.init = function (jsConfig, type) {
     var option, clientConfig, fullConfig;
 
-    this.attr('data-type', type);
+    this.element.setAttribute('data-type', type);
     clientConfig = $.extend(true, {}, this.getHTMLConfig() || {});
     $.extend(true, clientConfig, jsConfig || {});
     fullConfig = this.getConfig(clientConfig, type);
-    this.attr('data-guid', fullConfig.guid);
+    this.element.setAttribute('data-guid', fullConfig.guid);
     this.data(fullConfig);
 
     // Initialize events configured as options
@@ -135,7 +135,7 @@ gj.widget.prototype.getConfig = function (clientConfig, type) {
     }
 
     return config;
-}
+};
 
 gj.widget.prototype.getHTMLConfig = function () {
     var result = this.data(),
@@ -175,12 +175,12 @@ window.gijgoStorage = {
     },
     remove: function (el, key) {
         var ret = this._storage.get(el).delete(key);
-        if (!this._storage.get(key).size === 0) {
+        if (this._storage.get(key) && !this._storage.get(key).size === 0) {
             this._storage.delete(el);
         }
         return ret;
     }
-}
+};
 
 gj.widget.prototype.initJS = function (jsConfig, type) {
     var option, clientConfig, fullConfig;
@@ -813,7 +813,8 @@ gj.picker.widget.prototype.close = function (type) {
 gj.picker.widget.prototype.destroy = function (type) {
     var data = gijgoStorage.get(this.element, 'gijgo'),
         parent = this.element.parentElement,
-        picker = document.body.querySelector('[role="picker"][guid="' + this.getAttribute('data-guid') + '"]');
+        picker = document.body.querySelector('[role="picker"][guid="' + this.element.getAttribute('data-guid') + '"]'),
+        rightIcon = this.element.parentElement.querySelector('[role="right-icon"]');
     if (data) {
         //this.off();
         if (parent.getAttribute('role') === 'modal') {
@@ -824,7 +825,11 @@ gj.picker.widget.prototype.destroy = function (type) {
         this.element.removeAttribute('data-guid');
         this.element.removeAttribute('data-datepicker');
         this.element.removeAttribute('class');
-        this.element.removeChild(this.element.querySelector('[role="right-icon"]'));
+        if (rightIcon) {
+            this.element.parentElement.removeChild(rightIcon);
+        }
+        this.element.removeEventListener('focus');
+        this.element.removeEventListener('blur');
         picker.parentNode.removeChild(picker);
     }
     return this;

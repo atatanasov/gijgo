@@ -69,11 +69,11 @@ gj.widget = function () {
 gj.widget.prototype.init = function (jsConfig, type) {
     var option, clientConfig, fullConfig;
 
-    this.attr('data-type', type);
+    this.element.setAttribute('data-type', type);
     clientConfig = $.extend(true, {}, this.getHTMLConfig() || {});
     $.extend(true, clientConfig, jsConfig || {});
     fullConfig = this.getConfig(clientConfig, type);
-    this.attr('data-guid', fullConfig.guid);
+    this.element.setAttribute('data-guid', fullConfig.guid);
     this.data(fullConfig);
 
     // Initialize events configured as options
@@ -128,7 +128,7 @@ gj.widget.prototype.getConfig = function (clientConfig, type) {
     }
 
     return config;
-}
+};
 
 gj.widget.prototype.getHTMLConfig = function () {
     var result = this.data(),
@@ -168,12 +168,12 @@ window.gijgoStorage = {
     },
     remove: function (el, key) {
         var ret = this._storage.get(el).delete(key);
-        if (!this._storage.get(key).size === 0) {
+        if (this._storage.get(key) && !this._storage.get(key).size === 0) {
             this._storage.delete(el);
         }
         return ret;
     }
-}
+};
 
 gj.widget.prototype.initJS = function (jsConfig, type) {
     var option, clientConfig, fullConfig;

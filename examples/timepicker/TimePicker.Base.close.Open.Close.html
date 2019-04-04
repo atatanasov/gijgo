@@ -4,19 +4,18 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Example</title>
-  <script src="../../dist/libraries/jquery/jquery.js"></script>
   <script src="../../dist/modular/js/core.js" type="text/javascript"></script>
   <link href="../../dist/modular/css/core.css" rel="stylesheet" type="text/css">
   <link href="../../dist/modular/css/timepicker.css" rel="stylesheet" type="text/css">
   <script src="../../dist/modular/js/timepicker.js"></script>
 </head>
 <body style="padding: 8px;">
- <button class="gj-button-md" onclick="$timepicker.open()">Open</button>
- <button class="gj-button-md" onclick="$timepicker.close()">Close</button>
+ <button class="gj-button-md" onclick="picker.open()">Open</button>
+ <button class="gj-button-md" onclick="picker.close()">Close</button>
  <hr/>
- <input id="timepicker" width="312" />
+ <input id="picker" width="312" />
  <script>
-     var $timepicker = $('#timepicker').timepicker({ modal: false, header: false, footer: false, mode: '24hr' });
+     var picker = new GijgoTimePicker(document.getElementById('picker'), { modal: false, header: false, footer: false, mode: '24hr' });
  </script>
 </body>
 </html>

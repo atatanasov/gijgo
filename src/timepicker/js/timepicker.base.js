@@ -18,10 +18,10 @@ gj.timepicker.config = {
          * <script>
          *    new GijgoTimePicker(document.getElementById('timepicker'), { width: 280 });
          * </script>
-         * @example HTML.Config <!-- timepicker -->
+         * @example HTML.Config <!-- nojquery, timepicker -->
          * <input id="timepicker" width="312" />
          * <script>
-         *    $('#timepicker').timepicker();
+         *    new GijgoTimePicker(document.getElementById('timepicker'));
          * </script>
          */
         width: undefined,
@@ -29,15 +29,15 @@ gj.timepicker.config = {
         /** If set to true, the timepicker will have modal behavior.
          * @type Boolean
          * @default true
-         * @example True <!-- timepicker -->
+         * @example True <!-- nojquery, timepicker -->
          * <input id="timepicker" width="280" />
          * <script>
-         *    $('#timepicker').timepicker({ modal: true });
+         *    new GijgoTimePicker(document.getElementById('timepicker'), { modal: true });
          * </script>
-         * @example False <!-- timepicker -->
+         * @example False <!-- nojquery, timepicker -->
          * <input id="timepicker" width="280" />
          * <script>
-         *    $('#timepicker').timepicker({ modal: false, header: false, footer: false });
+         *    new GijgoTimePicker(document.getElementById('timepicker'), { modal: false, header: false, footer: false });
          * </script>
          */
         modal: true,
@@ -45,15 +45,15 @@ gj.timepicker.config = {
         /** If set to true, add header to the timepicker.
          * @type Boolean
          * @default true
-         * @example True <!-- timepicker -->
+         * @example True <!-- nojquery, timepicker -->
          * <input id="timepicker" width="280" />
          * <script>
-         *    $('#timepicker').timepicker({ header: true });
+         *    new GijgoTimePicker(document.getElementById('timepicker'), { header: true });
          * </script>
-         * @example False <!-- timepicker -->
+         * @example False <!-- nojquery, timepicker -->
          * <input id="timepicker" width="280" />
          * <script>
-         *    $('#timepicker').timepicker({ header: false, mode: '24hr' });
+         *    new GijgoTimePicker(document.getElementById('timepicker'), { header: false, mode: '24hr' });
          * </script>
          */
         header: true,
@@ -61,15 +61,15 @@ gj.timepicker.config = {
         /** If set to true, add footer with ok and cancel buttons to the timepicker.
          * @type Boolean
          * @default true
-         * @example True <!-- timepicker -->
+         * @example True <!-- nojquery, timepicker -->
          * <input id="timepicker" width="280" />
          * <script>
-         *    $('#timepicker').timepicker({ footer: true });
+         *    new GijgoTimePicker(document.getElementById('timepicker'), { footer: true });
          * </script>
-         * @example False <!-- timepicker -->
+         * @example False <!-- nojquery, timepicker -->
          * <input id="timepicker" width="280" />
          * <script>
-         *    $('#timepicker').timepicker({ footer: false });
+         *    new GijgoTimePicker(document.getElementById('timepicker'), { footer: false });
          * </script>
          */
         footer: true,
@@ -85,10 +85,10 @@ gj.timepicker.config = {
          * <b>TT</b> - The AM/PM designator; upercase.<br/>
          * @type String
          * @default 'MM:HH'
-         * @example Sample <!-- timepicker -->
+         * @example Sample <!-- nojquery, timepicker -->
          * <input id="timepicker" width="312" value="13.42" />
          * <script>
-         *     var timepicker = $('#timepicker').timepicker({
+         *     var timepicker = new GijgoTimePicker(document.getElementById('timepicker'), {
          *         format: 'HH.MM'
          *     });
          * </script>
@@ -99,20 +99,20 @@ gj.timepicker.config = {
          * @additionalinfo The css file for bootstrap should be manually included if you use bootstrap.
          * @type (materialdesign|bootstrap|bootstrap4)
          * @default materialdesign
-         * @example MaterialDesign <!-- timepicker -->
+         * @example MaterialDesign <!-- nojquery, timepicker -->
          * <input id="timepicker" width="312" />
          * <script>
-         *    $('#timepicker').timepicker({ uiLibrary: 'materialdesign' });
+         *    new GijgoTimePicker(document.getElementById('timepicker'), { uiLibrary: 'materialdesign' });
          * </script>
          * @example Bootstrap.3 <!-- bootstrap, timepicker -->
          * <input id="timepicker" width="270" />
          * <script>
-         *     $('#timepicker').timepicker({ uiLibrary: 'bootstrap', modal: false, footer: false });
+         *     new GijgoTimePicker(document.getElementById('timepicker'), { uiLibrary: 'bootstrap', modal: false, footer: false });
          * </script>
          * @example Bootstrap.4 <!-- bootstrap4, timepicker -->
          * <input id="timepicker" width="276" />
          * <script>
-         *     $('#timepicker').timepicker({ uiLibrary: 'bootstrap4' });
+         *     new GijgoTimePicker(document.getElementById('timepicker'), { uiLibrary: 'bootstrap4' });
          * </script>
          */
         uiLibrary: 'materialdesign',
@@ -120,17 +120,17 @@ gj.timepicker.config = {
         /** The initial timepicker value.
          * @type String
          * @default undefined
-         * @example Javascript <!-- timepicker -->
+         * @example Javascript <!-- nojquery, timepicker -->
          * <input id="timepicker" width="312" />
          * <script>
-         *    $('#timepicker').timepicker({
+         *    new GijgoTimePicker(document.getElementById('timepicker'), {
          *        value: '13:42'
          *    });
          * </script>
-         * @example HTML <!-- timepicker -->
+         * @example HTML <!-- nojquery, timepicker -->
          * <input id="timepicker" width="312" value="13:42" />
          * <script>
-         *     $('#timepicker').timepicker();
+         *     new GijgoTimePicker(document.getElementById('timepicker'));
          * </script>
          */
         value: undefined,
@@ -138,15 +138,15 @@ gj.timepicker.config = {
         /** The timepicker mode. Tells the component to display the picker in ampm (12hr) format or 24hr format.
          * @type ampm|24hr
          * @default 'ampm'
-         * @example ampm <!-- timepicker -->
+         * @example ampm <!-- nojquery, timepicker -->
          * <input id="timepicker" width="312" />
          * <script>
-         *    $('#timepicker').timepicker({ mode: 'ampm' });
+         *    new GijgoTimePicker(document.getElementById('timepicker'), { mode: 'ampm' });
          * </script>
-         * @example 24hr <!-- timepicker -->
+         * @example 24hr <!-- nojquery, timepicker -->
          * <input id="timepicker" width="312" />
          * <script>
-         *     $('#timepicker').timepicker({ mode: '24hr' });
+         *     new GijgoTimePicker(document.getElementById('timepicker'), { mode: '24hr' });
          * </script>
          */
         mode: '24hr',
@@ -154,38 +154,38 @@ gj.timepicker.config = {
         /** The language that needs to be in use.
          * @type string
          * @default 'en-us'
-         * @example German <!-- timepicker -->
+         * @example German <!-- nojquery, timepicker -->
          * <input id="timepicker" width="276" />
          * <script>
-         *    $('#timepicker').timepicker({
+         *    new GijgoTimePicker(document.getElementById('timepicker'), {
          *        locale: 'de-de'
          *    });
          * </script>
-         * @example Bulgarian <!-- timepicker -->
+         * @example Bulgarian <!-- nojquery, timepicker -->
          * <input id="timepicker" width="276" />
          * <script>
-         *    $('#timepicker').timepicker({
+         *    new GijgoTimePicker(document.getElementById('timepicker'), {
          *        locale: 'bg-bg'
          *    });
          * </script>
-         * @example French <!-- timepicker -->
+         * @example French <!-- nojquery, timepicker -->
          * <input id="timepicker" width="276" />
          * <script>
-         *    $('#timepicker').timepicker({
+         *    new GijgoTimePicker(document.getElementById('timepicker'), {
          *        locale: 'fr-fr'
          *    });
          * </script>
-         * @example Brazil <!-- timepicker -->
+         * @example Brazil <!-- nojquery, timepicker -->
          * <input id="timepicker" width="276" />
          * <script>
-         *    $('#timepicker').timepicker({
+         *    new GijgoTimePicker(document.getElementById('timepicker'), {
          *        locale: 'pt-br'
          *    });
          * </script>
-         * @example Russian <!-- timepicker -->
+         * @example Russian <!-- nojquery, timepicker -->
          * <input id="timepicker" width="276" />
          * <script>
-         *    $('#timepicker').timepicker({
+         *    new GijgoTimePicker(document.getElementById('timepicker'), {
          *        locale: 'ru-ru'
          *    });
          * </script>
@@ -195,32 +195,32 @@ gj.timepicker.config = {
         /** The size of the timepicker input.
          * @type 'small'|'default'|'large'
          * @default 'default'
-         * @example Bootstrap.4 <!-- bootstrap4, timepicker -->
+         * @example Bootstrap.4 <!-- nojquery, bootstrap4, timepicker -->
          * <p><label for="timepicker-small">Small Size:</label> <input id="timepicker-small" width="220" value="15:20" /></p>
          * <p><label for="timepicker-default">Default Size:</label> <input id="timepicker-default" width="220" value="15:20" /></p>
          * <p><label for="timepicker-large">Large Size:</label> <input id="timepicker-large" width="220" value="15:20" /></p>
          * <script>
-         *     $('#timepicker-small').timepicker({ uiLibrary: 'bootstrap4', size: 'small' });
-         *     $('#timepicker-default').timepicker({ uiLibrary: 'bootstrap4', size: 'default' });
-         *     $('#timepicker-large').timepicker({ uiLibrary: 'bootstrap4', size: 'large' });
+         *     new GijgoTimePicker(document.getElementById('timepicker-small'), { uiLibrary: 'bootstrap4', size: 'small' });
+         *     new GijgoTimePicker(document.getElementById('timepicker-default'), { uiLibrary: 'bootstrap4', size: 'default' });
+         *     new GijgoTimePicker(document.getElementById('timepicker-large'), { uiLibrary: 'bootstrap4', size: 'large' });
          * </script>
-         * @example Bootstrap.3 <!-- bootstrap, timepicker -->
+         * @example Bootstrap.3 <!-- nojquery, bootstrap, timepicker -->
          * <p><label for="timepicker-small">Small Size:</label> <input id="timepicker-small" width="220" value="15:20" /></p>
          * <p><label for="timepicker-default">Default Size:</label> <input id="timepicker-default" width="220" value="15:20" /></p>
          * <p><label for="timepicker-large">Large Size:</label> <input id="timepicker-large" width="220" value="15:20" /></p>
          * <script>
-         *     $('#timepicker-small').timepicker({ uiLibrary: 'bootstrap', size: 'small' });
-         *     $('#timepicker-default').timepicker({ uiLibrary: 'bootstrap', size: 'default' });
-         *     $('#timepicker-large').timepicker({ uiLibrary: 'bootstrap', size: 'large' });
+         *     new GijgoTimePicker(document.getElementById('timepicker-small'), { uiLibrary: 'bootstrap', size: 'small' });
+         *     new GijgoTimePicker(document.getElementById('timepicker-default'), { uiLibrary: 'bootstrap', size: 'default' });
+         *     new GijgoTimePicker(document.getElementById('timepicker-large'), { uiLibrary: 'bootstrap', size: 'large' });
          * </script>
-         * @example Material.Design <!-- timepicker -->
+         * @example Material.Design <!-- nojquery, timepicker -->
          * <p><label for="timepicker-small">Small Size:</label> <input id="timepicker-small" width="220" value="15:20" /></p>
          * <p><label for="timepicker-default">Default Size:</label> <input id="timepicker-default" width="220" value="15:20" /></p>
          * <p><label for="timepicker-large">Large Size:</label> <input id="timepicker-large" width="220" value="15:20" /></p>
          * <script>
-         *     $('#timepicker-small').timepicker({ size: 'small' });
-         *     $('#timepicker-default').timepicker({ size: 'default' });
-         *     $('#timepicker-large').timepicker({ size: 'large' });
+         *     new GijgoTimePicker(document.getElementById('timepicker-small'), { size: 'small' });
+         *     new GijgoTimePicker(document.getElementById('timepicker-default'), { size: 'default' });
+         *     new GijgoTimePicker(document.getElementById('timepicker-large'), { size: 'large' });
          * </script>
          */
         size: 'default',
@@ -234,7 +234,7 @@ gj.timepicker.config = {
          *    new GijgoTimePicker(document.getElementById('picker'), { showOnFocus: true, showRightIcon: false });
          * </script>
          * @example False <!-- nojquery, timepicker -->
-         * <input id="datepicker" width="312" />
+         * <input id="picker" width="312" />
          * <script>
          *    new GijgoTimePicker(document.getElementById('picker'), { showOnFocus: false });
          * </script>
@@ -306,8 +306,8 @@ gj.timepicker.methods = {
     initMouse: function (body, input, picker, data) {
         //body = body.parentNode.replaceChild(body.cloneNode(true), body); // remove all event listeners
         body.addEventListener('mousedown', gj.timepicker.methods.mouseDownHandler(picker));
-        body.addEventListener('mousemove', gj.timepicker.methods.mouseMoveHandler(input, picker, data));
-        body.addEventListener('mouseup', gj.timepicker.methods.mouseUpHandler(input, picker, data));
+        body.addEventListener('mousemove', gj.timepicker.methods.mouseMoveHandler(input, picker));
+        body.addEventListener('mouseup', gj.timepicker.methods.mouseUpHandler(input, picker));
     },
 
     createPopup: function (picker) {
@@ -315,6 +315,7 @@ gj.timepicker.methods = {
             data = gijgoStorage.get(picker.element, 'gijgo'),
             clock = document.createElement('div'),
             hour = document.createElement('div'),
+            separator = document.createElement('span'),
             minute = document.createElement('div'),
             header = document.createElement('div'),
             mode = document.createElement('div'),
@@ -357,7 +358,8 @@ gj.timepicker.methods = {
                 gj.timepicker.methods.renderMinutes(picker.element, clock, data);
             });
             header.appendChild(hour);
-            header.innerHTML += ':';
+            separator.innerText = ':';
+            header.appendChild(separator);
             header.appendChild(minute);
 
             if (data.mode === 'ampm') {
@@ -448,7 +450,7 @@ gj.timepicker.methods = {
                 value = gj.core.formatDate(date, data.format, data.locale);
             picker.value(value);
             picker.close();
-        }
+        };
     },
 
     getPointerValue: function (x, y, mode) {
@@ -555,31 +557,33 @@ gj.timepicker.methods = {
     mouseDownHandler: function (picker) {
         return function (e) {
             picker.mouseMove = true;
-        }
+        };
     },
 
-    mouseMoveHandler: function (picker, clock, data) {
+    mouseMoveHandler: function (picker, clock) {
         return function (e) {
+            var data = gijgoStorage.get(picker.element, 'gijgo');
             if (picker.mouseMove) {
                 gj.timepicker.methods.updateArrow(e, picker, clock, data);
             }
-        }
+        };
     },
 
-    mouseUpHandler: function (picker, clock, data) {
+    mouseUpHandler: function (picker, clock) {
         return function (e) {
+            var data = gijgoStorage.get(picker.element, 'gijgo');
             gj.timepicker.methods.updateArrow(e, picker, clock, data);
             picker.mouseMove = false;
             if (!data.modal) {
                 clearTimeout(picker.timeout);
                 picker.element.focus();
             }
-            if (data.dialMode == 'hours') {
+            if (data.dialMode === 'hours') {
                 setTimeout(function () {
                     gj.timepicker.events.select(picker.element, 'hour');
                     gj.timepicker.methods.renderMinutes(picker, clock, data);
                 }, 1000);
-            } else if (data.dialMode == 'minutes') {
+            } else if (data.dialMode === 'minutes') {
                 if (data.footer !== true && data.autoClose !== false) {
                     gj.timepicker.methods.setTime(picker, clock)();
                 }
@@ -719,10 +723,10 @@ gj.timepicker.events = {
      *
      * @event change
      * @param {object} e - event data
-     * @example sample <!-- timepicker -->
-     * <input id="timepicker" width="312" />
+     * @example sample <!-- nojquery, timepicker -->
+     * <input id="picker" width="312" />
      * <script>
-     *     $('#timepicker').timepicker({
+     *     new GijgoTimePicker(document.getElementById('picker'), {
      *         change: function (e) {
      *             alert('Change is fired');
      *         }
@@ -739,10 +743,10 @@ gj.timepicker.events = {
      * @event select
      * @param {object} e - event data
      * @param {string} type - The type of the selection. The options are hour and minute.
-     * @example sample <!-- timepicker -->
-     * <input id="timepicker" width="312" />
+     * @example sample <!-- nojquery, timepicker -->
+     * <input id="picker" width="312" />
      * <script>
-     *     $('#timepicker').timepicker({
+     *     new GijgoTimePicker(document.getElementById('picker'), {
      *         modal: true,
      *         header: true,
      *         footer: true,
@@ -763,10 +767,10 @@ gj.timepicker.events = {
      * Event fires when the timepicker is opened.
      * @event open
      * @param {object} e - event data
-     * @example sample <!-- timepicker -->
-     * <input id="timepicker" width="312" />
+     * @example sample <!-- nojquery, timepicker -->
+     * <input id="picker" width="312" />
      * <script>
-     *     $('#timepicker').timepicker({
+     *     new GijgoTimePicker(document.getElementById('picker'), {
      *         open: function (e) {
      *             alert('open is fired.');
      *         }
@@ -781,10 +785,10 @@ gj.timepicker.events = {
      * Event fires when the timepicker is closed.
      * @event close
      * @param {object} e - event data
-     * @example sample <!-- timepicker -->
-     * <input id="timepicker" width="312" />
+     * @example sample <!-- nojquery, timepicker -->
+     * <input id="picker" width="312" />
      * <script>
-     *     $('#timepicker').timepicker({
+     *     new GijgoTimePicker(document.getElementById('picker'), {
      *         close: function (e) {
      *             alert('close is fired.');
      *         }
@@ -808,19 +812,19 @@ GijgoTimePicker = function (element, jsConfig) {
      * @method
      * @param {string} value - The value that needs to be selected.
      * @return string
-     * @example Get <!-- timepicker -->
-     * <button class="gj-button-md" onclick="alert($timepicker.value())">Get Value</button>
+     * @example Get <!-- nojquery, timepicker -->
+     * <button class="gj-button-md" onclick="alert(picker.value())">Get Value</button>
      * <hr/>
-     * <input id="timepicker" width="312" />
+     * <input id="picker" width="312" />
      * <script>
-     *     var $timepicker = $('#timepicker').timepicker();
+     *     var picker = new GijgoTimePicker(document.getElementById('picker'), );
      * </script>
-     * @example Set <!-- timepicker -->
-     * <button class="gj-button-md" onclick="$timepicker.value('11:00')">Set Value</button>
+     * @example Set <!-- nojquery, timepicker -->
+     * <button class="gj-button-md" onclick="picker.value('11:00')">Set Value</button>
      * <hr/>
-     * <input id="timepicker" width="312" />
+     * <input id="picker" width="312" />
      * <script>
-     *     var $timepicker = $('#timepicker').timepicker();
+     *     var picker = new GijgoTimePicker(document.getElementById('picker'), );
      * </script>
      */
     self.value = function (value) {
@@ -830,11 +834,11 @@ GijgoTimePicker = function (element, jsConfig) {
     /** Remove timepicker functionality from the element.
      * @method
      * @return jquery element
-     * @example sample <!-- timepicker -->
+     * @example sample <!-- nojquery, timepicker -->
      * <button class="gj-button-md" onclick="timepicker.destroy()">Destroy</button>
-     * <input id="timepicker" width="312" />
+     * <input id="picker" width="312" />
      * <script>
-     *     var timepicker = $('#timepicker').timepicker();
+     *     var timepicker = new GijgoTimePicker(document.getElementById('picker'), );
      * </script>
      */
     self.destroy = function () {
@@ -844,13 +848,13 @@ GijgoTimePicker = function (element, jsConfig) {
     /** Open the clock.
      * @method
      * @return timepicker
-     * @example Open.Close <!-- timepicker -->
-     * <button class="gj-button-md" onclick="$timepicker.open()">Open</button>
-     * <button class="gj-button-md" onclick="$timepicker.close()">Close</button>
+     * @example Open.Close <!-- nojquery, timepicker -->
+     * <button class="gj-button-md" onclick="picker.open()">Open</button>
+     * <button class="gj-button-md" onclick="picker.close()">Close</button>
      * <hr/>
-     * <input id="timepicker" width="312" />
+     * <input id="picker" width="312" />
      * <script>
-     *     var $timepicker = $('#timepicker').timepicker({ modal: false, header: false, footer: false, mode: '24hr' });
+     *     var picker = new GijgoTimePicker(document.getElementById('picker'), { modal: false, header: false, footer: false, mode: '24hr' });
      * </script>
      */
     self.open = function () {
@@ -860,13 +864,13 @@ GijgoTimePicker = function (element, jsConfig) {
     /** Close the clock.
      * @method
      * @return timepicker
-     * @example Open.Close <!-- timepicker -->
-     * <button class="gj-button-md" onclick="$timepicker.open()">Open</button>
-     * <button class="gj-button-md" onclick="$timepicker.close()">Close</button>
+     * @example Open.Close <!-- nojquery, timepicker -->
+     * <button class="gj-button-md" onclick="picker.open()">Open</button>
+     * <button class="gj-button-md" onclick="picker.close()">Close</button>
      * <hr/>
-     * <input id="timepicker" width="312" />
+     * <input id="picker" width="312" />
      * <script>
-     *     var $timepicker = $('#timepicker').timepicker({ modal: false, header: false, footer: false, mode: '24hr' });
+     *     var picker = new GijgoTimePicker(document.getElementById('picker'), { modal: false, header: false, footer: false, mode: '24hr' });
      * </script>
      */
     self.close = function () {

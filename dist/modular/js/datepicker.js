@@ -289,56 +289,60 @@ gj.datepicker.methods = {
     },
 
     renderHeader: function (picker, calendar, data, date) {
-        var header, date, year;
+        var header, dateEl, yearEl;
 
         if (data.header) {
             header = document.createElement('div');
             header.setAttribute('role', 'header');
 
-            year = document.createElement('div');
-            year.setAttribute('role', 'year');
+            yearEl = document.createElement('div');
+            yearEl.setAttribute('role', 'year');
 
-            year.addEventListener('click', function () {
+            yearEl.addEventListener('click', function () {
                 gj.datepicker.methods.renderDecade(picker, calendar, data);
-                year.classList.add('selected');
-                date.classList.remove('selected');
+                yearEl.classList.add('selected');
+                dateEl.classList.remove('selected');
             });
-            year.innerHTML = gj.core.formatDate(date, 'yyyy', data.locale);
-            header.appendChild(year);
+            yearEl.innerHTML = gj.core.formatDate(date, 'yyyy', data.locale);
+            header.appendChild(yearEl);
 
-            date = document.createElement('div');
-            date.setAttribute('role', 'date');
-            date.classList.add('selected');
-            date.addEventListener('click', function () {
+            dateEl = document.createElement('div');
+            dateEl.setAttribute('role', 'date');
+            dateEl.classList.add('selected');
+            dateEl.addEventListener('click', function () {
                 gj.datepicker.methods.renderMonth(picker, calendar, data);
-                date.classList.add('selected');
-                year.classList.remove('selected');
+                dateEl.classList.add('selected');
+                yearEl.classList.remove('selected');
             });
-            date.innerHTML = gj.core.formatDate(date, 'ddd, mmm dd', data.locale);
-            header.appendChild(date);
+            dateEl.innerHTML = gj.core.formatDate(date, 'ddd, mmm dd', data.locale);
+            header.appendChild(dateEl);
             calendar.appendChild(header);
         }
     },
 
     updateHeader: function (calendar, data, date) {
-        var year, date, hour, minute;
+        var yearEl, dateEl, hour, minute;
 
         if (data.header) {
-            year = calendar.querySelector('[role="header"] [role="year"]');
-            year.classList.remove('selected');
-            year.innerHTML = gj.core.formatDate(date, 'yyyy', data.locale);
+            yearEl = calendar.querySelector('[role="header"] [role="year"]');
+            yearEl.classList.remove('selected');
+            yearEl.innerHTML = gj.core.formatDate(date, 'yyyy', data.locale);
 
-            date = calendar.querySelector('[role="header"] [role="date"]');
-            date.classList.add('selected');
-            date.innerHTML = gj.core.formatDate(date, 'ddd, mmm dd', data.locale);
+            dateEl = calendar.querySelector('[role="header"] [role="date"]');
+            dateEl.classList.add('selected');
+            dateEl.innerHTML = gj.core.formatDate(date, 'ddd, mmm dd', data.locale);
 
             hour = calendar.querySelector('[role="header"] [role="hour"]');
-            hour.classList.remove('selected');
-            hour.innerHTML = gj.core.formatDate(date, 'HH', data.locale);
+            if (hour) {
+                hour.classList.remove('selected');
+                hour.innerHTML = gj.core.formatDate(date, 'HH', data.locale);
+            }
 
             minute = calendar.querySelector('[role="header"] [role="minute"]');
-            minute.classList.remove('selected');
-            minute.innerHTML = gj.core.formatDate(date, 'MM', data.locale);
+            if (minute) {
+                minute.classList.remove('selected');
+                minute.innerHTML = gj.core.formatDate(date, 'MM', data.locale);
+            }
         }
     },
 
@@ -772,9 +776,9 @@ gj.datepicker.methods = {
                     gj.datepicker.methods.renderCentury(picker, calendar, data);
                     break;
             }
-            
+
             return false;
-        }
+        };
     },
 
     changePeriod: function (picker, data) {
@@ -792,7 +796,7 @@ gj.datepicker.methods = {
                     gj.datepicker.methods.renderCentury(picker, calendar, data);
                     break;
             }
-        }
+        };
     },
 
     dayClickHandler: function (picker, calendar, data, date) {
@@ -902,7 +906,7 @@ gj.datepicker.methods = {
     },
 
     close: function (picker) {
-        var calendar = document.body.querySelector('[role="calendar"][guid="' + picker.element.getAttribute('data-guid') + '"]');
+        var calendar = document.body.querySelector('[role="picker"][guid="' + picker.element.getAttribute('data-guid') + '"]');
         if (window.getComputedStyle(calendar).display !== 'none') {
             calendar.style.display = 'none';
             if (calendar.parentElement.getAttribute('role') === 'modal') {
@@ -914,13 +918,13 @@ gj.datepicker.methods = {
 
     createKeyDownHandler: function (picker, calendar, data) {
         return function (e) {
-            var e = e || window.event, activeCell;
-
+            var activeCell;
+            e = e || window.event;
             if (window.getComputedStyle(calendar).display !== 'none') {
                 activeCell = gj.datepicker.methods.getActiveCell(calendar);
                 gj.datepicker.methods.activateNextElement(picker, calendar, data, e.keyCode, activeCell);
             }
-        }
+        };
     },
 
     activateNextElement: function (picker, calendar, data, keyCode, cell) {
