@@ -54,13 +54,16 @@ gj.colorpicker.methods = {
     initialize: function ($colorpicker) {
     },
 
-    createPicker: function ($input, data) {
-        var $picker = $('<div role="picker" />').addClass(data.style.picker).attr('guid', $input.attr('data-guid'));
+    createPicker: function (input, data) {
+        var popup = document.createElement('div');
+        popup.setAttribute('role', 'popup');
+        gj.core.addClass(popup, data.style.picker);
+        popup.setAttribute('guid', input.getAttribute('data-guid'));
 
-        $picker.html('test');
+        popup.html('test');
 
-        $picker.hide();
-        $('body').append($picker);
+        popup.hide();
+        $('body').append(popup);
 
         return $picker;
     },
@@ -96,9 +99,11 @@ gj.colorpicker.events = {
     }
 };
 
-gj.colorpicker.widget = function ($element, jsConfig) {
+GijgoColorPicker = function (element, jsConfig) {
     var self = this,
-        methods = gj.colorpicker.methods;
+        methods = gj.datepicker.methods;
+
+    self.element = element;
 
     /** Gets or sets the value of the colorpicker.     */    self.value = function (value) {
         return methods.value(this, value);
@@ -115,32 +120,34 @@ gj.colorpicker.widget = function ($element, jsConfig) {
     /** Close the popup element with the color selector.     */    self.close = function () {
         return gj.picker.widget.prototype.close.call(this, 'colorpicker');
     };
-
-    $.extend($element, self);
-    if ('true' !== $element.attr('data-colorpicker')) {
-        methods.init.call($element, jsConfig);
+    
+    if ('true' !== element.getAttribute('data-colorpicker')) {
+        methods.init.call(self, jsConfig);
     }
 
-    return $element;
+    return self;
 };
 
-gj.colorpicker.widget.prototype = new gj.picker.widget();
-gj.colorpicker.widget.constructor = gj.colorpicker.widget;
+GijgoColorPicker.prototype = new gj.picker.widget();
+GijgoColorPicker.constructor = gj.colorpicker.widget;
 
-(function ($) {
-    $.fn.colorpicker = function (method) {
-        var $widget;
-        if (this && this.length) {
-            if (typeof method === 'object' || !method) {
-                return new gj.colorpicker.widget(this, method);
-            } else {
-                $widget = new gj.colorpicker.widget(this, null);
-                if ($widget[method]) {
-                    return $widget[method].apply(this, Array.prototype.slice.call(arguments, 1));
+
+if (typeof (jQuery) !== "undefined") {
+    (function ($) {
+        $.fn.colorpicker = function (method) {
+            var widget;
+            if (this && this.length) {
+                if (typeof method === 'object' || !method) {
+                    return new GijgoColorPicker(this, method);
                 } else {
-                    throw 'Method ' + method + ' does not exist.';
+                    widget = new GijgoColorPicker(this, null);
+                    if (widget[method]) {
+                        return widget[method].apply(this, Array.prototype.slice.call(arguments, 1));
+                    } else {
+                        throw 'Method ' + method + ' does not exist.';
+                    }
                 }
             }
-        }
-    };
-})(jQuery);
+        };
+    })(jQuery);
+}

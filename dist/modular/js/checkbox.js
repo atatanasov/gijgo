@@ -61,51 +61,47 @@ gj.checkbox.config = {
 
 gj.checkbox.methods = {
     init: function (jsConfig) {
-        var $chkb = this;
-
-        gj.widget.prototype.init.call(this, jsConfig, 'checkbox');
-        $chkb.attr('data-checkbox', 'true');
-
-        gj.checkbox.methods.initialize($chkb);
-
-        return $chkb;
+        gj.widget.prototype.initJS.call(this, jsConfig, 'checkbox');
+        this.element.setAttribute('data-checkbox', 'true');
+        gj.checkbox.methods.initialize(this, gijgoStorage.get(this.element, 'gijgo'));
+        return this;
     },
 
-    initialize: function ($chkb) {
-        var data = $chkb.data(), $wrapper, $span;
-
-        if (data.style.wrapperCssClass) {
-            $wrapper = $('<label class="' + data.style.wrapperCssClass + ' ' + data.style.iconsCssClass + '"></label>');
-            if ($chkb.attr('id')) {
-                $wrapper.attr('for', $chkb.attr('id'));
-            }
-            $chkb.wrap($wrapper);
-            $span = $('<span />');
-            if (data.style.spanCssClass) {
-                $span.addClass(data.style.spanCssClass);
-            }
-            $chkb.parent().append($span);
+    initialize: function (chkb, data) {
+        var wrapper, span;
+        wrapper = document.createElement('label');
+        wrapper.classList.add(data.style.wrapperCssClass);
+        wrapper.classList.add(data.style.iconsCssClass);
+        if (chkb.element.getAttribute('id')) {
+            wrapper.setAttribute('for', chkb.element.getAttribute('id'));
+        }
+        chkb.element.parentNode.insertBefore(wrapper, chkb.element);
+        wrapper.appendChild(chkb.element);
+            
+        span = document.createElement('span');
+        if (data.style.spanCssClass) {
+            span.classList.add(data.style.spanCssClass);
         }
     },
 
-    state: function ($chkb, value) {
+    state: function (chkb, value) {
         if (value) {
             if ('checked' === value) {
-                $chkb.prop('indeterminate', false);
-                $chkb.prop('checked', true);
+                chkb.prop('indeterminate', false);
+                chkb.prop('checked', true);
             } else if ('unchecked' === value) {
-                $chkb.prop('indeterminate', false);
-                $chkb.prop('checked', false);
+                chkb.prop('indeterminate', false);
+                chkb.prop('checked', false);
             } else if ('indeterminate' === value) {
-                $chkb.prop('checked', true);
-                $chkb.prop('indeterminate', true);
+                chkb.prop('checked', true);
+                chkb.prop('indeterminate', true);
             }
-            gj.checkbox.events.change($chkb, value);
-            return $chkb;
+            gj.checkbox.events.change(chkb, value);
+            return chkb;
         } else {
-            if ($chkb.prop('indeterminate')) {
+            if (chkb.prop('indeterminate')) {
                 value = 'indeterminate';
-            } else if ($chkb.prop('checked')) {
+            } else if (chkb.prop('checked')) {
                 value = 'checked';
             } else {
                 value = 'unchecked';
@@ -114,40 +110,46 @@ gj.checkbox.methods = {
         }
     },
 
-    toggle: function ($chkb) {
-        if ($chkb.state() == 'checked') {
-            $chkb.state('unchecked');
+    toggle: function (chkb) {
+        if (chkb.state() === 'checked') {
+            chkb.state('unchecked');
         } else {
-            $chkb.state('checked');
+            chkb.state('checked');
         }
-        return $chkb;
+        return chkb;
     },
 
-    destroy: function ($chkb) {
-        if ($chkb.attr('data-checkbox') === 'true') {
-            $chkb.removeData();
-            $chkb.removeAttr('data-guid');
-            $chkb.removeAttr('data-checkbox');
-            $chkb.off();
-            $chkb.next('span').remove();
-            $chkb.unwrap();
+    destroy: function (chkb) {
+        var data = gijgoStorage.get(chkb.element, 'gijgo'),
+            parent = picker.element.parentElement,
+            calendar = document.body.querySelector('[role="picker"][guid="' + picker.element.getAttribute('data-guid') + '"]');
+        if (data) {
+            gijgoStorage.remove(chkb.element, 'gijgo');
+            chkb.element.removeAttribute('data-type');
+            chkb.element.removeAttribute('data-guid');
+            chkb.element.removeAttribute('data-checkbox');
+            chkb.element.removeAttribute('class');
+            chkb.next('span').remove();
+            chkb.unwrap();
         }
-        return $chkb;
+        return chkb;
     }
 };
 
 gj.checkbox.events = {
     /**
      * Triggered when the state of the checkbox is changed
-     *     */    change: function ($chkb, state) {
-        return $chkb.triggerHandler('change', [state]);
+     *     */    change: function (el, state) {
+        return el.dispatchEvent(new CustomEvent('change', { 'state': state }));
     }
 };
 
 
-gj.checkbox.widget = function ($element, jsConfig) {
+GijgoCheckBox = function (element, jsConfig) {
     var self = this,
         methods = gj.checkbox.methods;
+
+    self.element = element;
 
     /** Toogle the state of the checkbox.     */    self.toggle = function () {
         return methods.toggle(this);
@@ -161,31 +163,32 @@ gj.checkbox.widget = function ($element, jsConfig) {
         return methods.destroy(this);
     };
 
-    $.extend($element, self);
-    if ('true' !== $element.attr('data-checkbox')) {
-        methods.init.call($element, jsConfig);
+    if ('true' !== element.getAttribute('data-checkbox')) {
+        methods.init.call(self, jsConfig);
     }
 
-    return $element;
+    return self;
 };
 
-gj.checkbox.widget.prototype = new gj.widget();
-gj.checkbox.widget.constructor = gj.checkbox.widget;
+GijgoCheckBox.prototype = new gj.widget();
+GijgoCheckBox.constructor = GijgoCheckBox;
 
-(function ($) {
-    $.fn.checkbox = function (method) {
-        var $widget;
-        if (this && this.length) {
-            if (typeof method === 'object' || !method) {
-                return new gj.checkbox.widget(this, method);
-            } else {
-                $widget = new gj.checkbox.widget(this, null);
-                if ($widget[method]) {
-                    return $widget[method].apply(this, Array.prototype.slice.call(arguments, 1));
+if (typeof (jQuery) !== "undefined") {
+    (function ($) {
+        $.fn.checkbox = function (method) {
+            var widget;
+            if (this && this.length) {
+                if (typeof method === 'object' || !method) {
+                    return new GijgoCheckBox(this, method);
                 } else {
-                    throw 'Method ' + method + ' does not exist.';
+                    widget = new GijgoCheckBox(this, null);
+                    if (widget[method]) {
+                        return widget[method].apply(this, Array.prototype.slice.call(arguments, 1));
+                    } else {
+                        throw 'Method ' + method + ' does not exist.';
+                    }
                 }
             }
-        }
-    };
-})(jQuery);
+        };
+    })(jQuery);
+}

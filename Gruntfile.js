@@ -380,18 +380,18 @@ var writer = {
         if (libs) {
             names = libs.replace('<!--', '').replace('-->', '').trim().split(',');
             result += '  <title>Example</title>\r\n';
-            if (names.indexOf(' nojquery') == -1 && names.indexOf(' nojquery ') == -1 && names.indexOf('nojquery ') == -1 && names.indexOf('nojquery') == -1) {
-                if (local) {
-                    result += '  <script src="../../dist/libraries/jquery/jquery.js"></script>\r\n';
-                } else {
-                    result += '  <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous" ></script >\r\n';
-                }
-            }
             result += '  <script src="../../dist/modular/js/core.js" type="text/javascript"></script>\r\n';
             result += '  <link href="../../dist/modular/css/core.css" rel="stylesheet" type="text/css">\r\n';
             for (i = 0; i < names.length; i++) {
                 //include css files
                 switch (names[i].trim()) {
+                    case 'jquery':
+                        if (local) {
+                            result += '  <script src="../../dist/libraries/jquery/jquery.js"></script>\r\n';
+                        } else {
+                            result += '  <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous" ></script >\r\n';
+                        }
+                        break;
                     case 'bootstrap':
                         if (local) {
                             result += '  <link href="../../dist/libraries/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">\r\n';

@@ -4,7 +4,6 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Example</title>
-  <script src="../../dist/libraries/jquery/jquery.js"></script>
   <script src="../../dist/modular/js/core.js" type="text/javascript"></script>
   <link href="../../dist/modular/css/core.css" rel="stylesheet" type="text/css">
   <link href="../../dist/libraries/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
@@ -14,7 +13,7 @@
 <body style="padding: 8px;">
  <textarea id="editor"></textarea>
  <script>
-     $('#editor').editor({
+     new GijgoEditor(document.getElementById('editor'), {
          uiLibrary: 'bootstrap'
      });
  </script>

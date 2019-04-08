@@ -700,9 +700,11 @@ gj.tree.methods = {
         return result;
     }
 }
-/**  */gj.tree.widget = function ($element, jsConfig) {
+/**  */GijgoTree = function (element, jsConfig) {
     var self = this,
-        methods = gj.tree.methods;
+        methods = gj.datepicker.methods;
+
+    self.element = element;
 
     /**
      * Reload the tree.     */    self.reload = function (params) {
@@ -836,34 +838,35 @@ gj.tree.methods = {
         return methods.disableAll(this);
     };
 
-    $.extend($element, self);
-    if ('tree' !== $element.attr('data-type')) {
-        methods.init.call($element, jsConfig);
+    if ('tree' !== element.attr('data-type')) {
+        methods.init.call(self, jsConfig);
     }
 
-    return $element;
+    return self;
 };
 
-gj.tree.widget.prototype = new gj.widget();
-gj.tree.widget.constructor = gj.tree.widget;
+GijgoTree.prototype = new gj.widget();
+GijgoTree.constructor = gj.tree.widget;
 
-(function ($) {
-    $.fn.tree = function (method) {
-        var $widget;
-        if (this && this.length) {
-            if (typeof method === 'object' || !method) {
-                return new gj.tree.widget(this, method);
-            } else {
-                $widget = new gj.tree.widget(this, null);
-                if ($widget[method]) {
-                    return $widget[method].apply(this, Array.prototype.slice.call(arguments, 1));
+if (typeof (jQuery) !== "undefined") {
+    (function ($) {
+        $.fn.tree = function (method) {
+            var widget;
+            if (this && this.length) {
+                if (typeof method === 'object' || !method) {
+                    return new GijgoTree(this, method);
                 } else {
-                    throw 'Method ' + method + ' does not exist.';
+                    widget = new GijgoTree(this, null);
+                    if (widget[method]) {
+                        return widget[method].apply(this, Array.prototype.slice.call(arguments, 1));
+                    } else {
+                        throw 'Method ' + method + ' does not exist.';
+                    }
                 }
             }
-        }
-    };
-})(jQuery);
+        };
+    })(jQuery);
+}
 /**  */gj.tree.plugins.checkboxes = {
     config: {
         base: {

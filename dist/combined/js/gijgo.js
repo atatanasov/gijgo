@@ -1640,7 +1640,7 @@ gj.dialog.events = {
 gj.dialog.methods = {
 
     init: function (jsConfig) {
-        gj.widget.prototype.init.call(this, jsConfig, 'dialog');
+        gj.widget.prototype.initJS.call(this, jsConfig, 'dialog');
 
         gj.dialog.methods.localization(this);
         gj.dialog.methods.initialize(this);
@@ -1648,72 +1648,75 @@ gj.dialog.methods = {
         return this;
     },
 
-    localization: function($dialog) {
-        var data = $dialog.data();
-        if (typeof (data.title) === 'undefined') {
+    localization: function(dialog) {
+        var data = gijgoStorage.get(dialog.element, 'gijgo');
+        if (typeof data.title === 'undefined') {
             data.title = gj.dialog.messages[data.locale].DefaultTitle;
         }
     },
 
     getHTMLConfig: function () {
         var result = gj.widget.prototype.getHTMLConfig.call(this),
-            attrs = this[0].attributes;
+            attrs = this.attributes;
         if (attrs['title']) {
             result.title = attrs['title'].value;
         }
         return result;
     },
 
-    initialize: function ($dialog) {
-        var data = $dialog.data(),
-            $header, $body, $footer;
+    initialize: function (dialog) {
+        var data, header, body, footer;
+        data = gijgoStorage.get(dialog.element, 'gijgo');
 
-        $dialog.addClass(data.style.content);
+        gj.core.addClass(dialog.element, data.style.content);
 
-        gj.dialog.methods.setSize($dialog);
+        gj.dialog.methods.setSize(dialog.element, data);
 
         if (data.closeOnEscape) {
-            $(document).keyup(function (e) {
+            document.addEventListener('keyup', function (e) {
                 if (e.keyCode === 27) {
-                    $dialog.close();
+                    dialog.close();
                 }
             });
         }
 
-        $body = $dialog.children('div[data-role="body"]');
-        if ($body.length === 0) {
-            $body = $('<div data-role="body"/>').addClass(data.style.body);
-            $dialog.wrapInner($body);
-        } else {
-            $body.addClass(data.style.body);
+        body = dialog.element.querySelector('div[data-role="body"]');
+        if (!body) {
+            body = document.createElement('div');
+            body.setAttribute('role', 'body');
+            dialog.element.addChild(body);
+        }
+        gj.core.addClasses(body, data.style.body);
+
+        header = gj.dialog.methods.renderHeader(dialog, data);
+
+        footer = dialog.element.querySelector('div[data-role="footer"]');
+        if (footer) {
+            gj.core.addClasses(footer, data.style.footer);
         }
 
-        $header = gj.dialog.methods.renderHeader($dialog);
-
-        $footer = $dialog.children('div[data-role="footer"]').addClass(data.style.footer);
-
-        $dialog.find('[data-role="close"]').on('click', function () {
-            $dialog.close();
+        dialog.querySelector('[data-role="close"]').addEventListener('click', function () {
+            dialog.close();
         });
 
         if (gj.draggable) {
             if (data.draggable) {
-                gj.dialog.methods.draggable($dialog, $header);
+                gj.dialog.methods.draggable(dialog, header);
             }
             if (data.resizable) {
-                gj.dialog.methods.resizable($dialog);
+                gj.dialog.methods.resizable(dialog);
             }
         }
 
         if (data.scrollable && data.height) {
-            $dialog.addClass('gj-dialog-scrollable');
-            $dialog.on('opened', function () {
-                var $body = $dialog.children('div[data-role="body"]');
-                $body.css('height', data.height - $header.outerHeight() - ($footer.length ? $footer.outerHeight() : 0));
+            dialog.element.classList.add('gj-dialog-scrollable');
+            dialog.element.addEventListener('opened', function () {
+                var body = dialog.element.querySelector('div[data-role="body"]');
+                body.style.height = (data.height - $header.outerHeight() - ($footer.length ? $footer.outerHeight() : 0)) + 'px';
             });            
         }
 
-        gj.core.center($dialog[0]);
+        gj.core.center(dialog.element);
 
         if (data.modal) {
             $dialog.wrapAll('<div data-role="modal" class="' + data.style.modal + '"/>');
@@ -1724,41 +1727,44 @@ gj.dialog.methods = {
         }
     },
 
-    setSize: function ($dialog) {
-        var data = $dialog.data();
+    setSize: function (dialog, data) {
         if (data.width) {
-            $dialog.css("width", data.width);
+            dialog.element.width = data.width + 'px';
         }
         if (data.height) {
-            $dialog.css("height", data.height);
+            dialog.element.height = data.height + 'px';
         }
     },
 
-    renderHeader: function ($dialog) {
-        var $header, $title, $closeButton, data = $dialog.data();
-        $header = $dialog.children('div[data-role="header"]');
-        if ($header.length === 0) {
-            $header = $('<div data-role="header" />');
-            $dialog.prepend($header);
+    renderHeader: function (dialog, data) {
+        var header, title, closeButton;
+        header = dialog.element.querySelector('div[data-role="header"]');
+        if (!header) {
+            header = document.createElement('div');
+            header.setAttribute('role', 'header');
+            dialog.element.parentElement.insertBefore(header, dialog.element);
         }
-        $header.addClass(data.style.header);
+        gj.core.addClasses(header, data.style.header);
 
-        $title = $header.find('[data-role="title"]');
-        if ($title.length === 0) {
-            $title = $('<h4 data-role="title">' + data.title + '</h4>');
-            $header.append($title);
+        title = header.querySelector('[data-role="title"]');
+        if (!title) {
+            title = document.createElement('h4');
+            title.setAttribute('role', 'title');
+            title.innerHTML = data.title;
+            header.appendChild(title);
         }
-        $title.addClass(data.style.headerTitle);
+        gj.core.addClasses(title, data.style.headerTitle);
 
-        $closeButton = $header.find('[data-role="close"]');
-        if ($closeButton.length === 0 && data.closeButtonInHeader) {
+        closeButton = header.querySelector('[data-role="close"]');
+        if (!closeButton && data.closeButtonInHeader) {
+            closeButton = document.createElement('button');
             $closeButton = $('<button type="button" data-role="close" title="' + gj.dialog.messages[data.locale].Close + '"><span>×</span></button>');
             $closeButton.addClass(data.style.headerCloseButton);
             $header.append($closeButton);
-        } else if ($closeButton.length > 0 && data.closeButtonInHeader === false) {
-            $closeButton.hide();
+        } else if (closeButton && data.closeButtonInHeader === false) {
+            closeButton.style.display = 'node';
         } else {
-            $closeButton.addClass(data.style.headerCloseButton);
+            closeButton.classList.add(data.style.headerCloseButton);
         }
 
         return $header;
@@ -1929,9 +1935,11 @@ gj.dialog.methods = {
   * @widget Dialog 
   * @plugin Base
   */
-gj.dialog.widget = function ($element, jsConfig) {
+GijgoDialog = function (element, jsConfig) {
     var self = this,
-        methods = gj.dialog.methods;
+        methods = gj.datepicker.methods;
+
+    self.element = element;
 
     /**
      * Opens the dialog.
@@ -1958,7 +1966,7 @@ gj.dialog.widget = function ($element, jsConfig) {
      */
     self.open = function (title) {
         return methods.open(this, title);
-    }
+    };
 
     /**
      * Close the dialog.
@@ -1975,7 +1983,7 @@ gj.dialog.widget = function ($element, jsConfig) {
      */
     self.close = function () {
         return methods.close(this);
-    }
+    };
 
     /**
      * Check if the dialog is currently open.
@@ -1992,7 +2000,7 @@ gj.dialog.widget = function ($element, jsConfig) {
      */
     self.isOpen = function () {
         return methods.isOpen(this);
-    }
+    };
 
     /**
      * Gets or set the content of a dialog. Supports chaining when used as a setter.
@@ -2009,7 +2017,7 @@ gj.dialog.widget = function ($element, jsConfig) {
      */
     self.content = function (content) {
         return methods.content(this, content);
-    }
+    };
 
     /**
      * Destroy the dialog.
@@ -2043,38 +2051,40 @@ gj.dialog.widget = function ($element, jsConfig) {
      */
     self.destroy = function (keepHtml) {
         return methods.destroy(this, keepHtml);
+    };
+
+    if ('dialog' !== element.getAttribute('data-type')) {
+        methods.init.call(self, jsConfig);
     }
 
-    $.extend($element, self);
-    if ('dialog' !== $element.attr('data-type')) {
-        methods.init.call($element, jsConfig);
-    }
-
-    return $element;
+    return self;
 };
 
-gj.dialog.widget.prototype = new gj.widget();
-gj.dialog.widget.constructor = gj.dialog.widget;
+GijgoDialog.prototype = new gj.widget();
+GijgoDialog.constructor = gj.dialog.widget;
 
-gj.dialog.widget.prototype.getHTMLConfig = gj.dialog.methods.getHTMLConfig;
+GijgoDialog.prototype.getHTMLConfig = gj.dialog.methods.getHTMLConfig;
 
-(function ($) {
-    $.fn.dialog = function (method) {
-        var $widget;
-        if (this && this.length) {
-            if (typeof method === 'object' || !method) {
-                return new gj.dialog.widget(this, method);
-            } else {
-                $widget = new gj.dialog.widget(this, null);
-                if ($widget[method]) {
-                    return $widget[method].apply(this, Array.prototype.slice.call(arguments, 1));
+
+if (typeof (jQuery) !== "undefined") {
+    (function ($) {
+        $.fn.dialog = function (method) {
+            var widget;
+            if (this && this.length) {
+                if (typeof method === 'object' || !method) {
+                    return new GijgoDialog(this, method);
                 } else {
-                    throw 'Method ' + method + ' does not exist.';
+                    widget = new GijgoDialog(this, null);
+                    if (widget[method]) {
+                        return widget[method].apply(this, Array.prototype.slice.call(arguments, 1));
+                    } else {
+                        throw 'Method ' + method + ' does not exist.';
+                    }
                 }
             }
-        }
-    };
-})(jQuery);
+        };
+    })(jQuery);
+}
 gj.dialog.messages['en-us'] = {
     Close: 'Close',
     DefaultTitle: 'Dialog'
@@ -5163,9 +5173,11 @@ gj.grid.methods = {
   * @widget Grid
   * @plugin Base
   */
-gj.grid.widget = function ($grid, jsConfig) {
+GijgoGrid = function (element, jsConfig) {
     var self = this,
-        methods = gj.grid.methods;
+        methods = gj.datepicker.methods;
+
+    self.element = element;
 
     /**
      * Reload the data in the grid from a data source.
@@ -5775,37 +5787,39 @@ gj.grid.widget = function ($grid, jsConfig) {
         return methods.removeRow(this, id);
     };
 
-    $.extend($grid, self);
-    if ('grid' !== $grid.attr('data-type')) {
-        methods.init.call($grid, jsConfig);
+    if ('grid' !== element.attr('data-type')) {
+        methods.init.call(self, jsConfig);
     }
 
-    return $grid;
-}
+    return self;
+};
 
-gj.grid.widget.prototype = new gj.widget();
-gj.grid.widget.constructor = gj.grid.widget;
+GijgoGrid.prototype = new gj.widget();
+GijgoGrid.constructor = gj.grid.widget;
 
-gj.grid.widget.prototype.getConfig = gj.grid.methods.getConfig;
-gj.grid.widget.prototype.getHTMLConfig = gj.grid.methods.getHTMLConfig;
+GijgoGrid.prototype.getConfig = gj.grid.methods.getConfig;
+GijgoGrid.prototype.getHTMLConfig = gj.grid.methods.getHTMLConfig;
 
-(function ($) {
-    $.fn.grid = function (method) {
-        var $widget;
-        if (this && this.length) {
-            if (typeof method === 'object' || !method) {
-                return new gj.grid.widget(this, method);
-            } else {
-                $widget = new gj.grid.widget(this, null);
-                if ($widget[method]) {
-                    return $widget[method].apply(this, Array.prototype.slice.call(arguments, 1));
+
+if (typeof (jQuery) !== "undefined") {
+    (function ($) {
+        $.fn.grid = function (method) {
+            var widget;
+            if (this && this.length) {
+                if (typeof method === 'object' || !method) {
+                    return new GijgoGrid(this, method);
                 } else {
-                    throw 'Method ' + method + ' does not exist.';
+                    widget = new GijgoGrid(this, null);
+                    if (widget[method]) {
+                        return widget[method].apply(this, Array.prototype.slice.call(arguments, 1));
+                    } else {
+                        throw 'Method ' + method + ' does not exist.';
+                    }
                 }
             }
-        }
-    };
-})(jQuery);
+        };
+    })(jQuery);
+}
 
 /**
  * @widget Grid
@@ -10912,9 +10926,11 @@ gj.tree.methods = {
   * @widget Tree
   * @plugin Base
   */
-gj.tree.widget = function ($element, jsConfig) {
+GijgoTree = function (element, jsConfig) {
     var self = this,
-        methods = gj.tree.methods;
+        methods = gj.datepicker.methods;
+
+    self.element = element;
 
     /**
      * Reload the tree.
@@ -11658,34 +11674,35 @@ gj.tree.widget = function ($element, jsConfig) {
         return methods.disableAll(this);
     };
 
-    $.extend($element, self);
-    if ('tree' !== $element.attr('data-type')) {
-        methods.init.call($element, jsConfig);
+    if ('tree' !== element.attr('data-type')) {
+        methods.init.call(self, jsConfig);
     }
 
-    return $element;
+    return self;
 };
 
-gj.tree.widget.prototype = new gj.widget();
-gj.tree.widget.constructor = gj.tree.widget;
+GijgoTree.prototype = new gj.widget();
+GijgoTree.constructor = gj.tree.widget;
 
-(function ($) {
-    $.fn.tree = function (method) {
-        var $widget;
-        if (this && this.length) {
-            if (typeof method === 'object' || !method) {
-                return new gj.tree.widget(this, method);
-            } else {
-                $widget = new gj.tree.widget(this, null);
-                if ($widget[method]) {
-                    return $widget[method].apply(this, Array.prototype.slice.call(arguments, 1));
+if (typeof (jQuery) !== "undefined") {
+    (function ($) {
+        $.fn.tree = function (method) {
+            var widget;
+            if (this && this.length) {
+                if (typeof method === 'object' || !method) {
+                    return new GijgoTree(this, method);
                 } else {
-                    throw 'Method ' + method + ' does not exist.';
+                    widget = new GijgoTree(this, null);
+                    if (widget[method]) {
+                        return widget[method].apply(this, Array.prototype.slice.call(arguments, 1));
+                    } else {
+                        throw 'Method ' + method + ' does not exist.';
+                    }
                 }
             }
-        }
-    };
-})(jQuery);
+        };
+    })(jQuery);
+}
 /** 
  * @widget Tree 
  * @plugin Checkboxes
@@ -12501,41 +12518,41 @@ gj.checkbox.config = {
          * @default 'materialdesign'
          * @example Material.Design <!-- checkbox  -->
          * <input type="checkbox" id="checkbox"/><br/><br/>
-         * <button onclick="$chkb.state('checked')" class="gj-button-md">Checked</button>
-         * <button onclick="$chkb.state('unchecked')" class="gj-button-md">Unchecked</button>
-         * <button onclick="$chkb.state('indeterminate')" class="gj-button-md">Indeterminate</button>
-         * <button onclick="$chkb.prop('disabled', false)" class="gj-button-md">Enable</button>
-         * <button onclick="$chkb.prop('disabled', true)" class="gj-button-md">Disable</button>
+         * <button onclick="chkb.state('checked')" class="gj-button-md">Checked</button>
+         * <button onclick="chkb.state('unchecked')" class="gj-button-md">Unchecked</button>
+         * <button onclick="chkb.state('indeterminate')" class="gj-button-md">Indeterminate</button>
+         * <button onclick="chkb.prop('disabled', false)" class="gj-button-md">Enable</button>
+         * <button onclick="chkb.prop('disabled', true)" class="gj-button-md">Disable</button>
          * <script>
-         *     var $chkb = $('#checkbox').checkbox({
+         *     var chkb = new GijgoCheckBox(document.getElementById('checkbox'), {
          *         uiLibrary: 'materialdesign'
          *     });
          * </script>
          * @example Bootstrap.3 <!-- bootstrap, checkbox -->
          * <div class="container-fluid" style="margin-top:10px">
          *     <input type="checkbox" id="checkbox"/><br/><br/>
-         *     <button onclick="$chkb.state('checked')" class="btn btn-default">Checked</button>
-         *     <button onclick="$chkb.state('unchecked')" class="btn btn-default">Unchecked</button>
-         *     <button onclick="$chkb.state('indeterminate')" class="btn btn-default">Indeterminate</button>
-         *     <button onclick="$chkb.prop('disabled', false)" class="btn btn-default">Enable</button>
-         *     <button onclick="$chkb.prop('disabled', true)" class="btn btn-default">Disable</button>
+         *     <button onclick="chkb.state('checked')" class="btn btn-default">Checked</button>
+         *     <button onclick="chkb.state('unchecked')" class="btn btn-default">Unchecked</button>
+         *     <button onclick="chkb.state('indeterminate')" class="btn btn-default">Indeterminate</button>
+         *     <button onclick="chkb.prop('disabled', false)" class="btn btn-default">Enable</button>
+         *     <button onclick="chkb.prop('disabled', true)" class="btn btn-default">Disable</button>
          * </div>
          * <script>
-         *     var $chkb = $('#checkbox').checkbox({
+         *     var chkb = new GijgoCheckBox(document.getElementById('checkbox'), {
          *         uiLibrary: 'bootstrap'
          *     });
          * </script>
          * @example Bootstrap.4 <!-- bootstrap4, checkbox -->
          * <div class="container-fluid" style="margin-top:10px">
          *     <input type="checkbox" id="checkbox"/><br/><br/>
-         *     <button onclick="$chkb.state('checked')" class="btn btn-default">Checked</button>
-         *     <button onclick="$chkb.state('unchecked')" class="btn btn-default">Unchecked</button>
-         *     <button onclick="$chkb.state('indeterminate')" class="btn btn-default">Indeterminate</button>
-         *     <button onclick="$chkb.prop('disabled', false)" class="btn btn-default">Enable</button>
-         *     <button onclick="$chkb.prop('disabled', true)" class="btn btn-default">Disable</button>
+         *     <button onclick="chkb.state('checked')" class="btn btn-default">Checked</button>
+         *     <button onclick="chkb.state('unchecked')" class="btn btn-default">Unchecked</button>
+         *     <button onclick="chkb.state('indeterminate')" class="btn btn-default">Indeterminate</button>
+         *     <button onclick="chkb.prop('disabled', false)" class="btn btn-default">Enable</button>
+         *     <button onclick="chkb.prop('disabled', true)" class="btn btn-default">Disable</button>
          * </div>
          * <script>
-         *     var $chkb = $('#checkbox').checkbox({
+         *     var chkb = new GijgoCheckBox(document.getElementById('checkbox'), {
          *         uiLibrary: 'bootstrap4'
          *     });
          * </script>
@@ -12551,14 +12568,14 @@ gj.checkbox.config = {
          * @example Bootstrap.4.FontAwesome <!-- bootstrap4, checkbox, fontawesome -->
          * <div class="container-fluid" style="margin-top:10px">
          *     <input type="checkbox" id="checkbox"/><br/><br/>
-         *     <button onclick="$chkb.state('checked')" class="btn btn-default">Checked</button>
-         *     <button onclick="$chkb.state('unchecked')" class="btn btn-default">Unchecked</button>
-         *     <button onclick="$chkb.state('indeterminate')" class="btn btn-default">Indeterminate</button>
-         *     <button onclick="$chkb.prop('disabled', false)" class="btn btn-default">Enable</button>
-         *     <button onclick="$chkb.prop('disabled', true)" class="btn btn-default">Disable</button>
+         *     <button onclick="chkb.state('checked')" class="btn btn-default">Checked</button>
+         *     <button onclick="chkb.state('unchecked')" class="btn btn-default">Unchecked</button>
+         *     <button onclick="chkb.state('indeterminate')" class="btn btn-default">Indeterminate</button>
+         *     <button onclick="chkb.prop('disabled', false)" class="btn btn-default">Enable</button>
+         *     <button onclick="chkb.prop('disabled', true)" class="btn btn-default">Disable</button>
          * </div>
          * <script>
-         *     var $chkb = $('#checkbox').checkbox({
+         *     var chkb = new GijgoCheckBox(document.getElementById('checkbox'), {
          *         uiLibrary: 'bootstrap4',
          *         iconsLibrary: 'fontawesome'
          *     });
@@ -12611,51 +12628,47 @@ gj.checkbox.config = {
 
 gj.checkbox.methods = {
     init: function (jsConfig) {
-        var $chkb = this;
-
-        gj.widget.prototype.init.call(this, jsConfig, 'checkbox');
-        $chkb.attr('data-checkbox', 'true');
-
-        gj.checkbox.methods.initialize($chkb);
-
-        return $chkb;
+        gj.widget.prototype.initJS.call(this, jsConfig, 'checkbox');
+        this.element.setAttribute('data-checkbox', 'true');
+        gj.checkbox.methods.initialize(this, gijgoStorage.get(this.element, 'gijgo'));
+        return this;
     },
 
-    initialize: function ($chkb) {
-        var data = $chkb.data(), $wrapper, $span;
-
-        if (data.style.wrapperCssClass) {
-            $wrapper = $('<label class="' + data.style.wrapperCssClass + ' ' + data.style.iconsCssClass + '"></label>');
-            if ($chkb.attr('id')) {
-                $wrapper.attr('for', $chkb.attr('id'));
-            }
-            $chkb.wrap($wrapper);
-            $span = $('<span />');
-            if (data.style.spanCssClass) {
-                $span.addClass(data.style.spanCssClass);
-            }
-            $chkb.parent().append($span);
+    initialize: function (chkb, data) {
+        var wrapper, span;
+        wrapper = document.createElement('label');
+        wrapper.classList.add(data.style.wrapperCssClass);
+        wrapper.classList.add(data.style.iconsCssClass);
+        if (chkb.element.getAttribute('id')) {
+            wrapper.setAttribute('for', chkb.element.getAttribute('id'));
+        }
+        chkb.element.parentNode.insertBefore(wrapper, chkb.element);
+        wrapper.appendChild(chkb.element);
+            
+        span = document.createElement('span');
+        if (data.style.spanCssClass) {
+            span.classList.add(data.style.spanCssClass);
         }
     },
 
-    state: function ($chkb, value) {
+    state: function (chkb, value) {
         if (value) {
             if ('checked' === value) {
-                $chkb.prop('indeterminate', false);
-                $chkb.prop('checked', true);
+                chkb.prop('indeterminate', false);
+                chkb.prop('checked', true);
             } else if ('unchecked' === value) {
-                $chkb.prop('indeterminate', false);
-                $chkb.prop('checked', false);
+                chkb.prop('indeterminate', false);
+                chkb.prop('checked', false);
             } else if ('indeterminate' === value) {
-                $chkb.prop('checked', true);
-                $chkb.prop('indeterminate', true);
+                chkb.prop('checked', true);
+                chkb.prop('indeterminate', true);
             }
-            gj.checkbox.events.change($chkb, value);
-            return $chkb;
+            gj.checkbox.events.change(chkb, value);
+            return chkb;
         } else {
-            if ($chkb.prop('indeterminate')) {
+            if (chkb.prop('indeterminate')) {
                 value = 'indeterminate';
-            } else if ($chkb.prop('checked')) {
+            } else if (chkb.prop('checked')) {
                 value = 'checked';
             } else {
                 value = 'unchecked';
@@ -12664,25 +12677,29 @@ gj.checkbox.methods = {
         }
     },
 
-    toggle: function ($chkb) {
-        if ($chkb.state() == 'checked') {
-            $chkb.state('unchecked');
+    toggle: function (chkb) {
+        if (chkb.state() === 'checked') {
+            chkb.state('unchecked');
         } else {
-            $chkb.state('checked');
+            chkb.state('checked');
         }
-        return $chkb;
+        return chkb;
     },
 
-    destroy: function ($chkb) {
-        if ($chkb.attr('data-checkbox') === 'true') {
-            $chkb.removeData();
-            $chkb.removeAttr('data-guid');
-            $chkb.removeAttr('data-checkbox');
-            $chkb.off();
-            $chkb.next('span').remove();
-            $chkb.unwrap();
+    destroy: function (chkb) {
+        var data = gijgoStorage.get(chkb.element, 'gijgo'),
+            parent = picker.element.parentElement,
+            calendar = document.body.querySelector('[role="picker"][guid="' + picker.element.getAttribute('data-guid') + '"]');
+        if (data) {
+            gijgoStorage.remove(chkb.element, 'gijgo');
+            chkb.element.removeAttribute('data-type');
+            chkb.element.removeAttribute('data-guid');
+            chkb.element.removeAttribute('data-checkbox');
+            chkb.element.removeAttribute('class');
+            chkb.next('span').remove();
+            chkb.unwrap();
         }
-        return $chkb;
+        return chkb;
     }
 };
 
@@ -12693,36 +12710,39 @@ gj.checkbox.events = {
      * @event change
      * @param {object} e - event data
      * @param {string} state - the data of the checkbox
+     * @return {GijgoCheckBox} GijgoCheckBox
      * @example sample <!-- checkbox -->
      * <input type="checkbox" id="checkbox"/>
      * <script>
-     *     var chkb = $('#checkbox').checkbox({
+     *     var chkb = new GijgoCheckBox(document.getElementById('checkbox'), {
      *         change: function (e) {
      *             alert('State: ' + chkb.state());
      *         }
      *     });
      * </script>
      */
-    change: function ($chkb, state) {
-        return $chkb.triggerHandler('change', [state]);
+    change: function (el, state) {
+        return el.dispatchEvent(new CustomEvent('change', { 'state': state }));
     }
 };
 
 
-gj.checkbox.widget = function ($element, jsConfig) {
+GijgoCheckBox = function (element, jsConfig) {
     var self = this,
         methods = gj.checkbox.methods;
+
+    self.element = element;
 
     /** Toogle the state of the checkbox.
      * @method
      * @fires change
-     * @return checkbox as jquery object
+     * @return {GijgoCheckBox} GijgoCheckBox
      * @example sample <!-- checkbox -->
-     * <button onclick="$chkb.toggle()" class="gj-button-md">toggle</button>
+     * <button onclick="chkb.toggle()" class="gj-button-md">toggle</button>
      * <hr/>
      * <input type="checkbox" id="checkbox"/>
      * <script>
-     *     var $chkb = $('#checkbox').checkbox();
+     *     var chkb = new GijgoCheckBox(document.getElementById('checkbox'));
      * </script>
      */
     self.toggle = function () {
@@ -12733,16 +12753,16 @@ gj.checkbox.widget = function ($element, jsConfig) {
      * @method
      * @fires change
      * @param {string} value - State of the checkbox. Accept only checked, unchecked or indeterminate as values.
-     * @return checked|unchecked|indeterminate|checkbox as jquery object
+     * @return {string} checked|unchecked|indeterminate|checkbox
      * @example sample <!-- checkbox -->
-     * <button onclick="$chkb.state('checked')" class="gj-button-md">Set to checked</button>
-     * <button onclick="$chkb.state('unchecked')" class="gj-button-md">Set to unchecked</button>
-     * <button onclick="$chkb.state('indeterminate')" class="gj-button-md">Set to indeterminate</button>
-     * <button onclick="alert($chkb.state())" class="gj-button-md">Get state</button>
+     * <button onclick="chkb.state('checked')" class="gj-button-md">Set to checked</button>
+     * <button onclick="chkb.state('unchecked')" class="gj-button-md">Set to unchecked</button>
+     * <button onclick="chkb.state('indeterminate')" class="gj-button-md">Set to indeterminate</button>
+     * <button onclick="alert(chkb.state())" class="gj-button-md">Get state</button>
      * <hr/>
      * <input type="checkbox" id="checkbox"/>
      * <script>
-     *     var $chkb = $('#checkbox').checkbox();
+     *     var chkb = new GijgoCheckBox(document.getElementById('checkbox'));
      * </script>
      */
     self.state = function (value) {
@@ -12751,46 +12771,47 @@ gj.checkbox.widget = function ($element, jsConfig) {
 
     /** Remove checkbox functionality from the element.
      * @method
-     * @return checkbox as jquery object
+     * @return {GijgoCheckBox} GijgoCheckBox
      * @example sample <!-- checkbox -->
-     * <button onclick="$chkb.destroy()" class="gj-button-md">Destroy</button>
+     * <button onclick="chkb.destroy()" class="gj-button-md">Destroy</button>
      * <input type="checkbox" id="checkbox"/>
      * <script>
-     *     var $chkb = $('#checkbox').checkbox();
+     *     var chkb = new GijgoCheckBox(document.getElementById('checkbox'));
      * </script>
      */
     self.destroy = function () {
         return methods.destroy(this);
     };
 
-    $.extend($element, self);
-    if ('true' !== $element.attr('data-checkbox')) {
-        methods.init.call($element, jsConfig);
+    if ('true' !== element.getAttribute('data-checkbox')) {
+        methods.init.call(self, jsConfig);
     }
 
-    return $element;
+    return self;
 };
 
-gj.checkbox.widget.prototype = new gj.widget();
-gj.checkbox.widget.constructor = gj.checkbox.widget;
+GijgoCheckBox.prototype = new gj.widget();
+GijgoCheckBox.constructor = GijgoCheckBox;
 
-(function ($) {
-    $.fn.checkbox = function (method) {
-        var $widget;
-        if (this && this.length) {
-            if (typeof method === 'object' || !method) {
-                return new gj.checkbox.widget(this, method);
-            } else {
-                $widget = new gj.checkbox.widget(this, null);
-                if ($widget[method]) {
-                    return $widget[method].apply(this, Array.prototype.slice.call(arguments, 1));
+if (typeof (jQuery) !== "undefined") {
+    (function ($) {
+        $.fn.checkbox = function (method) {
+            var widget;
+            if (this && this.length) {
+                if (typeof method === 'object' || !method) {
+                    return new GijgoCheckBox(this, method);
                 } else {
-                    throw 'Method ' + method + ' does not exist.';
+                    widget = new GijgoCheckBox(this, null);
+                    if (widget[method]) {
+                        return widget[method].apply(this, Array.prototype.slice.call(arguments, 1));
+                    } else {
+                        throw 'Method ' + method + ' does not exist.';
+                    }
                 }
             }
-        }
-    };
-})(jQuery);
+        };
+    })(jQuery);
+}
 /* global window alert jQuery */
 /** 
  * @widget Editor
@@ -12810,7 +12831,7 @@ gj.editor.config = {
          * @example sample <!-- editor -->
          * <textarea id="editor"></textarea>
          * <script>
-         *     $('#editor').editor({ height: 400 });
+         *     new GijgoEditor(document.getElementById('editor'), { height: 400 });
          * </script>
          */
         height: 300,
@@ -12821,12 +12842,12 @@ gj.editor.config = {
          * @example JS <!-- editor -->
          * <textarea id="editor"></textarea>
          * <script>
-         *     $('#editor').editor({ width: 900 });
+         *     new GijgoEditor(document.getElementById('editor'), { width: 900 });
          * </script>
          * @example HTML <!-- editor -->
          * <div id="editor" width="900"></div>
          * <script>
-         *     $('#editor').editor();
+         *     new GijgoEditor(document.getElementById('editor'));
          * </script>
          */
         width: undefined,
@@ -12838,19 +12859,19 @@ gj.editor.config = {
          * @example Material.Design <!-- editor, materialicons  -->
          * <textarea id="editor"></textarea>
          * <script>
-         *     $('#editor').editor({ uiLibrary: 'materialdesign' });
+         *     new GijgoEditor(document.getElementById('editor'), { uiLibrary: 'materialdesign' });
          * </script>
          * @example Bootstrap.3 <!-- bootstrap, editor -->
          * <textarea id="editor"></textarea>
          * <script>
-         *     $('#editor').editor({
+         *     new GijgoEditor(document.getElementById('editor'), {
          *         uiLibrary: 'bootstrap'
          *     });
          * </script>
          * @example Bootstrap.4 <!-- bootstrap4, editor -->
          * <textarea id="editor"></textarea>
          * <script>
-         *     $('#editor').editor({
+         *     new GijgoEditor(document.getElementById('editor'), {
          *         uiLibrary: 'bootstrap4'
          *     });
          * </script>
@@ -12866,7 +12887,7 @@ gj.editor.config = {
          * @example Bootstrap.4.FontAwesome <!-- bootstrap4, fontawesome, editor -->
          * <textarea id="editor"></textarea>
          * <script>
-         *     $('#editor').editor({
+         *     new GijgoEditor(document.getElementById('editor'), {
          *         uiLibrary: 'bootstrap4',
          *         iconsLibrary: 'fontawesome'
          *     });
@@ -12874,7 +12895,7 @@ gj.editor.config = {
          * @example Bootstrap.3.FontAwesome <!-- bootstrap, fontawesome, editor -->
          * <textarea id="editor"></textarea>
          * <script>
-         *     $('#editor').editor({
+         *     new GijgoEditor(document.getElementById('editor'), {
          *         uiLibrary: 'bootstrap',
          *         iconsLibrary: 'fontawesome'
          *     });
@@ -12889,7 +12910,7 @@ gj.editor.config = {
          * <script src="../../dist/modular/editor/js/messages/messages.fr-fr.js"></script>
          * <div id="editor">Hover buttons in the toolbar in order to see localized tooltips</div>
          * <script>
-         *     $("#editor").editor({
+         *     new GijgoEditor(document.getElementById('editor'), {
          *         locale: 'fr-fr'
          *     });
          * </script>
@@ -12897,7 +12918,7 @@ gj.editor.config = {
          * <script src="../../dist/modular/editor/js/messages/messages.de-de.js"></script>
          * <div id="editor">Hover <b><u>buttons</u></b> in the toolbar in order to see localized tooltips</div>
          * <script>
-         *     $("#editor").editor({
+         *     new GijgoEditor(document.getElementById('editor'), {
          *         locale: 'de-de'
          *     });
          * </script>
@@ -12979,71 +13000,73 @@ gj.editor.config = {
 
 gj.editor.methods = {
     init: function (jsConfig) {
-        gj.widget.prototype.init.call(this, jsConfig, 'editor');
-        this.attr('data-editor', 'true');
-        gj.editor.methods.initialize(this);
+        gj.widget.prototype.initJS.call(this, jsConfig, 'editor');
+        this.element.setAttribute('data-editor', 'true');
+        gj.editor.methods.initialize(this, gijgoStorage.get(this.element, 'gijgo'));
         return this;
     },
 
-    initialize: function ($editor) {
-        var self = this, data = $editor.data(),
-            $group, $btn, wrapper, $body, $toolbar;
+    initialize: function (editor, data) {
+        var group, groupEl, btn, btnEl, wrapper, body, toolbar;
 
-        $editor.hide();
+        editor.element.style.display = 'none';
 
-        if ($editor[0].parentElement.attributes.role !== 'wrapper') {
+        if (editor.element.parentElement.attributes.role !== 'wrapper') {
             wrapper = document.createElement('div');
             wrapper.setAttribute('role', 'wrapper');
-            $editor[0].parentNode.insertBefore(wrapper, $editor[0]);
-            wrapper.appendChild($editor[0]);
+            editor.element.parentNode.insertBefore(wrapper, editor.element);
+            wrapper.appendChild(editor.element);
         }
 
         gj.editor.methods.localization(data);
-        $(wrapper).addClass(data.style.wrapper);
+        gj.core.addClasses(wrapper, data.style.wrapper);
         if (data.width) {
-            $(wrapper).width(data.width);
+            wrapper.style.width = data.width;
         }
 
-        $body = $(wrapper).children('div[role="body"]');
-        if ($body.length === 0) {
-            $body = $('<div role="body"></div>');
-            $(wrapper).append($body);
-            if ($editor[0].innerText) {
-                $body[0].innerHTML = $editor[0].innerText;
+        body = wrapper.querySelector('div[role="body"]');
+        if (!body) {
+            body = document.createElement('div');
+            body.setAttribute('role', 'body');
+            wrapper.appendChild(body);
+            if (editor.element.innerText) {
+                body.innerHTML = editor.element.innerText;
             }
         }
-        $body.attr('contenteditable', true);
-        $body.on('keydown', function (e) {
+        body.setAttribute('contenteditable', true);
+        body.addEventListener('keydown', function (e) {
             var key = e.keyCode || e.charCode;
-            if (gj.editor.events.changing($editor) === false && key !== 8 && key !== 46) {
+            if (gj.editor.events.changing(editor.element) === false && key !== 8 && key !== 46) {
                 e.preventDefault();
             }
         });
-        $body.on('mouseup keyup mouseout cut paste', function (e) {
-            self.updateToolbar($editor, $toolbar);
-            gj.editor.events.changed($editor);
-            $editor.html($body.html());
+        body.addEventListener('mouseup keyup mouseout cut paste', function (e) {
+            self.updateToolbar(editor, toolbar, data);
+            gj.editor.events.changed(editor);
+            editor.html(body.html());
         });
 
-        $toolbar = $(wrapper).children('div[role="toolbar"]');
-        if ($toolbar.length === 0) {
-            $toolbar = $('<div role="toolbar"></div>');
-            $body.before($toolbar);
+        toolbar = wrapper.querySelector('div[role="toolbar"]');
+        if (!toolbar) {
+            toolbar = document.createElement('div');
+            toolbar.setAttribute('role', 'toolbar');
+            body.parentNode.insertBefore(toolbar, body);
 
-            for (var group in data.buttons) {
-                $group = $('<div />').addClass(data.style.buttonsGroup);
-                for (var btn in data.buttons[group]) {
-                    $btn = $(data.buttons[group][btn]);
-                    $btn.on('click', function () {
-                        gj.editor.methods.executeCmd($editor, $body, $toolbar, $(this));
+            for (group in data.buttons) {
+                groupEl = document.createElement('div');
+                groupEl.classList.add(data.style.buttonsGroup);
+                for (btn in data.buttons[group]) {
+                    btnEl = gj.core.createElement(data.buttons[group][btn]);
+                    btnEl.addEventListener('click', function () {
+                        gj.editor.methods.executeCmd(editor, body, toolbar, this, data);
                     });
-                    $group.append($btn);
+                    groupEl.appendChild(btnEl);
                 }
-                $toolbar.append($group);
+                toolbar.appendChild(groupEl);
             }
         }
 
-        $body.height(data.height - gj.core.height($toolbar[0], true));
+        body.style.height = data.height - gj.core.height(toolbar, true) + 'px';
     },
 
     localization: function (data) {
@@ -13076,49 +13099,47 @@ gj.editor.methods = {
         }
     },
 
-    updateToolbar: function ($editor, $toolbar) {
-        var data = $editor.data();
-        $buttons = $toolbar.find('[role]').each(function() {
-            var $btn = $(this),
-                cmd = $btn.attr('role');
+    updateToolbar: function (editor, toolbar, data) {
+        buttons = toolbar.querySelectorAll('[role]').forEach(function(btn) {
+            var cmd = btn.getAttribute('role');
 
             if (cmd && document.queryCommandEnabled(cmd) && document.queryCommandValue(cmd) === "true") {
-                $btn.addClass(data.style.buttonActive);
+                btn.classList.add(data.style.buttonActive);
             } else {
-                $btn.removeClass(data.style.buttonActive);
+                btn.classList.remove(data.style.buttonActive);
             }
         });
     },
 
-    executeCmd: function ($editor, $body, $toolbar, $btn) {
-        $body.focus();
-        document.execCommand($btn.attr('role'), false);
-        gj.editor.methods.updateToolbar($editor, $toolbar);
+    executeCmd: function (editor, body, toolbar, btn, data) {
+        body.focus();
+        document.execCommand(btn.getAttribute('role'), false);
+        gj.editor.methods.updateToolbar(editor, toolbar, data);
     },
 
-    content: function ($editor, html) {
-        var $body = $editor.parent().children('div[role="body"]');
-        if (typeof (html) === "undefined") {
-            return $body.html();
+    content: function (editor, html) {
+        var body = editor.element.parentElement.querySelector('div[role="body"]');
+        if (typeof html === "undefined") {
+            return body.innerHTML;
         } else {
-            return $body.html(html);
+            body.innerHTML = html;
         }
     },
 
-    destroy: function ($editor) {
-        var $wrapper;
-        if ($editor.attr('data-editor') === 'true') {
-            $wrapper = $editor.parent();
-            $wrapper.children('div[role="body"]').remove();
-            $wrapper.children('div[role="toolbar"]').remove();
-            $editor.unwrap();
-            $editor.removeData();
-            $editor.removeAttr('data-guid');
-            $editor.removeAttr('data-editor');
-            $editor.off();
-            $editor.show();
+    destroy: function (editor) {
+        var wrapper;
+        if (editor.element.getAttribute('data-editor') === 'true') {
+            wrapper = editor.element.parentElement;
+            wrapper.querySelector('div[role="body"]').remove();
+            wrapper.querySelector('div[role="toolbar"]').remove();
+            editor.element.outerHTML = editor.element.innerHTML;
+            gijgoStorage.remove(editor.element, 'gijgo');
+            editor.element.removeAttribute('data-guid');
+            editor.element.removeAttribute('data-editor');
+            //$editor.off();
+            editor.element.display = 'block';
         }
-        return $editor;
+        return editor;
     }
 };
 
@@ -13129,17 +13150,18 @@ gj.editor.events = {
      *
      * @event changing
      * @param {object} e - event data
+     * @return {object} - GijgoEditor
      * @example MaxLength <!-- editor -->
      * <textarea id="editor"></textarea>
      * <script>
-     *     var editor = $('#editor').editor();
-     *     editor.on('changing', function (e) {
-     *         return $(e.target).text().length < 3;
+     *     var editor = new GijgoEditor(document.getElementById('editor'));
+     *     editor.element.addEventListener('changing', function (e) {
+     *         return editor.content().length < 3;
      *     });
      * </script>
      */
-    changing: function ($editor) {
-        return $editor.triggerHandler('changing');
+    changing: function (el) {
+        return el.dispatchEvent(new Event('changing'));
     },
 
     /**
@@ -13147,42 +13169,45 @@ gj.editor.events = {
      *
      * @event changed
      * @param {object} e - event data
+     * @return {object} - GijgoEditor
      * @example sample <!-- editor -->
      * <textarea id="editor"></textarea>
      * <script>
-     *     $('#editor').editor({
+     *     new GijgoEditor(document.getElementById('editor'), {
      *         changed: function (e) {
      *             alert('changed is fired');
      *         }
      *     });
      * </script>
      */
-    changed: function ($editor) {
-        return $editor.triggerHandler('changed');
+    changed: function (el) {
+        return el.dispatchEvent(new Event('changed'));
     }
 };
 
-gj.editor.widget = function ($element, jsConfig) {
+GijgoEditor = function (element, jsConfig) {
     var self = this,
         methods = gj.editor.methods;
+
+    self.element = element;
 
     /** Get or set html content in the body.
      * @method
      * @param {string} html - The html content that needs to be set.
-     * @return string | editor
+     * @return {object} string | editor
      * @example Get <!-- editor, materialicons -->
-     * <button class="gj-button-md" onclick="alert($editor.content())">Get Content</button>
+     * <button class="gj-button-md" onclick="alert(editor.content())">Get Content</button>
      * <hr/>
      * <div id="editor">My <b>content</b>.</div>
      * <script>
-     *     var $editor = $('#editor').editor();
+     *     var editor = new GijgoEditor(document.getElementById('editor'));
      * </script>
      * @example Set <!-- editor, materialicons -->
-     * <button class="gj-button-md" onclick="$editor.content('<h1>new value</h1>')">Set Content</button>
+     * <button class="gj-button-md" onclick="editor.content('<h1>new value</h1>')">Set Content</button>
      * <hr/>
      * <textarea id="editor"></textarea>
      * <script>
-     *     var $editor = $('#editor').editor();
+     *     var editor = new GijgoEditor(document.getElementById('editor'));
      * </script>
      */
     self.content = function (html) {
@@ -13191,46 +13216,47 @@ gj.editor.widget = function ($element, jsConfig) {
 
     /** Remove editor functionality from the element.
      * @method
-     * @return jquery element
+     * @return {GijgoEditor} GijgoEditor
      * @example sample <!-- editor, materialicons -->
      * <button class="gj-button-md" onclick="editor.destroy()">Destroy</button><br/>
      * <textarea id="editor"></textarea>
      * <script>
-     *     var editor = $('#editor').editor();
+     *     var editor = new GijgoEditor(document.getElementById('editor'));
      * </script>
      */
     self.destroy = function () {
         return methods.destroy(this);
     };
 
-    $.extend($element, self);
-    if ('true' !== $element.attr('data-editor')) {
-        methods.init.call($element, jsConfig);
+    if ('true' !== element.getAttribute('data-editor')) {
+        methods.init.call(self, jsConfig);
     }
 
-    return $element;
+    return self;
 };
 
-gj.editor.widget.prototype = new gj.widget();
-gj.editor.widget.constructor = gj.editor.widget;
+GijgoEditor.prototype = new gj.widget();
+GijgoEditor.constructor = gj.editor.widget;
 
-(function ($) {
-    $.fn.editor = function (method) {
-        var $widget;
-        if (this && this.length) {
-            if (typeof method === 'object' || !method) {
-                return new gj.editor.widget(this, method);
-            } else {
-                $widget = new gj.editor.widget(this, null);
-                if ($widget[method]) {
-                    return $widget[method].apply(this, Array.prototype.slice.call(arguments, 1));
+if (typeof (jQuery) !== "undefined") {
+    (function ($) {
+        $.fn.editor = function (method) {
+            var widget;
+            if (this && this.length) {
+                if (typeof method === 'object' || !method) {
+                    return new GijgoEditor(this, method);
                 } else {
-                    throw 'Method ' + method + ' does not exist.';
+                    widget = new GijgoEditor(this, null);
+                    if (widget[method]) {
+                        return widget[method].apply(this, Array.prototype.slice.call(arguments, 1));
+                    } else {
+                        throw 'Method ' + method + ' does not exist.';
+                    }
                 }
             }
-        }
-    };
-})(jQuery);
+        };
+    })(jQuery);
+}
 
 gj.editor.messages['en-us'] = {
     bold: 'Bold',
@@ -13913,9 +13939,11 @@ gj.dropdown.events = {
     }
 };
 
-gj.dropdown.widget = function ($element, jsConfig) {
+GijgoDropDown = function (element, jsConfig) {
     var self = this,
-        methods = gj.dropdown.methods;
+        methods = gj.datepicker.methods;
+
+    self.element = element;
 
     /** Gets or sets the value of the DropDown.
      * @method
@@ -13974,36 +14002,38 @@ gj.dropdown.widget = function ($element, jsConfig) {
         return methods.destroy(this);
     };
 
-    $.extend($element, self);
-    if ('true' !== $element.attr('data-dropdown')) {
-        methods.init.call($element, jsConfig);
+    if ('true' !== element.attr('data-dropdown')) {
+        methods.init.call(self, jsConfig);
     }
 
-    return $element;
+    return self;
 };
 
-gj.dropdown.widget.prototype = new gj.widget();
-gj.dropdown.widget.constructor = gj.dropdown.widget;
+GijgoDropDown.prototype = new gj.widget();
+GijgoDropDown.constructor = gj.dropdown.widget;
 
-gj.dropdown.widget.prototype.getHTMLConfig = gj.dropdown.methods.getHTMLConfig;
+GijgoDropDown.prototype.getHTMLConfig = gj.dropdown.methods.getHTMLConfig;
 
-(function ($) {
-    $.fn.dropdown = function (method) {
-        var $widget;
-        if (this && this.length) {
-            if (typeof method === 'object' || !method) {
-                return new gj.dropdown.widget(this, method);
-            } else {
-                $widget = new gj.dropdown.widget(this, null);
-                if ($widget[method]) {
-                    return $widget[method].apply(this, Array.prototype.slice.call(arguments, 1));
+
+if (typeof (jQuery) !== "undefined") {
+    (function ($) {
+        $.fn.dropdown = function (method) {
+            var widget;
+            if (this && this.length) {
+                if (typeof method === 'object' || !method) {
+                    return new GijgoDropDown(this, method);
                 } else {
-                    throw 'Method ' + method + ' does not exist.';
+                    widget = new GijgoDropDown(this, null);
+                    if (widget[method]) {
+                        return widget[method].apply(this, Array.prototype.slice.call(arguments, 1));
+                    } else {
+                        throw 'Method ' + method + ' does not exist.';
+                    }
                 }
             }
-        }
-    };
-})(jQuery);
+        };
+    })(jQuery);
+}
 /* global window alert jQuery gj */
 /**
   * @widget DatePicker
@@ -15786,8 +15816,7 @@ GijgoDatePicker = function (element, jsConfig) {
     self.close = function () {
         return methods.close(this);
     };
-
-    //$.extend($element, self);
+    
     if ('true' !== element.getAttribute('data-datepicker')) {
         methods.init.call(self, jsConfig);
     }
@@ -16764,25 +16793,25 @@ gj.datetimepicker.config = {
          * @additionalinfo The css file for bootstrap should be manually included if you use bootstrap.
          * @type (materialdesign|bootstrap|bootstrap4)
          * @default materialdesign
-         * @example MaterialDesign <!-- datetimepicker -->
-         * <input id="datetimepicker" width="312" />
+         * @example MaterialDesign <!-- nojquery, datetimepicker -->
+         * <input id="picker" width="312" />
          * <script>
-         *    $('#datetimepicker').datetimepicker({ uiLibrary: 'materialdesign' });
+         *    new GijgoDateTimePicker(document.getElementById('picker'), { uiLibrary: 'materialdesign' });
          * </script>
-         * @example MaterialDesign.Modal <!-- datetimepicker -->
-         * <input id="datetimepicker" width="312" />
+         * @example MaterialDesign.Modal <!-- nojquery, datetimepicker -->
+         * <input id="picker" width="312" />
          * <script>
-         *    $('#datetimepicker').datetimepicker({ uiLibrary: 'materialdesign', modal: true, footer: true });
+         *    new GijgoDateTimePicker(document.getElementById('picker'), { uiLibrary: 'materialdesign', modal: true, footer: true });
          * </script>
-         * @example Bootstrap.3 <!-- bootstrap, datetimepicker -->
-         * <input id="datetimepicker" width="220" />
+         * @example Bootstrap.3 <!-- nojquery, bootstrap, datetimepicker -->
+         * <input id="picker" width="220" />
          * <script>
-         *     $('#datetimepicker').datetimepicker({ uiLibrary: 'bootstrap' });
+         *     new GijgoDateTimePicker(document.getElementById('picker'), { uiLibrary: 'bootstrap' });
          * </script>
-         * @example Bootstrap.4 <!-- bootstrap4, datetimepicker -->
-         * <input id="datetimepicker" width="234" />
+         * @example Bootstrap.4 <!-- nojquery, bootstrap4, datetimepicker -->
+         * <input id="picker" width="234" />
          * <script>
-         *     $('#datetimepicker').datetimepicker({ uiLibrary: 'bootstrap4', modal: true, footer: true });
+         *     new GijgoDateTimePicker(document.getElementById('picker'), { uiLibrary: 'bootstrap4', modal: true, footer: true });
          * </script>
          */
         uiLibrary: 'materialdesign',
@@ -16790,15 +16819,15 @@ gj.datetimepicker.config = {
         /** The initial datetimepicker value.
          * @type number
          * @default undefined
-         * @example Javascript <!-- datetimepicker -->
-         * <input id="datetimepicker" width="300" />
+         * @example Javascript <!-- nojquery, datetimepicker -->
+         * <input id="picker" width="300" />
          * <script>
-         *    $('#datetimepicker').datetimepicker({ value: '22:10 03/27/2018' });
+         *    new GijgoDateTimePicker(document.getElementById('picker'), { value: '22:10 03/27/2018' });
          * </script>
-         * @example HTML <!-- datetimepicker -->
-         * <input id="datetimepicker" width="300" value="22:10 03/27/2018" />
+         * @example HTML <!-- nojquery, datetimepicker -->
+         * <input id="picker" width="300" value="22:10 03/27/2018" />
          * <script>
-         *     $('#datetimepicker').datetimepicker();
+         *     new GijgoDateTimePicker(document.getElementById('picker'));
          * </script>
          */
         value: undefined,
@@ -16824,15 +16853,15 @@ gj.datetimepicker.config = {
          * <b>yyyy</b> - Year represented by four digits.<br/>
          * @type String
          * @default 'HH:MM mm/dd/yyyy'
-         * @example Sample <!-- datetimepicker -->
+         * @example Sample <!-- nojquery, datetimepicker -->
          * <input id="input" value="05:50 2018-27-03" width="312" />
          * <script>
-         *     $('#input').datetimepicker({ format: 'HH:MM yyyy-dd-mm' });
+         *     new GijgoDateTimePicker(document.getElementById('picker'), { format: 'HH:MM yyyy-dd-mm' });
          * </script>
-         * @example Long.Month.Format <!-- datetimepicker -->
+         * @example Long.Month.Format <!-- nojquery, datetimepicker -->
          * <input id="input" value="10 October 2017 05:50" width="312" />
          * <script>
-         *     $('#input').datetimepicker({ format: 'dd mmmm yyyy HH:MM' });
+         *     new GijgoDateTimePicker(document.getElementById('picker'), { format: 'dd mmmm yyyy HH:MM' });
          * </script>
          */
         format: 'HH:MM mm/dd/yyyy',
@@ -16840,15 +16869,15 @@ gj.datetimepicker.config = {
         /** The width of the datetimepicker.
          * @type number
          * @default undefined
-         * @example JS.Config <!-- datetimepicker -->
+         * @example JS.Config <!-- nojquery, datetimepicker -->
          * <input id="input" />
          * <script>
-         *    $('#input').datetimepicker({ width: 312 });
+         *    new GijgoDateTimePicker(document.getElementById('picker'), { width: 312 });
          * </script>
-         * @example HTML.Config <!-- datetimepicker -->
+         * @example HTML.Config <!-- nojquery, datetimepicker -->
          * <input id="input" width="312" />
          * <script>
-         *    $('#input').datetimepicker();
+         *    new GijgoDateTimePicker(document.getElementById('picker'));
          * </script>
          */
         width: undefined,
@@ -16856,20 +16885,20 @@ gj.datetimepicker.config = {
         /** If set to true, the datetimepicker will have modal behavior.
          * @type Boolean
          * @default false
-         * @example Material.Design <!-- datetimepicker -->
-         * <input id="input" width="312" />
+         * @example Material.Design <!-- nojquery, datetimepicker -->
+         * <input id="picker" width="312" />
          * <script>
-         *    $('#input').datetimepicker({ modal: true });
+         *    new GijgoDateTimePicker(document.getElementById('picker'), { modal: true });
          * </script>
-         * @example Bootstrap <!-- bootstrap, datetimepicker -->
-         * <input id="input" width="220" />
+         * @example Bootstrap <!-- nojquery, bootstrap, datetimepicker -->
+         * <input id="picker" width="220" />
          * <script>
-         *    $('#input').datetimepicker({ uiLibrary: 'bootstrap', modal: true, footer: true });
+         *    new GijgoDateTimePicker(document.getElementById('picker'), { uiLibrary: 'bootstrap', modal: true, footer: true });
          * </script>
-         * @example Bootstrap.4 <!-- bootstrap4, datetimepicker -->
-         * <input id="input" width="234" />
+         * @example Bootstrap.4 <!-- nojquery, bootstrap4, datetimepicker -->
+         * <input id="picker" width="234" />
          * <script>
-         *    $('#input').datetimepicker({ uiLibrary: 'bootstrap4', modal: true, footer: true });
+         *    new GijgoDateTimePicker(document.getElementById('picker'), { uiLibrary: 'bootstrap4', modal: true, footer: true });
          * </script>
          */
         modal: false,
@@ -16877,15 +16906,15 @@ gj.datetimepicker.config = {
         /** If set to true, add footer with ok and cancel buttons to the datetimepicker.
          * @type Boolean
          * @default false
-         * @example True <!-- datetimepicker -->
-         * <input id="input" width="312" />
+         * @example True <!-- nojquery, datetimepicker -->
+         * <input id="picker" width="312" />
          * <script>
-         *    $('#input').datetimepicker({ footer: true, modal: true, header: true });
+         *    new GijgoDateTimePicker(document.getElementById('picker'), { footer: true, modal: true, header: true });
          * </script>
-         * @example False <!-- datetimepicker -->
-         * <input id="input" width="312" />
+         * @example False <!-- nojquery, datetimepicker -->
+         * <input id="picker" width="312" />
          * <script>
-         *    $('#input').datetimepicker({ footer: false });
+         *    new GijgoDateTimePicker(document.getElementById('picker'), { footer: false });
          * </script>
          */
         footer: false,
@@ -16893,41 +16922,41 @@ gj.datetimepicker.config = {
         /** The size of the datetimepicker input.
          * @type 'small'|'default'|'large'
          * @default 'default'
-         * @example Bootstrap.4 <!-- bootstrap4, datetimepicker -->
+         * @example Bootstrap.4 <!-- nojquery, bootstrap4, datetimepicker -->
          * <p><label for="small">Small Size:</label> <input id="small" width="234" value="10:20 03/20/2018" /></p>
          * <p><label for="default">Default Size:</label> <input id="default" width="234" value="10:20 03/20/2018" /></p>
          * <p><label for="large">Large Size:</label> <input id="large" width="234" value="10:20 03/20/2018" /></p>
          * <script>
-         *     $('#small').datetimepicker({ uiLibrary: 'bootstrap4', size: 'small' });
-         *     $('#default').datetimepicker({ uiLibrary: 'bootstrap4', size: 'default' });
-         *     $('#large').datetimepicker({ uiLibrary: 'bootstrap4', size: 'large' });
+         *     new GijgoDateTimePicker(document.getElementById('small'), { uiLibrary: 'bootstrap4', size: 'small' });
+         *     new GijgoDateTimePicker(document.getElementById('default'), { uiLibrary: 'bootstrap4', size: 'default' });
+         *     new GijgoDateTimePicker(document.getElementById('large'), { uiLibrary: 'bootstrap4', size: 'large' });
          * </script>
-         * @example Bootstrap.4.Font.Awesome <!-- bootstrap4, fontawesome, datetimepicker -->
+         * @example Bootstrap.4.Font.Awesome <!-- nojquery, bootstrap4, fontawesome, datetimepicker -->
          * <p><label for="small">Small Size:</label> <input id="small" width="234" value="10:20 03/20/2018" /></p>
          * <p><label for="default">Default Size:</label> <input id="default" width="234" value="10:20 03/20/2018" /></p>
          * <p><label for="large">Large Size:</label> <input id="large" width="234" value="10:20 03/20/2018" /></p>
          * <script>
-         *     $('#small').datetimepicker({ uiLibrary: 'bootstrap4', iconsLibrary: 'fontawesome', size: 'small' });
-         *     $('#default').datetimepicker({ uiLibrary: 'bootstrap4', iconsLibrary: 'fontawesome', size: 'default' });
-         *     $('#large').datetimepicker({ uiLibrary: 'bootstrap4', iconsLibrary: 'fontawesome', size: 'large' });
+         *     new GijgoDateTimePicker(document.getElementById('small'), { uiLibrary: 'bootstrap4', iconsLibrary: 'fontawesome', size: 'small' });
+         *     new GijgoDateTimePicker(document.getElementById('default'), { uiLibrary: 'bootstrap4', iconsLibrary: 'fontawesome', size: 'default' });
+         *     new GijgoDateTimePicker(document.getElementById('large'), { uiLibrary: 'bootstrap4', iconsLibrary: 'fontawesome', size: 'large' });
          * </script>
-         * @example Bootstrap.3 <!-- bootstrap, datetimepicker -->
+         * @example Bootstrap.3 <!-- nojquery, bootstrap, datetimepicker -->
          * <p><label for="small">Small Size:</label> <input id="small" width="220" value="10:20 03/20/2018" /></p>
          * <p><label for="default">Default Size:</label> <input id="default" width="220" value="10:20 03/20/2018" /></p>
          * <p><label for="large">Large Size:</label> <input id="large" width="220" value="10:20 03/20/2018" /></p>
          * <script>
-         *     $('#small').datetimepicker({ uiLibrary: 'bootstrap', size: 'small' });
-         *     $('#default').datetimepicker({ uiLibrary: 'bootstrap', size: 'default' });
-         *     $('#large').datetimepicker({ uiLibrary: 'bootstrap', size: 'large' });
+         *     new GijgoDateTimePicker(document.getElementById('small'), { uiLibrary: 'bootstrap', size: 'small' });
+         *     new GijgoDateTimePicker(document.getElementById('default'), { uiLibrary: 'bootstrap', size: 'default' });
+         *     new GijgoDateTimePicker(document.getElementById('large'), { uiLibrary: 'bootstrap', size: 'large' });
          * </script>
-         * @example Material.Design <!-- datetimepicker -->
+         * @example Material.Design <!-- nojquery, datetimepicker -->
          * <p><label for="small">Small Size:</label> <input id="small" width="276" value="10:20 03/20/2018" /></p>
          * <p><label for="default">Default Size:</label> <input id="default" width="276" value="10:20 03/20/2018" /></p>
          * <p><label for="large">Large Size:</label> <input id="large" width="276" value="10:20 03/20/2018" /></p>
          * <script>
-         *     $('#small').datetimepicker({ size: 'small' });
-         *     $('#default').datetimepicker({ size: 'default' });
-         *     $('#large').datetimepicker({ size: 'large' });
+         *     new GijgoDateTimePicker(document.getElementById('small'), { size: 'small' });
+         *     new GijgoDateTimePicker(document.getElementById('default'), { size: 'default' });
+         *     new GijgoDateTimePicker(document.getElementById('large'), { size: 'large' });
          * </script>
          */
         size: 'default',
@@ -16935,27 +16964,27 @@ gj.datetimepicker.config = {
         /** The language that needs to be in use.
          * @type string
          * @default 'en-us'
-         * @example German <!-- datetimepicker -->
-         * <input id="input" width="276" />
+         * @example German <!-- nojquery, datetimepicker -->
+         * <input id="picker" width="276" />
          * <script>
-         *    $('#input').datetimepicker({
+         *    new GijgoDateTimePicker(document.getElementById('picker'), {
          *        locale: 'de-de',
          *        format: 'HH:MM dd mmm yyyy'
          *    });
          * </script>
-         * @example Bulgarian <!-- datetimepicker -->
-         * <input id="input" width="276" />
+         * @example Bulgarian <!-- nojquery, datetimepicker -->
+         * <input id="picker" width="276" />
          * <script>
-         *    $('#input').datetimepicker({
+         *    new GijgoDateTimePicker(document.getElementById('picker'), {
          *        locale: 'bg-bg',
          *        format: 'HH:MM dd mmm yyyy',
          *        datepicker: { weekStartDay: 1 }
          *    });
          * </script>
-         * @example Chinise_Simplified <!-- datetimepicker -->
-         * <input id="input" width="276" />
+         * @example Chinise_Simplified <!-- nojquery, datetimepicker -->
+         * <input id="picker" width="276" />
          * <script>
-         *    $('#input').datetimepicker({
+         *    new GijgoDateTimePicker(document.getElementById('picker'), {
          *        locale: 'zh-cn',
          *        format: 'HH:MM dd mmm yyyy',
          *        datepicker: { weekStartDay: 1 }
@@ -17201,10 +17230,10 @@ gj.datetimepicker.events = {
      *
      * @event change
      * @param {object} e - event data
-     * @example sample <!-- datetimepicker -->
+    * @example sample <!--nojquery, datetimepicker -->
      * <input id="input" width="312" />
      * <script>
-     *     $('#input').datetimepicker({
+     *     new GijgoDateTimePicker(document.getElementById('picker'), {
      *         footer: true,
      *         modal: true,
      *         change: function (e) {
@@ -17229,19 +17258,19 @@ GijgoDateTimePicker = function (element, jsConfig) {
      * @method
      * @param {string} value - The value that needs to be selected.
      * @return string
-     * @example Get <!-- datetimepicker -->
-     * <button class="gj-button-md" onclick="alert($datetimepicker.value())">Get Value</button>
+     * @example Get <!-- nojquery, datetimepicker -->
+     * <button class="gj-button-md" onclick="alert(datetimepicker.value())">Get Value</button>
      * <hr/>
-     * <input id="datetimepicker" width="312" value="17:50 03/27/2018" />
+     * <input id="picker" width="312" value="17:50 03/27/2018" />
      * <script>
-     *     var $datetimepicker = $('#datetimepicker').datetimepicker();
+     *     var datetimepicker = new GijgoDateTimePicker(document.getElementById('picker'));
      * </script>
-     * @example Set <!-- datetimepicker -->
-     * <button class="gj-button-md" onclick="$datetimepicker.value('13:40 08/01/2017')">Set Value</button>
+     * @example Set <!-- nojquery, datetimepicker -->
+     * <button class="gj-button-md" onclick="datetimepicker.value('13:40 08/01/2017')">Set Value</button>
      * <hr/>
-     * <input id="datetimepicker" width="312" />
+     * <input id="picker" width="312" />
      * <script>
-     *     var $datetimepicker = $('#datetimepicker').datetimepicker();
+     *     var datetimepicker = new GijgoDateTimePicker(document.getElementById('picker'));
      * </script>
      */
     self.value = function (value) {
@@ -17251,13 +17280,13 @@ GijgoDateTimePicker = function (element, jsConfig) {
     /** Open the calendar.
      * @method
      * @return datetimepicker
-     * @example Open.Close <!-- datetimepicker -->
-     * <button class="gj-button-md" onclick="$picker.open()">Open</button>
-     * <button class="gj-button-md" onclick="$picker.close()">Close</button>
+     * @example Open.Close <!-- nojquery, datetimepicker -->
+     * <button class="gj-button-md" onclick="picker.open()">Open</button>
+     * <button class="gj-button-md" onclick="picker.close()">Close</button>
      * <hr/>
-     * <input id="input" width="312" />
+     * <input id="picker" width="312" />
      * <script>
-     *     var $picker = $('#input').datetimepicker();
+     *     var picker = new GijgoDateTimePicker(document.getElementById('picker'));
      * </script>
      */
     self.open = function () {
@@ -17267,13 +17296,13 @@ GijgoDateTimePicker = function (element, jsConfig) {
     /** Close the calendar.
      * @method
      * @return datetimepicker
-     * @example Open.Close <!-- datetimepicker -->
-     * <button class="gj-button-md" onclick="$picker.open()">Open</button>
-     * <button class="gj-button-md" onclick="$picker.close()">Close</button>
+     * @example Open.Close <!-- nojquery, datetimepicker -->
+     * <button class="gj-button-md" onclick="picker.open()">Open</button>
+     * <button class="gj-button-md" onclick="picker.close()">Close</button>
      * <hr/>
-     * <input id="input" width="312" />
+     * <input id="picker" width="312" />
      * <script>
-     *     var $picker = $('#input').datetimepicker();
+     *     var picker = new GijgoDateTimePicker(document.getElementById('picker'));
      * </script>
      */
     self.close = function () {
@@ -17283,11 +17312,11 @@ GijgoDateTimePicker = function (element, jsConfig) {
     /** Remove datetimepicker functionality from the element.
      * @method
      * @return jquery element
-     * @example sample <!-- datetimepicker -->
-     * <button class="gj-button-md" onclick="datetimepicker.destroy()">Destroy</button>
-     * <input id="datetimepicker" width="312" />
+     * @example sample <!-- nojquery, datetimepicker -->
+     * <button class="gj-button-md" onclick="picker.destroy()">Destroy</button>
+     * <input id="picker" width="312" />
      * <script>
-     *     var datetimepicker = $('#datetimepicker').datetimepicker();
+     *     var picker = new GijgoDateTimePicker(document.getElementById('picker'));
      * </script>
      */
     self.destroy = function () {
@@ -17849,13 +17878,16 @@ gj.colorpicker.methods = {
     initialize: function ($colorpicker) {
     },
 
-    createPicker: function ($input, data) {
-        var $picker = $('<div role="picker" />').addClass(data.style.picker).attr('guid', $input.attr('data-guid'));
+    createPicker: function (input, data) {
+        var popup = document.createElement('div');
+        popup.setAttribute('role', 'popup');
+        gj.core.addClass(popup, data.style.picker);
+        popup.setAttribute('guid', input.getAttribute('data-guid'));
 
-        $picker.html('test');
+        popup.html('test');
 
-        $picker.hide();
-        $('body').append($picker);
+        popup.hide();
+        $('body').append(popup);
 
         return $picker;
     },
@@ -17944,9 +17976,11 @@ gj.colorpicker.events = {
     }
 };
 
-gj.colorpicker.widget = function ($element, jsConfig) {
+GijgoColorPicker = function (element, jsConfig) {
     var self = this,
-        methods = gj.colorpicker.methods;
+        methods = gj.datepicker.methods;
+
+    self.element = element;
 
     /** Gets or sets the value of the colorpicker.
      * @method
@@ -18012,32 +18046,34 @@ gj.colorpicker.widget = function ($element, jsConfig) {
     self.close = function () {
         return gj.picker.widget.prototype.close.call(this, 'colorpicker');
     };
-
-    $.extend($element, self);
-    if ('true' !== $element.attr('data-colorpicker')) {
-        methods.init.call($element, jsConfig);
+    
+    if ('true' !== element.getAttribute('data-colorpicker')) {
+        methods.init.call(self, jsConfig);
     }
 
-    return $element;
+    return self;
 };
 
-gj.colorpicker.widget.prototype = new gj.picker.widget();
-gj.colorpicker.widget.constructor = gj.colorpicker.widget;
+GijgoColorPicker.prototype = new gj.picker.widget();
+GijgoColorPicker.constructor = gj.colorpicker.widget;
 
-(function ($) {
-    $.fn.colorpicker = function (method) {
-        var $widget;
-        if (this && this.length) {
-            if (typeof method === 'object' || !method) {
-                return new gj.colorpicker.widget(this, method);
-            } else {
-                $widget = new gj.colorpicker.widget(this, null);
-                if ($widget[method]) {
-                    return $widget[method].apply(this, Array.prototype.slice.call(arguments, 1));
+
+if (typeof (jQuery) !== "undefined") {
+    (function ($) {
+        $.fn.colorpicker = function (method) {
+            var widget;
+            if (this && this.length) {
+                if (typeof method === 'object' || !method) {
+                    return new GijgoColorPicker(this, method);
                 } else {
-                    throw 'Method ' + method + ' does not exist.';
+                    widget = new GijgoColorPicker(this, null);
+                    if (widget[method]) {
+                        return widget[method].apply(this, Array.prototype.slice.call(arguments, 1));
+                    } else {
+                        throw 'Method ' + method + ' does not exist.';
+                    }
                 }
             }
-        }
-    };
-})(jQuery);
+        };
+    })(jQuery);
+}

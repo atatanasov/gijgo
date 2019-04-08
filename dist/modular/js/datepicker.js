@@ -1093,8 +1093,7 @@ GijgoDatePicker = function (element, jsConfig) {
     /** Close the calendar.     */    self.close = function () {
         return methods.close(this);
     };
-
-    //$.extend($element, self);
+    
     if ('true' !== element.getAttribute('data-datepicker')) {
         methods.init.call(self, jsConfig);
     }
