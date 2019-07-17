@@ -511,7 +511,7 @@ gj.tree.methods = {
                 result = true;
                 break;
             } else if (gj.tree.methods.pathFinder(data, list[i][data.childrenField], id, parents)) {
-                parents.push(list[i].data[data.textField]);
+                parents.push(list[i][data.textField]);
                 result = true;
                 break;
             }
