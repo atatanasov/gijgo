@@ -218,5 +218,5 @@ ModelManifest.xml
 /dist/libraries
 /bower_components/jquery
 
-
+#PHPStorm
 .idea
