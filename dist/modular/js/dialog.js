@@ -545,3 +545,7 @@ gj.dialog.messages['zh-tw'] = {
     Close: '關閉',
     DefaultTitle: '對話框'
 };
+gj.dialog.messages['hu-hu'] = {
+    Close: 'Bezár',
+    DefaultTitle: 'Dialógus'
+};
