@@ -99,71 +99,73 @@ gj.editor.config = {
 
 gj.editor.methods = {
     init: function (jsConfig) {
-        gj.widget.prototype.init.call(this, jsConfig, 'editor');
-        this.attr('data-editor', 'true');
-        gj.editor.methods.initialize(this);
+        gj.widget.prototype.initJS.call(this, jsConfig, 'editor');
+        this.element.setAttribute('data-editor', 'true');
+        gj.editor.methods.initialize(this, gijgoStorage.get(this.element, 'gijgo'));
         return this;
     },
 
-    initialize: function ($editor) {
-        var self = this, data = $editor.data(),
-            $group, $btn, wrapper, $body, $toolbar;
+    initialize: function (editor, data) {
+        var group, groupEl, btn, btnEl, wrapper, body, toolbar;
 
-        $editor.hide();
+        editor.element.style.display = 'none';
 
-        if ($editor[0].parentElement.attributes.role !== 'wrapper') {
+        if (editor.element.parentElement.attributes.role !== 'wrapper') {
             wrapper = document.createElement('div');
             wrapper.setAttribute('role', 'wrapper');
-            $editor[0].parentNode.insertBefore(wrapper, $editor[0]);
-            wrapper.appendChild($editor[0]);
+            editor.element.parentNode.insertBefore(wrapper, editor.element);
+            wrapper.appendChild(editor.element);
         }
 
         gj.editor.methods.localization(data);
-        $(wrapper).addClass(data.style.wrapper);
+        gj.core.addClasses(wrapper, data.style.wrapper);
         if (data.width) {
-            $(wrapper).width(data.width);
+            wrapper.style.width = data.width;
         }
 
-        $body = $(wrapper).children('div[role="body"]');
-        if ($body.length === 0) {
-            $body = $('<div role="body"></div>');
-            $(wrapper).append($body);
-            if ($editor[0].innerText) {
-                $body[0].innerHTML = $editor[0].innerText;
+        body = wrapper.querySelector('div[role="body"]');
+        if (!body) {
+            body = document.createElement('div');
+            body.setAttribute('role', 'body');
+            wrapper.appendChild(body);
+            if (editor.element.innerText) {
+                body.innerHTML = editor.element.innerText;
             }
         }
-        $body.attr('contenteditable', true);
-        $body.on('keydown', function (e) {
+        body.setAttribute('contenteditable', true);
+        body.addEventListener('keydown', function (e) {
             var key = e.keyCode || e.charCode;
-            if (gj.editor.events.changing($editor) === false && key !== 8 && key !== 46) {
+            if (gj.editor.events.changing(editor.element) === false && key !== 8 && key !== 46) {
                 e.preventDefault();
             }
         });
-        $body.on('mouseup keyup mouseout cut paste', function (e) {
-            self.updateToolbar($editor, $toolbar);
-            gj.editor.events.changed($editor);
-            $editor.html($body.html());
+        body.addEventListener('mouseup keyup mouseout cut paste', function (e) {
+            self.updateToolbar(editor, toolbar, data);
+            gj.editor.events.changed(editor);
+            editor.html(body.html());
         });
 
-        $toolbar = $(wrapper).children('div[role="toolbar"]');
-        if ($toolbar.length === 0) {
-            $toolbar = $('<div role="toolbar"></div>');
-            $body.before($toolbar);
+        toolbar = wrapper.querySelector('div[role="toolbar"]');
+        if (!toolbar) {
+            toolbar = document.createElement('div');
+            toolbar.setAttribute('role', 'toolbar');
+            body.parentNode.insertBefore(toolbar, body);
 
-            for (var group in data.buttons) {
-                $group = $('<div />').addClass(data.style.buttonsGroup);
-                for (var btn in data.buttons[group]) {
-                    $btn = $(data.buttons[group][btn]);
-                    $btn.on('click', function () {
-                        gj.editor.methods.executeCmd($editor, $body, $toolbar, $(this));
+            for (group in data.buttons) {
+                groupEl = document.createElement('div');
+                groupEl.classList.add(data.style.buttonsGroup);
+                for (btn in data.buttons[group]) {
+                    btnEl = gj.core.createElement(data.buttons[group][btn]);
+                    btnEl.addEventListener('click', function () {
+                        gj.editor.methods.executeCmd(editor, body, toolbar, this, data);
                     });
-                    $group.append($btn);
+                    groupEl.appendChild(btnEl);
                 }
-                $toolbar.append($group);
+                toolbar.appendChild(groupEl);
             }
         }
 
-        $body.height(data.height - gj.core.height($toolbar[0], true));
+        body.style.height = data.height - gj.core.height(toolbar, true) + 'px';
     },
 
     localization: function (data) {
@@ -196,49 +198,47 @@ gj.editor.methods = {
         }
     },
 
-    updateToolbar: function ($editor, $toolbar) {
-        var data = $editor.data();
-        $buttons = $toolbar.find('[role]').each(function() {
-            var $btn = $(this),
-                cmd = $btn.attr('role');
+    updateToolbar: function (editor, toolbar, data) {
+        buttons = toolbar.querySelectorAll('[role]').forEach(function(btn) {
+            var cmd = btn.getAttribute('role');
 
             if (cmd && document.queryCommandEnabled(cmd) && document.queryCommandValue(cmd) === "true") {
-                $btn.addClass(data.style.buttonActive);
+                btn.classList.add(data.style.buttonActive);
             } else {
-                $btn.removeClass(data.style.buttonActive);
+                btn.classList.remove(data.style.buttonActive);
             }
         });
     },
 
-    executeCmd: function ($editor, $body, $toolbar, $btn) {
-        $body.focus();
-        document.execCommand($btn.attr('role'), false);
-        gj.editor.methods.updateToolbar($editor, $toolbar);
+    executeCmd: function (editor, body, toolbar, btn, data) {
+        body.focus();
+        document.execCommand(btn.getAttribute('role'), false);
+        gj.editor.methods.updateToolbar(editor, toolbar, data);
     },
 
-    content: function ($editor, html) {
-        var $body = $editor.parent().children('div[role="body"]');
-        if (typeof (html) === "undefined") {
-            return $body.html();
+    content: function (editor, html) {
+        var body = editor.element.parentElement.querySelector('div[role="body"]');
+        if (typeof html === "undefined") {
+            return body.innerHTML;
         } else {
-            return $body.html(html);
+            body.innerHTML = html;
         }
     },
 
-    destroy: function ($editor) {
-        var $wrapper;
-        if ($editor.attr('data-editor') === 'true') {
-            $wrapper = $editor.parent();
-            $wrapper.children('div[role="body"]').remove();
-            $wrapper.children('div[role="toolbar"]').remove();
-            $editor.unwrap();
-            $editor.removeData();
-            $editor.removeAttr('data-guid');
-            $editor.removeAttr('data-editor');
-            $editor.off();
-            $editor.show();
+    destroy: function (editor) {
+        var wrapper;
+        if (editor.element.getAttribute('data-editor') === 'true') {
+            wrapper = editor.element.parentElement;
+            wrapper.querySelector('div[role="body"]').remove();
+            wrapper.querySelector('div[role="toolbar"]').remove();
+            editor.element.outerHTML = editor.element.innerHTML;
+            gijgoStorage.remove(editor.element, 'gijgo');
+            editor.element.removeAttribute('data-guid');
+            editor.element.removeAttribute('data-editor');
+            //$editor.off();
+            editor.element.display = 'block';
         }
-        return $editor;
+        return editor;
     }
 };
 
@@ -246,20 +246,22 @@ gj.editor.events = {
 
     /**
      * Event fires before change of text in the editor.
-     *     */    changing: function ($editor) {
-        return $editor.triggerHandler('changing');
+     *     */    changing: function (el) {
+        return el.dispatchEvent(new Event('changing'));
     },
 
     /**
      * Event fires after change of text in the editor.
-     *     */    changed: function ($editor) {
-        return $editor.triggerHandler('changed');
+     *     */    changed: function (el) {
+        return el.dispatchEvent(new Event('changed'));
     }
 };
 
-gj.editor.widget = function ($element, jsConfig) {
+GijgoEditor = function (element, jsConfig) {
     var self = this,
         methods = gj.editor.methods;
+
+    self.element = element;
 
     /** Get or set html content in the body.     */    self.content = function (html) {
         return methods.content(this, html);
@@ -269,34 +271,35 @@ gj.editor.widget = function ($element, jsConfig) {
         return methods.destroy(this);
     };
 
-    $.extend($element, self);
-    if ('true' !== $element.attr('data-editor')) {
-        methods.init.call($element, jsConfig);
+    if ('true' !== element.getAttribute('data-editor')) {
+        methods.init.call(self, jsConfig);
     }
 
-    return $element;
+    return self;
 };
 
-gj.editor.widget.prototype = new gj.widget();
-gj.editor.widget.constructor = gj.editor.widget;
+GijgoEditor.prototype = new gj.widget();
+GijgoEditor.constructor = gj.editor.widget;
 
-(function ($) {
-    $.fn.editor = function (method) {
-        var $widget;
-        if (this && this.length) {
-            if (typeof method === 'object' || !method) {
-                return new gj.editor.widget(this, method);
-            } else {
-                $widget = new gj.editor.widget(this, null);
-                if ($widget[method]) {
-                    return $widget[method].apply(this, Array.prototype.slice.call(arguments, 1));
+if (typeof (jQuery) !== "undefined") {
+    (function ($) {
+        $.fn.editor = function (method) {
+            var widget;
+            if (this && this.length) {
+                if (typeof method === 'object' || !method) {
+                    return new GijgoEditor(this, method);
                 } else {
-                    throw 'Method ' + method + ' does not exist.';
+                    widget = new GijgoEditor(this, null);
+                    if (widget[method]) {
+                        return widget[method].apply(this, Array.prototype.slice.call(arguments, 1));
+                    } else {
+                        throw 'Method ' + method + ' does not exist.';
+                    }
                 }
             }
-        }
-    };
-})(jQuery);
+        };
+    })(jQuery);
+}
 
 gj.editor.messages['en-us'] = {
     bold: 'Bold',

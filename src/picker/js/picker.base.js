@@ -153,7 +153,8 @@ gj.picker.widget.prototype.close = function (type) {
 gj.picker.widget.prototype.destroy = function (type) {
     var data = gijgoStorage.get(this.element, 'gijgo'),
         parent = this.element.parentElement,
-        picker = document.body.querySelector('[role="picker"][guid="' + this.getAttribute('data-guid') + '"]');
+        picker = document.body.querySelector('[role="picker"][guid="' + this.element.getAttribute('data-guid') + '"]'),
+        rightIcon = this.element.parentElement.querySelector('[role="right-icon"]');
     if (data) {
         //this.off();
         if (parent.getAttribute('role') === 'modal') {
@@ -164,7 +165,11 @@ gj.picker.widget.prototype.destroy = function (type) {
         this.element.removeAttribute('data-guid');
         this.element.removeAttribute('data-datepicker');
         this.element.removeAttribute('class');
-        this.element.removeChild(this.element.querySelector('[role="right-icon"]'));
+        if (rightIcon) {
+            this.element.parentElement.removeChild(rightIcon);
+        }
+        this.element.removeEventListener('focus');
+        this.element.removeEventListener('blur');
         picker.parentNode.removeChild(picker);
     }
     return this;

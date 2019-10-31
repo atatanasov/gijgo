@@ -4,7 +4,6 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Example</title>
-  <script src="../../dist/libraries/jquery/jquery.js"></script>
   <script src="../../dist/modular/js/core.js" type="text/javascript"></script>
   <link href="../../dist/modular/css/core.css" rel="stylesheet" type="text/css">
   <link href="../../dist/modular/css/editor.css" rel="stylesheet" type="text/css">
@@ -12,11 +11,11 @@
   <script src="../../dist/modular/js/editor.js"></script>
 </head>
 <body style="padding: 8px;">
- <button class="gj-button-md" onclick="$editor.content('<h1>new value</h1>')">Set Content</button>
+ <button class="gj-button-md" onclick="editor.content('<h1>new value</h1>')">Set Content</button>
  <hr/>
  <textarea id="editor"></textarea>
  <script>
-     var $editor = $('#editor').editor();
+     var editor = new GijgoEditor(document.getElementById('editor'));
  </script>
 </body>
 </html>

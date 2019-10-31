@@ -663,9 +663,11 @@ gj.dropdown.events = {
     }
 };
 
-gj.dropdown.widget = function ($element, jsConfig) {
+GijgoDropDown = function (element, jsConfig) {
     var self = this,
-        methods = gj.dropdown.methods;
+        methods = gj.datepicker.methods;
+
+    self.element = element;
 
     /** Gets or sets the value of the DropDown.
      * @method
@@ -724,33 +726,35 @@ gj.dropdown.widget = function ($element, jsConfig) {
         return methods.destroy(this);
     };
 
-    $.extend($element, self);
-    if ('true' !== $element.attr('data-dropdown')) {
-        methods.init.call($element, jsConfig);
+    if ('true' !== element.attr('data-dropdown')) {
+        methods.init.call(self, jsConfig);
     }
 
-    return $element;
+    return self;
 };
 
-gj.dropdown.widget.prototype = new gj.widget();
-gj.dropdown.widget.constructor = gj.dropdown.widget;
+GijgoDropDown.prototype = new gj.widget();
+GijgoDropDown.constructor = gj.dropdown.widget;
 
-gj.dropdown.widget.prototype.getHTMLConfig = gj.dropdown.methods.getHTMLConfig;
+GijgoDropDown.prototype.getHTMLConfig = gj.dropdown.methods.getHTMLConfig;
 
-(function ($) {
-    $.fn.dropdown = function (method) {
-        var $widget;
-        if (this && this.length) {
-            if (typeof method === 'object' || !method) {
-                return new gj.dropdown.widget(this, method);
-            } else {
-                $widget = new gj.dropdown.widget(this, null);
-                if ($widget[method]) {
-                    return $widget[method].apply(this, Array.prototype.slice.call(arguments, 1));
+
+if (typeof (jQuery) !== "undefined") {
+    (function ($) {
+        $.fn.dropdown = function (method) {
+            var widget;
+            if (this && this.length) {
+                if (typeof method === 'object' || !method) {
+                    return new GijgoDropDown(this, method);
                 } else {
-                    throw 'Method ' + method + ' does not exist.';
+                    widget = new GijgoDropDown(this, null);
+                    if (widget[method]) {
+                        return widget[method].apply(this, Array.prototype.slice.call(arguments, 1));
+                    } else {
+                        throw 'Method ' + method + ' does not exist.';
+                    }
                 }
             }
-        }
-    };
-})(jQuery);
+        };
+    })(jQuery);
+}

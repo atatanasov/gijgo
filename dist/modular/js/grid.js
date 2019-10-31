@@ -1192,9 +1192,11 @@ gj.grid.methods = {
     }
 };
 
-/**  */gj.grid.widget = function ($grid, jsConfig) {
+/**  */GijgoGrid = function (element, jsConfig) {
     var self = this,
-        methods = gj.grid.methods;
+        methods = gj.datepicker.methods;
+
+    self.element = element;
 
     /**
      * Reload the data in the grid from a data source.     */    self.reload = function (params) {
@@ -1293,37 +1295,39 @@ gj.grid.methods = {
         return methods.removeRow(this, id);
     };
 
-    $.extend($grid, self);
-    if ('grid' !== $grid.attr('data-type')) {
-        methods.init.call($grid, jsConfig);
+    if ('grid' !== element.attr('data-type')) {
+        methods.init.call(self, jsConfig);
     }
 
-    return $grid;
-}
+    return self;
+};
 
-gj.grid.widget.prototype = new gj.widget();
-gj.grid.widget.constructor = gj.grid.widget;
+GijgoGrid.prototype = new gj.widget();
+GijgoGrid.constructor = gj.grid.widget;
 
-gj.grid.widget.prototype.getConfig = gj.grid.methods.getConfig;
-gj.grid.widget.prototype.getHTMLConfig = gj.grid.methods.getHTMLConfig;
+GijgoGrid.prototype.getConfig = gj.grid.methods.getConfig;
+GijgoGrid.prototype.getHTMLConfig = gj.grid.methods.getHTMLConfig;
 
-(function ($) {
-    $.fn.grid = function (method) {
-        var $widget;
-        if (this && this.length) {
-            if (typeof method === 'object' || !method) {
-                return new gj.grid.widget(this, method);
-            } else {
-                $widget = new gj.grid.widget(this, null);
-                if ($widget[method]) {
-                    return $widget[method].apply(this, Array.prototype.slice.call(arguments, 1));
+
+if (typeof (jQuery) !== "undefined") {
+    (function ($) {
+        $.fn.grid = function (method) {
+            var widget;
+            if (this && this.length) {
+                if (typeof method === 'object' || !method) {
+                    return new GijgoGrid(this, method);
                 } else {
-                    throw 'Method ' + method + ' does not exist.';
+                    widget = new GijgoGrid(this, null);
+                    if (widget[method]) {
+                        return widget[method].apply(this, Array.prototype.slice.call(arguments, 1));
+                    } else {
+                        throw 'Method ' + method + ' does not exist.';
+                    }
                 }
             }
-        }
-    };
-})(jQuery);
+        };
+    })(jQuery);
+}
 
 /** */gj.grid.plugins.fixedHeader = {
     config: {

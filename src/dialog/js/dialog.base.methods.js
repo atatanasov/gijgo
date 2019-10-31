@@ -1,7 +1,7 @@
 ﻿gj.dialog.methods = {
 
     init: function (jsConfig) {
-        gj.widget.prototype.init.call(this, jsConfig, 'dialog');
+        gj.widget.prototype.initJS.call(this, jsConfig, 'dialog');
 
         gj.dialog.methods.localization(this);
         gj.dialog.methods.initialize(this);
@@ -9,72 +9,75 @@
         return this;
     },
 
-    localization: function($dialog) {
-        var data = $dialog.data();
-        if (typeof (data.title) === 'undefined') {
+    localization: function(dialog) {
+        var data = gijgoStorage.get(dialog.element, 'gijgo');
+        if (typeof data.title === 'undefined') {
             data.title = gj.dialog.messages[data.locale].DefaultTitle;
         }
     },
 
     getHTMLConfig: function () {
         var result = gj.widget.prototype.getHTMLConfig.call(this),
-            attrs = this[0].attributes;
+            attrs = this.attributes;
         if (attrs['title']) {
             result.title = attrs['title'].value;
         }
         return result;
     },
 
-    initialize: function ($dialog) {
-        var data = $dialog.data(),
-            $header, $body, $footer;
+    initialize: function (dialog) {
+        var data, header, body, footer;
+        data = gijgoStorage.get(dialog.element, 'gijgo');
 
-        $dialog.addClass(data.style.content);
+        gj.core.addClass(dialog.element, data.style.content);
 
-        gj.dialog.methods.setSize($dialog);
+        gj.dialog.methods.setSize(dialog.element, data);
 
         if (data.closeOnEscape) {
-            $(document).keyup(function (e) {
+            document.addEventListener('keyup', function (e) {
                 if (e.keyCode === 27) {
-                    $dialog.close();
+                    dialog.close();
                 }
             });
         }
 
-        $body = $dialog.children('div[data-role="body"]');
-        if ($body.length === 0) {
-            $body = $('<div data-role="body"/>').addClass(data.style.body);
-            $dialog.wrapInner($body);
-        } else {
-            $body.addClass(data.style.body);
+        body = dialog.element.querySelector('div[data-role="body"]');
+        if (!body) {
+            body = document.createElement('div');
+            body.setAttribute('role', 'body');
+            dialog.element.addChild(body);
+        }
+        gj.core.addClasses(body, data.style.body);
+
+        header = gj.dialog.methods.renderHeader(dialog, data);
+
+        footer = dialog.element.querySelector('div[data-role="footer"]');
+        if (footer) {
+            gj.core.addClasses(footer, data.style.footer);
         }
 
-        $header = gj.dialog.methods.renderHeader($dialog);
-
-        $footer = $dialog.children('div[data-role="footer"]').addClass(data.style.footer);
-
-        $dialog.find('[data-role="close"]').on('click', function () {
-            $dialog.close();
+        dialog.querySelector('[data-role="close"]').addEventListener('click', function () {
+            dialog.close();
         });
 
         if (gj.draggable) {
             if (data.draggable) {
-                gj.dialog.methods.draggable($dialog, $header);
+                gj.dialog.methods.draggable(dialog, header);
             }
             if (data.resizable) {
-                gj.dialog.methods.resizable($dialog);
+                gj.dialog.methods.resizable(dialog);
             }
         }
 
         if (data.scrollable && data.height) {
-            $dialog.addClass('gj-dialog-scrollable');
-            $dialog.on('opened', function () {
-                var $body = $dialog.children('div[data-role="body"]');
-                $body.css('height', data.height - $header.outerHeight() - ($footer.length ? $footer.outerHeight() : 0));
+            dialog.element.classList.add('gj-dialog-scrollable');
+            dialog.element.addEventListener('opened', function () {
+                var body = dialog.element.querySelector('div[data-role="body"]');
+                body.style.height = (data.height - $header.outerHeight() - ($footer.length ? $footer.outerHeight() : 0)) + 'px';
             });            
         }
 
-        gj.core.center($dialog[0]);
+        gj.core.center(dialog.element);
 
         if (data.modal) {
             $dialog.wrapAll('<div data-role="modal" class="' + data.style.modal + '"/>');
@@ -85,41 +88,44 @@
         }
     },
 
-    setSize: function ($dialog) {
-        var data = $dialog.data();
+    setSize: function (dialog, data) {
         if (data.width) {
-            $dialog.css("width", data.width);
+            dialog.element.width = data.width + 'px';
         }
         if (data.height) {
-            $dialog.css("height", data.height);
+            dialog.element.height = data.height + 'px';
         }
     },
 
-    renderHeader: function ($dialog) {
-        var $header, $title, $closeButton, data = $dialog.data();
-        $header = $dialog.children('div[data-role="header"]');
-        if ($header.length === 0) {
-            $header = $('<div data-role="header" />');
-            $dialog.prepend($header);
+    renderHeader: function (dialog, data) {
+        var header, title, closeButton;
+        header = dialog.element.querySelector('div[data-role="header"]');
+        if (!header) {
+            header = document.createElement('div');
+            header.setAttribute('role', 'header');
+            dialog.element.parentElement.insertBefore(header, dialog.element);
         }
-        $header.addClass(data.style.header);
+        gj.core.addClasses(header, data.style.header);
 
-        $title = $header.find('[data-role="title"]');
-        if ($title.length === 0) {
-            $title = $('<h4 data-role="title">' + data.title + '</h4>');
-            $header.append($title);
+        title = header.querySelector('[data-role="title"]');
+        if (!title) {
+            title = document.createElement('h4');
+            title.setAttribute('role', 'title');
+            title.innerHTML = data.title;
+            header.appendChild(title);
         }
-        $title.addClass(data.style.headerTitle);
+        gj.core.addClasses(title, data.style.headerTitle);
 
-        $closeButton = $header.find('[data-role="close"]');
-        if ($closeButton.length === 0 && data.closeButtonInHeader) {
+        closeButton = header.querySelector('[data-role="close"]');
+        if (!closeButton && data.closeButtonInHeader) {
+            closeButton = document.createElement('button');
             $closeButton = $('<button type="button" data-role="close" title="' + gj.dialog.messages[data.locale].Close + '"><span>×</span></button>');
             $closeButton.addClass(data.style.headerCloseButton);
             $header.append($closeButton);
-        } else if ($closeButton.length > 0 && data.closeButtonInHeader === false) {
-            $closeButton.hide();
+        } else if (closeButton && data.closeButtonInHeader === false) {
+            closeButton.style.display = 'node';
         } else {
-            $closeButton.addClass(data.style.headerCloseButton);
+            closeButton.classList.add(data.style.headerCloseButton);
         }
 
         return $header;

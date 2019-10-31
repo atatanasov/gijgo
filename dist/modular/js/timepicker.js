@@ -86,8 +86,8 @@ gj.timepicker.methods = {
     initMouse: function (body, input, picker, data) {
         //body = body.parentNode.replaceChild(body.cloneNode(true), body); // remove all event listeners
         body.addEventListener('mousedown', gj.timepicker.methods.mouseDownHandler(picker));
-        body.addEventListener('mousemove', gj.timepicker.methods.mouseMoveHandler(input, picker, data));
-        body.addEventListener('mouseup', gj.timepicker.methods.mouseUpHandler(input, picker, data));
+        body.addEventListener('mousemove', gj.timepicker.methods.mouseMoveHandler(input, picker));
+        body.addEventListener('mouseup', gj.timepicker.methods.mouseUpHandler(input, picker));
     },
 
     createPopup: function (picker) {
@@ -95,6 +95,7 @@ gj.timepicker.methods = {
             data = gijgoStorage.get(picker.element, 'gijgo'),
             clock = document.createElement('div'),
             hour = document.createElement('div'),
+            separator = document.createElement('span'),
             minute = document.createElement('div'),
             header = document.createElement('div'),
             mode = document.createElement('div'),
@@ -137,7 +138,8 @@ gj.timepicker.methods = {
                 gj.timepicker.methods.renderMinutes(picker.element, clock, data);
             });
             header.appendChild(hour);
-            header.innerHTML += ':';
+            separator.innerText = ':';
+            header.appendChild(separator);
             header.appendChild(minute);
 
             if (data.mode === 'ampm') {
@@ -228,7 +230,7 @@ gj.timepicker.methods = {
                 value = gj.core.formatDate(date, data.format, data.locale);
             picker.value(value);
             picker.close();
-        }
+        };
     },
 
     getPointerValue: function (x, y, mode) {
@@ -335,31 +337,33 @@ gj.timepicker.methods = {
     mouseDownHandler: function (picker) {
         return function (e) {
             picker.mouseMove = true;
-        }
+        };
     },
 
-    mouseMoveHandler: function (picker, clock, data) {
+    mouseMoveHandler: function (picker, clock) {
         return function (e) {
+            var data = gijgoStorage.get(picker.element, 'gijgo');
             if (picker.mouseMove) {
                 gj.timepicker.methods.updateArrow(e, picker, clock, data);
             }
-        }
+        };
     },
 
-    mouseUpHandler: function (picker, clock, data) {
+    mouseUpHandler: function (picker, clock) {
         return function (e) {
+            var data = gijgoStorage.get(picker.element, 'gijgo');
             gj.timepicker.methods.updateArrow(e, picker, clock, data);
             picker.mouseMove = false;
             if (!data.modal) {
                 clearTimeout(picker.timeout);
                 picker.element.focus();
             }
-            if (data.dialMode == 'hours') {
+            if (data.dialMode === 'hours') {
                 setTimeout(function () {
                     gj.timepicker.events.select(picker.element, 'hour');
                     gj.timepicker.methods.renderMinutes(picker, clock, data);
                 }, 1000);
-            } else if (data.dialMode == 'minutes') {
+            } else if (data.dialMode === 'minutes') {
                 if (data.footer !== true && data.autoClose !== false) {
                     gj.timepicker.methods.setTime(picker, clock)();
                 }
