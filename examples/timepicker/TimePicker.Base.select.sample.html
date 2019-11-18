@@ -19,8 +19,8 @@
          change: function (e) {
              alert('Change is fired');
          },
-         select: function (e, type) {
-             alert('Select from type of "' + type + '" is fired');
+         select: function (e) {
+             alert('Select from type of "' + e.detail.type + '" is fired');
          }
      });
  </script>

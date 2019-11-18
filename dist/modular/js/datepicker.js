@@ -1,5 +1,5 @@
 /*
- * Gijgo DatePicker v1.9.10
+ * Gijgo DatePicker v2.0.0-alpha-1
  * http://gijgo.com/datepicker
  *
  * Copyright 2014, 2018 gijgo.com
@@ -1058,7 +1058,7 @@ gj.datepicker.events = {
     /**
      * Triggered when new value is selected inside the picker.
      *     */    select: function (el, type) {
-        return el.dispatchEvent(new CustomEvent('select', { 'type': type }));
+        return el.dispatchEvent(new CustomEvent('select', { detail: { 'type': type } }));
     },
 
     /**

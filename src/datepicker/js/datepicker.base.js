@@ -1657,14 +1657,14 @@ gj.datepicker.events = {
      *         change: function (e) {
      *             alert('Change is fired');
      *         },
-     *         select: function (e, type) {
-     *             alert('Select from type of "' + type + '" is fired');
+     *         select: function (e) {
+     *             alert('Select from type of "' + e.detail.type + '" is fired');
      *         }
      *     });
      * </script>
      */
     select: function (el, type) {
-        return el.dispatchEvent(new CustomEvent('select', { 'type': type }));
+        return el.dispatchEvent(new CustomEvent('select', { detail: { 'type': type } }));
     },
 
     /**

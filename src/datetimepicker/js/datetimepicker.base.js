@@ -304,11 +304,11 @@ gj.datetimepicker.methods = {
 
         popup = document.body.querySelector('[role="picker"][guid="' + picker.element.getAttribute('data-guid') + '"]');
 
-        picker.element.addEventListener('select', function (e, type) {
+        picker.element.addEventListener('select', function (e) {
             var selectedDay, value;
-            if (type === 'day') {
-                gj.datetimepicker.methods.createShowHourHandler($datetimepicker, $picker, data)();
-            } else if (type === 'minute') {
+            if (e.detail.type === 'day') {
+                gj.datetimepicker.methods.createShowHourHandler(picker, popup, data)();
+            } else if (e.detail.type === 'minute') {
                 if (picker.element.getAttribute('selectedDay') && data.footer !== true) {
                     selectedDay = picker.element.getAttribute('selectedDay').split('-');
                     date = new Date(selectedDay[0], selectedDay[1], selectedDay[2], picker.element.getAttribute('hour') || 0, picker.element.getAttribute('minute') || 0);
@@ -471,7 +471,7 @@ gj.datetimepicker.events = {
      *
      * @event change
      * @param {object} e - event data
-    * @example sample <!--nojquery, datetimepicker -->
+     * @example sample <!--nojquery, datetimepicker -->
      * <input id="input" width="312" />
      * <script>
      *     new GijgoDateTimePicker(document.getElementById('picker'), {

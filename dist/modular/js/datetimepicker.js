@@ -1,5 +1,5 @@
 /*
- * Gijgo DateTimePicker v1.9.10
+ * Gijgo DateTimePicker v2.0.0-alpha-1
  * http://gijgo.com/datetimepicker
  *
  * Copyright 2014, 2018 gijgo.com
@@ -107,11 +107,11 @@ gj.datetimepicker.methods = {
 
         popup = document.body.querySelector('[role="picker"][guid="' + picker.element.getAttribute('data-guid') + '"]');
 
-        picker.element.addEventListener('select', function (e, type) {
+        picker.element.addEventListener('select', function (e) {
             var selectedDay, value;
-            if (type === 'day') {
-                gj.datetimepicker.methods.createShowHourHandler($datetimepicker, $picker, data)();
-            } else if (type === 'minute') {
+            if (e.detail.type === 'day') {
+                gj.datetimepicker.methods.createShowHourHandler(picker, popup, data)();
+            } else if (e.detail.type === 'minute') {
                 if (picker.element.getAttribute('selectedDay') && data.footer !== true) {
                     selectedDay = picker.element.getAttribute('selectedDay').split('-');
                     date = new Date(selectedDay[0], selectedDay[1], selectedDay[2], picker.element.getAttribute('hour') || 0, picker.element.getAttribute('minute') || 0);
