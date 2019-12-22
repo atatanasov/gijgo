@@ -210,7 +210,7 @@ gj.datepicker.methods = {
             });
             calendar.addEventListener('click', function () {
                 clearTimeout(picker.timeout);
-                document.activeElement !== picker.element && picker.element.focus();
+                //document.activeElement !== picker.element && picker.element.focus(); //breaks datetimepicker
             });
         }
 
@@ -321,24 +321,28 @@ gj.datepicker.methods = {
     },
 
     updateHeader: function (calendar, data, date) {
-        var yearEl, dateEl, hour, minute;
+        var yearEl, dateEl, hour, minute,
+            header = calendar.querySelector('[role="header"]');
 
-        if (data.header) {
-            yearEl = calendar.querySelector('[role="header"] [role="year"]');
-            yearEl.classList.remove('selected');
-            yearEl.innerHTML = gj.core.formatDate(date, 'yyyy', data.locale);
+        if (header) {
+            yearEl = header.querySelector('[role="year"]');
+            if (yearEl) {
+                yearEl.classList.remove('selected');
+                yearEl.innerHTML = gj.core.formatDate(date, 'yyyy', data.locale);
+            }
 
-            dateEl = calendar.querySelector('[role="header"] [role="date"]');
+            dateEl = header.querySelector('[role="date"]');
             dateEl.classList.add('selected');
             dateEl.innerHTML = gj.core.formatDate(date, 'ddd, mmm dd', data.locale);
 
-            hour = calendar.querySelector('[role="header"] [role="hour"]');
+            // update hours and minutes for datetimepickers
+            hour = header.querySelector('[role="hour"]');
             if (hour) {
                 hour.classList.remove('selected');
                 hour.innerHTML = gj.core.formatDate(date, 'HH', data.locale);
             }
 
-            minute = calendar.querySelector('[role="header"] [role="minute"]');
+            minute = header.querySelector('[role="minute"]');
             if (minute) {
                 minute.classList.remove('selected');
                 minute.innerHTML = gj.core.formatDate(date, 'MM', data.locale);
@@ -445,7 +449,7 @@ gj.datepicker.methods = {
                     cell.setAttribute('month', prevMonth.month);
                     cell.setAttribute('year', prevMonth.year);
                     dayEl.addEventListener('click', gj.datepicker.methods.dayClickHandler(picker, calendar, data, date));
-                    dayEl.addEventListener('mousedown', function (e) { e.stopPropagation() });
+                    dayEl.addEventListener('mousedown', function (e) { e.stopPropagation(); });
                 } else {
                     cell.classList.add('disabled');
                 }
@@ -803,6 +807,7 @@ gj.datepicker.methods = {
         return function (e) {
             e && e.stopPropagation();
             gj.datepicker.methods.selectDay(picker, calendar, data, date);
+            gj.datepicker.events.select(picker.element, 'day');
             if (data.footer !== true && data.autoClose !== false) {
                 gj.datepicker.methods.change(picker, calendar, data, date);
             }
@@ -837,7 +842,6 @@ gj.datepicker.methods = {
             cell.classList.add('selected');
         }
         gj.datepicker.methods.updateHeader(calendar, data, date);
-        gj.datepicker.events.select(picker.element, 'day');
     },
 
     selectMonth: function (picker, calendar, data, month) {
@@ -878,9 +882,6 @@ gj.datepicker.methods = {
             }
 
             switch (calendar.getAttribute('type')) {
-                case 'month':
-                    gj.datepicker.methods.renderMonth(picker, calendar, data);
-                    break;
                 case 'year':
                     gj.datepicker.methods.renderYear(picker, calendar, data);
                     break;
@@ -889,6 +890,9 @@ gj.datepicker.methods = {
                     break;
                 case 'century':
                     gj.datepicker.methods.renderCentury(picker, calendar, data);
+                    break;
+                default:
+                    gj.datepicker.methods.renderMonth(picker, calendar, data);
                     break;
             }
 

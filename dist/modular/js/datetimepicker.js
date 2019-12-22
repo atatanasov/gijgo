@@ -108,7 +108,7 @@ gj.datetimepicker.methods = {
         popup = document.body.querySelector('[role="picker"][guid="' + picker.element.getAttribute('data-guid') + '"]');
 
         picker.element.addEventListener('select', function (e) {
-            var selectedDay, value;
+            var selectedDay, date, value;
             if (e.detail.type === 'day') {
                 gj.datetimepicker.methods.createShowHourHandler(picker, popup, data)();
             } else if (e.detail.type === 'minute') {
@@ -196,10 +196,10 @@ gj.datetimepicker.methods = {
     },
 
     createShowDateHandler: function (picker, clock, data) {
-        return function (e) {
+        return function () {
             var header = clock.querySelector('[role="header"]');
-            header.querySelector('[role="calendarMode"]').classList.add('selected');
             header.querySelector('[role="date"]').classList.add('selected');
+            header.querySelector('[role="calendarMode"]').classList.add('selected');
             header.querySelector('[role="clockMode"]').classList.remove('selected');
             header.querySelector('[role="hour"]').classList.remove('selected');
             header.querySelector('[role="minute"]').classList.remove('selected');
@@ -207,16 +207,16 @@ gj.datetimepicker.methods = {
         };
     },
 
-    createShowHourHandler: function (picker, clock, data) {
+    createShowHourHandler: function (picker, popup, data) {
         return function () {
-            var header = clock.querySelector('[role="header"]');
+            var header = popup.querySelector('[role="header"]');
             header.querySelector('[role="calendarMode"]').classList.remove('selected');
             header.querySelector('[role="date"]').classList.remove('selected');
             header.querySelector('[role="clockMode"]').classList.add('selected');
             header.querySelector('[role="hour"]').classList.add('selected');
             header.querySelector('[role="minute"]').classList.remove('selected');
 
-            gj.timepicker.methods.renderHours(picker, clock, data.timepicker);
+            gj.timepicker.methods.renderHours(picker, popup, data.timepicker);
         };
     },
 
@@ -246,7 +246,7 @@ gj.datetimepicker.methods = {
             date = gj.core.parseDate(value, data.format, data.locale);
             if (date) {
                 clock = document.body.querySelector('[role="picker"][guid="' + picker.element.getAttribute('data-guid') + '"]');                
-                gj.datepicker.methods.selectDay(picker, clock, data.datepicker, date); //gj.datepicker.methods.dayClickHandler(picker, clock, data.datepicker, date)();
+                gj.datepicker.methods.selectDay(picker, clock, data.datepicker, date);
                 gj.timepicker.methods.setAttributes(clock, data.timepicker, date);
                 picker.element.value = value;
             } else {

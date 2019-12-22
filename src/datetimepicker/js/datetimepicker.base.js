@@ -63,10 +63,10 @@ gj.datetimepicker.config = {
          * @example Javascript <!-- nojquery, datetimepicker -->
          * <input id="picker" width="300" />
          * <script>
-         *    new GijgoDateTimePicker(document.getElementById('picker'), { value: '22:10 03/27/2018' });
+         *    new GijgoDateTimePicker(document.getElementById('picker'), { value: '22:10 03/27/2020' });
          * </script>
          * @example HTML <!-- nojquery, datetimepicker -->
-         * <input id="picker" width="300" value="22:10 03/27/2018" />
+         * <input id="picker" width="300" value="22:10 03/27/2020" />
          * <script>
          *     new GijgoDateTimePicker(document.getElementById('picker'));
          * </script>
@@ -305,7 +305,7 @@ gj.datetimepicker.methods = {
         popup = document.body.querySelector('[role="picker"][guid="' + picker.element.getAttribute('data-guid') + '"]');
 
         picker.element.addEventListener('select', function (e) {
-            var selectedDay, value;
+            var selectedDay, date, value;
             if (e.detail.type === 'day') {
                 gj.datetimepicker.methods.createShowHourHandler(picker, popup, data)();
             } else if (e.detail.type === 'minute') {
@@ -393,10 +393,10 @@ gj.datetimepicker.methods = {
     },
 
     createShowDateHandler: function (picker, clock, data) {
-        return function (e) {
+        return function () {
             var header = clock.querySelector('[role="header"]');
-            header.querySelector('[role="calendarMode"]').classList.add('selected');
             header.querySelector('[role="date"]').classList.add('selected');
+            header.querySelector('[role="calendarMode"]').classList.add('selected');
             header.querySelector('[role="clockMode"]').classList.remove('selected');
             header.querySelector('[role="hour"]').classList.remove('selected');
             header.querySelector('[role="minute"]').classList.remove('selected');
@@ -404,16 +404,16 @@ gj.datetimepicker.methods = {
         };
     },
 
-    createShowHourHandler: function (picker, clock, data) {
+    createShowHourHandler: function (picker, popup, data) {
         return function () {
-            var header = clock.querySelector('[role="header"]');
+            var header = popup.querySelector('[role="header"]');
             header.querySelector('[role="calendarMode"]').classList.remove('selected');
             header.querySelector('[role="date"]').classList.remove('selected');
             header.querySelector('[role="clockMode"]').classList.add('selected');
             header.querySelector('[role="hour"]').classList.add('selected');
             header.querySelector('[role="minute"]').classList.remove('selected');
 
-            gj.timepicker.methods.renderHours(picker, clock, data.timepicker);
+            gj.timepicker.methods.renderHours(picker, popup, data.timepicker);
         };
     },
 
@@ -443,7 +443,7 @@ gj.datetimepicker.methods = {
             date = gj.core.parseDate(value, data.format, data.locale);
             if (date) {
                 clock = document.body.querySelector('[role="picker"][guid="' + picker.element.getAttribute('data-guid') + '"]');                
-                gj.datepicker.methods.selectDay(picker, clock, data.datepicker, date); //gj.datepicker.methods.dayClickHandler(picker, clock, data.datepicker, date)();
+                gj.datepicker.methods.selectDay(picker, clock, data.datepicker, date);
                 gj.timepicker.methods.setAttributes(clock, data.timepicker, date);
                 picker.element.value = value;
             } else {
@@ -464,6 +464,7 @@ gj.datetimepicker.events = {
      *
      * @event change
      * @param {object} e - event data
+     * @return Boolean
      * @example sample <!--nojquery, datetimepicker -->
      * <input id="input" width="312" />
      * <script>
@@ -495,12 +496,12 @@ GijgoDateTimePicker = function (element, jsConfig) {
      * @example Get <!-- nojquery, datetimepicker -->
      * <button class="gj-button-md" onclick="alert(datetimepicker.value())">Get Value</button>
      * <hr/>
-     * <input id="picker" width="312" value="17:50 03/27/2018" />
+     * <input id="picker" width="312" value="17:50 03/27/2020" />
      * <script>
      *     var datetimepicker = new GijgoDateTimePicker(document.getElementById('picker'));
      * </script>
      * @example Set <!-- nojquery, datetimepicker -->
-     * <button class="gj-button-md" onclick="datetimepicker.value('13:40 08/01/2017')">Set Value</button>
+     * <button class="gj-button-md" onclick="datetimepicker.value('13:40 08/01/2020')">Set Value</button>
      * <hr/>
      * <input id="picker" width="312" />
      * <script>
