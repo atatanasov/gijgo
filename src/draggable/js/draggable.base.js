@@ -111,8 +111,8 @@ gj.draggable.methods = {
     createDownHandle: function (widget, dragEl, data) {
         return function (e) {
             var position = gj.core.position(dragEl);
-            dragEl.style.top = position.top + 'px';
-            dragEl.style.left = position.left + 'px';
+	    dragEl.style.top = (position.top + window.pageYOffset) + 'px';
+            dragEl.style.left = (position.left + window.pageXOffset) + 'px';
             dragEl.style.position = 'fixed';
 
             dragEl.setAttribute('draggable-dragging', true);
@@ -162,8 +162,8 @@ gj.draggable.methods = {
     move: function (dragEl, data, offsetX, offsetY, mouseX, mouseY) {
         var contPosition, maxTop, maxLeft,
             position = gj.core.position(dragEl),
-            newTop = position.top + offsetY,
-            newLeft = position.left + offsetX;
+            newTop = position.top + offsetY + window.pageYOffset,
+            newLeft = position.left + offsetX + window.pageXOffset;
 
         if (data.containment) {
             contPosition = gj.core.position(data.containment);
