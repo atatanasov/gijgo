@@ -193,6 +193,7 @@ gj.grid.plugins.rowReorder = {
                                 $grid.setCellContent(id, data.orderNumberField, record[data.orderNumberField]);
                             }
                         }
+                        gj.grid.plugins.rowReorder.events.orderChanged($grid);
                     }
                     $trTarget.removeClass('gj-grid-top-border');
                     $trTarget.removeClass('gj-grid-bottom-border');
@@ -217,6 +218,12 @@ gj.grid.plugins.rowReorder = {
         droppableOut: function () {
             $(this).removeClass('gj-grid-top-border');
             $(this).removeClass('gj-grid-bottom-border');
+        }
+    },
+
+    events: {
+        orderChanged: function ($grid) {
+            $grid.triggerHandler('orderChanged');
         }
     },
 
