@@ -33,7 +33,7 @@
   "author": "Atanas Atanasov",
   "license": "MIT",
   "dependencies": {
-    "jquery": ">=1.9.1"
+    "jquery": ">=3.5.0"
   },
   "devDependencies": {
     "bootstrap": "^3.3.5",
