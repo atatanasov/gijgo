@@ -604,7 +604,7 @@ gj.timepicker.methods = {
         }
         hour = time.getHours();
         if (data.mode === 'ampm') {
-            $clock.attr('mode', hour > 12 ? 'pm' : 'am');
+            $clock.attr('mode', hour >= 12 ? 'pm' : 'am');
         }
         $clock.attr('hour', hour);
         $clock.attr('minute', time.getMinutes());
