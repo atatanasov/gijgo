@@ -420,7 +420,7 @@ gj.core = {
      * </script>
      */
     parseDate: function (value, format, locale) {
-        var i, year = 0, month = 0, date = 1, hour = 0, minute = 0, dateParts, formatParts, result;
+        var i, year = 0, month = 0, date = 1, hour = 0, minute = 0, mode = null, dateParts, formatParts, result;
 
         if (value && typeof value === 'string') {
             if (/^\d+$/.test(value)) {
@@ -454,7 +454,17 @@ gj.core = {
                     } else if (['M', 'MM'].indexOf(formatParts[i]) > -1) {
                         minute = parseInt(dateParts[i], 10);
                     }
+					else if (['tt', 'TT'].indexOf(formatParts[i]) > -1) {
+                        mode = dateParts[i];
+                    }
                 }
+
+				if (hour == 12 && (mode === "am" || mode === "AM")) {
+					hour = 0;
+				}
+				if (hour < 12 && (mode === "pm" || mode === "PM")) {
+					hour += 12;
+				}
                 result = new Date(year, month, date, hour, minute);
             }
         } else if (typeof value === 'number') {
@@ -537,13 +547,15 @@ gj.core = {
                 case 'HH':
                     result += gj.core.pad(date.getHours()) + separator;
                     break;
-                case 'h':
-                    tmp = date.getHours() > 12 ? date.getHours() % 12 : date.getHours();
+                case 'h':					
+					tmp = date.getHours() > 12 ? date.getHours() % 12 : date.getHours();
+					tmp = tmp == 0 ? 12 : tmp;
                     result += tmp + separator;
                     break;
                 case 'hh':
                     tmp = date.getHours() > 12 ? date.getHours() % 12 : date.getHours();
-                    result += gj.core.pad(tmp) + separator;
+					tmp = tmp == 0 ? 12 : tmp;
+					result += gj.core.pad(tmp) + separator;
                     break;
                 case 'tt':
                     result += (date.getHours() >= 12 ? 'pm' : 'am') + separator;
