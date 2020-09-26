@@ -440,11 +440,15 @@ gj.timepicker.methods = {
         return parseInt(clock.getAttribute('minute'), 10) || 0;
     },
 
+    getMode: function (clock) {
+        return clock.getAttribute('mode')
+    },
+
     setTime: function (picker, clock) {
         return function () {
             var hour = gj.timepicker.methods.getHour(clock),
                 minute = gj.timepicker.methods.getMinute(clock),
-                mode = clock.getAttribute('mode'),
+                mode = gj.timepicker.methods.getMode(clock),
                 date = new Date(0, 0, 0, (hour === 12 && mode === 'am' ? 0 : hour), minute),
                 data = gijgoStorage.get(picker.element, 'gijgo'),
                 value = gj.core.formatDate(date, data.format, data.locale);
@@ -507,11 +511,12 @@ gj.timepicker.methods = {
     },
 
     update: function (picker, clock, data) {
-        var hour, minute, arrow, type, visualHour, header, numbers, i, number;
+        var hour, minute, mode, arrow, type, visualHour, header, numbers, i, number;
 
         // update the arrow
         hour = gj.timepicker.methods.getHour(clock);
         minute = gj.timepicker.methods.getMinute(clock);
+        mode = gj.timepicker.methods.getMode(clock);
         arrow = clock.querySelector('[role="arrow"]');
         type = clock.getAttribute('type');
         if (type === 'hours' && (hour == 0 || hour > 12) && data.mode === '24hr') {
@@ -547,7 +552,7 @@ gj.timepicker.methods = {
             header.querySelector('[role="hour"]').innerText = visualHour;
             header.querySelector('[role="minute"]').innerText = gj.core.pad(minute);
             if (data.mode === 'ampm') {
-                if (hour >= 12) {
+                if (mode == "pm") {
                     header.querySelector('[role="pm"]').classList.add('selected');
                     header.querySelector('[role="am"]').classList.remove('selected');
                 } else {
@@ -691,7 +696,7 @@ gj.timepicker.methods = {
     setAttributes: function (popup, data, date) {
         var hour = date.getHours();
         if (data.mode === 'ampm') {
-            popup.setAttribute('mode', hour > 12 ? 'pm' : 'am');
+            popup.setAttribute('mode', hour >= 12 ? 'pm' : 'am');
         }
         popup.setAttribute('hour', hour);
         popup.setAttribute('minute', date.getMinutes());
