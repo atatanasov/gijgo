@@ -1,0 +1,21 @@
+﻿gj.grid.messages['nl-nl'] = {
+    First: 'Eerste',
+    Previous: 'Vorige',
+    Next: 'Volgende',
+    Last: 'Laatste',
+    Page: 'Pagina',
+    FirstPageTooltip: 'Eerste pagina',
+    PreviousPageTooltip: 'Vorige pagina',
+    NextPageTooltip: 'Volgende pagina',
+    LastPageTooltip: 'Laatste pagina',
+    Refresh: 'Vernieuwen',
+    Of: 'van',
+    DisplayingRecords: 'Weergeef datums',
+    RowsPerPage: 'Rijen per pagina:',
+    Edit: 'Bewerk',
+    Delete: 'Verwijder',
+    Update: 'Bijwerken',
+    Cancel: 'Annuleren',
+    NoRecordsFound: 'Geen resultaten gevonden.',
+    Loading: 'Laden...'
+};
