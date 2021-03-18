@@ -1174,7 +1174,7 @@ gj.datepicker.methods = {
     renderCentury: function (picker, calendar, data) {
         var year, century, i, d, decade,
             table = calendar.querySelector('[role="body"] table'),
-            tbody = $table.querySelector('tbody');
+            tbody = table.querySelector('tbody');
         
         table.querySelector('thead').style.display = 'none';
 
