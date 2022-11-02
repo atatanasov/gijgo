@@ -1,8 +1,8 @@
 /*
- * Gijgo DateTimePicker v1.9.13
+ * Gijgo DateTimePicker v1.9.14
  * http://gijgo.com/datetimepicker
  *
- * Copyright 2014, 2019 gijgo.com
+ * Copyright 2014, 2022 gijgo.com
  * Released under the MIT license
  */
 /* global window alert jQuery gj */
