@@ -143,6 +143,14 @@ gj.dialog.config = {
          *         uiLibrary: 'bootstrap4'
          *     });
          * </script>
+         * @example Long.Text.Bootstrap5 <!-- bootstrap5, draggable, dialog.base -->
+         * <div id="dialog">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus porttitor quam in magna vulputate, vitae laoreet odio ultrices. Phasellus at efficitur magna. Mauris purus dolor, egestas quis leo et, vulputate dictum mauris. Vivamus maximus lectus sollicitudin lorem blandit tempor. Maecenas eget posuere mi. Suspendisse id hendrerit nibh. Morbi eu odio euismod, venenatis ipsum in, egestas nunc. Mauris dignissim metus ac risus porta eleifend. Aliquam tempus libero orci, id placerat odio vehicula eu. Donec tincidunt justo dolor, sit amet tempus turpis varius sit amet. Suspendisse ut ex blandit, hendrerit enim tristique, iaculis ipsum. Vivamus venenatis dolor justo, eget scelerisque lacus dignissim quis. Duis imperdiet ex at aliquet cursus. Proin non ultricies leo. Fusce quam diam, laoreet quis fringilla vitae, viverra id magna. Nam laoreet sem in volutpat rhoncus.</div>
+         * <script>
+         *     $("#dialog").dialog({
+         *         height: 350,
+         *         uiLibrary: 'bootstrap5'
+         *     });
+         * </script>
          */
         height: 'auto',
 
@@ -249,6 +257,14 @@ gj.dialog.config = {
          *         uiLibrary: 'bootstrap4'
          *     });
          * </script>
+         * @example True.Bootstrap.5 <!-- bootstrap5, draggable, dialog.base -->
+         * <div id="dialog">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
+         * <script>
+         *     $("#dialog").dialog({
+         *         modal: true,
+         *         uiLibrary: 'bootstrap5'
+         *     });
+         * </script>
          * @example False <!-- draggable, dialog.base, bootstrap -->
          * <div id="dialog">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
          * <script>
@@ -303,7 +319,16 @@ gj.dialog.config = {
          *     $("#dialog").dialog({
          *         scrollable: true,
          *         height: 300,
-         *         uiLibrary: 'bootstrap'
+         *         uiLibrary: 'bootstrap4'
+         *     });
+         * </script>
+         * @example Bootstrap.5 <!-- bootstrap5, draggable, dialog.base -->
+         * <div id="dialog">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus porttitor quam in magna vulputate, vitae laoreet odio ultrices. Phasellus at efficitur magna. Mauris purus dolor, egestas quis leo et, vulputate dictum mauris. Vivamus maximus lectus sollicitudin lorem blandit tempor. Maecenas eget posuere mi. Suspendisse id hendrerit nibh. Morbi eu odio euismod, venenatis ipsum in, egestas nunc. Mauris dignissim metus ac risus porta eleifend. Aliquam tempus libero orci, id placerat odio vehicula eu. Donec tincidunt justo dolor, sit amet tempus turpis varius sit amet. Suspendisse ut ex blandit, hendrerit enim tristique, iaculis ipsum. Vivamus venenatis dolor justo, eget scelerisque lacus dignissim quis. Duis imperdiet ex at aliquet cursus. Proin non ultricies leo. Fusce quam diam, laoreet quis fringilla vitae, viverra id magna. Nam laoreet sem in volutpat rhoncus.</div>
+         * <script>
+         *     $("#dialog").dialog({
+         *         scrollable: true,
+         *         height: 300,
+         *         uiLibrary: 'bootstrap5'
          *     });
          * </script>
          * @example Material.Design <!-- draggable, dialog.base -->
@@ -359,6 +384,19 @@ gj.dialog.config = {
          * <script>
          *     var dialog = $("#dialog").dialog({
          *         uiLibrary: 'bootstrap4'
+         *     });
+         * </script>
+         * @example Bootstrap.5 <!-- draggable, dialog.base, bootstrap5 -->
+         * <div id="dialog">
+         *     <div data-role="body">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
+         *     <div data-role="footer">
+         *         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+         *         <button type="button" class="btn btn-primary">Save changes</button>        
+         *     </div>
+         * </div>
+         * <script>
+         *     var dialog = $("#dialog").dialog({
+         *         uiLibrary: 'bootstrap5'
          *     });
          * </script>
          * @example Material.Design <!-- draggable, dialog.base  -->
@@ -433,6 +471,18 @@ gj.dialog.config = {
             header: 'modal-header',
             headerTitle: 'modal-title',
             headerCloseButton: 'close',
+            body: 'modal-body',
+            footer: 'gj-dialog-footer modal-footer'
+        }
+    },
+
+    bootstrap5: {
+        style: {
+            modal: 'gj-modal',
+            content: 'modal modal-content gj-dialog-bootstrap5',
+            header: 'modal-header',
+            headerTitle: 'modal-title',
+            headerCloseButton: 'btn-close',
             body: 'modal-body',
             footer: 'gj-dialog-footer modal-footer'
         }

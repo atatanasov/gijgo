@@ -105,6 +105,19 @@
     line-height: 1.5;
 }
 
+/** Bootstrap 5 **/
+.gj-dialog-bootstrap5 {
+    overflow: hidden;
+    z-index: 1202;
+}
+
+.gj-dialog-bootstrap5 [data-role="title"] {
+    display: inline;
+}
+.gj-dialog-bootstrap5 [data-role="close"] {
+    line-height: 1.5;
+}
+
 /** Material Design **/
 .gj-dialog-md {
     background-color: #FFF;

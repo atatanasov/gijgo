@@ -58,6 +58,20 @@
     font-size: 16px;
 }
 
+/* Bootstrap 5 */
+.gj-checkbox-bootstrap.gj-checkbox-bootstrap-5 span {
+    line-height: 16px;
+    padding: 0px;
+}
+
+.gj-checkbox-bootstrap-5.gj-checkbox-material-icons input[type="checkbox"]:checked + span:after {
+    font-size: 16px;
+}
+
+.gj-checkbox-bootstrap-5.gj-checkbox-material-icons input[type="checkbox"]:indeterminate + span:after {
+    font-size: 16px;
+}
+
 /* Material Design */
 .gj-checkbox-md {
     min-width: 0;

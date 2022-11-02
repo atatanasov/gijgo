@@ -37,6 +37,13 @@ gj.checkbox.config = {
         iconsLibrary: 'materialicons'
     },
 
+    bootstrap5: {
+        style: {
+            wrapperCssClass: 'gj-checkbox-bootstrap gj-checkbox-bootstrap-5'
+        },
+        iconsLibrary: 'materialicons'
+    },
+
     materialicons: {
         style: {
             iconsCssClass: 'gj-checkbox-material-icons',

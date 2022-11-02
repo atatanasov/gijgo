@@ -80,6 +80,18 @@ gj.dialog.config = {
             body: 'modal-body',
             footer: 'gj-dialog-footer modal-footer'
         }
+    },
+
+    bootstrap5: {
+        style: {
+            modal: 'gj-modal',
+            content: 'modal modal-content gj-dialog-bootstrap5',
+            header: 'modal-header',
+            headerTitle: 'modal-title',
+            headerCloseButton: 'btn-close',
+            body: 'modal-body',
+            footer: 'gj-dialog-footer modal-footer'
+        }
     }
 };
 /**   */gj.dialog.events = {
@@ -255,7 +267,11 @@ gj.dialog.methods = {
 
         $closeButton = $header.find('[data-role="close"]');
         if ($closeButton.length === 0 && data.closeButtonInHeader) {
-            $closeButton = $('<button type="button" data-role="close" title="' + gj.dialog.messages[data.locale].Close + '"><span>×</span></button>');
+            if (data.uiLibrary === 'bootstrap5') {
+                $closeButton = $('<button type="button" data-role="close" title="' + gj.dialog.messages[data.locale].Close + '" data-bs-dismiss="modal" aria-label="Close"></button>');
+            } else {
+                $closeButton = $('<button type="button" data-role="close" title="' + gj.dialog.messages[data.locale].Close + '"><span>×</span></button>');
+            }
             $closeButton.addClass(data.style.headerCloseButton);
             $header.append($closeButton);
         } else if ($closeButton.length > 0 && data.closeButtonInHeader === false) {

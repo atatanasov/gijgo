@@ -317,6 +317,19 @@ gj.tree.config = {
          *         ]
          *     });
          * </script>
+         * @example Bootstrap.5 <!-- bootstrap5, checkbox, tree -->
+         * <div id="tree"></div>
+         * <script>
+         *     var tree = $('#tree').tree({
+         *         uiLibrary: 'bootstrap5',
+         *         checkboxes: true,
+         *         dataSource: [ { text: 'foo', children: [
+         *                 { text: 'bar', disabled: true, children: [ { text: 'sub-bar' } ] },
+         *                 { text: 'bar2', disabled: false }
+         *             ] }
+         *         ]
+         *     });
+         * </script>
          */
         disabledField: 'disabled',
 
@@ -403,12 +416,32 @@ gj.tree.config = {
          *         border: false
          *     });
          * </script>
+         * @example Bootstrap.5.True <!-- bootstrap5, tree -->
+         * <div id="tree"></div>
+         * <script>
+         *     $('#tree').tree({
+         *         dataSource: '/Locations/Get',
+         *         width: 500,
+         *         uiLibrary: 'bootstrap5',
+         *         border: true
+         *     });
+         * </script>
+         * @example Bootstrap.5.False <!-- bootstrap5, tree -->
+         * <div id="tree"></div>
+         * <script>
+         *     $('#tree').tree({
+         *         dataSource: '/Locations/Get',
+         *         width: 500,
+         *         uiLibrary: 'bootstrap5',
+         *         border: false
+         *     });
+         * </script>
          */
         border: false,
 
         /** The name of the UI library that is going to be in use.
          * @additionalinfo The css file for bootstrap should be manually included if you use bootstrap.
-         * @type (materialdesign|bootstrap|bootstrap4)
+         * @type (materialdesign|bootstrap|bootstrap4|bootstrap5)
          * @default materialdesign
          * @example MaterialDesign <!-- tree, checkbox -->
          * <div id="tree"></div>
@@ -440,6 +473,16 @@ gj.tree.config = {
          *         checkboxes: true
          *     });
          * </script>
+         * @example Bootstrap.5 <!-- bootstrap5, tree, checkbox -->
+         * <div id="tree"></div>
+         * <script>
+         *     var tree = $('#tree').tree({
+         *         dataSource: '/Locations/Get',
+         *         width: 500,
+         *         uiLibrary: 'bootstrap5',
+         *         checkboxes: true
+         *     });
+         * </script>
          */
         uiLibrary: 'materialdesign',
 
@@ -465,6 +508,17 @@ gj.tree.config = {
          *         dataSource: '/Locations/Get',
          *         width: 500,
          *         uiLibrary: 'bootstrap4',
+         *         iconsLibrary: 'fontawesome',
+         *         checkboxes: true
+         *     });
+         * </script>
+         * @example Bootstrap.5.Font.Awesome <!-- bootstrap5, fontawesome, tree, checkbox -->
+         * <div id="tree"></div>
+         * <script>
+         *     var tree = $('#tree').tree({
+         *         dataSource: '/Locations/Get',
+         *         width: 500,
+         *         uiLibrary: 'bootstrap5',
          *         iconsLibrary: 'fontawesome',
          *         checkboxes: true
          *     });
@@ -540,6 +594,20 @@ gj.tree.config = {
     bootstrap4: {
         style: {
             wrapper: 'gj-unselectable gj-tree-bootstrap-4',
+            list: 'gj-list gj-list-bootstrap',
+            item: 'list-group-item',
+            active: 'active',
+            border: 'gj-tree-bootstrap-border'
+        },
+        icons: {
+            expand: '<i class="gj-icon plus" />',
+            collapse: '<i class="gj-icon minus" />'
+        }
+    },
+
+    bootstrap5: {
+        style: {
+            wrapper: 'gj-unselectable gj-tree-bootstrap-5',
             list: 'gj-list gj-list-bootstrap',
             item: 'list-group-item',
             active: 'active',

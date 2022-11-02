@@ -66,6 +66,16 @@ gj.timepicker.config = {
             footer: 'modal-footer',
             button: 'btn btn-default'
         }
+    },
+
+    bootstrap5: {
+        style: {
+            wrapper: 'gj-timepicker gj-timepicker-bootstrap gj-unselectable input-group',
+            input: 'form-control border',
+            clock: 'gj-picker gj-picker-bootstrap timepicker',
+            footer: 'modal-footer',
+            button: 'btn  btn-outline-secondary'
+        }
     }
 };
 

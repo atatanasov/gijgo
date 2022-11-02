@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Example</title>
+  <script src="../../dist/libraries/jquery/jquery.js"></script>
+  <script src="../../dist/modular/js/core.js" type="text/javascript"></script>
+  <link href="../../dist/modular/css/core.css" rel="stylesheet" type="text/css">
+  <link href="../../dist/modular/css/dialog.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+  <script src="../../dist/modular/js/draggable.js"></script>
+  <script src="../../dist/modular/js/dialog.js"></script>
+</head>
+<body style="padding: 8px;">
+ <div id="dialog">
+     <div data-role="body">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
+     <div data-role="footer">
+         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+         <button type="button" class="btn btn-primary">Save changes</button>
+     </div>
+ </div>
+ <script>
+     var dialog = $("#dialog").dialog({
+         uiLibrary: 'bootstrap5'
+     });
+ </script>
+</body>
+</html>

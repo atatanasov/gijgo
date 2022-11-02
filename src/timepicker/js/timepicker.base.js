@@ -97,7 +97,7 @@ gj.timepicker.config = {
 
         /** The name of the UI library that is going to be in use.
          * @additionalinfo The css file for bootstrap should be manually included if you use bootstrap.
-         * @type (materialdesign|bootstrap|bootstrap4)
+         * @type (materialdesign|bootstrap|bootstrap4|bootstrap5)
          * @default materialdesign
          * @example MaterialDesign <!-- timepicker -->
          * <input id="timepicker" width="312" />
@@ -113,6 +113,11 @@ gj.timepicker.config = {
          * <input id="timepicker" width="276" />
          * <script>
          *     $('#timepicker').timepicker({ uiLibrary: 'bootstrap4' });
+         * </script>
+         * @example Bootstrap.5 <!-- bootstrap5, timepicker -->
+         * <input id="timepicker" width="276" />
+         * <script>
+         *     $('#timepicker').timepicker({ uiLibrary: 'bootstrap5' });
          * </script>
          */
         uiLibrary: 'materialdesign',
@@ -195,6 +200,15 @@ gj.timepicker.config = {
         /** The size of the timepicker input.
          * @type 'small'|'default'|'large'
          * @default 'default'
+         * @example Bootstrap.5 <!-- bootstrap5, timepicker -->
+         * <p><label for="timepicker-small">Small Size:</label> <input id="timepicker-small" width="220" value="15:20" /></p>
+         * <p><label for="timepicker-default">Default Size:</label> <input id="timepicker-default" width="220" value="15:20" /></p>
+         * <p><label for="timepicker-large">Large Size:</label> <input id="timepicker-large" width="220" value="15:20" /></p>
+         * <script>
+         *     $('#timepicker-small').timepicker({ uiLibrary: 'bootstrap5', size: 'small' });
+         *     $('#timepicker-default').timepicker({ uiLibrary: 'bootstrap5', size: 'default' });
+         *     $('#timepicker-large').timepicker({ uiLibrary: 'bootstrap5', size: 'large' });
+         * </script>
          * @example Bootstrap.4 <!-- bootstrap4, timepicker -->
          * <p><label for="timepicker-small">Small Size:</label> <input id="timepicker-small" width="220" value="15:20" /></p>
          * <p><label for="timepicker-default">Default Size:</label> <input id="timepicker-default" width="220" value="15:20" /></p>
@@ -257,6 +271,16 @@ gj.timepicker.config = {
             clock: 'gj-picker gj-picker-bootstrap timepicker',
             footer: 'modal-footer',
             button: 'btn btn-default'
+        }
+    },
+
+    bootstrap5: {
+        style: {
+            wrapper: 'gj-timepicker gj-timepicker-bootstrap gj-unselectable input-group',
+            input: 'form-control border',
+            clock: 'gj-picker gj-picker-bootstrap timepicker',
+            footer: 'modal-footer',
+            button: 'btn  btn-outline-secondary'
         }
     }
 };

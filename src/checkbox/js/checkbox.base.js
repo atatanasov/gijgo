@@ -53,6 +53,20 @@ gj.checkbox.config = {
          *         uiLibrary: 'bootstrap4'
          *     });
          * </script>
+         * @example Bootstrap.5 <!-- bootstrap5, checkbox -->
+         * <div class="container-fluid" style="margin-top:10px">
+         *     <input type="checkbox" id="checkbox"/><br/><br/>
+         *     <button onclick="$chkb.state('checked')" class="btn btn-default">Checked</button>
+         *     <button onclick="$chkb.state('unchecked')" class="btn btn-default">Unchecked</button>
+         *     <button onclick="$chkb.state('indeterminate')" class="btn btn-default">Indeterminate</button>
+         *     <button onclick="$chkb.prop('disabled', false)" class="btn btn-default">Enable</button>
+         *     <button onclick="$chkb.prop('disabled', true)" class="btn btn-default">Disable</button>
+         * </div>
+         * <script>
+         *     var $chkb = $('#checkbox').checkbox({
+         *         uiLibrary: 'bootstrap5'
+         *     });
+         * </script>
          */
         uiLibrary: 'materialdesign',
         
@@ -97,6 +111,13 @@ gj.checkbox.config = {
     bootstrap4: {
         style: {
             wrapperCssClass: 'gj-checkbox-bootstrap gj-checkbox-bootstrap-4'
+        },
+        iconsLibrary: 'materialicons'
+    },
+
+    bootstrap5: {
+        style: {
+            wrapperCssClass: 'gj-checkbox-bootstrap gj-checkbox-bootstrap-5'
         },
         iconsLibrary: 'materialicons'
     },

@@ -95,6 +95,20 @@ gj.tree.config = {
         }
     },
 
+    bootstrap5: {
+        style: {
+            wrapper: 'gj-unselectable gj-tree-bootstrap-5',
+            list: 'gj-list gj-list-bootstrap',
+            item: 'list-group-item',
+            active: 'active',
+            border: 'gj-tree-bootstrap-border'
+        },
+        icons: {
+            expand: '<i class="gj-icon plus" />',
+            collapse: '<i class="gj-icon minus" />'
+        }
+    },
+
     materialicons: {
         style: {
             expander: 'gj-tree-material-icons-expander'

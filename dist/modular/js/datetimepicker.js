@@ -55,6 +55,12 @@ gj.datetimepicker.config = {
         style: {
             calendar: 'gj-picker gj-picker-bootstrap datetimepicker gj-unselectable'
         }
+    },
+
+    bootstrap5: {
+        style: {
+            calendar: 'gj-picker gj-picker-bootstrap datetimepicker gj-unselectable'
+        }
     }
 };
 
