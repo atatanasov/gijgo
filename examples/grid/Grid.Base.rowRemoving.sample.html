@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Example</title>
+  <script src="../../dist/modular/js/core.js" type="text/javascript"></script>
+  <link href="../../dist/modular/css/core.css" rel="stylesheet" type="text/css">
+  <link href="../../dist/modular/css/grid.css" rel="stylesheet" type="text/css">
+  <script src="../../dist/modular/js/grid.js"></script>
+</head>
+<body style="padding: 8px;">
+ <button onclick="grid.removeRow('1')" class="gj-button-md">Remove Row</button><br/><br/>
+ <table id="grid"></table>
+ <script>
+     var grid = $('#grid').grid({
+         primaryKey: 'ID',
+         dataSource: [
+             { 'ID': 1, 'Name': 'Hristo Stoichkov', 'PlaceOfBirth': 'Plovdiv, Bulgaria' },
+             { 'ID': 2, 'Name': 'Ronaldo Luis Nazario de Lima', 'PlaceOfBirth': 'Rio de Janeiro, Brazil' },
+             { 'ID': 3, 'Name': 'David Platt', 'PlaceOfBirth': 'Chadderton, Lancashire, England' }
+         ],
+         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
+     });
+     grid.on('rowRemoving', function (e, $row, id, record) {
+         alert('rowRemoving is fired for row with id=' + id + '.');
+     });
+ </script>
+</body>
+</html>

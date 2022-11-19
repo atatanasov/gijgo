@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Example</title>
+  <script src="../../dist/modular/js/core.js" type="text/javascript"></script>
+  <link href="../../dist/modular/css/core.css" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">
+  <link href="../../dist/modular/css/grid.css" rel="stylesheet" type="text/css">
+  <script src="../../dist/modular/js/grid.js"></script>
+</head>
+<body style="padding: 8px;">
+ <table id="grid"></table>
+ <script>
+     $('#grid').grid({
+         primaryKey: 'ID',
+         dataSource: '/Players/Get',
+         columns: [ { field: 'ID', width: 56 }, { field: 'Name' } ],
+         detailTemplate: '<div><b>Place Of Birth:</b> {PlaceOfBirth}</div>',
+         icons: {
+             expandRow: '<i class="material-icons">add</i>',
+             collapseRow: '<i class="material-icons">remove</i>'
+         }
+     });
+ </script>
+</body>
+</html>

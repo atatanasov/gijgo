@@ -112,8 +112,8 @@ gj.datepicker.config = {
          * <script>
          *     new GijgoDatePicker(document.getElementById('datepicker'), {
          *        format: 'yyyy-mm-dd',
-         *        value: '2019-01-15',
-         *        minDate: '2019-01-12',
+         *        value: '2023-01-15',
+         *        minDate: '2023-01-12',
          *        uiLibrary: 'bootstrap'
          *     });
          * </script>
@@ -121,9 +121,18 @@ gj.datepicker.config = {
          * <input id="datepicker" width="234" />
          * <script>
          *     new GijgoDatePicker(document.getElementById('datepicker'), {
-         *        value: '02/15/2019',
-         *        minDate: '02/12/2019',
+         *        value: '02/15/2023',
+         *        minDate: '02/12/2023',
          *        uiLibrary: 'bootstrap4'
+         *     });
+         * </script>
+         * @example Bootstrap.5 <!-- bootstrap5, datepicker -->
+         * <input id="datepicker" width="234" />
+         * <script>
+         *     new GijgoDatePicker(document.getElementById('datepicker'), {
+         *        value: '12/15/2022',
+         *        minDate: '12/12/2022',
+         *        uiLibrary: 'bootstrap5'
          *     });
          * </script>
          */
@@ -168,17 +177,17 @@ gj.datepicker.config = {
          * @type String
          * @default 'mm/dd/yyyy'
          * @example Sample <!-- nojquery, datepicker -->
-         * <input id="datepicker" value="2017-25-07" width="312" />
+         * <input id="datepicker" value="2022-25-07" width="312" />
          * <script>
          *     new GijgoDatePicker(document.getElementById('datepicker'), { format: 'yyyy-dd-mm' });
          * </script>
          * @example Short.Month.Format <!-- nojquery, datepicker -->
-         * <input id="datepicker" value="10 Oct 2017" width="312" />
+         * <input id="datepicker" value="10 Oct 2022" width="312" />
          * <script>
          *     new GijgoDatePicker(document.getElementById('datepicker'), { format: 'dd mmm yyyy' });
          * </script>
          * @example Long.Month.Format <!-- nojquery, datepicker -->
-         * <input id="datepicker" value="10 October 2017" width="312" />
+         * <input id="datepicker" value="10 October 2022" width="312" />
          * <script>
          *     new GijgoDatePicker(document.getElementById('datepicker'), { format: 'dd mmmm yyyy' });
          * </script>
@@ -187,7 +196,7 @@ gj.datepicker.config = {
 
         /** The name of the UI library that is going to be in use.
          * @additionalinfo The css file for bootstrap should be manually included if you use bootstrap.
-         * @type (materialdesign|bootstrap|bootstrap4)
+         * @type (materialdesign|bootstrap|bootstrap4|bootstrap5)
          * @default materialdesign
          * @example MaterialDesign <!-- nojquery, datepicker -->
          * <input id="datepicker" width="312" />
@@ -202,12 +211,22 @@ gj.datepicker.config = {
          * @example Bootstrap.4.Material.Icons <!-- nojquery, bootstrap4, datepicker -->
          * <input id="datepicker" width="234" />
          * <script>
-         *     new GijgoDatePicker(document.getElementById('datepicker'), { uiLibrary: 'bootstrap4', iconsLibrary: 'materialicons' });
+         *     new GijgoDatePicker(document.getElementById('datepicker'), { uiLibrary: 'bootstrap4' });
          * </script>
          * @example Bootstrap.4.FontAwesome <!-- nojquery, fontawesome, bootstrap4, datepicker -->
          * <input id="datepicker" width="234" />
          * <script>
          *     new GijgoDatePicker(document.getElementById('datepicker'), { uiLibrary: 'bootstrap4', iconsLibrary: 'fontawesome' });
+         * </script>
+         * @example Bootstrap.5.Material.Icons <!-- nojquery, bootstrap5, datepicker -->
+         * <input id="datepicker" width="234" />
+         * <script>
+         *     new GijgoDatePicker(document.getElementById('datepicker'), { uiLibrary: 'bootstrap5' });
+         * </script>
+         * @example Bootstrap.5.FontAwesome <!-- nojquery, fontawesome, bootstrap5, datepicker -->
+         * <input id="datepicker" width="234" />
+         * <script>
+         *     new GijgoDatePicker(document.getElementById('datepicker'), { uiLibrary: 'bootstrap5', iconsLibrary: 'fontawesome' });
          * </script>
          */
         uiLibrary: 'materialdesign',
@@ -234,6 +253,14 @@ gj.datepicker.config = {
          *         iconsLibrary: 'fontawesome'
          *     });
          * </script>
+         * @example Bootstrap.5.Font.Awesome <!-- nojquery, bootstrap5, fontawesome, datepicker -->
+         * <input id="datepicker" width="234" />
+         * <script>
+         *     new GijgoDatePicker(document.getElementById('datepicker'), {
+         *         uiLibrary: 'bootstrap5',
+         *         iconsLibrary: 'fontawesome'
+         *     });
+         * </script>
          */
         iconsLibrary: 'materialicons',
 
@@ -244,11 +271,11 @@ gj.datepicker.config = {
          * <input id="datepicker" width="312" />
          * <script>
          *    new GijgoDatePicker(document.getElementById('datepicker'), {
-         *        value: '01/01/2019'
+         *        value: '01/01/2023'
          *    });
          * </script>
          * @example HTML <!-- nojquery, datepicker -->
-         * <input id="datepicker" width="312" value="01/01/2019" />
+         * <input id="datepicker" width="312" value="01/01/2023" />
          * <script>
          *     new GijgoDatePicker(document.getElementById('datepicker'));
          * </script>
@@ -282,15 +309,15 @@ gj.datepicker.config = {
          * <input id="datepicker" width="312" />
          * <script>
          *    $('#datepicker').datepicker({
-         *        value: '11/10/2019',
-         *        disableDates: [new Date(2019,10,11), '11/12/2019']
+         *        value: '11/10/2023',
+         *        disableDates: [new Date(2023,10,11), '11/12/2023']
          *    });
          * </script>
          * @example Function <!-- nojquery, datepicker -->
          * <input id="datepicker" width="312" />
          * <script>
          *    new GijgoDatePicker(document.getElementById('datepicker'), {
-         *        value: '11/11/2019',
+         *        value: '11/11/2023',
          *        disableDates:  function (date) {
          *            var disabled = [10,15,20,25];
          *            if (disabled.indexOf(date.getDate()) == -1 ) {
@@ -340,6 +367,11 @@ gj.datepicker.config = {
          * <script>
          *    new GijgoDatePicker(document.getElementById('datepicker'), { calendarWeeks: true, uiLibrary: 'bootstrap4' });
          * </script>
+         * @example Bootstrap.5 <!-- nojquery, bootstrap5, datepicker -->
+         * <input id="datepicker" width="234" />
+         * <script>
+         *    new GijgoDatePicker(document.getElementById('datepicker'), { calendarWeeks: true, uiLibrary: 'bootstrap5' });
+         * </script>
          */
         calendarWeeks: false,
 
@@ -363,6 +395,15 @@ gj.datepicker.config = {
          * <script>
          *    new GijgoDatePicker(document.getElementById('datepicker'), {
          *        uiLibrary: 'bootstrap4',
+         *        keyboardNavigation: true,
+         *        showOtherMonths: true
+         *    });
+         * </script>
+         * @example Bootstrap.5 <!-- nojquery, bootstrap5, datepicker -->
+         * <input id="datepicker" width="234" />
+         * <script>
+         *    new GijgoDatePicker(document.getElementById('datepicker'), {
+         *        uiLibrary: 'bootstrap5',
          *        keyboardNavigation: true,
          *        showOtherMonths: true
          *    });
@@ -491,6 +532,16 @@ gj.datepicker.config = {
              *         }
              *     });
              * </script>
+             * @example Bootstrap.5 <!-- bootstrap5, materialicons, datepicker -->
+             * <input id="datepicker" width="234" />
+             * <script>
+             *     new GijgoDatePicker(document.getElementById('datepicker'), {
+             *         uiLibrary: 'bootstrap5',
+             *         icons: {
+             *             rightIcon: '<i class="material-icons">date_range</i>'
+             *         }
+             *     });
+             * </script>
              */
             rightIcon: '<i class="gj-icon">event</i>',
 
@@ -503,37 +554,55 @@ gj.datepicker.config = {
         /** The size of the datepicker input.
          * @type 'small'|'default'|'large'
          * @default 'default'
+         * @example Bootstrap.5 <!-- nojquery, bootstrap5, datepicker -->
+         * <p><label for="datepicker-small">Small Size:</label> <input id="datepicker-small" width="234" value="03/20/2023" /></p>
+         * <p><label for="datepicker-default">Default Size:</label> <input id="datepicker-default" width="234" value="03/20/2023" /></p>
+         * <p><label for="datepicker-large">Large Size:</label> <input id="datepicker-large" width="234" value="03/20/2023" /></p>
+         * <script>
+         *     new GijgoDatePicker(document.getElementById('datepicker-small'), { uiLibrary: 'bootstrap5', size: 'small' });
+         *     new GijgoDatePicker(document.getElementById('datepicker-default'), { uiLibrary: 'bootstrap5', size: 'default' });
+         *     new GijgoDatePicker(document.getElementById('datepicker-large'), { uiLibrary: 'bootstrap5', size: 'large' });
+         * </script>
+         * @example Bootstrap.5.Font.Awesome <!-- nojquery, bootstrap5, fontawesome, datepicker -->
+         * <p><label for="datepicker-small">Small Size:</label> <input id="datepicker-small" width="234" value="03/20/2023" /></p>
+         * <p><label for="datepicker-default">Default Size:</label> <input id="datepicker-default" width="234" value="03/20/2023" /></p>
+         * <p><label for="datepicker-large">Large Size:</label> <input id="datepicker-large" width="234" value="03/20/2023" /></p>
+         * <script>
+         *     new GijgoDatePicker(document.getElementById('datepicker-small'), { uiLibrary: 'bootstrap5', iconsLibrary: 'fontawesome', size: 'small' });
+         *     new GijgoDatePicker(document.getElementById('datepicker-default'), { uiLibrary: 'bootstrap5', iconsLibrary: 'fontawesome', size: 'default' });
+         *     new GijgoDatePicker(document.getElementById('datepicker-large'), { uiLibrary: 'bootstrap5', iconsLibrary: 'fontawesome', size: 'large' });
+         * </script>
          * @example Bootstrap.4 <!-- nojquery, bootstrap4, datepicker -->
-         * <p><label for="datepicker-small">Small Size:</label> <input id="datepicker-small" width="234" value="03/20/2019" /></p>
-         * <p><label for="datepicker-default">Default Size:</label> <input id="datepicker-default" width="234" value="03/20/2019" /></p>
-         * <p><label for="datepicker-large">Large Size:</label> <input id="datepicker-large" width="234" value="03/20/2019" /></p>
+         * <p><label for="datepicker-small">Small Size:</label> <input id="datepicker-small" width="234" value="03/20/2023" /></p>
+         * <p><label for="datepicker-default">Default Size:</label> <input id="datepicker-default" width="234" value="03/20/2023" /></p>
+         * <p><label for="datepicker-large">Large Size:</label> <input id="datepicker-large" width="234" value="03/20/2023" /></p>
          * <script>
          *     new GijgoDatePicker(document.getElementById('datepicker-small'), { uiLibrary: 'bootstrap4', size: 'small' });
          *     new GijgoDatePicker(document.getElementById('datepicker-default'), { uiLibrary: 'bootstrap4', size: 'default' });
          *     new GijgoDatePicker(document.getElementById('datepicker-large'), { uiLibrary: 'bootstrap4', size: 'large' });
          * </script>
          * @example Bootstrap.4.Font.Awesome <!-- nojquery, bootstrap4, fontawesome, datepicker -->
-         * <p><label for="datepicker-small">Small Size:</label> <input id="datepicker-small" width="234" value="03/20/2019" /></p>
-         * <p><label for="datepicker-default">Default Size:</label> <input id="datepicker-default" width="234" value="03/20/2019" /></p>
-         * <p><label for="datepicker-large">Large Size:</label> <input id="datepicker-large" width="234" value="03/20/2019" /></p>
+         * <p><label for="datepicker-small">Small Size:</label> <input id="datepicker-small" width="234" value="03/20/2023" /></p>
+         * <p><label for="datepicker-default">Default Size:</label> <input id="datepicker-default" width="234" value="03/20/2023" /></p>
+         * <p><label for="datepicker-large">Large Size:</label> <input id="datepicker-large" width="234" value="03/20/2023" /></p>
          * <script>
          *     new GijgoDatePicker(document.getElementById('datepicker-small'), { uiLibrary: 'bootstrap4', iconsLibrary: 'fontawesome', size: 'small' });
          *     new GijgoDatePicker(document.getElementById('datepicker-default'), { uiLibrary: 'bootstrap4', iconsLibrary: 'fontawesome', size: 'default' });
          *     new GijgoDatePicker(document.getElementById('datepicker-large'), { uiLibrary: 'bootstrap4', iconsLibrary: 'fontawesome', size: 'large' });
          * </script>
          * @example Bootstrap.3 <!-- nojquery, bootstrap, datepicker -->
-         * <p><label for="datepicker-small">Small Size:</label> <input id="datepicker-small" width="220" value="03/20/2019" /></p>
-         * <p><label for="datepicker-default">Default Size:</label> <input id="datepicker-default" width="220" value="03/20/2019" /></p>
-         * <p><label for="datepicker-large">Large Size:</label> <input id="datepicker-large" width="220" value="03/20/2019" /></p>
+         * <p><label for="datepicker-small">Small Size:</label> <input id="datepicker-small" width="220" value="03/20/2023" /></p>
+         * <p><label for="datepicker-default">Default Size:</label> <input id="datepicker-default" width="220" value="03/20/2023" /></p>
+         * <p><label for="datepicker-large">Large Size:</label> <input id="datepicker-large" width="220" value="03/20/2023" /></p>
          * <script>
          *     new GijgoDatePicker(document.getElementById('datepicker-small'), { uiLibrary: 'bootstrap', size: 'small' });
          *     new GijgoDatePicker(document.getElementById('datepicker-default'), { uiLibrary: 'bootstrap', size: 'default' });
          *     new GijgoDatePicker(document.getElementById('datepicker-large'), { uiLibrary: 'bootstrap', size: 'large' });
          * </script>
          * @example Material.Design <!-- nojquery, datepicker -->
-         * <p><label for="datepicker-small">Small Size:</label> <input id="datepicker-small" width="276" value="03/20/2019" /></p>
-         * <p><label for="datepicker-default">Default Size:</label> <input id="datepicker-default" width="276" value="03/20/2019" /></p>
-         * <p><label for="datepicker-large">Large Size:</label> <input id="datepicker-large" width="276" value="03/20/2019" /></p>
+         * <p><label for="datepicker-small">Small Size:</label> <input id="datepicker-small" width="276" value="03/20/2023" /></p>
+         * <p><label for="datepicker-default">Default Size:</label> <input id="datepicker-default" width="276" value="03/20/2023" /></p>
+         * <p><label for="datepicker-large">Large Size:</label> <input id="datepicker-large" width="276" value="03/20/2023" /></p>
          * <script>
          *     new GijgoDatePicker(document.getElementById('datepicker-small'), { size: 'small' });
          *     new GijgoDatePicker(document.getElementById('datepicker-default'), { size: 'default' });
@@ -565,6 +634,15 @@ gj.datepicker.config = {
          * <script>
          *    new GijgoDatePicker(document.getElementById('datepicker'), {
          *        uiLibrary: 'bootstrap4',
+         *        modal: true,
+         *        header: true,
+         *        footer: true
+         *    });
+         * @example Bootstrap.5 <!-- nojquery, bootstrap5, datepicker -->
+         * <input id="datepicker" width="234" />
+         * <script>
+         *    new GijgoDatePicker(document.getElementById('datepicker'), {
+         *        uiLibrary: 'bootstrap5',
          *        modal: true,
          *        header: true,
          *        footer: true
@@ -670,6 +748,17 @@ gj.datepicker.config = {
         showOtherMonths: true
     },
 
+    bootstrap5: {
+        style: {
+            wrapper: 'gj-datepicker gj-datepicker-bootstrap gj-unselectable input-group mb-3',
+            input: 'form-control',
+            calendar: 'gj-picker gj-picker-bootstrap datepicker gj-unselectable',
+            footer: 'modal-footer',
+            button: 'btn btn-outline-secondary'
+        },
+        showOtherMonths: true
+    },
+
     fontawesome: {
         icons: {
             rightIcon: '<i class="fa fa-calendar" aria-hidden="true"></i>',
@@ -721,7 +810,7 @@ gj.datepicker.methods = {
             picker.element.style.fontSize = data.fontSize;
         }
         
-        if (data.uiLibrary === 'bootstrap' || data.uiLibrary === 'bootstrap4') {
+        if (data.uiLibrary === 'bootstrap' || data.uiLibrary === 'bootstrap4' || data.uiLibrary === 'bootstrap5') {
             if (data.size === 'small') {
                 wrapper.classList.add('input-group-sm');
                 picker.element.classList.add('form-control-sm');
@@ -745,7 +834,11 @@ gj.datepicker.methods = {
             } else if (data.uiLibrary === 'bootstrap4') {
                 rightIcon = document.createElement('span');
                 rightIcon.classList.add('input-group-append');
-                rightIcon.innerHTML = '<button class="btn btn-outline-secondary border-left-0" type="button">' + data.icons.rightIcon + '</button>';                
+                rightIcon.innerHTML = '<button class="btn btn-outline-secondary border-left-0" type="button">' + data.icons.rightIcon + '</button>';
+            } else if (data.uiLibrary === 'bootstrap5') {
+                rightIcon = document.createElement('button');
+                rightIcon.classList.add('btn', 'btn-outline-secondary', 'border-left-0');
+                rightIcon.innerHTML = data.icons.rightIcon;
             } else {
                 rightIcon = gj.core.createElement(data.icons.rightIcon);
             }
@@ -1728,7 +1821,7 @@ GijgoDatePicker = function (element, jsConfig) {
      *     var datepicker = new GijgoDatePicker(document.getElementById('datepicker'));
      * </script>
      * @example Set <!-- datepicker -->
-     * <button class="gj-button-md" onclick="datepicker.value('03/01/2019')">Set Value</button>
+     * <button class="gj-button-md" onclick="datepicker.value('03/01/2023')">Set Value</button>
      * <hr/>
      * <input id="datepicker" width="312" />
      * <script>

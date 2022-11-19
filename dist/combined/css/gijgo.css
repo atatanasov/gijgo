@@ -2184,6 +2184,15 @@ ul.gj-list-md li.disabled > [data-role="wrapper"] > [data-role="expander"] {
     color: #777;
 }
 
+.gj-picker-bootstrap.datepicker [role="footer"] {
+    padding: 1rem;
+}
+
+.gj-picker-bootstrap.datepicker [role="footer"]> :not(:last-child) {
+    margin-right: .25rem;
+}
+
+
 /* Bootstrap 3 */
 .gj-datepicker-bootstrap span[role="right-icon"].input-group-addon {
     border-top-left-radius: 0px;
@@ -2242,6 +2251,42 @@ ul.gj-list-md li.disabled > [data-role="wrapper"] > [data-role="expander"] {
     font-size: 27px;
     top: 10px;
     left: 10px;
+}
+
+/* Bootstrap 5 */
+.gj-datepicker-bootstrap button[role="right-icon"]  {
+    width: 2.55rem;
+    padding-top: 0.25rem;
+}
+
+.gj-datepicker-bootstrap.input-group-sm button[role="right-icon"] {
+    width: 2rem;
+}
+
+.gj-datepicker-bootstrap.input-group-lg button[role="right-icon"] {
+    width: 3.3rem;
+}
+
+.gj-datepicker-bootstrap button[role="right-icon"] .gj-icon,
+.gj-datepicker-bootstrap button[role="right-icon"] .material-icons {
+    position: absolute;
+    font-size: 21px;
+    top: 0.55rem;
+    left: 0.55rem;
+}
+
+.gj-datepicker-bootstrap.input-group-sm button[role="right-icon"] .gj-icon,
+.gj-datepicker-bootstrap.input-group-sm button[role="right-icon"] .material-icons {
+    font-size: 19px;
+    top: 0.4rem;
+    left: 0.34rem;
+}
+
+.gj-datepicker-bootstrap.input-group-lg button[role="right-icon"] .gj-icon,
+.gj-datepicker-bootstrap.input-group-lg button[role="right-icon"] .material-icons {
+    font-size: 27px;
+    top: 0.72rem;
+    left: 0.7rem;
 }
 .gj-timepicker [role="input"]::-ms-clear {
     display: none;

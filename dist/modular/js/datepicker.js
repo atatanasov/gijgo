@@ -98,6 +98,17 @@ gj.datepicker.config = {
         showOtherMonths: true
     },
 
+    bootstrap5: {
+        style: {
+            wrapper: 'gj-datepicker gj-datepicker-bootstrap gj-unselectable input-group mb-3',
+            input: 'form-control',
+            calendar: 'gj-picker gj-picker-bootstrap datepicker gj-unselectable',
+            footer: 'modal-footer',
+            button: 'btn btn-outline-secondary'
+        },
+        showOtherMonths: true
+    },
+
     fontawesome: {
         icons: {
             rightIcon: '<i class="fa fa-calendar" aria-hidden="true"></i>',
@@ -149,7 +160,7 @@ gj.datepicker.methods = {
             picker.element.style.fontSize = data.fontSize;
         }
         
-        if (data.uiLibrary === 'bootstrap' || data.uiLibrary === 'bootstrap4') {
+        if (data.uiLibrary === 'bootstrap' || data.uiLibrary === 'bootstrap4' || data.uiLibrary === 'bootstrap5') {
             if (data.size === 'small') {
                 wrapper.classList.add('input-group-sm');
                 picker.element.classList.add('form-control-sm');
@@ -173,7 +184,11 @@ gj.datepicker.methods = {
             } else if (data.uiLibrary === 'bootstrap4') {
                 rightIcon = document.createElement('span');
                 rightIcon.classList.add('input-group-append');
-                rightIcon.innerHTML = '<button class="btn btn-outline-secondary border-left-0" type="button">' + data.icons.rightIcon + '</button>';                
+                rightIcon.innerHTML = '<button class="btn btn-outline-secondary border-left-0" type="button">' + data.icons.rightIcon + '</button>';
+            } else if (data.uiLibrary === 'bootstrap5') {
+                rightIcon = document.createElement('button');
+                rightIcon.classList.add('btn', 'btn-outline-secondary', 'border-left-0');
+                rightIcon.innerHTML = data.icons.rightIcon;
             } else {
                 rightIcon = gj.core.createElement(data.icons.rightIcon);
             }

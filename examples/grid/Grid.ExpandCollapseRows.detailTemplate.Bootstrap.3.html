@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Example</title>
+  <script src="../../dist/modular/js/core.js" type="text/javascript"></script>
+  <link href="../../dist/modular/css/core.css" rel="stylesheet" type="text/css">
+  <link href="../../dist/libraries/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+  <link href="../../dist/modular/css/grid.css" rel="stylesheet" type="text/css">
+  <script src="../../dist/modular/js/grid.js"></script>
+</head>
+<body style="padding: 8px;">
+ <table id="grid"></table>
+ <script>
+     $('#grid').grid({
+         dataSource: '/Players/Get',
+         uiLibrary: 'bootstrap',
+         detailTemplate: '<div><b>Place Of Birth:</b> {PlaceOfBirth}</div>',
+         columns: [ { field: 'ID', width: 34 }, { field: 'Name' }, { field: 'DateOfBirth', type: 'date' } ]
+     });
+ </script>
+</body>
+</html>
