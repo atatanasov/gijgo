@@ -750,7 +750,7 @@ gj.datepicker.config = {
 
     bootstrap5: {
         style: {
-            wrapper: 'gj-datepicker gj-datepicker-bootstrap gj-unselectable input-group mb-3',
+            wrapper: 'gj-datepicker gj-datepicker-bootstrap gj-unselectable input-group',
             input: 'form-control',
             calendar: 'gj-picker gj-picker-bootstrap datepicker gj-unselectable',
             footer: 'modal-footer',

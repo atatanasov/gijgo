@@ -18,8 +18,8 @@ gj.checkbox.config = {
          * <button onclick="chkb.state('checked')" class="gj-button-md">Checked</button>
          * <button onclick="chkb.state('unchecked')" class="gj-button-md">Unchecked</button>
          * <button onclick="chkb.state('indeterminate')" class="gj-button-md">Indeterminate</button>
-         * <button onclick="chkb.prop('disabled', false)" class="gj-button-md">Enable</button>
-         * <button onclick="chkb.prop('disabled', true)" class="gj-button-md">Disable</button>
+         * <button onclick="chkb.element.disabled = false" class="gj-button-md">Enable</button>
+         * <button onclick="chkb.element.disabled = true" class="gj-button-md">Disable</button>
          * <script>
          *     var chkb = new GijgoCheckBox(document.getElementById('checkbox'), {
          *         uiLibrary: 'materialdesign'
@@ -31,8 +31,8 @@ gj.checkbox.config = {
          *     <button onclick="chkb.state('checked')" class="btn btn-default">Checked</button>
          *     <button onclick="chkb.state('unchecked')" class="btn btn-default">Unchecked</button>
          *     <button onclick="chkb.state('indeterminate')" class="btn btn-default">Indeterminate</button>
-         *     <button onclick="chkb.prop('disabled', false)" class="btn btn-default">Enable</button>
-         *     <button onclick="chkb.prop('disabled', true)" class="btn btn-default">Disable</button>
+         *     <button onclick="chkb.element.disabled = false" class="btn btn-default">Enable</button>
+         *     <button onclick="chkb.element.disabled = true" class="btn btn-default">Disable</button>
          * </div>
          * <script>
          *     var chkb = new GijgoCheckBox(document.getElementById('checkbox'), {
@@ -45,12 +45,26 @@ gj.checkbox.config = {
          *     <button onclick="chkb.state('checked')" class="btn btn-default">Checked</button>
          *     <button onclick="chkb.state('unchecked')" class="btn btn-default">Unchecked</button>
          *     <button onclick="chkb.state('indeterminate')" class="btn btn-default">Indeterminate</button>
-         *     <button onclick="chkb.prop('disabled', false)" class="btn btn-default">Enable</button>
-         *     <button onclick="chkb.prop('disabled', true)" class="btn btn-default">Disable</button>
+         *     <button onclick="chkb.element.disabled = false" class="btn btn-default">Enable</button>
+         *     <button onclick="chkb.element.disabled = true" class="btn btn-default">Disable</button>
          * </div>
          * <script>
          *     var chkb = new GijgoCheckBox(document.getElementById('checkbox'), {
          *         uiLibrary: 'bootstrap4'
+         *     });
+         * </script>
+         * @example Bootstrap.5 <!-- bootstrap5, checkbox -->
+         * <div class="container-fluid" style="margin-top:10px">
+         *     <input type="checkbox" id="checkbox"/><br/><br/>
+         *     <button onclick="chkb.state('checked')" class="btn btn-primary">Checked</button>
+         *     <button onclick="chkb.state('unchecked')" class="btn btn-primary">Unchecked</button>
+         *     <button onclick="chkb.state('indeterminate')" class="btn btn-primary">Indeterminate</button>
+         *     <button onclick="chkb.element.disabled = false" class="btn btn-primary">Enable</button>
+         *     <button onclick="chkb.element.disabled = true" class="btn btn-primary">Disable</button>
+         * </div>
+         * <script>
+         *     var chkb = new GijgoCheckBox(document.getElementById('checkbox'), {
+         *         uiLibrary: 'bootstrap5'
          *     });
          * </script>
          */
@@ -68,8 +82,8 @@ gj.checkbox.config = {
          *     <button onclick="chkb.state('checked')" class="btn btn-default">Checked</button>
          *     <button onclick="chkb.state('unchecked')" class="btn btn-default">Unchecked</button>
          *     <button onclick="chkb.state('indeterminate')" class="btn btn-default">Indeterminate</button>
-         *     <button onclick="chkb.prop('disabled', false)" class="btn btn-default">Enable</button>
-         *     <button onclick="chkb.prop('disabled', true)" class="btn btn-default">Disable</button>
+         *     <button onclick="chkb.element.disabled = false"" class="btn btn-default">Enable</button>
+         *     <button onclick="chkb.element.disabled = true"" class="btn btn-default">Disable</button>
          * </div>
          * <script>
          *     var chkb = new GijgoCheckBox(document.getElementById('checkbox'), {
@@ -89,12 +103,19 @@ gj.checkbox.config = {
 
     bootstrap: {
         style: {
-            wrapperCssClass: 'gj-checkbox-bootstrap'
+            wrapperCssClass: 'gj-checkbox-bootstrap gj-checkbox-bootstrap-3'
         },
         iconsLibrary: 'glyphicons'
     },
 
     bootstrap4: {
+        style: {
+            wrapperCssClass: 'gj-checkbox-bootstrap gj-checkbox-bootstrap-4'
+        },
+        iconsLibrary: 'materialicons'
+    },
+
+    bootstrap5: {
         style: {
             wrapperCssClass: 'gj-checkbox-bootstrap gj-checkbox-bootstrap-4'
         },
@@ -134,38 +155,40 @@ gj.checkbox.methods = {
     initialize: function (chkb, data) {
         var wrapper, span;
         wrapper = document.createElement('label');
-        wrapper.classList.add(data.style.wrapperCssClass);
-        wrapper.classList.add(data.style.iconsCssClass);
+        gj.core.addClasses(wrapper, data.style.wrapperCssClass);
+        gj.core.addClasses(wrapper, data.style.iconsCssClass);
         if (chkb.element.getAttribute('id')) {
             wrapper.setAttribute('for', chkb.element.getAttribute('id'));
         }
+
         chkb.element.parentNode.insertBefore(wrapper, chkb.element);
         wrapper.appendChild(chkb.element);
             
         span = document.createElement('span');
         if (data.style.spanCssClass) {
-            span.classList.add(data.style.spanCssClass);
+            gj.core.addClasses(span, data.style.spanCssClass);
         }
+        wrapper.appendChild(span);
     },
 
     state: function (chkb, value) {
         if (value) {
             if ('checked' === value) {
-                chkb.prop('indeterminate', false);
-                chkb.prop('checked', true);
+                chkb.element.checked = true;
+                chkb.element.indeterminate = false;
             } else if ('unchecked' === value) {
-                chkb.prop('indeterminate', false);
-                chkb.prop('checked', false);
+                chkb.element.checked = false;
+                chkb.element.indeterminate = false;
             } else if ('indeterminate' === value) {
-                chkb.prop('checked', true);
-                chkb.prop('indeterminate', true);
+                chkb.element.checked = false;
+                chkb.element.indeterminate = true;
             }
-            gj.checkbox.events.change(chkb, value);
+            gj.checkbox.events.change(chkb.element, value);
             return chkb;
         } else {
-            if (chkb.prop('indeterminate')) {
+            if (chkb.element.indeterminate) {
                 value = 'indeterminate';
-            } else if (chkb.prop('checked')) {
+            } else if (chkb.element.checked) {
                 value = 'checked';
             } else {
                 value = 'unchecked';
@@ -184,17 +207,15 @@ gj.checkbox.methods = {
     },
 
     destroy: function (chkb) {
-        var data = gijgoStorage.get(chkb.element, 'gijgo'),
-            parent = picker.element.parentElement,
-            calendar = document.body.querySelector('[role="picker"][guid="' + picker.element.getAttribute('data-guid') + '"]');
+        var data = gijgoStorage.get(chkb.element, 'gijgo');
         if (data) {
             gijgoStorage.remove(chkb.element, 'gijgo');
             chkb.element.removeAttribute('data-type');
             chkb.element.removeAttribute('data-guid');
             chkb.element.removeAttribute('data-checkbox');
             chkb.element.removeAttribute('class');
-            chkb.next('span').remove();
-            chkb.unwrap();
+            chkb.element.parentNode.removeChild(chkb.element.parentNode.querySelector('span'));
+            chkb.element.parentNode.outerHTML = chkb.element.parentNode.innerHTML;
         }
         return chkb;
     }

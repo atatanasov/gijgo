@@ -194,4 +194,8 @@ server.get('/Locations/GetCountries', function (req, res) {
     res.send(countries);
 });
 
+server.get('/favico.ico', (req, res) => {
+    res.sendStatus(404);
+});
+
 server.listen(4000);

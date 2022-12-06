@@ -694,7 +694,7 @@ gj.picker.methods = {
             input.style.fontSize = data.fontSize;
         }
 
-        if (data.uiLibrary === 'bootstrap' || data.uiLibrary === 'bootstrap4') {
+        if (data.uiLibrary === 'bootstrap' || data.uiLibrary === 'bootstrap4' || data.uiLibrary === 'bootstrap5') {
             if (data.size === 'small') {
                 wrapper.classList.add('input-group-sm');
                 input.classList.add('form-control-sm');
@@ -719,6 +719,10 @@ gj.picker.methods = {
                 rightIcon = document.createElement('span');
                 rightIcon.classList.add('input-group-append');
                 rightIcon.innerHTML = '<button class="btn btn-outline-secondary border-left-0" type="button">' + data.icons.rightIcon + '</button>';
+            } else if (data.uiLibrary === 'bootstrap5') {
+                rightIcon = document.createElement('button');
+                rightIcon.classList.add('btn', 'btn-outline-secondary', 'border-left-0');
+                rightIcon.innerHTML = data.icons.rightIcon;
             } else {
                 rightIcon = gj.core.createElement(data.icons.rightIcon);
             }

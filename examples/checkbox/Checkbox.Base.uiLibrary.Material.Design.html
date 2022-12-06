@@ -14,8 +14,8 @@
  <button onclick="chkb.state('checked')" class="gj-button-md">Checked</button>
  <button onclick="chkb.state('unchecked')" class="gj-button-md">Unchecked</button>
  <button onclick="chkb.state('indeterminate')" class="gj-button-md">Indeterminate</button>
- <button onclick="chkb.prop('disabled', false)" class="gj-button-md">Enable</button>
- <button onclick="chkb.prop('disabled', true)" class="gj-button-md">Disable</button>
+ <button onclick="chkb.element.disabled = false" class="gj-button-md">Enable</button>
+ <button onclick="chkb.element.disabled = true" class="gj-button-md">Disable</button>
  <script>
      var chkb = new GijgoCheckBox(document.getElementById('checkbox'), {
          uiLibrary: 'materialdesign'

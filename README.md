@@ -31,12 +31,13 @@ They are designed to saves you time and scales with your development process.
 5. [Angular Treeview](http://gijgo.com/tree/demos/angular-treeview)
 6. [Bootstrap Datepicker](http://gijgo.com/datepicker/example/bootstrap)
 7. [Bootstrap 4 Datepicker](http://gijgo.com/datepicker/example/bootstrap-4)
-8. [Angular 5 Datepicker](http://gijgo.com/datepicker/example/angular-5)
+8. [Bootstrap 5 Datepicker](http://gijgo.com/datepicker/example/bootstrap-5)
 9. [Bootstrap 4 Timepicker](http://gijgo.com/timepicker/example/bootstrap-4)
-10. [Bootstrap 4 DateTimePicker](http://gijgo.com/datetimepicker/example/bootstrap-4)
-11. [Bootstrap 4 Checkbox](http://gijgo.com/checkbox/example/bootstrap-4)
-12. [Bootstrap 4 Table](http://gijgo.com/grid/demos/bootstrap-4-table)
-13. [Bootstrap 4 Slider](http://gijgo.com/slider/example/bootstrap-4)
+10. [Bootstrap 5 Timepicker](http://gijgo.com/timepicker/example/bootstrap-5)
+11. [Bootstrap 4 DateTimePicker](http://gijgo.com/datetimepicker/example/bootstrap-4)
+12. [Bootstrap 4 Checkbox](http://gijgo.com/checkbox/example/bootstrap-4)
+13. [Bootstrap 4 Table](http://gijgo.com/grid/demos/bootstrap-4-table)
+14. [Bootstrap 4 Slider](http://gijgo.com/slider/example/bootstrap-4)
 
 ### How To Contribute
 

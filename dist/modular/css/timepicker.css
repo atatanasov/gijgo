@@ -171,6 +171,15 @@
     border: 16px solid #888;
 }
 
+.gj-picker-bootstrap.timepicker [role="footer"] {
+    padding: 1rem;
+    border-top: 1px solid #e9ecef;
+}
+
+.gj-picker-bootstrap.timepicker [role="footer"]> :not(:last-child) {
+    margin-right: .25rem;
+}
+
 /* Bootstrap 3 */
 .gj-timepicker-bootstrap .input-group-addon {
     border-top-left-radius: 0px;
@@ -247,4 +256,39 @@
     font-size: 27px;
     top: 10px;
     left: 10px;
+}
+
+/* Bootstrap 5 */
+.gj-timepicker-bootstrap button[role="right-icon"]  {
+    width: 2.5rem;
+}
+
+.gj-timepicker-bootstrap.input-group-sm button[role="right-icon"] {
+    width: 2rem;
+}
+
+.gj-timepicker-bootstrap.input-group-lg button[role="right-icon"] {
+    width: 3.3rem;
+}
+
+.gj-timepicker-bootstrap button[role="right-icon"] .gj-icon,
+.gj-timepicker-bootstrap button[role="right-icon"] .material-icons {
+    position: absolute;
+    font-size: 21px;
+    top: 0.55rem;
+    left: 0.55rem;
+}
+
+.gj-timepicker-bootstrap.input-group-sm button[role="right-icon"] .gj-icon,
+.gj-timepicker-bootstrap.input-group-sm button[role="right-icon"] .material-icons {
+    font-size: 19px;
+    top: 0.4rem;
+    left: 0.34rem;
+}
+
+.gj-timepicker-bootstrap.input-group-lg button[role="right-icon"] .gj-icon,
+.gj-timepicker-bootstrap.input-group-lg button[role="right-icon"] .material-icons {
+    font-size: 27px;
+    top: 0.72rem;
+    left: 0.7rem;
 }
