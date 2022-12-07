@@ -177,7 +177,7 @@ gj.tree.methods = {
             $expander.attr('data-mode', 'close');
             $expander.empty().append(data.icons.expand);
             if (cascade) {
-                $children = $node.find('ul>li');
+                $children = $node.find('ul[style="display: block;"] > li:has(span[data-mode="open"])');
                 for (i = 0; i < $children.length; i++) {
                     gj.tree.methods.collapse($tree, $($children[i]), cascade);
                 }
@@ -195,7 +195,7 @@ gj.tree.methods = {
     },
 
     collapseAll: function ($tree) {
-        var i, $nodes = $tree.find('ul>li');
+        var i, $nodes = $tree.find('ul[style="display: block;"] > li:has(span[data-mode="open"])');
         for (i = 0; i < $nodes.length; i++) {
             gj.tree.methods.collapse($tree, $($nodes[i]), true);
         }
