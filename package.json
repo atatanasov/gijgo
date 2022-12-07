@@ -37,7 +37,7 @@
   },
   "devDependencies": {
     "bootstrap": "^3.4.1",
-    "express": "4.13.3",
+    "express": "4.17.3",
     "grunt": "^1.5.3",
     "grunt-contrib-clean": "^1.0.0",
     "grunt-contrib-concat": "^0.5.1",
