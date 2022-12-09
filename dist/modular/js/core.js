@@ -269,12 +269,12 @@ gj.widget.prototype.getHTMLConfigJS = function () {
 };
 
 gj.widget.prototype.createDoneHandler = function () {
-    var $widget = this;
+    var widget = this;
     return function (response) {
         if (typeof (response) === 'string' && JSON) {
             response = JSON.parse(response);
         }
-        gj[$widget.data('type')].methods.render($widget, response);
+        gj[widget.data('type')].methods.render($widget, response);
     };
 };
 
@@ -292,7 +292,7 @@ gj.widget.prototype.reload = function (params) {
         gj[type].methods.useHtmlDataSource(this, data);
     }
     $.extend(data.params, params);
-    if ($.isArray(data.dataSource)) {
+    if (Array.isArray(data.dataSource)) {
         result = gj[type].methods.filter(this);
         gj[type].methods.render(this, result);
     } else if (typeof(data.dataSource) === 'string') {
@@ -385,7 +385,7 @@ gj.documentManager = {
     },
 
     /**      */    parseDate: function (value, format, locale) {
-        var i, year = 0, month = 0, date = 1, hour = 0, minute = 0, dateParts, formatParts, result;
+        var i, year = 0, month = 0, date = 1, hour = 0, minute = 0, mode = null, dateParts, formatParts, result;
 
         if (value && typeof value === 'string') {
             if (/^\d+$/.test(value)) {
@@ -419,7 +419,17 @@ gj.documentManager = {
                     } else if (['M', 'MM'].indexOf(formatParts[i]) > -1) {
                         minute = parseInt(dateParts[i], 10);
                     }
+					else if (['tt', 'TT'].indexOf(formatParts[i]) > -1) {
+                        mode = dateParts[i];
+                    }
                 }
+
+				if (hour == 12 && (mode === "am" || mode === "AM")) {
+					hour = 0;
+				}
+				if (hour < 12 && (mode === "pm" || mode === "PM")) {
+					hour += 12;
+				}
                 result = new Date(year, month, date, hour, minute);
             }
         } else if (typeof value === 'number') {
@@ -459,13 +469,15 @@ gj.documentManager = {
                 case 'HH':
                     result += gj.core.pad(date.getHours()) + separator;
                     break;
-                case 'h':
-                    tmp = date.getHours() > 12 ? date.getHours() % 12 : date.getHours();
+                case 'h':					
+					tmp = date.getHours() > 12 ? date.getHours() % 12 : date.getHours();
+					tmp = tmp == 0 ? 12 : tmp;
                     result += tmp + separator;
                     break;
                 case 'hh':
                     tmp = date.getHours() > 12 ? date.getHours() % 12 : date.getHours();
-                    result += gj.core.pad(tmp) + separator;
+					tmp = tmp == 0 ? 12 : tmp;
+					result += gj.core.pad(tmp) + separator;
                     break;
                 case 'tt':
                     result += (date.getHours() >= 12 ? 'pm' : 'am') + separator;
@@ -519,9 +531,10 @@ gj.documentManager = {
     },
 
     center: function (element) {
-        var left = (window.innerWidth / 2) - (gj.core.width(element, true) / 2),
-            top = (window.innerHeight / 2) - (gj.core.height(element, true) / 2);
+        var left, top;
         element.style.position = 'absolute';
+        left = (window.innerWidth / 2) - (gj.core.width(element, true) / 2),
+        top = (window.innerHeight / 2) - (gj.core.height(element, true) / 2);
         element.style.left = (left > 0 ? left : 0) + 'px';
         element.style.top = (top > 0 ? top : 0) + 'px';
     },
@@ -901,7 +914,7 @@ gj.core.messages['ru-ru'] = {
 gj.core.messages['es-es'] = {
     monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
     monthShortNames: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
-    weekDaysMin: ['D', 'L', 'M', 'M', 'J', 'V', 'S'],
+    weekDaysMin: ['D', 'L', 'M', 'X', 'J', 'V', 'S'],
     weekDaysShort: ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'],
     weekDays: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
     am: 'AM',

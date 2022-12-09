@@ -20,8 +20,8 @@ gj.dialog.events = {
      *     });
      * </script>
      */
-    initialized: function ($dialog) {
-        $dialog.trigger("initialized");
+    initialized: function (el) {
+        return el.dispatchEvent(new Event('initialized'));
     },
 
     /**
@@ -43,8 +43,8 @@ gj.dialog.events = {
      *     });
      * </script>
      */
-    opening: function ($dialog) {
-        $dialog.trigger("opening");
+    opening: function (el) {
+        return el.dispatchEvent(new Event('opening'));
     },
 
     /**
@@ -66,8 +66,8 @@ gj.dialog.events = {
      *     });
      * </script>
      */
-    opened: function ($dialog) {
-        $dialog.trigger("opened");
+    opened: function (el) {
+        return el.dispatchEvent(new Event('opened'));
     },
 
     /**
@@ -89,8 +89,8 @@ gj.dialog.events = {
      *     });
      * </script>
      */
-    closing: function ($dialog) {
-        $dialog.trigger("closing");
+    closing: function (el) {
+        return el.dispatchEvent(new Event('closing'));
     },
 
     /**
@@ -112,8 +112,8 @@ gj.dialog.events = {
      *     });
      * </script>
      */
-    closed: function ($dialog) {
-        $dialog.trigger("closed");
+    closed: function (el) {
+        return el.dispatchEvent(new Event('closed'));
     },
 
     /**
@@ -138,8 +138,8 @@ gj.dialog.events = {
      *     });
      * </script>
      */
-    drag: function ($dialog) {
-        $dialog.trigger("drag");
+    drag: function (el) {
+        return el.dispatchEvent(new Event('drag'));
     },
 
     /**
@@ -164,8 +164,8 @@ gj.dialog.events = {
      *     });
      * </script>
      */
-    dragStart: function ($dialog) {
-        $dialog.trigger("dragStart");
+    dragStart: function (el) {
+        return el.dispatchEvent(new Event('dragStart'));
     },
 
     /**
@@ -190,8 +190,8 @@ gj.dialog.events = {
      *     });
      * </script>
      */
-    dragStop: function ($dialog) {
-        $dialog.trigger("dragStop");
+    dragStop: function (el) {
+        return el.dispatchEvent(new Event('dragStop'));
     },
 
     /**
@@ -217,8 +217,8 @@ gj.dialog.events = {
      *     });
      * </script>
      */
-    resize: function ($dialog) {
-        $dialog.trigger("resize");
+    resize: function (el) {
+        return el.dispatchEvent(new Event('resize'));
     },
 
     /**
@@ -244,8 +244,8 @@ gj.dialog.events = {
      *     });
      * </script>
      */
-    resizeStart: function ($dialog) {
-        $dialog.trigger("resizeStart");
+    resizeStart: function (el) {
+        return el.dispatchEvent(new Event('resizeStart'));
     },
 
     /**
@@ -271,7 +271,7 @@ gj.dialog.events = {
      *     });
      * </script>
      */
-    resizeStop: function ($dialog) {
-        $dialog.trigger("resizeStop");
+    resizeStop: function (el) {
+        return el.dispatchEvent(new Event('resizeStop'));
     }
 };

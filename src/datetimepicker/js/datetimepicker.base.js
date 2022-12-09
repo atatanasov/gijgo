@@ -54,6 +54,11 @@ gj.datetimepicker.config = {
          * <script>
          *     new GijgoDateTimePicker(document.getElementById('picker'), { uiLibrary: 'bootstrap4', modal: true, footer: true });
          * </script>
+         * @example Bootstrap.5 <!-- bootstrap5, datetimepicker -->
+         * <input id="picker" width="234" />
+         * <script>
+         *     new GijgoDateTimePicker(document.getElementById('picker'), { uiLibrary: 'bootstrap5', modal: true, footer: true });
+         * </script>
          */
         uiLibrary: 'materialdesign',
 
@@ -63,10 +68,10 @@ gj.datetimepicker.config = {
          * @example Javascript <!-- nojquery, datetimepicker -->
          * <input id="picker" width="300" />
          * <script>
-         *    new GijgoDateTimePicker(document.getElementById('picker'), { value: '22:10 03/27/2020' });
+         *    new GijgoDateTimePicker(document.getElementById('picker'), { value: '22:10 03/27/2023' });
          * </script>
          * @example HTML <!-- nojquery, datetimepicker -->
-         * <input id="picker" width="300" value="22:10 03/27/2020" />
+         * <input id="picker" width="300" value="22:10 03/27/2023" />
          * <script>
          *     new GijgoDateTimePicker(document.getElementById('picker'));
          * </script>
@@ -95,12 +100,12 @@ gj.datetimepicker.config = {
          * @type String
          * @default 'HH:MM mm/dd/yyyy'
          * @example Sample <!-- nojquery, datetimepicker -->
-         * <input id="input" value="05:50 2018-27-03" width="312" />
+         * <input id="input" value="05:50 2023-27-03" width="312" />
          * <script>
          *     new GijgoDateTimePicker(document.getElementById('picker'), { format: 'HH:MM yyyy-dd-mm' });
          * </script>
          * @example Long.Month.Format <!-- nojquery, datetimepicker -->
-         * <input id="input" value="10 October 2017 05:50" width="312" />
+         * <input id="input" value="10 October 2023 05:50" width="312" />
          * <script>
          *     new GijgoDateTimePicker(document.getElementById('picker'), { format: 'dd mmmm yyyy HH:MM' });
          * </script>
@@ -164,36 +169,36 @@ gj.datetimepicker.config = {
          * @type 'small'|'default'|'large'
          * @default 'default'
          * @example Bootstrap.4 <!-- nojquery, bootstrap4, datetimepicker -->
-         * <p><label for="small">Small Size:</label> <input id="small" width="234" value="10:20 03/20/2018" /></p>
-         * <p><label for="default">Default Size:</label> <input id="default" width="234" value="10:20 03/20/2018" /></p>
-         * <p><label for="large">Large Size:</label> <input id="large" width="234" value="10:20 03/20/2018" /></p>
+         * <p><label for="small">Small Size:</label> <input id="small" width="234" value="10:20 03/20/2023" /></p>
+         * <p><label for="default">Default Size:</label> <input id="default" width="234" value="10:20 03/20/2023" /></p>
+         * <p><label for="large">Large Size:</label> <input id="large" width="234" value="10:20 03/20/2023" /></p>
          * <script>
          *     new GijgoDateTimePicker(document.getElementById('small'), { uiLibrary: 'bootstrap4', size: 'small' });
          *     new GijgoDateTimePicker(document.getElementById('default'), { uiLibrary: 'bootstrap4', size: 'default' });
          *     new GijgoDateTimePicker(document.getElementById('large'), { uiLibrary: 'bootstrap4', size: 'large' });
          * </script>
          * @example Bootstrap.4.Font.Awesome <!-- nojquery, bootstrap4, fontawesome, datetimepicker -->
-         * <p><label for="small">Small Size:</label> <input id="small" width="234" value="10:20 03/20/2018" /></p>
-         * <p><label for="default">Default Size:</label> <input id="default" width="234" value="10:20 03/20/2018" /></p>
-         * <p><label for="large">Large Size:</label> <input id="large" width="234" value="10:20 03/20/2018" /></p>
+         * <p><label for="small">Small Size:</label> <input id="small" width="234" value="10:20 03/20/2023" /></p>
+         * <p><label for="default">Default Size:</label> <input id="default" width="234" value="10:20 03/20/2023" /></p>
+         * <p><label for="large">Large Size:</label> <input id="large" width="234" value="10:20 03/20/2023" /></p>
          * <script>
          *     new GijgoDateTimePicker(document.getElementById('small'), { uiLibrary: 'bootstrap4', iconsLibrary: 'fontawesome', size: 'small' });
          *     new GijgoDateTimePicker(document.getElementById('default'), { uiLibrary: 'bootstrap4', iconsLibrary: 'fontawesome', size: 'default' });
          *     new GijgoDateTimePicker(document.getElementById('large'), { uiLibrary: 'bootstrap4', iconsLibrary: 'fontawesome', size: 'large' });
          * </script>
          * @example Bootstrap.3 <!-- nojquery, bootstrap, datetimepicker -->
-         * <p><label for="small">Small Size:</label> <input id="small" width="220" value="10:20 03/20/2018" /></p>
-         * <p><label for="default">Default Size:</label> <input id="default" width="220" value="10:20 03/20/2018" /></p>
-         * <p><label for="large">Large Size:</label> <input id="large" width="220" value="10:20 03/20/2018" /></p>
+         * <p><label for="small">Small Size:</label> <input id="small" width="220" value="10:20 03/20/2023" /></p>
+         * <p><label for="default">Default Size:</label> <input id="default" width="220" value="10:20 03/20/2023" /></p>
+         * <p><label for="large">Large Size:</label> <input id="large" width="220" value="10:20 03/20/2023" /></p>
          * <script>
          *     new GijgoDateTimePicker(document.getElementById('small'), { uiLibrary: 'bootstrap', size: 'small' });
          *     new GijgoDateTimePicker(document.getElementById('default'), { uiLibrary: 'bootstrap', size: 'default' });
          *     new GijgoDateTimePicker(document.getElementById('large'), { uiLibrary: 'bootstrap', size: 'large' });
          * </script>
          * @example Material.Design <!-- nojquery, datetimepicker -->
-         * <p><label for="small">Small Size:</label> <input id="small" width="276" value="10:20 03/20/2018" /></p>
-         * <p><label for="default">Default Size:</label> <input id="default" width="276" value="10:20 03/20/2018" /></p>
-         * <p><label for="large">Large Size:</label> <input id="large" width="276" value="10:20 03/20/2018" /></p>
+         * <p><label for="small">Small Size:</label> <input id="small" width="276" value="10:20 03/20/2023" /></p>
+         * <p><label for="default">Default Size:</label> <input id="default" width="276" value="10:20 03/20/2023" /></p>
+         * <p><label for="large">Large Size:</label> <input id="large" width="276" value="10:20 03/20/2023" /></p>
          * <script>
          *     new GijgoDateTimePicker(document.getElementById('small'), { size: 'small' });
          *     new GijgoDateTimePicker(document.getElementById('default'), { size: 'default' });
@@ -249,6 +254,12 @@ gj.datetimepicker.config = {
     },
 
     bootstrap4: {
+        style: {
+            calendar: 'gj-picker gj-picker-bootstrap datetimepicker gj-unselectable'
+        }
+    },
+
+    bootstrap5: {
         style: {
             calendar: 'gj-picker gj-picker-bootstrap datetimepicker gj-unselectable'
         }
@@ -496,12 +507,12 @@ GijgoDateTimePicker = function (element, jsConfig) {
      * @example Get <!-- nojquery, datetimepicker -->
      * <button class="gj-button-md" onclick="alert(datetimepicker.value())">Get Value</button>
      * <hr/>
-     * <input id="picker" width="312" value="17:50 03/27/2020" />
+     * <input id="picker" width="312" value="17:50 03/27/2023" />
      * <script>
      *     var datetimepicker = new GijgoDateTimePicker(document.getElementById('picker'));
      * </script>
      * @example Set <!-- nojquery, datetimepicker -->
-     * <button class="gj-button-md" onclick="datetimepicker.value('13:40 08/01/2020')">Set Value</button>
+     * <button class="gj-button-md" onclick="datetimepicker.value('13:40 08/01/2023')">Set Value</button>
      * <hr/>
      * <input id="picker" width="312" />
      * <script>

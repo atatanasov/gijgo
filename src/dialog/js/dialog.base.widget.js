@@ -4,7 +4,7 @@
   */
 GijgoDialog = function (element, jsConfig) {
     var self = this,
-        methods = gj.datepicker.methods;
+        methods = gj.dialog.methods;
 
     self.element = element;
 
@@ -128,7 +128,7 @@ GijgoDialog = function (element, jsConfig) {
 };
 
 GijgoDialog.prototype = new gj.widget();
-GijgoDialog.constructor = gj.dialog.widget;
+GijgoDialog.constructor = GijgoDialog;
 
 GijgoDialog.prototype.getHTMLConfig = gj.dialog.methods.getHTMLConfig;
 

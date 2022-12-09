@@ -848,7 +848,7 @@ GijgoTimePicker = function (element, jsConfig) {
 
     /** Remove timepicker functionality from the element.
      * @method
-     * @return jquery element
+     * @return timepicker
      * @example sample <!-- nojquery, timepicker -->
      * <button class="gj-button-md" onclick="timepicker.destroy()">Destroy</button>
      * <input id="picker" width="312" />

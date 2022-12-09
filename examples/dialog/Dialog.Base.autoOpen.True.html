@@ -13,9 +13,7 @@
 <body style="padding: 8px;">
  <div id="dialog">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
  <script>
-     $("#dialog").dialog({
-         autoOpen: true
-     });
+     new GijgoDialog(document.getElementById('dialog'), { autoOpen: true, draggable: false });
  </script>
 </body>
 </html>

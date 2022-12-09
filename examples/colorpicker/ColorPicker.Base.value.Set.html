@@ -10,11 +10,11 @@
   <script src="../../dist/modular/js/colorpicker.js"></script>
 </head>
 <body style="padding: 8px;">
- <button class="gj-button-md" onclick="$colorpicker.value('#FF0000')">Set Value</button>
+ <button class="gj-button-md" onclick="colorpicker.value('#FF0000')">Set Value</button>
  <hr/>
  <input id="colorpicker" />
  <script>
-     var $colorpicker = $('#colorpicker').colorpicker();
+     var colorpicker = new GijgoColorPicker(document.getElementById('colorpicker'));
  </script>
 </body>
 </html>

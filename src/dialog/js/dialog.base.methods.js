@@ -5,7 +5,7 @@
 
         gj.dialog.methods.localization(this);
         gj.dialog.methods.initialize(this);
-        gj.dialog.events.initialized(this);
+        gj.dialog.events.initialized(this.element);
         return this;
     },
 
@@ -29,13 +29,13 @@
         var data, header, body, footer;
         data = gijgoStorage.get(dialog.element, 'gijgo');
 
-        gj.core.addClass(dialog.element, data.style.content);
+        gj.core.addClasses(dialog.element, data.style.content);
 
         gj.dialog.methods.setSize(dialog.element, data);
 
         if (data.closeOnEscape) {
             document.addEventListener('keyup', function (e) {
-                if (e.keyCode === 27) {
+                if (e.key === 27) {
                     dialog.close();
                 }
             });
@@ -45,7 +45,11 @@
         if (!body) {
             body = document.createElement('div');
             body.setAttribute('role', 'body');
-            dialog.element.addChild(body);
+            for(var i = 0; i < dialog.element.childNodes.length; i++)
+            {
+                body.appendChild(dialog.element.childNodes[i]);
+            }
+            dialog.element.appendChild(body);
         }
         gj.core.addClasses(body, data.style.body);
 
@@ -56,7 +60,7 @@
             gj.core.addClasses(footer, data.style.footer);
         }
 
-        dialog.querySelector('[data-role="close"]').addEventListener('click', function () {
+        dialog.element.querySelector('[data-role="close"]').addEventListener('click', function () {
             dialog.close();
         });
 
@@ -77,23 +81,21 @@
             });            
         }
 
-        gj.core.center(dialog.element);
-
         if (data.modal) {
             $dialog.wrapAll('<div data-role="modal" class="' + data.style.modal + '"/>');
         }
 
         if (data.autoOpen) {
-            $dialog.open();
+            dialog.open();
         }
     },
 
-    setSize: function (dialog, data) {
+    setSize: function (el, data) {
         if (data.width) {
-            dialog.element.width = data.width + 'px';
+            el.style.width = data.width + 'px';
         }
         if (data.height) {
-            dialog.element.height = data.height + 'px';
+            el.style.height = data.height + 'px';
         }
     },
 
@@ -102,8 +104,8 @@
         header = dialog.element.querySelector('div[data-role="header"]');
         if (!header) {
             header = document.createElement('div');
-            header.setAttribute('role', 'header');
-            dialog.element.parentElement.insertBefore(header, dialog.element);
+            header.setAttribute('data-role', 'header');
+            dialog.element.insertBefore(header, dialog.element.children[0]);
         }
         gj.core.addClasses(header, data.style.header);
 
@@ -119,16 +121,19 @@
         closeButton = header.querySelector('[data-role="close"]');
         if (!closeButton && data.closeButtonInHeader) {
             closeButton = document.createElement('button');
-            $closeButton = $('<button type="button" data-role="close" title="' + gj.dialog.messages[data.locale].Close + '"><span>×</span></button>');
-            $closeButton.addClass(data.style.headerCloseButton);
-            $header.append($closeButton);
+            closeButton.setAttribute('type', 'button');
+            closeButton.setAttribute('data-role', 'close');
+            closeButton.setAttribute('title', gj.dialog.messages[data.locale].Close);
+            closeButton.innerHTML = '<span>×</span>';
+            gj.core.addClasses(closeButton, data.style.headerCloseButton);
+            header.appendChild(closeButton);
         } else if (closeButton && data.closeButtonInHeader === false) {
             closeButton.style.display = 'node';
         } else {
             closeButton.classList.add(data.style.headerCloseButton);
         }
 
-        return $header;
+        return header;
     },
 
     draggable: function ($dialog, $header) {
@@ -231,42 +236,51 @@
         return result;
     },
 
-    open: function ($dialog, title) {
-        var $footer;
-        gj.dialog.events.opening($dialog);
-        $dialog.css('display', 'block');
-        $dialog.closest('div[data-role="modal"]').css('display', 'block');
-        $footer = $dialog.children('div[data-role="footer"]');
-        if ($footer.length && $footer.outerHeight()) {
-            $dialog.children('div[data-role="body"]').css('margin-bottom', $footer.outerHeight());
-        }
+    open: function (dialog, title) {
+        var footer, modal, el = dialog.element;
+        gj.dialog.events.opening(el);
         if (title !== undefined) {
-            $dialog.find('[data-role="title"]').html(title);
+            el.querySelector('[data-role="title"]').innerHTML = title;
         }
-        gj.dialog.events.opened($dialog);
-        return $dialog;
+        el.style.display = 'block';
+        modal = el.closest('div[data-role="modal"]');
+        if (modal) {
+            modal.style.display = 'block';
+        }
+        footer = el.querySelector('div[data-role="footer"]');
+        if (footer) {
+            el.querySelector('div[data-role="body"]').style.marginBottom = footer.offsetHeight;
+        }
+        gj.core.center(el);
+        gj.dialog.events.opened(el);
+        return dialog;
     },
 
-    close: function ($dialog) {
-        if ($dialog.is(':visible')) {
-            gj.dialog.events.closing($dialog);
-            $dialog.css('display', 'none');
-            $dialog.closest('div[data-role="modal"]').css('display', 'none');
-            gj.dialog.events.closed($dialog);
+    close: function (dialog) {
+        var modal, el = dialog.element;
+        if (el.style.display != 'none') {
+            gj.dialog.events.closing(el);
+            el.style.display = 'none';
+            modal = el.closest('div[data-role="modal"]');
+            if (modal) {
+                modal.style.display = 'none';
+            }
+            gj.dialog.events.closed(el);
         }
-        return $dialog;
+        return dialog;
     },
 
     isOpen: function ($dialog) {
-        return $dialog.is(':visible');
+        return el.style.display != 'none';
     },
 
-    content: function ($dialog, html) {
-        var $body = $dialog.children('div[data-role="body"]');
+    content: function (dialog, html) {
+        var body = dialog.element.querySelector('div[data-role="body"]');
         if (typeof (html) === "undefined") {
-            return $body.html();
+            return body.innerHTML;
         } else {
-            return $body.html(html);
+            body.innerHTML = html;
+            return dialog;
         }
     },
 

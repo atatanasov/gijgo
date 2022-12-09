@@ -269,12 +269,12 @@ gj.widget.prototype.getHTMLConfigJS = function () {
 };
 
 gj.widget.prototype.createDoneHandler = function () {
-    var $widget = this;
+    var widget = this;
     return function (response) {
         if (typeof (response) === 'string' && JSON) {
             response = JSON.parse(response);
         }
-        gj[$widget.data('type')].methods.render($widget, response);
+        gj[widget.data('type')].methods.render($widget, response);
     };
 };
 
@@ -292,7 +292,7 @@ gj.widget.prototype.reload = function (params) {
         gj[type].methods.useHtmlDataSource(this, data);
     }
     $.extend(data.params, params);
-    if ($.isArray(data.dataSource)) {
+    if (Array.isArray(data.dataSource)) {
         result = gj[type].methods.filter(this);
         gj[type].methods.render(this, result);
     } else if (typeof(data.dataSource) === 'string') {
@@ -393,41 +393,41 @@ gj.core = {
      * @example String.1
      * <div id="date"></div>
      * <script>
-     *     $('#date').text(gj.core.parseDate('02/03/17', 'mm/dd/yy'));
+     *     document.getElementById('date').innerText = gj.core.parseDate('02/03/23', 'mm/dd/yy');
      * </script>
      * @example String.2
      * <div id="date"></div>
      * <script>
-     *     $('#date').text(gj.core.parseDate('2017 2.3', 'yyyy m.d'));
+     *     document.getElementById('date').innerText = gj.core.parseDate('2023 2.3', 'yyyy m.d');
      * </script>
      * @example String.dd.mmm.yyyy
      * <div id="date"></div>
      * <script>
-     *     $('#date').text(gj.core.parseDate('05 Feb 2017', 'dd mmm yyyy'));
+     *     document.getElementById('date').innerText = gj.core.parseDate('05 Feb 2023', 'dd mmm yyyy');
      * </script>
      * @example String.dd.mmmm.yyyy
      * <div id="date"></div>
      * <script>
-     *     $('#date').text(gj.core.parseDate('05 February 2017', 'dd mmmm yyyy'));
+     *     document.getElementById('date').innerText = gj.core.parseDate('05 February 2023', 'dd mmmm yyyy');
      * </script>
      * @example String.HH:MM
      * <div id="date"></div>
      * <script>
-     *     $('#date').text(gj.core.parseDate('10:57', 'HH:MM'));
+     *     document.getElementById('date').innerText = gj.core.parseDate('10:57', 'HH:MM');
      * </script>
      * @example ASP.NET.JSON.Date
      * <div id="date"></div>
      * <script>
-     *     $('#date').text(gj.core.parseDate("\/Date(349653600000)\/"));
+     *     document.getElementById('date').innerText = gj.core.parseDate("\/Date(349653600000)\/");
      * </script>
      * @example UNIX.Timestamp
      * <div id="date"></div>
      * <script>
-     *     $('#date').text(gj.core.parseDate(349653600000));
+     *     document.getElementById('date').innerText = gj.core.parseDate(349653600000);
      * </script>
      */
     parseDate: function (value, format, locale) {
-        var i, year = 0, month = 0, date = 1, hour = 0, minute = 0, dateParts, formatParts, result;
+        var i, year = 0, month = 0, date = 1, hour = 0, minute = 0, mode = null, dateParts, formatParts, result;
 
         if (value && typeof value === 'string') {
             if (/^\d+$/.test(value)) {
@@ -461,7 +461,17 @@ gj.core = {
                     } else if (['M', 'MM'].indexOf(formatParts[i]) > -1) {
                         minute = parseInt(dateParts[i], 10);
                     }
+					else if (['tt', 'TT'].indexOf(formatParts[i]) > -1) {
+                        mode = dateParts[i];
+                    }
                 }
+
+				if (hour == 12 && (mode === "am" || mode === "AM")) {
+					hour = 0;
+				}
+				if (hour < 12 && (mode === "pm" || mode === "PM")) {
+					hour += 12;
+				}
                 result = new Date(year, month, date, hour, minute);
             }
         } else if (typeof value === 'number') {
@@ -478,42 +488,42 @@ gj.core = {
      * @example Sample.1
      * <div id="date"></div>
      * <script>
-     *     $('#date').text(gj.core.formatDate(new Date(2017, 1, 3), 'mm/dd/yy'));
+     *     document.getElementById('date').innerText = gj.core.formatDate(new Date(2023, 1, 3), 'mm/dd/yy');
      * </script>
      * @example Sample.2
      * <div id="date"></div>
      * <script>
-     *     $('#date').text(gj.core.formatDate(new Date(2017, 1, 3), 'yyyy m.d'));
+     *     document.getElementById('date').innerText = gj.core.formatDate(new Date(2023, 1, 3), 'yyyy m.d');
      * </script>
      * @example Sample.dd.mmm.yyyy
      * <div id="date"></div>
      * <script>
-     *     $('#date').text(gj.core.formatDate(new Date(2017, 1, 3), 'dd mmm yyyy'));
+     *     document.getElementById('date').innerText = gj.core.formatDate(new Date(2023, 1, 3), 'dd mmm yyyy');
      * </script>
      * @example Sample.dd.mmmm.yyyy
      * <div id="date"></div>
      * <script>
-     *     $('#date').text(gj.core.formatDate(new Date(2017, 1, 3), 'dd mmmm yyyy'));
+     *     document.getElementById('date').innerText = gj.core.formatDate(new Date(2023, 1, 3), 'dd mmmm yyyy');
      * </script>
      * @example Sample.5
      * <div id="date"></div>
      * <script>
-     *     $('#date').text(gj.core.formatDate(new Date(2017, 1, 3, 20, 43, 53), 'hh:MM:ss tt mm/dd/yyyy'));
+     *     document.getElementById('date').innerText = gj.core.formatDate(new Date(2023, 1, 3, 20, 43, 53), 'hh:MM:ss tt mm/dd/yyyy');
      * </script>
      * @example Sample.6
      * <div id="date"></div>
      * <script>
-     *     $('#date').text(gj.core.formatDate(new Date(2017, 1, 3, 20, 43, 53), 'hh:MM TT'));
+     *     document.getElementById('date').innerText = gj.core.formatDate(new Date(2023, 1, 3, 20, 43, 53), 'hh:MM TT');
      * </script>
      * @example Short.WeekDay
      * <div id="date"></div>
      * <script>
-     *     $('#date').text(gj.core.formatDate(new Date(2017, 1, 3), 'ddd, mmm dd'));
+     *     document.getElementById('date').innerText = gj.core.formatDate(new Date(2023, 1, 3), 'ddd, mmm dd');
      * </script>
      * @example Full.WeekDay
      * <div id="date"></div>
      * <script>
-     *     $('#date').text(gj.core.formatDate(new Date(2017, 1, 3), 'dddd, mmm dd'));
+     *     document.getElementById('date').innerText = gj.core.formatDate(new Date(2023, 1, 3), 'dddd, mmm dd');
      * </script>
      */
     formatDate: function (date, format, locale) {
@@ -544,13 +554,15 @@ gj.core = {
                 case 'HH':
                     result += gj.core.pad(date.getHours()) + separator;
                     break;
-                case 'h':
-                    tmp = date.getHours() > 12 ? date.getHours() % 12 : date.getHours();
+                case 'h':					
+					tmp = date.getHours() > 12 ? date.getHours() % 12 : date.getHours();
+					tmp = tmp == 0 ? 12 : tmp;
                     result += tmp + separator;
                     break;
                 case 'hh':
                     tmp = date.getHours() > 12 ? date.getHours() % 12 : date.getHours();
-                    result += gj.core.pad(tmp) + separator;
+					tmp = tmp == 0 ? 12 : tmp;
+					result += gj.core.pad(tmp) + separator;
                     break;
                 case 'tt':
                     result += (date.getHours() >= 12 ? 'pm' : 'am') + separator;
@@ -604,9 +616,10 @@ gj.core = {
     },
 
     center: function (element) {
-        var left = (window.innerWidth / 2) - (gj.core.width(element, true) / 2),
-            top = (window.innerHeight / 2) - (gj.core.height(element, true) / 2);
+        var left, top;
         element.style.position = 'absolute';
+        left = (window.innerWidth / 2) - (gj.core.width(element, true) / 2),
+        top = (window.innerHeight / 2) - (gj.core.height(element, true) / 2);
         element.style.left = (left > 0 ? left : 0) + 'px';
         element.style.top = (top > 0 ? top : 0) + 'px';
     },
@@ -939,21 +952,16 @@ gj.dialog.config = {
          * If false, the dialog will stay hidden until the open() method is called.
          * @type boolean
          * @default true
-         * @example True <!-- dialog.base, draggable -->
+         * @example True <!-- nojquery, dialog.base, draggable -->
          * <div id="dialog">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
          * <script>
-         *     $("#dialog").dialog({
-         *         autoOpen: true
-         *     });
+         *     new GijgoDialog(document.getElementById('dialog'), { autoOpen: true, draggable: false });
          * </script>
-         * @example False <!-- dialog.base, bootstrap -->
+         * @example False <!-- dialog.base, bootstrap4 -->
          * <div id="dialog" style="display: none">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
          * <button onclick="dialog.open()" class="btn btn-default">Open Dialog</button>
          * <script>
-         *     var dialog = $("#dialog").dialog({
-         *         uiLibrary: 'bootstrap',
-         *         autoOpen: false
-         *     });
+         *     var dialog = new GijgoDialog(document.getElementById('dialog'), { uiLibrary: 'bootstrap4', autoOpen: false });
          * </script>
          */
         autoOpen: true,
@@ -1385,8 +1393,8 @@ gj.dialog.events = {
      *     });
      * </script>
      */
-    initialized: function ($dialog) {
-        $dialog.trigger("initialized");
+    initialized: function (el) {
+        return el.dispatchEvent(new Event('initialized'));
     },
 
     /**
@@ -1408,8 +1416,8 @@ gj.dialog.events = {
      *     });
      * </script>
      */
-    opening: function ($dialog) {
-        $dialog.trigger("opening");
+    opening: function (el) {
+        return el.dispatchEvent(new Event('opening'));
     },
 
     /**
@@ -1431,8 +1439,8 @@ gj.dialog.events = {
      *     });
      * </script>
      */
-    opened: function ($dialog) {
-        $dialog.trigger("opened");
+    opened: function (el) {
+        return el.dispatchEvent(new Event('opened'));
     },
 
     /**
@@ -1454,8 +1462,8 @@ gj.dialog.events = {
      *     });
      * </script>
      */
-    closing: function ($dialog) {
-        $dialog.trigger("closing");
+    closing: function (el) {
+        return el.dispatchEvent(new Event('closing'));
     },
 
     /**
@@ -1477,8 +1485,8 @@ gj.dialog.events = {
      *     });
      * </script>
      */
-    closed: function ($dialog) {
-        $dialog.trigger("closed");
+    closed: function (el) {
+        return el.dispatchEvent(new Event('closed'));
     },
 
     /**
@@ -1503,8 +1511,8 @@ gj.dialog.events = {
      *     });
      * </script>
      */
-    drag: function ($dialog) {
-        $dialog.trigger("drag");
+    drag: function (el) {
+        return el.dispatchEvent(new Event('drag'));
     },
 
     /**
@@ -1529,8 +1537,8 @@ gj.dialog.events = {
      *     });
      * </script>
      */
-    dragStart: function ($dialog) {
-        $dialog.trigger("dragStart");
+    dragStart: function (el) {
+        return el.dispatchEvent(new Event('dragStart'));
     },
 
     /**
@@ -1555,8 +1563,8 @@ gj.dialog.events = {
      *     });
      * </script>
      */
-    dragStop: function ($dialog) {
-        $dialog.trigger("dragStop");
+    dragStop: function (el) {
+        return el.dispatchEvent(new Event('dragStop'));
     },
 
     /**
@@ -1582,8 +1590,8 @@ gj.dialog.events = {
      *     });
      * </script>
      */
-    resize: function ($dialog) {
-        $dialog.trigger("resize");
+    resize: function (el) {
+        return el.dispatchEvent(new Event('resize'));
     },
 
     /**
@@ -1609,8 +1617,8 @@ gj.dialog.events = {
      *     });
      * </script>
      */
-    resizeStart: function ($dialog) {
-        $dialog.trigger("resizeStart");
+    resizeStart: function (el) {
+        return el.dispatchEvent(new Event('resizeStart'));
     },
 
     /**
@@ -1636,8 +1644,8 @@ gj.dialog.events = {
      *     });
      * </script>
      */
-    resizeStop: function ($dialog) {
-        $dialog.trigger("resizeStop");
+    resizeStop: function (el) {
+        return el.dispatchEvent(new Event('resizeStop'));
     }
 };
 
@@ -1648,7 +1656,7 @@ gj.dialog.methods = {
 
         gj.dialog.methods.localization(this);
         gj.dialog.methods.initialize(this);
-        gj.dialog.events.initialized(this);
+        gj.dialog.events.initialized(this.element);
         return this;
     },
 
@@ -1672,13 +1680,13 @@ gj.dialog.methods = {
         var data, header, body, footer;
         data = gijgoStorage.get(dialog.element, 'gijgo');
 
-        gj.core.addClass(dialog.element, data.style.content);
+        gj.core.addClasses(dialog.element, data.style.content);
 
         gj.dialog.methods.setSize(dialog.element, data);
 
         if (data.closeOnEscape) {
             document.addEventListener('keyup', function (e) {
-                if (e.keyCode === 27) {
+                if (e.key === 27) {
                     dialog.close();
                 }
             });
@@ -1688,7 +1696,11 @@ gj.dialog.methods = {
         if (!body) {
             body = document.createElement('div');
             body.setAttribute('role', 'body');
-            dialog.element.addChild(body);
+            for(var i = 0; i < dialog.element.childNodes.length; i++)
+            {
+                body.appendChild(dialog.element.childNodes[i]);
+            }
+            dialog.element.appendChild(body);
         }
         gj.core.addClasses(body, data.style.body);
 
@@ -1699,7 +1711,7 @@ gj.dialog.methods = {
             gj.core.addClasses(footer, data.style.footer);
         }
 
-        dialog.querySelector('[data-role="close"]').addEventListener('click', function () {
+        dialog.element.querySelector('[data-role="close"]').addEventListener('click', function () {
             dialog.close();
         });
 
@@ -1720,23 +1732,21 @@ gj.dialog.methods = {
             });            
         }
 
-        gj.core.center(dialog.element);
-
         if (data.modal) {
             $dialog.wrapAll('<div data-role="modal" class="' + data.style.modal + '"/>');
         }
 
         if (data.autoOpen) {
-            $dialog.open();
+            dialog.open();
         }
     },
 
-    setSize: function (dialog, data) {
+    setSize: function (el, data) {
         if (data.width) {
-            dialog.element.width = data.width + 'px';
+            el.style.width = data.width + 'px';
         }
         if (data.height) {
-            dialog.element.height = data.height + 'px';
+            el.style.height = data.height + 'px';
         }
     },
 
@@ -1745,8 +1755,8 @@ gj.dialog.methods = {
         header = dialog.element.querySelector('div[data-role="header"]');
         if (!header) {
             header = document.createElement('div');
-            header.setAttribute('role', 'header');
-            dialog.element.parentElement.insertBefore(header, dialog.element);
+            header.setAttribute('data-role', 'header');
+            dialog.element.insertBefore(header, dialog.element.children[0]);
         }
         gj.core.addClasses(header, data.style.header);
 
@@ -1762,16 +1772,19 @@ gj.dialog.methods = {
         closeButton = header.querySelector('[data-role="close"]');
         if (!closeButton && data.closeButtonInHeader) {
             closeButton = document.createElement('button');
-            $closeButton = $('<button type="button" data-role="close" title="' + gj.dialog.messages[data.locale].Close + '"><span>×</span></button>');
-            $closeButton.addClass(data.style.headerCloseButton);
-            $header.append($closeButton);
+            closeButton.setAttribute('type', 'button');
+            closeButton.setAttribute('data-role', 'close');
+            closeButton.setAttribute('title', gj.dialog.messages[data.locale].Close);
+            closeButton.innerHTML = '<span>×</span>';
+            gj.core.addClasses(closeButton, data.style.headerCloseButton);
+            header.appendChild(closeButton);
         } else if (closeButton && data.closeButtonInHeader === false) {
             closeButton.style.display = 'node';
         } else {
             closeButton.classList.add(data.style.headerCloseButton);
         }
 
-        return $header;
+        return header;
     },
 
     draggable: function ($dialog, $header) {
@@ -1874,42 +1887,51 @@ gj.dialog.methods = {
         return result;
     },
 
-    open: function ($dialog, title) {
-        var $footer;
-        gj.dialog.events.opening($dialog);
-        $dialog.css('display', 'block');
-        $dialog.closest('div[data-role="modal"]').css('display', 'block');
-        $footer = $dialog.children('div[data-role="footer"]');
-        if ($footer.length && $footer.outerHeight()) {
-            $dialog.children('div[data-role="body"]').css('margin-bottom', $footer.outerHeight());
-        }
+    open: function (dialog, title) {
+        var footer, modal, el = dialog.element;
+        gj.dialog.events.opening(el);
         if (title !== undefined) {
-            $dialog.find('[data-role="title"]').html(title);
+            el.querySelector('[data-role="title"]').innerHTML = title;
         }
-        gj.dialog.events.opened($dialog);
-        return $dialog;
+        el.style.display = 'block';
+        modal = el.closest('div[data-role="modal"]');
+        if (modal) {
+            modal.style.display = 'block';
+        }
+        footer = el.querySelector('div[data-role="footer"]');
+        if (footer) {
+            el.querySelector('div[data-role="body"]').style.marginBottom = footer.offsetHeight;
+        }
+        gj.core.center(el);
+        gj.dialog.events.opened(el);
+        return dialog;
     },
 
-    close: function ($dialog) {
-        if ($dialog.is(':visible')) {
-            gj.dialog.events.closing($dialog);
-            $dialog.css('display', 'none');
-            $dialog.closest('div[data-role="modal"]').css('display', 'none');
-            gj.dialog.events.closed($dialog);
+    close: function (dialog) {
+        var modal, el = dialog.element;
+        if (el.style.display != 'none') {
+            gj.dialog.events.closing(el);
+            el.style.display = 'none';
+            modal = el.closest('div[data-role="modal"]');
+            if (modal) {
+                modal.style.display = 'none';
+            }
+            gj.dialog.events.closed(el);
         }
-        return $dialog;
+        return dialog;
     },
 
     isOpen: function ($dialog) {
-        return $dialog.is(':visible');
+        return el.style.display != 'none';
     },
 
-    content: function ($dialog, html) {
-        var $body = $dialog.children('div[data-role="body"]');
+    content: function (dialog, html) {
+        var body = dialog.element.querySelector('div[data-role="body"]');
         if (typeof (html) === "undefined") {
-            return $body.html();
+            return body.innerHTML;
         } else {
-            return $body.html(html);
+            body.innerHTML = html;
+            return dialog;
         }
     },
 
@@ -1941,7 +1963,7 @@ gj.dialog.methods = {
   */
 GijgoDialog = function (element, jsConfig) {
     var self = this,
-        methods = gj.datepicker.methods;
+        methods = gj.dialog.methods;
 
     self.element = element;
 
@@ -2065,7 +2087,7 @@ GijgoDialog = function (element, jsConfig) {
 };
 
 GijgoDialog.prototype = new gj.widget();
-GijgoDialog.constructor = gj.dialog.widget;
+GijgoDialog.constructor = GijgoDialog;
 
 GijgoDialog.prototype.getHTMLConfig = gj.dialog.methods.getHTMLConfig;
 
@@ -10583,7 +10605,7 @@ gj.tree.methods = {
             $expander.attr('data-mode', 'close');
             $expander.empty().append(data.icons.expand);
             if (cascade) {
-                $children = $node.find('ul>li');
+                $children = $node.find('ul > li:has(span[data-mode="open"])');
                 for (i = 0; i < $children.length; i++) {
                     gj.tree.methods.collapse($tree, $($children[i]), cascade);
                 }
@@ -10601,7 +10623,7 @@ gj.tree.methods = {
     },
 
     collapseAll: function ($tree) {
-        var i, $nodes = $tree.find('ul>li');
+        var i, $nodes = $tree.find('ul > li:has(span[data-mode="open"])');
         for (i = 0; i < $nodes.length; i++) {
             gj.tree.methods.collapse($tree, $($nodes[i]), true);
         }
@@ -15301,7 +15323,7 @@ gj.datepicker.methods = {
             table = calendar.querySelector('[role="body"] table'),
             tbody = table.querySelector('tbody');
         
-        table.querySelector('thead').display.style = 'none';
+        table.querySelector('thead').style.display = 'none';
 
         year = parseInt(calendar.getAttribute('year'), 10);
         decade = year - (year % 10);
@@ -15328,7 +15350,7 @@ gj.datepicker.methods = {
     renderCentury: function (picker, calendar, data) {
         var year, century, i, d, decade,
             table = calendar.querySelector('[role="body"] table'),
-            tbody = $table.querySelector('tbody');
+            tbody = table.querySelector('tbody');
         
         table.querySelector('thead').style.display = 'none';
 
@@ -16411,11 +16433,15 @@ gj.timepicker.methods = {
         return parseInt(clock.getAttribute('minute'), 10) || 0;
     },
 
+    getMode: function (clock) {
+        return clock.getAttribute('mode')
+    },
+
     setTime: function (picker, clock) {
         return function () {
             var hour = gj.timepicker.methods.getHour(clock),
                 minute = gj.timepicker.methods.getMinute(clock),
-                mode = clock.getAttribute('mode'),
+                mode = gj.timepicker.methods.getMode(clock),
                 date = new Date(0, 0, 0, (hour === 12 && mode === 'am' ? 0 : hour), minute),
                 data = gijgoStorage.get(picker.element, 'gijgo'),
                 value = gj.core.formatDate(date, data.format, data.locale);
@@ -16478,11 +16504,12 @@ gj.timepicker.methods = {
     },
 
     update: function (picker, clock, data) {
-        var hour, minute, arrow, type, visualHour, header, numbers, i, number;
+        var hour, minute, mode, arrow, type, visualHour, header, numbers, i, number;
 
         // update the arrow
         hour = gj.timepicker.methods.getHour(clock);
         minute = gj.timepicker.methods.getMinute(clock);
+        mode = gj.timepicker.methods.getMode(clock);
         arrow = clock.querySelector('[role="arrow"]');
         type = clock.getAttribute('type');
         if (type === 'hours' && (hour == 0 || hour > 12) && data.mode === '24hr') {
@@ -16518,7 +16545,7 @@ gj.timepicker.methods = {
             header.querySelector('[role="hour"]').innerText = visualHour;
             header.querySelector('[role="minute"]').innerText = gj.core.pad(minute);
             if (data.mode === 'ampm') {
-                if (hour >= 12) {
+                if (mode == "pm") {
                     header.querySelector('[role="pm"]').classList.add('selected');
                     header.querySelector('[role="am"]').classList.remove('selected');
                 } else {
@@ -16662,7 +16689,7 @@ gj.timepicker.methods = {
     setAttributes: function (popup, data, date) {
         var hour = date.getHours();
         if (data.mode === 'ampm') {
-            popup.setAttribute('mode', hour > 12 ? 'pm' : 'am');
+            popup.setAttribute('mode', hour >= 12 ? 'pm' : 'am');
         }
         popup.setAttribute('hour', hour);
         popup.setAttribute('minute', date.getMinutes());
@@ -16814,7 +16841,7 @@ GijgoTimePicker = function (element, jsConfig) {
 
     /** Remove timepicker functionality from the element.
      * @method
-     * @return jquery element
+     * @return timepicker
      * @example sample <!-- nojquery, timepicker -->
      * <button class="gj-button-md" onclick="timepicker.destroy()">Destroy</button>
      * <input id="picker" width="312" />
@@ -16945,6 +16972,11 @@ gj.datetimepicker.config = {
          * <script>
          *     new GijgoDateTimePicker(document.getElementById('picker'), { uiLibrary: 'bootstrap4', modal: true, footer: true });
          * </script>
+         * @example Bootstrap.5 <!-- bootstrap5, datetimepicker -->
+         * <input id="picker" width="234" />
+         * <script>
+         *     new GijgoDateTimePicker(document.getElementById('picker'), { uiLibrary: 'bootstrap5', modal: true, footer: true });
+         * </script>
          */
         uiLibrary: 'materialdesign',
 
@@ -16954,10 +16986,10 @@ gj.datetimepicker.config = {
          * @example Javascript <!-- nojquery, datetimepicker -->
          * <input id="picker" width="300" />
          * <script>
-         *    new GijgoDateTimePicker(document.getElementById('picker'), { value: '22:10 03/27/2020' });
+         *    new GijgoDateTimePicker(document.getElementById('picker'), { value: '22:10 03/27/2023' });
          * </script>
          * @example HTML <!-- nojquery, datetimepicker -->
-         * <input id="picker" width="300" value="22:10 03/27/2020" />
+         * <input id="picker" width="300" value="22:10 03/27/2023" />
          * <script>
          *     new GijgoDateTimePicker(document.getElementById('picker'));
          * </script>
@@ -16986,12 +17018,12 @@ gj.datetimepicker.config = {
          * @type String
          * @default 'HH:MM mm/dd/yyyy'
          * @example Sample <!-- nojquery, datetimepicker -->
-         * <input id="input" value="05:50 2018-27-03" width="312" />
+         * <input id="input" value="05:50 2023-27-03" width="312" />
          * <script>
          *     new GijgoDateTimePicker(document.getElementById('picker'), { format: 'HH:MM yyyy-dd-mm' });
          * </script>
          * @example Long.Month.Format <!-- nojquery, datetimepicker -->
-         * <input id="input" value="10 October 2017 05:50" width="312" />
+         * <input id="input" value="10 October 2023 05:50" width="312" />
          * <script>
          *     new GijgoDateTimePicker(document.getElementById('picker'), { format: 'dd mmmm yyyy HH:MM' });
          * </script>
@@ -17055,36 +17087,36 @@ gj.datetimepicker.config = {
          * @type 'small'|'default'|'large'
          * @default 'default'
          * @example Bootstrap.4 <!-- nojquery, bootstrap4, datetimepicker -->
-         * <p><label for="small">Small Size:</label> <input id="small" width="234" value="10:20 03/20/2018" /></p>
-         * <p><label for="default">Default Size:</label> <input id="default" width="234" value="10:20 03/20/2018" /></p>
-         * <p><label for="large">Large Size:</label> <input id="large" width="234" value="10:20 03/20/2018" /></p>
+         * <p><label for="small">Small Size:</label> <input id="small" width="234" value="10:20 03/20/2023" /></p>
+         * <p><label for="default">Default Size:</label> <input id="default" width="234" value="10:20 03/20/2023" /></p>
+         * <p><label for="large">Large Size:</label> <input id="large" width="234" value="10:20 03/20/2023" /></p>
          * <script>
          *     new GijgoDateTimePicker(document.getElementById('small'), { uiLibrary: 'bootstrap4', size: 'small' });
          *     new GijgoDateTimePicker(document.getElementById('default'), { uiLibrary: 'bootstrap4', size: 'default' });
          *     new GijgoDateTimePicker(document.getElementById('large'), { uiLibrary: 'bootstrap4', size: 'large' });
          * </script>
          * @example Bootstrap.4.Font.Awesome <!-- nojquery, bootstrap4, fontawesome, datetimepicker -->
-         * <p><label for="small">Small Size:</label> <input id="small" width="234" value="10:20 03/20/2018" /></p>
-         * <p><label for="default">Default Size:</label> <input id="default" width="234" value="10:20 03/20/2018" /></p>
-         * <p><label for="large">Large Size:</label> <input id="large" width="234" value="10:20 03/20/2018" /></p>
+         * <p><label for="small">Small Size:</label> <input id="small" width="234" value="10:20 03/20/2023" /></p>
+         * <p><label for="default">Default Size:</label> <input id="default" width="234" value="10:20 03/20/2023" /></p>
+         * <p><label for="large">Large Size:</label> <input id="large" width="234" value="10:20 03/20/2023" /></p>
          * <script>
          *     new GijgoDateTimePicker(document.getElementById('small'), { uiLibrary: 'bootstrap4', iconsLibrary: 'fontawesome', size: 'small' });
          *     new GijgoDateTimePicker(document.getElementById('default'), { uiLibrary: 'bootstrap4', iconsLibrary: 'fontawesome', size: 'default' });
          *     new GijgoDateTimePicker(document.getElementById('large'), { uiLibrary: 'bootstrap4', iconsLibrary: 'fontawesome', size: 'large' });
          * </script>
          * @example Bootstrap.3 <!-- nojquery, bootstrap, datetimepicker -->
-         * <p><label for="small">Small Size:</label> <input id="small" width="220" value="10:20 03/20/2018" /></p>
-         * <p><label for="default">Default Size:</label> <input id="default" width="220" value="10:20 03/20/2018" /></p>
-         * <p><label for="large">Large Size:</label> <input id="large" width="220" value="10:20 03/20/2018" /></p>
+         * <p><label for="small">Small Size:</label> <input id="small" width="220" value="10:20 03/20/2023" /></p>
+         * <p><label for="default">Default Size:</label> <input id="default" width="220" value="10:20 03/20/2023" /></p>
+         * <p><label for="large">Large Size:</label> <input id="large" width="220" value="10:20 03/20/2023" /></p>
          * <script>
          *     new GijgoDateTimePicker(document.getElementById('small'), { uiLibrary: 'bootstrap', size: 'small' });
          *     new GijgoDateTimePicker(document.getElementById('default'), { uiLibrary: 'bootstrap', size: 'default' });
          *     new GijgoDateTimePicker(document.getElementById('large'), { uiLibrary: 'bootstrap', size: 'large' });
          * </script>
          * @example Material.Design <!-- nojquery, datetimepicker -->
-         * <p><label for="small">Small Size:</label> <input id="small" width="276" value="10:20 03/20/2018" /></p>
-         * <p><label for="default">Default Size:</label> <input id="default" width="276" value="10:20 03/20/2018" /></p>
-         * <p><label for="large">Large Size:</label> <input id="large" width="276" value="10:20 03/20/2018" /></p>
+         * <p><label for="small">Small Size:</label> <input id="small" width="276" value="10:20 03/20/2023" /></p>
+         * <p><label for="default">Default Size:</label> <input id="default" width="276" value="10:20 03/20/2023" /></p>
+         * <p><label for="large">Large Size:</label> <input id="large" width="276" value="10:20 03/20/2023" /></p>
          * <script>
          *     new GijgoDateTimePicker(document.getElementById('small'), { size: 'small' });
          *     new GijgoDateTimePicker(document.getElementById('default'), { size: 'default' });
@@ -17140,6 +17172,12 @@ gj.datetimepicker.config = {
     },
 
     bootstrap4: {
+        style: {
+            calendar: 'gj-picker gj-picker-bootstrap datetimepicker gj-unselectable'
+        }
+    },
+
+    bootstrap5: {
         style: {
             calendar: 'gj-picker gj-picker-bootstrap datetimepicker gj-unselectable'
         }
@@ -17387,12 +17425,12 @@ GijgoDateTimePicker = function (element, jsConfig) {
      * @example Get <!-- nojquery, datetimepicker -->
      * <button class="gj-button-md" onclick="alert(datetimepicker.value())">Get Value</button>
      * <hr/>
-     * <input id="picker" width="312" value="17:50 03/27/2020" />
+     * <input id="picker" width="312" value="17:50 03/27/2023" />
      * <script>
      *     var datetimepicker = new GijgoDateTimePicker(document.getElementById('picker'));
      * </script>
      * @example Set <!-- nojquery, datetimepicker -->
-     * <button class="gj-button-md" onclick="datetimepicker.value('13:40 08/01/2020')">Set Value</button>
+     * <button class="gj-button-md" onclick="datetimepicker.value('13:40 08/01/2023')">Set Value</button>
      * <hr/>
      * <input id="picker" width="312" />
      * <script>
@@ -17940,7 +17978,7 @@ gj.colorpicker.config = {
          * @example MaterialDesign <!-- colorpicker -->
          * <input id="colorpicker" width="300" />
          * <script>
-         *    $('#colorpicker').colorpicker({ uiLibrary: 'materialdesign' });
+         *    new GijgoColorPicker(document.getElementById('colorpicker'), { uiLibrary: 'materialdesign' });
          * </script>
          * @example Bootstrap.3 <!-- bootstrap, colorpicker -->
          * <input id="colorpicker" width="300" />
@@ -18001,28 +18039,28 @@ gj.colorpicker.methods = {
         return this;
     },
 
-    initialize: function ($colorpicker) {
+    initialize: function (colorpicker) {
     },
 
-    createPicker: function (input, data) {
+    createPopup: function (ctrl, data) {
         var popup = document.createElement('div');
         popup.setAttribute('role', 'popup');
-        gj.core.addClass(popup, data.style.picker);
-        popup.setAttribute('guid', input.getAttribute('data-guid'));
+        gj.core.addClasses(popup, data.style.picker);
+        popup.setAttribute('guid', ctrl.element.getAttribute('data-guid'));
 
-        popup.html('test');
+        popup.innerHTML = 'test';
 
-        popup.hide();
-        $('body').append(popup);
+        popup.style.display = 'none';
+        document.body.appendChild(popup);
 
-        return $picker;
+        return ctrl;
     },
 
-    open: function ($input) {
-        if ($input.val()) {
-            $input.value($input.val());
+    open: function (picker) {
+        if (picker.value()) {
+            //$input.value($input.val());
         }
-        return gj.picker.widget.prototype.open.call($input, 'colorpicker');
+        return gj.picker.widget.prototype.open.call(picker, 'colorpicker');
     }
 };
 
@@ -18033,17 +18071,17 @@ gj.colorpicker.events = {
      * @event change
      * @param {object} e - event data
      * @example sample <!-- colorpicker -->
-     * <input id="colorpicker" />
+     * <input id="picker" />
      * <script>
-     *     $('#colorpicker').colorpicker({
+     *     new GijgoColorPicker(document.getElementById('picker'),
      *         change: function (e) {
      *             console.log('Change is fired');
      *         }
      *     });
      * </script>
      */
-    change: function ($colorpicker) {
-        return $colorpicker.triggerHandler('change');
+    change: function (el) {
+        return el.dispatchEvent(new Event('change'));
     },
 
     /**
@@ -18052,17 +18090,17 @@ gj.colorpicker.events = {
      * @event select
      * @param {object} e - event data
      * @example sample <!-- colorpicker -->
-     * <input id="colorpicker" />
+     * <input id="picker" />
      * <script>
-     *     $('#colorpicker').colorpicker({
+     *     new GijgoColorPicker(document.getElementById('picker'),
      *         select: function (e) {
      *             console.log('select is fired');
      *         }
      *     });
      * </script>
      */
-    select: function ($colorpicker) {
-        return $colorpicker.triggerHandler('select');
+    select: function (el) {
+        return el.dispatchEvent(new Event('select'));
     },
 
     /**
@@ -18070,17 +18108,17 @@ gj.colorpicker.events = {
      * @event open
      * @param {object} e - event data
      * @example sample <!-- colorpicker -->
-     * <input id="colorpicker" />
+     * <input id="picker" />
      * <script>
-     *     $('#colorpicker').colorpicker({
+     *     new GijgoColorPicker(document.getElementById('picker'),
      *         open: function (e) {
      *             console.log('open is fired');
      *         }
      *     });
      * </script>
      */
-    open: function ($colorpicker) {
-        return $colorpicker.triggerHandler('open');
+    open: function (el) {
+        return el.dispatchEvent(new Event('open'));
     },
 
     /**
@@ -18090,21 +18128,21 @@ gj.colorpicker.events = {
      * @example sample <!-- colorpicker -->
      * <input id="colorpicker" />
      * <script>
-     *     $('#colorpicker').colorpicker({
+     *     new GijgoColorPicker(document.getElementById('picker'),
      *         close: function (e) {
      *             console.log('close is fired');
      *         }
      *     });
      * </script>
      */
-    close: function ($colorpicker) {
-        return $colorpicker.triggerHandler('close');
+    close: function (el) {
+        return el.dispatchEvent(new Event('close'));
     }
 };
 
 GijgoColorPicker = function (element, jsConfig) {
     var self = this,
-        methods = gj.datepicker.methods;
+        methods = gj.colorpicker.methods;
 
     self.element = element;
 
@@ -18113,18 +18151,18 @@ GijgoColorPicker = function (element, jsConfig) {
      * @param {string} value - The value that needs to be selected.
      * @return string
      * @example Get <!-- colorpicker -->
-     * <button class="gj-button-md" onclick="alert($colorpicker.value())">Get Value</button>
+     * <button class="gj-button-md" onclick="alert(colorpicker.value())">Get Value</button>
      * <hr/>
      * <input id="colorpicker" />
      * <script>
-     *     var $colorpicker = $('#colorpicker').colorpicker();
+     *     var colorpicker = new GijgoColorPicker(document.getElementById('colorpicker'));
      * </script>
      * @example Set <!-- colorpicker -->
-     * <button class="gj-button-md" onclick="$colorpicker.value('#FF0000')">Set Value</button>
+     * <button class="gj-button-md" onclick="colorpicker.value('#FF0000')">Set Value</button>
      * <hr/>
      * <input id="colorpicker" />
      * <script>
-     *     var $colorpicker = $('#colorpicker').colorpicker();
+     *     var colorpicker = new GijgoColorPicker(document.getElementById('colorpicker'));
      * </script>
      */
     self.value = function (value) {
@@ -18133,12 +18171,12 @@ GijgoColorPicker = function (element, jsConfig) {
 
     /** Remove colorpicker functionality from the element.
      * @method
-     * @return jquery element
+     * @return colorpicker
      * @example sample <!-- colorpicker -->
      * <button class="gj-button-md" onclick="colorpicker.destroy()">Destroy</button>
      * <input id="colorpicker" />
      * <script>
-     *     var colorpicker = $('#colorpicker').colorpicker();
+     *     var colorpicker = new GijgoColorPicker(document.getElementById('colorpicker'));
      * </script>
      */
     self.destroy = function () {
@@ -18147,12 +18185,12 @@ GijgoColorPicker = function (element, jsConfig) {
 
     /** Opens the popup element with the color selector.
      * @method
-     * @return jquery element
+     * @return colorpicker
      * @example sample <!-- colorpicker -->
      * <button class="gj-button-md" onclick="colorpicker.open()">Open</button>
      * <input id="colorpicker" />
      * <script>
-     *     var colorpicker = $('#colorpicker').colorpicker();
+     *     var colorpicker = new GijgoColorPicker(document.getElementById('colorpicker'));
      * </script>
      */
     self.open = function () {
@@ -18161,12 +18199,12 @@ GijgoColorPicker = function (element, jsConfig) {
 
     /** Close the popup element with the color selector.
      * @method
-     * @return jquery element
+     * @return colorpicker
      * @example sample <!-- colorpicker -->
      * <button class="gj-button-md" onclick="colorpicker.close()">Close</button>
      * <input id="colorpicker" />
      * <script>
-     *     var colorpicker = $('#colorpicker').colorpicker();
+     *     var colorpicker = new GijgoColorPicker(document.getElementById('colorpicker'));
      * </script>
      */
     self.close = function () {

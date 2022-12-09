@@ -51,57 +51,57 @@ gj.colorpicker.methods = {
         return this;
     },
 
-    initialize: function ($colorpicker) {
+    initialize: function (colorpicker) {
     },
 
-    createPicker: function (input, data) {
+    createPopup: function (ctrl, data) {
         var popup = document.createElement('div');
         popup.setAttribute('role', 'popup');
-        gj.core.addClass(popup, data.style.picker);
-        popup.setAttribute('guid', input.getAttribute('data-guid'));
+        gj.core.addClasses(popup, data.style.picker);
+        popup.setAttribute('guid', ctrl.element.getAttribute('data-guid'));
 
-        popup.html('test');
+        popup.innerHTML = 'test';
 
-        popup.hide();
-        $('body').append(popup);
+        popup.style.display = 'none';
+        document.body.appendChild(popup);
 
-        return $picker;
+        return ctrl;
     },
 
-    open: function ($input) {
-        if ($input.val()) {
-            $input.value($input.val());
+    open: function (picker) {
+        if (picker.value()) {
+            //$input.value($input.val());
         }
-        return gj.picker.widget.prototype.open.call($input, 'colorpicker');
+        return gj.picker.widget.prototype.open.call(picker, 'colorpicker');
     }
 };
 
 gj.colorpicker.events = {
     /**
      * Fires when the colorpicker value changes as a result of selecting a new value with the drag handle, buttons or keyboard.
-     *     */    change: function ($colorpicker) {
-        return $colorpicker.triggerHandler('change');
+     *     */    change: function (el) {
+        return el.dispatchEvent(new Event('change'));
     },
 
     /**
-     * Fires as a new color is displayed in the drop-down picker.     */    select: function ($colorpicker) {
-        return $colorpicker.triggerHandler('select');
+     * Fires as a new color is displayed in the drop-down picker.     */    select: function (el) {
+        return el.dispatchEvent(new Event('select'));
     },
 
     /**
-     * Fires when the picker popup is opening.     */    open: function ($colorpicker) {
-        return $colorpicker.triggerHandler('open');
+     * Fires when the picker popup is opening.     */    open: function (el) {
+        return el.dispatchEvent(new Event('open'));
     },
 
     /**
-     * Fires when the picker popup is closing.     */    close: function ($colorpicker) {
-        return $colorpicker.triggerHandler('close');
+     * Fires when the picker popup is closing.     */    close: function (el) {
+        return el.dispatchEvent(new Event('close'));
     }
 };
 
 GijgoColorPicker = function (element, jsConfig) {
     var self = this,
-        methods = gj.datepicker.methods;
+        methods = gj.colorpicker.methods;
 
     self.element = element;
 

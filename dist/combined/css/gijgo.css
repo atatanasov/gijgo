@@ -2670,6 +2670,7 @@ ul.gj-list-md li.disabled > [data-role="wrapper"] > [data-role="expander"] {
 .gj-picker-bootstrap.datetimepicker [role="footer"]> :not(:last-child) {
     margin-right: .25rem;
 }
+
 .gj-slider {
     position: relative;
     padding: 8px 6px;

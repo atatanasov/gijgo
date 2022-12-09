@@ -21,7 +21,7 @@ gj.colorpicker.config = {
          * @example MaterialDesign <!-- colorpicker -->
          * <input id="colorpicker" width="300" />
          * <script>
-         *    $('#colorpicker').colorpicker({ uiLibrary: 'materialdesign' });
+         *    new GijgoColorPicker(document.getElementById('colorpicker'), { uiLibrary: 'materialdesign' });
          * </script>
          * @example Bootstrap.3 <!-- bootstrap, colorpicker -->
          * <input id="colorpicker" width="300" />
@@ -82,28 +82,28 @@ gj.colorpicker.methods = {
         return this;
     },
 
-    initialize: function ($colorpicker) {
+    initialize: function (colorpicker) {
     },
 
-    createPicker: function (input, data) {
+    createPopup: function (ctrl, data) {
         var popup = document.createElement('div');
         popup.setAttribute('role', 'popup');
-        gj.core.addClass(popup, data.style.picker);
-        popup.setAttribute('guid', input.getAttribute('data-guid'));
+        gj.core.addClasses(popup, data.style.picker);
+        popup.setAttribute('guid', ctrl.element.getAttribute('data-guid'));
 
-        popup.html('test');
+        popup.innerHTML = 'test';
 
-        popup.hide();
-        $('body').append(popup);
+        popup.style.display = 'none';
+        document.body.appendChild(popup);
 
-        return $picker;
+        return ctrl;
     },
 
-    open: function ($input) {
-        if ($input.val()) {
-            $input.value($input.val());
+    open: function (picker) {
+        if (picker.value()) {
+            //$input.value($input.val());
         }
-        return gj.picker.widget.prototype.open.call($input, 'colorpicker');
+        return gj.picker.widget.prototype.open.call(picker, 'colorpicker');
     }
 };
 
@@ -114,17 +114,17 @@ gj.colorpicker.events = {
      * @event change
      * @param {object} e - event data
      * @example sample <!-- colorpicker -->
-     * <input id="colorpicker" />
+     * <input id="picker" />
      * <script>
-     *     $('#colorpicker').colorpicker({
+     *     new GijgoColorPicker(document.getElementById('picker'),
      *         change: function (e) {
      *             console.log('Change is fired');
      *         }
      *     });
      * </script>
      */
-    change: function ($colorpicker) {
-        return $colorpicker.triggerHandler('change');
+    change: function (el) {
+        return el.dispatchEvent(new Event('change'));
     },
 
     /**
@@ -133,17 +133,17 @@ gj.colorpicker.events = {
      * @event select
      * @param {object} e - event data
      * @example sample <!-- colorpicker -->
-     * <input id="colorpicker" />
+     * <input id="picker" />
      * <script>
-     *     $('#colorpicker').colorpicker({
+     *     new GijgoColorPicker(document.getElementById('picker'),
      *         select: function (e) {
      *             console.log('select is fired');
      *         }
      *     });
      * </script>
      */
-    select: function ($colorpicker) {
-        return $colorpicker.triggerHandler('select');
+    select: function (el) {
+        return el.dispatchEvent(new Event('select'));
     },
 
     /**
@@ -151,17 +151,17 @@ gj.colorpicker.events = {
      * @event open
      * @param {object} e - event data
      * @example sample <!-- colorpicker -->
-     * <input id="colorpicker" />
+     * <input id="picker" />
      * <script>
-     *     $('#colorpicker').colorpicker({
+     *     new GijgoColorPicker(document.getElementById('picker'),
      *         open: function (e) {
      *             console.log('open is fired');
      *         }
      *     });
      * </script>
      */
-    open: function ($colorpicker) {
-        return $colorpicker.triggerHandler('open');
+    open: function (el) {
+        return el.dispatchEvent(new Event('open'));
     },
 
     /**
@@ -171,21 +171,21 @@ gj.colorpicker.events = {
      * @example sample <!-- colorpicker -->
      * <input id="colorpicker" />
      * <script>
-     *     $('#colorpicker').colorpicker({
+     *     new GijgoColorPicker(document.getElementById('picker'),
      *         close: function (e) {
      *             console.log('close is fired');
      *         }
      *     });
      * </script>
      */
-    close: function ($colorpicker) {
-        return $colorpicker.triggerHandler('close');
+    close: function (el) {
+        return el.dispatchEvent(new Event('close'));
     }
 };
 
 GijgoColorPicker = function (element, jsConfig) {
     var self = this,
-        methods = gj.datepicker.methods;
+        methods = gj.colorpicker.methods;
 
     self.element = element;
 
@@ -194,18 +194,18 @@ GijgoColorPicker = function (element, jsConfig) {
      * @param {string} value - The value that needs to be selected.
      * @return string
      * @example Get <!-- colorpicker -->
-     * <button class="gj-button-md" onclick="alert($colorpicker.value())">Get Value</button>
+     * <button class="gj-button-md" onclick="alert(colorpicker.value())">Get Value</button>
      * <hr/>
      * <input id="colorpicker" />
      * <script>
-     *     var $colorpicker = $('#colorpicker').colorpicker();
+     *     var colorpicker = new GijgoColorPicker(document.getElementById('colorpicker'));
      * </script>
      * @example Set <!-- colorpicker -->
-     * <button class="gj-button-md" onclick="$colorpicker.value('#FF0000')">Set Value</button>
+     * <button class="gj-button-md" onclick="colorpicker.value('#FF0000')">Set Value</button>
      * <hr/>
      * <input id="colorpicker" />
      * <script>
-     *     var $colorpicker = $('#colorpicker').colorpicker();
+     *     var colorpicker = new GijgoColorPicker(document.getElementById('colorpicker'));
      * </script>
      */
     self.value = function (value) {
@@ -214,12 +214,12 @@ GijgoColorPicker = function (element, jsConfig) {
 
     /** Remove colorpicker functionality from the element.
      * @method
-     * @return jquery element
+     * @return colorpicker
      * @example sample <!-- colorpicker -->
      * <button class="gj-button-md" onclick="colorpicker.destroy()">Destroy</button>
      * <input id="colorpicker" />
      * <script>
-     *     var colorpicker = $('#colorpicker').colorpicker();
+     *     var colorpicker = new GijgoColorPicker(document.getElementById('colorpicker'));
      * </script>
      */
     self.destroy = function () {
@@ -228,12 +228,12 @@ GijgoColorPicker = function (element, jsConfig) {
 
     /** Opens the popup element with the color selector.
      * @method
-     * @return jquery element
+     * @return colorpicker
      * @example sample <!-- colorpicker -->
      * <button class="gj-button-md" onclick="colorpicker.open()">Open</button>
      * <input id="colorpicker" />
      * <script>
-     *     var colorpicker = $('#colorpicker').colorpicker();
+     *     var colorpicker = new GijgoColorPicker(document.getElementById('colorpicker'));
      * </script>
      */
     self.open = function () {
@@ -242,12 +242,12 @@ GijgoColorPicker = function (element, jsConfig) {
 
     /** Close the popup element with the color selector.
      * @method
-     * @return jquery element
+     * @return colorpicker
      * @example sample <!-- colorpicker -->
      * <button class="gj-button-md" onclick="colorpicker.close()">Close</button>
      * <input id="colorpicker" />
      * <script>
-     *     var colorpicker = $('#colorpicker').colorpicker();
+     *     var colorpicker = new GijgoColorPicker(document.getElementById('colorpicker'));
      * </script>
      */
     self.close = function () {

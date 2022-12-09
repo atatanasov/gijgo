@@ -14,21 +14,16 @@ gj.dialog.config = {
          * If false, the dialog will stay hidden until the open() method is called.
          * @type boolean
          * @default true
-         * @example True <!-- dialog.base, draggable -->
+         * @example True <!-- nojquery, dialog.base, draggable -->
          * <div id="dialog">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
          * <script>
-         *     $("#dialog").dialog({
-         *         autoOpen: true
-         *     });
+         *     new GijgoDialog(document.getElementById('dialog'), { autoOpen: true, draggable: false });
          * </script>
-         * @example False <!-- dialog.base, bootstrap -->
+         * @example False <!-- dialog.base, bootstrap4 -->
          * <div id="dialog" style="display: none">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
          * <button onclick="dialog.open()" class="btn btn-default">Open Dialog</button>
          * <script>
-         *     var dialog = $("#dialog").dialog({
-         *         uiLibrary: 'bootstrap',
-         *         autoOpen: false
-         *     });
+         *     var dialog = new GijgoDialog(document.getElementById('dialog'), { uiLibrary: 'bootstrap4', autoOpen: false });
          * </script>
          */
         autoOpen: true,

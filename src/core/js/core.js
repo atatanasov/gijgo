@@ -262,12 +262,12 @@ gj.widget.prototype.getHTMLConfigJS = function () {
 };
 
 gj.widget.prototype.createDoneHandler = function () {
-    var $widget = this;
+    var widget = this;
     return function (response) {
         if (typeof (response) === 'string' && JSON) {
             response = JSON.parse(response);
         }
-        gj[$widget.data('type')].methods.render($widget, response);
+        gj[widget.data('type')].methods.render($widget, response);
     };
 };
 
@@ -285,7 +285,7 @@ gj.widget.prototype.reload = function (params) {
         gj[type].methods.useHtmlDataSource(this, data);
     }
     $.extend(data.params, params);
-    if ($.isArray(data.dataSource)) {
+    if (Array.isArray(data.dataSource)) {
         result = gj[type].methods.filter(this);
         gj[type].methods.render(this, result);
     } else if (typeof(data.dataSource) === 'string') {
@@ -386,37 +386,37 @@ gj.core = {
      * @example String.1
      * <div id="date"></div>
      * <script>
-     *     $('#date').text(gj.core.parseDate('02/03/17', 'mm/dd/yy'));
+     *     document.getElementById('date').innerText = gj.core.parseDate('02/03/23', 'mm/dd/yy');
      * </script>
      * @example String.2
      * <div id="date"></div>
      * <script>
-     *     $('#date').text(gj.core.parseDate('2017 2.3', 'yyyy m.d'));
+     *     document.getElementById('date').innerText = gj.core.parseDate('2023 2.3', 'yyyy m.d');
      * </script>
      * @example String.dd.mmm.yyyy
      * <div id="date"></div>
      * <script>
-     *     $('#date').text(gj.core.parseDate('05 Feb 2017', 'dd mmm yyyy'));
+     *     document.getElementById('date').innerText = gj.core.parseDate('05 Feb 2023', 'dd mmm yyyy');
      * </script>
      * @example String.dd.mmmm.yyyy
      * <div id="date"></div>
      * <script>
-     *     $('#date').text(gj.core.parseDate('05 February 2017', 'dd mmmm yyyy'));
+     *     document.getElementById('date').innerText = gj.core.parseDate('05 February 2023', 'dd mmmm yyyy');
      * </script>
      * @example String.HH:MM
      * <div id="date"></div>
      * <script>
-     *     $('#date').text(gj.core.parseDate('10:57', 'HH:MM'));
+     *     document.getElementById('date').innerText = gj.core.parseDate('10:57', 'HH:MM');
      * </script>
      * @example ASP.NET.JSON.Date
      * <div id="date"></div>
      * <script>
-     *     $('#date').text(gj.core.parseDate("\/Date(349653600000)\/"));
+     *     document.getElementById('date').innerText = gj.core.parseDate("\/Date(349653600000)\/");
      * </script>
      * @example UNIX.Timestamp
      * <div id="date"></div>
      * <script>
-     *     $('#date').text(gj.core.parseDate(349653600000));
+     *     document.getElementById('date').innerText = gj.core.parseDate(349653600000);
      * </script>
      */
     parseDate: function (value, format, locale) {
@@ -481,42 +481,42 @@ gj.core = {
      * @example Sample.1
      * <div id="date"></div>
      * <script>
-     *     $('#date').text(gj.core.formatDate(new Date(2017, 1, 3), 'mm/dd/yy'));
+     *     document.getElementById('date').innerText = gj.core.formatDate(new Date(2023, 1, 3), 'mm/dd/yy');
      * </script>
      * @example Sample.2
      * <div id="date"></div>
      * <script>
-     *     $('#date').text(gj.core.formatDate(new Date(2017, 1, 3), 'yyyy m.d'));
+     *     document.getElementById('date').innerText = gj.core.formatDate(new Date(2023, 1, 3), 'yyyy m.d');
      * </script>
      * @example Sample.dd.mmm.yyyy
      * <div id="date"></div>
      * <script>
-     *     $('#date').text(gj.core.formatDate(new Date(2017, 1, 3), 'dd mmm yyyy'));
+     *     document.getElementById('date').innerText = gj.core.formatDate(new Date(2023, 1, 3), 'dd mmm yyyy');
      * </script>
      * @example Sample.dd.mmmm.yyyy
      * <div id="date"></div>
      * <script>
-     *     $('#date').text(gj.core.formatDate(new Date(2017, 1, 3), 'dd mmmm yyyy'));
+     *     document.getElementById('date').innerText = gj.core.formatDate(new Date(2023, 1, 3), 'dd mmmm yyyy');
      * </script>
      * @example Sample.5
      * <div id="date"></div>
      * <script>
-     *     $('#date').text(gj.core.formatDate(new Date(2017, 1, 3, 20, 43, 53), 'hh:MM:ss tt mm/dd/yyyy'));
+     *     document.getElementById('date').innerText = gj.core.formatDate(new Date(2023, 1, 3, 20, 43, 53), 'hh:MM:ss tt mm/dd/yyyy');
      * </script>
      * @example Sample.6
      * <div id="date"></div>
      * <script>
-     *     $('#date').text(gj.core.formatDate(new Date(2017, 1, 3, 20, 43, 53), 'hh:MM TT'));
+     *     document.getElementById('date').innerText = gj.core.formatDate(new Date(2023, 1, 3, 20, 43, 53), 'hh:MM TT');
      * </script>
      * @example Short.WeekDay
      * <div id="date"></div>
      * <script>
-     *     $('#date').text(gj.core.formatDate(new Date(2017, 1, 3), 'ddd, mmm dd'));
+     *     document.getElementById('date').innerText = gj.core.formatDate(new Date(2023, 1, 3), 'ddd, mmm dd');
      * </script>
      * @example Full.WeekDay
      * <div id="date"></div>
      * <script>
-     *     $('#date').text(gj.core.formatDate(new Date(2017, 1, 3), 'dddd, mmm dd'));
+     *     document.getElementById('date').innerText = gj.core.formatDate(new Date(2023, 1, 3), 'dddd, mmm dd');
      * </script>
      */
     formatDate: function (date, format, locale) {
@@ -609,9 +609,10 @@ gj.core = {
     },
 
     center: function (element) {
-        var left = (window.innerWidth / 2) - (gj.core.width(element, true) / 2),
-            top = (window.innerHeight / 2) - (gj.core.height(element, true) / 2);
+        var left, top;
         element.style.position = 'absolute';
+        left = (window.innerWidth / 2) - (gj.core.width(element, true) / 2),
+        top = (window.innerHeight / 2) - (gj.core.height(element, true) / 2);
         element.style.left = (left > 0 ? left : 0) + 'px';
         element.style.top = (top > 0 ? top : 0) + 'px';
     },

@@ -10,9 +10,9 @@
   <script src="../../dist/modular/js/colorpicker.js"></script>
 </head>
 <body style="padding: 8px;">
- <input id="colorpicker" />
+ <input id="picker" />
  <script>
-     $('#colorpicker').colorpicker({
+     new GijgoColorPicker(document.getElementById('picker'),
          change: function (e) {
              console.log('Change is fired');
          }
