@@ -12,8 +12,8 @@ gj.grid.methods = {
         return this;
     },
 
-    getConfig: function (jsConfig, type) {
-        var config = gj.widget.prototype.getConfig.call(this, jsConfig, type);
+    readConfig: function (jsConfig, type) {
+        var config = gj.widget.prototype.readConfig.call(this, jsConfig, type);
         gj.grid.methods.setDefaultColumnConfig(config.columns, config.defaultColumnSettings);
         return config;
     },
@@ -29,13 +29,13 @@ gj.grid.methods = {
         }
     },
 
-    getHTMLConfig: function () {
-        var result = gj.widget.prototype.getHTMLConfig.call(this);
+    readHTMLConfig: function () {
+        var result = gj.widget.prototype.readHTMLConfig.call(this);
         result.columns = [];
         this.find('thead > tr > th').each(function () {
             var $el = $(this),
                 title = $el.text(),
-                config = gj.widget.prototype.getHTMLConfig.call($el);
+                config = gj.widget.prototype.readHTMLConfig.call($el);
             config.title = title;
             if (!config.field) {
                 config.field = title;

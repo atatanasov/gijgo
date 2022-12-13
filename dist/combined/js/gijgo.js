@@ -7,372 +7,11 @@
  */
 var gj = {};
 
-gj.widget = function () {
-    var self = this;
-
-    self.xhr = null;
-
-    self.generateGUID = function () {
-        function s4() {
-            return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
-        }
-        return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
-    };
-
-    self.mouseX = function (e) {
-        if (e) {
-            if (e.pageX) {
-                return e.pageX;
-            } else if (e.clientX) {
-                return e.clientX + (document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft);
-            } else if (e.touches && e.touches.length) {
-                return e.touches[0].pageX;
-            } else if (e.changedTouches && e.changedTouches.length) {
-                return e.changedTouches[0].pageX;
-            } else if (e.originalEvent && e.originalEvent.touches && e.originalEvent.touches.length) {
-                return e.originalEvent.touches[0].pageX;
-            } else if (e.originalEvent && e.originalEvent.changedTouches && e.originalEvent.changedTouches.length) {
-                return e.originalEvent.touches[0].pageX;
-            }
-        }
-        return null;
-    };
-
-    self.mouseY = function (e) {
-        if (e) {
-            if (e.pageY) {
-                return e.pageY;
-            } else if (e.clientY) {
-                return e.clientY + (document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop);
-            } else if (e.touches && e.touches.length) {
-                return e.touches[0].pageY;
-            } else if (e.changedTouches && e.changedTouches.length) {
-                return e.changedTouches[0].pageY;
-            } else if (e.originalEvent && e.originalEvent.touches && e.originalEvent.touches.length) {
-                return e.originalEvent.touches[0].pageY;
-            } else if (e.originalEvent && e.originalEvent.changedTouches && e.originalEvent.changedTouches.length) {
-                return e.originalEvent.touches[0].pageY;
-            }
-        }
-        return null;
-    };
-
-    self.extend = function () {
-        for (var i = 1; i < arguments.length; i++) {
-            for (var key in arguments[i]) {
-                if (arguments[i].hasOwnProperty(key)) {
-                    if (typeof arguments[0][key] === 'object') {
-                        arguments[0][key] = this.extend(arguments[0][key], arguments[i][key]);
-                    } else {
-                        arguments[0][key] = arguments[i][key];
-                    }
-                }
-            }
-        }
-        return arguments[0];
-    };
-};
-
-gj.widget.prototype.init = function (jsConfig, type) {
-    var option, clientConfig, fullConfig;
-
-    this.element.setAttribute('data-type', type);
-    clientConfig = $.extend(true, {}, this.getHTMLConfig() || {});
-    $.extend(true, clientConfig, jsConfig || {});
-    fullConfig = this.getConfig(clientConfig, type);
-    this.element.setAttribute('data-guid', fullConfig.guid);
-    this.data(fullConfig);
-
-    // Initialize events configured as options
-    for (option in fullConfig) {
-        if (gj[type].events.hasOwnProperty(option)) {
-            this.on(option, fullConfig[option]);
-            delete fullConfig[option];
-        }
-    }
-
-    // Initialize all plugins
-    for (plugin in gj[type].plugins) {
-        if (gj[type].plugins.hasOwnProperty(plugin)) {
-            gj[type].plugins[plugin].configure(this, fullConfig, clientConfig);
-        }
-    }
-
-    return this;
-};
-
-gj.widget.prototype.getConfig = function (clientConfig, type) {
-    var config, uiLibrary, iconsLibrary, plugin;
-
-    config = $.extend(true, {}, gj[type].config.base);
-
-    uiLibrary = clientConfig.hasOwnProperty('uiLibrary') ? clientConfig.uiLibrary : config.uiLibrary;
-    if (gj[type].config[uiLibrary]) {
-        $.extend(true, config, gj[type].config[uiLibrary]);
-    }
-
-    iconsLibrary = clientConfig.hasOwnProperty('iconsLibrary') ? clientConfig.iconsLibrary : config.iconsLibrary;
-    if (gj[type].config[iconsLibrary]) {
-        $.extend(true, config, gj[type].config[iconsLibrary]);
-    }
-
-    for (plugin in gj[type].plugins) {
-        if (gj[type].plugins.hasOwnProperty(plugin)) {
-            $.extend(true, config, gj[type].plugins[plugin].config.base);
-            if (gj[type].plugins[plugin].config[uiLibrary]) {
-                $.extend(true, config, gj[type].plugins[plugin].config[uiLibrary]);
-            }
-            if (gj[type].plugins[plugin].config[iconsLibrary]) {
-                $.extend(true, config, gj[type].plugins[plugin].config[iconsLibrary]);
-            }
-        }
-    }
-
-    $.extend(true, config, clientConfig);
-
-    if (!config.guid) {
-        config.guid = this.generateGUID();
-    }
-
-    return config;
-};
-
-gj.widget.prototype.getHTMLConfig = function () {
-    var result = this.data(),
-        attrs = this[0].attributes;
-    if (attrs['width']) {
-        result.width = attrs['width'].value;
-    }
-    if (attrs['height']) {
-        result.height = attrs['height'].value;
-    }
-    if (attrs['value']) {
-        result.value = attrs['value'].value;
-    }
-    if (attrs['align']) {
-        result.align = attrs['align'].value;
-    }
-    if (result && result.source) {
-        result.dataSource = result.source;
-        delete result.source;
-    }
-    return result;
-};
-
-window.gijgoStorage = {
-    _storage: new WeakMap(),
-    put: function (el, key, obj) {
-        if (!this._storage.has(key)) {
-            this._storage.set(el, new Map());
-        }
-        this._storage.get(el).set(key, obj);
-    },
-    get: function (el, key) {
-        return this._storage.get(el).get(key);
-    },
-    has: function (el, key) {
-        return this._storage.get(el).has(key);
-    },
-    remove: function (el, key) {
-        var ret = this._storage.get(el).delete(key);
-        if (this._storage.get(key) && !this._storage.get(key).size === 0) {
-            this._storage.delete(el);
-        }
-        return ret;
-    }
-};
-
-gj.widget.prototype.initJS = function (jsConfig, type) {
-    var option, clientConfig, fullConfig;
-
-    this.element.setAttribute('data-type', type);
-    clientConfig = this.extend({}, this.getHTMLConfigJS() || {});
-    this.extend(clientConfig, jsConfig || {});
-    fullConfig = this.getConfigJS(clientConfig, type);
-    this.element.setAttribute('data-guid', fullConfig.guid);
-    gijgoStorage.put(this.element, 'gijgo', fullConfig);
-
-    // Initialize events configured as options
-    for (option in fullConfig) {
-        if (gj[type].events.hasOwnProperty(option)) {
-            this.element.addEventListener(option, fullConfig[option]);
-            delete fullConfig[option];
-        }
-    }
-
-    // Initialize all plugins
-    for (plugin in gj[type].plugins) {
-        if (gj[type].plugins.hasOwnProperty(plugin)) {
-            gj[type].plugins[plugin].configure(this, fullConfig, clientConfig);
-        }
-    }
-
-    return this;
-};
-
-gj.widget.prototype.getConfigJS = function (clientConfig, type) {
-    var config, uiLibrary, iconsLibrary, plugin;
-
-    config = this.extend({}, gj[type].config.base);
-
-    uiLibrary = clientConfig.hasOwnProperty('uiLibrary') ? clientConfig.uiLibrary : config.uiLibrary;
-    if (gj[type].config[uiLibrary]) {
-        this.extend(config, gj[type].config[uiLibrary]);
-    }
-
-    iconsLibrary = clientConfig.hasOwnProperty('iconsLibrary') ? clientConfig.iconsLibrary : config.iconsLibrary;
-    if (gj[type].config[iconsLibrary]) {
-        this.extend(config, gj[type].config[iconsLibrary]);
-    }
-
-    for (plugin in gj[type].plugins) {
-        if (gj[type].plugins.hasOwnProperty(plugin)) {
-            this.extend(config, gj[type].plugins[plugin].config.base);
-            if (gj[type].plugins[plugin].config[uiLibrary]) {
-                this.extend(config, gj[type].plugins[plugin].config[uiLibrary]);
-            }
-            if (gj[type].plugins[plugin].config[iconsLibrary]) {
-                this.extend(config, gj[type].plugins[plugin].config[iconsLibrary]);
-            }
-        }
-    }
-
-    this.extend(config, clientConfig);
-
-    if (!config.guid) {
-        config.guid = this.generateGUID();
-    }
-
-    return config;
-}
-
-gj.widget.prototype.getHTMLConfigJS = function () {
-    var result = {},
-        attrs = this.element.attributes;
-    if (attrs['width']) {
-        result.width = attrs['width'].value;
-    }
-    if (attrs['height']) {
-        result.height = attrs['height'].value;
-    }
-    if (attrs['value']) {
-        result.value = attrs['value'].value;
-    }
-    if (attrs['align']) {
-        result.align = attrs['align'].value;
-    }
-    if (result && result.source) {
-        result.dataSource = result.source;
-        delete result.source;
-    }
-    return result;
-};
-
-gj.widget.prototype.createDoneHandler = function () {
-    var widget = this;
-    return function (response) {
-        if (typeof (response) === 'string' && JSON) {
-            response = JSON.parse(response);
-        }
-        gj[widget.data('type')].methods.render($widget, response);
-    };
-};
-
-gj.widget.prototype.createErrorHandler = function () {
-    return function (response) {
-        if (response && response.statusText && response.statusText !== 'abort') {
-            alert(response.statusText);
-        }
-    };
-};
-
-gj.widget.prototype.reload = function (params) {
-    var ajaxOptions, result, data = this.data(), type = this.data('type');
-    if (data.dataSource === undefined) {
-        gj[type].methods.useHtmlDataSource(this, data);
-    }
-    $.extend(data.params, params);
-    if (Array.isArray(data.dataSource)) {
-        result = gj[type].methods.filter(this);
-        gj[type].methods.render(this, result);
-    } else if (typeof(data.dataSource) === 'string') {
-        ajaxOptions = { url: data.dataSource, data: data.params };
-        if (this.xhr) {
-            this.xhr.abort();
-        }
-        this.xhr = $.ajax(ajaxOptions).done(this.createDoneHandler()).fail(this.createErrorHandler());
-    } else if (typeof (data.dataSource) === 'object') {
-        if (!data.dataSource.data) {
-            data.dataSource.data = {};
-        }
-        $.extend(data.dataSource.data, data.params);
-        ajaxOptions = $.extend(true, {}, data.dataSource); //clone dataSource object
-        if (ajaxOptions.dataType === 'json' && typeof(ajaxOptions.data) === 'object') {
-            ajaxOptions.data = JSON.stringify(ajaxOptions.data);
-        }
-        if (!ajaxOptions.success) {
-            ajaxOptions.success = this.createDoneHandler();
-        }
-        if (!ajaxOptions.error) {
-            ajaxOptions.error = this.createErrorHandler();
-        }
-        if (this.xhr) {
-            this.xhr.abort();
-        }
-        this.xhr = $.ajax(ajaxOptions);
-    }
-    return this;
-}
-
-gj.documentManager = {
-    events: {},
-
-    subscribeForEvent: function (eventName, widgetId, callback) {
-        if (!gj.documentManager.events[eventName] || gj.documentManager.events[eventName].length === 0) {
-            gj.documentManager.events[eventName] = [{ widgetId: widgetId, callback: callback }];
-            document.addEventListener(eventName, gj.documentManager.executeCallbacks);
-        } else if (!gj.documentManager.events[eventName][widgetId]) {
-            gj.documentManager.events[eventName].push({ widgetId: widgetId, callback: callback });
-        } else {
-            throw 'Event ' + eventName + ' for widget with guid="' + widgetId + '" is already attached.';
-        }
-    },
-
-    executeCallbacks: function (e) {
-        var callbacks = gj.documentManager.events[e.type];
-        if (callbacks) {
-            for (var i = 0; i < callbacks.length; i++) {
-                callbacks[i].callback(e);
-            }
-        }
-    },
-
-    unsubscribeForEvent: function (eventName, widgetId) {
-        var success = false,
-            events = gj.documentManager.events[eventName];
-        if (events) {
-            for (var i = 0; i < events.length; i++) {
-                if (events[i].widgetId === widgetId) {
-                    events.splice(i, 1);
-                    success = true;
-                    if (events.length === 0) {
-                        document.removeEventListener(eventName, gj.documentManager.executeCallbacks);
-                        delete gj.documentManager.events[eventName];
-                    }
-                }
-            }
-        }
-        if (!success) {
-            throw 'The "' + eventName + '" for widget with guid="' + widgetId + '" can\'t be removed.';
-        }
-    }
-};
-
 /**
   * @widget Core
   * @plugin Base
   */
-gj.core = {
+ gj.core = {
     messages: {
         'en-us': {
             monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
@@ -746,6 +385,7 @@ gj.core = {
             }
         }
     },
+
     getScrollParent: function (node) {
         if (node == null) {
             return null;
@@ -753,6 +393,389 @@ gj.core = {
             return node;
         } else {
             return gj.core.getScrollParent(node.parentNode);
+        }
+    },
+    
+    extend: function () {
+        for (var i = 1; i < arguments.length; i++) {
+            for (var key in arguments[i]) {
+                if (arguments[i].hasOwnProperty(key)) {
+                    if (typeof arguments[0][key] === 'object') {
+                        arguments[0][key] = gj.core.extend(arguments[0][key], arguments[i][key]);
+                    } else {
+                        arguments[0][key] = arguments[i][key];
+                    }
+                }
+            }
+        }
+        return arguments[0];
+    }
+};
+
+window.gijgoStorage = {
+    _storage: new WeakMap(),
+    put: function (el, key, obj) {
+        if (!this._storage.get(el)) {
+            this._storage.set(el, new Map());
+        }
+        this._storage.get(el).set(key, obj);
+    },
+    get: function (el, key) {
+        return this._storage.get(el).get(key);
+    },
+    has: function (el, key) {
+        return this._storage.get(el).has(key);
+    },
+    remove: function (el, key) {
+        var ret = this._storage.get(el).delete(key);
+        if (this._storage.get(key) && !this._storage.get(key).size === 0) {
+            this._storage.delete(el);
+        }
+        return ret;
+    }
+};
+
+gj.widget = function () {
+    var self = this;
+
+    self.xhr = null;
+
+    self.type = null;
+
+    self.getConfig = function() {
+        return window.gijgoStorage.get(this.element, this.type);
+    };
+
+    self.setConfig = function(config) {
+        window.gijgoStorage.put(this.element, this.type, config);
+    };
+
+    self.removeConfig = function() {
+        window.gijgoStorage.remove(this.element, this.type);
+    };
+
+    self.generateGUID = function () {
+        function s4() {
+            return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
+        }
+        return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
+    };
+
+    self.mouseX = function (e) {
+        if (e) {
+            if (e.pageX) {
+                return e.pageX;
+            } else if (e.clientX) {
+                return e.clientX + (document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft);
+            } else if (e.touches && e.touches.length) {
+                return e.touches[0].pageX;
+            } else if (e.changedTouches && e.changedTouches.length) {
+                return e.changedTouches[0].pageX;
+            } else if (e.originalEvent && e.originalEvent.touches && e.originalEvent.touches.length) {
+                return e.originalEvent.touches[0].pageX;
+            } else if (e.originalEvent && e.originalEvent.changedTouches && e.originalEvent.changedTouches.length) {
+                return e.originalEvent.touches[0].pageX;
+            }
+        }
+        return null;
+    };
+
+    self.mouseY = function (e) {
+        if (e) {
+            if (e.pageY) {
+                return e.pageY;
+            } else if (e.clientY) {
+                return e.clientY + (document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop);
+            } else if (e.touches && e.touches.length) {
+                return e.touches[0].pageY;
+            } else if (e.changedTouches && e.changedTouches.length) {
+                return e.changedTouches[0].pageY;
+            } else if (e.originalEvent && e.originalEvent.touches && e.originalEvent.touches.length) {
+                return e.originalEvent.touches[0].pageY;
+            } else if (e.originalEvent && e.originalEvent.changedTouches && e.originalEvent.changedTouches.length) {
+                return e.originalEvent.touches[0].pageY;
+            }
+        }
+        return null;
+    };
+
+    self.extend = function () {
+        return gj.core.extend.apply(null, arguments);
+    };
+};
+
+gj.widget.prototype.init = function (jsConfig, type) {
+    var option, clientConfig, fullConfig;
+
+    this.element.setAttribute('data-type', type);
+    clientConfig = $.extend(true, {}, this.readHTMLConfig() || {});
+    $.extend(true, clientConfig, jsConfig || {});
+    fullConfig = this.readConfig(clientConfig, type);
+    this.element.setAttribute('data-guid', fullConfig.guid);
+    this.data(fullConfig);
+
+    // Initialize events configured as options
+    for (option in fullConfig) {
+        if (gj[type].events.hasOwnProperty(option)) {
+            this.on(option, fullConfig[option]);
+            delete fullConfig[option];
+        }
+    }
+
+    // Initialize all plugins
+    for (plugin in gj[type].plugins) {
+        if (gj[type].plugins.hasOwnProperty(plugin)) {
+            gj[type].plugins[plugin].configure(this, fullConfig, clientConfig);
+        }
+    }
+
+    return this;
+};
+
+gj.widget.prototype.readConfig = function (clientConfig, type) {
+    var config, uiLibrary, iconsLibrary, plugin;
+
+    config = $.extend(true, {}, gj[type].config.base);
+
+    uiLibrary = clientConfig.hasOwnProperty('uiLibrary') ? clientConfig.uiLibrary : config.uiLibrary;
+    if (gj[type].config[uiLibrary]) {
+        $.extend(true, config, gj[type].config[uiLibrary]);
+    }
+
+    iconsLibrary = clientConfig.hasOwnProperty('iconsLibrary') ? clientConfig.iconsLibrary : config.iconsLibrary;
+    if (gj[type].config[iconsLibrary]) {
+        $.extend(true, config, gj[type].config[iconsLibrary]);
+    }
+
+    for (plugin in gj[type].plugins) {
+        if (gj[type].plugins.hasOwnProperty(plugin)) {
+            $.extend(true, config, gj[type].plugins[plugin].config.base);
+            if (gj[type].plugins[plugin].config[uiLibrary]) {
+                $.extend(true, config, gj[type].plugins[plugin].config[uiLibrary]);
+            }
+            if (gj[type].plugins[plugin].config[iconsLibrary]) {
+                $.extend(true, config, gj[type].plugins[plugin].config[iconsLibrary]);
+            }
+        }
+    }
+
+    $.extend(true, config, clientConfig);
+
+    if (!config.guid) {
+        config.guid = this.generateGUID();
+    }
+
+    return config;
+};
+
+gj.widget.prototype.readHTMLConfig = function () {
+    var result = this.data(),
+        attrs = this[0].attributes;
+    if (attrs['width']) {
+        result.width = attrs['width'].value;
+    }
+    if (attrs['height']) {
+        result.height = attrs['height'].value;
+    }
+    if (attrs['value']) {
+        result.value = attrs['value'].value;
+    }
+    if (attrs['align']) {
+        result.align = attrs['align'].value;
+    }
+    if (result && result.source) {
+        result.dataSource = result.source;
+        delete result.source;
+    }
+    return result;
+};
+
+gj.widget.prototype.initJS = function (jsConfig) {
+    var option, clientConfig, fullConfig, type = this.type;
+
+    clientConfig = this.extend({}, this.readHTMLConfigJS() || {});
+    this.extend(clientConfig, jsConfig || {});
+    fullConfig = this.getConfigJS(clientConfig);
+    this.element.setAttribute('data-gj-guid', fullConfig.guid);
+    this.setConfig(fullConfig);
+
+    // Initialize events configured as options
+    for (option in fullConfig) {
+        if (gj[type].events.hasOwnProperty(option)) {
+            this.element.addEventListener(option, fullConfig[option]);
+            delete fullConfig[option];
+        }
+    }
+
+    // Initialize all plugins
+    for (plugin in gj[type].plugins) {
+        if (gj[type].plugins.hasOwnProperty(plugin)) {
+            gj[type].plugins[plugin].configure(this, fullConfig, clientConfig);
+        }
+    }
+
+    return this;
+};
+
+gj.widget.prototype.getConfigJS = function (clientConfig) {
+    var config, uiLibrary, iconsLibrary, plugin, type = this.type;
+
+    config = this.extend({}, gj[type].config.base);
+
+    uiLibrary = clientConfig.hasOwnProperty('uiLibrary') ? clientConfig.uiLibrary : config.uiLibrary;
+    if (gj[type].config[uiLibrary]) {
+        this.extend(config, gj[type].config[uiLibrary]);
+    }
+
+    iconsLibrary = clientConfig.hasOwnProperty('iconsLibrary') ? clientConfig.iconsLibrary : config.iconsLibrary;
+    if (gj[type].config[iconsLibrary]) {
+        this.extend(config, gj[type].config[iconsLibrary]);
+    }
+
+    for (plugin in gj[type].plugins) {
+        if (gj[type].plugins.hasOwnProperty(plugin)) {
+            this.extend(config, gj[type].plugins[plugin].config.base);
+            if (gj[type].plugins[plugin].config[uiLibrary]) {
+                this.extend(config, gj[type].plugins[plugin].config[uiLibrary]);
+            }
+            if (gj[type].plugins[plugin].config[iconsLibrary]) {
+                this.extend(config, gj[type].plugins[plugin].config[iconsLibrary]);
+            }
+        }
+    }
+
+    this.extend(config, clientConfig);
+
+    if (!config.guid) {
+        config.guid = this.generateGUID();
+    }
+
+    return config;
+}
+
+gj.widget.prototype.readHTMLConfigJS = function () {
+    var result = {},
+        attrs = this.element.attributes;
+    if (attrs['width']) {
+        result.width = attrs['width'].value;
+    }
+    if (attrs['height']) {
+        result.height = attrs['height'].value;
+    }
+    if (attrs['value']) {
+        result.value = attrs['value'].value;
+    }
+    if (attrs['align']) {
+        result.align = attrs['align'].value;
+    }
+    if (result && result.source) {
+        result.dataSource = result.source;
+        delete result.source;
+    }
+    for (var dataEl in this.element.dataset) {
+        if (dataEl.startsWith('gj')) {
+            result[dataEl.charAt(2).toLowerCase() + dataEl.slice(3)] = this.element.dataset[dataEl];
+        }
+    }
+    return result;
+};
+
+gj.widget.prototype.createDoneHandler = function () {
+    var widget = this;
+    return function (response) {
+        if (typeof (response) === 'string' && JSON) {
+            response = JSON.parse(response);
+        }
+        gj[widget.data('type')].methods.render($widget, response);
+    };
+};
+
+gj.widget.prototype.createErrorHandler = function () {
+    return function (response) {
+        if (response && response.statusText && response.statusText !== 'abort') {
+            alert(response.statusText);
+        }
+    };
+};
+
+gj.widget.prototype.reload = function (params) {
+    var ajaxOptions, result, data = this.data(), type = this.data('type');
+    if (data.dataSource === undefined) {
+        gj[type].methods.useHtmlDataSource(this, data);
+    }
+    $.extend(data.params, params);
+    if (Array.isArray(data.dataSource)) {
+        result = gj[type].methods.filter(this);
+        gj[type].methods.render(this, result);
+    } else if (typeof(data.dataSource) === 'string') {
+        ajaxOptions = { url: data.dataSource, data: data.params };
+        if (this.xhr) {
+            this.xhr.abort();
+        }
+        this.xhr = $.ajax(ajaxOptions).done(this.createDoneHandler()).fail(this.createErrorHandler());
+    } else if (typeof (data.dataSource) === 'object') {
+        if (!data.dataSource.data) {
+            data.dataSource.data = {};
+        }
+        $.extend(data.dataSource.data, data.params);
+        ajaxOptions = $.extend(true, {}, data.dataSource); //clone dataSource object
+        if (ajaxOptions.dataType === 'json' && typeof(ajaxOptions.data) === 'object') {
+            ajaxOptions.data = JSON.stringify(ajaxOptions.data);
+        }
+        if (!ajaxOptions.success) {
+            ajaxOptions.success = this.createDoneHandler();
+        }
+        if (!ajaxOptions.error) {
+            ajaxOptions.error = this.createErrorHandler();
+        }
+        if (this.xhr) {
+            this.xhr.abort();
+        }
+        this.xhr = $.ajax(ajaxOptions);
+    }
+    return this;
+}
+
+gj.documentManager = {
+    events: {},
+
+    subscribeForEvent: function (eventName, widgetId, callback) {
+        if (!gj.documentManager.events[eventName] || gj.documentManager.events[eventName].length === 0) {
+            gj.documentManager.events[eventName] = [{ widgetId: widgetId, callback: callback }];
+            document.addEventListener(eventName, gj.documentManager.executeCallbacks);
+        } else if (!gj.documentManager.events[eventName][widgetId]) {
+            gj.documentManager.events[eventName].push({ widgetId: widgetId, callback: callback });
+        } else {
+            throw 'Event ' + eventName + ' for widget with guid="' + widgetId + '" is already attached.';
+        }
+    },
+
+    executeCallbacks: function (e) {
+        var callbacks = gj.documentManager.events[e.type];
+        if (callbacks) {
+            for (var i = 0; i < callbacks.length; i++) {
+                callbacks[i].callback(e);
+            }
+        }
+    },
+
+    unsubscribeForEvent: function (eventName, widgetId) {
+        var success = false,
+            events = gj.documentManager.events[eventName];
+        if (events) {
+            for (var i = 0; i < events.length; i++) {
+                if (events[i].widgetId === widgetId) {
+                    events.splice(i, 1);
+                    success = true;
+                    if (events.length === 0) {
+                        document.removeEventListener(eventName, gj.documentManager.executeCallbacks);
+                        delete gj.documentManager.events[eventName];
+                    }
+                }
+            }
+        }
+        if (!success) {
+            throw 'The "' + eventName + '" for widget with guid="' + widgetId + '" can\'t be removed.';
         }
     }
 };
@@ -876,14 +899,15 @@ gj.picker.widget.prototype = new gj.widget();
 gj.picker.widget.constructor = gj.picker.widget;
 
 gj.picker.widget.prototype.init = function (jsConfig, type, methods) {
-    gj.widget.prototype.initJS.call(this, jsConfig, type);
+    this.type = type;
+    gj.widget.prototype.initJS.call(this, jsConfig);
     this.element.setAttribute('data-' + type, 'true');
-    gj.picker.methods.initialize(this, gijgoStorage.get(this.element, 'gijgo'), gj[type].methods);
+    gj.picker.methods.initialize(this, gijgoStorage.get(this.element, this.type), gj[type].methods);
     return this;
 };
 
 gj.picker.widget.prototype.open = function (type) {
-    var data = gijgoStorage.get(this.element, 'gijgo'),
+    var data = gijgoStorage.get(this.element, this.type),
         picker = document.body.querySelector('[role="picker"][guid="' + this.element.getAttribute('data-guid') + '"]');
 
     picker.style.display = 'block';
@@ -902,7 +926,7 @@ gj.picker.widget.prototype.open = function (type) {
 };
 
 gj.picker.widget.prototype.close = function (type) {
-    var data = gijgoStorage.get(this.element, 'gijgo'),
+    var data = gijgoStorage.get(this.element, type),
         picker = document.body.querySelector('[role="picker"][guid="' + this.element.getAttribute('data-guid') + '"]');
     picker.style.display = 'none';
     if (data.modal) {
@@ -913,7 +937,7 @@ gj.picker.widget.prototype.close = function (type) {
 };
 
 gj.picker.widget.prototype.destroy = function (type) {
-    var data = gijgoStorage.get(this.element, 'gijgo'),
+    var data = gijgoStorage.get(this.element, type),
         parent = this.element.parentElement,
         picker = document.body.querySelector('[role="picker"][guid="' + this.element.getAttribute('data-guid') + '"]'),
         rightIcon = this.element.parentElement.querySelector('[role="right-icon"]');
@@ -922,7 +946,7 @@ gj.picker.widget.prototype.destroy = function (type) {
         if (parent.getAttribute('role') === 'modal') {
             this.element.outerHTML = this.element.innerHTML;
         }
-        gijgoStorage.remove(this.element, 'gijgo');
+        gijgoStorage.remove(this.element, type);
         this.element.removeAttribute('data-type');
         this.element.removeAttribute('data-guid');
         this.element.removeAttribute('data-datepicker');
@@ -971,30 +995,30 @@ gj.dialog.config = {
          * @default true
          * @example True <!-- dialog.base, draggable -->
          * <div id="dialog">
-         *     <div data-role="header"><h4 data-role="title">Dialog</h4></div>
-         *     <div data-role="body">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
-         *     <div data-role="footer">
-         *         <button onclick="dialog.close()" class="gj-button-md">Ok</button>
-         *         <button onclick="dialog.close()" class="gj-button-md">Cancel</button>
+         *     <div data-gj-role="header"><h4 data-gj-role="title">Dialog</h4></div>
+         *     <div data-gj-role="body">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
+         *     <div data-gj-role="footer">
+         *         <button data-gj-role="close" class="gj-button-md">Ok</button>
+         *         <button data-gj-role="close" class="gj-button-md">Cancel</button>
          *     </div>
          * </div>
          * <script>
-         *     var dialog = $("#dialog").dialog({
+         *     var dialog = new GijgoDialog(document.getElementById('dialog'), {
          *         closeButtonInHeader: true,
          *         height: 200
          *     });
          * </script>
          * @example False <!-- dialog.base, draggable -->
          * <div id="dialog">
-         *     <div data-role="header"><h4 data-role="title">Dialog</h4></div>
-         *     <div data-role="body">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
-         *     <div data-role="footer">
-         *         <button onclick="dialog.close()" class="gj-button-md">Ok</button>
-         *         <button onclick="dialog.close()" class="gj-button-md">Cancel</button>
+         *     <div data-gj-role="header"><h4 data-gj-role="title">Dialog</h4></div>
+         *     <div data-gj-role="body">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
+         *     <div data-gj-role="footer">
+         *         <button data-gj-role="close" class="gj-button-md">Ok</button>
+         *         <button data-gj-role="close" class="gj-button-md">Cancel</button>
          *     </div>
          * </div>
          * <script>
-         *     var dialog = $("#dialog").dialog({
+         *     var dialog = new GijgoDialog(document.getElementById('dialog'), {
          *         closeButtonInHeader: false
          *     });
          * </script>
@@ -1007,14 +1031,14 @@ gj.dialog.config = {
          * @example True <!-- dialog.base -->
          * <div id="dialog">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
          * <script>
-         *     $("#dialog").dialog({
+         *     new GijgoDialog(document.getElementById('dialog'), {
          *         closeOnEscape: true
          *     });
          * </script>
          * @example False <!-- dialog.base, draggable -->
          * <div id="dialog" style="display: none">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
          * <script>
-         *     $("#dialog").dialog({
+         *     new GijgoDialog(document.getElementById('dialog'), {
          *         closeOnEscape: false
          *     });
          * </script>
@@ -1027,14 +1051,14 @@ gj.dialog.config = {
          * @example True <!-- draggable, dialog.base -->
          * <div id="dialog">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
          * <script>
-         *     $("#dialog").dialog({
+         *     new GijgoDialog(document.getElementById('dialog'), {
          *         draggable: true
          *     });
          * </script>
          * @example False <!-- draggable, dialog.base -->
          * <div id="dialog">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
          * <script>
-         *     $("#dialog").dialog({
+         *     new GijgoDialog(document.getElementById('dialog'), {
          *         draggable: false
          *     });
          * </script>
@@ -1049,32 +1073,31 @@ gj.dialog.config = {
          * @example Short.Text <!-- draggable, dialog.base -->
          * <div id="dialog">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
          * <script>
-         *     $("#dialog").dialog({
+         *     new GijgoDialog(document.getElementById('dialog'), {
          *         height: 200
          *     });
          * </script>
          * @example Long.Text.Material.Design <!-- draggable, dialog.base -->
          * <div id="dialog">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus porttitor quam in magna vulputate, vitae laoreet odio ultrices. Phasellus at efficitur magna. Mauris purus dolor, egestas quis leo et, vulputate dictum mauris. Vivamus maximus lectus sollicitudin lorem blandit tempor. Maecenas eget posuere mi. Suspendisse id hendrerit nibh. Morbi eu odio euismod, venenatis ipsum in, egestas nunc. Mauris dignissim metus ac risus porta eleifend. Aliquam tempus libero orci, id placerat odio vehicula eu. Donec tincidunt justo dolor, sit amet tempus turpis varius sit amet. Suspendisse ut ex blandit, hendrerit enim tristique, iaculis ipsum. Vivamus venenatis dolor justo, eget scelerisque lacus dignissim quis. Duis imperdiet ex at aliquet cursus. Proin non ultricies leo. Fusce quam diam, laoreet quis fringilla vitae, viverra id magna. Nam laoreet sem in volutpat rhoncus.</div>
          * <script>
-         *     $("#dialog").dialog({
+         *     new GijgoDialog(document.getElementById('dialog'), {
          *         height: 350
          *     });
          * </script>
          * @example Long.Text.Bootstrap3 <!-- bootstrap, draggable, dialog.base -->
          * <div id="dialog">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus porttitor quam in magna vulputate, vitae laoreet odio ultrices. Phasellus at efficitur magna. Mauris purus dolor, egestas quis leo et, vulputate dictum mauris. Vivamus maximus lectus sollicitudin lorem blandit tempor. Maecenas eget posuere mi. Suspendisse id hendrerit nibh. Morbi eu odio euismod, venenatis ipsum in, egestas nunc. Mauris dignissim metus ac risus porta eleifend. Aliquam tempus libero orci, id placerat odio vehicula eu. Donec tincidunt justo dolor, sit amet tempus turpis varius sit amet. Suspendisse ut ex blandit, hendrerit enim tristique, iaculis ipsum. Vivamus venenatis dolor justo, eget scelerisque lacus dignissim quis. Duis imperdiet ex at aliquet cursus. Proin non ultricies leo. Fusce quam diam, laoreet quis fringilla vitae, viverra id magna. Nam laoreet sem in volutpat rhoncus.</div>
          * <script>
-         *     $("#dialog").dialog({
+         *     new GijgoDialog(document.getElementById('dialog'), {
          *         height: 350,
          *         uiLibrary: 'bootstrap'
          *     });
          * </script>
          * @example Long.Text.Bootstrap4 <!-- bootstrap4, draggable, dialog.base -->
-         * <div id="dialog">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus porttitor quam in magna vulputate, vitae laoreet odio ultrices. Phasellus at efficitur magna. Mauris purus dolor, egestas quis leo et, vulputate dictum mauris. Vivamus maximus lectus sollicitudin lorem blandit tempor. Maecenas eget posuere mi. Suspendisse id hendrerit nibh. Morbi eu odio euismod, venenatis ipsum in, egestas nunc. Mauris dignissim metus ac risus porta eleifend. Aliquam tempus libero orci, id placerat odio vehicula eu. Donec tincidunt justo dolor, sit amet tempus turpis varius sit amet. Suspendisse ut ex blandit, hendrerit enim tristique, iaculis ipsum. Vivamus venenatis dolor justo, eget scelerisque lacus dignissim quis. Duis imperdiet ex at aliquet cursus. Proin non ultricies leo. Fusce quam diam, laoreet quis fringilla vitae, viverra id magna. Nam laoreet sem in volutpat rhoncus.</div>
+         * <div id="dialog" data-gj-ui-library="bootstrap4" height="350">
+         *     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus porttitor quam in magna vulputate, vitae laoreet odio ultrices. Phasellus at efficitur magna. Mauris purus dolor, egestas quis leo et, vulputate dictum mauris. Vivamus maximus lectus sollicitudin lorem blandit tempor. Maecenas eget posuere mi. Suspendisse id hendrerit nibh. Morbi eu odio euismod, venenatis ipsum in, egestas nunc. Mauris dignissim metus ac risus porta eleifend. Aliquam tempus libero orci, id placerat odio vehicula eu. Donec tincidunt justo dolor, sit amet tempus turpis varius sit amet. Suspendisse ut ex blandit, hendrerit enim tristique, iaculis ipsum. Vivamus venenatis dolor justo, eget scelerisque lacus dignissim quis. Duis imperdiet ex at aliquet cursus. Proin non ultricies leo. Fusce quam diam, laoreet quis fringilla vitae, viverra id magna. Nam laoreet sem in volutpat rhoncus.
+         * </div>
          * <script>
-         *     $("#dialog").dialog({
-         *         height: 350,
-         *         uiLibrary: 'bootstrap4'
-         *     });
+         *     new GijgoDialog(document.getElementById('dialog'));
          * </script>
          */
         height: 'auto',
@@ -1083,21 +1106,19 @@ gj.dialog.config = {
          * @type string
          * @default 'en-us'
          * @example French.Default <!-- draggable, dialog.base-->
-         * <script src="../../dist/modular/dialog/js/messages/messages.fr-fr.js"></script>
+         * <!-- <script src="../../dist/combined/js/messages/messages.fr-fr.js"></script> -->
          * <div id="dialog">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
          * <script>
-         *     $("#dialog").dialog({
-         *         resizable: true,
+         *     new GijgoDialog(document.getElementById('dialog'), {
          *         locale: 'fr-fr'
          *     });
          * </script>
          * @example French.Custom <!-- draggable, dialog.base -->
-         * <script src="../../dist/modular/dialog/js/messages/messages.fr-fr.js"></script>
+         * <!-- <script src="../../dist/combined/js/messages/messages.fr-fr.js"></script> -->
          * <div id="dialog">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
          * <script>
          *     gj.dialog.messages['fr-fr'].DefaultTitle = 'Titre de la boîte de dialogue';
-         *     $("#dialog").dialog({
-         *         resizable: true,
+         *     new GijgoDialog(document.getElementById('dialog'), {
          *         locale: 'fr-fr',
          *         width: 700
          *     });
@@ -1111,7 +1132,7 @@ gj.dialog.config = {
          * @example sample <!-- draggable, dialog.base -->
          * <div id="dialog">The maximum height of this dialog is set to 300 px. Try to resize it for testing.</div>
          * <script>
-         *     $("#dialog").dialog({
+         *     new GijgoDialog(document.getElementById('dialog'), {
          *         resizable: true,
          *         height: 200,
          *         maxHeight: 300
@@ -1126,7 +1147,7 @@ gj.dialog.config = {
          * @example sample <!-- draggable, dialog.base -->
          * <div id="dialog">The maximum width of this dialog is set to 400 px. Try to resize it for testing.</div>
          * <script>
-         *     $("#dialog").dialog({
+         *     new GijgoDialog(document.getElementById('dialog'), {
          *         resizable: true,
          *         maxWidth: 400
          *     });
@@ -1140,7 +1161,7 @@ gj.dialog.config = {
          * @example sample <!-- draggable, dialog.base -->
          * <div id="dialog">The minimum height of this dialog is set to 200 px. Try to resize it for testing.</div>
          * <script>
-         *     $("#dialog").dialog({
+         *     new GijgoDialog(document.getElementById('dialog'), {
          *         resizable: true,
          *         height: 300,
          *         minHeight: 200
@@ -1155,7 +1176,7 @@ gj.dialog.config = {
          * @example sample <!-- draggable, dialog.base -->
          * <div id="dialog">The minimum width of this dialog is set to 200 px. Try to resize it for testing.</div>
          * <script>
-         *     $("#dialog").dialog({
+         *     new GijgoDialog(document.getElementById('dialog'), {
          *         resizable: true,
          *         minWidth: 200
          *     });
@@ -1170,22 +1191,31 @@ gj.dialog.config = {
          * @example True.Material.Design <!-- draggable, dialog.base -->
          * <div id="dialog">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
          * <script>
-         *     $("#dialog").dialog({
+         *     new GijgoDialog(document.getElementById('dialog'), {
          *         modal: true
          *     });
          * </script>
          * @example True.Bootstrap.4 <!-- bootstrap4, draggable, dialog.base -->
          * <div id="dialog">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
          * <script>
-         *     $("#dialog").dialog({
+         *     new GijgoDialog(document.getElementById('dialog'), {
          *         modal: true,
          *         uiLibrary: 'bootstrap4'
+         *     });
+         * </script>
+         * @example True.Bootstrap.5 <!-- bootstrap5, draggable, dialog.base -->
+         * <div id="dialog">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
+         * <script>
+         *     new GijgoDialog(document.getElementById('dialog'), {
+         *         modal: true,
+         *         uiLibrary: 'bootstrap5',
+         *         height: 300
          *     });
          * </script>
          * @example False <!-- draggable, dialog.base, bootstrap -->
          * <div id="dialog">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
          * <script>
-         *     $("#dialog").dialog({
+         *     new GijgoDialog(document.getElementById('dialog'), {
          *         modal: false
          *     });
          * </script>
@@ -1198,14 +1228,23 @@ gj.dialog.config = {
          * @example True <!-- draggable, dialog.base -->
          * <div id="dialog">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
          * <script>
-         *     $("#dialog").dialog({
+         *     new GijgoDialog(document.getElementById('dialog'), {
          *         resizable: true
+         *     });
+         * </script>
+         * @example True.Bootstrap5 <!-- bootstrap5, draggable, dialog.base -->
+         * <div id="dialog">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
+         * <script>
+         *     new GijgoDialog(document.getElementById('dialog'), {
+         *         resizable: true,
+         *         uiLibrary: 'bootstrap5',
+         *         maxHeight: 500
          *     });
          * </script>
          * @example False <!-- draggable, dialog.base -->
          * <div id="dialog">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
          * <script>
-         *     $("#dialog").dialog({
+         *     new GijgoDialog(document.getElementById('dialog'), {
          *         resizable: false
          *     });
          * </script>
@@ -1217,32 +1256,32 @@ gj.dialog.config = {
          * @default false
          * @example Bootstrap.3 <!-- bootstrap, draggable, dialog.base -->
          * <div id="dialog">
-         *     <div data-role="body">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus porttitor quam in magna vulputate, vitae laoreet odio ultrices. Phasellus at efficitur magna. Mauris purus dolor, egestas quis leo et, vulputate dictum mauris. Vivamus maximus lectus sollicitudin lorem blandit tempor. Maecenas eget posuere mi. Suspendisse id hendrerit nibh. Morbi eu odio euismod, venenatis ipsum in, egestas nunc. Mauris dignissim metus ac risus porta eleifend. Aliquam tempus libero orci, id placerat odio vehicula eu. Donec tincidunt justo dolor, sit amet tempus turpis varius sit amet. Suspendisse ut ex blandit, hendrerit enim tristique, iaculis ipsum. Vivamus venenatis dolor justo, eget scelerisque lacus dignissim quis. Duis imperdiet ex at aliquet cursus. Proin non ultricies leo. Fusce quam diam, laoreet quis fringilla vitae, viverra id magna. Nam laoreet sem in volutpat rhoncus.</div>
-         *     <div data-role="footer">
-         *         <button class="btn btn-default" data-role="close">Cancel</button>
-         *         <button class="btn btn-default" onclick="dialog.close()">OK</button>
+         *     <div data-gj-role="body">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus porttitor quam in magna vulputate, vitae laoreet odio ultrices. Phasellus at efficitur magna. Mauris purus dolor, egestas quis leo et, vulputate dictum mauris. Vivamus maximus lectus sollicitudin lorem blandit tempor. Maecenas eget posuere mi. Suspendisse id hendrerit nibh. Morbi eu odio euismod, venenatis ipsum in, egestas nunc. Mauris dignissim metus ac risus porta eleifend. Aliquam tempus libero orci, id placerat odio vehicula eu. Donec tincidunt justo dolor, sit amet tempus turpis varius sit amet. Suspendisse ut ex blandit, hendrerit enim tristique, iaculis ipsum. Vivamus venenatis dolor justo, eget scelerisque lacus dignissim quis. Duis imperdiet ex at aliquet cursus. Proin non ultricies leo. Fusce quam diam, laoreet quis fringilla vitae, viverra id magna. Nam laoreet sem in volutpat rhoncus.</div>
+         *     <div data-gj-role="footer">
+         *         <button class="btn btn-default" data-gj-role="close">Cancel</button>
+         *         <button class="btn btn-default" data-gj-role="close">OK</button>
          *     </div>
          * </div>
          * <script>
-         *     var dialog = $("#dialog").dialog({
+         *     var dialog = new GijgoDialog(document.getElementById('dialog'), {
          *         scrollable: true,
          *         height: 300,
          *         uiLibrary: 'bootstrap'
          *     });
          * </script>
-         * @example Bootstrap.4 <!-- bootstrap4, draggable, dialog.base -->
+         * @example Bootstrap.5 <!-- bootstrap5, draggable, dialog.base -->
          * <div id="dialog">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus porttitor quam in magna vulputate, vitae laoreet odio ultrices. Phasellus at efficitur magna. Mauris purus dolor, egestas quis leo et, vulputate dictum mauris. Vivamus maximus lectus sollicitudin lorem blandit tempor. Maecenas eget posuere mi. Suspendisse id hendrerit nibh. Morbi eu odio euismod, venenatis ipsum in, egestas nunc. Mauris dignissim metus ac risus porta eleifend. Aliquam tempus libero orci, id placerat odio vehicula eu. Donec tincidunt justo dolor, sit amet tempus turpis varius sit amet. Suspendisse ut ex blandit, hendrerit enim tristique, iaculis ipsum. Vivamus venenatis dolor justo, eget scelerisque lacus dignissim quis. Duis imperdiet ex at aliquet cursus. Proin non ultricies leo. Fusce quam diam, laoreet quis fringilla vitae, viverra id magna. Nam laoreet sem in volutpat rhoncus.</div>
          * <script>
-         *     $("#dialog").dialog({
+         *     new GijgoDialog(document.getElementById('dialog'), {
          *         scrollable: true,
          *         height: 300,
-         *         uiLibrary: 'bootstrap'
+         *         uiLibrary: 'bootstrap5'
          *     });
          * </script>
          * @example Material.Design <!-- draggable, dialog.base -->
          * <div id="dialog">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus porttitor quam in magna vulputate, vitae laoreet odio ultrices. Phasellus at efficitur magna. Mauris purus dolor, egestas quis leo et, vulputate dictum mauris. Vivamus maximus lectus sollicitudin lorem blandit tempor. Maecenas eget posuere mi. Suspendisse id hendrerit nibh. Morbi eu odio euismod, venenatis ipsum in, egestas nunc. Mauris dignissim metus ac risus porta eleifend. Aliquam tempus libero orci, id placerat odio vehicula eu. Donec tincidunt justo dolor, sit amet tempus turpis varius sit amet. Suspendisse ut ex blandit, hendrerit enim tristique, iaculis ipsum. Vivamus venenatis dolor justo, eget scelerisque lacus dignissim quis. Duis imperdiet ex at aliquet cursus. Proin non ultricies leo. Fusce quam diam, laoreet quis fringilla vitae, viverra id magna. Nam laoreet sem in volutpat rhoncus.</div>
          * <script>
-         *     $("#dialog").dialog({
+         *     new GijgoDialog(document.getElementById('dialog'), {
          *         scrollable: true,
          *         height: 300,
          *         uiLibrary: 'materialdesign'
@@ -1257,15 +1296,25 @@ gj.dialog.config = {
          * @example Js.Config <!-- draggable, dialog.base -->
          * <div id="dialog">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
          * <script>
-         *     $("#dialog").dialog({
+         *     new GijgoDialog(document.getElementById('dialog'), {
          *         title: 'My Custom Title',
          *         width: 400
          *     });
          * </script>
          * @example Html.Config <!-- draggable, dialog.base -->
-         * <div id="dialog" title="My Custom Title" width="400">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
+         * <div id="dialog" width="400" title="My Custom Title">
+         *     Lorem ipsum dolor sit amet, consectetur adipiscing elit...
+         * </div>
          * <script>
-         *     $("#dialog").dialog();
+         *     new GijgoDialog(document.getElementById('dialog'), );
+         * </script>
+         * @example Html.Config.2 <!-- draggable, dialog.base -->
+         * <div id="dialog" width="400">
+         *     <div data-gj-role="header"><div data-gj-role="title">My Custom Title</div></div>
+         *     Lorem ipsum dolor sit amet, consectetur adipiscing elit...
+         * </div>
+         * <script>
+         *     new GijgoDialog(document.getElementById('dialog'), );
          * </script>
          */
         title: undefined,
@@ -1277,36 +1326,49 @@ gj.dialog.config = {
          * @example Bootstrap.3 <!-- draggable, dialog.base, bootstrap -->
          * <div id="dialog">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
          * <script>
-         *     $("#dialog").dialog({
+         *     new GijgoDialog(document.getElementById('dialog'), {
          *         uiLibrary: 'bootstrap'
          *     });
          * </script>
          * @example Bootstrap.4 <!-- draggable, dialog.base, bootstrap4 -->
          * <div id="dialog">
-         *     <div data-role="body">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
-         *     <div data-role="footer">
-         *         <button class="btn btn-default" data-role="close">Cancel</button>
-         *         <button class="btn btn-default" onclick="dialog.close()">OK</button>
+         *     <div data-gj-role="body">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
+         *     <div data-gj-role="footer">
+         *         <button class="btn btn-default" data-gj-role="close">Cancel</button>
+         *         <button class="btn btn-default" data-gj-role="close">OK</button>
          *     </div>
          * </div>
          * <script>
-         *     var dialog = $("#dialog").dialog({
+         *     var dialog = new GijgoDialog(document.getElementById('dialog'), {
          *         uiLibrary: 'bootstrap4'
+         *     });
+         * </script>
+         * @example Bootstrap.5 <!-- draggable, dialog.base, bootstrap5 -->
+         * <div id="dialog">
+         *     <div data-gj-role="body">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
+         *     <div data-gj-role="footer">
+         *         <button class="btn btn-secondary" data-gj-role="close">Cancel</button>
+         *         <button class="btn btn-primary" data-gj-role="close">OK</button>
+         *     </div>
+         * </div>
+         * <script>
+         *     var dialog = new GijgoDialog(document.getElementById('dialog'), {
+         *         uiLibrary: 'bootstrap5'
          *     });
          * </script>
          * @example Material.Design <!-- draggable, dialog.base  -->
          * <div id="dialog">
-         *   <div data-role="body">
+         *   <div data-gj-role="body">
          *     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
          *     Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
          *   </div>
-         *   <div data-role="footer">
-         *     <button class="gj-button-md" onclick="dialog.close()">OK</button>
-         *     <button class="gj-button-md" data-role="close">Cancel</button>
+         *   <div data-gj-role="footer">
+         *     <button class="gj-button-md" data-gj-role="close">OK</button>
+         *     <button class="gj-button-md" data-gj-role="close">Cancel</button>
          *   </div>
          * </div>
          * <script>
-         *     var dialog = $("#dialog").dialog({
+         *     var dialog = new GijgoDialog(document.getElementById('dialog'), {
          *         uiLibrary: 'materialdesign',
          *         resizable: true
          *     });
@@ -1320,7 +1382,7 @@ gj.dialog.config = {
          * @example Fixed.Width <!-- draggable, dialog.base -->
          * <div id="dialog">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
          * <script>
-         *     $("#dialog").dialog({
+         *     new GijgoDialog(document.getElementById('dialog'), {
          *         width: 400
          *     });
          * </script>
@@ -1329,7 +1391,7 @@ gj.dialog.config = {
          *   <img src="https://upload.wikimedia.org/wikipedia/en/thumb/8/80/Wikipedia-logo-v2.svg/1122px-Wikipedia-logo-v2.svg.png" width="420"/>
          * </div>
          * <script>
-         *     $("#dialog").dialog({
+         *     new GijgoDialog(document.getElementById('dialog'), {
          *         width: 'auto'
          *     });
          * </script>
@@ -1369,6 +1431,18 @@ gj.dialog.config = {
             body: 'modal-body',
             footer: 'gj-dialog-footer modal-footer'
         }
+    },
+
+    bootstrap5: {
+        style: {
+            modal: 'gj-modal',
+            content: 'modal modal-content gj-dialog-bootstrap5',
+            header: 'modal-header',
+            headerTitle: 'modal-title',
+            headerCloseButton: 'btn-close',
+            body: 'modal-body',
+            footer: 'gj-dialog-footer modal-footer'
+        }
     }
 };
 /** 
@@ -1385,7 +1459,7 @@ gj.dialog.events = {
      * <div id="dialog" style="display: none">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
      * <button onclick="dialog.open()" class="gj-button-md">Open Dialog</button>
      * <script>
-     *     var dialog = $("#dialog").dialog({
+     *     var dialog = new GijgoDialog(document.getElementById('dialog'), {
      *         autoOpen: false,
      *         initialized: function (e) {
      *             alert('The initialized event is fired.');
@@ -1405,7 +1479,7 @@ gj.dialog.events = {
      * <div id="dialog" style="display: none">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
      * <button onclick="dialog.open()" class="gj-button-md">Open Dialog</button>
      * <script>
-     *     var dialog = $("#dialog").dialog({
+     *     var dialog = new GijgoDialog(document.getElementById('dialog'), {
      *         autoOpen: false,
      *         opening: function (e) {
      *             alert('The opening event is fired.');
@@ -1428,7 +1502,7 @@ gj.dialog.events = {
      * <div id="dialog" style="display: none">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
      * <button onclick="dialog.open()" class="gj-button-md">Open Dialog</button>
      * <script>
-     *     var dialog = $("#dialog").dialog({
+     *     var dialog = new GijgoDialog(document.getElementById('dialog'), {
      *         autoOpen: false,
      *         opening: function (e) {
      *             alert('The opening event is fired.');
@@ -1451,7 +1525,7 @@ gj.dialog.events = {
      * <div id="dialog" style="display: none">Close the dialog in order to fire closing event.</div>
      * <button onclick="dialog.open()" class="gj-button-md">Open Dialog</button>
      * <script>
-     *     var dialog = $("#dialog").dialog({
+     *     var dialog = new GijgoDialog(document.getElementById('dialog'), {
      *         autoOpen: false,
      *         closing: function (e) {
      *             alert('The closing event is fired.');
@@ -1474,7 +1548,7 @@ gj.dialog.events = {
      * <div id="dialog" style="display: none">Close the dialog in order to fire closed event.</div>
      * <button onclick="dialog.open()" class="gj-button-md">Open Dialog</button>
      * <script>
-     *     var dialog = $("#dialog").dialog({
+     *     var dialog = new GijgoDialog(document.getElementById('dialog'), {
      *         autoOpen: false,
      *         closing: function (e) {
      *             alert('The closing event is fired.');
@@ -1497,16 +1571,16 @@ gj.dialog.events = {
      * <div id="dialog" style="display: none">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
      * <div id="logPanel" class="col-xs-12 well pre-scrollable" style="height: 200px"></div>
      * <script>
-     *     var log = $('#logPanel');
-     *     $("#dialog").dialog({
+     *     var log = document.getElementById('logPanel');
+     *     new GijgoDialog(document.getElementById('dialog'), {
      *         drag: function (e) {
-     *             log.append('<div class="row">The drag event is fired.</div>');
+     *             log.innerHTML += '<div class="row">The drag event is fired.</div>';
      *         },
      *         dragStart: function (e) {
-     *             log.append('<div class="row">The dragStart event is fired.</div>');
+     *             log.innerHTML += '<div class="row">The dragStart event is fired.</div>';
      *         },
      *         dragStop: function (e) {
-     *             log.append('<div class="row">The dragStop event is fired.</div>');
+     *             log.innerHTML += '<div class="row">The dragStop event is fired.</div>';
      *         }
      *     });
      * </script>
@@ -1523,16 +1597,16 @@ gj.dialog.events = {
      * <div id="dialog" style="display: none">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
      * <div id="logPanel" class="col-xs-12 well pre-scrollable" style="height: 200px"></div>
      * <script>
-     *     var log = $('#logPanel');
-     *     $("#dialog").dialog({
+     *     var log = document.getElementById('logPanel');
+     *     new GijgoDialog(document.getElementById('dialog'), {
      *         drag: function (e) {
-     *             log.append('<div class="row">The drag event is fired.</div>');
+     *             log.innerHTML += '<div class="row">The drag event is fired.</div>';
      *         },
      *         dragStart: function (e) {
-     *             log.append('<div class="row">The dragStart event is fired.</div>');
+     *             log.innerHTML += '<div class="row">The dragStart event is fired.</div>';
      *         },
      *         dragStop: function (e) {
-     *             log.append('<div class="row">The dragStop event is fired.</div>');
+     *             log.innerHTML += '<div class="row">The dragStop event is fired.</div>';
      *         }
      *     });
      * </script>
@@ -1549,16 +1623,16 @@ gj.dialog.events = {
      * <div id="dialog" style="display: none">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
      * <div id="logPanel" class="col-xs-12 well pre-scrollable" style="height: 200px"></div>
      * <script>
-     *     var log = $('#logPanel');
-     *     $("#dialog").dialog({
+     *     var log = document.getElementById('logPanel');
+     *     new GijgoDialog(document.getElementById('dialog'), {
      *         drag: function (e) {
-     *             log.append('<div class="row">The drag event is fired.</div>');
+     *             log.innerHTML += '<div class="row">The drag event is fired.</div>';
      *         },
      *         dragStart: function (e) {
-     *             log.append('<div class="row">The dragStart event is fired.</div>');
+     *             log.innerHTML += '<div class="row">The dragStart event is fired.</div>';
      *         },
      *         dragStop: function (e) {
-     *             log.append('<div class="row">The dragStop event is fired.</div>');
+     *             log.innerHTML += '<div class="row">The dragStop event is fired.</div>';
      *         }
      *     });
      * </script>
@@ -1575,17 +1649,17 @@ gj.dialog.events = {
      * <div id="dialog" style="display: none">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
      * <div id="logPanel" class="col-xs-12 well pre-scrollable" style="height: 200px"></div>
      * <script>
-     *     var log = $('#logPanel');
-     *     $("#dialog").dialog({
+     *     var log = document.getElementById('logPanel');
+     *     new GijgoDialog(document.getElementById('dialog'), {
      *         resizable: true,
      *         resize: function (e) {
-     *             log.append('<div class="row">The resize event is fired.</div>');
+     *             log.innerHTML += '<div class="row">The resize event is fired.</div>';
      *         },
      *         resizeStart: function (e) {
-     *             log.append('<div class="row">The resizeStart event is fired.</div>');
+     *             log.innerHTML += '<div class="row">The resizeStart event is fired.</div>';
      *         },
      *         resizeStop: function (e) {
-     *             log.append('<div class="row">The resizeStop event is fired.</div>');
+     *             log.innerHTML += '<div class="row">The resizeStop event is fired.</div>';
      *         }
      *     });
      * </script>
@@ -1602,17 +1676,17 @@ gj.dialog.events = {
      * <div id="dialog" style="display: none">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
      * <div id="logPanel" class="col-xs-12 well pre-scrollable" style="height: 200px"></div>
      * <script>
-     *     var log = $('#logPanel');
-     *     $("#dialog").dialog({
+     *     var log = document.getElementById('logPanel');
+     *     new GijgoDialog(document.getElementById('dialog'), {
      *         resizable: true,
      *         resize: function (e) {
-     *             log.append('<div class="row">The resize event is fired.</div>');
+     *             log.innerHTML += '<div class="row">The resize event is fired.</div>';
      *         },
      *         resizeStart: function (e) {
-     *             log.append('<div class="row">The resizeStart event is fired.</div>');
+     *             log.innerHTML += '<div class="row">The resizeStart event is fired.</div>';
      *         },
      *         resizeStop: function (e) {
-     *             log.append('<div class="row">The resizeStop event is fired.</div>');
+     *             log.innerHTML += '<div class="row">The resizeStop event is fired.</div>';
      *         }
      *     });
      * </script>
@@ -1629,17 +1703,17 @@ gj.dialog.events = {
      * <div id="dialog" style="display: none">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
      * <div id="logPanel" class="col-xs-12 well pre-scrollable" style="height: 200px"></div>
      * <script>
-     *     var log = $('#logPanel');
-     *     $("#dialog").dialog({
+     *     var log = document.getElementById('logPanel');
+     *     new GijgoDialog(document.getElementById('dialog'), {
      *         resizable: true,
      *         resize: function (e) {
-     *             log.append('<div class="row">The resize event is fired.</div>');
+     *             log.innerHTML += '<div class="row">The resize event is fired.</div>';
      *         },
      *         resizeStart: function (e) {
-     *             log.append('<div class="row">The resizeStart event is fired.</div>');
+     *             log.innerHTML += '<div class="row">The resizeStart event is fired.</div>';
      *         },
      *         resizeStop: function (e) {
-     *             log.append('<div class="row">The resizeStop event is fired.</div>');
+     *             log.innerHTML += '<div class="row">The resizeStop event is fired.</div>';
      *         }
      *     });
      * </script>
@@ -1652,33 +1726,35 @@ gj.dialog.events = {
 gj.dialog.methods = {
 
     init: function (jsConfig) {
-        gj.widget.prototype.initJS.call(this, jsConfig, 'dialog');
+        var config;
+        this.type = 'dialog';
+        gj.widget.prototype.initJS.call(this, jsConfig);
 
-        gj.dialog.methods.localization(this);
-        gj.dialog.methods.initialize(this);
+        config = this.getConfig();
+        gj.dialog.methods.localization(config);
+        gj.dialog.methods.initialize(this, config);
+        gj.dialog.methods.accessibility(this.element, config);
         gj.dialog.events.initialized(this.element);
         return this;
     },
 
-    localization: function(dialog) {
-        var data = gijgoStorage.get(dialog.element, 'gijgo');
-        if (typeof data.title === 'undefined') {
-            data.title = gj.dialog.messages[data.locale].DefaultTitle;
-        }
-    },
-
-    getHTMLConfig: function () {
-        var result = gj.widget.prototype.getHTMLConfig.call(this),
-            attrs = this.attributes;
+    readHTMLConfig: function () {
+        var result = gj.widget.prototype.readHTMLConfigJS.call(this),
+            attrs = this.element.attributes;
         if (attrs['title']) {
             result.title = attrs['title'].value;
         }
         return result;
     },
 
-    initialize: function (dialog) {
-        var data, header, body, footer;
-        data = gijgoStorage.get(dialog.element, 'gijgo');
+    localization: function(config) {
+        if (typeof config.title === 'undefined') {
+            config.title = gj.dialog.messages[config.locale].DefaultTitle;
+        }
+    },
+
+    initialize: function (dialog, data) {
+        var data, header, body, footer, wrapper;
 
         gj.core.addClasses(dialog.element, data.style.content);
 
@@ -1686,16 +1762,16 @@ gj.dialog.methods = {
 
         if (data.closeOnEscape) {
             document.addEventListener('keyup', function (e) {
-                if (e.key === 27) {
+                if (e.key === 'Escape') {
                     dialog.close();
                 }
             });
         }
 
-        body = dialog.element.querySelector('div[data-role="body"]');
+        body = dialog.element.querySelector('div[data-gj-role="body"]');
         if (!body) {
             body = document.createElement('div');
-            body.setAttribute('role', 'body');
+            body.setAttribute('data-gj-role', 'body');
             for(var i = 0; i < dialog.element.childNodes.length; i++)
             {
                 body.appendChild(dialog.element.childNodes[i]);
@@ -1706,14 +1782,10 @@ gj.dialog.methods = {
 
         header = gj.dialog.methods.renderHeader(dialog, data);
 
-        footer = dialog.element.querySelector('div[data-role="footer"]');
+        footer = dialog.element.querySelector('div[data-gj-role="footer"]');
         if (footer) {
             gj.core.addClasses(footer, data.style.footer);
         }
-
-        dialog.element.querySelector('[data-role="close"]').addEventListener('click', function () {
-            dialog.close();
-        });
 
         if (gj.draggable) {
             if (data.draggable) {
@@ -1727,13 +1799,17 @@ gj.dialog.methods = {
         if (data.scrollable && data.height) {
             dialog.element.classList.add('gj-dialog-scrollable');
             dialog.element.addEventListener('opened', function () {
-                var body = dialog.element.querySelector('div[data-role="body"]');
-                body.style.height = (data.height - $header.outerHeight() - ($footer.length ? $footer.outerHeight() : 0)) + 'px';
+                var body = dialog.element.querySelector('div[data-gj-role="body"]');
+                body.style.height = (data.height - gj.core.height(header) - (footer ? gj.core.height(footer) : 0)) + 'px';
             });            
         }
 
         if (data.modal) {
-            $dialog.wrapAll('<div data-role="modal" class="' + data.style.modal + '"/>');
+            wrapper = document.createElement('div');
+            gj.core.addClasses(wrapper, data.style.modal);
+            wrapper.setAttribute('data-gj-role', 'modal');
+            dialog.element.parentNode.insertBefore(wrapper, dialog.element);
+            wrapper.appendChild(dialog.element);
         }
 
         if (data.autoOpen) {
@@ -1741,166 +1817,242 @@ gj.dialog.methods = {
         }
     },
 
+    accessibility: function(el, config) {
+        var id, title, titleId;
+
+        id = el.id;
+        if (!id) {
+            id = el.getAttribute('data-gj-type') + Math.random().toString(16).slice(2);
+            el.setAttribute('id', id);
+        }
+
+        if (!el.getAttribute('aria-labelledby')) {
+            title = el.querySelector('[data-gj-role="title"]');
+            titleId = title.id;
+            if (!titleId) {
+                titleId = id + '-title';
+                title.setAttribute('id', titleId);
+            }
+            el.setAttribute('aria-labelledby', titleId);
+        }
+
+        if (config.modal) {
+            el.setAttribute('aria-modal', 'true');
+        } else {
+            el.removeAttribute('aria-modal');
+        }
+
+        el.element.querySelectorAll('[data-gj-role="close"]').forEach(function (el) {
+            el.setAttribute('aria-label', 'Close');
+        });
+    },
+
     setSize: function (el, data) {
         if (data.width) {
-            el.style.width = data.width + 'px';
+            el.style.width = isNaN(data.width) ? data.width : data.width + 'px';
         }
         if (data.height) {
-            el.style.height = data.height + 'px';
+            el.style.height = isNaN(data.height) ? data.height : data.height + 'px';
         }
     },
 
     renderHeader: function (dialog, data) {
         var header, title, closeButton;
-        header = dialog.element.querySelector('div[data-role="header"]');
+
+        header = dialog.element.querySelector('div[data-gj-role="header"]');
         if (!header) {
             header = document.createElement('div');
-            header.setAttribute('data-role', 'header');
+            header.setAttribute('data-gj-role', 'header');
             dialog.element.insertBefore(header, dialog.element.children[0]);
         }
         gj.core.addClasses(header, data.style.header);
 
-        title = header.querySelector('[data-role="title"]');
+        title = header.querySelector('[data-gj-role="title"]');
         if (!title) {
             title = document.createElement('h4');
-            title.setAttribute('role', 'title');
+            title.setAttribute('data-gj-role', 'title');
             title.innerHTML = data.title;
             header.appendChild(title);
         }
         gj.core.addClasses(title, data.style.headerTitle);
 
-        closeButton = header.querySelector('[data-role="close"]');
+        closeButton = header.querySelector('[data-gj-role="close"]');
         if (!closeButton && data.closeButtonInHeader) {
             closeButton = document.createElement('button');
             closeButton.setAttribute('type', 'button');
-            closeButton.setAttribute('data-role', 'close');
+            closeButton.setAttribute('data-gj-role', 'close');
             closeButton.setAttribute('title', gj.dialog.messages[data.locale].Close);
-            closeButton.innerHTML = '<span>×</span>';
-            gj.core.addClasses(closeButton, data.style.headerCloseButton);
+            if (data.uiLibrary !== 'bootstrap5') {
+                closeButton.innerHTML = '<span>×</span>';
+            }
             header.appendChild(closeButton);
-        } else if (closeButton && data.closeButtonInHeader === false) {
+        } else if (closeButton && !data.closeButtonInHeader) {
             closeButton.style.display = 'node';
-        } else {
-            closeButton.classList.add(data.style.headerCloseButton);
+        } 
+        if (closeButton) {
+            closeButton.classList.add(data.style.headerCloseButton);            
         }
+
+        dialog.element.querySelectorAll('[data-gj-role="close"]').forEach(function (el) {
+            el.addEventListener('click', function () {
+                dialog.close();
+            });
+        });
 
         return header;
     },
 
-    draggable: function ($dialog, $header) {
-        $dialog.appendTo('body');
-        $header.addClass('gj-draggable');
-        $dialog.draggable({
-            handle: $header,
+    draggable: function (dialog, header) {
+        document.body.appendChild(dialog.element);
+        gj.core.addClasses(header, 'gj-draggable');
+        new GijgoDraggable(dialog.element, {
+            handle: header,
             start: function () {
-                $dialog.addClass('gj-unselectable');
-                gj.dialog.events.dragStart($dialog);
+                dialog.element.classList.add('gj-unselectable');
+                gj.dialog.events.dragStart(dialog.element);
             },
             stop: function () {
-                $dialog.removeClass('gj-unselectable');
-                gj.dialog.events.dragStop($dialog);
+                dialog.element.classList.remove('gj-unselectable');
+                gj.dialog.events.dragStop(dialog.element);
             }
         });
     },
 
-    resizable: function ($dialog) {
-        var config = {
-            'drag': gj.dialog.methods.resize,
+    resizable: function (dialog) {
+        var config, n, e, s, w, ne, nw, sw, se,
+            el = dialog.element;
+        
+        config = {
+            'drag': gj.dialog.methods.resize(dialog.getConfig()),
             'start': function () {
-                $dialog.addClass('gj-unselectable');
-                gj.dialog.events.resizeStart($dialog);
+                dialog.element.classList.add('gj-unselectable');
+                gj.dialog.events.resizeStart(dialog.element);
             },
             'stop': function () {
                 this.removeAttribute('style');
-                $dialog.removeClass('gj-unselectable');
-                gj.dialog.events.resizeStop($dialog);
+                dialog.element.classList.remove('gj-unselectable');
+                gj.dialog.events.resizeStop(dialog.element);
             }
         };
-        $dialog.append($('<div class="gj-resizable-handle gj-resizable-n"></div>').draggable($.extend(true, { horizontal: false }, config)));
-        $dialog.append($('<div class="gj-resizable-handle gj-resizable-e"></div>').draggable($.extend(true, { vertical: false }, config)));
-        $dialog.append($('<div class="gj-resizable-handle gj-resizable-s"></div>').draggable($.extend(true, { horizontal: false }, config)));
-        $dialog.append($('<div class="gj-resizable-handle gj-resizable-w"></div>').draggable($.extend(true, { vertical: false }, config)));
-        $dialog.append($('<div class="gj-resizable-handle gj-resizable-ne"></div>').draggable($.extend(true, {}, config)));
-        $dialog.append($('<div class="gj-resizable-handle gj-resizable-nw"></div>').draggable($.extend(true, {}, config)));
-        $dialog.append($('<div class="gj-resizable-handle gj-resizable-sw"></div>').draggable($.extend(true, {}, config)));
-        $dialog.append($('<div class="gj-resizable-handle gj-resizable-se"></div>').draggable($.extend(true, {}, config)));
-    },
-
-    resize: function (e, newPosition) {
-        var $el, $dialog, position, data, height, width, top, left, result = false;
-
-        $el = $(this);
-        $dialog = $el.parent();
-        position = gj.core.position(this);
-        offset = { top: newPosition.top - position.top, left: newPosition.left - position.left };
-        data = $dialog.data();
-
-        // TODO: Include margins in the calculations
-        if ($el.hasClass('gj-resizable-n')) {
-            height = $dialog.height() - offset.top;
-            top = $dialog.offset().top + offset.top;
-        } else if ($el.hasClass('gj-resizable-e')) {
-            width = $dialog.width() + offset.left;
-        } else if ($el.hasClass('gj-resizable-s')) {
-            height = $dialog.height() + offset.top;
-        } else if ($el.hasClass('gj-resizable-w')) {
-            width = $dialog.width() - offset.left;
-            left = $dialog.offset().left + offset.left;
-        } else if ($el.hasClass('gj-resizable-ne')) {
-            height = $dialog.height() - offset.top;
-            top = $dialog.offset().top + offset.top;
-            width = $dialog.width() + offset.left;
-        } else if ($el.hasClass('gj-resizable-nw')) {
-            height = $dialog.height() - offset.top;
-            top = $dialog.offset().top + offset.top;
-            width = $dialog.width() - offset.left;
-            left = $dialog.offset().left + offset.left;
-        } else if ($el.hasClass('gj-resizable-se')) {
-            height = $dialog.height() + offset.top;
-            width = $dialog.width() + offset.left;
-        } else if ($el.hasClass('gj-resizable-sw')) {
-            height = $dialog.height() + offset.top;
-            width = $dialog.width() - offset.left;
-            left = $dialog.offset().left + offset.left;
-        }
-
-        if (height && (!data.minHeight || height >= data.minHeight) && (!data.maxHeight || height <= data.maxHeight)) {
-            $dialog.height(height);
-            if (top) {
-                $dialog.css('top', top);
-            }
-            result = true;
-        }
-
-        if (width && (!data.minWidth || width >= data.minWidth) && (!data.maxWidth || width <= data.maxWidth)) {
-            $dialog.width(width);
-            if (left) {
-                $dialog.css('left', left);
-            }
-            result = true;
-        }
-
-        if (result) {
-            gj.dialog.events.resize($dialog);
-        }
         
-        return result;
+        n = document.createElement('div');
+        gj.core.addClasses(n, 'gj-resizable-handle gj-resizable-n');
+        el.appendChild(n);
+        new GijgoDraggable(n, gj.core.extend({ horizontal: false }, config));
+
+        e = document.createElement('div');
+        gj.core.addClasses(e, 'gj-resizable-handle gj-resizable-e');
+        el.appendChild(e);
+        new GijgoDraggable(e, gj.core.extend({ vertical: false }, config));
+
+        s = document.createElement('div');
+        gj.core.addClasses(s, 'gj-resizable-handle gj-resizable-s');
+        el.appendChild(s);
+        new GijgoDraggable(s, gj.core.extend({ horizontal: false }, config));
+
+        w = document.createElement('div');
+        gj.core.addClasses(w, 'gj-resizable-handle gj-resizable-w');
+        el.appendChild(w);
+        new GijgoDraggable(w, gj.core.extend({ vertical: false }, config));
+
+        ne = document.createElement('div');
+        gj.core.addClasses(ne, 'gj-resizable-handle gj-resizable-ne');
+        el.appendChild(ne);
+        new GijgoDraggable(ne, gj.core.extend({}, config));
+
+        nw = document.createElement('div');
+        gj.core.addClasses(nw, 'gj-resizable-handle gj-resizable-nw');
+        el.appendChild(nw);
+        new GijgoDraggable(nw, gj.core.extend({}, config));
+
+        sw = document.createElement('div');
+        gj.core.addClasses(sw, 'gj-resizable-handle gj-resizable-sw');
+        el.appendChild(sw);
+        new GijgoDraggable(sw, gj.core.extend({}, config));
+
+        se = document.createElement('div');
+        gj.core.addClasses(se, 'gj-resizable-handle gj-resizable-se');
+        el.appendChild(se);
+        new GijgoDraggable(se, gj.core.extend({}, config));
     },
 
+    resize: function (dialogConfig)
+    {
+        return function (e) {
+            var el, dialog, position, height, width, top, left, result = false;
+    
+            el = this;
+            dialog = this.parentNode;
+            position = gj.core.position(this);
+            offset = { top: e.detail.newPosition.top - position.top, left: e.detail.newPosition.left - position.left };
+    
+            // TODO: Include margins in the calculations
+            if (el.classList.contains('gj-resizable-n')) {
+                height = gj.core.height(dialog) - offset.top;
+                top = dialog.offsetTop + offset.top;
+            } else if (el.classList.contains('gj-resizable-e')) {
+                width = gj.core.width(dialog) + offset.left;
+            } else if (el.classList.contains('gj-resizable-s')) {
+                height = gj.core.height(dialog) + offset.top;
+            } else if (el.classList.contains('gj-resizable-w')) {
+                width = gj.core.width(dialog) - offset.left;
+                left = dialog.offsetLeft + offset.left;
+            } else if (el.classList.contains('gj-resizable-ne')) {
+                height = gj.core.height(dialog) - offset.top;
+                top = dialog.offsetTop + offset.top;
+                width = gj.core.width(dialog) + offset.left;
+            } else if (el.classList.contains('gj-resizable-nw')) {
+                height = gj.core.height(dialog) - offset.top;
+                top = dialog.offsetTop + offset.top;
+                width = gj.core.width(dialog) - offset.left;
+                left = dialog.offsetLeft + offset.left;
+            } else if (el.classList.contains('gj-resizable-se')) {
+                height = gj.core.height(dialog) + offset.top;
+                width = gj.core.width(dialog) + offset.left;
+            } else if (el.classList.contains('gj-resizable-sw')) {
+                height = gj.core.height(dialog) + offset.top;
+                width = gj.core.width(dialog) - offset.left;
+                left = dialog.offsetLeft + offset.left;
+            }
+    
+            if (height && (!dialogConfig.minHeight || height >= dialogConfig.minHeight) && (!dialogConfig.maxHeight || height <= dialogConfig.maxHeight)) {
+                dialog.style.height = height + 'px';
+                if (top) {
+                    dialog.style.top = top + 'px';
+                }
+                result = true;
+            }
+    
+            if (width && (!dialogConfig.minWidth || width >= dialogConfig.minWidth) && (!dialogConfig.maxWidth || width <= dialogConfig.maxWidth)) {
+                dialog.style.width = width + 'px';
+                if (left) {
+                    dialog.style.left = left + 'px';
+                }
+                result = true;
+            }
+    
+            if (result) {
+                gj.dialog.events.resize(dialog);
+            }
+            
+            return result;
+        }
+    },
+    
     open: function (dialog, title) {
         var footer, modal, el = dialog.element;
         gj.dialog.events.opening(el);
         if (title !== undefined) {
-            el.querySelector('[data-role="title"]').innerHTML = title;
+            el.querySelector('[data-gj-role="title"]').innerHTML = title;
         }
         el.style.display = 'block';
-        modal = el.closest('div[data-role="modal"]');
+        modal = el.closest('div[data-gj-role="modal"]');
         if (modal) {
             modal.style.display = 'block';
         }
-        footer = el.querySelector('div[data-role="footer"]');
+        footer = el.querySelector('div[data-gj-role="footer"]');
         if (footer) {
-            el.querySelector('div[data-role="body"]').style.marginBottom = footer.offsetHeight;
+            el.querySelector('div[data-gj-role="body"]').style.marginBottom = gj.core.height(footer) + 'px';
         }
         gj.core.center(el);
         gj.dialog.events.opened(el);
@@ -1912,7 +2064,7 @@ gj.dialog.methods = {
         if (el.style.display != 'none') {
             gj.dialog.events.closing(el);
             el.style.display = 'none';
-            modal = el.closest('div[data-role="modal"]');
+            modal = el.closest('div[data-gj-role="modal"]');
             if (modal) {
                 modal.style.display = 'none';
             }
@@ -1921,12 +2073,12 @@ gj.dialog.methods = {
         return dialog;
     },
 
-    isOpen: function ($dialog) {
+    isOpen: function (el) {
         return el.style.display != 'none';
     },
 
     content: function (dialog, html) {
-        var body = dialog.element.querySelector('div[data-role="body"]');
+        var body = dialog.element.querySelector('div[data-gj-role="body"]');
         if (typeof (html) === "undefined") {
             return body.innerHTML;
         } else {
@@ -1935,22 +2087,23 @@ gj.dialog.methods = {
         }
     },
 
-    destroy: function ($dialog, keepHtml) {
-        var data = $dialog.data();
+    destroy: function (dialog, keepHtml) {
+        var data = dialog.getConfig();
         if (data) {
+            dialog.removeConfig();
             if (keepHtml === false) {
-                $dialog.remove();
+                dialog.remove();
             } else {
                 $dialog.close();
                 $dialog.off();
                 $dialog.removeData();
-                $dialog.removeAttr('data-type');
+                $dialog.removeAttr('data-gj-type');
                 $dialog.removeClass(data.style.content);
-                $dialog.find('[data-role="header"]').removeClass(data.style.header);
-                $dialog.find('[data-role="title"]').removeClass(data.style.headerTitle);
-                $dialog.find('[data-role="close"]').remove();
-                $dialog.find('[data-role="body"]').removeClass(data.style.body);
-                $dialog.find('[data-role="footer"]').removeClass(data.style.footer);
+                $dialog.find('[data-gj-role="header"]').removeClass(data.style.header);
+                $dialog.find('[data-gj-role="title"]').removeClass(data.style.headerTitle);
+                $dialog.find('[data-gj-role="close"]').remove();
+                $dialog.find('[data-gj-role="body"]').removeClass(data.style.body);
+                $dialog.find('[data-gj-role="footer"]').removeClass(data.style.footer);
             }
             
         }
@@ -1977,7 +2130,7 @@ GijgoDialog = function (element, jsConfig) {
      * <div id="dialog" style="display: none">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
      * <button onclick="dialog.open()" class="gj-button-md">Open Dialog</button>
      * <script>
-     *     var dialog = $('#dialog').dialog({
+     *     var dialog = new GijgoDialog(document.getElementById('dialog'), {
      *         autoOpen: false
      *     });
      * </script>
@@ -1985,7 +2138,7 @@ GijgoDialog = function (element, jsConfig) {
      * <div id="dialog" style="display: none">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
      * <button onclick="dialog.open('Custom Text')" class="gj-button-md">Open Dialog</button>
      * <script>
-     *     var dialog = $('#dialog').dialog({
+     *     var dialog = new GijgoDialog(document.getElementById('dialog'), {
      *         autoOpen: false
      *     });
      * </script>
@@ -2004,7 +2157,7 @@ GijgoDialog = function (element, jsConfig) {
      * <button onclick="dialog.open()" class="gj-button-md">Open Dialog</button>
      * <button onclick="dialog.close()" class="gj-button-md">Close Dialog</button>
      * <script>
-     *     var dialog = $('#dialog').dialog();
+     *     var dialog = new GijgoDialog(document.getElementById('dialog'));
      * </script>
      */
     self.close = function () {
@@ -2019,13 +2172,13 @@ GijgoDialog = function (element, jsConfig) {
      * <div id="dialog" style="display: none">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
      * <button onclick="dialog.open()" class="gj-button-md">Open Dialog</button>
      * <button onclick="dialog.close()" class="gj-button-md">Close Dialog</button>
-     * <button onclick="alert($('#dialog').dialog('isOpen'))" class="gj-button-md">isOpen</button>
+     * <button onclick="alert(dialog.isOpen())" class="gj-button-md">isOpen</button>
      * <script>
-     *     var dialog = $('#dialog').dialog();
+     *     var dialog = new GijgoDialog(document.getElementById('dialog'));
      * </script>
      */
     self.isOpen = function () {
-        return methods.isOpen(this);
+        return methods.isOpen(this.element);
     };
 
     /**
@@ -2038,7 +2191,7 @@ GijgoDialog = function (element, jsConfig) {
      * <button onclick="alert(dialog.content())" class="btn btn-default">Get Content</button>
      * <button onclick="dialog.content('New Test Content Value')" class="btn btn-default">Set Content</button>
      * <script>
-     *     var dialog = $('#dialog').dialog({ uiLibrary: 'bootstrap' });
+     *     var dialog = new GijgoDialog(document.getElementById('dialog'), { uiLibrary: 'bootstrap' });
      * </script>
      */
     self.content = function (content) {
@@ -2057,7 +2210,7 @@ GijgoDialog = function (element, jsConfig) {
      * <script>
      *     var dialog;
      *     function create() { 
-     *         dialog = $('#dialog').dialog();
+     *         dialog = new GijgoDialog(document.getElementById('dialog'));
      *     }
      * </script>
      * @example Remove.HTML.Markup <!-- draggable, dialog.base -->
@@ -2070,7 +2223,7 @@ GijgoDialog = function (element, jsConfig) {
      *         if ($('#dialog').length === 0) {
      *             alert('The dialog can not be created.');
      *         } else {
-     *             dialog = $('#dialog').dialog();
+     *             dialog = new GijgoDialog(document.getElementById('dialog'));
      *         }
      *     }
      * </script>
@@ -2079,7 +2232,7 @@ GijgoDialog = function (element, jsConfig) {
         return methods.destroy(this, keepHtml);
     };
 
-    if ('dialog' !== element.getAttribute('data-type')) {
+    if ('dialog' !== element.getAttribute('data-gj-type')) {
         methods.init.call(self, jsConfig);
     }
 
@@ -2089,7 +2242,7 @@ GijgoDialog = function (element, jsConfig) {
 GijgoDialog.prototype = new gj.widget();
 GijgoDialog.constructor = GijgoDialog;
 
-GijgoDialog.prototype.getHTMLConfig = gj.dialog.methods.getHTMLConfig;
+GijgoDialog.prototype.readHTMLConfigJS = gj.dialog.methods.readHTMLConfig;
 
 
 if (typeof (jQuery) !== "undefined") {
@@ -2209,9 +2362,10 @@ gj.draggable.methods = {
     init: function (jsConfig) {
         var handleEl, data, dragEl = this.element;
 
-        gj.widget.prototype.initJS.call(this, jsConfig, 'draggable');
-        data = gijgoStorage.get(dragEl, 'gijgo');
-        dragEl.setAttribute('data-draggable', 'true');
+        this.type = 'draggable'
+        gj.widget.prototype.initJS.call(this, jsConfig);
+        data = this.getConfig();
+        dragEl.setAttribute('data-gj-draggable', 'true');
 
         handleEl = gj.draggable.methods.getHandleElement(dragEl, data);
 
@@ -2232,9 +2386,9 @@ gj.draggable.methods = {
             dragEl.style.left = position.left + 'px';
             dragEl.style.position = 'fixed';
 
-            dragEl.setAttribute('draggable-dragging', true);
-            dragEl.removeAttribute('draggable-x');
-            dragEl.removeAttribute('draggable-y');
+            dragEl.setAttribute('data-gj-draggable-dragging', true);
+            dragEl.removeAttribute('data-gj-draggable-x');
+            dragEl.removeAttribute('data-gj-draggable-y');
             gj.documentManager.subscribeForEvent('touchmove', data.guid, gj.draggable.methods.createMoveHandler(widget, dragEl, data));
             gj.documentManager.subscribeForEvent('mousemove', data.guid, gj.draggable.methods.createMoveHandler(widget, dragEl, data));
         }
@@ -2246,8 +2400,8 @@ gj.draggable.methods = {
 
     createUpHandler: function (widget, dragEl, data) {
         return function (e) {
-            if (dragEl.getAttribute('draggable-dragging') === 'true') {
-                dragEl.setAttribute('draggable-dragging', false);
+            if (dragEl.getAttribute('data-gj-draggable-dragging') === 'true') {
+                dragEl.setAttribute('data-gj-draggable-dragging', false);
                 gj.documentManager.unsubscribeForEvent('mousemove', data.guid);
                 gj.documentManager.unsubscribeForEvent('touchmove', data.guid);
                 gj.draggable.events.stop(dragEl, { x: widget.mouseX(e), y: widget.mouseY(e) });
@@ -2258,11 +2412,11 @@ gj.draggable.methods = {
     createMoveHandler: function (widget, dragEl, data) {
         return function (e) {
             var mouseX, mouseY, offsetX, offsetY, prevX, prevY;
-            if (dragEl.getAttribute('draggable-dragging') === 'true') {
+            if (dragEl.getAttribute('data-gj-draggable-dragging') === 'true') {
                 mouseX = Math.round(widget.mouseX(e));
                 mouseY = Math.round(widget.mouseY(e));
-                prevX = dragEl.getAttribute('draggable-x');
-                prevY = dragEl.getAttribute('draggable-y');
+                prevX = dragEl.getAttribute('data-gj-draggable-x');
+                prevY = dragEl.getAttribute('data-gj-draggable-y');
                 if (prevX && prevY) {
                     offsetX = data.horizontal ? mouseX - parseInt(prevX, 10) : 0;
                     offsetY = data.vertical ? mouseY - parseInt(prevY, 10) : 0;
@@ -2270,8 +2424,8 @@ gj.draggable.methods = {
                 } else {
                     gj.draggable.events.start(dragEl, mouseX, mouseY);
                 }
-                dragEl.setAttribute('draggable-x', mouseX);
-                dragEl.setAttribute('draggable-y', mouseY);
+                dragEl.setAttribute('data-gj-draggable-x', mouseX);
+                dragEl.setAttribute('data-gj-draggable-y', mouseY);
             }
         }
     },
@@ -2317,15 +2471,16 @@ gj.draggable.methods = {
     },
 
     destroy: function (dragEl) {
-        if (dragEl.getAttribute('data-draggable') === 'true') {
+        if (dragEl.getAttribute('data-gj-draggable') === 'true') {
             gj.documentManager.unsubscribeForEvent('mouseup', data.guid);
-            gijgoStorage.remove(dragEl, 'gijgo');
-            dragEl.removeAttribute('data-guid');
-            dragEl.removeAttribute('data-type');
-            dragEl.removeAttribute('data-draggable');
-            dragEl.removeAttribute('draggable-x');
-            dragEl.removeAttribute('draggable-y');
-            dragEl.removeAttribute('draggable-dragging');
+            //TODO: 
+            gijgoStorage.remove(dragEl, dragEl.getAttribute('data-type'));
+            dragEl.removeAttribute('data-gj-guid');
+            dragEl.removeAttribute('data-gj-type');
+            dragEl.removeAttribute('data-gj-draggable');
+            dragEl.removeAttribute('data-gj-draggable-x');
+            dragEl.removeAttribute('data-gj-draggable-y');
+            dragEl.removeAttribute('data-gj-draggable-dragging');
             dragEl.style.top = '';
             dragEl.style.left = '';
             dragEl.style.position = '';
@@ -2354,16 +2509,20 @@ gj.draggable.events = {
      * </style>
      * <div id="element" class="element gj-unselectable">drag me</div>
      * <script>
-     *     var obj = new GijgoDraggable(document.getElementById('element'));
-     *     obj.element.addEventListener('drag', function (e) {
-     *         $('body').append('<div>The drag event is fired. New Element Position = { top:' + e.newPosition.top + ', left: ' + e.newPosition.left + '}.</div>');
+     *     var obj = new GijgoDraggable(document.getElementById('element'), {
+     *         drag: function (e) {
+     *             document.body.innerHTML += '<div>The drag event is fired. New Element Position = { top:' + e.detail.newPosition.top + ', left: ' + e.detail.newPosition.left + '}.</div>';
+     *         }
      *     });
      * </script>
      */
     drag: function (el, newLeft, newTop, mouseX, mouseY) {
-        var event = new Event('drag');
-        event.newPosition = { left: newLeft, top: newTop };
-        event.mousePosition = { x: mouseX, y: mouseY };
+        var event = new CustomEvent('drag', {
+            detail: {
+                newPosition: { left: newLeft, top: newTop },
+                mousePosition: { x: mouseX, y: mouseY }
+            }
+        });
         return el.dispatchEvent(event);
     },
 
@@ -2383,7 +2542,7 @@ gj.draggable.events = {
      * <script>
      *     new GijgoDraggable(document.getElementById('element'), {
      *         start: function (e, mousePosition) {
-     *             $('body').append('<div>The start event is fired. mousePosition { x:' + mousePosition.x + ', y: ' + mousePosition.y + '}.</div>');
+     *             document.body.innerHTML += '<div>The start event is fired. mousePosition { x:' + mousePosition.x + ', y: ' + mousePosition.y + '}.</div>';
      *         }
      *     });
      * </script>
@@ -2408,7 +2567,7 @@ gj.draggable.events = {
      * <script>
      *     var obj = new GijgoDraggable(document.getElementById('element'));
      *     obj.addEventListener('stop', function (e) {
-     *         $('body').append('<div>The stop event is fired.</div>');
+     *         document.body.innerHTML += '<div>The stop event is fired.</div>';
      *     });
      * </script>
      */
@@ -2433,7 +2592,7 @@ GijgoDraggable = function (element, jsConfig) {
         * <button onclick="dragEl.destroy()" class="gj-button-md">Destroy</button>
         * <div id="element" class="element">Drag Me</div>
         * <script>
-        *     var dragEl = $('#element').draggable();
+        *     var dragEl = new GijgoDraggable(document.getElementById('element'));
         * </script>
         */
     self.destroy = function () {
@@ -2441,7 +2600,7 @@ GijgoDraggable = function (element, jsConfig) {
     };
 
     //$.extend($element, self);
-    if ('true' !== element.getAttribute('data-draggable')) {
+    if ('true' !== element.getAttribute('data-gj-draggable')) {
         methods.init.call(self, jsConfig);
     }
 
@@ -4277,8 +4436,8 @@ gj.grid.methods = {
         return this;
     },
 
-    getConfig: function (jsConfig, type) {
-        var config = gj.widget.prototype.getConfig.call(this, jsConfig, type);
+    readConfig: function (jsConfig, type) {
+        var config = gj.widget.prototype.readConfig.call(this, jsConfig, type);
         gj.grid.methods.setDefaultColumnConfig(config.columns, config.defaultColumnSettings);
         return config;
     },
@@ -4294,13 +4453,13 @@ gj.grid.methods = {
         }
     },
 
-    getHTMLConfig: function () {
-        var result = gj.widget.prototype.getHTMLConfig.call(this);
+    readHTMLConfig: function () {
+        var result = gj.widget.prototype.readHTMLConfig.call(this);
         result.columns = [];
         this.find('thead > tr > th').each(function () {
             var $el = $(this),
                 title = $el.text(),
-                config = gj.widget.prototype.getHTMLConfig.call($el);
+                config = gj.widget.prototype.readHTMLConfig.call($el);
             config.title = title;
             if (!config.field) {
                 config.field = title;
@@ -5823,8 +5982,8 @@ GijgoGrid = function (element, jsConfig) {
 GijgoGrid.prototype = new gj.widget();
 GijgoGrid.constructor = gj.grid.widget;
 
-GijgoGrid.prototype.getConfig = gj.grid.methods.getConfig;
-GijgoGrid.prototype.getHTMLConfig = gj.grid.methods.getHTMLConfig;
+GijgoGrid.prototype.readConfig = gj.grid.methods.readConfig;
+GijgoGrid.prototype.readHTMLConfig = gj.grid.methods.readHTMLConfig;
 
 
 if (typeof (jQuery) !== "undefined") {
@@ -12675,9 +12834,10 @@ gj.checkbox.config = {
 
 gj.checkbox.methods = {
     init: function (jsConfig) {
-        gj.widget.prototype.initJS.call(this, jsConfig, 'checkbox');
+        var type = 'checkbox';
+        gj.widget.prototype.initJS.call(this, jsConfig, type);
         this.element.setAttribute('data-checkbox', 'true');
-        gj.checkbox.methods.initialize(this, gijgoStorage.get(this.element, 'gijgo'));
+        gj.checkbox.methods.initialize(this, gijgoStorage.get(this.element, 'gijgo' + type));
         return this;
     },
 
@@ -12736,9 +12896,10 @@ gj.checkbox.methods = {
     },
 
     destroy: function (chkb) {
-        var data = gijgoStorage.get(chkb.element, 'gijgo');
+        var type = chkb.element.getAttribute('data-type');
+            data = gijgoStorage.get(chkb.element, 'gijgo');
         if (data) {
-            gijgoStorage.remove(chkb.element, 'gijgo');
+            gijgoStorage.remove(chkb.element, 'gijgo' + type);
             chkb.element.removeAttribute('data-type');
             chkb.element.removeAttribute('data-guid');
             chkb.element.removeAttribute('data-checkbox');
@@ -13047,9 +13208,10 @@ gj.editor.config = {
 
 gj.editor.methods = {
     init: function (jsConfig) {
-        gj.widget.prototype.initJS.call(this, jsConfig, 'editor');
+        this.type = 'editor';
+        gj.widget.prototype.initJS.call(this, jsConfig);
         this.element.setAttribute('data-editor', 'true');
-        gj.editor.methods.initialize(this, gijgoStorage.get(this.element, 'gijgo'));
+        gj.editor.methods.initialize(this, gijgoStorage.get(this.element, this.type));
         return this;
     },
 
@@ -13180,7 +13342,7 @@ gj.editor.methods = {
             wrapper.querySelector('div[role="body"]').remove();
             wrapper.querySelector('div[role="toolbar"]').remove();
             editor.element.outerHTML = editor.element.innerHTML;
-            gijgoStorage.remove(editor.element, 'gijgo');
+            gijgoStorage.remove(editor.element, editor.type);
             editor.element.removeAttribute('data-guid');
             editor.element.removeAttribute('data-editor');
             //$editor.off();
@@ -13650,8 +13812,8 @@ gj.dropdown.methods = {
         return this;
     },
 
-    getHTMLConfig: function () {
-        var result = gj.widget.prototype.getHTMLConfig.call(this),
+    readHTMLConfig: function () {
+        var result = gj.widget.prototype.readHTMLConfig.call(this),
             attrs = this[0].attributes;
         if (attrs['placeholder']) {
             result.placeholder = attrs['placeholder'].value;
@@ -14059,7 +14221,7 @@ GijgoDropDown = function (element, jsConfig) {
 GijgoDropDown.prototype = new gj.widget();
 GijgoDropDown.constructor = gj.dropdown.widget;
 
-GijgoDropDown.prototype.getHTMLConfig = gj.dropdown.methods.getHTMLConfig;
+GijgoDropDown.prototype.readHTMLConfig = gj.dropdown.methods.readHTMLConfig;
 
 
 if (typeof (jQuery) !== "undefined") {
@@ -14861,9 +15023,10 @@ gj.datepicker.config = {
 
 gj.datepicker.methods = {
     init: function (jsConfig) {
-        gj.widget.prototype.initJS.call(this, jsConfig, 'datepicker');
+        this.type = 'datepicker';
+        gj.widget.prototype.initJS.call(this, jsConfig);
         this.element.setAttribute('data-datepicker', 'true');
-        gj.datepicker.methods.initialize(this, gijgoStorage.get(this.element, 'gijgo'));
+        gj.datepicker.methods.initialize(this, gijgoStorage.get(this.element, this.type));
         return this;
     },
 
@@ -15764,7 +15927,7 @@ gj.datepicker.methods = {
     },
 
     value: function (picker, value) {
-        var calendar, date, data = gijgoStorage.get(picker.element, 'gijgo');
+        var calendar, date, data = gijgoStorage.get(picker.element, this.type);
         if (typeof (value) === "undefined") {
             return picker.element.value;
         } else {
@@ -15780,7 +15943,7 @@ gj.datepicker.methods = {
     },
 
     destroy: function (picker) {
-        var data = gijgoStorage.get(picker.element, 'gijgo'),
+        var data = gijgoStorage.get(picker.element, this.type),
             parent = picker.element.parentElement,
             calendar = document.body.querySelector('[role="picker"][guid="' + picker.element.getAttribute('data-guid') + '"]');
         if (data) {
@@ -15789,7 +15952,7 @@ gj.datepicker.methods = {
                 picker.element.outerHTML = picker.element.innerHTML;
             }
             //$picker.remove();
-            gijgoStorage.remove(picker.element, 'gijgo');
+            gijgoStorage.remove(picker.element, this.type);
             picker.element.removeAttribute('data-type');
             picker.element.removeAttribute('data-guid');
             picker.element.removeAttribute('data-datepicker');
@@ -16288,7 +16451,8 @@ gj.timepicker.config = {
 
 gj.timepicker.methods = {
     init: function (jsConfig) {
-        gj.picker.widget.prototype.init.call(this, jsConfig, 'timepicker');
+        this.type = 'timepicker';
+        gj.picker.widget.prototype.init.call(this, jsConfig);
         return this;
     },
 
@@ -16305,7 +16469,7 @@ gj.timepicker.methods = {
 
     createPopup: function (picker) {
         var date, amEl, pmEl, wrapper,
-            data = gijgoStorage.get(picker.element, 'gijgo'),
+            data = gijgoStorage.get(picker.element, picker.type),
             clock = document.createElement('div'),
             hour = document.createElement('div'),
             separator = document.createElement('span'),
@@ -16443,7 +16607,7 @@ gj.timepicker.methods = {
                 minute = gj.timepicker.methods.getMinute(clock),
                 mode = gj.timepicker.methods.getMode(clock),
                 date = new Date(0, 0, 0, (hour === 12 && mode === 'am' ? 0 : hour), minute),
-                data = gijgoStorage.get(picker.element, 'gijgo'),
+                data = gijgoStorage.get(picker.element, picker.type),
                 value = gj.core.formatDate(date, data.format, data.locale);
             picker.value(value);
             picker.close();
@@ -16697,7 +16861,7 @@ gj.timepicker.methods = {
     },
 
     open: function (picker) {
-        var time, data = gijgoStorage.get(picker.element, 'gijgo'),
+        var time, data = gijgoStorage.get(picker.element, picker.type),
             clock = document.body.querySelector('[role="picker"][guid="' + picker.element.getAttribute('data-guid') + '"]');
 
         if (picker.value()) {
@@ -17186,13 +17350,14 @@ gj.datetimepicker.config = {
 
 gj.datetimepicker.methods = {
     init: function (jsConfig) {
-        gj.widget.prototype.initJS.call(this, jsConfig, 'datetimepicker');
+        this.type = 'datetimepicker';
+        gj.widget.prototype.initJS.call(this, jsConfig);
         this.element.setAttribute('data-datetimepicker', 'true');
-        gj.datetimepicker.methods.initialize(this, gijgoStorage.get(this.element, 'gijgo'));
+        gj.datetimepicker.methods.initialize(this, gijgoStorage.get(this.element, this.type));
         return this;
     },
 
-    getConfig: function (clientConfig, type) {
+    readConfig: function (clientConfig, type) {
         var config = gj.widget.prototype.getConfigJS.call(this, clientConfig, type);
 
         uiLibrary = clientConfig.hasOwnProperty('uiLibrary') ? clientConfig.uiLibrary : config.uiLibrary;
@@ -17365,7 +17530,7 @@ gj.datetimepicker.methods = {
 
     value: function (picker, value) {
         var clock, date, hour,
-            data = gijgoStorage.get(picker.element, 'gijgo');
+            data = gijgoStorage.get(picker.element, picker.type);
         if (typeof value === "undefined") {
             return picker.element.value;
         } else {
@@ -17497,7 +17662,7 @@ GijgoDateTimePicker = function (element, jsConfig) {
 
 GijgoDateTimePicker.prototype = new gj.widget();
 GijgoDateTimePicker.constructor = GijgoDatePicker;
-GijgoDateTimePicker.prototype.getConfigJS = gj.datetimepicker.methods.getConfig;
+GijgoDateTimePicker.prototype.getConfigJS = gj.datetimepicker.methods.readConfig;
 
 if (typeof jQuery !== "undefined") {
     (function ($) {
@@ -17689,9 +17854,10 @@ gj.slider.config = {
 
 gj.slider.methods = {
     init: function (jsConfig) {
-        gj.widget.prototype.initJS.call(this, jsConfig, 'slider');
+        this.type = 'slider';
+        gj.widget.prototype.initJS.call(this, jsConfig);
         this.element.setAttribute('data-slider', 'true');
-        gj.slider.methods.initialize(this.element, gijgoStorage.get(this.element, 'gijgo'));
+        gj.slider.methods.initialize(this.element, gijgoStorage.get(this.element, this.type));
         return this;
     },
 
@@ -17821,7 +17987,7 @@ gj.slider.methods = {
     },
 
     destroy: function (el) {
-        var data = gijgoStorage.get(el, 'gijgo'),
+        var data = gijgoStorage.get(el, el.getAttribute('data-type')),
             wrapper = el.parentElement;
         if (data) {
             wrapper.removeChild(wrapper.querySelector('[role="track"]'));
@@ -17908,7 +18074,7 @@ GijgoSlider = function (element, jsConfig) {
      * </script>
      */
     self.value = function (value) {
-        return methods.value(this.element, gijgoStorage.get(this.element, 'gijgo'), value);
+        return methods.value(this.element, gijgoStorage.get(this.element, this.type), value);
     };
 
     /** Remove slider functionality from the element.

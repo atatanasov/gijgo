@@ -274,8 +274,8 @@ gj.grid.methods = {
         return this;
     },
 
-    getConfig: function (jsConfig, type) {
-        var config = gj.widget.prototype.getConfig.call(this, jsConfig, type);
+    readConfig: function (jsConfig, type) {
+        var config = gj.widget.prototype.readConfig.call(this, jsConfig, type);
         gj.grid.methods.setDefaultColumnConfig(config.columns, config.defaultColumnSettings);
         return config;
     },
@@ -291,13 +291,13 @@ gj.grid.methods = {
         }
     },
 
-    getHTMLConfig: function () {
-        var result = gj.widget.prototype.getHTMLConfig.call(this);
+    readHTMLConfig: function () {
+        var result = gj.widget.prototype.readHTMLConfig.call(this);
         result.columns = [];
         this.find('thead > tr > th').each(function () {
             var $el = $(this),
                 title = $el.text(),
-                config = gj.widget.prototype.getHTMLConfig.call($el);
+                config = gj.widget.prototype.readHTMLConfig.call($el);
             config.title = title;
             if (!config.field) {
                 config.field = title;
@@ -1305,8 +1305,8 @@ gj.grid.methods = {
 GijgoGrid.prototype = new gj.widget();
 GijgoGrid.constructor = gj.grid.widget;
 
-GijgoGrid.prototype.getConfig = gj.grid.methods.getConfig;
-GijgoGrid.prototype.getHTMLConfig = gj.grid.methods.getHTMLConfig;
+GijgoGrid.prototype.readConfig = gj.grid.methods.readConfig;
+GijgoGrid.prototype.readHTMLConfig = gj.grid.methods.readHTMLConfig;
 
 
 if (typeof (jQuery) !== "undefined") {

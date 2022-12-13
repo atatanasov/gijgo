@@ -11,11 +11,10 @@
   <script src="../../dist/modular/js/dialog.js"></script>
 </head>
 <body style="padding: 8px;">
- <script src="../../dist/modular/dialog/js/messages/messages.fr-fr.js"></script>
+ <!-- <script src="../../dist/combined/js/messages/messages.fr-fr.js"></script> -->
  <div id="dialog">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
  <script>
-     $("#dialog").dialog({
-         resizable: true,
+     new GijgoDialog(document.getElementById('dialog'), {
          locale: 'fr-fr'
      });
  </script>

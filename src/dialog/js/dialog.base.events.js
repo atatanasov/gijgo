@@ -12,7 +12,7 @@ gj.dialog.events = {
      * <div id="dialog" style="display: none">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
      * <button onclick="dialog.open()" class="gj-button-md">Open Dialog</button>
      * <script>
-     *     var dialog = $("#dialog").dialog({
+     *     var dialog = new GijgoDialog(document.getElementById('dialog'), {
      *         autoOpen: false,
      *         initialized: function (e) {
      *             alert('The initialized event is fired.');
@@ -32,7 +32,7 @@ gj.dialog.events = {
      * <div id="dialog" style="display: none">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
      * <button onclick="dialog.open()" class="gj-button-md">Open Dialog</button>
      * <script>
-     *     var dialog = $("#dialog").dialog({
+     *     var dialog = new GijgoDialog(document.getElementById('dialog'), {
      *         autoOpen: false,
      *         opening: function (e) {
      *             alert('The opening event is fired.');
@@ -55,7 +55,7 @@ gj.dialog.events = {
      * <div id="dialog" style="display: none">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
      * <button onclick="dialog.open()" class="gj-button-md">Open Dialog</button>
      * <script>
-     *     var dialog = $("#dialog").dialog({
+     *     var dialog = new GijgoDialog(document.getElementById('dialog'), {
      *         autoOpen: false,
      *         opening: function (e) {
      *             alert('The opening event is fired.');
@@ -78,7 +78,7 @@ gj.dialog.events = {
      * <div id="dialog" style="display: none">Close the dialog in order to fire closing event.</div>
      * <button onclick="dialog.open()" class="gj-button-md">Open Dialog</button>
      * <script>
-     *     var dialog = $("#dialog").dialog({
+     *     var dialog = new GijgoDialog(document.getElementById('dialog'), {
      *         autoOpen: false,
      *         closing: function (e) {
      *             alert('The closing event is fired.');
@@ -101,7 +101,7 @@ gj.dialog.events = {
      * <div id="dialog" style="display: none">Close the dialog in order to fire closed event.</div>
      * <button onclick="dialog.open()" class="gj-button-md">Open Dialog</button>
      * <script>
-     *     var dialog = $("#dialog").dialog({
+     *     var dialog = new GijgoDialog(document.getElementById('dialog'), {
      *         autoOpen: false,
      *         closing: function (e) {
      *             alert('The closing event is fired.');
@@ -124,16 +124,16 @@ gj.dialog.events = {
      * <div id="dialog" style="display: none">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
      * <div id="logPanel" class="col-xs-12 well pre-scrollable" style="height: 200px"></div>
      * <script>
-     *     var log = $('#logPanel');
-     *     $("#dialog").dialog({
+     *     var log = document.getElementById('logPanel');
+     *     new GijgoDialog(document.getElementById('dialog'), {
      *         drag: function (e) {
-     *             log.append('<div class="row">The drag event is fired.</div>');
+     *             log.innerHTML += '<div class="row">The drag event is fired.</div>';
      *         },
      *         dragStart: function (e) {
-     *             log.append('<div class="row">The dragStart event is fired.</div>');
+     *             log.innerHTML += '<div class="row">The dragStart event is fired.</div>';
      *         },
      *         dragStop: function (e) {
-     *             log.append('<div class="row">The dragStop event is fired.</div>');
+     *             log.innerHTML += '<div class="row">The dragStop event is fired.</div>';
      *         }
      *     });
      * </script>
@@ -150,16 +150,16 @@ gj.dialog.events = {
      * <div id="dialog" style="display: none">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
      * <div id="logPanel" class="col-xs-12 well pre-scrollable" style="height: 200px"></div>
      * <script>
-     *     var log = $('#logPanel');
-     *     $("#dialog").dialog({
+     *     var log = document.getElementById('logPanel');
+     *     new GijgoDialog(document.getElementById('dialog'), {
      *         drag: function (e) {
-     *             log.append('<div class="row">The drag event is fired.</div>');
+     *             log.innerHTML += '<div class="row">The drag event is fired.</div>';
      *         },
      *         dragStart: function (e) {
-     *             log.append('<div class="row">The dragStart event is fired.</div>');
+     *             log.innerHTML += '<div class="row">The dragStart event is fired.</div>';
      *         },
      *         dragStop: function (e) {
-     *             log.append('<div class="row">The dragStop event is fired.</div>');
+     *             log.innerHTML += '<div class="row">The dragStop event is fired.</div>';
      *         }
      *     });
      * </script>
@@ -176,16 +176,16 @@ gj.dialog.events = {
      * <div id="dialog" style="display: none">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
      * <div id="logPanel" class="col-xs-12 well pre-scrollable" style="height: 200px"></div>
      * <script>
-     *     var log = $('#logPanel');
-     *     $("#dialog").dialog({
+     *     var log = document.getElementById('logPanel');
+     *     new GijgoDialog(document.getElementById('dialog'), {
      *         drag: function (e) {
-     *             log.append('<div class="row">The drag event is fired.</div>');
+     *             log.innerHTML += '<div class="row">The drag event is fired.</div>';
      *         },
      *         dragStart: function (e) {
-     *             log.append('<div class="row">The dragStart event is fired.</div>');
+     *             log.innerHTML += '<div class="row">The dragStart event is fired.</div>';
      *         },
      *         dragStop: function (e) {
-     *             log.append('<div class="row">The dragStop event is fired.</div>');
+     *             log.innerHTML += '<div class="row">The dragStop event is fired.</div>';
      *         }
      *     });
      * </script>
@@ -202,17 +202,17 @@ gj.dialog.events = {
      * <div id="dialog" style="display: none">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
      * <div id="logPanel" class="col-xs-12 well pre-scrollable" style="height: 200px"></div>
      * <script>
-     *     var log = $('#logPanel');
-     *     $("#dialog").dialog({
+     *     var log = document.getElementById('logPanel');
+     *     new GijgoDialog(document.getElementById('dialog'), {
      *         resizable: true,
      *         resize: function (e) {
-     *             log.append('<div class="row">The resize event is fired.</div>');
+     *             log.innerHTML += '<div class="row">The resize event is fired.</div>';
      *         },
      *         resizeStart: function (e) {
-     *             log.append('<div class="row">The resizeStart event is fired.</div>');
+     *             log.innerHTML += '<div class="row">The resizeStart event is fired.</div>';
      *         },
      *         resizeStop: function (e) {
-     *             log.append('<div class="row">The resizeStop event is fired.</div>');
+     *             log.innerHTML += '<div class="row">The resizeStop event is fired.</div>';
      *         }
      *     });
      * </script>
@@ -229,17 +229,17 @@ gj.dialog.events = {
      * <div id="dialog" style="display: none">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
      * <div id="logPanel" class="col-xs-12 well pre-scrollable" style="height: 200px"></div>
      * <script>
-     *     var log = $('#logPanel');
-     *     $("#dialog").dialog({
+     *     var log = document.getElementById('logPanel');
+     *     new GijgoDialog(document.getElementById('dialog'), {
      *         resizable: true,
      *         resize: function (e) {
-     *             log.append('<div class="row">The resize event is fired.</div>');
+     *             log.innerHTML += '<div class="row">The resize event is fired.</div>';
      *         },
      *         resizeStart: function (e) {
-     *             log.append('<div class="row">The resizeStart event is fired.</div>');
+     *             log.innerHTML += '<div class="row">The resizeStart event is fired.</div>';
      *         },
      *         resizeStop: function (e) {
-     *             log.append('<div class="row">The resizeStop event is fired.</div>');
+     *             log.innerHTML += '<div class="row">The resizeStop event is fired.</div>';
      *         }
      *     });
      * </script>
@@ -256,17 +256,17 @@ gj.dialog.events = {
      * <div id="dialog" style="display: none">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
      * <div id="logPanel" class="col-xs-12 well pre-scrollable" style="height: 200px"></div>
      * <script>
-     *     var log = $('#logPanel');
-     *     $("#dialog").dialog({
+     *     var log = document.getElementById('logPanel');
+     *     new GijgoDialog(document.getElementById('dialog'), {
      *         resizable: true,
      *         resize: function (e) {
-     *             log.append('<div class="row">The resize event is fired.</div>');
+     *             log.innerHTML += '<div class="row">The resize event is fired.</div>';
      *         },
      *         resizeStart: function (e) {
-     *             log.append('<div class="row">The resizeStart event is fired.</div>');
+     *             log.innerHTML += '<div class="row">The resizeStart event is fired.</div>';
      *         },
      *         resizeStop: function (e) {
-     *             log.append('<div class="row">The resizeStop event is fired.</div>');
+     *             log.innerHTML += '<div class="row">The resizeStop event is fired.</div>';
      *         }
      *     });
      * </script>

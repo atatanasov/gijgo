@@ -626,8 +626,8 @@ GijgoGrid = function (element, jsConfig) {
 GijgoGrid.prototype = new gj.widget();
 GijgoGrid.constructor = gj.grid.widget;
 
-GijgoGrid.prototype.getConfig = gj.grid.methods.getConfig;
-GijgoGrid.prototype.getHTMLConfig = gj.grid.methods.getHTMLConfig;
+GijgoGrid.prototype.readConfig = gj.grid.methods.readConfig;
+GijgoGrid.prototype.readHTMLConfig = gj.grid.methods.readHTMLConfig;
 
 
 if (typeof (jQuery) !== "undefined") {

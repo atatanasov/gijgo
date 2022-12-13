@@ -16,7 +16,7 @@
  <button onclick="alert(dialog.content())" class="btn btn-default">Get Content</button>
  <button onclick="dialog.content('New Test Content Value')" class="btn btn-default">Set Content</button>
  <script>
-     var dialog = $('#dialog').dialog({ uiLibrary: 'bootstrap' });
+     var dialog = new GijgoDialog(document.getElementById('dialog'), { uiLibrary: 'bootstrap' });
  </script>
 </body>
 </html>

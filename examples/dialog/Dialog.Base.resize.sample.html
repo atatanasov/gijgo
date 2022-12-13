@@ -15,17 +15,17 @@
  <div id="dialog" style="display: none">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
  <div id="logPanel" class="col-xs-12 well pre-scrollable" style="height: 200px"></div>
  <script>
-     var log = $('#logPanel');
-     $("#dialog").dialog({
+     var log = document.getElementById('logPanel');
+     new GijgoDialog(document.getElementById('dialog'), {
          resizable: true,
          resize: function (e) {
-             log.append('<div class="row">The resize event is fired.</div>');
+             log.innerHTML += '<div class="row">The resize event is fired.</div>';
          },
          resizeStart: function (e) {
-             log.append('<div class="row">The resizeStart event is fired.</div>');
+             log.innerHTML += '<div class="row">The resizeStart event is fired.</div>';
          },
          resizeStop: function (e) {
-             log.append('<div class="row">The resizeStop event is fired.</div>');
+             log.innerHTML += '<div class="row">The resizeStop event is fired.</div>';
          }
      });
  </script>

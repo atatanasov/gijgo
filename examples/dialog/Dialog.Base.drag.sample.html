@@ -15,16 +15,16 @@
  <div id="dialog" style="display: none">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
  <div id="logPanel" class="col-xs-12 well pre-scrollable" style="height: 200px"></div>
  <script>
-     var log = $('#logPanel');
-     $("#dialog").dialog({
+     var log = document.getElementById('logPanel');
+     new GijgoDialog(document.getElementById('dialog'), {
          drag: function (e) {
-             log.append('<div class="row">The drag event is fired.</div>');
+             log.innerHTML += '<div class="row">The drag event is fired.</div>';
          },
          dragStart: function (e) {
-             log.append('<div class="row">The dragStart event is fired.</div>');
+             log.innerHTML += '<div class="row">The dragStart event is fired.</div>';
          },
          dragStop: function (e) {
-             log.append('<div class="row">The dragStop event is fired.</div>');
+             log.innerHTML += '<div class="row">The dragStop event is fired.</div>';
          }
      });
  </script>

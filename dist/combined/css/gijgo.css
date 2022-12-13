@@ -607,31 +607,31 @@ ul.gj-list-md li.disabled>[data-role="wrapper"]>[data-role="display"] {
 }
 .gj-resizable-se {
 	cursor: se-resize;
-	width: 12px;
-	height: 12px;
-	right: 1px;
-	bottom: 1px;
+	width: 0.75rem;
+	height: 0.75rem;
+    right: -0.125rem;
+    bottom: -0.125rem;
 }
 .gj-resizable-sw {
 	cursor: sw-resize;
-	width: 9px;
-	height: 9px;
-	left: -5px;
-	bottom: -5px;
+    width: 0.625rem;
+    height: 0.625rem;
+    left: -0.2rem;
+    top: -0.2rem;
 }
 .gj-resizable-nw {
 	cursor: nw-resize;
-	width: 9px;
-	height: 9px;
-	left: -5px;
-	top: -5px;
+    width: 0.625rem;
+    height: 0.625rem;
+    left: -0.2rem;
+    top: -0.2rem;
 }
 .gj-resizable-ne {
 	cursor: ne-resize;
-	width: 9px;
-	height: 9px;
-	right: -5px;
-	top: -5px;
+    width: 0.625rem;
+    height: 0.625rem;
+    left: -0.2rem;
+    top: -0.2rem;
 }
 
 .gj-dialog-footer {
@@ -641,7 +641,7 @@ ul.gj-list-md li.disabled>[data-role="wrapper"]>[data-role="display"] {
     margin-top: 0px;
 }
 
-.gj-dialog-scrollable [data-role="body"] {
+.gj-dialog-scrollable [data-gj-role="body"] {
     overflow-x: hidden;
     overflow-y: scroll;
 }
@@ -652,11 +652,11 @@ ul.gj-list-md li.disabled>[data-role="wrapper"]>[data-role="display"] {
     z-index: 1202;
 }
 
-.gj-dialog-bootstrap [data-role="title"] {
+.gj-dialog-bootstrap [data-gj-role="title"] {
     display: inline;
 }
-.gj-dialog-bootstrap [data-role="close"] {
-    line-height: 1.42857143;
+.gj-dialog-bootstrap [data-gj-role="header"] button[data-gj-role="close"] {
+    margin: 0;
 }
 
 /** Bootstrap 4 **/
@@ -665,10 +665,23 @@ ul.gj-list-md li.disabled>[data-role="wrapper"]>[data-role="display"] {
     z-index: 1202;
 }
 
-.gj-dialog-bootstrap4 [data-role="title"] {
+.gj-dialog-bootstrap4 [data-gj-role="title"] {
     display: inline;
 }
-.gj-dialog-bootstrap4 [data-role="close"] {
+.gj-dialog-bootstrap4 [data-gj-role="header"] button[data-gj-role="close"] {
+    line-height: 1.5;
+}
+
+/** Bootstrap 5 **/
+.gj-dialog-bootstrap5 {
+    overflow: hidden;
+    z-index: 1202;
+}
+
+.gj-dialog-bootstrap5 [data-gj-role="title"] {
+    display: inline;
+}
+.gj-dialog-bootstrap5 [data-gj-role="close"] {
     line-height: 1.5;
 }
 

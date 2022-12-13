@@ -15,7 +15,7 @@
  <div id="dialog" style="display: none">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
  <button onclick="dialog.open()" class="gj-button-md">Open Dialog</button>
  <script>
-     var dialog = $("#dialog").dialog({
+     var dialog = new GijgoDialog(document.getElementById('dialog'), {
          autoOpen: false,
          opening: function (e) {
              alert('The opening event is fired.');

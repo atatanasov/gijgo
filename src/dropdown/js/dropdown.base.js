@@ -327,8 +327,8 @@ gj.dropdown.methods = {
         return this;
     },
 
-    getHTMLConfig: function () {
-        var result = gj.widget.prototype.getHTMLConfig.call(this),
+    readHTMLConfig: function () {
+        var result = gj.widget.prototype.readHTMLConfig.call(this),
             attrs = this[0].attributes;
         if (attrs['placeholder']) {
             result.placeholder = attrs['placeholder'].value;
@@ -736,7 +736,7 @@ GijgoDropDown = function (element, jsConfig) {
 GijgoDropDown.prototype = new gj.widget();
 GijgoDropDown.constructor = gj.dropdown.widget;
 
-GijgoDropDown.prototype.getHTMLConfig = gj.dropdown.methods.getHTMLConfig;
+GijgoDropDown.prototype.readHTMLConfig = gj.dropdown.methods.readHTMLConfig;
 
 
 if (typeof (jQuery) !== "undefined") {

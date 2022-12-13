@@ -295,7 +295,8 @@ gj.timepicker.config = {
 
 gj.timepicker.methods = {
     init: function (jsConfig) {
-        gj.picker.widget.prototype.init.call(this, jsConfig, 'timepicker');
+        this.type = 'timepicker';
+        gj.picker.widget.prototype.init.call(this, jsConfig);
         return this;
     },
 
@@ -312,7 +313,7 @@ gj.timepicker.methods = {
 
     createPopup: function (picker) {
         var date, amEl, pmEl, wrapper,
-            data = gijgoStorage.get(picker.element, 'gijgo'),
+            data = gijgoStorage.get(picker.element, picker.type),
             clock = document.createElement('div'),
             hour = document.createElement('div'),
             separator = document.createElement('span'),
@@ -450,7 +451,7 @@ gj.timepicker.methods = {
                 minute = gj.timepicker.methods.getMinute(clock),
                 mode = gj.timepicker.methods.getMode(clock),
                 date = new Date(0, 0, 0, (hour === 12 && mode === 'am' ? 0 : hour), minute),
-                data = gijgoStorage.get(picker.element, 'gijgo'),
+                data = gijgoStorage.get(picker.element, picker.type),
                 value = gj.core.formatDate(date, data.format, data.locale);
             picker.value(value);
             picker.close();
@@ -704,7 +705,7 @@ gj.timepicker.methods = {
     },
 
     open: function (picker) {
-        var time, data = gijgoStorage.get(picker.element, 'gijgo'),
+        var time, data = gijgoStorage.get(picker.element, picker.type),
             clock = document.body.querySelector('[role="picker"][guid="' + picker.element.getAttribute('data-guid') + '"]');
 
         if (picker.value()) {

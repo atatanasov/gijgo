@@ -13,7 +13,7 @@
 <body style="padding: 8px;">
  <div id="dialog">The minimum height of this dialog is set to 200 px. Try to resize it for testing.</div>
  <script>
-     $("#dialog").dialog({
+     new GijgoDialog(document.getElementById('dialog'), {
          resizable: true,
          height: 300,
          minHeight: 200

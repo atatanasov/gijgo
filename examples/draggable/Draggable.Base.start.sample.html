@@ -18,7 +18,7 @@
  <script>
      new GijgoDraggable(document.getElementById('element'), {
          start: function (e, mousePosition) {
-             $('body').append('<div>The start event is fired. mousePosition { x:' + mousePosition.x + ', y: ' + mousePosition.y + '}.</div>');
+             document.body.innerHTML += '<div>The start event is fired. mousePosition { x:' + mousePosition.x + ', y: ' + mousePosition.y + '}.</div>';
          }
      });
  </script>

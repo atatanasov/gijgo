@@ -18,7 +18,7 @@ GijgoDialog = function (element, jsConfig) {
      * <div id="dialog" style="display: none">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
      * <button onclick="dialog.open()" class="gj-button-md">Open Dialog</button>
      * <script>
-     *     var dialog = $('#dialog').dialog({
+     *     var dialog = new GijgoDialog(document.getElementById('dialog'), {
      *         autoOpen: false
      *     });
      * </script>
@@ -26,7 +26,7 @@ GijgoDialog = function (element, jsConfig) {
      * <div id="dialog" style="display: none">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
      * <button onclick="dialog.open('Custom Text')" class="gj-button-md">Open Dialog</button>
      * <script>
-     *     var dialog = $('#dialog').dialog({
+     *     var dialog = new GijgoDialog(document.getElementById('dialog'), {
      *         autoOpen: false
      *     });
      * </script>
@@ -45,7 +45,7 @@ GijgoDialog = function (element, jsConfig) {
      * <button onclick="dialog.open()" class="gj-button-md">Open Dialog</button>
      * <button onclick="dialog.close()" class="gj-button-md">Close Dialog</button>
      * <script>
-     *     var dialog = $('#dialog').dialog();
+     *     var dialog = new GijgoDialog(document.getElementById('dialog'));
      * </script>
      */
     self.close = function () {
@@ -60,13 +60,13 @@ GijgoDialog = function (element, jsConfig) {
      * <div id="dialog" style="display: none">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
      * <button onclick="dialog.open()" class="gj-button-md">Open Dialog</button>
      * <button onclick="dialog.close()" class="gj-button-md">Close Dialog</button>
-     * <button onclick="alert($('#dialog').dialog('isOpen'))" class="gj-button-md">isOpen</button>
+     * <button onclick="alert(dialog.isOpen())" class="gj-button-md">isOpen</button>
      * <script>
-     *     var dialog = $('#dialog').dialog();
+     *     var dialog = new GijgoDialog(document.getElementById('dialog'));
      * </script>
      */
     self.isOpen = function () {
-        return methods.isOpen(this);
+        return methods.isOpen(this.element);
     };
 
     /**
@@ -79,7 +79,7 @@ GijgoDialog = function (element, jsConfig) {
      * <button onclick="alert(dialog.content())" class="btn btn-default">Get Content</button>
      * <button onclick="dialog.content('New Test Content Value')" class="btn btn-default">Set Content</button>
      * <script>
-     *     var dialog = $('#dialog').dialog({ uiLibrary: 'bootstrap' });
+     *     var dialog = new GijgoDialog(document.getElementById('dialog'), { uiLibrary: 'bootstrap' });
      * </script>
      */
     self.content = function (content) {
@@ -98,7 +98,7 @@ GijgoDialog = function (element, jsConfig) {
      * <script>
      *     var dialog;
      *     function create() { 
-     *         dialog = $('#dialog').dialog();
+     *         dialog = new GijgoDialog(document.getElementById('dialog'));
      *     }
      * </script>
      * @example Remove.HTML.Markup <!-- draggable, dialog.base -->
@@ -111,7 +111,7 @@ GijgoDialog = function (element, jsConfig) {
      *         if ($('#dialog').length === 0) {
      *             alert('The dialog can not be created.');
      *         } else {
-     *             dialog = $('#dialog').dialog();
+     *             dialog = new GijgoDialog(document.getElementById('dialog'));
      *         }
      *     }
      * </script>
@@ -120,7 +120,7 @@ GijgoDialog = function (element, jsConfig) {
         return methods.destroy(this, keepHtml);
     };
 
-    if ('dialog' !== element.getAttribute('data-type')) {
+    if ('dialog' !== element.getAttribute('data-gj-type')) {
         methods.init.call(self, jsConfig);
     }
 
@@ -130,7 +130,7 @@ GijgoDialog = function (element, jsConfig) {
 GijgoDialog.prototype = new gj.widget();
 GijgoDialog.constructor = GijgoDialog;
 
-GijgoDialog.prototype.getHTMLConfig = gj.dialog.methods.getHTMLConfig;
+GijgoDialog.prototype.readHTMLConfigJS = gj.dialog.methods.readHTMLConfig;
 
 
 if (typeof (jQuery) !== "undefined") {

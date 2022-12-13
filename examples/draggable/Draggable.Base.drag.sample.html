@@ -14,9 +14,10 @@
  </style>
  <div id="element" class="element gj-unselectable">drag me</div>
  <script>
-     var obj = new GijgoDraggable(document.getElementById('element'));
-     obj.element.addEventListener('drag', function (e) {
-         $('body').append('<div>The drag event is fired. New Element Position = { top:' + e.newPosition.top + ', left: ' + e.newPosition.left + '}.</div>');
+     var obj = new GijgoDraggable(document.getElementById('element'), {
+         drag: function (e) {
+             document.body.innerHTML += '<div>The drag event is fired. New Element Position = { top:' + e.detail.newPosition.top + ', left: ' + e.detail.newPosition.left + '}.</div>';
+         }
      });
  </script>
 </body>

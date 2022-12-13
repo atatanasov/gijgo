@@ -57,9 +57,10 @@ gj.slider.config = {
 
 gj.slider.methods = {
     init: function (jsConfig) {
-        gj.widget.prototype.initJS.call(this, jsConfig, 'slider');
+        this.type = 'slider';
+        gj.widget.prototype.initJS.call(this, jsConfig);
         this.element.setAttribute('data-slider', 'true');
-        gj.slider.methods.initialize(this.element, gijgoStorage.get(this.element, 'gijgo'));
+        gj.slider.methods.initialize(this.element, gijgoStorage.get(this.element, this.type));
         return this;
     },
 
@@ -189,7 +190,7 @@ gj.slider.methods = {
     },
 
     destroy: function (el) {
-        var data = gijgoStorage.get(el, 'gijgo'),
+        var data = gijgoStorage.get(el, el.getAttribute('data-type')),
             wrapper = el.parentElement;
         if (data) {
             wrapper.removeChild(wrapper.querySelector('[role="track"]'));
@@ -228,7 +229,7 @@ GijgoSlider = function (element, jsConfig) {
     self.element = element;
 
     /** Gets or sets the value of the slider.     */    self.value = function (value) {
-        return methods.value(this.element, gijgoStorage.get(this.element, 'gijgo'), value);
+        return methods.value(this.element, gijgoStorage.get(this.element, this.type), value);
     };
 
     /** Remove slider functionality from the element.     */    self.destroy = function () {

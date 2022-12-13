@@ -27,9 +27,10 @@ gj.draggable.methods = {
     init: function (jsConfig) {
         var handleEl, data, dragEl = this.element;
 
-        gj.widget.prototype.initJS.call(this, jsConfig, 'draggable');
-        data = gijgoStorage.get(dragEl, 'gijgo');
-        dragEl.setAttribute('data-draggable', 'true');
+        this.type = 'draggable'
+        gj.widget.prototype.initJS.call(this, jsConfig);
+        data = this.getConfig();
+        dragEl.setAttribute('data-gj-draggable', 'true');
 
         handleEl = gj.draggable.methods.getHandleElement(dragEl, data);
 
@@ -50,9 +51,9 @@ gj.draggable.methods = {
             dragEl.style.left = position.left + 'px';
             dragEl.style.position = 'fixed';
 
-            dragEl.setAttribute('draggable-dragging', true);
-            dragEl.removeAttribute('draggable-x');
-            dragEl.removeAttribute('draggable-y');
+            dragEl.setAttribute('data-gj-draggable-dragging', true);
+            dragEl.removeAttribute('data-gj-draggable-x');
+            dragEl.removeAttribute('data-gj-draggable-y');
             gj.documentManager.subscribeForEvent('touchmove', data.guid, gj.draggable.methods.createMoveHandler(widget, dragEl, data));
             gj.documentManager.subscribeForEvent('mousemove', data.guid, gj.draggable.methods.createMoveHandler(widget, dragEl, data));
         }
@@ -64,8 +65,8 @@ gj.draggable.methods = {
 
     createUpHandler: function (widget, dragEl, data) {
         return function (e) {
-            if (dragEl.getAttribute('draggable-dragging') === 'true') {
-                dragEl.setAttribute('draggable-dragging', false);
+            if (dragEl.getAttribute('data-gj-draggable-dragging') === 'true') {
+                dragEl.setAttribute('data-gj-draggable-dragging', false);
                 gj.documentManager.unsubscribeForEvent('mousemove', data.guid);
                 gj.documentManager.unsubscribeForEvent('touchmove', data.guid);
                 gj.draggable.events.stop(dragEl, { x: widget.mouseX(e), y: widget.mouseY(e) });
@@ -76,11 +77,11 @@ gj.draggable.methods = {
     createMoveHandler: function (widget, dragEl, data) {
         return function (e) {
             var mouseX, mouseY, offsetX, offsetY, prevX, prevY;
-            if (dragEl.getAttribute('draggable-dragging') === 'true') {
+            if (dragEl.getAttribute('data-gj-draggable-dragging') === 'true') {
                 mouseX = Math.round(widget.mouseX(e));
                 mouseY = Math.round(widget.mouseY(e));
-                prevX = dragEl.getAttribute('draggable-x');
-                prevY = dragEl.getAttribute('draggable-y');
+                prevX = dragEl.getAttribute('data-gj-draggable-x');
+                prevY = dragEl.getAttribute('data-gj-draggable-y');
                 if (prevX && prevY) {
                     offsetX = data.horizontal ? mouseX - parseInt(prevX, 10) : 0;
                     offsetY = data.vertical ? mouseY - parseInt(prevY, 10) : 0;
@@ -88,8 +89,8 @@ gj.draggable.methods = {
                 } else {
                     gj.draggable.events.start(dragEl, mouseX, mouseY);
                 }
-                dragEl.setAttribute('draggable-x', mouseX);
-                dragEl.setAttribute('draggable-y', mouseY);
+                dragEl.setAttribute('data-gj-draggable-x', mouseX);
+                dragEl.setAttribute('data-gj-draggable-y', mouseY);
             }
         }
     },
@@ -135,15 +136,16 @@ gj.draggable.methods = {
     },
 
     destroy: function (dragEl) {
-        if (dragEl.getAttribute('data-draggable') === 'true') {
+        if (dragEl.getAttribute('data-gj-draggable') === 'true') {
             gj.documentManager.unsubscribeForEvent('mouseup', data.guid);
-            gijgoStorage.remove(dragEl, 'gijgo');
-            dragEl.removeAttribute('data-guid');
-            dragEl.removeAttribute('data-type');
-            dragEl.removeAttribute('data-draggable');
-            dragEl.removeAttribute('draggable-x');
-            dragEl.removeAttribute('draggable-y');
-            dragEl.removeAttribute('draggable-dragging');
+            //TODO: 
+            gijgoStorage.remove(dragEl, dragEl.getAttribute('data-type'));
+            dragEl.removeAttribute('data-gj-guid');
+            dragEl.removeAttribute('data-gj-type');
+            dragEl.removeAttribute('data-gj-draggable');
+            dragEl.removeAttribute('data-gj-draggable-x');
+            dragEl.removeAttribute('data-gj-draggable-y');
+            dragEl.removeAttribute('data-gj-draggable-dragging');
             dragEl.style.top = '';
             dragEl.style.left = '';
             dragEl.style.position = '';
@@ -162,9 +164,12 @@ gj.draggable.events = {
     /**
      * Triggered while the mouse is moved during the dragging, immediately before the current move happens.
      *     */    drag: function (el, newLeft, newTop, mouseX, mouseY) {
-        var event = new Event('drag');
-        event.newPosition = { left: newLeft, top: newTop };
-        event.mousePosition = { x: mouseX, y: mouseY };
+        var event = new CustomEvent('drag', {
+            detail: {
+                newPosition: { left: newLeft, top: newTop },
+                mousePosition: { x: mouseX, y: mouseY }
+            }
+        });
         return el.dispatchEvent(event);
     },
 
@@ -192,7 +197,7 @@ GijgoDraggable = function (element, jsConfig) {
     };
 
     //$.extend($element, self);
-    if ('true' !== element.getAttribute('data-draggable')) {
+    if ('true' !== element.getAttribute('data-gj-draggable')) {
         methods.init.call(self, jsConfig);
     }
 

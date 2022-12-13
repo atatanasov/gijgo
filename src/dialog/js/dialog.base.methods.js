@@ -1,33 +1,35 @@
 ﻿gj.dialog.methods = {
 
     init: function (jsConfig) {
-        gj.widget.prototype.initJS.call(this, jsConfig, 'dialog');
+        var config;
+        this.type = 'dialog';
+        gj.widget.prototype.initJS.call(this, jsConfig);
 
-        gj.dialog.methods.localization(this);
-        gj.dialog.methods.initialize(this);
+        config = this.getConfig();
+        gj.dialog.methods.localization(config);
+        gj.dialog.methods.initialize(this, config);
+        gj.dialog.methods.accessibility(this.element, config);
         gj.dialog.events.initialized(this.element);
         return this;
     },
 
-    localization: function(dialog) {
-        var data = gijgoStorage.get(dialog.element, 'gijgo');
-        if (typeof data.title === 'undefined') {
-            data.title = gj.dialog.messages[data.locale].DefaultTitle;
-        }
-    },
-
-    getHTMLConfig: function () {
-        var result = gj.widget.prototype.getHTMLConfig.call(this),
-            attrs = this.attributes;
+    readHTMLConfig: function () {
+        var result = gj.widget.prototype.readHTMLConfigJS.call(this),
+            attrs = this.element.attributes;
         if (attrs['title']) {
             result.title = attrs['title'].value;
         }
         return result;
     },
 
-    initialize: function (dialog) {
-        var data, header, body, footer;
-        data = gijgoStorage.get(dialog.element, 'gijgo');
+    localization: function(config) {
+        if (typeof config.title === 'undefined') {
+            config.title = gj.dialog.messages[config.locale].DefaultTitle;
+        }
+    },
+
+    initialize: function (dialog, data) {
+        var data, header, body, footer, wrapper;
 
         gj.core.addClasses(dialog.element, data.style.content);
 
@@ -35,16 +37,16 @@
 
         if (data.closeOnEscape) {
             document.addEventListener('keyup', function (e) {
-                if (e.key === 27) {
+                if (e.key === 'Escape') {
                     dialog.close();
                 }
             });
         }
 
-        body = dialog.element.querySelector('div[data-role="body"]');
+        body = dialog.element.querySelector('div[data-gj-role="body"]');
         if (!body) {
             body = document.createElement('div');
-            body.setAttribute('role', 'body');
+            body.setAttribute('data-gj-role', 'body');
             for(var i = 0; i < dialog.element.childNodes.length; i++)
             {
                 body.appendChild(dialog.element.childNodes[i]);
@@ -55,14 +57,10 @@
 
         header = gj.dialog.methods.renderHeader(dialog, data);
 
-        footer = dialog.element.querySelector('div[data-role="footer"]');
+        footer = dialog.element.querySelector('div[data-gj-role="footer"]');
         if (footer) {
             gj.core.addClasses(footer, data.style.footer);
         }
-
-        dialog.element.querySelector('[data-role="close"]').addEventListener('click', function () {
-            dialog.close();
-        });
 
         if (gj.draggable) {
             if (data.draggable) {
@@ -76,13 +74,17 @@
         if (data.scrollable && data.height) {
             dialog.element.classList.add('gj-dialog-scrollable');
             dialog.element.addEventListener('opened', function () {
-                var body = dialog.element.querySelector('div[data-role="body"]');
-                body.style.height = (data.height - $header.outerHeight() - ($footer.length ? $footer.outerHeight() : 0)) + 'px';
+                var body = dialog.element.querySelector('div[data-gj-role="body"]');
+                body.style.height = (data.height - gj.core.height(header) - (footer ? gj.core.height(footer) : 0)) + 'px';
             });            
         }
 
         if (data.modal) {
-            $dialog.wrapAll('<div data-role="modal" class="' + data.style.modal + '"/>');
+            wrapper = document.createElement('div');
+            gj.core.addClasses(wrapper, data.style.modal);
+            wrapper.setAttribute('data-gj-role', 'modal');
+            dialog.element.parentNode.insertBefore(wrapper, dialog.element);
+            wrapper.appendChild(dialog.element);
         }
 
         if (data.autoOpen) {
@@ -90,166 +92,242 @@
         }
     },
 
+    accessibility: function(el, config) {
+        var id, title, titleId;
+
+        id = el.id;
+        if (!id) {
+            id = el.getAttribute('data-gj-type') + Math.random().toString(16).slice(2);
+            el.setAttribute('id', id);
+        }
+
+        if (!el.getAttribute('aria-labelledby')) {
+            title = el.querySelector('[data-gj-role="title"]');
+            titleId = title.id;
+            if (!titleId) {
+                titleId = id + '-title';
+                title.setAttribute('id', titleId);
+            }
+            el.setAttribute('aria-labelledby', titleId);
+        }
+
+        if (config.modal) {
+            el.setAttribute('aria-modal', 'true');
+        } else {
+            el.removeAttribute('aria-modal');
+        }
+
+        el.element.querySelectorAll('[data-gj-role="close"]').forEach(function (el) {
+            el.setAttribute('aria-label', 'Close');
+        });
+    },
+
     setSize: function (el, data) {
         if (data.width) {
-            el.style.width = data.width + 'px';
+            el.style.width = isNaN(data.width) ? data.width : data.width + 'px';
         }
         if (data.height) {
-            el.style.height = data.height + 'px';
+            el.style.height = isNaN(data.height) ? data.height : data.height + 'px';
         }
     },
 
     renderHeader: function (dialog, data) {
         var header, title, closeButton;
-        header = dialog.element.querySelector('div[data-role="header"]');
+
+        header = dialog.element.querySelector('div[data-gj-role="header"]');
         if (!header) {
             header = document.createElement('div');
-            header.setAttribute('data-role', 'header');
+            header.setAttribute('data-gj-role', 'header');
             dialog.element.insertBefore(header, dialog.element.children[0]);
         }
         gj.core.addClasses(header, data.style.header);
 
-        title = header.querySelector('[data-role="title"]');
+        title = header.querySelector('[data-gj-role="title"]');
         if (!title) {
             title = document.createElement('h4');
-            title.setAttribute('role', 'title');
+            title.setAttribute('data-gj-role', 'title');
             title.innerHTML = data.title;
             header.appendChild(title);
         }
         gj.core.addClasses(title, data.style.headerTitle);
 
-        closeButton = header.querySelector('[data-role="close"]');
+        closeButton = header.querySelector('[data-gj-role="close"]');
         if (!closeButton && data.closeButtonInHeader) {
             closeButton = document.createElement('button');
             closeButton.setAttribute('type', 'button');
-            closeButton.setAttribute('data-role', 'close');
+            closeButton.setAttribute('data-gj-role', 'close');
             closeButton.setAttribute('title', gj.dialog.messages[data.locale].Close);
-            closeButton.innerHTML = '<span>×</span>';
-            gj.core.addClasses(closeButton, data.style.headerCloseButton);
+            if (data.uiLibrary !== 'bootstrap5') {
+                closeButton.innerHTML = '<span>×</span>';
+            }
             header.appendChild(closeButton);
-        } else if (closeButton && data.closeButtonInHeader === false) {
+        } else if (closeButton && !data.closeButtonInHeader) {
             closeButton.style.display = 'node';
-        } else {
-            closeButton.classList.add(data.style.headerCloseButton);
+        } 
+        if (closeButton) {
+            closeButton.classList.add(data.style.headerCloseButton);            
         }
+
+        dialog.element.querySelectorAll('[data-gj-role="close"]').forEach(function (el) {
+            el.addEventListener('click', function () {
+                dialog.close();
+            });
+        });
 
         return header;
     },
 
-    draggable: function ($dialog, $header) {
-        $dialog.appendTo('body');
-        $header.addClass('gj-draggable');
-        $dialog.draggable({
-            handle: $header,
+    draggable: function (dialog, header) {
+        document.body.appendChild(dialog.element);
+        gj.core.addClasses(header, 'gj-draggable');
+        new GijgoDraggable(dialog.element, {
+            handle: header,
             start: function () {
-                $dialog.addClass('gj-unselectable');
-                gj.dialog.events.dragStart($dialog);
+                dialog.element.classList.add('gj-unselectable');
+                gj.dialog.events.dragStart(dialog.element);
             },
             stop: function () {
-                $dialog.removeClass('gj-unselectable');
-                gj.dialog.events.dragStop($dialog);
+                dialog.element.classList.remove('gj-unselectable');
+                gj.dialog.events.dragStop(dialog.element);
             }
         });
     },
 
-    resizable: function ($dialog) {
-        var config = {
-            'drag': gj.dialog.methods.resize,
+    resizable: function (dialog) {
+        var config, n, e, s, w, ne, nw, sw, se,
+            el = dialog.element;
+        
+        config = {
+            'drag': gj.dialog.methods.resize(dialog.getConfig()),
             'start': function () {
-                $dialog.addClass('gj-unselectable');
-                gj.dialog.events.resizeStart($dialog);
+                dialog.element.classList.add('gj-unselectable');
+                gj.dialog.events.resizeStart(dialog.element);
             },
             'stop': function () {
                 this.removeAttribute('style');
-                $dialog.removeClass('gj-unselectable');
-                gj.dialog.events.resizeStop($dialog);
+                dialog.element.classList.remove('gj-unselectable');
+                gj.dialog.events.resizeStop(dialog.element);
             }
         };
-        $dialog.append($('<div class="gj-resizable-handle gj-resizable-n"></div>').draggable($.extend(true, { horizontal: false }, config)));
-        $dialog.append($('<div class="gj-resizable-handle gj-resizable-e"></div>').draggable($.extend(true, { vertical: false }, config)));
-        $dialog.append($('<div class="gj-resizable-handle gj-resizable-s"></div>').draggable($.extend(true, { horizontal: false }, config)));
-        $dialog.append($('<div class="gj-resizable-handle gj-resizable-w"></div>').draggable($.extend(true, { vertical: false }, config)));
-        $dialog.append($('<div class="gj-resizable-handle gj-resizable-ne"></div>').draggable($.extend(true, {}, config)));
-        $dialog.append($('<div class="gj-resizable-handle gj-resizable-nw"></div>').draggable($.extend(true, {}, config)));
-        $dialog.append($('<div class="gj-resizable-handle gj-resizable-sw"></div>').draggable($.extend(true, {}, config)));
-        $dialog.append($('<div class="gj-resizable-handle gj-resizable-se"></div>').draggable($.extend(true, {}, config)));
-    },
-
-    resize: function (e, newPosition) {
-        var $el, $dialog, position, data, height, width, top, left, result = false;
-
-        $el = $(this);
-        $dialog = $el.parent();
-        position = gj.core.position(this);
-        offset = { top: newPosition.top - position.top, left: newPosition.left - position.left };
-        data = $dialog.data();
-
-        // TODO: Include margins in the calculations
-        if ($el.hasClass('gj-resizable-n')) {
-            height = $dialog.height() - offset.top;
-            top = $dialog.offset().top + offset.top;
-        } else if ($el.hasClass('gj-resizable-e')) {
-            width = $dialog.width() + offset.left;
-        } else if ($el.hasClass('gj-resizable-s')) {
-            height = $dialog.height() + offset.top;
-        } else if ($el.hasClass('gj-resizable-w')) {
-            width = $dialog.width() - offset.left;
-            left = $dialog.offset().left + offset.left;
-        } else if ($el.hasClass('gj-resizable-ne')) {
-            height = $dialog.height() - offset.top;
-            top = $dialog.offset().top + offset.top;
-            width = $dialog.width() + offset.left;
-        } else if ($el.hasClass('gj-resizable-nw')) {
-            height = $dialog.height() - offset.top;
-            top = $dialog.offset().top + offset.top;
-            width = $dialog.width() - offset.left;
-            left = $dialog.offset().left + offset.left;
-        } else if ($el.hasClass('gj-resizable-se')) {
-            height = $dialog.height() + offset.top;
-            width = $dialog.width() + offset.left;
-        } else if ($el.hasClass('gj-resizable-sw')) {
-            height = $dialog.height() + offset.top;
-            width = $dialog.width() - offset.left;
-            left = $dialog.offset().left + offset.left;
-        }
-
-        if (height && (!data.minHeight || height >= data.minHeight) && (!data.maxHeight || height <= data.maxHeight)) {
-            $dialog.height(height);
-            if (top) {
-                $dialog.css('top', top);
-            }
-            result = true;
-        }
-
-        if (width && (!data.minWidth || width >= data.minWidth) && (!data.maxWidth || width <= data.maxWidth)) {
-            $dialog.width(width);
-            if (left) {
-                $dialog.css('left', left);
-            }
-            result = true;
-        }
-
-        if (result) {
-            gj.dialog.events.resize($dialog);
-        }
         
-        return result;
+        n = document.createElement('div');
+        gj.core.addClasses(n, 'gj-resizable-handle gj-resizable-n');
+        el.appendChild(n);
+        new GijgoDraggable(n, gj.core.extend({ horizontal: false }, config));
+
+        e = document.createElement('div');
+        gj.core.addClasses(e, 'gj-resizable-handle gj-resizable-e');
+        el.appendChild(e);
+        new GijgoDraggable(e, gj.core.extend({ vertical: false }, config));
+
+        s = document.createElement('div');
+        gj.core.addClasses(s, 'gj-resizable-handle gj-resizable-s');
+        el.appendChild(s);
+        new GijgoDraggable(s, gj.core.extend({ horizontal: false }, config));
+
+        w = document.createElement('div');
+        gj.core.addClasses(w, 'gj-resizable-handle gj-resizable-w');
+        el.appendChild(w);
+        new GijgoDraggable(w, gj.core.extend({ vertical: false }, config));
+
+        ne = document.createElement('div');
+        gj.core.addClasses(ne, 'gj-resizable-handle gj-resizable-ne');
+        el.appendChild(ne);
+        new GijgoDraggable(ne, gj.core.extend({}, config));
+
+        nw = document.createElement('div');
+        gj.core.addClasses(nw, 'gj-resizable-handle gj-resizable-nw');
+        el.appendChild(nw);
+        new GijgoDraggable(nw, gj.core.extend({}, config));
+
+        sw = document.createElement('div');
+        gj.core.addClasses(sw, 'gj-resizable-handle gj-resizable-sw');
+        el.appendChild(sw);
+        new GijgoDraggable(sw, gj.core.extend({}, config));
+
+        se = document.createElement('div');
+        gj.core.addClasses(se, 'gj-resizable-handle gj-resizable-se');
+        el.appendChild(se);
+        new GijgoDraggable(se, gj.core.extend({}, config));
     },
 
+    resize: function (dialogConfig)
+    {
+        return function (e) {
+            var el, dialog, position, height, width, top, left, result = false;
+    
+            el = this;
+            dialog = this.parentNode;
+            position = gj.core.position(this);
+            offset = { top: e.detail.newPosition.top - position.top, left: e.detail.newPosition.left - position.left };
+    
+            // TODO: Include margins in the calculations
+            if (el.classList.contains('gj-resizable-n')) {
+                height = gj.core.height(dialog) - offset.top;
+                top = dialog.offsetTop + offset.top;
+            } else if (el.classList.contains('gj-resizable-e')) {
+                width = gj.core.width(dialog) + offset.left;
+            } else if (el.classList.contains('gj-resizable-s')) {
+                height = gj.core.height(dialog) + offset.top;
+            } else if (el.classList.contains('gj-resizable-w')) {
+                width = gj.core.width(dialog) - offset.left;
+                left = dialog.offsetLeft + offset.left;
+            } else if (el.classList.contains('gj-resizable-ne')) {
+                height = gj.core.height(dialog) - offset.top;
+                top = dialog.offsetTop + offset.top;
+                width = gj.core.width(dialog) + offset.left;
+            } else if (el.classList.contains('gj-resizable-nw')) {
+                height = gj.core.height(dialog) - offset.top;
+                top = dialog.offsetTop + offset.top;
+                width = gj.core.width(dialog) - offset.left;
+                left = dialog.offsetLeft + offset.left;
+            } else if (el.classList.contains('gj-resizable-se')) {
+                height = gj.core.height(dialog) + offset.top;
+                width = gj.core.width(dialog) + offset.left;
+            } else if (el.classList.contains('gj-resizable-sw')) {
+                height = gj.core.height(dialog) + offset.top;
+                width = gj.core.width(dialog) - offset.left;
+                left = dialog.offsetLeft + offset.left;
+            }
+    
+            if (height && (!dialogConfig.minHeight || height >= dialogConfig.minHeight) && (!dialogConfig.maxHeight || height <= dialogConfig.maxHeight)) {
+                dialog.style.height = height + 'px';
+                if (top) {
+                    dialog.style.top = top + 'px';
+                }
+                result = true;
+            }
+    
+            if (width && (!dialogConfig.minWidth || width >= dialogConfig.minWidth) && (!dialogConfig.maxWidth || width <= dialogConfig.maxWidth)) {
+                dialog.style.width = width + 'px';
+                if (left) {
+                    dialog.style.left = left + 'px';
+                }
+                result = true;
+            }
+    
+            if (result) {
+                gj.dialog.events.resize(dialog);
+            }
+            
+            return result;
+        }
+    },
+    
     open: function (dialog, title) {
         var footer, modal, el = dialog.element;
         gj.dialog.events.opening(el);
         if (title !== undefined) {
-            el.querySelector('[data-role="title"]').innerHTML = title;
+            el.querySelector('[data-gj-role="title"]').innerHTML = title;
         }
         el.style.display = 'block';
-        modal = el.closest('div[data-role="modal"]');
+        modal = el.closest('div[data-gj-role="modal"]');
         if (modal) {
             modal.style.display = 'block';
         }
-        footer = el.querySelector('div[data-role="footer"]');
+        footer = el.querySelector('div[data-gj-role="footer"]');
         if (footer) {
-            el.querySelector('div[data-role="body"]').style.marginBottom = footer.offsetHeight;
+            el.querySelector('div[data-gj-role="body"]').style.marginBottom = gj.core.height(footer) + 'px';
         }
         gj.core.center(el);
         gj.dialog.events.opened(el);
@@ -261,7 +339,7 @@
         if (el.style.display != 'none') {
             gj.dialog.events.closing(el);
             el.style.display = 'none';
-            modal = el.closest('div[data-role="modal"]');
+            modal = el.closest('div[data-gj-role="modal"]');
             if (modal) {
                 modal.style.display = 'none';
             }
@@ -270,12 +348,12 @@
         return dialog;
     },
 
-    isOpen: function ($dialog) {
+    isOpen: function (el) {
         return el.style.display != 'none';
     },
 
     content: function (dialog, html) {
-        var body = dialog.element.querySelector('div[data-role="body"]');
+        var body = dialog.element.querySelector('div[data-gj-role="body"]');
         if (typeof (html) === "undefined") {
             return body.innerHTML;
         } else {
@@ -284,22 +362,23 @@
         }
     },
 
-    destroy: function ($dialog, keepHtml) {
-        var data = $dialog.data();
+    destroy: function (dialog, keepHtml) {
+        var data = dialog.getConfig();
         if (data) {
+            dialog.removeConfig();
             if (keepHtml === false) {
-                $dialog.remove();
+                dialog.remove();
             } else {
                 $dialog.close();
                 $dialog.off();
                 $dialog.removeData();
-                $dialog.removeAttr('data-type');
+                $dialog.removeAttr('data-gj-type');
                 $dialog.removeClass(data.style.content);
-                $dialog.find('[data-role="header"]').removeClass(data.style.header);
-                $dialog.find('[data-role="title"]').removeClass(data.style.headerTitle);
-                $dialog.find('[data-role="close"]').remove();
-                $dialog.find('[data-role="body"]').removeClass(data.style.body);
-                $dialog.find('[data-role="footer"]').removeClass(data.style.footer);
+                $dialog.find('[data-gj-role="header"]').removeClass(data.style.header);
+                $dialog.find('[data-gj-role="title"]').removeClass(data.style.headerTitle);
+                $dialog.find('[data-gj-role="close"]').remove();
+                $dialog.find('[data-gj-role="body"]').removeClass(data.style.body);
+                $dialog.find('[data-gj-role="footer"]').removeClass(data.style.footer);
             }
             
         }

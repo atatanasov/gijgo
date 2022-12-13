@@ -118,14 +118,15 @@ gj.picker.widget.prototype = new gj.widget();
 gj.picker.widget.constructor = gj.picker.widget;
 
 gj.picker.widget.prototype.init = function (jsConfig, type, methods) {
-    gj.widget.prototype.initJS.call(this, jsConfig, type);
+    this.type = type;
+    gj.widget.prototype.initJS.call(this, jsConfig);
     this.element.setAttribute('data-' + type, 'true');
-    gj.picker.methods.initialize(this, gijgoStorage.get(this.element, 'gijgo'), gj[type].methods);
+    gj.picker.methods.initialize(this, gijgoStorage.get(this.element, this.type), gj[type].methods);
     return this;
 };
 
 gj.picker.widget.prototype.open = function (type) {
-    var data = gijgoStorage.get(this.element, 'gijgo'),
+    var data = gijgoStorage.get(this.element, this.type),
         picker = document.body.querySelector('[role="picker"][guid="' + this.element.getAttribute('data-guid') + '"]');
 
     picker.style.display = 'block';
@@ -144,7 +145,7 @@ gj.picker.widget.prototype.open = function (type) {
 };
 
 gj.picker.widget.prototype.close = function (type) {
-    var data = gijgoStorage.get(this.element, 'gijgo'),
+    var data = gijgoStorage.get(this.element, type),
         picker = document.body.querySelector('[role="picker"][guid="' + this.element.getAttribute('data-guid') + '"]');
     picker.style.display = 'none';
     if (data.modal) {
@@ -155,7 +156,7 @@ gj.picker.widget.prototype.close = function (type) {
 };
 
 gj.picker.widget.prototype.destroy = function (type) {
-    var data = gijgoStorage.get(this.element, 'gijgo'),
+    var data = gijgoStorage.get(this.element, type),
         parent = this.element.parentElement,
         picker = document.body.querySelector('[role="picker"][guid="' + this.element.getAttribute('data-guid') + '"]'),
         rightIcon = this.element.parentElement.querySelector('[role="right-icon"]');
@@ -164,7 +165,7 @@ gj.picker.widget.prototype.destroy = function (type) {
         if (parent.getAttribute('role') === 'modal') {
             this.element.outerHTML = this.element.innerHTML;
         }
-        gijgoStorage.remove(this.element, 'gijgo');
+        gijgoStorage.remove(this.element, type);
         this.element.removeAttribute('data-type');
         this.element.removeAttribute('data-guid');
         this.element.removeAttribute('data-datepicker');

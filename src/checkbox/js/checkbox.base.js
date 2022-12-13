@@ -146,9 +146,10 @@ gj.checkbox.config = {
 
 gj.checkbox.methods = {
     init: function (jsConfig) {
-        gj.widget.prototype.initJS.call(this, jsConfig, 'checkbox');
+        var type = 'checkbox';
+        gj.widget.prototype.initJS.call(this, jsConfig, type);
         this.element.setAttribute('data-checkbox', 'true');
-        gj.checkbox.methods.initialize(this, gijgoStorage.get(this.element, 'gijgo'));
+        gj.checkbox.methods.initialize(this, gijgoStorage.get(this.element, 'gijgo' + type));
         return this;
     },
 
@@ -207,9 +208,10 @@ gj.checkbox.methods = {
     },
 
     destroy: function (chkb) {
-        var data = gijgoStorage.get(chkb.element, 'gijgo');
+        var type = chkb.element.getAttribute('data-type');
+            data = gijgoStorage.get(chkb.element, 'gijgo');
         if (data) {
-            gijgoStorage.remove(chkb.element, 'gijgo');
+            gijgoStorage.remove(chkb.element, 'gijgo' + type);
             chkb.element.removeAttribute('data-type');
             chkb.element.removeAttribute('data-guid');
             chkb.element.removeAttribute('data-checkbox');

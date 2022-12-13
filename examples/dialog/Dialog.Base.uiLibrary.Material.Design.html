@@ -12,17 +12,17 @@
 </head>
 <body style="padding: 8px;">
  <div id="dialog">
-   <div data-role="body">
+   <div data-gj-role="body">
      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
      Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
    </div>
-   <div data-role="footer">
-     <button class="gj-button-md" onclick="dialog.close()">OK</button>
-     <button class="gj-button-md" data-role="close">Cancel</button>
+   <div data-gj-role="footer">
+     <button class="gj-button-md" data-gj-role="close">OK</button>
+     <button class="gj-button-md" data-gj-role="close">Cancel</button>
    </div>
  </div>
  <script>
-     var dialog = $("#dialog").dialog({
+     var dialog = new GijgoDialog(document.getElementById('dialog'), {
          uiLibrary: 'materialdesign',
          resizable: true
      });

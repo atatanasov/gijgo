@@ -7,368 +7,7 @@
  */
 var gj = {};
 
-gj.widget = function () {
-    var self = this;
-
-    self.xhr = null;
-
-    self.generateGUID = function () {
-        function s4() {
-            return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
-        }
-        return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
-    };
-
-    self.mouseX = function (e) {
-        if (e) {
-            if (e.pageX) {
-                return e.pageX;
-            } else if (e.clientX) {
-                return e.clientX + (document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft);
-            } else if (e.touches && e.touches.length) {
-                return e.touches[0].pageX;
-            } else if (e.changedTouches && e.changedTouches.length) {
-                return e.changedTouches[0].pageX;
-            } else if (e.originalEvent && e.originalEvent.touches && e.originalEvent.touches.length) {
-                return e.originalEvent.touches[0].pageX;
-            } else if (e.originalEvent && e.originalEvent.changedTouches && e.originalEvent.changedTouches.length) {
-                return e.originalEvent.touches[0].pageX;
-            }
-        }
-        return null;
-    };
-
-    self.mouseY = function (e) {
-        if (e) {
-            if (e.pageY) {
-                return e.pageY;
-            } else if (e.clientY) {
-                return e.clientY + (document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop);
-            } else if (e.touches && e.touches.length) {
-                return e.touches[0].pageY;
-            } else if (e.changedTouches && e.changedTouches.length) {
-                return e.changedTouches[0].pageY;
-            } else if (e.originalEvent && e.originalEvent.touches && e.originalEvent.touches.length) {
-                return e.originalEvent.touches[0].pageY;
-            } else if (e.originalEvent && e.originalEvent.changedTouches && e.originalEvent.changedTouches.length) {
-                return e.originalEvent.touches[0].pageY;
-            }
-        }
-        return null;
-    };
-
-    self.extend = function () {
-        for (var i = 1; i < arguments.length; i++) {
-            for (var key in arguments[i]) {
-                if (arguments[i].hasOwnProperty(key)) {
-                    if (typeof arguments[0][key] === 'object') {
-                        arguments[0][key] = this.extend(arguments[0][key], arguments[i][key]);
-                    } else {
-                        arguments[0][key] = arguments[i][key];
-                    }
-                }
-            }
-        }
-        return arguments[0];
-    };
-};
-
-gj.widget.prototype.init = function (jsConfig, type) {
-    var option, clientConfig, fullConfig;
-
-    this.element.setAttribute('data-type', type);
-    clientConfig = $.extend(true, {}, this.getHTMLConfig() || {});
-    $.extend(true, clientConfig, jsConfig || {});
-    fullConfig = this.getConfig(clientConfig, type);
-    this.element.setAttribute('data-guid', fullConfig.guid);
-    this.data(fullConfig);
-
-    // Initialize events configured as options
-    for (option in fullConfig) {
-        if (gj[type].events.hasOwnProperty(option)) {
-            this.on(option, fullConfig[option]);
-            delete fullConfig[option];
-        }
-    }
-
-    // Initialize all plugins
-    for (plugin in gj[type].plugins) {
-        if (gj[type].plugins.hasOwnProperty(plugin)) {
-            gj[type].plugins[plugin].configure(this, fullConfig, clientConfig);
-        }
-    }
-
-    return this;
-};
-
-gj.widget.prototype.getConfig = function (clientConfig, type) {
-    var config, uiLibrary, iconsLibrary, plugin;
-
-    config = $.extend(true, {}, gj[type].config.base);
-
-    uiLibrary = clientConfig.hasOwnProperty('uiLibrary') ? clientConfig.uiLibrary : config.uiLibrary;
-    if (gj[type].config[uiLibrary]) {
-        $.extend(true, config, gj[type].config[uiLibrary]);
-    }
-
-    iconsLibrary = clientConfig.hasOwnProperty('iconsLibrary') ? clientConfig.iconsLibrary : config.iconsLibrary;
-    if (gj[type].config[iconsLibrary]) {
-        $.extend(true, config, gj[type].config[iconsLibrary]);
-    }
-
-    for (plugin in gj[type].plugins) {
-        if (gj[type].plugins.hasOwnProperty(plugin)) {
-            $.extend(true, config, gj[type].plugins[plugin].config.base);
-            if (gj[type].plugins[plugin].config[uiLibrary]) {
-                $.extend(true, config, gj[type].plugins[plugin].config[uiLibrary]);
-            }
-            if (gj[type].plugins[plugin].config[iconsLibrary]) {
-                $.extend(true, config, gj[type].plugins[plugin].config[iconsLibrary]);
-            }
-        }
-    }
-
-    $.extend(true, config, clientConfig);
-
-    if (!config.guid) {
-        config.guid = this.generateGUID();
-    }
-
-    return config;
-};
-
-gj.widget.prototype.getHTMLConfig = function () {
-    var result = this.data(),
-        attrs = this[0].attributes;
-    if (attrs['width']) {
-        result.width = attrs['width'].value;
-    }
-    if (attrs['height']) {
-        result.height = attrs['height'].value;
-    }
-    if (attrs['value']) {
-        result.value = attrs['value'].value;
-    }
-    if (attrs['align']) {
-        result.align = attrs['align'].value;
-    }
-    if (result && result.source) {
-        result.dataSource = result.source;
-        delete result.source;
-    }
-    return result;
-};
-
-window.gijgoStorage = {
-    _storage: new WeakMap(),
-    put: function (el, key, obj) {
-        if (!this._storage.has(key)) {
-            this._storage.set(el, new Map());
-        }
-        this._storage.get(el).set(key, obj);
-    },
-    get: function (el, key) {
-        return this._storage.get(el).get(key);
-    },
-    has: function (el, key) {
-        return this._storage.get(el).has(key);
-    },
-    remove: function (el, key) {
-        var ret = this._storage.get(el).delete(key);
-        if (this._storage.get(key) && !this._storage.get(key).size === 0) {
-            this._storage.delete(el);
-        }
-        return ret;
-    }
-};
-
-gj.widget.prototype.initJS = function (jsConfig, type) {
-    var option, clientConfig, fullConfig;
-
-    this.element.setAttribute('data-type', type);
-    clientConfig = this.extend({}, this.getHTMLConfigJS() || {});
-    this.extend(clientConfig, jsConfig || {});
-    fullConfig = this.getConfigJS(clientConfig, type);
-    this.element.setAttribute('data-guid', fullConfig.guid);
-    gijgoStorage.put(this.element, 'gijgo', fullConfig);
-
-    // Initialize events configured as options
-    for (option in fullConfig) {
-        if (gj[type].events.hasOwnProperty(option)) {
-            this.element.addEventListener(option, fullConfig[option]);
-            delete fullConfig[option];
-        }
-    }
-
-    // Initialize all plugins
-    for (plugin in gj[type].plugins) {
-        if (gj[type].plugins.hasOwnProperty(plugin)) {
-            gj[type].plugins[plugin].configure(this, fullConfig, clientConfig);
-        }
-    }
-
-    return this;
-};
-
-gj.widget.prototype.getConfigJS = function (clientConfig, type) {
-    var config, uiLibrary, iconsLibrary, plugin;
-
-    config = this.extend({}, gj[type].config.base);
-
-    uiLibrary = clientConfig.hasOwnProperty('uiLibrary') ? clientConfig.uiLibrary : config.uiLibrary;
-    if (gj[type].config[uiLibrary]) {
-        this.extend(config, gj[type].config[uiLibrary]);
-    }
-
-    iconsLibrary = clientConfig.hasOwnProperty('iconsLibrary') ? clientConfig.iconsLibrary : config.iconsLibrary;
-    if (gj[type].config[iconsLibrary]) {
-        this.extend(config, gj[type].config[iconsLibrary]);
-    }
-
-    for (plugin in gj[type].plugins) {
-        if (gj[type].plugins.hasOwnProperty(plugin)) {
-            this.extend(config, gj[type].plugins[plugin].config.base);
-            if (gj[type].plugins[plugin].config[uiLibrary]) {
-                this.extend(config, gj[type].plugins[plugin].config[uiLibrary]);
-            }
-            if (gj[type].plugins[plugin].config[iconsLibrary]) {
-                this.extend(config, gj[type].plugins[plugin].config[iconsLibrary]);
-            }
-        }
-    }
-
-    this.extend(config, clientConfig);
-
-    if (!config.guid) {
-        config.guid = this.generateGUID();
-    }
-
-    return config;
-}
-
-gj.widget.prototype.getHTMLConfigJS = function () {
-    var result = {},
-        attrs = this.element.attributes;
-    if (attrs['width']) {
-        result.width = attrs['width'].value;
-    }
-    if (attrs['height']) {
-        result.height = attrs['height'].value;
-    }
-    if (attrs['value']) {
-        result.value = attrs['value'].value;
-    }
-    if (attrs['align']) {
-        result.align = attrs['align'].value;
-    }
-    if (result && result.source) {
-        result.dataSource = result.source;
-        delete result.source;
-    }
-    return result;
-};
-
-gj.widget.prototype.createDoneHandler = function () {
-    var widget = this;
-    return function (response) {
-        if (typeof (response) === 'string' && JSON) {
-            response = JSON.parse(response);
-        }
-        gj[widget.data('type')].methods.render($widget, response);
-    };
-};
-
-gj.widget.prototype.createErrorHandler = function () {
-    return function (response) {
-        if (response && response.statusText && response.statusText !== 'abort') {
-            alert(response.statusText);
-        }
-    };
-};
-
-gj.widget.prototype.reload = function (params) {
-    var ajaxOptions, result, data = this.data(), type = this.data('type');
-    if (data.dataSource === undefined) {
-        gj[type].methods.useHtmlDataSource(this, data);
-    }
-    $.extend(data.params, params);
-    if (Array.isArray(data.dataSource)) {
-        result = gj[type].methods.filter(this);
-        gj[type].methods.render(this, result);
-    } else if (typeof(data.dataSource) === 'string') {
-        ajaxOptions = { url: data.dataSource, data: data.params };
-        if (this.xhr) {
-            this.xhr.abort();
-        }
-        this.xhr = $.ajax(ajaxOptions).done(this.createDoneHandler()).fail(this.createErrorHandler());
-    } else if (typeof (data.dataSource) === 'object') {
-        if (!data.dataSource.data) {
-            data.dataSource.data = {};
-        }
-        $.extend(data.dataSource.data, data.params);
-        ajaxOptions = $.extend(true, {}, data.dataSource); //clone dataSource object
-        if (ajaxOptions.dataType === 'json' && typeof(ajaxOptions.data) === 'object') {
-            ajaxOptions.data = JSON.stringify(ajaxOptions.data);
-        }
-        if (!ajaxOptions.success) {
-            ajaxOptions.success = this.createDoneHandler();
-        }
-        if (!ajaxOptions.error) {
-            ajaxOptions.error = this.createErrorHandler();
-        }
-        if (this.xhr) {
-            this.xhr.abort();
-        }
-        this.xhr = $.ajax(ajaxOptions);
-    }
-    return this;
-}
-
-gj.documentManager = {
-    events: {},
-
-    subscribeForEvent: function (eventName, widgetId, callback) {
-        if (!gj.documentManager.events[eventName] || gj.documentManager.events[eventName].length === 0) {
-            gj.documentManager.events[eventName] = [{ widgetId: widgetId, callback: callback }];
-            document.addEventListener(eventName, gj.documentManager.executeCallbacks);
-        } else if (!gj.documentManager.events[eventName][widgetId]) {
-            gj.documentManager.events[eventName].push({ widgetId: widgetId, callback: callback });
-        } else {
-            throw 'Event ' + eventName + ' for widget with guid="' + widgetId + '" is already attached.';
-        }
-    },
-
-    executeCallbacks: function (e) {
-        var callbacks = gj.documentManager.events[e.type];
-        if (callbacks) {
-            for (var i = 0; i < callbacks.length; i++) {
-                callbacks[i].callback(e);
-            }
-        }
-    },
-
-    unsubscribeForEvent: function (eventName, widgetId) {
-        var success = false,
-            events = gj.documentManager.events[eventName];
-        if (events) {
-            for (var i = 0; i < events.length; i++) {
-                if (events[i].widgetId === widgetId) {
-                    events.splice(i, 1);
-                    success = true;
-                    if (events.length === 0) {
-                        document.removeEventListener(eventName, gj.documentManager.executeCallbacks);
-                        delete gj.documentManager.events[eventName];
-                    }
-                }
-            }
-        }
-        if (!success) {
-            throw 'The "' + eventName + '" for widget with guid="' + widgetId + '" can\'t be removed.';
-        }
-    }
-};
-
-/**  */gj.core = {
+/**  */ gj.core = {
     messages: {
         'en-us': {
             monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
@@ -661,6 +300,7 @@ gj.documentManager = {
             }
         }
     },
+
     getScrollParent: function (node) {
         if (node == null) {
             return null;
@@ -668,6 +308,389 @@ gj.documentManager = {
             return node;
         } else {
             return gj.core.getScrollParent(node.parentNode);
+        }
+    },
+    
+    extend: function () {
+        for (var i = 1; i < arguments.length; i++) {
+            for (var key in arguments[i]) {
+                if (arguments[i].hasOwnProperty(key)) {
+                    if (typeof arguments[0][key] === 'object') {
+                        arguments[0][key] = gj.core.extend(arguments[0][key], arguments[i][key]);
+                    } else {
+                        arguments[0][key] = arguments[i][key];
+                    }
+                }
+            }
+        }
+        return arguments[0];
+    }
+};
+
+window.gijgoStorage = {
+    _storage: new WeakMap(),
+    put: function (el, key, obj) {
+        if (!this._storage.get(el)) {
+            this._storage.set(el, new Map());
+        }
+        this._storage.get(el).set(key, obj);
+    },
+    get: function (el, key) {
+        return this._storage.get(el).get(key);
+    },
+    has: function (el, key) {
+        return this._storage.get(el).has(key);
+    },
+    remove: function (el, key) {
+        var ret = this._storage.get(el).delete(key);
+        if (this._storage.get(key) && !this._storage.get(key).size === 0) {
+            this._storage.delete(el);
+        }
+        return ret;
+    }
+};
+
+gj.widget = function () {
+    var self = this;
+
+    self.xhr = null;
+
+    self.type = null;
+
+    self.getConfig = function() {
+        return window.gijgoStorage.get(this.element, this.type);
+    };
+
+    self.setConfig = function(config) {
+        window.gijgoStorage.put(this.element, this.type, config);
+    };
+
+    self.removeConfig = function() {
+        window.gijgoStorage.remove(this.element, this.type);
+    };
+
+    self.generateGUID = function () {
+        function s4() {
+            return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
+        }
+        return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
+    };
+
+    self.mouseX = function (e) {
+        if (e) {
+            if (e.pageX) {
+                return e.pageX;
+            } else if (e.clientX) {
+                return e.clientX + (document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft);
+            } else if (e.touches && e.touches.length) {
+                return e.touches[0].pageX;
+            } else if (e.changedTouches && e.changedTouches.length) {
+                return e.changedTouches[0].pageX;
+            } else if (e.originalEvent && e.originalEvent.touches && e.originalEvent.touches.length) {
+                return e.originalEvent.touches[0].pageX;
+            } else if (e.originalEvent && e.originalEvent.changedTouches && e.originalEvent.changedTouches.length) {
+                return e.originalEvent.touches[0].pageX;
+            }
+        }
+        return null;
+    };
+
+    self.mouseY = function (e) {
+        if (e) {
+            if (e.pageY) {
+                return e.pageY;
+            } else if (e.clientY) {
+                return e.clientY + (document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop);
+            } else if (e.touches && e.touches.length) {
+                return e.touches[0].pageY;
+            } else if (e.changedTouches && e.changedTouches.length) {
+                return e.changedTouches[0].pageY;
+            } else if (e.originalEvent && e.originalEvent.touches && e.originalEvent.touches.length) {
+                return e.originalEvent.touches[0].pageY;
+            } else if (e.originalEvent && e.originalEvent.changedTouches && e.originalEvent.changedTouches.length) {
+                return e.originalEvent.touches[0].pageY;
+            }
+        }
+        return null;
+    };
+
+    self.extend = function () {
+        return gj.core.extend.apply(null, arguments);
+    };
+};
+
+gj.widget.prototype.init = function (jsConfig, type) {
+    var option, clientConfig, fullConfig;
+
+    this.element.setAttribute('data-type', type);
+    clientConfig = $.extend(true, {}, this.readHTMLConfig() || {});
+    $.extend(true, clientConfig, jsConfig || {});
+    fullConfig = this.readConfig(clientConfig, type);
+    this.element.setAttribute('data-guid', fullConfig.guid);
+    this.data(fullConfig);
+
+    // Initialize events configured as options
+    for (option in fullConfig) {
+        if (gj[type].events.hasOwnProperty(option)) {
+            this.on(option, fullConfig[option]);
+            delete fullConfig[option];
+        }
+    }
+
+    // Initialize all plugins
+    for (plugin in gj[type].plugins) {
+        if (gj[type].plugins.hasOwnProperty(plugin)) {
+            gj[type].plugins[plugin].configure(this, fullConfig, clientConfig);
+        }
+    }
+
+    return this;
+};
+
+gj.widget.prototype.readConfig = function (clientConfig, type) {
+    var config, uiLibrary, iconsLibrary, plugin;
+
+    config = $.extend(true, {}, gj[type].config.base);
+
+    uiLibrary = clientConfig.hasOwnProperty('uiLibrary') ? clientConfig.uiLibrary : config.uiLibrary;
+    if (gj[type].config[uiLibrary]) {
+        $.extend(true, config, gj[type].config[uiLibrary]);
+    }
+
+    iconsLibrary = clientConfig.hasOwnProperty('iconsLibrary') ? clientConfig.iconsLibrary : config.iconsLibrary;
+    if (gj[type].config[iconsLibrary]) {
+        $.extend(true, config, gj[type].config[iconsLibrary]);
+    }
+
+    for (plugin in gj[type].plugins) {
+        if (gj[type].plugins.hasOwnProperty(plugin)) {
+            $.extend(true, config, gj[type].plugins[plugin].config.base);
+            if (gj[type].plugins[plugin].config[uiLibrary]) {
+                $.extend(true, config, gj[type].plugins[plugin].config[uiLibrary]);
+            }
+            if (gj[type].plugins[plugin].config[iconsLibrary]) {
+                $.extend(true, config, gj[type].plugins[plugin].config[iconsLibrary]);
+            }
+        }
+    }
+
+    $.extend(true, config, clientConfig);
+
+    if (!config.guid) {
+        config.guid = this.generateGUID();
+    }
+
+    return config;
+};
+
+gj.widget.prototype.readHTMLConfig = function () {
+    var result = this.data(),
+        attrs = this[0].attributes;
+    if (attrs['width']) {
+        result.width = attrs['width'].value;
+    }
+    if (attrs['height']) {
+        result.height = attrs['height'].value;
+    }
+    if (attrs['value']) {
+        result.value = attrs['value'].value;
+    }
+    if (attrs['align']) {
+        result.align = attrs['align'].value;
+    }
+    if (result && result.source) {
+        result.dataSource = result.source;
+        delete result.source;
+    }
+    return result;
+};
+
+gj.widget.prototype.initJS = function (jsConfig) {
+    var option, clientConfig, fullConfig, type = this.type;
+
+    clientConfig = this.extend({}, this.readHTMLConfigJS() || {});
+    this.extend(clientConfig, jsConfig || {});
+    fullConfig = this.getConfigJS(clientConfig);
+    this.element.setAttribute('data-gj-guid', fullConfig.guid);
+    this.setConfig(fullConfig);
+
+    // Initialize events configured as options
+    for (option in fullConfig) {
+        if (gj[type].events.hasOwnProperty(option)) {
+            this.element.addEventListener(option, fullConfig[option]);
+            delete fullConfig[option];
+        }
+    }
+
+    // Initialize all plugins
+    for (plugin in gj[type].plugins) {
+        if (gj[type].plugins.hasOwnProperty(plugin)) {
+            gj[type].plugins[plugin].configure(this, fullConfig, clientConfig);
+        }
+    }
+
+    return this;
+};
+
+gj.widget.prototype.getConfigJS = function (clientConfig) {
+    var config, uiLibrary, iconsLibrary, plugin, type = this.type;
+
+    config = this.extend({}, gj[type].config.base);
+
+    uiLibrary = clientConfig.hasOwnProperty('uiLibrary') ? clientConfig.uiLibrary : config.uiLibrary;
+    if (gj[type].config[uiLibrary]) {
+        this.extend(config, gj[type].config[uiLibrary]);
+    }
+
+    iconsLibrary = clientConfig.hasOwnProperty('iconsLibrary') ? clientConfig.iconsLibrary : config.iconsLibrary;
+    if (gj[type].config[iconsLibrary]) {
+        this.extend(config, gj[type].config[iconsLibrary]);
+    }
+
+    for (plugin in gj[type].plugins) {
+        if (gj[type].plugins.hasOwnProperty(plugin)) {
+            this.extend(config, gj[type].plugins[plugin].config.base);
+            if (gj[type].plugins[plugin].config[uiLibrary]) {
+                this.extend(config, gj[type].plugins[plugin].config[uiLibrary]);
+            }
+            if (gj[type].plugins[plugin].config[iconsLibrary]) {
+                this.extend(config, gj[type].plugins[plugin].config[iconsLibrary]);
+            }
+        }
+    }
+
+    this.extend(config, clientConfig);
+
+    if (!config.guid) {
+        config.guid = this.generateGUID();
+    }
+
+    return config;
+}
+
+gj.widget.prototype.readHTMLConfigJS = function () {
+    var result = {},
+        attrs = this.element.attributes;
+    if (attrs['width']) {
+        result.width = attrs['width'].value;
+    }
+    if (attrs['height']) {
+        result.height = attrs['height'].value;
+    }
+    if (attrs['value']) {
+        result.value = attrs['value'].value;
+    }
+    if (attrs['align']) {
+        result.align = attrs['align'].value;
+    }
+    if (result && result.source) {
+        result.dataSource = result.source;
+        delete result.source;
+    }
+    for (var dataEl in this.element.dataset) {
+        if (dataEl.startsWith('gj')) {
+            result[dataEl.charAt(2).toLowerCase() + dataEl.slice(3)] = this.element.dataset[dataEl];
+        }
+    }
+    return result;
+};
+
+gj.widget.prototype.createDoneHandler = function () {
+    var widget = this;
+    return function (response) {
+        if (typeof (response) === 'string' && JSON) {
+            response = JSON.parse(response);
+        }
+        gj[widget.data('type')].methods.render($widget, response);
+    };
+};
+
+gj.widget.prototype.createErrorHandler = function () {
+    return function (response) {
+        if (response && response.statusText && response.statusText !== 'abort') {
+            alert(response.statusText);
+        }
+    };
+};
+
+gj.widget.prototype.reload = function (params) {
+    var ajaxOptions, result, data = this.data(), type = this.data('type');
+    if (data.dataSource === undefined) {
+        gj[type].methods.useHtmlDataSource(this, data);
+    }
+    $.extend(data.params, params);
+    if (Array.isArray(data.dataSource)) {
+        result = gj[type].methods.filter(this);
+        gj[type].methods.render(this, result);
+    } else if (typeof(data.dataSource) === 'string') {
+        ajaxOptions = { url: data.dataSource, data: data.params };
+        if (this.xhr) {
+            this.xhr.abort();
+        }
+        this.xhr = $.ajax(ajaxOptions).done(this.createDoneHandler()).fail(this.createErrorHandler());
+    } else if (typeof (data.dataSource) === 'object') {
+        if (!data.dataSource.data) {
+            data.dataSource.data = {};
+        }
+        $.extend(data.dataSource.data, data.params);
+        ajaxOptions = $.extend(true, {}, data.dataSource); //clone dataSource object
+        if (ajaxOptions.dataType === 'json' && typeof(ajaxOptions.data) === 'object') {
+            ajaxOptions.data = JSON.stringify(ajaxOptions.data);
+        }
+        if (!ajaxOptions.success) {
+            ajaxOptions.success = this.createDoneHandler();
+        }
+        if (!ajaxOptions.error) {
+            ajaxOptions.error = this.createErrorHandler();
+        }
+        if (this.xhr) {
+            this.xhr.abort();
+        }
+        this.xhr = $.ajax(ajaxOptions);
+    }
+    return this;
+}
+
+gj.documentManager = {
+    events: {},
+
+    subscribeForEvent: function (eventName, widgetId, callback) {
+        if (!gj.documentManager.events[eventName] || gj.documentManager.events[eventName].length === 0) {
+            gj.documentManager.events[eventName] = [{ widgetId: widgetId, callback: callback }];
+            document.addEventListener(eventName, gj.documentManager.executeCallbacks);
+        } else if (!gj.documentManager.events[eventName][widgetId]) {
+            gj.documentManager.events[eventName].push({ widgetId: widgetId, callback: callback });
+        } else {
+            throw 'Event ' + eventName + ' for widget with guid="' + widgetId + '" is already attached.';
+        }
+    },
+
+    executeCallbacks: function (e) {
+        var callbacks = gj.documentManager.events[e.type];
+        if (callbacks) {
+            for (var i = 0; i < callbacks.length; i++) {
+                callbacks[i].callback(e);
+            }
+        }
+    },
+
+    unsubscribeForEvent: function (eventName, widgetId) {
+        var success = false,
+            events = gj.documentManager.events[eventName];
+        if (events) {
+            for (var i = 0; i < events.length; i++) {
+                if (events[i].widgetId === widgetId) {
+                    events.splice(i, 1);
+                    success = true;
+                    if (events.length === 0) {
+                        document.removeEventListener(eventName, gj.documentManager.executeCallbacks);
+                        delete gj.documentManager.events[eventName];
+                    }
+                }
+            }
+        }
+        if (!success) {
+            throw 'The "' + eventName + '" for widget with guid="' + widgetId + '" can\'t be removed.';
         }
     }
 };
@@ -791,14 +814,15 @@ gj.picker.widget.prototype = new gj.widget();
 gj.picker.widget.constructor = gj.picker.widget;
 
 gj.picker.widget.prototype.init = function (jsConfig, type, methods) {
-    gj.widget.prototype.initJS.call(this, jsConfig, type);
+    this.type = type;
+    gj.widget.prototype.initJS.call(this, jsConfig);
     this.element.setAttribute('data-' + type, 'true');
-    gj.picker.methods.initialize(this, gijgoStorage.get(this.element, 'gijgo'), gj[type].methods);
+    gj.picker.methods.initialize(this, gijgoStorage.get(this.element, this.type), gj[type].methods);
     return this;
 };
 
 gj.picker.widget.prototype.open = function (type) {
-    var data = gijgoStorage.get(this.element, 'gijgo'),
+    var data = gijgoStorage.get(this.element, this.type),
         picker = document.body.querySelector('[role="picker"][guid="' + this.element.getAttribute('data-guid') + '"]');
 
     picker.style.display = 'block';
@@ -817,7 +841,7 @@ gj.picker.widget.prototype.open = function (type) {
 };
 
 gj.picker.widget.prototype.close = function (type) {
-    var data = gijgoStorage.get(this.element, 'gijgo'),
+    var data = gijgoStorage.get(this.element, type),
         picker = document.body.querySelector('[role="picker"][guid="' + this.element.getAttribute('data-guid') + '"]');
     picker.style.display = 'none';
     if (data.modal) {
@@ -828,7 +852,7 @@ gj.picker.widget.prototype.close = function (type) {
 };
 
 gj.picker.widget.prototype.destroy = function (type) {
-    var data = gijgoStorage.get(this.element, 'gijgo'),
+    var data = gijgoStorage.get(this.element, type),
         parent = this.element.parentElement,
         picker = document.body.querySelector('[role="picker"][guid="' + this.element.getAttribute('data-guid') + '"]'),
         rightIcon = this.element.parentElement.querySelector('[role="right-icon"]');
@@ -837,7 +861,7 @@ gj.picker.widget.prototype.destroy = function (type) {
         if (parent.getAttribute('role') === 'modal') {
             this.element.outerHTML = this.element.innerHTML;
         }
-        gijgoStorage.remove(this.element, 'gijgo');
+        gijgoStorage.remove(this.element, type);
         this.element.removeAttribute('data-type');
         this.element.removeAttribute('data-guid');
         this.element.removeAttribute('data-datepicker');

@@ -778,9 +778,10 @@ gj.datepicker.config = {
 
 gj.datepicker.methods = {
     init: function (jsConfig) {
-        gj.widget.prototype.initJS.call(this, jsConfig, 'datepicker');
+        this.type = 'datepicker';
+        gj.widget.prototype.initJS.call(this, jsConfig);
         this.element.setAttribute('data-datepicker', 'true');
-        gj.datepicker.methods.initialize(this, gijgoStorage.get(this.element, 'gijgo'));
+        gj.datepicker.methods.initialize(this, gijgoStorage.get(this.element, this.type));
         return this;
     },
 
@@ -1681,7 +1682,7 @@ gj.datepicker.methods = {
     },
 
     value: function (picker, value) {
-        var calendar, date, data = gijgoStorage.get(picker.element, 'gijgo');
+        var calendar, date, data = gijgoStorage.get(picker.element, this.type);
         if (typeof (value) === "undefined") {
             return picker.element.value;
         } else {
@@ -1697,7 +1698,7 @@ gj.datepicker.methods = {
     },
 
     destroy: function (picker) {
-        var data = gijgoStorage.get(picker.element, 'gijgo'),
+        var data = gijgoStorage.get(picker.element, this.type),
             parent = picker.element.parentElement,
             calendar = document.body.querySelector('[role="picker"][guid="' + picker.element.getAttribute('data-guid') + '"]');
         if (data) {
@@ -1706,7 +1707,7 @@ gj.datepicker.methods = {
                 picker.element.outerHTML = picker.element.innerHTML;
             }
             //$picker.remove();
-            gijgoStorage.remove(picker.element, 'gijgo');
+            gijgoStorage.remove(picker.element, this.type);
             picker.element.removeAttribute('data-type');
             picker.element.removeAttribute('data-guid');
             picker.element.removeAttribute('data-datepicker');

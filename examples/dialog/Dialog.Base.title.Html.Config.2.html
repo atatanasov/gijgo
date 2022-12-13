@@ -11,18 +11,12 @@
   <script src="../../dist/modular/js/dialog.js"></script>
 </head>
 <body style="padding: 8px;">
- <div id="dialog" style="display: none">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
- <button onclick="create()" class="gj-button-md">Create</button>
- <button onclick="dialog.destroy(false)" class="gj-button-md">Destroy</button>
+ <div id="dialog" width="400">
+     <div data-gj-role="header"><div data-gj-role="title">My Custom Title</div></div>
+     Lorem ipsum dolor sit amet, consectetur adipiscing elit...
+ </div>
  <script>
-     var dialog;
-     function create() {
-         if ($('#dialog').length === 0) {
-             alert('The dialog can not be created.');
-         } else {
-             dialog = new GijgoDialog(document.getElementById('dialog'));
-         }
-     }
+     new GijgoDialog(document.getElementById('dialog'), );
  </script>
 </body>
 </html>
