@@ -332,6 +332,16 @@
         }
     },
 
+    removeClasses: function (el, classes) {
+        var i, arr;
+        if (classes) {
+            arr = classes.split(' ');
+            for (i = 0; i < arr.length; i++) {
+                el.classList.remove(arr[i]);
+            }
+        }
+    },
+
     createElement: function (htmlString) {
         var div = document.createElement('div');
         div.innerHTML = htmlString.trim();
@@ -588,7 +598,7 @@ gj.widget.prototype.initJS = function (jsConfig) {
 
     clientConfig = this.extend({}, this.readHTMLConfigJS() || {});
     this.extend(clientConfig, jsConfig || {});
-    fullConfig = this.getConfigJS(clientConfig);
+    fullConfig = this.buildConfigJS(clientConfig);
     this.element.setAttribute('data-gj-guid', fullConfig.guid);
     this.setConfig(fullConfig);
 
@@ -610,7 +620,7 @@ gj.widget.prototype.initJS = function (jsConfig) {
     return this;
 };
 
-gj.widget.prototype.getConfigJS = function (clientConfig) {
+gj.widget.prototype.buildConfigJS = function (clientConfig) {
     var config, uiLibrary, iconsLibrary, plugin, type = this.type;
 
     config = this.extend({}, gj[type].config.base);

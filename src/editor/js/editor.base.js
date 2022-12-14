@@ -189,7 +189,7 @@ gj.editor.methods = {
         this.type = 'editor';
         gj.widget.prototype.initJS.call(this, jsConfig);
         this.element.setAttribute('data-editor', 'true');
-        gj.editor.methods.initialize(this, gijgoStorage.get(this.element, this.type));
+        gj.editor.methods.initialize(this, this.getConfig());
         return this;
     },
 
@@ -320,7 +320,7 @@ gj.editor.methods = {
             wrapper.querySelector('div[role="body"]').remove();
             wrapper.querySelector('div[role="toolbar"]').remove();
             editor.element.outerHTML = editor.element.innerHTML;
-            gijgoStorage.remove(editor.element, editor.type);
+            editor.removeConfig();
             editor.element.removeAttribute('data-guid');
             editor.element.removeAttribute('data-editor');
             //$editor.off();

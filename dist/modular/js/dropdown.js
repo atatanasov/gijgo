@@ -96,7 +96,8 @@ gj.dropdown.config = {
 
 gj.dropdown.methods = {
     init: function (jsConfig) {
-        gj.widget.prototype.init.call(this, jsConfig, 'dropdown');
+        this.type = 'dropdown';
+        gj.widget.prototype.init.call(this, jsConfig);
         this.attr('data-dropdown', 'true');
         gj.dropdown.methods.initialize(this);
         return this;

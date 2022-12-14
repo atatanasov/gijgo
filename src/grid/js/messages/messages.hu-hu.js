@@ -1,0 +1,21 @@
+gj.grid.messages['hu-hu'] = {
+    First: 'Első',
+    Previous: 'Előző',
+    Next: 'Következő',
+    Last: 'Utolsó',
+    Page: 'Oldal',
+    FirstPageTooltip: 'Első oldal',
+    PreviousPageTooltip: 'Előző oldal',
+    NextPageTooltip: 'Következő oldal',
+    LastPageTooltip: 'Utolsó oldal',
+    Refresh: 'Frissítés',
+    Of: '/',
+    DisplayingRecords: 'Rekordok megjelenítése',
+    RowsPerPage: 'Sorok oldalanként:',
+    Edit: 'Szerkesztés',
+    Delete: 'Törlés',
+    Update: 'Módosítás',
+    Cancel: 'Mégsem',
+    NoRecordsFound: 'Nincs találat.',
+    Loading: 'Betöltés...'
+};

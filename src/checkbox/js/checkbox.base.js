@@ -146,10 +146,10 @@ gj.checkbox.config = {
 
 gj.checkbox.methods = {
     init: function (jsConfig) {
-        var type = 'checkbox';
-        gj.widget.prototype.initJS.call(this, jsConfig, type);
-        this.element.setAttribute('data-checkbox', 'true');
-        gj.checkbox.methods.initialize(this, gijgoStorage.get(this.element, 'gijgo' + type));
+        this.type = 'checkbox';
+        gj.widget.prototype.initJS.call(this, jsConfig);
+        this.element.setAttribute('data-gj-checkbox', 'true');
+        gj.checkbox.methods.initialize(this, this.getConfig());
         return this;
     },
 
@@ -184,7 +184,6 @@ gj.checkbox.methods = {
                 chkb.element.checked = false;
                 chkb.element.indeterminate = true;
             }
-            gj.checkbox.events.change(chkb.element, value);
             return chkb;
         } else {
             if (chkb.element.indeterminate) {
@@ -208,13 +207,13 @@ gj.checkbox.methods = {
     },
 
     destroy: function (chkb) {
-        var type = chkb.element.getAttribute('data-type');
-            data = gijgoStorage.get(chkb.element, 'gijgo');
+        var type = chkb.element.getAttribute('data-gj-type');
+            data = chkb.getConfig();
         if (data) {
-            gijgoStorage.remove(chkb.element, 'gijgo' + type);
-            chkb.element.removeAttribute('data-type');
-            chkb.element.removeAttribute('data-guid');
-            chkb.element.removeAttribute('data-checkbox');
+            chkb.removeConfig();
+            chkb.element.removeAttribute('data-gj-type');
+            chkb.element.removeAttribute('data-gj-guid');
+            chkb.element.removeAttribute('data-gj-checkbox');
             chkb.element.removeAttribute('class');
             chkb.element.parentNode.removeChild(chkb.element.parentNode.querySelector('span'));
             chkb.element.parentNode.outerHTML = chkb.element.parentNode.innerHTML;
@@ -229,20 +228,19 @@ gj.checkbox.events = {
      *
      * @event change
      * @param {object} e - event data
-     * @param {string} state - the data of the checkbox
      * @return {GijgoCheckBox} GijgoCheckBox
      * @example sample <!-- checkbox -->
      * <input type="checkbox" id="checkbox"/>
      * <script>
      *     var chkb = new GijgoCheckBox(document.getElementById('checkbox'), {
      *         change: function (e) {
-     *             alert('State: ' + chkb.state());
+     *             alert('Checked: ' + e.target.checked);
      *         }
      *     });
      * </script>
      */
-    change: function (el, state) {
-        return el.dispatchEvent(new CustomEvent('change', { 'state': state }));
+    change: function (el) {
+        //Event dispatched by native html input from type=checkbox
     }
 };
 
@@ -303,7 +301,7 @@ GijgoCheckBox = function (element, jsConfig) {
         return methods.destroy(this);
     };
 
-    if ('true' !== element.getAttribute('data-checkbox')) {
+    if ('true' !== element.getAttribute('data-gj-checkbox')) {
         methods.init.call(self, jsConfig);
     }
 

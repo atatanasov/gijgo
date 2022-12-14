@@ -96,7 +96,8 @@ gj.switch.config = {
 
 gj.switch.methods = {
     init: function (jsConfig) {
-        gj.widget.prototype.init.call(this, jsConfig, 'switch');
+        this.type = 'switch';
+        gj.widget.prototype.init.call(this, jsConfig);
         this.attr('data-switch', 'true');
         gj.switch.methods.initialize(this);
         return this;
@@ -105,15 +106,17 @@ gj.switch.methods = {
     initialize: function ($switch) {
     },
 
-    destroy: function ($switch) {
-        var data = $switch.data();
+    destroy: function (obj) {
+        var data = obj.getConfig();
         if (data) {
-            $switch.off();
-            $switch.removeData();
-            $switch.removeAttr('data-type').removeAttr('data-guid').removeAttr('data-switch');
-            $switch.removeClass();
+            obj.off();
+            obj.removeConfig();
+            obj.removeAttribute('data-type')
+            obj.removeAttribute('data-guid')
+            obj.removeAttribute('data-switch');
+            obj.removeClass();
         }
-        return $switch;
+        return obj;
     }
 };
 

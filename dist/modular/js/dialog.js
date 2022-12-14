@@ -271,7 +271,7 @@ gj.dialog.methods = {
             el.removeAttribute('aria-modal');
         }
 
-        el.element.querySelectorAll('[data-gj-role="close"]').forEach(function (el) {
+        el.querySelectorAll('[data-gj-role="close"]').forEach(function (el) {
             el.setAttribute('aria-label', 'Close');
         });
     },
@@ -517,26 +517,24 @@ gj.dialog.methods = {
     },
 
     destroy: function (dialog, keepHtml) {
-        var data = dialog.getConfig();
+        var subEl, data = dialog.getConfig(), el = dialog.element;
         if (data) {
             dialog.removeConfig();
             if (keepHtml === false) {
-                dialog.remove();
+                dialog.element.remove();
             } else {
-                $dialog.close();
-                $dialog.off();
-                $dialog.removeData();
-                $dialog.removeAttr('data-gj-type');
-                $dialog.removeClass(data.style.content);
-                $dialog.find('[data-gj-role="header"]').removeClass(data.style.header);
-                $dialog.find('[data-gj-role="title"]').removeClass(data.style.headerTitle);
-                $dialog.find('[data-gj-role="close"]').remove();
-                $dialog.find('[data-gj-role="body"]').removeClass(data.style.body);
-                $dialog.find('[data-gj-role="footer"]').removeClass(data.style.footer);
-            }
-            
+                el.removeAttribute('data-gj-type');
+                gj.core.removeClasses(el, data.style.content);
+                gj.core.removeClasses(el.querySelector('[data-gj-role="header"]'), data.style.header);
+                gj.core.removeClasses(el.querySelector('[data-gj-role="title"]'), data.style.headerTitle);
+                el.querySelector('[data-gj-role="close"]').remove();
+                gj.core.removeClasses(el.querySelector('[data-gj-role="body"]'), data.style.body);
+                subEl = el.querySelector('[data-gj-role="footer"]');
+                if (subEl) {
+                    gj.core.removeClasses(subEl, data.style.footer);
+                }
+            }            
         }
-        return $dialog;
     }
 };
 /**   */GijgoDialog = function (element, jsConfig) {
@@ -650,3 +648,28 @@ gj.dialog.messages['zh-tw'] = {
     Close: '關閉',
     DefaultTitle: '對話框'
 };
+gj.dialog.messages['lv-lv'] = {
+    Close: 'Aizvert',
+    DefaultTitle: 'Īsziņa'
+};
+gj.dialog.messages['cs-cz'] = {
+    Close: 'Zavřít',
+    DefaultTitle: 'Dialog'
+};
+gj.dialog.messages['az-az'] = {
+    Close: 'Bağla',
+    DefaultTitle: 'Dialoq'
+};
+gj.dialog.messages['el-gr'] = {
+    Close: 'Κλέισιμο',
+    DefaultTitle: 'Πλαίσιο Διαλόγου'
+};
+gj.dialog.messages['hu-hu'] = {
+    Close: 'Bezár',
+    DefaultTitle: 'Dialógus'
+};
+gj.dialog.messages['nl-nl'] = {
+    Close: 'Sluiten',
+    DefaultTitle: 'Venster'
+};
+

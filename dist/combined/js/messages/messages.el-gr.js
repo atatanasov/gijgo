@@ -48,5 +48,6 @@ gj.core.messages['el-gr'] = {
     am: 'ΠΜ',
     pm: 'ΑΜ',
     ok: 'OK',
-    cancel: 'Άκυρο'
+    cancel: 'Άκυρο',
+    titleFormat: 'mmmm yyyy'
 };

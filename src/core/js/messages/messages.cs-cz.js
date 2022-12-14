@@ -7,5 +7,6 @@
     am: 'AM',
     pm: 'PM',
     ok: 'OK',
-    cancel: 'Zavřít'
+    cancel: 'Zavřít',
+    titleFormat: 'mmmm yyyy'
 };

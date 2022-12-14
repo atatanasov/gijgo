@@ -1,0 +1,21 @@
+gj.grid.messages['el-gr'] = {
+    First: 'Αρχή',
+    Previous: 'Προηγούμενο',
+    Next: 'Επόμενο',
+    Last: 'Τέλος',
+    Page: 'Σελίδα',
+    FirstPageTooltip: 'Πρώτη Σελίδα',
+    PreviousPageTooltip: 'Προηγούμενη Σελίδα',
+    NextPageTooltip: 'Επόμενη Σελίδα',
+    LastPageTooltip: 'Τελευταία Σελίδα',
+    Refresh: 'Ανανέωση',
+    Of: 'Από',
+    DisplayingRecords: 'Αποτελέσματα',
+    RowsPerPage: 'Γραμμές ανά σελίδα:',
+    Edit: 'Επεξεργασία',
+    Delete: 'Διαγραφή',
+    Update: 'Ενημέρωση',
+    Cancel: 'Άκυρο',
+    NoRecordsFound: 'Δε βρέθηκαν εγγραφές.',
+    Loading: 'Φόρτωση...'
+};

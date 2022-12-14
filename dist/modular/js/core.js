@@ -254,6 +254,16 @@ var gj = {};
         }
     },
 
+    removeClasses: function (el, classes) {
+        var i, arr;
+        if (classes) {
+            arr = classes.split(' ');
+            for (i = 0; i < arr.length; i++) {
+                el.classList.remove(arr[i]);
+            }
+        }
+    },
+
     createElement: function (htmlString) {
         var div = document.createElement('div');
         div.innerHTML = htmlString.trim();
@@ -510,7 +520,7 @@ gj.widget.prototype.initJS = function (jsConfig) {
 
     clientConfig = this.extend({}, this.readHTMLConfigJS() || {});
     this.extend(clientConfig, jsConfig || {});
-    fullConfig = this.getConfigJS(clientConfig);
+    fullConfig = this.buildConfigJS(clientConfig);
     this.element.setAttribute('data-gj-guid', fullConfig.guid);
     this.setConfig(fullConfig);
 
@@ -532,7 +542,7 @@ gj.widget.prototype.initJS = function (jsConfig) {
     return this;
 };
 
-gj.widget.prototype.getConfigJS = function (clientConfig) {
+gj.widget.prototype.buildConfigJS = function (clientConfig) {
     var config, uiLibrary, iconsLibrary, plugin, type = this.type;
 
     config = this.extend({}, gj[type].config.base);
@@ -1009,5 +1019,78 @@ gj.core.messages['zh-tw'] = {
     ok: '確認',
     cancel: '取消',
     titleFormat: 'yyyy年mmmm'
+};
+
+gj.core.messages['lv-lv'] = {
+    monthNames: ['Janvaris', 'Februāris', 'Marts', 'Aprīls', 'Maijs', 'Jūnjs', 'Jūlijs', 'Augusts', 'Septembris', 'Oktobris', 'Novembris', 'Decembris'],
+    monthShortNames: ['Jan', 'Feb', 'Mar', 'Apr', 'Mai', 'Jūn', 'Jūl', 'Aug', 'Sep', 'Okt', 'Nov', 'Dec'],
+    weekDaysMin: ['Sv', 'P', 'O', 'T', 'C', 'P', 'S'],
+    weekDaysShort: ['sv', 'pirm', 'otr', 'treš', 'cet', 'piekt', 'sest'],
+    weekDays: ['svētdiena', 'pirmdiena', 'otrdiena', 'trešdiena', 'ceturtdiena', 'piektdiena', 'sestdiena'],
+    am: 'AM',
+    pm: 'PM',
+    ok: 'ОК',
+    cancel: 'Atcelt',
+    titleFormat: 'mmmm yyyy'
+};
+gj.core.messages['cs-cz'] = {
+    monthNames: ['Leden', 'Únor', 'Březen', 'Duben', 'Květen', 'Červen', 'Červenec', 'Srpen', 'Září', 'Říjen', 'Listopad', 'Prosinec'],
+    monthShortNames: ['Led', 'Úno', 'Bře', 'Dub', 'Kvě', 'Čvn', 'Čvc', 'Srp', 'Zář', 'Říj', 'Lis', 'Pro'],
+    weekDaysMin: ['Ne', 'Po', 'Út', 'St', 'Čt', 'Pá', 'So'],
+    weekDaysShort: ['Ne', 'Po', 'Út', 'St', 'Čt', 'Pá', 'So'],
+    weekDays: ['Neděle', 'Pondělí', 'Úterý', 'Středa', 'Čtvrtek', 'Pátek', 'Sobota'],
+    am: 'AM',
+    pm: 'PM',
+    ok: 'OK',
+    cancel: 'Zavřít',
+    titleFormat: 'mmmm yyyy'
+};
+gj.core.messages['az-az'] = {
+    monthNames: ['Yanvar', 'Fevral', 'Mart', 'Aprel', 'May', 'İyun', 'İyul', 'Avqust', 'Sentyabr', 'Oktyabr', 'Noyabr', 'Dekabr'],
+    monthShortNames: ['Yan', 'Fev', 'Mar', 'Apr', 'May', 'İyn', 'İyl', 'Avq', 'Sen', 'Okt', 'Noy', 'Dek'],
+    weekDaysMin: ['B', 'B', 'Ç', 'Ç', 'C', 'C', 'Ş'],
+    weekDaysShort: ['Ba', 'Be', 'Ça', 'Çə', 'Ca', 'Cü', 'Şn'],
+    weekDays: ['Bazar', 'Bazar ertəsi', 'Çərşənbə axşamı', 'Çərşənbə', 'Cümə axşamı', 'Cümə', 'Şənbə'],
+    am: 'AM',
+    pm: 'PM',
+    ok: 'Təsdiq',
+    cancel: 'İmtina',
+    titleFormat: 'mmmm yyyy'
+};
+gj.core.messages['el-gr'] = {
+    monthNames: ['ιανουάριος', 'φεβρουάριος', 'μάρτιος', 'απρίλιος', 'μάιος', 'ιούνιος', 'ιούλιος', 'αύγουστος', 'σεπτέμβριος', 'οκτώβριος', 'νοέμβριος', 'δεκέμβριος'],
+    monthShortNames: ['ιαν.', 'φεβ.', 'μαρ.', 'απρ.', 'μάι.', 'ιούν.', 'ιούλ.', 'αύγ.', 'σεπ.', 'οκτ.', 'νοέ.', 'δεκ.'],
+    weekDaysMin: ['Κυ', 'Δε', 'Τρ', 'Τε', 'Πε', 'Πα', 'Σα'],
+    weekDaysShort: ['Κυρ', 'Δευ', 'Τρι', 'Τετ', 'Πεμ', 'Παρ', 'Σαβ'],
+    weekDays: ['Κυριακή', 'Δευτέρα', 'Τρίτη', 'Τετάρτη', 'Πέμπτη', 'Παρασκευή', 'Σάββατο'],
+    am: 'ΠΜ',
+    pm: 'ΑΜ',
+    ok: 'OK',
+    cancel: 'Άκυρο',
+    titleFormat: 'mmmm yyyy'
+};
+gj.core.messages['hu-hu'] = {
+    monthNames: ['Január', 'Február', 'Március', 'Április', 'Május', 'Június', 'Július', 'Augusztus', 'Szeptember', 'Október', 'November', 'December'],
+    monthShortNames: ['Jan', 'Feb', 'Már', 'Ápr', 'Máj', 'Jún', 'Júl', 'Aug', 'Sze', 'Okt', 'Nov', 'Dec'],
+    weekDaysMin: ['V', 'H', 'K', 'S', 'C', 'P', 'S'],
+    weekDaysShort: ['Vas', 'Hét', 'Ked', 'Sze', 'Csü', 'Pén', 'Szo'],
+    weekDays: ['Vasárnap', 'Hétfő', 'Kedd', 'Szerda', 'Csütörtök', 'Péntek', 'Szombat'],
+    am: 'de',
+    pm: 'du',
+    ok: 'OK',
+    cancel: 'Mégsem',
+    titleFormat: 'yyyy mmmm'
+};
+gj.core.messages['nl-nl'] = {
+    monthNames: ['Januari', 'Februari', 'Maart', 'April', 'Mei', 'Juni', 'Juli', 'Augustus', 'September', 'Oktober', 'November', 'December'],
+    monthShortNames: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dec'],
+    weekDaysMin: ['Zo', 'Ma', 'Di', 'Wo', 'Do', 'Vr', 'Za'],
+    weekDaysShort: ['Zo', 'Ma', 'Di', 'Wo', 'Do', 'Vr', 'Za'],
+    weekDays: ['Zondag', 'Maandag', 'Dinsdag', 'Woensdag', 'Donderdag', 'Vrijdag', 'Zaterdag'],
+    am: 'AM',
+    pm: 'PM',
+    ok: 'OK',
+    cancel: 'Annuleren',
+    titleFormat: 'mmmm yyyy'
 };
 

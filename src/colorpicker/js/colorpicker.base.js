@@ -26,12 +26,12 @@ gj.colorpicker.config = {
          * @example Bootstrap.3 <!-- bootstrap, colorpicker -->
          * <input id="colorpicker" width="300" />
          * <script>
-         *     $('#colorpicker').colorpicker({ uiLibrary: 'bootstrap' });
+         *     new GijgoColorPicker(document.getElementById('colorpicker'), { uiLibrary: 'bootstrap' });
          * </script>
          * @example Bootstrap.4 <!-- bootstrap4, colorpicker -->
          * <input id="colorpicker" width="300" />
          * <script>
-         *     $('#colorpicker').colorpicker({ uiLibrary: 'bootstrap4' });
+         *     new GijgoColorPicker(document.getElementById('colorpicker'), { uiLibrary: 'bootstrap4' });
          * </script>
          */
         uiLibrary: 'materialdesign',
@@ -42,12 +42,12 @@ gj.colorpicker.config = {
          * @example Javascript <!-- colorpicker -->
          * <input id="colorpicker" width="300" />
          * <script>
-         *    $('#colorpicker').colorpicker({ value: '#FF0000' });
+         *    new GijgoColorPicker(document.getElementById('colorpicker'), { value: '#FF0000' });
          * </script>
          * @example HTML <!-- colorpicker -->
          * <input id="colorpicker" width="300" value="#FF0000" />
          * <script>
-         *     $('#colorpicker').colorpicker();
+         *     new GijgoColorPicker(document.getElementById('colorpicker'));
          * </script>
          */
         value: undefined,
@@ -77,7 +77,8 @@ gj.colorpicker.config = {
 
 gj.colorpicker.methods = {
     init: function (jsConfig) {
-        gj.picker.widget.prototype.init.call(this, jsConfig, 'colorpicker');
+        this.type = 'colorpicker';
+        gj.picker.widget.prototype.initJS.call(this, jsConfig);
         gj.colorpicker.methods.initialize(this);
         return this;
     },
@@ -89,7 +90,7 @@ gj.colorpicker.methods = {
         var popup = document.createElement('div');
         popup.setAttribute('role', 'popup');
         gj.core.addClasses(popup, data.style.picker);
-        popup.setAttribute('guid', ctrl.element.getAttribute('data-guid'));
+        popup.setAttribute('guid', ctrl.element.getAttribute('data-gj-guid'));
 
         popup.innerHTML = 'test';
 
@@ -254,7 +255,7 @@ GijgoColorPicker = function (element, jsConfig) {
         return gj.picker.widget.prototype.close.call(this, 'colorpicker');
     };
     
-    if ('true' !== element.getAttribute('data-colorpicker')) {
+    if ('true' !== element.getAttribute('data-gj-colorpicker')) {
         methods.init.call(self, jsConfig);
     }
 
@@ -262,7 +263,7 @@ GijgoColorPicker = function (element, jsConfig) {
 };
 
 GijgoColorPicker.prototype = new gj.picker.widget();
-GijgoColorPicker.constructor = gj.colorpicker.widget;
+GijgoColorPicker.constructor = GijgoColorPicker;
 
 
 if (typeof (jQuery) !== "undefined") {

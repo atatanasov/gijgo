@@ -108,7 +108,7 @@ GijgoDialog = function (element, jsConfig) {
      * <script>
      *     var dialog;
      *     function create() {
-     *         if ($('#dialog').length === 0) {
+     *         if (!document.getElementById('dialog')) {
      *             alert('The dialog can not be created.');
      *         } else {
      *             dialog = new GijgoDialog(document.getElementById('dialog'));

@@ -102,7 +102,7 @@ gj.editor.methods = {
         this.type = 'editor';
         gj.widget.prototype.initJS.call(this, jsConfig);
         this.element.setAttribute('data-editor', 'true');
-        gj.editor.methods.initialize(this, gijgoStorage.get(this.element, this.type));
+        gj.editor.methods.initialize(this, this.getConfig());
         return this;
     },
 
@@ -233,7 +233,7 @@ gj.editor.methods = {
             wrapper.querySelector('div[role="body"]').remove();
             wrapper.querySelector('div[role="toolbar"]').remove();
             editor.element.outerHTML = editor.element.innerHTML;
-            gijgoStorage.remove(editor.element, editor.type);
+            editor.removeConfig();
             editor.element.removeAttribute('data-guid');
             editor.element.removeAttribute('data-editor');
             //$editor.off();
@@ -494,3 +494,100 @@ gj.editor.messages['zh-tw'] = {
     undo: '撤銷',
     redo: '重做'
 };
+gj.editor.messages['lv-lv'] = {
+	bold: 'Trekns',
+	italic: 'Slīpraksts',
+	strikethrough: 'Izsvītrots',
+	underline: 'Pasvītrots',
+	listBulleted: 'Saraksts',
+	listNumbered: 'Numurēts saraksts',
+	indentDecrease: 'Samazināt atkāpumu',
+	indentIncrease: 'Palielināt atkāpumu',
+	alignLeft: 'Kreisais līdzinājums',
+	alignCenter: 'Centrālais līdzinājums',
+	alignRight: 'Labais līdzinājums',
+	alignJustify: 'Izlīdzināt platumā',
+	undo: 'Atpakaļ',
+	redo: 'Uz priekšu'
+};
+gj.editor.messages['cs-cz'] = {
+    bold: 'Tučně',
+    italic: 'Kurzíva',
+    strikethrough: 'Přeškrtnutí',
+    underline: 'Podtržení',
+    listBulleted: 'Odrážkový seznam',
+    listNumbered: 'Číslovaný seznam',
+    indentDecrease: 'Zmenšit odsazení',
+    indentIncrease: 'Zvětšit odsazení',
+    alignLeft: 'Zarovnat vlevo',
+    alignCenter: 'Zarovnat na střed',
+    alignRight: 'Zarovnat vpravo',
+    alignJustify: 'Zarovnat do bloku',
+    undo: 'Zpět',
+    redo: 'Znovu'
+};
+gj.editor.messages['az-az'] = {
+    bold: 'Qalın',
+    italic: 'İtalik',
+    strikethrough: 'Çox Qalın',
+    underline: 'Alt Xətli',
+    listBulleted: 'Noqtəli',
+    listNumbered: 'Rəqəmli',
+    indentDecrease: 'Abzası Azalt',
+    indentIncrease: 'Abzası Çoxalt',
+    alignLeft: 'Sola Daya',
+    alignCenter: 'Ortala',
+    alignRight: 'Sağa Daya',
+    alignJustify: 'Hər iki tərəfə daya',
+    undo: 'Geri Al',
+    redo: 'İrəli Al'
+};
+gj.editor.messages['el-gr'] = {
+    bold: 'Έντονα',
+    italic: 'Πλάγια',
+    strikethrough: 'Διαγραμμένα',
+    underline: 'Υπογραμμισμένα',
+    listBulleted: 'Λίστα κουκίδας',
+    listNumbered: 'Λίστα αρίθμησης',
+    indentDecrease: 'Μείωση Εσοχής',
+    indentIncrease: 'Αύξηση Εσοχής',
+    alignLeft: 'Αριστερή Στοίχιση',
+    alignCenter: 'Κεντρική Στοίχιση',
+    alignRight: 'Δεξιά Στοίχιση',
+    alignJustify: 'Πλήρης Στοίχιση',
+    undo: 'Αναίρεση',
+    redo: 'Επανάληψη'
+};
+gj.editor.messages['hu-hu'] = {
+    bold: 'Félkövér',
+    italic: 'Dőlt',
+    strikethrough: 'Áthúzott',
+    underline: 'Aláhúzott',
+    listBulleted: 'Felsorolás',
+    listNumbered: 'Számozás',
+    indentDecrease: 'Behúzás csökkentése',
+    indentIncrease: 'Behúzás növelése',
+    alignLeft: 'Balra igazítás',
+    alignCenter: 'Középre igazítás',
+    alignRight: 'Jobbra igazítás',
+    alignJustify: 'Sorkizárás',
+    undo: 'Visszavonás',
+    redo: 'Mégis'
+};
+gj.editor.messages['nl-nl'] = {
+    bold: 'Vet',
+    italic: 'Cursief',
+    strikethrough: 'Doorgestreept',
+    underline: 'Onderstreept',
+    listBulleted: 'Opgesomde lijst',
+    listNumbered: 'Genummerde lijst',
+    indentDecrease: 'Inspringen verkleinen',
+    indentIncrease: 'Inspringen vergroten',
+    alignLeft: 'Links uitlijnen',
+    alignCenter: 'Centreren',
+    alignRight: 'Rechts uitlijnen',
+    alignJustify: 'Uitlijnen',
+    undo: 'Ongedaan maken',
+    redo: 'Opnieuw'
+};
+

@@ -1,0 +1,21 @@
+gj.grid.messages['lv-lv'] = {
+    First: 'Pirmais',
+    Previous: 'Iepriekšējais',
+    Next: 'Nākošais',
+    Last: 'Pēdējais',
+    Page: 'Lapa',
+    FirstPageTooltip: 'Pirmā lapa',
+    PreviousPageTooltip: 'Iepriekšējā lapa',
+    NextPageTooltip: 'Nākamā lapa',
+    LastPageTooltip: 'Pēdējā lapa',
+    Refresh: 'Atjaunot',
+    Of: 'no',
+    DisplayingRecords: 'Rādīt ierakstus',
+    RowsPerPage: 'Ieraksti vienā lappusē:',
+    Edit: 'Rediģēt',
+    Delete: 'Dzēst',
+    Update: 'Atjaunot',
+    Cancel: 'Atcelt',
+    NoRecordsFound: 'Nav neviena ieraksta.',
+    Loading: 'Notiek ielāde...'
+};

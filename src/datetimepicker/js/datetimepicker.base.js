@@ -271,12 +271,12 @@ gj.datetimepicker.methods = {
         this.type = 'datetimepicker';
         gj.widget.prototype.initJS.call(this, jsConfig);
         this.element.setAttribute('data-datetimepicker', 'true');
-        gj.datetimepicker.methods.initialize(this, gijgoStorage.get(this.element, this.type));
+        gj.datetimepicker.methods.initialize(this, this.getConfig());
         return this;
     },
 
-    readConfig: function (clientConfig, type) {
-        var config = gj.widget.prototype.getConfigJS.call(this, clientConfig, type);
+    buildConfig: function (clientConfig, type) {
+        var config = gj.widget.prototype.buildConfigJS.call(this, clientConfig, type);
 
         uiLibrary = clientConfig.hasOwnProperty('uiLibrary') ? clientConfig.uiLibrary : config.uiLibrary;
         if (gj.datepicker.config[uiLibrary]) {
@@ -448,7 +448,7 @@ gj.datetimepicker.methods = {
 
     value: function (picker, value) {
         var clock, date, hour,
-            data = gijgoStorage.get(picker.element, picker.type);
+            data = picker.getConfig();
         if (typeof value === "undefined") {
             return picker.element.value;
         } else {
@@ -580,7 +580,7 @@ GijgoDateTimePicker = function (element, jsConfig) {
 
 GijgoDateTimePicker.prototype = new gj.widget();
 GijgoDateTimePicker.constructor = GijgoDatePicker;
-GijgoDateTimePicker.prototype.getConfigJS = gj.datetimepicker.methods.readConfig;
+GijgoDateTimePicker.prototype.buildConfigJS = gj.datetimepicker.methods.buildConfig;
 
 if (typeof jQuery !== "undefined") {
     (function ($) {

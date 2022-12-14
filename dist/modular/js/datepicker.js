@@ -130,17 +130,17 @@ gj.datepicker.methods = {
     init: function (jsConfig) {
         this.type = 'datepicker';
         gj.widget.prototype.initJS.call(this, jsConfig);
-        this.element.setAttribute('data-datepicker', 'true');
-        gj.datepicker.methods.initialize(this, gijgoStorage.get(this.element, this.type));
+        this.element.setAttribute('data-gj-datepicker', 'true');
+        gj.datepicker.methods.initialize(this, this.getConfig());
         return this;
     },
 
     initialize: function (picker, data) {
         var wrapper, rightIcon, calendar;
 
-        if (picker.element.parentElement.attributes.role !== 'wrapper') {
+        if (picker.element.parentElement.attributes["data-gj-role"] !== 'wrapper') {
             wrapper = document.createElement('div');
-            wrapper.setAttribute('role', 'wrapper');
+            wrapper.setAttribute('data-gj-role', 'wrapper');
             picker.element.parentNode.insertBefore(wrapper, picker.element);
             wrapper.appendChild(picker.element);
         } else {
@@ -155,7 +155,7 @@ gj.datepicker.methods = {
 
         picker.element.value = data.value || '';
         gj.core.addClasses(picker.element, data.style.input);
-        wrapper.setAttribute('role', 'input');
+        wrapper.setAttribute('data-gj-role', 'input');
 
         if (data.fontSize) {
             picker.element.style.fontSize = data.fontSize;
@@ -193,9 +193,9 @@ gj.datepicker.methods = {
             } else {
                 rightIcon = gj.core.createElement(data.icons.rightIcon);
             }
-            rightIcon.setAttribute('role', 'right-icon');
+            rightIcon.setAttribute('data-gj-role', 'right-icon');
             rightIcon.addEventListener('click', function (e) {
-                var calendar = document.body.querySelector('[role="picker"][guid="' + picker.element.getAttribute('data-guid') + '"]');
+                var calendar = document.body.querySelector('[data-gj-role="picker"][guid="' + picker.element.getAttribute('data-gj-guid') + '"]');
                 if (window.getComputedStyle(calendar).display === 'none') {
                     gj.datepicker.methods.open(picker, data);
                 } else {
@@ -239,10 +239,10 @@ gj.datepicker.methods = {
         var date, body, footer, btnCancel, btnOk, calendar, wrapper;
 
         calendar = document.createElement('div');
-        calendar.setAttribute('role', 'picker');
+        calendar.setAttribute('data-gj-role', 'picker');
         calendar.setAttribute('type', 'month');
         gj.core.addClasses(calendar, data.style.calendar);
-        calendar.setAttribute('guid', picker.element.getAttribute('data-guid'));
+        calendar.setAttribute('guid', picker.element.getAttribute('data-gj-guid'));
         
         if (data.fontSize) {
             calendar.style.fontSize = data.fontSize;
@@ -261,12 +261,12 @@ gj.datepicker.methods = {
         gj.datepicker.methods.renderHeader(picker, calendar, data, date);
 
         body = document.createElement('div');
-        body.setAttribute('role', 'body');
+        body.setAttribute('data-gj-role', 'body');
         calendar.appendChild(body);
 
         if (data.footer) {
             footer = document.createElement('div');
-            footer.setAttribute('role', 'footer');
+            footer.setAttribute('data-gj-role', 'footer');
             gj.core.addClasses(footer, data.style.footer);
 
             btnCancel = gj.core.createElement('<button class="' + data.style.button + '">' + gj.core.messages[data.locale].cancel + '</button>');
@@ -294,7 +294,7 @@ gj.datepicker.methods = {
 
         if (data.modal) {
             wrapper = document.createElement('div');
-            wrapper.setAttribute('role', 'modal');
+            wrapper.setAttribute('data-gj-role', 'modal');
             gj.core.addClasses(wrapper, data.style.modal);
             calendar.parentNode.insertBefore(wrapper, calendar);
             wrapper.appendChild(calendar);
@@ -309,10 +309,10 @@ gj.datepicker.methods = {
 
         if (data.header) {
             header = document.createElement('div');
-            header.setAttribute('role', 'header');
+            header.setAttribute('data-gj-role', 'header');
 
             yearEl = document.createElement('div');
-            yearEl.setAttribute('role', 'year');
+            yearEl.setAttribute('data-gj-role', 'year');
 
             yearEl.addEventListener('click', function () {
                 gj.datepicker.methods.renderDecade(picker, calendar, data);
@@ -323,7 +323,7 @@ gj.datepicker.methods = {
             header.appendChild(yearEl);
 
             dateEl = document.createElement('div');
-            dateEl.setAttribute('role', 'date');
+            dateEl.setAttribute('data-gj-role', 'date');
             dateEl.classList.add('selected');
             dateEl.addEventListener('click', function () {
                 gj.datepicker.methods.renderMonth(picker, calendar, data);
@@ -338,27 +338,27 @@ gj.datepicker.methods = {
 
     updateHeader: function (calendar, data, date) {
         var yearEl, dateEl, hour, minute,
-            header = calendar.querySelector('[role="header"]');
+            header = calendar.querySelector('[data-gj-role="header"]');
 
         if (header) {
-            yearEl = header.querySelector('[role="year"]');
+            yearEl = header.querySelector('[data-gj-role="year"]');
             if (yearEl) {
                 yearEl.classList.remove('selected');
                 yearEl.innerHTML = gj.core.formatDate(date, 'yyyy', data.locale);
             }
 
-            dateEl = header.querySelector('[role="date"]');
+            dateEl = header.querySelector('[data-gj-role="date"]');
             dateEl.classList.add('selected');
             dateEl.innerHTML = gj.core.formatDate(date, 'ddd, mmm dd', data.locale);
 
             // update hours and minutes for datetimepickers
-            hour = header.querySelector('[role="hour"]');
+            hour = header.querySelector('[data-gj-role="hour"]');
             if (hour) {
                 hour.classList.remove('selected');
                 hour.innerHTML = gj.core.formatDate(date, 'HH', data.locale);
             }
 
-            minute = header.querySelector('[role="minute"]');
+            minute = header.querySelector('[data-gj-role="minute"]');
             if (minute) {
                 minute.classList.remove('selected');
                 minute.innerHTML = gj.core.formatDate(date, 'MM', data.locale);
@@ -370,7 +370,7 @@ gj.datepicker.methods = {
         var navigator, row, prevIcon, period, nextIcon, th, thead = document.createElement('thead');
 
         navigator = document.createElement('div');
-        navigator.setAttribute('role', 'navigator');
+        navigator.setAttribute('data-gj-role', 'navigator');
 
         prevIcon = document.createElement('div');
         prevIcon.innerHTML = data.icons.previousMonth;
@@ -378,7 +378,7 @@ gj.datepicker.methods = {
         navigator.appendChild(prevIcon);
 
         period = document.createElement('div');
-        period.setAttribute('role', 'period');
+        period.setAttribute('data-gj-role', 'period');
         period.addEventListener('click', gj.datepicker.methods.changePeriod(picker, data));
         navigator.appendChild(period);
 
@@ -390,7 +390,7 @@ gj.datepicker.methods = {
         body.append(navigator);
 
         row = document.createElement('tr');
-        row.setAttribute('role', 'week-days');
+        row.setAttribute('data-gj-role', 'week-days');
         
         if (data.calendarWeeks) {
             th = document.createElement('th');
@@ -422,7 +422,7 @@ gj.datepicker.methods = {
 
     renderMonth: function (picker, calendar, data) {
         var weekDay, selectedDay, day, month, year, total, daysInMonth, firstDayPosition, i, now, prevMonth, nextMonth, cell, dayEl, date,
-            body = calendar.querySelector('[role="body"]'),
+            body = calendar.querySelector('[data-gj-role="body"]'),
             table = document.createElement('table'),
             tbody = document.createElement('tbody'),
             period = gj.core.messages[data.locale].titleFormat;
@@ -435,7 +435,7 @@ gj.datepicker.methods = {
 
         calendar.setAttribute('type', 'month');
         period = period.replace('mmmm', gj.core.messages[data.locale].monthNames[month]).replace('yyyy', year);
-        calendar.querySelector('div[role="period"]').innerText = period;
+        calendar.querySelector('div[data-gj-role="period"]').innerText = period;
         daysInMonth = gj.datepicker.methods.getDaysInMonth(year);
         total = daysInMonth[month];
 
@@ -560,7 +560,7 @@ gj.datepicker.methods = {
 
     renderYear: function (picker, calendar, data) {
         var year, i, m, row, month,
-            table = calendar.querySelector('[role="body"] table'),
+            table = calendar.querySelector('[data-gj-role="body"] table'),
             tbody = table.querySelector('tbody');
         
         table.querySelector('thead').style.display = 'none';
@@ -568,7 +568,7 @@ gj.datepicker.methods = {
         year = parseInt(calendar.getAttribute('year'), 10);
 
         calendar.setAttribute('type', 'year');
-        calendar.querySelector('div[role="period"]').innerText = year;
+        calendar.querySelector('div[data-gj-role="period"]').innerText = year;
 
         tbody.innerHTML = '';
 
@@ -588,7 +588,7 @@ gj.datepicker.methods = {
 
     renderDecade: function (picker, calendar, data) {
         var year, decade, i, y, year,
-            table = calendar.querySelector('[role="body"] table'),
+            table = calendar.querySelector('[data-gj-role="body"] table'),
             tbody = table.querySelector('tbody');
         
         table.querySelector('thead').style.display = 'none';
@@ -597,7 +597,7 @@ gj.datepicker.methods = {
         decade = year - (year % 10);
 
         calendar.setAttribute('type', 'decade');
-        calendar.querySelector('div[role="period"]').innerText = decade + ' - ' + (decade + 9);
+        calendar.querySelector('div[data-gj-role="period"]').innerText = decade + ' - ' + (decade + 9);
 
         tbody.innerHTML = '';
 
@@ -617,7 +617,7 @@ gj.datepicker.methods = {
 
     renderCentury: function (picker, calendar, data) {
         var year, century, i, d, decade,
-            table = calendar.querySelector('[role="body"] table'),
+            table = calendar.querySelector('[data-gj-role="body"] table'),
             tbody = table.querySelector('tbody');
         
         table.querySelector('thead').style.display = 'none';
@@ -626,7 +626,7 @@ gj.datepicker.methods = {
         century = year - (year % 100);
 
         calendar.setAttribute('type', 'century');
-        calendar.querySelector('div[role="period"]').innerText = century + ' - ' + (century + 99);
+        calendar.querySelector('div[data-gj-role="period"]').innerText = century + ' - ' + (century + 99);
 
         tbody.innerHTML = '';
 
@@ -736,7 +736,7 @@ gj.datepicker.methods = {
     prev: function (picker, data) {
         return function () {
             var date, month, year, decade, century,
-                calendar = document.body.querySelector('[role="picker"][guid="' + picker.element.getAttribute('data-guid') + '"]');
+                calendar = document.body.querySelector('[data-gj-role="picker"][guid="' + picker.element.getAttribute('data-gj-guid') + '"]');
 
             year = parseInt(calendar.getAttribute('year'), 10);
             switch (calendar.getAttribute('type')) {
@@ -770,7 +770,7 @@ gj.datepicker.methods = {
     next: function (picker, data) {
         return function (e) {
             var date, month, year, decade, century,
-                calendar = document.body.querySelector('[role="picker"][guid="' + picker.element.getAttribute('data-guid') + '"]');
+                calendar = document.body.querySelector('[data-gj-role="picker"][guid="' + picker.element.getAttribute('data-gj-guid') + '"]');
 
             year = parseInt(calendar.getAttribute('year'), 10);
             switch (calendar.getAttribute('type')) {
@@ -803,7 +803,7 @@ gj.datepicker.methods = {
 
     changePeriod: function (picker, data) {
         return function (e) {
-            var calendar = document.body.querySelector('[role="picker"][guid="' + picker.element.getAttribute('data-guid') + '"]');
+            var calendar = document.body.querySelector('[data-gj-role="picker"][guid="' + picker.element.getAttribute('data-gj-guid') + '"]');
 
             switch (calendar.getAttribute('type')) {
                 case 'month':
@@ -886,7 +886,7 @@ gj.datepicker.methods = {
 
     open: function (picker, data) {
         var date,
-            calendar = document.body.querySelector('[role="picker"][guid="' + picker.element.getAttribute('data-guid') + '"]');
+            calendar = document.body.querySelector('[data-gj-role="picker"][guid="' + picker.element.getAttribute('data-gj-guid') + '"]');
 
         if (window.getComputedStyle(calendar).display === 'none') {
             if (picker.element.value) {
@@ -926,10 +926,10 @@ gj.datepicker.methods = {
     },
 
     close: function (picker) {
-        var calendar = document.body.querySelector('[role="picker"][guid="' + picker.element.getAttribute('data-guid') + '"]');
+        var calendar = document.body.querySelector('[data-gj-role="picker"][guid="' + picker.element.getAttribute('data-gj-guid') + '"]');
         if (window.getComputedStyle(calendar).display !== 'none') {
             calendar.style.display = 'none';
-            if (calendar.parentElement.getAttribute('role') === 'modal') {
+            if (calendar.parentElement.getAttribute('data-gj-role') === 'modal') {
                 calendar.parentElement.style.display = 'none';
             }
             gj.datepicker.events.close(picker.element);
@@ -1032,13 +1032,13 @@ gj.datepicker.methods = {
     },
 
     value: function (picker, value) {
-        var calendar, date, data = gijgoStorage.get(picker.element, this.type);
+        var calendar, date, data = picker.getConfig();
         if (typeof (value) === "undefined") {
             return picker.element.value;
         } else {
             date = gj.core.parseDate(value, data.format, data.locale);
             if (date && date.getTime()) {
-                calendar = document.body.querySelector('[role="picker"][guid="' + picker.element.getAttribute('data-guid') + '"]');
+                calendar = document.body.querySelector('[data-gj-role="picker"][guid="' + picker.element.getAttribute('data-gj-guid') + '"]');
                 gj.datepicker.methods.dayClickHandler(picker, calendar, data, date)();
             } else {
                 picker.element.value = '';
@@ -1048,21 +1048,21 @@ gj.datepicker.methods = {
     },
 
     destroy: function (picker) {
-        var data = gijgoStorage.get(picker.element, this.type),
+        var data = picker.getConfig(),
             parent = picker.element.parentElement,
-            calendar = document.body.querySelector('[role="picker"][guid="' + picker.element.getAttribute('data-guid') + '"]');
+            calendar = document.body.querySelector('[data-gj-role="picker"][guid="' + picker.element.getAttribute('data-gj-guid') + '"]');
         if (data) {
             //$datepicker.off();
-            if (picker.element.parentElement.getAttribute('role') === 'modal') {
+            if (picker.element.parentElement.getAttribute('data-gj-role') === 'modal') {
                 picker.element.outerHTML = picker.element.innerHTML;
             }
             //$picker.remove();
-            gijgoStorage.remove(picker.element, this.type);
-            picker.element.removeAttribute('data-type');
-            picker.element.removeAttribute('data-guid');
-            picker.element.removeAttribute('data-datepicker');
+            picker.removeConfig();
+            picker.element.removeAttribute('data-gj-type');
+            picker.element.removeAttribute('data-gj-guid');
+            picker.element.removeAttribute('data-gj-datepicker');
             picker.element.removeAttribute('class');
-            picker.element.removeChild(picker.element.querySelector('[role="right-icon"]'));
+            picker.element.removeChild(picker.element.querySelector('[data-gj-role="right-icon"]'));
         }
         return picker;
     }
@@ -1114,7 +1114,7 @@ GijgoDatePicker = function (element, jsConfig) {
         return methods.close(this);
     };
     
-    if ('true' !== element.getAttribute('data-datepicker')) {
+    if ('true' !== element.getAttribute('data-gj-datepicker')) {
         methods.init.call(self, jsConfig);
     }
 

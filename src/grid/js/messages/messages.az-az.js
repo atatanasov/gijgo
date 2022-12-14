@@ -1,0 +1,21 @@
+gj.grid.messages['az-az'] = {
+    First: 'İlk',
+    Previous: 'Öncəki',
+    Next: 'Sonrakı',
+    Last: 'Son',
+    Page: 'Səhifə',
+    FirstPageTooltip: 'İlk səhifə',
+    PreviousPageTooltip: 'Öncəki səhifə',
+    NextPageTooltip: 'Sonrakı səhifə',
+    LastPageTooltip: 'Son səhifə',
+    Refresh: 'Yenilə',
+    Of: 'üzərindən',
+    DisplayingRecords: 'Nəticələr',
+    RowsPerPage: 'Səhifədəki sətr sayı:',
+    Edit: 'Dəyişdir',
+    Delete: 'Sil',
+    Update: 'Redaktə et',
+    Cancel: 'İmtina',
+    NoRecordsFound: 'Nəticə yoxdur.',
+    Loading: 'Yüklənir...'
+};

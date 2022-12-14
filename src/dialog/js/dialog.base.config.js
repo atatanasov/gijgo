@@ -17,9 +17,9 @@ gj.dialog.config = {
          * @example True <!-- nojquery, dialog.base, draggable -->
          * <div id="dialog">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
          * <script>
-         *     new GijgoDialog(document.getElementById('dialog'), { autoOpen: true, draggable: false });
+         *     new GijgoDialog(document.getElementById('dialog'), { autoOpen: true });
          * </script>
-         * @example False <!-- dialog.base, bootstrap4 -->
+         * @example False <!-- dialog.base, draggable, bootstrap4 -->
          * <div id="dialog" style="display: none">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
          * <button onclick="dialog.open()" class="btn btn-default">Open Dialog</button>
          * <script>
@@ -344,7 +344,7 @@ gj.dialog.config = {
          *     Lorem ipsum dolor sit amet, consectetur adipiscing elit...
          * </div>
          * <script>
-         *     new GijgoDialog(document.getElementById('dialog'), );
+         *     new GijgoDialog(document.getElementById('dialog'));
          * </script>
          * @example Html.Config.2 <!-- draggable, dialog.base -->
          * <div id="dialog" width="400">
@@ -352,7 +352,7 @@ gj.dialog.config = {
          *     Lorem ipsum dolor sit amet, consectetur adipiscing elit...
          * </div>
          * <script>
-         *     new GijgoDialog(document.getElementById('dialog'), );
+         *     new GijgoDialog(document.getElementById('dialog'));
          * </script>
          */
         title: undefined,

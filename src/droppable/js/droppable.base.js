@@ -29,16 +29,16 @@ gj.droppable.config = {
 
 gj.droppable.methods = {
     init: function (jsConfig) {
-        var $dropEl = this;
+        this.type = 'droppable';
 
-        gj.widget.prototype.init.call(this, jsConfig, 'droppable');
-        $dropEl.attr('data-droppable', 'true');
+        gj.widget.prototype.init.call(this, jsConfig);
+        this.attr('data-droppable', 'true');
         
-        gj.documentManager.subscribeForEvent('mousedown', $dropEl.data('guid'), gj.droppable.methods.createMouseDownHandler($dropEl));
-        gj.documentManager.subscribeForEvent('mousemove', $dropEl.data('guid'), gj.droppable.methods.createMouseMoveHandler($dropEl));
-        gj.documentManager.subscribeForEvent('mouseup', $dropEl.data('guid'), gj.droppable.methods.createMouseUpHandler($dropEl));
+        gj.documentManager.subscribeForEvent('mousedown', this.data('guid'), gj.droppable.methods.createMouseDownHandler($dropEl));
+        gj.documentManager.subscribeForEvent('mousemove', this.data('guid'), gj.droppable.methods.createMouseMoveHandler($dropEl));
+        gj.documentManager.subscribeForEvent('mouseup', this.data('guid'), gj.droppable.methods.createMouseUpHandler($dropEl));
         
-        return $dropEl;
+        return this;
     },
 
     createMouseDownHandler: function ($dropEl) {
