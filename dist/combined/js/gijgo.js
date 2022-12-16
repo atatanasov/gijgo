@@ -464,6 +464,14 @@ gj.widget = function () {
         window.gijgoStorage.remove(this.element, this.type);
     };
 
+    self.getRecords = function() {
+        return window.gijgoStorage.get(this.element, 'records');
+    };
+
+    self.setRecords = function(records) {
+        window.gijgoStorage.put(this.element, 'records', records);
+    };
+
     self.generateGUID = function () {
         function s4() {
             return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
@@ -512,6 +520,26 @@ gj.widget = function () {
     self.extend = function () {
         return gj.core.extend.apply(null, arguments);
     };
+
+    self.wrap = function(tagName) {
+        let wrapper = this.element.parentNode.getAttribute('data-gj-role') === 'wrapper' ? this.element.parentNode : null;
+        if (!wrapper) {
+            wrapper = document.createElement(tagName);
+            this.element.parentNode.insertBefore(wrapper, this.element);
+            wrapper.appendChild(this.element);
+        }
+        gj.core.addClasses(wrapper, this.getConfig().style.wrapper);
+        wrapper.setAttribute('data-gj-role', 'wrapper');
+        return wrapper;
+    };
+
+    self.unwrap = function() {
+        let wrapper = this.element.parentNode.getAttribute('data-gj-role') === 'wrapper' ? this.element.parentNode : null;
+        if (wrapper) {
+            wrapper.parentNode.insertBefore(this.element, wrapper);
+            wrapper.remove();
+        }
+    };
 };
 
 gj.widget.prototype.init = function (jsConfig, type) {
@@ -521,7 +549,7 @@ gj.widget.prototype.init = function (jsConfig, type) {
     clientConfig = $.extend(true, {}, this.readHTMLConfig() || {});
     $.extend(true, clientConfig, jsConfig || {});
     fullConfig = this.readConfig(clientConfig, type);
-    this.element.setAttribute('data-guid', fullConfig.guid);
+    this.element.setAttribute('data-gj-guid', fullConfig.guid);
     this.data(fullConfig);
 
     // Initialize events configured as options
@@ -678,14 +706,17 @@ gj.widget.prototype.readHTMLConfigJS = function () {
     if (attrs['align']) {
         result.align = attrs['align'].value;
     }
-    if (result && result.source) {
-        result.dataSource = result.source;
-        delete result.source;
+    if (attrs['placeholder']) {
+        result.placeholder = attrs['placeholder'].value;
     }
     for (var dataEl in this.element.dataset) {
         if (dataEl.startsWith('gj')) {
             result[dataEl.charAt(2).toLowerCase() + dataEl.slice(3)] = this.element.dataset[dataEl];
         }
+    }
+    if (result && result.source) {
+        result.dataSource = result.source;
+        delete result.source;
     }
     return result;
 };
@@ -696,7 +727,7 @@ gj.widget.prototype.createDoneHandler = function () {
         if (typeof (response) === 'string' && JSON) {
             response = JSON.parse(response);
         }
-        gj[widget.data('type')].methods.render($widget, response);
+        gj[widget.type].methods.render(widget, response);
     };
 };
 
@@ -709,14 +740,14 @@ gj.widget.prototype.createErrorHandler = function () {
 };
 
 gj.widget.prototype.reload = function (params) {
-    var ajaxOptions, result, data = this.data(), type = this.data('type');
+    var ajaxOptions, result, data = this.getConfig();
     if (data.dataSource === undefined) {
-        gj[type].methods.useHtmlDataSource(this, data);
+        gj[this.type].methods.useHtmlDataSource(this, data);
     }
-    $.extend(data.params, params);
+    this.extend(data.params, params);
     if (Array.isArray(data.dataSource)) {
-        result = gj[type].methods.filter(this);
-        gj[type].methods.render(this, result);
+        result = gj[this.type].methods.filter(this);
+        gj[this.type].methods.render(this, result);
     } else if (typeof(data.dataSource) === 'string') {
         ajaxOptions = { url: data.dataSource, data: data.params };
         if (this.xhr) {
@@ -727,8 +758,8 @@ gj.widget.prototype.reload = function (params) {
         if (!data.dataSource.data) {
             data.dataSource.data = {};
         }
-        $.extend(data.dataSource.data, data.params);
-        ajaxOptions = $.extend(true, {}, data.dataSource); //clone dataSource object
+        this.extend(data.dataSource.data, data.params);
+        ajaxOptions = this.extend({}, data.dataSource); //clone dataSource object
         if (ajaxOptions.dataType === 'json' && typeof(ajaxOptions.data) === 'object') {
             ajaxOptions.data = JSON.stringify(ajaxOptions.data);
         }
@@ -918,7 +949,7 @@ gj.picker.widget.prototype.init = function (jsConfig, type, methods) {
 
 gj.picker.widget.prototype.open = function (type) {
     var data = gijgoStorage.get(this.element, this.type),
-        picker = document.body.querySelector('[role="picker"][guid="' + this.element.getAttribute('data-guid') + '"]');
+        picker = document.body.querySelector('[role="picker"][data-gj-guid="' + this.element.getAttribute('data-gj-guid') + '"]');
 
     picker.style.display = 'block';
     if (data.modal) {
@@ -937,7 +968,7 @@ gj.picker.widget.prototype.open = function (type) {
 
 gj.picker.widget.prototype.close = function (type) {
     var data = gijgoStorage.get(this.element, type),
-        picker = document.body.querySelector('[role="picker"][guid="' + this.element.getAttribute('data-guid') + '"]');
+        picker = document.body.querySelector('[role="picker"][data-gj-guid="' + this.element.getAttribute('data-gj-guid') + '"]');
     picker.style.display = 'none';
     if (data.modal) {
         picker.parentElement.style.display = 'none';
@@ -949,7 +980,7 @@ gj.picker.widget.prototype.close = function (type) {
 gj.picker.widget.prototype.destroy = function (type) {
     var data = gijgoStorage.get(this.element, type),
         parent = this.element.parentElement,
-        picker = document.body.querySelector('[role="picker"][guid="' + this.element.getAttribute('data-guid') + '"]'),
+        picker = document.body.querySelector('[role="picker"][data-gj-guid="' + this.element.getAttribute('data-gj-guid') + '"]'),
         rightIcon = this.element.parentElement.querySelector('[role="right-icon"]');
     if (data) {
         //this.off();
@@ -958,7 +989,7 @@ gj.picker.widget.prototype.destroy = function (type) {
         }
         gijgoStorage.remove(this.element, type);
         this.element.removeAttribute('data-type');
-        this.element.removeAttribute('data-guid');
+        this.element.removeAttribute('data-gj-guid');
         this.element.removeAttribute('data-datepicker');
         this.element.removeAttribute('class');
         if (rightIcon) {
@@ -2660,8 +2691,8 @@ gj.droppable.config = {
      * <div id="droppable" class="droppable">Drop Here</div>
      * <div id="draggable" class="draggable">Drag Me</div>
      * <script>
-     *     $('#draggable').draggable();
-     *     $('#droppable').droppable({ hoverClass: 'hover' });
+     *     new GijgoDraggable(document.getElementById('draggable'));
+     *     new GijgoDroppable(document.getElementById('droppable'), { hoverClass: 'hover' });
      * </script>
      */
     hoverClass: undefined
@@ -2671,80 +2702,81 @@ gj.droppable.methods = {
     init: function (jsConfig) {
         this.type = 'droppable';
 
-        gj.widget.prototype.init.call(this, jsConfig);
-        this.attr('data-droppable', 'true');
+        gj.widget.prototype.initJS.call(this, jsConfig);
+        this.element.setAttribute('data-gj-droppable', 'true');
         
-        gj.documentManager.subscribeForEvent('mousedown', this.data('guid'), gj.droppable.methods.createMouseDownHandler($dropEl));
-        gj.documentManager.subscribeForEvent('mousemove', this.data('guid'), gj.droppable.methods.createMouseMoveHandler($dropEl));
-        gj.documentManager.subscribeForEvent('mouseup', this.data('guid'), gj.droppable.methods.createMouseUpHandler($dropEl));
+        gj.documentManager.subscribeForEvent('mousedown', this.element.getAttribute('data-gj-guid'), gj.droppable.methods.createMouseDownHandler(this));
+        gj.documentManager.subscribeForEvent('mousemove', this.element.getAttribute('data-gj-guid'), gj.droppable.methods.createMouseMoveHandler(this));
+        gj.documentManager.subscribeForEvent('mouseup', this.element.getAttribute('data-gj-guid'), gj.droppable.methods.createMouseUpHandler(this));
         
         return this;
     },
 
-    createMouseDownHandler: function ($dropEl) {
+    createMouseDownHandler: function (dropEl) {
         return function (e) {
-            $dropEl.isDragging = true;
+            dropEl.isDragging = true;
         }
     },
 
-    createMouseMoveHandler: function ($dropEl) {
+    createMouseMoveHandler: function (droppable) {
         return function (e) {
-            if ($dropEl.isDragging) {
-                var hoverClass = $dropEl.data('hoverClass'),
+            if (droppable.isDragging) {
+                let hoverClass = droppable.getConfig().hoverClass,
                     mousePosition = {
-                        x: $dropEl.mouseX(e),
-                        y: $dropEl.mouseY(e)
+                        left: droppable.mouseX(e),
+                        top: droppable.mouseY(e)
                     },
-                    newIsOver = gj.droppable.methods.isOver($dropEl, mousePosition);
-                if (newIsOver != $dropEl.isOver) {
+                    newIsOver = gj.droppable.methods.isOver(droppable, mousePosition);
+                if (newIsOver != droppable.isOver) {
                     if (newIsOver) {
                         if (hoverClass) {
-                            $dropEl.addClass(hoverClass);
+                            droppable.element.classList.add(hoverClass);
                         }
-                        gj.droppable.events.over($dropEl, mousePosition);
+                        gj.droppable.events.over(droppable.element, mousePosition);
                     } else {
                         if (hoverClass) {
-                            $dropEl.removeClass(hoverClass);
+                            droppable.element.classList.remove(hoverClass);
                         }
-                        gj.droppable.events.out($dropEl);
+                        gj.droppable.events.out(droppable.element);
                     }
                 }
-                $dropEl.isOver = newIsOver;
+                droppable.isOver = newIsOver;
             }
         }
     },
 
-    createMouseUpHandler: function ($dropEl) {
+    createMouseUpHandler: function (droppable) {
         return function (e) {
-            var mousePosition = {
-                left: $dropEl.mouseX(e),
-                top: $dropEl.mouseY(e)
+            let mousePosition = {
+                left: droppable.mouseX(e),
+                top: droppable.mouseY(e)
             };
-            $dropEl.isDragging = false;
-            if (gj.droppable.methods.isOver($dropEl, mousePosition)) {
-                gj.droppable.events.drop($dropEl);
+            droppable.isDragging = false;
+            console.log(gj.droppable.methods.isOver(droppable, mousePosition));
+            if (gj.droppable.methods.isOver(droppable, mousePosition)) {
+                gj.droppable.events.drop(droppable.element);
             }
         }
     },
 
-    isOver: function ($dropEl, mousePosition) {
-        var offsetTop = $dropEl.offset().top,
-            offsetLeft = $dropEl.offset().left;
-        return mousePosition.x > offsetLeft && mousePosition.x < (offsetLeft + $dropEl.outerWidth(true))
-            && mousePosition.y > offsetTop && mousePosition.y < (offsetTop + $dropEl.outerHeight(true));
+    isOver: function (droppable, mousePosition) {
+        let offsetTop = droppable.element.offsetTop,
+            offsetLeft = droppable.element.offsetLeft;
+        return mousePosition.left > offsetLeft && mousePosition.left < (offsetLeft + gj.core.width(droppable.element))
+            && mousePosition.top > offsetTop && mousePosition.top < (offsetTop + gj.core.height(droppable.element));
     },
 
-    destroy: function ($dropEl) {
-        if ($dropEl.attr('data-droppable') === 'true') {
-            gj.documentManager.unsubscribeForEvent('mousedown', $dropEl.data('guid'));
-            gj.documentManager.unsubscribeForEvent('mousemove', $dropEl.data('guid'));
-            gj.documentManager.unsubscribeForEvent('mouseup', $dropEl.data('guid'));
-            $dropEl.removeData();
-            $dropEl.removeAttr('data-guid');
-            $dropEl.removeAttr('data-droppable');
-            $dropEl.off('drop').off('over').off('out');
+    destroy: function (droppable) {
+        let el = droppable.element;
+        if (el.getAttribute('data-gj-droppable') === 'true') {
+            gj.documentManager.unsubscribeForEvent('mousedown', el.getAttribute('data-gj-guid'));
+            gj.documentManager.unsubscribeForEvent('mousemove', el.getAttribute('data-gj-guid'));
+            gj.documentManager.unsubscribeForEvent('mouseup', el.getAttribute('data-gj-guid'));
+            droppable.removeConfig();
+            el.removeAttribute('data-gj-guid');
+            el.removeAttribute('data-gj-droppable');
         }
-        return $dropEl;
+        return droppable;
     }
 };
 
@@ -2761,12 +2793,16 @@ gj.droppable.events = {
      * <div id="droppable" class="droppable">Drop Here</div>
      * <div id="draggable" class="draggable">Drag Me</div>
      * <script>
-     *     $('#draggable').draggable();
-     *     $('#droppable').droppable({ drop: function() { $(this).addClass('drop') } });
+     *     new GijgoDraggable(document.getElementById('draggable'));
+     *     new GijgoDroppable(document.getElementById('droppable'), { 
+     *         drop: function() { 
+     *             this.classList.add('drop');
+     *         } 
+     *     });
      * </script>
      */
-    drop: function ($dropEl, offsetX, offsetY) {
-        $dropEl.trigger('drop', [{ top: offsetY, left: offsetX }]);
+    drop: function (el, offsetX, offsetY) {
+        return el.dispatchEvent(new CustomEvent('drop', { detail: { 'top': offsetY, 'left': offsetX } }));
     },
 
     /** Triggered when a draggable element is dragged over the droppable.
@@ -2782,19 +2818,19 @@ gj.droppable.events = {
      * <div id="droppable" class="droppable">Drop Here</div>
      * <div id="draggable" class="draggable">Drag Me</div>
      * <script>
-     *     $('#draggable').draggable();
-     *     $('#droppable').droppable({
+     *     new GijgoDraggable(document.getElementById('draggable'));
+     *     new GijgoDroppable(document.getElementById('droppable'), {
      *         over: function() { 
-     *             $(this).addClass('hover')
+     *             this.classList.add('hover')
      *         },
      *         out: function() {
-     *             $(this).removeClass('hover')
+     *             this.classList.remove('hover')
      *         }
      *     });
      * </script>
      */
-    over: function ($dropEl, mousePosition) {
-        $dropEl.trigger('over', [mousePosition]);
+    over: function (el, mousePosition) {
+        return el.dispatchEvent(new CustomEvent('over', { detail: { 'mousePosition': mousePosition } }));
     },
 
     /** Triggered when a draggable element is dragged out of the droppable.
@@ -2809,22 +2845,23 @@ gj.droppable.events = {
      * <div id="droppable" class="droppable">Drop Here</div>
      * <div id="draggable" class="draggable">Drag Me</div>
      * <script>
-     *     $('#draggable').draggable();
-     *     $('#droppable').droppable({
-     *         over: function() { $(this).addClass('hover') },
-     *         out: function() { $(this).removeClass('hover') }
+     *     new GijgoDraggable(document.getElementById('draggable'));
+     *     new GijgoDroppable(document.getElementById('droppable'), {
+     *         over: function() { this.classList.add('hover') },
+     *         out: function() { this.classList.remove('hover') }
      *     });
      * </script>
      */
-    out: function ($dropEl) {
-        $dropEl.trigger('out');
+    out: function (el) {
+        return el.dispatchEvent(new Event('out'));
     }
 };
 
-gj.droppable.widget = function ($element, jsConfig) {
-    var self = this,
+GijgoDroppable = function (element, jsConfig) {
+    let self = this,
         methods = gj.droppable.methods;
-
+    
+    self.element = element;
     self.isOver = false;
     self.isDragging = false;
 
@@ -2844,9 +2881,9 @@ gj.droppable.widget = function ($element, jsConfig) {
      * <div id="draggable" class="draggable">Drag Me</div>
      * <script>
      *     var dropEl;
-     *     $('#draggable').draggable();
+     *     new GijgoDraggable(document.getElementById('draggable'));
      *     function create() {
-     *         dropEl = $('#droppable').droppable({
+     *         dropEl = new GijgoDroppable(document.getElementById('droppable'), {
      *             hoverClass: 'hover'
      *         });
      *     }
@@ -2861,34 +2898,35 @@ gj.droppable.widget = function ($element, jsConfig) {
         return methods.isOver(this, mousePosition);
     }
 
-    $.extend($element, self);
-    if ('true' !== $element.attr('data-droppable')) {
-        methods.init.call($element, jsConfig);
+    if ('true' !== element.getAttribute('data-gj-droppable')) {
+        methods.init.call(self, jsConfig);
     }
 
-    return $element;
+    return self;
 };
 
-gj.droppable.widget.prototype = new gj.widget();
-gj.droppable.widget.constructor = gj.droppable.widget;
+GijgoDroppable.prototype = new gj.widget();
+GijgoDroppable.constructor = GijgoDroppable;
 
-(function ($) {
-    $.fn.droppable = function (method) {
-        var $widget;
-        if (this && this.length) {
-            if (typeof method === 'object' || !method) {
-                return new gj.droppable.widget(this, method);
-            } else {
-                $widget = new gj.droppable.widget(this, null);
-                if ($widget[method]) {
-                    return $widget[method].apply(this, Array.prototype.slice.call(arguments, 1));
+if (typeof (jQuery) !== "undefined") {
+    (function ($) {
+        $.fn.droppable = function (method) {
+            let $widget;
+            if (this && this.length) {
+                if (typeof method === 'object' || !method) {
+                    return new GijgoDroppable(this, method);
                 } else {
-                    throw 'Method ' + method + ' does not exist.';
+                    $widget = new GijgoDroppable(this, null);
+                    if ($widget[method]) {
+                        return $widget[method].apply(this, Array.prototype.slice.call(arguments, 1));
+                    } else {
+                        throw 'Method ' + method + ' does not exist.';
+                    }
                 }
             }
-        }
-    };
-})(jQuery);
+        };
+    })(jQuery);
+}
 /* global window alert jQuery gj */
 /**
   * @widget Grid
@@ -4434,7 +4472,8 @@ gj.grid.events = {
 gj.grid.methods = {
 
     init: function (jsConfig) {
-        gj.widget.prototype.init.call(this, jsConfig, 'grid');
+        this.type = 'grid';
+        gj.widget.prototype.init.call(this, jsConfig);
 
         gj.grid.methods.initialize(this);
 
@@ -12792,7 +12831,7 @@ gj.checkbox.config = {
         iconsLibrary: 'materialicons',
 
         style: {
-            wrapperCssClass: 'gj-checkbox-md',
+            wrapper: 'gj-checkbox-md',
             spanCssClass: undefined
         }
         
@@ -12800,21 +12839,21 @@ gj.checkbox.config = {
 
     bootstrap: {
         style: {
-            wrapperCssClass: 'gj-checkbox-bootstrap gj-checkbox-bootstrap-3'
+            wrapper: 'gj-checkbox-bootstrap gj-checkbox-bootstrap-3'
         },
         iconsLibrary: 'glyphicons'
     },
 
     bootstrap4: {
         style: {
-            wrapperCssClass: 'gj-checkbox-bootstrap gj-checkbox-bootstrap-4'
+            wrapper: 'gj-checkbox-bootstrap gj-checkbox-bootstrap-4'
         },
         iconsLibrary: 'materialicons'
     },
 
     bootstrap5: {
         style: {
-            wrapperCssClass: 'gj-checkbox-bootstrap gj-checkbox-bootstrap-4'
+            wrapper: 'gj-checkbox-bootstrap gj-checkbox-bootstrap-4'
         },
         iconsLibrary: 'materialicons'
     },
@@ -12853,7 +12892,7 @@ gj.checkbox.methods = {
     initialize: function (chkb, data) {
         var wrapper, span;
         wrapper = document.createElement('label');
-        gj.core.addClasses(wrapper, data.style.wrapperCssClass);
+        gj.core.addClasses(wrapper, data.style.wrapper);
         gj.core.addClasses(wrapper, data.style.iconsCssClass);
         if (chkb.element.getAttribute('id')) {
             wrapper.setAttribute('for', chkb.element.getAttribute('id'));
@@ -13350,7 +13389,7 @@ gj.editor.methods = {
             wrapper.querySelector('div[role="toolbar"]').remove();
             editor.element.outerHTML = editor.element.innerHTML;
             editor.removeConfig();
-            editor.element.removeAttribute('data-guid');
+            editor.element.removeAttribute('data-gj-guid');
             editor.element.removeAttribute('data-editor');
             //$editor.off();
             editor.element.display = 'block';
@@ -13511,14 +13550,14 @@ gj.dropdown.config = {
          * @example Local.DataSource <!-- dropdown -->
          * <select id="dropdown" width="200"></select>
          * <script>
-         *     $('#dropdown').dropdown({
+         *     new GijgoDropDown(document.getElementById('dropdown'), {
          *         dataSource: [ { value: 1, text: 'One' }, { value: 2, text: 'Two' }, { value: 3, text: 'Three' } ]
          *     });
          * </script>
-         * @example Remote.DataSource <!-- dropdown -->
+         * @example Remote.DataSource <!-- jquery, dropdown -->
          * <select id="dropdown" width="200"></select>
          * <script>
-         *     $('#dropdown').dropdown({
+         *     new GijgoDropDown(document.getElementById('dropdown'), {
          *         dataSource: '/Locations/Get',
          *         valueField: 'id'
          *     });
@@ -13532,7 +13571,7 @@ gj.dropdown.config = {
          * @example sample <!-- dropdown -->
          * <select id="dropdown" width="200"></select>
          * <script>
-         *     $('#dropdown').dropdown({
+         *     new GijgoDropDown(document.getElementById('dropdown'), {
          *         textField: 'newTextField',
          *         dataSource: [ { value: 1, newTextField: 'One' }, { value: 2, newTextField: 'Two' }, { value: 3, newTextField: 'Three' } ]
          *     });
@@ -13546,7 +13585,7 @@ gj.dropdown.config = {
          * @example sample <!-- dropdown -->
          * <select id="dropdown" width="200"></select>
          * <script>
-         *     $('#dropdown').dropdown({
+         *     new GijgoDropDown(document.getElementById('dropdown'), {
          *         valueField: 'newValueField',
          *         dataSource: [ { newValueField: 1, text: 'One' }, { newValueField: 2, text: 'Two' }, { newValueField: 3, text: 'Three' } ]
          *     });
@@ -13560,7 +13599,7 @@ gj.dropdown.config = {
          * @example sample <!-- dropdown -->
          * <select id="dropdown" width="200"></select>
          * <script>
-         *     $('#dropdown').dropdown({
+         *     new GijgoDropDown(document.getElementById('dropdown'), {
          *         selectedField: 'newSelectedField',
          *         dataSource: [ { value: 1, text: 'One' }, { value: 2, text: 'Two', newSelectedField: true }, { value: 3, text: 'Three' } ]
          *     });
@@ -13578,7 +13617,7 @@ gj.dropdown.config = {
          *     <option value="3">Three</option>
          * </select>
          * <script>
-         *     $('#dropdown').dropdown({ width: 200 });
+         *     new GijgoDropDown(document.getElementById('dropdown'), { width: 200 });
          * </script>
          * @example HTML.Config <!-- dropdown -->
          * <select id="dropdown" width="200">
@@ -13587,7 +13626,7 @@ gj.dropdown.config = {
          *     <option value="3">Three</option>
          * </select>
          * <script>
-         *     $('#dropdown').dropdown();
+         *     new GijgoDropDown(document.getElementById('dropdown'));
          * </script>
          * @example 100.Percent <!-- dropdown -->
          * <select id="dropdown" width="100%">
@@ -13597,7 +13636,7 @@ gj.dropdown.config = {
          *     <option value="3">Three</option>
          * </select>
          * <script>
-         *     $('#dropdown').dropdown();
+         *     new GijgoDropDown(document.getElementById('dropdown'));
          * </script>
          */
         width: undefined,
@@ -13605,21 +13644,21 @@ gj.dropdown.config = {
         /** The maximum height of the dropdown list. When set to auto adjust to the screen height.
          * @type Number|'auto'
          * @default 'auto'
-         * @example Auto <!-- dropdown -->
+         * @example Auto <!-- jquery, dropdown -->
          * <p>Note: Minimize the window in order to enable scrolling for the drop down list.</p>
          * <select id="dropdown" width="200"></select>
          * <script>
-         *     $('#dropdown').dropdown({ maxHeight: 'auto', dataSource: '/Locations/GetCountries', valueField: 'id' });
+         *     new GijgoDropDown(document.getElementById('dropdown'), { maxHeight: 'auto', dataSource: '/Locations/GetCountries', valueField: 'id' });
          * </script>
-         * @example Fixed <!-- dropdown -->
+         * @example Fixed <!-- jquery, dropdown -->
          * <select id="dropdown" width="200"></select>
          * <script>
-         *     $('#dropdown').dropdown({ maxHeight: 200, dataSource: '/Locations/GetCountries', valueField: 'id' });
+         *     new GijgoDropDown(document.getElementById('dropdown'), { maxHeight: 200, dataSource: '/Locations/GetCountries', valueField: 'id' });
          * </script>
-         * @example Bootstrap.4 <!-- bootstrap4, dropdown -->
+         * @example Bootstrap.4 <!-- jquery, bootstrap4, dropdown -->
          * <select id="dropdown" width="200"></select>
          * <script>
-         *     $('#dropdown').dropdown({ maxHeight: 200, dataSource: '/Locations/GetCountries', valueField: 'id', uiLibrary: 'bootstrap4' });
+         *     new GijgoDropDown(document.getElementById('dropdown'), { maxHeight: 200, dataSource: '/Locations/GetCountries', valueField: 'id', uiLibrary: 'bootstrap4' });
          * </script>
          */
         maxHeight: 'auto',
@@ -13627,28 +13666,25 @@ gj.dropdown.config = {
         /** Placeholder. This label appear only if the value is not set yet.
          * @type string
          * @default undefined
-         * @example JS.Config <!-- dropdown -->
+         * @example JS.Config <!-- jquery, dropdown -->
          * <select id="dropdown"></select>
          * <script>
-         *     $('#dropdown').dropdown({ placeholder: 'Select One...', width: 200, dataSource: '/Locations/GetCountries', valueField: 'id' });
+         *     new GijgoDropDown(document.getElementById('dropdown'), { placeholder: 'Select One...', width: 200, dataSource: '/Locations/GetCountries', valueField: 'id' });
          * </script>
-         * @example HTML.Config <!-- dropdown -->
-         * <input type="text" class="gj-textbox-md" placeholder="Select One..." style="width: 200px" /><br/>
-         * <select id="dropdown" placeholder="Select One..." width="200" data-source="/Locations/GetCountries" data-value-field="id"></select>
+         * @example HTML.Config <!-- jquery, dropdown -->
+         * <select id="dropdown" placeholder="Select One..." width="200" data-gj-source="/Locations/GetCountries" data-gj-value-field="id"></select>
          * <script>
-         *     $('#dropdown').dropdown();
+         *     new GijgoDropDown(document.getElementById('dropdown'));
          * </script>
-         * @example Bootstrap <!-- bootstrap, dropdown -->
-         * <input type="text" class="form-control" placeholder="Select One..." style="width: 200px" /><br/>
-         * <select id="dropdown" placeholder="Select One..." width="200" data-source="/Locations/GetCountries" data-value-field="id"></select>
+         * @example Bootstrap <!-- jquery, bootstrap, dropdown -->
+         * <select id="dropdown" placeholder="Select One..." width="200" data-gj-source="/Locations/GetCountries" data-gj-value-field="id"></select>
          * <script>
-         *     $('#dropdown').dropdown({ uiLibrary: 'bootstrap' });
+         *     new GijgoDropDown(document.getElementById('dropdown'), { uiLibrary: 'bootstrap' });
          * </script>
-         * @example Bootstrap.4 <!-- bootstrap4, dropdown -->
-         * <input type="text" class="form-control" placeholder="Select One..." style="width: 200px" /><br/>
-         * <select id="dropdown" placeholder="Select One..." width="200" data-source="/Locations/GetCountries" data-value-field="id"></select>
+         * @example Bootstrap.4 <!-- jquery, bootstrap4, dropdown -->
+         * <select id="dropdown" placeholder="Select One..." width="200" data-gj-source="/Locations/GetCountries" data-gj-value-field="id"></select>
          * <script>
-         *     $('#dropdown').dropdown({ uiLibrary: 'bootstrap4' });
+         *     new GijgoDropDown(document.getElementById('dropdown'), { uiLibrary: 'bootstrap4' });
          * </script>
          */
         placeholder: undefined,
@@ -13666,7 +13702,7 @@ gj.dropdown.config = {
          *     <option value="3">Three</option>
          * </select>
          * <script>
-         *     var dropdown = $('#dropdown').dropdown({
+         *     var dropdown = new GijgoDropDown(document.getElementById('dropdown'), {
          *         uiLibrary: 'materialdesign'
          *     });
          * </script>
@@ -13677,7 +13713,7 @@ gj.dropdown.config = {
          *     <option value="3">Three</option>
          * </select>
          * <script>
-         *     $('#dropdown').dropdown({ uiLibrary: 'bootstrap' });
+         *     new GijgoDropDown(document.getElementById('dropdown'), { uiLibrary: 'bootstrap' });
          * </script>
          * @example Bootstrap.4 <!-- bootstrap4, dropdown -->
          * <select id="dropdown" width="200">
@@ -13686,7 +13722,16 @@ gj.dropdown.config = {
          *     <option value="3">Three</option>
          * </select>
          * <script>
-         *     $('#dropdown').dropdown({ uiLibrary: 'bootstrap4', width: 300 });
+         *     new GijgoDropDown(document.getElementById('dropdown'), { uiLibrary: 'bootstrap4', width: 300 });
+         * </script>
+         * @example Bootstrap.5 <!-- bootstrap5, dropdown -->
+         * <select id="dropdown" width="200">
+         *     <option value="1">One</option>
+         *     <option value="2">Two</option>
+         *     <option value="3">Three</option>
+         * </select>
+         * <script>
+         *     new GijgoDropDown(document.getElementById('dropdown'), { uiLibrary: 'bootstrap5', width: 300 });
          * </script>
          */
         uiLibrary: 'materialdesign',
@@ -13697,20 +13742,20 @@ gj.dropdown.config = {
          * The css files for Material Icons, Font Awesome or Glyphicons should be manually included to the page where the grid is in use.
          * @type (materialicons|fontawesome|glyphicons)
          * @default 'materialicons'
-         * @example Bootstrap.Material.Icons <!-- bootstrap, dropdown -->
+         * @example Bootstrap.Material.Icons <!-- jquery, bootstrap, dropdown -->
          * <select id="dropdown" width="200"></select>
          * <script>
-         *     var dropdown = $('#dropdown').dropdown({
+         *     var dropdown = new GijgoDropDown(document.getElementById('dropdown'), {
          *         dataSource: '/Locations/Get',
          *         uiLibrary: 'bootstrap',
          *         iconsLibrary: 'materialicons',
          *         valueField: 'id'
          *     });
          * </script>
-         * @example Bootstrap.4.Font.Awesome <!-- bootstrap4, fontawesome, dropdown -->
+         * @example Bootstrap.4.Font.Awesome <!-- jquery, bootstrap4, fontawesome, dropdown -->
          * <select id="dropdown" width="200"></select>
          * <script>
-         *     var dropdown = $('#dropdown').dropdown({
+         *     var dropdown = new GijgoDropDown(document.getElementById('dropdown'), {
          *         dataSource: '/Locations/Get',
          *         uiLibrary: 'bootstrap4',
          *         iconsLibrary: 'fontawesome',
@@ -13725,27 +13770,29 @@ gj.dropdown.config = {
              * @alias icons.dropdown
              * @type String
              * @default '<i class="gj-icon arrow-dropdown" />'
-             * @example Custom.Material.Icon <!-- materialicons, dropdown -->
+             * @example Custom.Material.Icon <!-- jquery, materialicons, dropdown -->
              * <select id="dropdown"></select>
              * <script>
-             *     var dropdown = $('#dropdown').dropdown({
+             *     var dropdown = new GijgoDropDown(document.getElementById('dropdown'), {
              *         dataSource: '/Locations/Get',
              *         valueField: 'id',
              *         width: 200,
              *         icons: { 
+             *             dropup: '<i class="material-icons">keyboard_arrow_up</i>',
              *             dropdown: '<i class="material-icons">keyboard_arrow_down</i>'
              *         }
              *     });
              * </script>
-             * @example Custom.Glyphicon.Icon <!-- bootstrap, dropdown -->
+             * @example Custom.Glyphicon.Icon <!-- jquery, bootstrap, dropdown -->
              * <select id="dropdown"></select>
              * <script>
-             *     var dropdown = $('#dropdown').dropdown({
+             *     var dropdown = new GijgoDropDown(document.getElementById('dropdown'), {
              *         dataSource: '/Locations/Get',
              *         valueField: 'id',
              *         uiLibrary: 'bootstrap',
              *         width: 200,
              *         icons: { 
+             *             dropup: '<span class="glyphicon glyphicon-triangle-top" />',
              *             dropdown: '<span class="glyphicon glyphicon-triangle-bottom" />'
              *         }
              *     });
@@ -13775,6 +13822,16 @@ gj.dropdown.config = {
     },
 
     bootstrap4: {
+        style: {
+            wrapper: 'gj-dropdown gj-dropdown-bootstrap gj-dropdown-bootstrap-4 gj-unselectable',
+            presenter: 'btn btn-outline-secondary',
+            list: 'gj-list gj-list-bootstrap gj-dropdown-list-bootstrap list-group',
+            item: 'list-group-item',
+            active: 'active'
+        }
+    },
+
+    bootstrap5: {
         style: {
             wrapper: 'gj-dropdown gj-dropdown-bootstrap gj-dropdown-bootstrap-4 gj-unselectable',
             presenter: 'btn btn-outline-secondary',
@@ -13814,65 +13871,65 @@ gj.dropdown.config = {
 gj.dropdown.methods = {
     init: function (jsConfig) {
         this.type = 'dropdown';
-        gj.widget.prototype.init.call(this, jsConfig);
-        this.attr('data-dropdown', 'true');
+        gj.widget.prototype.initJS.call(this, jsConfig);
+        this.element.setAttribute('data-gj-dropdown', 'true');
         gj.dropdown.methods.initialize(this);
         return this;
     },
 
-    readHTMLConfig: function () {
-        var result = gj.widget.prototype.readHTMLConfig.call(this),
-            attrs = this[0].attributes;
-        if (attrs['placeholder']) {
-            result.placeholder = attrs['placeholder'].value;
-        }
-        return result;
-    },
-
-    initialize: function ($dropdown) {
-        var $item,
-            data = $dropdown.data(),
-            $wrapper = $dropdown.parent('div[role="wrapper"]'),
-            $display = $('<span role="display"></span>'),
-            $expander = $('<span role="expander">' + data.icons.dropdown + '</span>').addClass(data.style.expander),
-            $presenter = $('<button role="presenter" type="button"></button>').addClass(data.style.presenter),
-            $list = $('<ul role="list" class="' + data.style.list + '"></ul>').attr('guid', $dropdown.attr('data-guid'));
-
-        if ($wrapper.length === 0) {
-            $wrapper = $('<div role="wrapper" />').addClass(data.style.wrapper); // The css class needs to be added before the wrapping, otherwise doesn't work.
-            $dropdown.wrap($wrapper);
-        } else {
-            $wrapper.addClass(data.style.wrapper);
-        }
+    initialize: function (dropdown) {
+        let item,
+            el = dropdown.element;
+            data = dropdown.getConfig(),
+            wrapper = dropdown.wrap('div'),
+            display = document.createElement('span'),
+            expander = document.createElement('span'),
+            presenter = document.createElement('button'),
+            list = document.createElement('ul');
 
         if (data.fontSize) {
-            $presenter.css('font-size', data.fontSize);
+            presenter.style.fontSize = data.fontSize;
         }
 
-        $presenter.on('click', function (e) {
-            if ($list.is(':visible')) {
-                gj.dropdown.methods.close($dropdown, $list);
+        presenter.setAttribute('type', 'button');
+        presenter.setAttribute('data-gj-role', 'presenter');
+        gj.core.addClasses(presenter, data.style.presenter);
+        presenter.addEventListener('click', function (e) {
+            if (list.style.display !== 'none') {
+                gj.dropdown.methods.close(dropdown, list);
             } else {
-                gj.dropdown.methods.open($dropdown, $list);
+                gj.dropdown.methods.open(dropdown, list);
             }
         });
-        $presenter.on('blur', function (e) {
+        presenter.addEventListener('blur', function (e) {
             setTimeout(function () {
-                gj.dropdown.methods.close($dropdown, $list);
+                gj.dropdown.methods.close(dropdown, list);
             }, 500);
         });
-        $presenter.append($display).append($expander);
 
-        $dropdown.hide();
-        $dropdown.after($presenter);
-        $('body').append($list);
-        $list.hide();
+        display.setAttribute('data-gj-role', 'display');
+        presenter.appendChild(display);
 
-        $dropdown.reload();
+        expander.setAttribute('data-gj-role', 'expander');
+        expander.innerHTML = data.icons.dropdown;
+        gj.core.addClasses(expander, data.style.expander);
+        presenter.appendChild(expander);
+
+        dropdown.element.style.display = 'none';
+        
+        wrapper.appendChild(presenter); //dropdown.after($presenter);
+
+        list.setAttribute('data-gj-role', 'list');
+        gj.core.addClasses(list, data.style.list);
+        list.setAttribute('data-gj-guid', el.getAttribute('data-gj-guid'));
+        list.style.display = 'none';
+        document.body.appendChild(list);
+
+        dropdown.reload();
     },
 
     setListPosition: function (presenter, list, data) {
-        var top, listHeight, presenterHeight, newHeight, listElRect,
+        let top, listHeight, presenterHeight, newHeight, listElRect,
             mainElRect = presenter.getBoundingClientRect(),
             scrollY = window.scrollY || window.pageYOffset || 0,
             scrollX = window.scrollX || window.pageXOffset || 0;
@@ -13911,23 +13968,22 @@ gj.dropdown.methods = {
         }
     },
 
-    useHtmlDataSource: function ($dropdown, data) {
-        var dataSource = [], i, record,
-            $options = $dropdown.find('option');
-        for (i = 0; i < $options.length; i++) {
+    useHtmlDataSource: function (dropdown, data) {
+        let dataSource = [], i, record,
+            options = dropdown.element.getElementsByTagName('option');
+        for (i = 0; i < options.length; i++) {
             record = {};
-            record[data.valueField] = $options[i].value;
-            record[data.textField] = $options[i].innerHTML;
-            record[data.selectedField] = $dropdown[0].value === $options[i].value;
+            record[data.valueField] = options[i].value;
+            record[data.textField] = options[i].innerHTML;
+            record[data.selectedField] = dropdown.element[0].value === options[i].value;
             dataSource.push(record);
         }
         data.dataSource = dataSource;
     },
 
-    filter: function ($dropdown) {
-        var i, record, data = $dropdown.data();
-        if (!data.dataSource)
-        {
+    filter: function (dropdown) {
+        let i, record, data = dropdown.getConfig();
+        if (!data.dataSource) {
             data.dataSource = [];
         } else if (typeof data.dataSource[0] === 'string') {
             for (i = 0; i < data.dataSource.length; i++) {
@@ -13940,139 +13996,149 @@ gj.dropdown.methods = {
         return data.dataSource;
     },
 
-    render: function ($dropdown, response) {
-        var selections = [],
-            data = $dropdown.data(),
-            $parent = $dropdown.parent(),
-            $list = $('body').children('[role="list"][guid="' + $dropdown.attr('data-guid') + '"]'),
-            $presenter = $parent.children('[role="presenter"]'),
-            $expander = $presenter.children('[role="expander"]'),
-            $display = $presenter.children('[role="display"]');
+    createListItem: function (dropdown, list, value, text, css) {
+        let li = document.createElement('li'),
+            option = document.createElement('option');
+        li.setAttribute('value', value);
+        li.innerHTML = '<div data-gj-role="wrapper"><span data-gj-role="display">' + text + '</span></div>';
+        gj.core.addClasses(li, css);
+        li.addEventListener('click', function (e) {
+            gj.dropdown.methods.select(dropdown, value);
+        });
+        list.appendChild(li);
 
-        $dropdown.data('records', response);
-        $dropdown.empty();
-        $list.empty();
+        option.setAttribute('value', value);
+        option.text = text;
+        dropdown.element.appendChild(option);
+    },
+
+    render: function (dropdown, response) {
+        let i, option, width, selections = [],
+            data = dropdown.getConfig(),
+            parent = dropdown.element.parentNode,
+            list = document.body.querySelector('[data-gj-role="list"][data-gj-guid="' + dropdown.element.getAttribute('data-gj-guid') + '"]'),
+            presenter = parent.querySelector('[data-gj-role="presenter"]'),
+            expander = presenter.querySelector('[data-gj-role="expander"]'),
+            display = presenter.querySelector('[data-gj-role="display"]');
+
+        dropdown.setRecords(response);
+        dropdown.element.innerHTML = '';
+        list.innerHTML = '';
 
         if (response && response.length) {
-            $.each(response, function () {
-                var value = this[data.valueField],
-                    text = this[data.textField],
-                    selected = this[data.selectedField] && this[data.selectedField].toString().toLowerCase() === 'true',
-                    i, $item;
 
-                $item = $('<li value="' + value + '"><div data-role="wrapper"><span data-role="display">' + text + '</span></div></li>');
-                $item.addClass(data.style.item);
-                $item.on('click', function (e) {
-                    gj.dropdown.methods.select($dropdown, value);
-                });
-                $list.append($item);
-                
-                $dropdown.append('<option value="' + value + '">' + text + '</option>');
+            for (const record of response) {
+                gj.dropdown.methods.createListItem(dropdown, list, record[data.valueField], record[data.textField], data.style.item);
 
-                if (selected) {
-                    selections.push(value);
+                if (record[data.selectedField] && record[data.selectedField].toString().toLowerCase() === 'true') {
+                    selections.push(record[data.valueField]);
                 }
-            });
+            };
             if (selections.length === 0) {
-                $dropdown.prepend('<option value=""></option>');
-                $dropdown[0].selectedIndex = 0;
+                option = document.createElement('option');
+                option.setAttribute('value', '');
+                dropdown.element.insertBefore(option, dropdown.element.firstChild);
+                dropdown.element.selectedIndex = 0;
                 if (data.placeholder) {
-                    $display[0].innerHTML = '<span class="placeholder">' + data.placeholder + '</span>';
+                    display.innerHTML = '<span class="placeholder">' + data.placeholder + '</span>';
                 }
             } else {
                 for (i = 0; i < selections.length; i++) {
-                    gj.dropdown.methods.select($dropdown, selections[i]);
+                    gj.dropdown.methods.select(dropdown, selections[i]);
                 }
             }
         }
 
         if (data.width) {
-            $parent.css('width', data.width);
-            $presenter.css('width', data.width);
+            width = isNaN(data.width) ? data.width : data.width + 'px';
+            parent.style.width = width;
+            presenter.style.width = width;
         }
 
         if (data.fontSize) {
-            $list.children('li').css('font-size', data.fontSize);
+            list.style.fontSize = data.fontSize;
         }
 
-        gj.dropdown.events.dataBound($dropdown);
+        gj.dropdown.events.dataBound(dropdown.element);
 
-        return $dropdown;
+        return dropdown;
     },
 
-    open: function ($dropdown, $list) {
-        var data = $dropdown.data(),
-            $expander = $dropdown.parent().find('[role="expander"]'),
-            $presenter = $dropdown.parent().find('[role="presenter"]'),
-            scrollParentEl = gj.core.getScrollParent($dropdown[0]);
-        $list.css('width', gj.core.width($presenter[0]));
-        $list.show();
-        gj.dropdown.methods.setListPosition($presenter[0], $list[0], data);
-        $expander.html(data.icons.dropup);
+    open: function (dropdown, list) {
+        let data = dropdown.getConfig(),
+            expander = dropdown.element.parentNode.querySelector('[data-gj-role="expander"]'),
+            presenter = dropdown.element.parentNode.querySelector('[data-gj-role="presenter"]'),
+            scrollParentEl = gj.core.getScrollParent(dropdown.element);
+        list.style.width = gj.core.width(presenter) + 'px';
+        list.style.display = 'block';
+        gj.dropdown.methods.setListPosition(presenter, list, data);
+        expander.innerHTML = data.icons.dropup;
         if (scrollParentEl) {
             data.parentScrollHandler = function () {
-                gj.dropdown.methods.setListPosition($presenter[0], $list[0], data);
+                gj.dropdown.methods.setListPosition(presenter, list, data);
             };
             gj.dropdown.methods.addParentsScrollListener(scrollParentEl, data.parentScrollHandler);
         }
     },
 
-    close: function ($dropdown, $list) {
-        var data = $dropdown.data(),
-            $expander = $dropdown.parent().find('[role="expander"]'),
-            scrollParentEl = gj.core.getScrollParent($dropdown[0]);
-        $expander.html(data.icons.dropdown);
+    close: function (dropdown, list) {
+        let data = dropdown.getConfig(),
+            expander = dropdown.element.parentNode.querySelector('[data-gj-role="expander"]'),
+            scrollParentEl = gj.core.getScrollParent(dropdown.element);
+        expander.innerHTML = data.icons.dropdown;
         if (scrollParentEl && data.parentScrollHandler) {
             gj.dropdown.methods.removeParentsScrollListener(scrollParentEl, data.parentScrollHandler);
         }
-        $list.hide();
+        list.style.display = 'none';
     },
 
     addParentsScrollListener: function (el, handler) {
-        var scrollParentEl = gj.core.getScrollParent(el.parentNode);
+        let scrollParentEl = gj.core.getScrollParent(el.parentNode);
         el.addEventListener('scroll', handler);
         if (scrollParentEl) {
             gj.dropdown.methods.addParentsScrollListener(scrollParentEl, handler);
         }
     },
     removeParentsScrollListener: function (el, handler) {
-        var scrollParentEl = gj.core.getScrollParent(el.parentNode);
+        let scrollParentEl = gj.core.getScrollParent(el.parentNode);
         el.removeEventListener('scroll', handler);
         if (scrollParentEl) {
             gj.dropdown.methods.removeParentsScrollListener(scrollParentEl, handler);
         }
     },
 
-    select: function ($dropdown, value) {
-        var data = $dropdown.data(),
-            $list = $('body').children('[role="list"][guid="' + $dropdown.attr('data-guid') + '"]'),
-            $item = $list.children('li[value="' + value + '"]'),
-            $display = $dropdown.next('[role="presenter"]').find('[role="display"]'),
-            record = gj.dropdown.methods.getRecordByValue($dropdown, value);
+    select: function (dropdown, value) {
+        let data = dropdown.getConfig(),
+            list = document.body.querySelector('[data-gj-role="list"][data-gj-guid="' + dropdown.element.getAttribute('data-gj-guid') + '"]'),
+            item = list.querySelector('li[value="' + value + '"]'),
+            display = dropdown.element.parentNode.querySelector('[data-gj-role="presenter"] [data-gj-role="display"]'),
+            record = gj.dropdown.methods.getRecordByValue(dropdown, value);
 
-        $list.children('li').removeClass(data.style.active);
+        list.querySelectorAll('li').forEach(function(li) {
+            li.classList.remove(data.style.active);
+        });
         if (record) {
-            $item.addClass(data.style.active);
-            $dropdown[0].value = value;
-            $display[0].innerHTML = record[data.textField];
+            item.classList.add(data.style.active);
+            dropdown.element.value = value;
+            display.innerHTML = record[data.textField];
         } else {
             if (data.placeholder) {
-                $display[0].innerHTML = '<span class="placeholder">' + data.placeholder + '</span>';
+                display.innerHTML = '<span class="placeholder">' + data.placeholder + '</span>';
             }
-            $dropdown[0].value = '';
+            dropdown.element.value = '';
         }
-        gj.dropdown.events.change($dropdown);
-        gj.dropdown.methods.close($dropdown, $list);
-        return $dropdown;
+        gj.dropdown.events.change(dropdown.element);
+        gj.dropdown.methods.close(dropdown, list);
+        return dropdown;
     },
 
-    getRecordByValue: function ($dropdown, value) {
-        var data = $dropdown.data(),
+    getRecordByValue: function (dropdown, value) {
+        let records = dropdown.getRecords(),
             i, result = undefined;
 
-        for (i = 0; i < data.records.length; i++) {
-            if (data.records[i][data.valueField] === value) {
-                result = data.records[i];
+        for (i = 0; i < records.length; i++) {
+            if (records[i][data.valueField] === value) {
+                result = records[i];
                 break;
             }
         }
@@ -14080,32 +14146,35 @@ gj.dropdown.methods = {
         return result;
     },
 
-    value: function ($dropdown, value) {
+    value: function (dropdown, value) {
         if (typeof (value) === "undefined") {
-            return $dropdown.val();
+            return dropdown.element.value;
         } else {
-            gj.dropdown.methods.select($dropdown, value);
-            return $dropdown;
+            gj.dropdown.methods.select(dropdown, value);
+            return dropdown;
         }
     },
 
-    destroy: function ($dropdown) {
-        var data = $dropdown.data(),
-            $parent = $dropdown.parent('div[role="wrapper"]');
+    destroy: function (dropdown) {
+        let data = dropdown.getConfig(),
+            el = dropdown.element,
+            parent = dropdown.element.parentNode;
         if (data) {
-            $dropdown.xhr && $dropdown.xhr.abort();
-            $dropdown.off();
-            $dropdown.removeData();
-            $dropdown.removeAttr('data-type').removeAttr('data-guid').removeAttr('data-dropdown');
-            $dropdown.removeClass();
-            if ($parent.length > 0) {
-                $parent.children('[role="presenter"]').remove();
-                $parent.children('[role="list"]').remove();
-                $dropdown.unwrap();
+            dropdown.xhr && dropdown.xhr.abort();
+            //TODO: remove all event listeners - $dropdown.off();
+            dropdown.removeConfig();
+            el.removeAttribute('data-gj-type')
+            el.removeAttribute('data-gj-guid')
+            el.removeAttribute('data-gj-dropdown');
+            el.className = '';
+            if (parent) {
+                parent.querySelector('[data-gj-role="presenter"]').remove();
+                document.body.querySelector('[data-gj-role="list"]').remove();
             }
-            $dropdown.show();
+            dropdown.unwrap();
+            el.style.display = 'block';
         }
-        return $dropdown;
+        return dropdown;
     }
 };
 
@@ -14122,15 +14191,15 @@ gj.dropdown.events = {
      *     <option value="3">Three</option>
      * </select>
      * <script>
-     *     $('#dropdown').dropdown({
+     *     new GijgoDropDown(document.getElementById('dropdown'), {
      *         change: function (e) {
      *             alert('Change is fired');
      *         }
      *     });
      * </script>
      */
-    change: function ($dropdown) {
-        return $dropdown.triggerHandler('change');
+    change: function (el) {
+        return el.dispatchEvent(new Event('change'));
     },
 
     /**
@@ -14144,21 +14213,21 @@ gj.dropdown.events = {
      *     <option value="3">Three</option>
      * </select>
      * <script>
-     *     $('#dropdown').dropdown({
+     *     new GijgoDropDown(document.getElementById('dropdown'), {
      *         dataBound: function (e) {
      *             alert('dataBound is fired.');
      *         }
      *     });
      * </script>
      */
-    dataBound: function ($dropdown) {
-        return $dropdown.triggerHandler('dataBound');
+    dataBound: function (el) {
+        return el.dispatchEvent(new Event('dataBound'));;
     }
 };
 
 GijgoDropDown = function (element, jsConfig) {
-    var self = this,
-        methods = gj.datepicker.methods;
+    let self = this,
+        methods = gj.dropdown.methods;
 
     self.element = element;
 
@@ -14167,7 +14236,7 @@ GijgoDropDown = function (element, jsConfig) {
      * @param {string} value - The value that needs to be selected.
      * @return string
      * @example Get <!-- dropdown, materialicons -->
-     * <button class="gj-button-md" onclick="alert($dropdown.value())">Get Value</button>
+     * <button class="gj-button-md" onclick="alert(dropdown.value())">Get Value</button>
      * <hr/>
      * <select id="dropdown" width="200">
      *     <option value="1">One</option>
@@ -14175,10 +14244,10 @@ GijgoDropDown = function (element, jsConfig) {
      *     <option value="3">Three</option>
      * </select>
      * <script>
-     *     var $dropdown = $('#dropdown').dropdown();
+     *     var dropdown = new GijgoDropDown(document.getElementById('dropdown'));
      * </script>
      * @example Set <!-- dropdown, materialicons -->
-     * <button class="gj-button-md" onclick="$dropdown.value('3')">Set Value</button>
+     * <button class="gj-button-md" onclick="dropdown.value('3')">Set Value</button>
      * <hr/>
      * <select id="dropdown" width="200">
      *     <option value="1">One</option>
@@ -14186,7 +14255,7 @@ GijgoDropDown = function (element, jsConfig) {
      *     <option value="3">Three</option>
      * </select>
      * <script>
-     *     var $dropdown = $('#dropdown').dropdown();
+     *     var dropdown = new GijgoDropDown(document.getElementById('dropdown'));
      * </script>
      */
     self.value = function (value) {
@@ -14212,14 +14281,14 @@ GijgoDropDown = function (element, jsConfig) {
      *     <option value="3">Three</option>
      * </select>
      * <script>
-     *     var dropdown = $('#dropdown').dropdown();
+     *     var dropdown = new GijgoDropDown(document.getElementById('dropdown'));
      * </script>
      */
     self.destroy = function () {
         return methods.destroy(this);
     };
 
-    if ('true' !== element.attr('data-dropdown')) {
+    if ('true' !== element.getAttribute('data-gj-dropdown')) {
         methods.init.call(self, jsConfig);
     }
 
@@ -14227,10 +14296,7 @@ GijgoDropDown = function (element, jsConfig) {
 };
 
 GijgoDropDown.prototype = new gj.widget();
-GijgoDropDown.constructor = gj.dropdown.widget;
-
-GijgoDropDown.prototype.readHTMLConfig = gj.dropdown.methods.readHTMLConfig;
-
+GijgoDropDown.constructor = GijgoDropDown;
 
 if (typeof (jQuery) !== "undefined") {
     (function ($) {
@@ -14955,7 +15021,7 @@ gj.datepicker.config = {
         /** If set to true, add header to the datepicker.
          * @type Boolean
          * @default false
-         * @example True <!-- datepicker -->
+         * @example True <!-- picker, datepicker -->
          * <input id="datepicker" width="312" />
          * <script>
          *    new GijgoDatePicker(document.getElementById('datepicker'), { header: true, modal: true, footer: true });
@@ -15146,7 +15212,7 @@ gj.datepicker.methods = {
             }
             rightIcon.setAttribute('data-gj-role', 'right-icon');
             rightIcon.addEventListener('click', function (e) {
-                var calendar = document.body.querySelector('[data-gj-role="picker"][guid="' + picker.element.getAttribute('data-gj-guid') + '"]');
+                var calendar = document.body.querySelector('[data-gj-role="picker"][data-gj-guid="' + picker.element.getAttribute('data-gj-guid') + '"]');
                 if (window.getComputedStyle(calendar).display === 'none') {
                     gj.datepicker.methods.open(picker, data);
                 } else {
@@ -15193,7 +15259,7 @@ gj.datepicker.methods = {
         calendar.setAttribute('data-gj-role', 'picker');
         calendar.setAttribute('type', 'month');
         gj.core.addClasses(calendar, data.style.calendar);
-        calendar.setAttribute('guid', picker.element.getAttribute('data-gj-guid'));
+        calendar.setAttribute('data-gj-guid', picker.element.getAttribute('data-gj-guid'));
         
         if (data.fontSize) {
             calendar.style.fontSize = data.fontSize;
@@ -15687,7 +15753,7 @@ gj.datepicker.methods = {
     prev: function (picker, data) {
         return function () {
             var date, month, year, decade, century,
-                calendar = document.body.querySelector('[data-gj-role="picker"][guid="' + picker.element.getAttribute('data-gj-guid') + '"]');
+                calendar = document.body.querySelector('[data-gj-role="picker"][data-gj-guid="' + picker.element.getAttribute('data-gj-guid') + '"]');
 
             year = parseInt(calendar.getAttribute('year'), 10);
             switch (calendar.getAttribute('type')) {
@@ -15721,7 +15787,7 @@ gj.datepicker.methods = {
     next: function (picker, data) {
         return function (e) {
             var date, month, year, decade, century,
-                calendar = document.body.querySelector('[data-gj-role="picker"][guid="' + picker.element.getAttribute('data-gj-guid') + '"]');
+                calendar = document.body.querySelector('[data-gj-role="picker"][data-gj-guid="' + picker.element.getAttribute('data-gj-guid') + '"]');
 
             year = parseInt(calendar.getAttribute('year'), 10);
             switch (calendar.getAttribute('type')) {
@@ -15754,7 +15820,7 @@ gj.datepicker.methods = {
 
     changePeriod: function (picker, data) {
         return function (e) {
-            var calendar = document.body.querySelector('[data-gj-role="picker"][guid="' + picker.element.getAttribute('data-gj-guid') + '"]');
+            var calendar = document.body.querySelector('[data-gj-role="picker"][data-gj-guid="' + picker.element.getAttribute('data-gj-guid') + '"]');
 
             switch (calendar.getAttribute('type')) {
                 case 'month':
@@ -15837,7 +15903,7 @@ gj.datepicker.methods = {
 
     open: function (picker, data) {
         var date,
-            calendar = document.body.querySelector('[data-gj-role="picker"][guid="' + picker.element.getAttribute('data-gj-guid') + '"]');
+            calendar = document.body.querySelector('[data-gj-role="picker"][data-gj-guid="' + picker.element.getAttribute('data-gj-guid') + '"]');
 
         if (window.getComputedStyle(calendar).display === 'none') {
             if (picker.element.value) {
@@ -15877,7 +15943,7 @@ gj.datepicker.methods = {
     },
 
     close: function (picker) {
-        var calendar = document.body.querySelector('[data-gj-role="picker"][guid="' + picker.element.getAttribute('data-gj-guid') + '"]');
+        var calendar = document.body.querySelector('[data-gj-role="picker"][data-gj-guid="' + picker.element.getAttribute('data-gj-guid') + '"]');
         if (window.getComputedStyle(calendar).display !== 'none') {
             calendar.style.display = 'none';
             if (calendar.parentElement.getAttribute('data-gj-role') === 'modal') {
@@ -15989,7 +16055,7 @@ gj.datepicker.methods = {
         } else {
             date = gj.core.parseDate(value, data.format, data.locale);
             if (date && date.getTime()) {
-                calendar = document.body.querySelector('[data-gj-role="picker"][guid="' + picker.element.getAttribute('data-gj-guid') + '"]');
+                calendar = document.body.querySelector('[data-gj-role="picker"][data-gj-guid="' + picker.element.getAttribute('data-gj-guid') + '"]');
                 gj.datepicker.methods.dayClickHandler(picker, calendar, data, date)();
             } else {
                 picker.element.value = '';
@@ -15999,21 +16065,23 @@ gj.datepicker.methods = {
     },
 
     destroy: function (picker) {
-        var data = picker.getConfig(),
-            parent = picker.element.parentElement,
-            calendar = document.body.querySelector('[data-gj-role="picker"][guid="' + picker.element.getAttribute('data-gj-guid') + '"]');
+        var data = picker.getConfig(), calendar;
         if (data) {
-            //$datepicker.off();
-            if (picker.element.parentElement.getAttribute('data-gj-role') === 'modal') {
-                picker.element.outerHTML = picker.element.innerHTML;
-            }
-            //$picker.remove();
             picker.removeConfig();
+
+            calendar = document.body.querySelector('[data-gj-role="picker"][data-gj-guid="' + picker.element.getAttribute('data-gj-guid') + '"]');
+            if (calendar.parentElement.getAttribute('data-gj-role') === 'modal') {
+                calendar.parentElement.outerHTML = calendar.parentElement.innerHTML;
+            }
+            calendar = document.body.querySelector('[data-gj-role="picker"][data-gj-guid="' + picker.element.getAttribute('data-gj-guid') + '"]');
+            calendar.remove();
+
+            picker.element.parentElement.removeChild(picker.element.parentElement.querySelector('[data-gj-role="right-icon"]'));
             picker.element.removeAttribute('data-gj-type');
             picker.element.removeAttribute('data-gj-guid');
             picker.element.removeAttribute('data-gj-datepicker');
             picker.element.removeAttribute('class');
-            picker.element.removeChild(picker.element.querySelector('[data-gj-role="right-icon"]'));
+            picker.element.parentElement.outerHTML = picker.element.parentElement.innerHTML;
         }
         return picker;
     }
@@ -16141,7 +16209,7 @@ GijgoDatePicker = function (element, jsConfig) {
      * <button class="gj-button-md" onclick="datepicker.destroy()">Destroy</button>
      * <input id="datepicker" width="312" />
      * <script>
-     *     var datepicker = new GijgoDatePicker(document.getElementById('datepicker'));
+     *     var datepicker = new GijgoDatePicker(document.getElementById('datepicker'), { modal: true });
      * </script>
      */
     self.destroy = function () {
@@ -16517,7 +16585,7 @@ gj.timepicker.methods = {
     },
 
     initMouse: function (input, popup, data) {
-        var body = popup.querySelector('[role="body"]');
+        var body = popup.querySelector('[data-gj-role="body"]');
         body.addEventListener('mousedown', gj.timepicker.methods.mouseDownHandler(popup));
         body.addEventListener('mousemove', gj.timepicker.methods.mouseMoveHandler(input, popup, data));
         body.addEventListener('mouseup', gj.timepicker.methods.mouseUpHandler(input, popup, data));
@@ -16539,7 +16607,7 @@ gj.timepicker.methods = {
 
         gj.core.addClasses(clock, data.style.clock);
         clock.setAttribute('role', 'picker');
-        clock.setAttribute('guid', picker.element.getAttribute('data-guid'));
+        clock.setAttribute('data-gj-guid', picker.element.getAttribute('data-gj-guid'));
 
         hour.setAttribute('role', 'hour');
         minute.setAttribute('role', 'minute');
@@ -16584,7 +16652,7 @@ gj.timepicker.methods = {
                     var hour = gj.timepicker.methods.getHour(clock);
                     clock.setAttribute('mode', 'am');
                     this.classList.add('selected');
-                    this.parentElement.querySelector('[role="pm"]').classList.remove('selected');
+                    this.parentElement.querySelector('[data-gj-role="pm"]').classList.remove('selected');
                     if (hour >= 12) {
                         clock.setAttribute('hour', hour - 12);
                     }
@@ -16603,7 +16671,7 @@ gj.timepicker.methods = {
                     var hour = gj.timepicker.methods.getHour(clock);
                     clock.setAttribute('mode', 'pm');
                     this.classList.add('selected');
-                    this.parentElement.querySelector('[role="am"]').classList.remove('selected');
+                    this.parentElement.querySelector('[data-gj-role="am"]').classList.remove('selected');
                     if (hour < 12) {
                         clock.setAttribute('hour', hour + 12);
                     }
@@ -16730,7 +16798,7 @@ gj.timepicker.methods = {
         hour = gj.timepicker.methods.getHour(clock);
         minute = gj.timepicker.methods.getMinute(clock);
         mode = gj.timepicker.methods.getMode(clock);
-        arrow = clock.querySelector('[role="arrow"]');
+        arrow = clock.querySelector('[data-gj-role="arrow"]');
         type = clock.getAttribute('type');
         if (type === 'hours' && (hour == 0 || hour > 12) && data.mode === '24hr') {
             arrow.style.width = 'calc(50% - 52px)';
@@ -16747,7 +16815,7 @@ gj.timepicker.methods = {
 
         // update the numbers
         visualHour = (data.mode === 'ampm' && hour > 12 ? hour - 12 : (hour == 0 ? 12 : hour));
-        numbers = clock.querySelectorAll('[role="body"] span');
+        numbers = clock.querySelectorAll('[data-gj-role="body"] span');
         for (i = 0; i < numbers.length; i++) {
             number = parseInt(numbers[i].innerText, 10);
             if (type === 'hours' && number === visualHour) {
@@ -16761,16 +16829,16 @@ gj.timepicker.methods = {
 
         // update the header
         if (data.header) {
-            header = clock.querySelector('[role="header"]');
-            header.querySelector('[role="hour"]').innerText = visualHour;
-            header.querySelector('[role="minute"]').innerText = gj.core.pad(minute);
+            header = clock.querySelector('[data-gj-role="header"]');
+            header.querySelector('[data-gj-role="hour"]').innerText = visualHour;
+            header.querySelector('[data-gj-role="minute"]').innerText = gj.core.pad(minute);
             if (data.mode === 'ampm') {
                 if (mode == "pm") {
-                    header.querySelector('[role="pm"]').classList.add('selected');
-                    header.querySelector('[role="am"]').classList.remove('selected');
+                    header.querySelector('[data-gj-role="pm"]').classList.add('selected');
+                    header.querySelector('[data-gj-role="am"]').classList.remove('selected');
                 } else {
-                    header.querySelector('[role="am"]').classList.add('selected');
-                    header.querySelector('[role="pm"]').classList.remove('selected');
+                    header.querySelector('[data-gj-role="am"]').classList.add('selected');
+                    header.querySelector('[data-gj-role="pm"]').classList.remove('selected');
                 }
             }
         }
@@ -16816,49 +16884,49 @@ gj.timepicker.methods = {
     },
 
     renderHours: function (picker, clock, data) {
-        var dial, arrow, body = clock.querySelector('[role="body"]');
+        var dial, arrow, body = clock.querySelector('[data-gj-role="body"]');
 
         clearTimeout(picker.timeout);
         body.innerHTML = '';
         dial = document.createElement('div');
-        dial.setAttribute('role', 'dial');
+        dial.setAttribute('data-gj-role', 'dial');
 
-        arrow = gj.core.createElement('<div role="arrow" style="display: none; transform: rotate(-90deg);" />');
+        arrow = gj.core.createElement('<div data-gj-role="arrow" style="display: none; transform: rotate(-90deg);" />');
         arrow.appendChild(gj.core.createElement('<div class="arrow-begin"></div>'));
         arrow.appendChild(gj.core.createElement('<div class="arrow-end"></div>'));
         dial.appendChild(arrow);
 
-        dial.appendChild(gj.core.createElement('<span role="hour" style="transform: translate(54px, -93.5307px)">1</span>'));
-        dial.appendChild(gj.core.createElement('<span role="hour" style="transform: translate(93.5307px, -54px)">2</span>'));
-        dial.appendChild(gj.core.createElement('<span role="hour" style="transform: translate(108px, 0px)">3</span>'));
-        dial.appendChild(gj.core.createElement('<span role="hour" style="transform: translate(93.5307px, 54px)">4</span>'));
-        dial.appendChild(gj.core.createElement('<span role="hour" style="transform: translate(54px, 93.5307px)">5</span>'));
-        dial.appendChild(gj.core.createElement('<span role="hour" style="transform: translate(6.61309e-15px, 108px)">6</span>'));
-        dial.appendChild(gj.core.createElement('<span role="hour" style="transform: translate(-54px, 93.5307px)">7</span>'));
-        dial.appendChild(gj.core.createElement('<span role="hour" style="transform: translate(-93.5307px, 54px)">8</span>'));
-        dial.appendChild(gj.core.createElement('<span role="hour" style="transform: translate(-108px, 1.32262e-14px)">9</span>'));
-        dial.appendChild(gj.core.createElement('<span role="hour" style="transform: translate(-93.5307px, -54px)">10</span>'));
-        dial.appendChild(gj.core.createElement('<span role="hour" style="transform: translate(-54px, -93.5307px)">11</span>'));
-        dial.appendChild(gj.core.createElement('<span role="hour" style="transform: translate(-1.98393e-14px, -108px)">12</span>'));
+        dial.appendChild(gj.core.createElement('<span data-gj-role="hour" style="transform: translate(54px, -93.5307px)">1</span>'));
+        dial.appendChild(gj.core.createElement('<span data-gj-role="hour" style="transform: translate(93.5307px, -54px)">2</span>'));
+        dial.appendChild(gj.core.createElement('<span data-gj-role="hour" style="transform: translate(108px, 0px)">3</span>'));
+        dial.appendChild(gj.core.createElement('<span data-gj-role="hour" style="transform: translate(93.5307px, 54px)">4</span>'));
+        dial.appendChild(gj.core.createElement('<span data-gj-role="hour" style="transform: translate(54px, 93.5307px)">5</span>'));
+        dial.appendChild(gj.core.createElement('<span data-gj-role="hour" style="transform: translate(6.61309e-15px, 108px)">6</span>'));
+        dial.appendChild(gj.core.createElement('<span data-gj-role="hour" style="transform: translate(-54px, 93.5307px)">7</span>'));
+        dial.appendChild(gj.core.createElement('<span data-gj-role="hour" style="transform: translate(-93.5307px, 54px)">8</span>'));
+        dial.appendChild(gj.core.createElement('<span data-gj-role="hour" style="transform: translate(-108px, 1.32262e-14px)">9</span>'));
+        dial.appendChild(gj.core.createElement('<span data-gj-role="hour" style="transform: translate(-93.5307px, -54px)">10</span>'));
+        dial.appendChild(gj.core.createElement('<span data-gj-role="hour" style="transform: translate(-54px, -93.5307px)">11</span>'));
+        dial.appendChild(gj.core.createElement('<span data-gj-role="hour" style="transform: translate(-1.98393e-14px, -108px)">12</span>'));
         if (data.mode === '24hr') {
-            dial.appendChild(gj.core.createElement('<span role="hour" style="transform: translate(38px, -65.8179px)">13</span>'));
-            dial.appendChild(gj.core.createElement('<span role="hour" style="transform: translate(65.8179px, -38px)">14</span>'));
-            dial.appendChild(gj.core.createElement('<span role="hour" style="transform: translate(76px, 0px)">15</span>'));
-            dial.appendChild(gj.core.createElement('<span role="hour" style="transform: translate(65.8179px, 38px)">16</span>'));
-            dial.appendChild(gj.core.createElement('<span role="hour" style="transform: translate(38px, 65.8179px)">17</span>'));
-            dial.appendChild(gj.core.createElement('<span role="hour" style="transform: translate(4.65366e-15px, 76px)">18</span>'));
-            dial.appendChild(gj.core.createElement('<span role="hour" style="transform: translate(-38px, 65.8179px)">19</span>'));
-            dial.appendChild(gj.core.createElement('<span role="hour" style="transform: translate(-65.8179px, 38px)">20</span>'));
-            dial.appendChild(gj.core.createElement('<span role="hour" style="transform: translate(-76px, 9.30732e-15px)">21</span>'));
-            dial.appendChild(gj.core.createElement('<span role="hour" style="transform: translate(-65.8179px, -38px)">22</span>'));
-            dial.appendChild(gj.core.createElement('<span role="hour" style="transform: translate(-38px, -65.8179px)">23</span>'));
-            dial.appendChild(gj.core.createElement('<span role="hour" style="transform: translate(-1.3961e-14px, -76px)">00</span>'));
+            dial.appendChild(gj.core.createElement('<span data-gj-role="hour" style="transform: translate(38px, -65.8179px)">13</span>'));
+            dial.appendChild(gj.core.createElement('<span data-gj-role="hour" style="transform: translate(65.8179px, -38px)">14</span>'));
+            dial.appendChild(gj.core.createElement('<span data-gj-role="hour" style="transform: translate(76px, 0px)">15</span>'));
+            dial.appendChild(gj.core.createElement('<span data-gj-role="hour" style="transform: translate(65.8179px, 38px)">16</span>'));
+            dial.appendChild(gj.core.createElement('<span data-gj-role="hour" style="transform: translate(38px, 65.8179px)">17</span>'));
+            dial.appendChild(gj.core.createElement('<span data-gj-role="hour" style="transform: translate(4.65366e-15px, 76px)">18</span>'));
+            dial.appendChild(gj.core.createElement('<span data-gj-role="hour" style="transform: translate(-38px, 65.8179px)">19</span>'));
+            dial.appendChild(gj.core.createElement('<span data-gj-role="hour" style="transform: translate(-65.8179px, 38px)">20</span>'));
+            dial.appendChild(gj.core.createElement('<span data-gj-role="hour" style="transform: translate(-76px, 9.30732e-15px)">21</span>'));
+            dial.appendChild(gj.core.createElement('<span data-gj-role="hour" style="transform: translate(-65.8179px, -38px)">22</span>'));
+            dial.appendChild(gj.core.createElement('<span data-gj-role="hour" style="transform: translate(-38px, -65.8179px)">23</span>'));
+            dial.appendChild(gj.core.createElement('<span data-gj-role="hour" style="transform: translate(-1.3961e-14px, -76px)">00</span>'));
         }
         body.appendChild(dial);
 
         if (data.header) {
-            clock.querySelector('[role="header"] [role="hour"]').classList.add('selected');
-            clock.querySelector('[role="header"] [role="minute"]').classList.remove('selected');
+            clock.querySelector('[data-gj-role="header"] [data-gj-role="hour"]').classList.add('selected');
+            clock.querySelector('[data-gj-role="header"] [data-gj-role="minute"]').classList.remove('selected');
         }
 
         clock.setAttribute('type', 'hours');
@@ -16867,38 +16935,38 @@ gj.timepicker.methods = {
     },
 
     renderMinutes: function (picker, clock, data) {
-        var arrow, body = clock.querySelector('[role="body"]');
+        var arrow, body = clock.querySelector('[data-gj-role="body"]');
 
         clearTimeout(picker.timeout);
         body.innerHTML = '';
         dial = document.createElement('div');
-        dial.setAttribute('role', 'dial');
+        dial.setAttribute('data-gj-role', 'dial');
 
         arrow = document.createElement('div');
-        arrow.setAttribute('role', 'arrow');
+        arrow.setAttribute('data-gj-role', 'arrow');
         arrow.style.display = 'none';
         arrow.style.transform = 'rotate(-90deg)';
         arrow.appendChild(gj.core.createElement('<div class="arrow-begin"></div>'));
         arrow.appendChild(gj.core.createElement('<div class="arrow-end"></div>'));
         dial.appendChild(arrow);
 
-        dial.appendChild(gj.core.createElement('<span role="hour" style="transform: translate(54px, -93.5307px)">5</span>'));
-        dial.appendChild(gj.core.createElement('<span role="hour" style="transform: translate(93.5307px, -54px)">10</span>'));
-        dial.appendChild(gj.core.createElement('<span role="hour" style="transform: translate(108px, 0px)">15</span>'));
-        dial.appendChild(gj.core.createElement('<span role="hour" style="transform: translate(93.5307px, 54px)">20</span>'));
-        dial.appendChild(gj.core.createElement('<span role="hour" style="transform: translate(54px, 93.5307px)">25</span>'));
-        dial.appendChild(gj.core.createElement('<span role="hour" style="transform: translate(6.61309e-15px, 108px)">30</span>'));
-        dial.appendChild(gj.core.createElement('<span role="hour" style="transform: translate(-54px, 93.5307px)">35</span>'));
-        dial.appendChild(gj.core.createElement('<span role="hour" style="transform: translate(-93.5307px, 54px)">40</span>'));
-        dial.appendChild(gj.core.createElement('<span role="hour" style="transform: translate(-108px, 1.32262e-14px)">45</span>'));
-        dial.appendChild(gj.core.createElement('<span role="hour" style="transform: translate(-93.5307px, -54px)">50</span>'));
-        dial.appendChild(gj.core.createElement('<span role="hour" style="transform: translate(-54px, -93.5307px)">55</span>'));
-        dial.appendChild(gj.core.createElement('<span role="hour" style="transform: translate(-1.98393e-14px, -108px)">00</span>'));
+        dial.appendChild(gj.core.createElement('<span data-gj-role="hour" style="transform: translate(54px, -93.5307px)">5</span>'));
+        dial.appendChild(gj.core.createElement('<span data-gj-role="hour" style="transform: translate(93.5307px, -54px)">10</span>'));
+        dial.appendChild(gj.core.createElement('<span data-gj-role="hour" style="transform: translate(108px, 0px)">15</span>'));
+        dial.appendChild(gj.core.createElement('<span data-gj-role="hour" style="transform: translate(93.5307px, 54px)">20</span>'));
+        dial.appendChild(gj.core.createElement('<span data-gj-role="hour" style="transform: translate(54px, 93.5307px)">25</span>'));
+        dial.appendChild(gj.core.createElement('<span data-gj-role="hour" style="transform: translate(6.61309e-15px, 108px)">30</span>'));
+        dial.appendChild(gj.core.createElement('<span data-gj-role="hour" style="transform: translate(-54px, 93.5307px)">35</span>'));
+        dial.appendChild(gj.core.createElement('<span data-gj-role="hour" style="transform: translate(-93.5307px, 54px)">40</span>'));
+        dial.appendChild(gj.core.createElement('<span data-gj-role="hour" style="transform: translate(-108px, 1.32262e-14px)">45</span>'));
+        dial.appendChild(gj.core.createElement('<span data-gj-role="hour" style="transform: translate(-93.5307px, -54px)">50</span>'));
+        dial.appendChild(gj.core.createElement('<span data-gj-role="hour" style="transform: translate(-54px, -93.5307px)">55</span>'));
+        dial.appendChild(gj.core.createElement('<span data-gj-role="hour" style="transform: translate(-1.98393e-14px, -108px)">00</span>'));
         body.appendChild(dial);
 
         if (data.header) {
-            clock.querySelector('[role="header"] [role="hour"]').classList.remove('selected');
-            clock.querySelector('[role="header"] [role="minute"]').classList.add('selected');
+            clock.querySelector('[data-gj-role="header"] [data-gj-role="hour"]').classList.remove('selected');
+            clock.querySelector('[data-gj-role="header"] [data-gj-role="minute"]').classList.add('selected');
         }
         
         clock.setAttribute('type', 'minutes');
@@ -16918,7 +16986,7 @@ gj.timepicker.methods = {
 
     open: function (picker) {
         var time, data = picker.getConfig(),
-            clock = document.body.querySelector('[role="picker"][guid="' + picker.element.getAttribute('data-guid') + '"]');
+            clock = document.body.querySelector('[data-gj-role="picker"][data-gj-guid="' + picker.element.getAttribute('data-gj-guid') + '"]');
 
         if (picker.value()) {
             time = gj.core.parseDate(picker.value(), data.format, data.locale);
@@ -17160,7 +17228,7 @@ gj.datetimepicker.config = {
          * <input id="picker" width="312" />
          * <script>
          *    new GijgoDateTimePicker(document.getElementById('picker'), {
-         *        datepicker: { showOtherMonths: true, calendarWeeks: true }
+         *        datepicker: { showOtherMonths: true }
          *    });
          * </script>
          */
@@ -17177,10 +17245,10 @@ gj.datetimepicker.config = {
          * <script>
          *    new GijgoDateTimePicker(document.getElementById('picker'), { uiLibrary: 'materialdesign' });
          * </script>
-         * @example MaterialDesign.Modal <!-- nojquery, datetimepicker -->
+         * @example MaterialDesign.NoModal <!-- nojquery, datetimepicker -->
          * <input id="picker" width="312" />
          * <script>
-         *    new GijgoDateTimePicker(document.getElementById('picker'), { uiLibrary: 'materialdesign', modal: true, footer: true });
+         *    new GijgoDateTimePicker(document.getElementById('picker'), { uiLibrary: 'materialdesign', modal: false, footer:false });
          * </script>
          * @example Bootstrap.3 <!-- nojquery, bootstrap, datetimepicker -->
          * <input id="picker" width="220" />
@@ -17190,12 +17258,12 @@ gj.datetimepicker.config = {
          * @example Bootstrap.4 <!-- nojquery, bootstrap4, datetimepicker -->
          * <input id="picker" width="234" />
          * <script>
-         *     new GijgoDateTimePicker(document.getElementById('picker'), { uiLibrary: 'bootstrap4', modal: true, footer: true });
+         *     new GijgoDateTimePicker(document.getElementById('picker'), { uiLibrary: 'bootstrap4' });
          * </script>
          * @example Bootstrap.5 <!-- bootstrap5, datetimepicker -->
          * <input id="picker" width="234" />
          * <script>
-         *     new GijgoDateTimePicker(document.getElementById('picker'), { uiLibrary: 'bootstrap5', modal: true, footer: true });
+         *     new GijgoDateTimePicker(document.getElementById('picker'), { uiLibrary: 'bootstrap5' });
          * </script>
          */
         uiLibrary: 'materialdesign',
@@ -17268,7 +17336,7 @@ gj.datetimepicker.config = {
 
         /** If set to true, the datetimepicker will have modal behavior.
          * @type Boolean
-         * @default false
+         * @default true
          * @example Material.Design <!-- nojquery, datetimepicker -->
          * <input id="picker" width="312" />
          * <script>
@@ -17285,11 +17353,11 @@ gj.datetimepicker.config = {
          *    new GijgoDateTimePicker(document.getElementById('picker'), { uiLibrary: 'bootstrap4', modal: true, footer: true });
          * </script>
          */
-        modal: false,
+        modal: true,
 
         /** If set to true, add footer with ok and cancel buttons to the datetimepicker.
          * @type Boolean
-         * @default false
+         * @default true
          * @example True <!-- nojquery, datetimepicker -->
          * <input id="picker" width="312" />
          * <script>
@@ -17301,7 +17369,7 @@ gj.datetimepicker.config = {
          *    new GijgoDateTimePicker(document.getElementById('picker'), { footer: false });
          * </script>
          */
-        footer: false,
+        footer: true,
 
         /** The size of the datetimepicker input.
          * @type 'small'|'default'|'large'
@@ -17452,7 +17520,7 @@ gj.datetimepicker.methods = {
         data.datepicker.autoClose = false;
         gj.datepicker.methods.initialize(picker, data.datepicker);
 
-        popup = document.body.querySelector('[role="picker"][guid="' + picker.element.getAttribute('data-guid') + '"]');
+        popup = document.body.querySelector('[data-gj-role="picker"][data-gj-guid="' + picker.element.getAttribute('data-gj-guid') + '"]');
 
         picker.element.addEventListener('select', function (e) {
             var selectedDay, date, value;
@@ -17470,9 +17538,9 @@ gj.datetimepicker.methods = {
             }
         });
         picker.element.addEventListener('open', function () {
-            var headerEl = popup.querySelector('[role="header"]');
-            headerEl.querySelector('[role="calendarMode"]').classList.add('selected');
-            headerEl.querySelector('[role="clockMode"]').classList.remove('selected');
+            var headerEl = popup.querySelector('[data-gj-role="header"]');
+            headerEl.querySelector('[data-gj-role="calendarMode"]').classList.add('selected');
+            headerEl.querySelector('[data-gj-role="clockMode"]').classList.remove('selected');
         });
         
         date = data.value ? gj.core.parseDate(data.value, data.format, data.locale) : new Date();
@@ -17493,36 +17561,36 @@ gj.datetimepicker.methods = {
 
         // Init header
         headerEl = document.createElement('div');
-        headerEl.setAttribute('role', 'header');
+        headerEl.setAttribute('data-gj-role', 'header');
 
         dateEl = document.createElement('div');
-        dateEl.setAttribute('role', 'date');
+        dateEl.setAttribute('data-gj-role', 'date');
         dateEl.classList.add('selected');
         dateEl.addEventListener('click', gj.datetimepicker.methods.createShowDateHandler(picker, popup, data));
         dateEl.innerHTML = gj.core.formatDate(new Date(), 'ddd, mmm dd', data.locale);
         headerEl.appendChild(dateEl);
 
         switchEl = document.createElement('div');
-        switchEl.setAttribute('role', 'switch');
+        switchEl.setAttribute('data-gj-role', 'switch');
 
         calendarMode = document.createElement('i');
         calendarMode.classList.add('gj-icon');
         calendarMode.classList.add('selected');
-        calendarMode.setAttribute('role', 'calendarMode');
+        calendarMode.setAttribute('data-gj-role', 'calendarMode');
         calendarMode.innerHTML = 'event';
         calendarMode.addEventListener('click', gj.datetimepicker.methods.createShowDateHandler(picker, popup, data));
         switchEl.appendChild(calendarMode);
 
         timeEl = document.createElement('div');
-        timeEl.setAttribute('role', 'time');
+        timeEl.setAttribute('data-gj-role', 'time');
         hourEl = document.createElement('div');
-        hourEl.setAttribute('role', 'hour');
+        hourEl.setAttribute('data-gj-role', 'hour');
         hourEl.addEventListener('click', gj.datetimepicker.methods.createShowHourHandler(picker, popup, data));
         hourEl.innerHTML = gj.core.formatDate(new Date(), 'HH', data.locale);
         separatorEl = document.createElement('div');
         separatorEl.innerText = ':';
         minuteEl = document.createElement('div');
-        minuteEl.setAttribute('role', 'minute');
+        minuteEl.setAttribute('data-gj-role', 'minute');
         minuteEl.addEventListener('click', gj.datetimepicker.methods.createShowMinuteHandler(picker, popup, data));
         minuteEl.innerHTML = gj.core.formatDate(new Date(), 'MM', data.locale);
         timeEl.appendChild(hourEl);
@@ -17532,7 +17600,7 @@ gj.datetimepicker.methods = {
         
         clockMode = document.createElement('i');
         clockMode.classList.add('gj-icon');
-        clockMode.setAttribute('role', 'clockMode');
+        clockMode.setAttribute('data-gj-role', 'clockMode');
         clockMode.innerHTML = 'clock';
         clockMode.addEventListener('click', gj.datetimepicker.methods.createShowHourHandler(picker, popup, data));
         switchEl.appendChild(clockMode);
@@ -17544,24 +17612,24 @@ gj.datetimepicker.methods = {
 
     createShowDateHandler: function (picker, clock, data) {
         return function () {
-            var header = clock.querySelector('[role="header"]');
-            header.querySelector('[role="date"]').classList.add('selected');
-            header.querySelector('[role="calendarMode"]').classList.add('selected');
-            header.querySelector('[role="clockMode"]').classList.remove('selected');
-            header.querySelector('[role="hour"]').classList.remove('selected');
-            header.querySelector('[role="minute"]').classList.remove('selected');
+            var header = clock.querySelector('[data-gj-role="header"]');
+            header.querySelector('[data-gj-role="date"]').classList.add('selected');
+            header.querySelector('[data-gj-role="calendarMode"]').classList.add('selected');
+            header.querySelector('[data-gj-role="clockMode"]').classList.remove('selected');
+            header.querySelector('[data-gj-role="hour"]').classList.remove('selected');
+            header.querySelector('[data-gj-role="minute"]').classList.remove('selected');
             gj.datepicker.methods.renderMonth(picker, clock, data.datepicker);
         };
     },
 
     createShowHourHandler: function (picker, popup, data) {
         return function () {
-            var header = popup.querySelector('[role="header"]');
-            header.querySelector('[role="calendarMode"]').classList.remove('selected');
-            header.querySelector('[role="date"]').classList.remove('selected');
-            header.querySelector('[role="clockMode"]').classList.add('selected');
-            header.querySelector('[role="hour"]').classList.add('selected');
-            header.querySelector('[role="minute"]').classList.remove('selected');
+            var header = popup.querySelector('[data-gj-role="header"]');
+            header.querySelector('[data-gj-role="calendarMode"]').classList.remove('selected');
+            header.querySelector('[data-gj-role="date"]').classList.remove('selected');
+            header.querySelector('[data-gj-role="clockMode"]').classList.add('selected');
+            header.querySelector('[data-gj-role="hour"]').classList.add('selected');
+            header.querySelector('[data-gj-role="minute"]').classList.remove('selected');
 
             gj.timepicker.methods.renderHours(picker, popup, data.timepicker);
         };
@@ -17569,12 +17637,12 @@ gj.datetimepicker.methods = {
 
     createShowMinuteHandler: function (picker, clock, data) {
         return function () {
-            var header = clock.querySelector('[role="header"]');
-            header.querySelector('[role="calendarMode"]').classList.remove('selected');
-            header.querySelector('[role="date"]').classList.remove('selected');
-            header.querySelector('[role="clockMode"]').classList.add('selected');
-            header.querySelector('[role="hour"]').classList.remove('selected');
-            header.querySelector('[role="minute"]').classList.add('selected');
+            var header = clock.querySelector('[data-gj-role="header"]');
+            header.querySelector('[data-gj-role="calendarMode"]').classList.remove('selected');
+            header.querySelector('[data-gj-role="date"]').classList.remove('selected');
+            header.querySelector('[data-gj-role="clockMode"]').classList.add('selected');
+            header.querySelector('[data-gj-role="hour"]').classList.remove('selected');
+            header.querySelector('[data-gj-role="minute"]').classList.add('selected');
 
             gj.timepicker.methods.renderMinutes(picker, clock, data.timepicker);
         };
@@ -17592,7 +17660,7 @@ gj.datetimepicker.methods = {
         } else {
             date = gj.core.parseDate(value, data.format, data.locale);
             if (date) {
-                clock = document.body.querySelector('[role="picker"][guid="' + picker.element.getAttribute('data-guid') + '"]');                
+                clock = document.body.querySelector('[data-gj-role="picker"][data-gj-guid="' + picker.element.getAttribute('data-gj-guid') + '"]');                
                 gj.datepicker.methods.selectDay(picker, clock, data.datepicker, date);
                 gj.timepicker.methods.setAttributes(clock, data.timepicker, date);
                 picker.element.value = value;
@@ -18053,7 +18121,7 @@ gj.slider.methods = {
             $(el).off();
             slider.removeConfig();
             el.removeAttribute('data-type');
-            el.removeAttribute('data-guid')
+            el.removeAttribute('data-gj-guid')
             el.removeAttribute('data-slider');
             el.removeAttribute('class');
             el.style.display = 'block';
@@ -18269,7 +18337,7 @@ gj.colorpicker.methods = {
         var popup = document.createElement('div');
         popup.setAttribute('role', 'popup');
         gj.core.addClasses(popup, data.style.picker);
-        popup.setAttribute('guid', ctrl.element.getAttribute('data-gj-guid'));
+        popup.setAttribute('data-gj-guid', ctrl.element.getAttribute('data-gj-guid'));
 
         popup.innerHTML = 'test';
 

@@ -67,6 +67,16 @@ gj.dropdown.config = {
         }
     },
 
+    bootstrap5: {
+        style: {
+            wrapper: 'gj-dropdown gj-dropdown-bootstrap gj-dropdown-bootstrap-4 gj-unselectable',
+            presenter: 'btn btn-outline-secondary',
+            list: 'gj-list gj-list-bootstrap gj-dropdown-list-bootstrap list-group',
+            item: 'list-group-item',
+            active: 'active'
+        }
+    },
+
     materialicons: {
         style: {
             expander: 'gj-dropdown-expander-mi'
@@ -97,65 +107,65 @@ gj.dropdown.config = {
 gj.dropdown.methods = {
     init: function (jsConfig) {
         this.type = 'dropdown';
-        gj.widget.prototype.init.call(this, jsConfig);
-        this.attr('data-dropdown', 'true');
+        gj.widget.prototype.initJS.call(this, jsConfig);
+        this.element.setAttribute('data-gj-dropdown', 'true');
         gj.dropdown.methods.initialize(this);
         return this;
     },
 
-    readHTMLConfig: function () {
-        var result = gj.widget.prototype.readHTMLConfig.call(this),
-            attrs = this[0].attributes;
-        if (attrs['placeholder']) {
-            result.placeholder = attrs['placeholder'].value;
-        }
-        return result;
-    },
-
-    initialize: function ($dropdown) {
-        var $item,
-            data = $dropdown.data(),
-            $wrapper = $dropdown.parent('div[role="wrapper"]'),
-            $display = $('<span role="display"></span>'),
-            $expander = $('<span role="expander">' + data.icons.dropdown + '</span>').addClass(data.style.expander),
-            $presenter = $('<button role="presenter" type="button"></button>').addClass(data.style.presenter),
-            $list = $('<ul role="list" class="' + data.style.list + '"></ul>').attr('guid', $dropdown.attr('data-guid'));
-
-        if ($wrapper.length === 0) {
-            $wrapper = $('<div role="wrapper" />').addClass(data.style.wrapper); // The css class needs to be added before the wrapping, otherwise doesn't work.
-            $dropdown.wrap($wrapper);
-        } else {
-            $wrapper.addClass(data.style.wrapper);
-        }
+    initialize: function (dropdown) {
+        let item,
+            el = dropdown.element;
+            data = dropdown.getConfig(),
+            wrapper = dropdown.wrap('div'),
+            display = document.createElement('span'),
+            expander = document.createElement('span'),
+            presenter = document.createElement('button'),
+            list = document.createElement('ul');
 
         if (data.fontSize) {
-            $presenter.css('font-size', data.fontSize);
+            presenter.style.fontSize = data.fontSize;
         }
 
-        $presenter.on('click', function (e) {
-            if ($list.is(':visible')) {
-                gj.dropdown.methods.close($dropdown, $list);
+        presenter.setAttribute('type', 'button');
+        presenter.setAttribute('data-gj-role', 'presenter');
+        gj.core.addClasses(presenter, data.style.presenter);
+        presenter.addEventListener('click', function (e) {
+            if (list.style.display !== 'none') {
+                gj.dropdown.methods.close(dropdown, list);
             } else {
-                gj.dropdown.methods.open($dropdown, $list);
+                gj.dropdown.methods.open(dropdown, list);
             }
         });
-        $presenter.on('blur', function (e) {
+        presenter.addEventListener('blur', function (e) {
             setTimeout(function () {
-                gj.dropdown.methods.close($dropdown, $list);
+                gj.dropdown.methods.close(dropdown, list);
             }, 500);
         });
-        $presenter.append($display).append($expander);
 
-        $dropdown.hide();
-        $dropdown.after($presenter);
-        $('body').append($list);
-        $list.hide();
+        display.setAttribute('data-gj-role', 'display');
+        presenter.appendChild(display);
 
-        $dropdown.reload();
+        expander.setAttribute('data-gj-role', 'expander');
+        expander.innerHTML = data.icons.dropdown;
+        gj.core.addClasses(expander, data.style.expander);
+        presenter.appendChild(expander);
+
+        dropdown.element.style.display = 'none';
+        
+        wrapper.appendChild(presenter); //dropdown.after($presenter);
+
+        list.setAttribute('data-gj-role', 'list');
+        gj.core.addClasses(list, data.style.list);
+        list.setAttribute('data-gj-guid', el.getAttribute('data-gj-guid'));
+        list.style.display = 'none';
+        document.body.appendChild(list);
+
+        dropdown.reload();
     },
 
     setListPosition: function (presenter, list, data) {
-        var top, listHeight, presenterHeight, newHeight, listElRect,
+        let top, listHeight, presenterHeight, newHeight, listElRect,
             mainElRect = presenter.getBoundingClientRect(),
             scrollY = window.scrollY || window.pageYOffset || 0,
             scrollX = window.scrollX || window.pageXOffset || 0;
@@ -194,23 +204,22 @@ gj.dropdown.methods = {
         }
     },
 
-    useHtmlDataSource: function ($dropdown, data) {
-        var dataSource = [], i, record,
-            $options = $dropdown.find('option');
-        for (i = 0; i < $options.length; i++) {
+    useHtmlDataSource: function (dropdown, data) {
+        let dataSource = [], i, record,
+            options = dropdown.element.getElementsByTagName('option');
+        for (i = 0; i < options.length; i++) {
             record = {};
-            record[data.valueField] = $options[i].value;
-            record[data.textField] = $options[i].innerHTML;
-            record[data.selectedField] = $dropdown[0].value === $options[i].value;
+            record[data.valueField] = options[i].value;
+            record[data.textField] = options[i].innerHTML;
+            record[data.selectedField] = dropdown.element[0].value === options[i].value;
             dataSource.push(record);
         }
         data.dataSource = dataSource;
     },
 
-    filter: function ($dropdown) {
-        var i, record, data = $dropdown.data();
-        if (!data.dataSource)
-        {
+    filter: function (dropdown) {
+        let i, record, data = dropdown.getConfig();
+        if (!data.dataSource) {
             data.dataSource = [];
         } else if (typeof data.dataSource[0] === 'string') {
             for (i = 0; i < data.dataSource.length; i++) {
@@ -223,139 +232,149 @@ gj.dropdown.methods = {
         return data.dataSource;
     },
 
-    render: function ($dropdown, response) {
-        var selections = [],
-            data = $dropdown.data(),
-            $parent = $dropdown.parent(),
-            $list = $('body').children('[role="list"][guid="' + $dropdown.attr('data-guid') + '"]'),
-            $presenter = $parent.children('[role="presenter"]'),
-            $expander = $presenter.children('[role="expander"]'),
-            $display = $presenter.children('[role="display"]');
+    createListItem: function (dropdown, list, value, text, css) {
+        let li = document.createElement('li'),
+            option = document.createElement('option');
+        li.setAttribute('value', value);
+        li.innerHTML = '<div data-gj-role="wrapper"><span data-gj-role="display">' + text + '</span></div>';
+        gj.core.addClasses(li, css);
+        li.addEventListener('click', function (e) {
+            gj.dropdown.methods.select(dropdown, value);
+        });
+        list.appendChild(li);
 
-        $dropdown.data('records', response);
-        $dropdown.empty();
-        $list.empty();
+        option.setAttribute('value', value);
+        option.text = text;
+        dropdown.element.appendChild(option);
+    },
+
+    render: function (dropdown, response) {
+        let i, option, width, selections = [],
+            data = dropdown.getConfig(),
+            parent = dropdown.element.parentNode,
+            list = document.body.querySelector('[data-gj-role="list"][data-gj-guid="' + dropdown.element.getAttribute('data-gj-guid') + '"]'),
+            presenter = parent.querySelector('[data-gj-role="presenter"]'),
+            expander = presenter.querySelector('[data-gj-role="expander"]'),
+            display = presenter.querySelector('[data-gj-role="display"]');
+
+        dropdown.setRecords(response);
+        dropdown.element.innerHTML = '';
+        list.innerHTML = '';
 
         if (response && response.length) {
-            $.each(response, function () {
-                var value = this[data.valueField],
-                    text = this[data.textField],
-                    selected = this[data.selectedField] && this[data.selectedField].toString().toLowerCase() === 'true',
-                    i, $item;
 
-                $item = $('<li value="' + value + '"><div data-role="wrapper"><span data-role="display">' + text + '</span></div></li>');
-                $item.addClass(data.style.item);
-                $item.on('click', function (e) {
-                    gj.dropdown.methods.select($dropdown, value);
-                });
-                $list.append($item);
-                
-                $dropdown.append('<option value="' + value + '">' + text + '</option>');
+            for (const record of response) {
+                gj.dropdown.methods.createListItem(dropdown, list, record[data.valueField], record[data.textField], data.style.item);
 
-                if (selected) {
-                    selections.push(value);
+                if (record[data.selectedField] && record[data.selectedField].toString().toLowerCase() === 'true') {
+                    selections.push(record[data.valueField]);
                 }
-            });
+            };
             if (selections.length === 0) {
-                $dropdown.prepend('<option value=""></option>');
-                $dropdown[0].selectedIndex = 0;
+                option = document.createElement('option');
+                option.setAttribute('value', '');
+                dropdown.element.insertBefore(option, dropdown.element.firstChild);
+                dropdown.element.selectedIndex = 0;
                 if (data.placeholder) {
-                    $display[0].innerHTML = '<span class="placeholder">' + data.placeholder + '</span>';
+                    display.innerHTML = '<span class="placeholder">' + data.placeholder + '</span>';
                 }
             } else {
                 for (i = 0; i < selections.length; i++) {
-                    gj.dropdown.methods.select($dropdown, selections[i]);
+                    gj.dropdown.methods.select(dropdown, selections[i]);
                 }
             }
         }
 
         if (data.width) {
-            $parent.css('width', data.width);
-            $presenter.css('width', data.width);
+            width = isNaN(data.width) ? data.width : data.width + 'px';
+            parent.style.width = width;
+            presenter.style.width = width;
         }
 
         if (data.fontSize) {
-            $list.children('li').css('font-size', data.fontSize);
+            list.style.fontSize = data.fontSize;
         }
 
-        gj.dropdown.events.dataBound($dropdown);
+        gj.dropdown.events.dataBound(dropdown.element);
 
-        return $dropdown;
+        return dropdown;
     },
 
-    open: function ($dropdown, $list) {
-        var data = $dropdown.data(),
-            $expander = $dropdown.parent().find('[role="expander"]'),
-            $presenter = $dropdown.parent().find('[role="presenter"]'),
-            scrollParentEl = gj.core.getScrollParent($dropdown[0]);
-        $list.css('width', gj.core.width($presenter[0]));
-        $list.show();
-        gj.dropdown.methods.setListPosition($presenter[0], $list[0], data);
-        $expander.html(data.icons.dropup);
+    open: function (dropdown, list) {
+        let data = dropdown.getConfig(),
+            expander = dropdown.element.parentNode.querySelector('[data-gj-role="expander"]'),
+            presenter = dropdown.element.parentNode.querySelector('[data-gj-role="presenter"]'),
+            scrollParentEl = gj.core.getScrollParent(dropdown.element);
+        list.style.width = gj.core.width(presenter) + 'px';
+        list.style.display = 'block';
+        gj.dropdown.methods.setListPosition(presenter, list, data);
+        expander.innerHTML = data.icons.dropup;
         if (scrollParentEl) {
             data.parentScrollHandler = function () {
-                gj.dropdown.methods.setListPosition($presenter[0], $list[0], data);
+                gj.dropdown.methods.setListPosition(presenter, list, data);
             };
             gj.dropdown.methods.addParentsScrollListener(scrollParentEl, data.parentScrollHandler);
         }
     },
 
-    close: function ($dropdown, $list) {
-        var data = $dropdown.data(),
-            $expander = $dropdown.parent().find('[role="expander"]'),
-            scrollParentEl = gj.core.getScrollParent($dropdown[0]);
-        $expander.html(data.icons.dropdown);
+    close: function (dropdown, list) {
+        let data = dropdown.getConfig(),
+            expander = dropdown.element.parentNode.querySelector('[data-gj-role="expander"]'),
+            scrollParentEl = gj.core.getScrollParent(dropdown.element);
+        expander.innerHTML = data.icons.dropdown;
         if (scrollParentEl && data.parentScrollHandler) {
             gj.dropdown.methods.removeParentsScrollListener(scrollParentEl, data.parentScrollHandler);
         }
-        $list.hide();
+        list.style.display = 'none';
     },
 
     addParentsScrollListener: function (el, handler) {
-        var scrollParentEl = gj.core.getScrollParent(el.parentNode);
+        let scrollParentEl = gj.core.getScrollParent(el.parentNode);
         el.addEventListener('scroll', handler);
         if (scrollParentEl) {
             gj.dropdown.methods.addParentsScrollListener(scrollParentEl, handler);
         }
     },
     removeParentsScrollListener: function (el, handler) {
-        var scrollParentEl = gj.core.getScrollParent(el.parentNode);
+        let scrollParentEl = gj.core.getScrollParent(el.parentNode);
         el.removeEventListener('scroll', handler);
         if (scrollParentEl) {
             gj.dropdown.methods.removeParentsScrollListener(scrollParentEl, handler);
         }
     },
 
-    select: function ($dropdown, value) {
-        var data = $dropdown.data(),
-            $list = $('body').children('[role="list"][guid="' + $dropdown.attr('data-guid') + '"]'),
-            $item = $list.children('li[value="' + value + '"]'),
-            $display = $dropdown.next('[role="presenter"]').find('[role="display"]'),
-            record = gj.dropdown.methods.getRecordByValue($dropdown, value);
+    select: function (dropdown, value) {
+        let data = dropdown.getConfig(),
+            list = document.body.querySelector('[data-gj-role="list"][data-gj-guid="' + dropdown.element.getAttribute('data-gj-guid') + '"]'),
+            item = list.querySelector('li[value="' + value + '"]'),
+            display = dropdown.element.parentNode.querySelector('[data-gj-role="presenter"] [data-gj-role="display"]'),
+            record = gj.dropdown.methods.getRecordByValue(dropdown, value);
 
-        $list.children('li').removeClass(data.style.active);
+        list.querySelectorAll('li').forEach(function(li) {
+            li.classList.remove(data.style.active);
+        });
         if (record) {
-            $item.addClass(data.style.active);
-            $dropdown[0].value = value;
-            $display[0].innerHTML = record[data.textField];
+            item.classList.add(data.style.active);
+            dropdown.element.value = value;
+            display.innerHTML = record[data.textField];
         } else {
             if (data.placeholder) {
-                $display[0].innerHTML = '<span class="placeholder">' + data.placeholder + '</span>';
+                display.innerHTML = '<span class="placeholder">' + data.placeholder + '</span>';
             }
-            $dropdown[0].value = '';
+            dropdown.element.value = '';
         }
-        gj.dropdown.events.change($dropdown);
-        gj.dropdown.methods.close($dropdown, $list);
-        return $dropdown;
+        gj.dropdown.events.change(dropdown.element);
+        gj.dropdown.methods.close(dropdown, list);
+        return dropdown;
     },
 
-    getRecordByValue: function ($dropdown, value) {
-        var data = $dropdown.data(),
+    getRecordByValue: function (dropdown, value) {
+        let records = dropdown.getRecords(),
             i, result = undefined;
 
-        for (i = 0; i < data.records.length; i++) {
-            if (data.records[i][data.valueField] === value) {
-                result = data.records[i];
+        for (i = 0; i < records.length; i++) {
+            if (records[i][data.valueField] === value) {
+                result = records[i];
                 break;
             }
         }
@@ -363,51 +382,54 @@ gj.dropdown.methods = {
         return result;
     },
 
-    value: function ($dropdown, value) {
+    value: function (dropdown, value) {
         if (typeof (value) === "undefined") {
-            return $dropdown.val();
+            return dropdown.element.value;
         } else {
-            gj.dropdown.methods.select($dropdown, value);
-            return $dropdown;
+            gj.dropdown.methods.select(dropdown, value);
+            return dropdown;
         }
     },
 
-    destroy: function ($dropdown) {
-        var data = $dropdown.data(),
-            $parent = $dropdown.parent('div[role="wrapper"]');
+    destroy: function (dropdown) {
+        let data = dropdown.getConfig(),
+            el = dropdown.element,
+            parent = dropdown.element.parentNode;
         if (data) {
-            $dropdown.xhr && $dropdown.xhr.abort();
-            $dropdown.off();
-            $dropdown.removeData();
-            $dropdown.removeAttr('data-type').removeAttr('data-guid').removeAttr('data-dropdown');
-            $dropdown.removeClass();
-            if ($parent.length > 0) {
-                $parent.children('[role="presenter"]').remove();
-                $parent.children('[role="list"]').remove();
-                $dropdown.unwrap();
+            dropdown.xhr && dropdown.xhr.abort();
+            //TODO: remove all event listeners - $dropdown.off();
+            dropdown.removeConfig();
+            el.removeAttribute('data-gj-type')
+            el.removeAttribute('data-gj-guid')
+            el.removeAttribute('data-gj-dropdown');
+            el.className = '';
+            if (parent) {
+                parent.querySelector('[data-gj-role="presenter"]').remove();
+                document.body.querySelector('[data-gj-role="list"]').remove();
             }
-            $dropdown.show();
+            dropdown.unwrap();
+            el.style.display = 'block';
         }
-        return $dropdown;
+        return dropdown;
     }
 };
 
 gj.dropdown.events = {
     /**
      * Triggered when the dropdown value is changed.
-     *     */    change: function ($dropdown) {
-        return $dropdown.triggerHandler('change');
+     *     */    change: function (el) {
+        return el.dispatchEvent(new Event('change'));
     },
 
     /**
-     * Event fires after the loading of the data in the dropdown.     */    dataBound: function ($dropdown) {
-        return $dropdown.triggerHandler('dataBound');
+     * Event fires after the loading of the data in the dropdown.     */    dataBound: function (el) {
+        return el.dispatchEvent(new Event('dataBound'));;
     }
 };
 
 GijgoDropDown = function (element, jsConfig) {
-    var self = this,
-        methods = gj.datepicker.methods;
+    let self = this,
+        methods = gj.dropdown.methods;
 
     self.element = element;
 
@@ -427,7 +449,7 @@ GijgoDropDown = function (element, jsConfig) {
         return methods.destroy(this);
     };
 
-    if ('true' !== element.attr('data-dropdown')) {
+    if ('true' !== element.getAttribute('data-gj-dropdown')) {
         methods.init.call(self, jsConfig);
     }
 
@@ -435,10 +457,7 @@ GijgoDropDown = function (element, jsConfig) {
 };
 
 GijgoDropDown.prototype = new gj.widget();
-GijgoDropDown.constructor = gj.dropdown.widget;
-
-GijgoDropDown.prototype.readHTMLConfig = gj.dropdown.methods.readHTMLConfig;
-
+GijgoDropDown.constructor = GijgoDropDown;
 
 if (typeof (jQuery) !== "undefined") {
     (function ($) {

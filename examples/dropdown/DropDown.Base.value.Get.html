@@ -11,7 +11,7 @@
   <script src="../../dist/modular/js/dropdown.js"></script>
 </head>
 <body style="padding: 8px;">
- <button class="gj-button-md" onclick="alert($dropdown.value())">Get Value</button>
+ <button class="gj-button-md" onclick="alert(dropdown.value())">Get Value</button>
  <hr/>
  <select id="dropdown" width="200">
      <option value="1">One</option>
@@ -19,7 +19,7 @@
      <option value="3">Three</option>
  </select>
  <script>
-     var $dropdown = $('#dropdown').dropdown();
+     var dropdown = new GijgoDropDown(document.getElementById('dropdown'));
  </script>
 </body>
 </html>

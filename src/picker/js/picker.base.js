@@ -127,7 +127,7 @@ gj.picker.widget.prototype.init = function (jsConfig, type, methods) {
 
 gj.picker.widget.prototype.open = function (type) {
     var data = gijgoStorage.get(this.element, this.type),
-        picker = document.body.querySelector('[role="picker"][guid="' + this.element.getAttribute('data-guid') + '"]');
+        picker = document.body.querySelector('[role="picker"][data-gj-guid="' + this.element.getAttribute('data-gj-guid') + '"]');
 
     picker.style.display = 'block';
     if (data.modal) {
@@ -146,7 +146,7 @@ gj.picker.widget.prototype.open = function (type) {
 
 gj.picker.widget.prototype.close = function (type) {
     var data = gijgoStorage.get(this.element, type),
-        picker = document.body.querySelector('[role="picker"][guid="' + this.element.getAttribute('data-guid') + '"]');
+        picker = document.body.querySelector('[role="picker"][data-gj-guid="' + this.element.getAttribute('data-gj-guid') + '"]');
     picker.style.display = 'none';
     if (data.modal) {
         picker.parentElement.style.display = 'none';
@@ -158,7 +158,7 @@ gj.picker.widget.prototype.close = function (type) {
 gj.picker.widget.prototype.destroy = function (type) {
     var data = gijgoStorage.get(this.element, type),
         parent = this.element.parentElement,
-        picker = document.body.querySelector('[role="picker"][guid="' + this.element.getAttribute('data-guid') + '"]'),
+        picker = document.body.querySelector('[role="picker"][data-gj-guid="' + this.element.getAttribute('data-gj-guid') + '"]'),
         rightIcon = this.element.parentElement.querySelector('[role="right-icon"]');
     if (data) {
         //this.off();
@@ -167,7 +167,7 @@ gj.picker.widget.prototype.destroy = function (type) {
         }
         gijgoStorage.remove(this.element, type);
         this.element.removeAttribute('data-type');
-        this.element.removeAttribute('data-guid');
+        this.element.removeAttribute('data-gj-guid');
         this.element.removeAttribute('data-datepicker');
         this.element.removeAttribute('class');
         if (rightIcon) {

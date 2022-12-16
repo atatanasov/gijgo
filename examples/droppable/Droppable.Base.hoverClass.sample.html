@@ -18,8 +18,8 @@
  <div id="droppable" class="droppable">Drop Here</div>
  <div id="draggable" class="draggable">Drag Me</div>
  <script>
-     $('#draggable').draggable();
-     $('#droppable').droppable({ hoverClass: 'hover' });
+     new GijgoDraggable(document.getElementById('draggable'));
+     new GijgoDroppable(document.getElementById('droppable'), { hoverClass: 'hover' });
  </script>
 </body>
 </html>

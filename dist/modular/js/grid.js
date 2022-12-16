@@ -264,7 +264,8 @@ gj.grid.config = {
 gj.grid.methods = {
 
     init: function (jsConfig) {
-        gj.widget.prototype.init.call(this, jsConfig, 'grid');
+        this.type = 'grid';
+        gj.widget.prototype.init.call(this, jsConfig);
 
         gj.grid.methods.initialize(this);
 

@@ -311,7 +311,7 @@ gj.slider.methods = {
             $(el).off();
             slider.removeConfig();
             el.removeAttribute('data-type');
-            el.removeAttribute('data-guid')
+            el.removeAttribute('data-gj-guid')
             el.removeAttribute('data-slider');
             el.removeAttribute('class');
             el.style.display = 'block';

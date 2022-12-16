@@ -22,9 +22,9 @@
  <div id="draggable" class="draggable">Drag Me</div>
  <script>
      var dropEl;
-     $('#draggable').draggable();
+     new GijgoDraggable(document.getElementById('draggable'));
      function create() {
-         dropEl = $('#droppable').droppable({
+         dropEl = new GijgoDroppable(document.getElementById('droppable'), {
              hoverClass: 'hover'
          });
      }

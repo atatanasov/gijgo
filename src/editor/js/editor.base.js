@@ -321,7 +321,7 @@ gj.editor.methods = {
             wrapper.querySelector('div[role="toolbar"]').remove();
             editor.element.outerHTML = editor.element.innerHTML;
             editor.removeConfig();
-            editor.element.removeAttribute('data-guid');
+            editor.element.removeAttribute('data-gj-guid');
             editor.element.removeAttribute('data-editor');
             //$editor.off();
             editor.element.display = 'block';

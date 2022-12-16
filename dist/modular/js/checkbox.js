@@ -17,7 +17,7 @@ gj.checkbox.config = {
         /** The name of the icons library that is going to be in use. Currently we support Material Icons, Font Awesome and Glyphicons.         */        iconsLibrary: 'materialicons',
 
         style: {
-            wrapperCssClass: 'gj-checkbox-md',
+            wrapper: 'gj-checkbox-md',
             spanCssClass: undefined
         }
         
@@ -25,21 +25,21 @@ gj.checkbox.config = {
 
     bootstrap: {
         style: {
-            wrapperCssClass: 'gj-checkbox-bootstrap gj-checkbox-bootstrap-3'
+            wrapper: 'gj-checkbox-bootstrap gj-checkbox-bootstrap-3'
         },
         iconsLibrary: 'glyphicons'
     },
 
     bootstrap4: {
         style: {
-            wrapperCssClass: 'gj-checkbox-bootstrap gj-checkbox-bootstrap-4'
+            wrapper: 'gj-checkbox-bootstrap gj-checkbox-bootstrap-4'
         },
         iconsLibrary: 'materialicons'
     },
 
     bootstrap5: {
         style: {
-            wrapperCssClass: 'gj-checkbox-bootstrap gj-checkbox-bootstrap-4'
+            wrapper: 'gj-checkbox-bootstrap gj-checkbox-bootstrap-4'
         },
         iconsLibrary: 'materialicons'
     },
@@ -78,7 +78,7 @@ gj.checkbox.methods = {
     initialize: function (chkb, data) {
         var wrapper, span;
         wrapper = document.createElement('label');
-        gj.core.addClasses(wrapper, data.style.wrapperCssClass);
+        gj.core.addClasses(wrapper, data.style.wrapper);
         gj.core.addClasses(wrapper, data.style.iconsCssClass);
         if (chkb.element.getAttribute('id')) {
             wrapper.setAttribute('for', chkb.element.getAttribute('id'));

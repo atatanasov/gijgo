@@ -379,6 +379,14 @@ gj.widget = function () {
         window.gijgoStorage.remove(this.element, this.type);
     };
 
+    self.getRecords = function() {
+        return window.gijgoStorage.get(this.element, 'records');
+    };
+
+    self.setRecords = function(records) {
+        window.gijgoStorage.put(this.element, 'records', records);
+    };
+
     self.generateGUID = function () {
         function s4() {
             return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
@@ -427,6 +435,26 @@ gj.widget = function () {
     self.extend = function () {
         return gj.core.extend.apply(null, arguments);
     };
+
+    self.wrap = function(tagName) {
+        let wrapper = this.element.parentNode.getAttribute('data-gj-role') === 'wrapper' ? this.element.parentNode : null;
+        if (!wrapper) {
+            wrapper = document.createElement(tagName);
+            this.element.parentNode.insertBefore(wrapper, this.element);
+            wrapper.appendChild(this.element);
+        }
+        gj.core.addClasses(wrapper, this.getConfig().style.wrapper);
+        wrapper.setAttribute('data-gj-role', 'wrapper');
+        return wrapper;
+    };
+
+    self.unwrap = function() {
+        let wrapper = this.element.parentNode.getAttribute('data-gj-role') === 'wrapper' ? this.element.parentNode : null;
+        if (wrapper) {
+            wrapper.parentNode.insertBefore(this.element, wrapper);
+            wrapper.remove();
+        }
+    };
 };
 
 gj.widget.prototype.init = function (jsConfig, type) {
@@ -436,7 +464,7 @@ gj.widget.prototype.init = function (jsConfig, type) {
     clientConfig = $.extend(true, {}, this.readHTMLConfig() || {});
     $.extend(true, clientConfig, jsConfig || {});
     fullConfig = this.readConfig(clientConfig, type);
-    this.element.setAttribute('data-guid', fullConfig.guid);
+    this.element.setAttribute('data-gj-guid', fullConfig.guid);
     this.data(fullConfig);
 
     // Initialize events configured as options
@@ -593,14 +621,17 @@ gj.widget.prototype.readHTMLConfigJS = function () {
     if (attrs['align']) {
         result.align = attrs['align'].value;
     }
-    if (result && result.source) {
-        result.dataSource = result.source;
-        delete result.source;
+    if (attrs['placeholder']) {
+        result.placeholder = attrs['placeholder'].value;
     }
     for (var dataEl in this.element.dataset) {
         if (dataEl.startsWith('gj')) {
             result[dataEl.charAt(2).toLowerCase() + dataEl.slice(3)] = this.element.dataset[dataEl];
         }
+    }
+    if (result && result.source) {
+        result.dataSource = result.source;
+        delete result.source;
     }
     return result;
 };
@@ -611,7 +642,7 @@ gj.widget.prototype.createDoneHandler = function () {
         if (typeof (response) === 'string' && JSON) {
             response = JSON.parse(response);
         }
-        gj[widget.data('type')].methods.render($widget, response);
+        gj[widget.type].methods.render(widget, response);
     };
 };
 
@@ -624,14 +655,14 @@ gj.widget.prototype.createErrorHandler = function () {
 };
 
 gj.widget.prototype.reload = function (params) {
-    var ajaxOptions, result, data = this.data(), type = this.data('type');
+    var ajaxOptions, result, data = this.getConfig();
     if (data.dataSource === undefined) {
-        gj[type].methods.useHtmlDataSource(this, data);
+        gj[this.type].methods.useHtmlDataSource(this, data);
     }
-    $.extend(data.params, params);
+    this.extend(data.params, params);
     if (Array.isArray(data.dataSource)) {
-        result = gj[type].methods.filter(this);
-        gj[type].methods.render(this, result);
+        result = gj[this.type].methods.filter(this);
+        gj[this.type].methods.render(this, result);
     } else if (typeof(data.dataSource) === 'string') {
         ajaxOptions = { url: data.dataSource, data: data.params };
         if (this.xhr) {
@@ -642,8 +673,8 @@ gj.widget.prototype.reload = function (params) {
         if (!data.dataSource.data) {
             data.dataSource.data = {};
         }
-        $.extend(data.dataSource.data, data.params);
-        ajaxOptions = $.extend(true, {}, data.dataSource); //clone dataSource object
+        this.extend(data.dataSource.data, data.params);
+        ajaxOptions = this.extend({}, data.dataSource); //clone dataSource object
         if (ajaxOptions.dataType === 'json' && typeof(ajaxOptions.data) === 'object') {
             ajaxOptions.data = JSON.stringify(ajaxOptions.data);
         }
@@ -833,7 +864,7 @@ gj.picker.widget.prototype.init = function (jsConfig, type, methods) {
 
 gj.picker.widget.prototype.open = function (type) {
     var data = gijgoStorage.get(this.element, this.type),
-        picker = document.body.querySelector('[role="picker"][guid="' + this.element.getAttribute('data-guid') + '"]');
+        picker = document.body.querySelector('[role="picker"][data-gj-guid="' + this.element.getAttribute('data-gj-guid') + '"]');
 
     picker.style.display = 'block';
     if (data.modal) {
@@ -852,7 +883,7 @@ gj.picker.widget.prototype.open = function (type) {
 
 gj.picker.widget.prototype.close = function (type) {
     var data = gijgoStorage.get(this.element, type),
-        picker = document.body.querySelector('[role="picker"][guid="' + this.element.getAttribute('data-guid') + '"]');
+        picker = document.body.querySelector('[role="picker"][data-gj-guid="' + this.element.getAttribute('data-gj-guid') + '"]');
     picker.style.display = 'none';
     if (data.modal) {
         picker.parentElement.style.display = 'none';
@@ -864,7 +895,7 @@ gj.picker.widget.prototype.close = function (type) {
 gj.picker.widget.prototype.destroy = function (type) {
     var data = gijgoStorage.get(this.element, type),
         parent = this.element.parentElement,
-        picker = document.body.querySelector('[role="picker"][guid="' + this.element.getAttribute('data-guid') + '"]'),
+        picker = document.body.querySelector('[role="picker"][data-gj-guid="' + this.element.getAttribute('data-gj-guid') + '"]'),
         rightIcon = this.element.parentElement.querySelector('[role="right-icon"]');
     if (data) {
         //this.off();
@@ -873,7 +904,7 @@ gj.picker.widget.prototype.destroy = function (type) {
         }
         gijgoStorage.remove(this.element, type);
         this.element.removeAttribute('data-type');
-        this.element.removeAttribute('data-guid');
+        this.element.removeAttribute('data-gj-guid');
         this.element.removeAttribute('data-datepicker');
         this.element.removeAttribute('class');
         if (rightIcon) {

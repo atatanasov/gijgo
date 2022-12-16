@@ -1,37 +1,37 @@
-﻿.gj-picker.datetimepicker [role="header"] [role="date"] {
+﻿.gj-picker.datetimepicker [data-gj-role="header"] [data-gj-role="date"] {
     padding-bottom: 5px;
     text-align: center;
     cursor: pointer;
 }
 
-.gj-picker [role="switch"] {
+.gj-picker [data-gj-role="switch"] {
     align-items: baseline;
     user-select: none;
     position: relative;
 }
 
-.gj-picker [role="switch"] [role="calendarMode"] {
+.gj-picker [data-gj-role="switch"] [data-gj-role="calendarMode"] {
     cursor: pointer;
     position: absolute;
     bottom: 2px;
     left: 0px;
 }
 
-.gj-picker [role="switch"] [role="time"] {
+.gj-picker [data-gj-role="switch"] [data-gj-role="time"] {
     width: 100%;
     text-align: center;
 }
 
-.gj-picker [role="switch"] [role="time"] div {
+.gj-picker [data-gj-role="switch"] [data-gj-role="time"] div {
     display: inline;
     cursor: pointer;
 }
 
-.gj-picker [role="switch"] [role="calendarMode"] {
+.gj-picker [data-gj-role="switch"] [data-gj-role="calendarMode"] {
     cursor: pointer;
 }
 
-.gj-picker [role="switch"] [role="clockMode"] {
+.gj-picker [data-gj-role="switch"] [data-gj-role="clockMode"] {
     position: absolute;
     right: 0px;
     bottom: 3px;
@@ -39,34 +39,34 @@
 }
 
 /* Material Design */
-.gj-picker-md.datetimepicker [role="header"] {
+.gj-picker-md.datetimepicker [data-gj-role="header"] {
     font-size: 36px;
     padding: 10px 20px;
     display: block;
 }
 
-.gj-picker-md [role="switch"] {
+.gj-picker-md [data-gj-role="switch"] {
     color: rgba(255, 255, 255, 0.54);
     background: #2196f3;
     font-size: 32px;
 }
 
 /* Bootstrap */
-.gj-picker-bootstrap.datetimepicker [role="header"] {
+.gj-picker-bootstrap.datetimepicker [data-gj-role="header"] {
     font-size: 36px;
     padding: 10px 20px;
     display: block;
 }
 
-.gj-picker-bootstrap.datetimepicker [role="header"] [role="time"] {
+.gj-picker-bootstrap.datetimepicker [data-gj-role="header"] [data-gj-role="time"] {
     font-size: 22px;
 }
 
-.gj-picker-bootstrap.datetimepicker [role="footer"] {
+.gj-picker-bootstrap.datetimepicker [data-gj-role="footer"] {
     padding: 1rem;
     border-top: 1px solid #e9ecef;
 }
 
-.gj-picker-bootstrap.datetimepicker [role="footer"]> :not(:last-child) {
+.gj-picker-bootstrap.datetimepicker [data-gj-role="footer"]> :not(:last-child) {
     margin-right: .25rem;
 }

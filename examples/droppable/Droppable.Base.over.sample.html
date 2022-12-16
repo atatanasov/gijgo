@@ -18,13 +18,13 @@
  <div id="droppable" class="droppable">Drop Here</div>
  <div id="draggable" class="draggable">Drag Me</div>
  <script>
-     $('#draggable').draggable();
-     $('#droppable').droppable({
+     new GijgoDraggable(document.getElementById('draggable'));
+     new GijgoDroppable(document.getElementById('droppable'), {
          over: function() {
-             $(this).addClass('hover')
+             this.classList.add('hover')
          },
          out: function() {
-             $(this).removeClass('hover')
+             this.classList.remove('hover')
          }
      });
  </script>

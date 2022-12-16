@@ -12,7 +12,7 @@
 <body style="padding: 8px;">
  <select id="dropdown" width="200"></select>
  <script>
-     $('#dropdown').dropdown({
+     new GijgoDropDown(document.getElementById('dropdown'), {
          valueField: 'newValueField',
          dataSource: [ { newValueField: 1, text: 'One' }, { newValueField: 2, text: 'Two' }, { newValueField: 3, text: 'Three' } ]
      });

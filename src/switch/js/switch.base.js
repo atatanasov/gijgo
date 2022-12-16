@@ -112,7 +112,7 @@ gj.switch.methods = {
             obj.off();
             obj.removeConfig();
             obj.removeAttribute('data-type')
-            obj.removeAttribute('data-guid')
+            obj.removeAttribute('data-gj-guid')
             obj.removeAttribute('data-switch');
             obj.removeClass();
         }

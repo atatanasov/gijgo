@@ -90,7 +90,7 @@ gj.colorpicker.methods = {
         var popup = document.createElement('div');
         popup.setAttribute('role', 'popup');
         gj.core.addClasses(popup, data.style.picker);
-        popup.setAttribute('guid', ctrl.element.getAttribute('data-gj-guid'));
+        popup.setAttribute('data-gj-guid', ctrl.element.getAttribute('data-gj-guid'));
 
         popup.innerHTML = 'test';
 

@@ -18,101 +18,103 @@ gj.droppable.methods = {
     init: function (jsConfig) {
         this.type = 'droppable';
 
-        gj.widget.prototype.init.call(this, jsConfig);
-        this.attr('data-droppable', 'true');
+        gj.widget.prototype.initJS.call(this, jsConfig);
+        this.element.setAttribute('data-gj-droppable', 'true');
         
-        gj.documentManager.subscribeForEvent('mousedown', this.data('guid'), gj.droppable.methods.createMouseDownHandler($dropEl));
-        gj.documentManager.subscribeForEvent('mousemove', this.data('guid'), gj.droppable.methods.createMouseMoveHandler($dropEl));
-        gj.documentManager.subscribeForEvent('mouseup', this.data('guid'), gj.droppable.methods.createMouseUpHandler($dropEl));
+        gj.documentManager.subscribeForEvent('mousedown', this.element.getAttribute('data-gj-guid'), gj.droppable.methods.createMouseDownHandler(this));
+        gj.documentManager.subscribeForEvent('mousemove', this.element.getAttribute('data-gj-guid'), gj.droppable.methods.createMouseMoveHandler(this));
+        gj.documentManager.subscribeForEvent('mouseup', this.element.getAttribute('data-gj-guid'), gj.droppable.methods.createMouseUpHandler(this));
         
         return this;
     },
 
-    createMouseDownHandler: function ($dropEl) {
+    createMouseDownHandler: function (dropEl) {
         return function (e) {
-            $dropEl.isDragging = true;
+            dropEl.isDragging = true;
         }
     },
 
-    createMouseMoveHandler: function ($dropEl) {
+    createMouseMoveHandler: function (droppable) {
         return function (e) {
-            if ($dropEl.isDragging) {
-                var hoverClass = $dropEl.data('hoverClass'),
+            if (droppable.isDragging) {
+                let hoverClass = droppable.getConfig().hoverClass,
                     mousePosition = {
-                        x: $dropEl.mouseX(e),
-                        y: $dropEl.mouseY(e)
+                        left: droppable.mouseX(e),
+                        top: droppable.mouseY(e)
                     },
-                    newIsOver = gj.droppable.methods.isOver($dropEl, mousePosition);
-                if (newIsOver != $dropEl.isOver) {
+                    newIsOver = gj.droppable.methods.isOver(droppable, mousePosition);
+                if (newIsOver != droppable.isOver) {
                     if (newIsOver) {
                         if (hoverClass) {
-                            $dropEl.addClass(hoverClass);
+                            droppable.element.classList.add(hoverClass);
                         }
-                        gj.droppable.events.over($dropEl, mousePosition);
+                        gj.droppable.events.over(droppable.element, mousePosition);
                     } else {
                         if (hoverClass) {
-                            $dropEl.removeClass(hoverClass);
+                            droppable.element.classList.remove(hoverClass);
                         }
-                        gj.droppable.events.out($dropEl);
+                        gj.droppable.events.out(droppable.element);
                     }
                 }
-                $dropEl.isOver = newIsOver;
+                droppable.isOver = newIsOver;
             }
         }
     },
 
-    createMouseUpHandler: function ($dropEl) {
+    createMouseUpHandler: function (droppable) {
         return function (e) {
-            var mousePosition = {
-                left: $dropEl.mouseX(e),
-                top: $dropEl.mouseY(e)
+            let mousePosition = {
+                left: droppable.mouseX(e),
+                top: droppable.mouseY(e)
             };
-            $dropEl.isDragging = false;
-            if (gj.droppable.methods.isOver($dropEl, mousePosition)) {
-                gj.droppable.events.drop($dropEl);
+            droppable.isDragging = false;
+            console.log(gj.droppable.methods.isOver(droppable, mousePosition));
+            if (gj.droppable.methods.isOver(droppable, mousePosition)) {
+                gj.droppable.events.drop(droppable.element);
             }
         }
     },
 
-    isOver: function ($dropEl, mousePosition) {
-        var offsetTop = $dropEl.offset().top,
-            offsetLeft = $dropEl.offset().left;
-        return mousePosition.x > offsetLeft && mousePosition.x < (offsetLeft + $dropEl.outerWidth(true))
-            && mousePosition.y > offsetTop && mousePosition.y < (offsetTop + $dropEl.outerHeight(true));
+    isOver: function (droppable, mousePosition) {
+        let offsetTop = droppable.element.offsetTop,
+            offsetLeft = droppable.element.offsetLeft;
+        return mousePosition.left > offsetLeft && mousePosition.left < (offsetLeft + gj.core.width(droppable.element))
+            && mousePosition.top > offsetTop && mousePosition.top < (offsetTop + gj.core.height(droppable.element));
     },
 
-    destroy: function ($dropEl) {
-        if ($dropEl.attr('data-droppable') === 'true') {
-            gj.documentManager.unsubscribeForEvent('mousedown', $dropEl.data('guid'));
-            gj.documentManager.unsubscribeForEvent('mousemove', $dropEl.data('guid'));
-            gj.documentManager.unsubscribeForEvent('mouseup', $dropEl.data('guid'));
-            $dropEl.removeData();
-            $dropEl.removeAttr('data-guid');
-            $dropEl.removeAttr('data-droppable');
-            $dropEl.off('drop').off('over').off('out');
+    destroy: function (droppable) {
+        let el = droppable.element;
+        if (el.getAttribute('data-gj-droppable') === 'true') {
+            gj.documentManager.unsubscribeForEvent('mousedown', el.getAttribute('data-gj-guid'));
+            gj.documentManager.unsubscribeForEvent('mousemove', el.getAttribute('data-gj-guid'));
+            gj.documentManager.unsubscribeForEvent('mouseup', el.getAttribute('data-gj-guid'));
+            droppable.removeConfig();
+            el.removeAttribute('data-gj-guid');
+            el.removeAttribute('data-gj-droppable');
         }
-        return $dropEl;
+        return droppable;
     }
 };
 
 gj.droppable.events = {
-    /** Triggered when a draggable element is dropped.     */    drop: function ($dropEl, offsetX, offsetY) {
-        $dropEl.trigger('drop', [{ top: offsetY, left: offsetX }]);
+    /** Triggered when a draggable element is dropped.     */    drop: function (el, offsetX, offsetY) {
+        return el.dispatchEvent(new CustomEvent('drop', { detail: { 'top': offsetY, 'left': offsetX } }));
     },
 
-    /** Triggered when a draggable element is dragged over the droppable.     */    over: function ($dropEl, mousePosition) {
-        $dropEl.trigger('over', [mousePosition]);
+    /** Triggered when a draggable element is dragged over the droppable.     */    over: function (el, mousePosition) {
+        return el.dispatchEvent(new CustomEvent('over', { detail: { 'mousePosition': mousePosition } }));
     },
 
-    /** Triggered when a draggable element is dragged out of the droppable.     */    out: function ($dropEl) {
-        $dropEl.trigger('out');
+    /** Triggered when a draggable element is dragged out of the droppable.     */    out: function (el) {
+        return el.dispatchEvent(new Event('out'));
     }
 };
 
-gj.droppable.widget = function ($element, jsConfig) {
-    var self = this,
+GijgoDroppable = function (element, jsConfig) {
+    let self = this,
         methods = gj.droppable.methods;
-
+    
+    self.element = element;
     self.isOver = false;
     self.isDragging = false;
 
@@ -124,31 +126,32 @@ gj.droppable.widget = function ($element, jsConfig) {
         return methods.isOver(this, mousePosition);
     }
 
-    $.extend($element, self);
-    if ('true' !== $element.attr('data-droppable')) {
-        methods.init.call($element, jsConfig);
+    if ('true' !== element.getAttribute('data-gj-droppable')) {
+        methods.init.call(self, jsConfig);
     }
 
-    return $element;
+    return self;
 };
 
-gj.droppable.widget.prototype = new gj.widget();
-gj.droppable.widget.constructor = gj.droppable.widget;
+GijgoDroppable.prototype = new gj.widget();
+GijgoDroppable.constructor = GijgoDroppable;
 
-(function ($) {
-    $.fn.droppable = function (method) {
-        var $widget;
-        if (this && this.length) {
-            if (typeof method === 'object' || !method) {
-                return new gj.droppable.widget(this, method);
-            } else {
-                $widget = new gj.droppable.widget(this, null);
-                if ($widget[method]) {
-                    return $widget[method].apply(this, Array.prototype.slice.call(arguments, 1));
+if (typeof (jQuery) !== "undefined") {
+    (function ($) {
+        $.fn.droppable = function (method) {
+            let $widget;
+            if (this && this.length) {
+                if (typeof method === 'object' || !method) {
+                    return new GijgoDroppable(this, method);
                 } else {
-                    throw 'Method ' + method + ' does not exist.';
+                    $widget = new GijgoDroppable(this, null);
+                    if ($widget[method]) {
+                        return $widget[method].apply(this, Array.prototype.slice.call(arguments, 1));
+                    } else {
+                        throw 'Method ' + method + ' does not exist.';
+                    }
                 }
             }
-        }
-    };
-})(jQuery);
+        };
+    })(jQuery);
+}
