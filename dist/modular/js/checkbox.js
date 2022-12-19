@@ -69,7 +69,7 @@ gj.checkbox.config = {
 gj.checkbox.methods = {
     init: function (jsConfig) {
         this.type = 'checkbox';
-        gj.widget.prototype.initJS.call(this, jsConfig);
+        gj.widget.prototype.init.call(this, jsConfig);
         this.element.setAttribute('data-gj-checkbox', 'true');
         gj.checkbox.methods.initialize(this, this.getConfig());
         return this;
@@ -77,15 +77,12 @@ gj.checkbox.methods = {
 
     initialize: function (chkb, data) {
         var wrapper, span;
-        wrapper = document.createElement('label');
-        gj.core.addClasses(wrapper, data.style.wrapper);
+        wrapper = chkb.wrap('label');
         gj.core.addClasses(wrapper, data.style.iconsCssClass);
         if (chkb.element.getAttribute('id')) {
             wrapper.setAttribute('for', chkb.element.getAttribute('id'));
         }
 
-        chkb.element.parentNode.insertBefore(wrapper, chkb.element);
-        wrapper.appendChild(chkb.element);
             
         span = document.createElement('span');
         if (data.style.spanCssClass) {

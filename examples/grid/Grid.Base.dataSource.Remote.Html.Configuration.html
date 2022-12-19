@@ -10,17 +10,17 @@
   <script src="../../dist/modular/js/grid.js"></script>
 </head>
 <body style="padding: 8px;">
- <table id="grid" data-source="/Players/Get">
+ <table id="grid" data-gj-source="/Players/Get">
      <thead>
          <tr>
-             <th width="56" data-field="ID">#</th>
+             <th width="56" data-gj-field="ID">#</th>
              <th>Name</th>
              <th>PlaceOfBirth</th>
          </tr>
      </thead>
  </table>
  <script>
-     $('#grid').grid();
+     new GijgoGrid(document.getElementById('grid'));
  </script>
 </body>
 </html>

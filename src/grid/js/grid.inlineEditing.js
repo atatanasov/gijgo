@@ -4,23 +4,23 @@
  */
 gj.grid.plugins.inlineEditing = {
     renderers: {
-        editManager: function (value, record, $cell, $displayEl, id, $grid) {
-            var data = $grid.data(),
+        editManager: function (value, record, $cell, $displayEl, id, grid) {
+            var data = grid.getConfig(),
                 $edit = $(data.inlineEditing.editButton).attr('key', id),
                 $delete = $(data.inlineEditing.deleteButton).attr('key', id),
                 $update = $(data.inlineEditing.updateButton).attr('key', id).hide(),
                 $cancel = $(data.inlineEditing.cancelButton).attr('key', id).hide();
             $edit.on('click', function (e) {
-                $grid.edit($(this).attr('key'));
+                grid.edit($(this).attr('key'));
             });
             $delete.on('click', function (e) {
-                $grid.removeRow($(this).attr('key'));
+                grid.removeRow($(this).attr('key'));
             });
             $update.on('click', function (e) {
-                $grid.update($(this).attr('key'));
+                grid.update($(this).attr('key'));
             });
             $cancel.on('click', function (e) {
-                $grid.cancel($(this).attr('key'));
+                grid.cancel($(this).attr('key'));
             });
             $displayEl.empty().append($edit).append($delete).append($update).append($cancel);
         }
@@ -246,31 +246,31 @@ gj.grid.plugins.inlineEditing.config = {
              *         { 'ID': 5, 'Name': 'James Rodríguez', 'PlaceOfBirth': 'Cúcuta, Colombia' },
              *         { 'ID': 6, 'Name': 'Dimitar Berbatov', 'PlaceOfBirth': 'Blagoevgrad, Bulgaria' }
              *     ];
-             *     editManager = function (value, record, $cell, $displayEl, id, $grid) {
-             *         var data = $grid.data(),
+             *     editManager = function (value, record, $cell, $displayEl, id, grid) {
+             *         var data = grid.getConfig(),
              *             $edit = $('<button class="gj-button-md"><i class="material-icons">mode_edit</i> Edit</button>').attr('data-key', id),
              *             $delete = $('<button class="gj-button-md"><i class="material-icons">delete</i> Delete</button>').attr('data-key', id),
              *             $update = $('<button class="gj-button-md"><i class="material-icons">check_circle</i> Update</button>').attr('data-key', id).hide(),
              *             $cancel = $('<button class="gj-button-md"><i class="material-icons">cancel</i> Cancel</button>').attr('data-key', id).hide();
              *         $edit.on('click', function (e) {
-             *             $grid.edit($(this).data('key'));
+             *             grid.edit($(this).data('key'));
              *             $edit.hide();
              *             $delete.hide();
              *             $update.show();
              *             $cancel.show();
              *         });
              *         $delete.on('click', function (e) {
-             *             $grid.removeRow($(this).data('key'));
+             *             grid.removeRow($(this).data('key'));
              *         });
              *         $update.on('click', function (e) {
-             *             $grid.update($(this).data('key'));
+             *             grid.update($(this).data('key'));
              *             $edit.show();
              *             $delete.show();
              *             $update.hide();
              *             $cancel.hide();
              *         });
              *         $cancel.on('click', function (e) {
-             *             $grid.cancel($(this).data('key'));
+             *             grid.cancel($(this).data('key'));
              *             $edit.show();
              *             $delete.show();
              *             $update.hide();
@@ -373,11 +373,11 @@ gj.grid.plugins.inlineEditing.private = {
         }
     },
 
-    editMode: function ($grid, $cell, column, record) {
-        var $displayContainer, $editorContainer, $editorField, value, config, data = $grid.data();
+    editMode: function (grid, $cell, column, record) {
+        var $displayContainer, $editorContainer, $editorField, value, config, data = grid.getConfig();
         if ($cell.attr('data-mode') !== 'edit') {
             if (column.editor) {
-                gj.grid.plugins.inlineEditing.private.updateOtherCells($grid, column.mode);
+                gj.grid.plugins.inlineEditing.private.updateOtherCells(grid, column.mode);
                 $displayContainer = $cell.find('div[data-role="display"]').hide();
                 $editorContainer = $cell.find('div[data-role="edit"]').show();
                 if ($editorContainer.length === 0) {
@@ -405,7 +405,7 @@ gj.grid.plugins.inlineEditing.private = {
                         config = typeof column.editor === "object" ? column.editor : {};
                         config.uiLibrary = data.uiLibrary;
                         config.iconsLibrary = data.iconsLibrary;
-                        config.fontSize = $grid.css('font-size');
+                        config.fontSize = grid.css('font-size');
                         config.showOnFocus = false;
                         if ('checkbox' === column.type && gj.checkbox) {
                             $editorField = $('<input type="checkbox" />').prop('checked', value);
@@ -446,7 +446,7 @@ gj.grid.plugins.inlineEditing.private = {
                         } else {
                             $editorField = $('<input type="text" value="' + value + '" class="gj-width-full"/>');
                             if (data.uiLibrary === 'materialdesign') {
-                                $editorField.addClass('gj-textbox-md').css('font-size', $grid.css('font-size'));
+                                $editorField.addClass('gj-textbox-md').css('font-size', grid.css('font-size'));
                             }
                             $editorContainer.append($editorField);
                         }
@@ -455,7 +455,7 @@ gj.grid.plugins.inlineEditing.private = {
                         $editorField = $editorContainer.find('input, select, textarea').first();
                         $editorField.on('keyup', function (e) {
                             if (e.keyCode === 13 || e.keyCode === 27) {
-                                gj.grid.plugins.inlineEditing.private.displayMode($grid, $cell, column);
+                                gj.grid.plugins.inlineEditing.private.displayMode(grid, $cell, column);
                             }
                         });
                     }
@@ -475,7 +475,7 @@ gj.grid.plugins.inlineEditing.private = {
         }
     },
 
-    displayMode: function ($grid, $cell, column, cancel) {
+    displayMode: function (grid, $cell, column, cancel) {
         var $editorContainer, $displayContainer, $ele, newValue, newEditFieldValue, record, position, style = '';
         if (column.mode !== 'editOnly') {
             if ($cell.attr('data-mode') === 'edit') {
@@ -491,20 +491,20 @@ gj.grid.plugins.inlineEditing.private = {
                     newValue = $ele.val();
                 }
                 position = $cell.parent().data('position');
-                record = $grid.get(position);
+                record = grid.get(position);
                 if (cancel !== true && newValue !== record[column.field]) {
                     record[column.field] = column.type === 'date' ? gj.core.parseDate(newValue, column.format) : newValue;
                     if (column.editField) {
                         record[column.editField] = newEditFieldValue || newValue;
                     }
                     if (column.mode !== 'editOnly') {
-                        gj.grid.methods.renderDisplayElement($grid, $displayContainer, column, record, gj.grid.methods.getId(record, $grid.data('primaryKey'), position), 'update');
+                        gj.grid.methods.renderDisplayElement(grid, $displayContainer, column, record, gj.grid.methods.getId(record, grid.getConfig().primaryKey, position), 'update');
                         if ($cell.find('span.gj-dirty').length === 0) {
                             $cell.prepend($('<span class="gj-dirty" />'));
                         }
                     }
-                    gj.grid.plugins.inlineEditing.events.cellDataChanged($grid, $cell, column, record, newValue);
-                    gj.grid.plugins.inlineEditing.private.updateChanges($grid, column, record, newValue);
+                    gj.grid.plugins.inlineEditing.events.cellDataChanged(grid, $cell, column, record, newValue);
+                    gj.grid.plugins.inlineEditing.private.updateChanges(grid, column, record, newValue);
                 }
                 $editorContainer.hide();
                 $displayContainer.show();
@@ -519,19 +519,19 @@ gj.grid.plugins.inlineEditing.private = {
         }
     },
 
-    updateOtherCells: function($grid, mode) {
-        var data = $grid.data();
+    updateOtherCells: function(grid, mode) {
+        var data = grid.getConfig();
         if (data.inlineEditing.mode !== 'command' && mode !== 'editOnly') {
-            $grid.find('div[data-role="edit"]:visible').parent('td').each(function () {
+            grid.find('div[data-role="edit"]:visible').parent('td').each(function () {
                 var $cell = $(this),
                     column = data.columns[$cell.index()];
-                gj.grid.plugins.inlineEditing.private.displayMode($grid, $cell, column);
+                gj.grid.plugins.inlineEditing.private.displayMode(grid, $cell, column);
             });
         }
     },
 
-    updateChanges: function ($grid, column, sourceRecord, newValue) {
-        var targetRecords, filterResult, newRecord, data = $grid.data();
+    updateChanges: function (grid, column, sourceRecord, newValue) {
+        var targetRecords, filterResult, newRecord, data = grid.getConfig();
         if (!data.guid) {
             data.guid = gj.grid.plugins.inlineEditing.private.generateGUID();
         }
@@ -589,7 +589,7 @@ gj.grid.plugins.inlineEditing.public = {
      * </script>
      */
     getChanges: function () {
-        return JSON.parse(sessionStorage.getItem('gj.grid.' + this.data().guid));
+        return JSON.parse(sessionStorage.getItem('gj.grid.' + this.getConfig().guid));
     },
 
     /**
@@ -768,8 +768,8 @@ gj.grid.plugins.inlineEditing.events = {
      *     });
      * </script>
      */
-    cellDataChanged: function ($grid, $cell, column, record, oldValue, newValue) {
-        $grid.triggerHandler('cellDataChanged', [$cell, column, record, oldValue, newValue]);
+    cellDataChanged: function (grid, $cell, column, record, oldValue, newValue) {
+        grid.triggerHandler('cellDataChanged', [$cell, column, record, oldValue, newValue]);
     },
 
     /**
@@ -793,20 +793,20 @@ gj.grid.plugins.inlineEditing.events = {
      *     });
      * </script>
      */
-    rowDataChanged: function ($grid, id, record) {
-        $grid.triggerHandler('rowDataChanged', [id, record]);
+    rowDataChanged: function (grid, id, record) {
+        grid.triggerHandler('rowDataChanged', [id, record]);
     }
 };
 
-gj.grid.plugins.inlineEditing.configure = function ($grid, fullConfig, clientConfig) {
-    var data = $grid.data();
-    $.extend(true, $grid, gj.grid.plugins.inlineEditing.public);
+gj.grid.plugins.inlineEditing.configure = function (grid, fullConfig, clientConfig) {
+    var data = grid.getConfig();
+    grid.extend(grid, gj.grid.plugins.inlineEditing.public);
     if (clientConfig.inlineEditing) {
-        $grid.on('dataBound', function () {
-            $grid.find('span.gj-dirty').remove();
+        grid.on('dataBound', function () {
+            grid.find('span.gj-dirty').remove();
         });
-        $grid.on('rowDataBound', function (e, $row, id, record) {
-            $grid.cancel(id);
+        grid.on('rowDataBound', function (e, $row, id, record) {
+            grid.cancel(id);
         });
     }
     if (data.inlineEditing.mode === 'command') {
@@ -815,13 +815,13 @@ gj.grid.plugins.inlineEditing.configure = function ($grid, fullConfig, clientCon
             data.columns.push(fullConfig.inlineEditing.managementColumnConfig);
         }
     } else {
-        $grid.on('cellDataBound', function (e, $displayEl, id, column, record) {
-            if (column.editor) {
-                if (column.mode === 'editOnly') {
-                    gj.grid.plugins.inlineEditing.private.editMode($grid, $displayEl.parent(), column, record);
+        grid.element.addEventListener('cellDataBound', function (e) {
+            if (e.detail.column.editor) {
+                if (e.detail.column.mode === 'editOnly') {
+                    gj.grid.plugins.inlineEditing.private.editMode(grid, e.detail.displayEl.parentNode, e.detail.column, e.detail.record);
                 } else {
-                    $displayEl.parent('td').on(data.inlineEditing.mode === 'dblclick' ? 'dblclick' : 'click', function () {
-                        gj.grid.plugins.inlineEditing.private.editMode($grid, $displayEl.parent(), column, record);
+                    displayEl.closest('td').on(data.inlineEditing.mode === 'dblclick' ? 'dblclick' : 'click', function () {
+                        gj.grid.plugins.inlineEditing.private.editMode(grid, e.detail.displayEl.parentNode, e.detail.column, e.detail.record);
                     });
                 }
             }

@@ -187,7 +187,7 @@ gj.editor.config = {
 gj.editor.methods = {
     init: function (jsConfig) {
         this.type = 'editor';
-        gj.widget.prototype.initJS.call(this, jsConfig);
+        gj.widget.prototype.init.call(this, jsConfig);
         this.element.setAttribute('data-editor', 'true');
         gj.editor.methods.initialize(this, this.getConfig());
         return this;

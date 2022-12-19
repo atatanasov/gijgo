@@ -4,7 +4,7 @@
   */
 GijgoGrid = function (element, jsConfig) {
     var self = this,
-        methods = gj.datepicker.methods;
+        methods = gj.grid.methods;
 
     self.element = element;
 
@@ -616,7 +616,7 @@ GijgoGrid = function (element, jsConfig) {
         return methods.removeRow(this, id);
     };
 
-    if ('grid' !== element.attr('data-type')) {
+    if ('grid' !== element.getAttribute('data-gj-type')) {
         methods.init.call(self, jsConfig);
     }
 
@@ -624,7 +624,7 @@ GijgoGrid = function (element, jsConfig) {
 };
 
 GijgoGrid.prototype = new gj.widget();
-GijgoGrid.constructor = gj.grid.widget;
+GijgoGrid.constructor = GijgoGrid;
 
 GijgoGrid.prototype.readConfig = gj.grid.methods.readConfig;
 GijgoGrid.prototype.readHTMLConfig = gj.grid.methods.readHTMLConfig;

@@ -130,7 +130,7 @@ GijgoDialog = function (element, jsConfig) {
 GijgoDialog.prototype = new gj.widget();
 GijgoDialog.constructor = GijgoDialog;
 
-GijgoDialog.prototype.readHTMLConfigJS = gj.dialog.methods.readHTMLConfig;
+GijgoDialog.prototype.readHTMLConfig = gj.dialog.methods.readHTMLConfig;
 
 
 if (typeof (jQuery) !== "undefined") {

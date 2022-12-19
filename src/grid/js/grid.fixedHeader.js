@@ -82,25 +82,25 @@ gj.grid.plugins.fixedHeader = {
     },
 
     private: {
-        init: function ($grid) {
-            var data = $grid.data(),
-                $tbody = $grid.children('tbody'),
-                $thead = $grid.children('thead'),
-                bodyHeight = data.height - $thead.outerHeight() - ($grid.children('tfoot').outerHeight() || 0);
-            $grid.addClass('gj-grid-scrollable');
+        init: function (grid) {
+            var data = grid.getConfig(),
+                $tbody = grid.children('tbody'),
+                $thead = grid.children('thead'),
+                bodyHeight = data.height - $thead.outerHeight() - (grid.children('tfoot').outerHeight() || 0);
+            grid.addClass('gj-grid-scrollable');
             $tbody.css('width', $thead.outerWidth());
             $tbody.height(bodyHeight);
         },
 
-        refresh: function ($grid) {
+        refresh: function (grid) {
             var i, width,
-                data = $grid.data(),
-                $tbody = $grid.children('tbody'),
-                $thead = $grid.children('thead'),
-                $tbodyCells = $grid.find('tbody tr[data-role="row"] td'),
-                $theadCells = $grid.find('thead tr[data-role="caption"] th');
+                data = grid.getConfig(),
+                $tbody = grid.children('tbody'),
+                $thead = grid.children('thead'),
+                $tbodyCells = grid.find('tbody tr[data-role="row"] td'),
+                $theadCells = grid.find('thead tr[data-role="caption"] th');
 
-            if ($grid.children('tbody').height() < gj.grid.plugins.fixedHeader.private.getRowsHeight($grid)) {
+            if (grid.children('tbody').height() < gj.grid.plugins.fixedHeader.private.getRowsHeight(grid)) {
                 $tbody.css('width', $thead.outerWidth() + gj.grid.plugins.fixedHeader.private.getScrollBarWidth() + (navigator.userAgent.toLowerCase().indexOf('firefox') > -1 ? 1 : 0));
             } else {
                 $tbody.css('width', $thead.outerWidth());
@@ -115,9 +115,9 @@ gj.grid.plugins.fixedHeader = {
             }
         },
 
-        getRowsHeight: function ($grid) {
+        getRowsHeight: function (grid) {
             var total = 0;
-            $grid.find('tbody tr').each(function () {
+            grid.find('tbody tr').each(function () {
                 total += $(this).height();
             });
             return total;
@@ -156,18 +156,18 @@ gj.grid.plugins.fixedHeader = {
     events: {
     },
 
-    configure: function ($grid, fullConfig, clientConfig) {
-        $.extend(true, $grid, gj.grid.plugins.fixedHeader.public);
-        var data = $grid.data();
+    configure: function (grid, fullConfig, clientConfig) {
+        grid.extend(grid, gj.grid.plugins.fixedHeader.public);
+        var data = grid.getConfig();
         if (clientConfig.fixedHeader) {
-            $grid.on('initialized', function () {
-                gj.grid.plugins.fixedHeader.private.init($grid);
+            grid.on('initialized', function () {
+                gj.grid.plugins.fixedHeader.private.init(grid);
             });
-            $grid.on('dataBound', function () {
-                gj.grid.plugins.fixedHeader.private.refresh($grid);
+            grid.on('dataBound', function () {
+                gj.grid.plugins.fixedHeader.private.refresh(grid);
             });
-            $grid.on('resize', function () {
-                gj.grid.plugins.fixedHeader.private.refresh($grid);
+            grid.on('resize', function () {
+                gj.grid.plugins.fixedHeader.private.refresh(grid);
             });
         }
     }

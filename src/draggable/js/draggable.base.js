@@ -93,7 +93,7 @@ gj.draggable.methods = {
         var handleEl, data, dragEl = this.element;
 
         this.type = 'draggable'
-        gj.widget.prototype.initJS.call(this, jsConfig);
+        gj.widget.prototype.init.call(this, jsConfig);
         data = this.getConfig();
         dragEl.setAttribute('data-gj-draggable', 'true');
 

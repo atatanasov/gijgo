@@ -129,7 +129,7 @@ gj.datepicker.config = {
 gj.datepicker.methods = {
     init: function (jsConfig) {
         this.type = 'datepicker';
-        gj.widget.prototype.initJS.call(this, jsConfig);
+        gj.widget.prototype.init.call(this, jsConfig);
         this.element.setAttribute('data-gj-datepicker', 'true');
         gj.datepicker.methods.initialize(this, this.getConfig());
         return this;
@@ -150,7 +150,7 @@ gj.datepicker.methods = {
         gj.core.addClasses(wrapper, data.style.wrapper);
 
         if (data.width) {
-            wrapper.style.width = data.width + 'px';
+            gj.core.css(wrapper, 'width', data.width);
         }
 
         picker.element.value = data.value || '';

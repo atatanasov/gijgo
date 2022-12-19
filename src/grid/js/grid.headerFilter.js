@@ -110,8 +110,8 @@ gj.grid.plugins.headerFilter = {
     },
 
     private: {
-        init: function ($grid) {
-            var i, $th, $ctrl, data = $grid.data(),
+        init: function (grid) {
+            var i, $th, $ctrl, data = grid.getConfig(),
                 $filterTr = $('<tr data-role="filter"/>');
 
             for (i = 0; i < data.columns.length; i++) {
@@ -120,16 +120,16 @@ gj.grid.plugins.headerFilter = {
                     $ctrl = $('<input data-field="' + data.columns[i].field + '" class="gj-width-full" />');
                     if ('onchange' === data.headerFilter.type) {
                         $ctrl.on('input propertychange', function (e) {
-                            gj.grid.plugins.headerFilter.private.reload($grid, $(this));
+                            gj.grid.plugins.headerFilter.private.reload(grid, $(this));
                         });
                     } else {
                         $ctrl.on('keypress', function (e) {
                             if (e.which == 13) {
-                                gj.grid.plugins.headerFilter.private.reload($grid, $(this));
+                                gj.grid.plugins.headerFilter.private.reload(grid, $(this));
                             }
                         });
                         $ctrl.on('blur', function (e) {
-                            gj.grid.plugins.headerFilter.private.reload($grid, $(this));
+                            gj.grid.plugins.headerFilter.private.reload(grid, $(this));
                         });
                     }
                     $th.append($ctrl);
@@ -140,13 +140,13 @@ gj.grid.plugins.headerFilter = {
                 $filterTr.append($th);
             }
 
-            $grid.children('thead').append($filterTr);
+            grid.children('thead').append($filterTr);
         },
 
-        reload: function ($grid, $ctrl) {
+        reload: function (grid, $ctrl) {
             var params = {};
             params[$ctrl.data('field')] = $ctrl.val();
-            $grid.reload(params);
+            grid.reload(params);
         }
     },
 
@@ -156,12 +156,12 @@ gj.grid.plugins.headerFilter = {
     events: {
     },
 
-    configure: function ($grid, fullConfig, clientConfig) {
-        $.extend(true, $grid, gj.grid.plugins.headerFilter.public);
-        var data = $grid.data();
+    configure: function (grid, fullConfig, clientConfig) {
+        grid.extend(grid, gj.grid.plugins.headerFilter.public);
+        var data = grid.getConfig();
         if (clientConfig.headerFilter) {
-            $grid.on('initialized', function () {
-                gj.grid.plugins.headerFilter.private.init($grid);
+            grid.on('initialized', function () {
+                gj.grid.plugins.headerFilter.private.init(grid);
             });
         }
     }

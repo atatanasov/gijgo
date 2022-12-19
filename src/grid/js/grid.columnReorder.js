@@ -53,40 +53,40 @@ gj.grid.plugins.columnReorder = {
     },
 
     private: {
-        init: function ($grid) {
+        init: function (grid) {
             var i, $cell,
-                $cells = $grid.find('thead tr th');
+                $cells = grid.find('thead tr th');
             for (i = 0; i < $cells.length; i++) {
                 $cell = $($cells[i]);
-                $cell.on('mousedown', gj.grid.plugins.columnReorder.private.createMouseDownHandler($grid, $cell));
-                $cell.on('mousemove', gj.grid.plugins.columnReorder.private.createMouseMoveHandler($grid, $cell));
-                $cell.on('mouseup', gj.grid.plugins.columnReorder.private.createMouseUpHandler($grid, $cell));
+                $cell.on('mousedown', gj.grid.plugins.columnReorder.private.createMouseDownHandler(grid, $cell));
+                $cell.on('mousemove', gj.grid.plugins.columnReorder.private.createMouseMoveHandler(grid, $cell));
+                $cell.on('mouseup', gj.grid.plugins.columnReorder.private.createMouseUpHandler(grid, $cell));
             }
         },
 
-        createMouseDownHandler: function ($grid) {
+        createMouseDownHandler: function (grid) {
             return function (e) {
-                $grid.timeout = setTimeout(function () {
-                    $grid.data('dragReady', true);
+                grid.timeout = setTimeout(function () {
+                    grid.element.setAttribute('data-gj-drag-ready', true);
                 }, 100);
             }
         },
 
-        createMouseUpHandler: function ($grid) {
+        createMouseUpHandler: function (grid) {
             return function (e) {
-                clearTimeout($grid.timeout);
-                $grid.data('dragReady', false);
+                clearTimeout(grid.timeout);
+                grid.element.setAttribute('data-gj-drag-ready', false);
             }
         },
 
-        createMouseMoveHandler: function ($grid, $thSource) {
+        createMouseMoveHandler: function (grid, $thSource) {
             return function (e) {
                 var $dragEl, srcIndex;
-                if ($grid.data('dragReady')) {
-                    $grid.data('dragReady', false);
-                    $dragEl = $grid.clone();
+                if (grid.element.getAttribute('data-gj-drag-ready')) {
+                    grid.element.setAttribute('data-gj-drag-ready', false);
+                    $dragEl = grid.clone();
                     srcIndex = $thSource.index();
-                    $grid.addClass('gj-unselectable');
+                    grid.addClass('gj-unselectable');
                     $('body').append($dragEl);
                     $dragEl.attr('data-role', 'draggable-clone').css('cursor', 'move');
                     $dragEl.find('thead tr th:eq(' + srcIndex + ')').siblings().remove();
@@ -94,7 +94,7 @@ gj.grid.plugins.columnReorder = {
                     $dragEl.find('tbody tr td:nth-child(' + (srcIndex + 1) + ')').siblings().remove();
                     $dragEl.find('tfoot').remove();
                     $dragEl.draggable({
-                        stop: gj.grid.plugins.columnReorder.private.createDragStopHandler($grid, $thSource)
+                        stop: gj.grid.plugins.columnReorder.private.createDragStopHandler(grid, $thSource)
                     });
                     $dragEl.css({
                         position: 'absolute', top: $thSource.offset().top, left: $thSource.offset().left, width: $thSource.width(), zIndex: 1
@@ -108,7 +108,7 @@ gj.grid.plugins.columnReorder = {
                             $dropEl.droppable('destroy');
                         }
                         $dropEl.droppable({
-                            over: gj.grid.plugins.columnReorder.private.createDroppableOverHandler($grid, $thSource),
+                            over: gj.grid.plugins.columnReorder.private.createDroppableOverHandler(grid, $thSource),
                             out: gj.grid.plugins.columnReorder.private.droppableOut
                         });
                     });
@@ -117,13 +117,13 @@ gj.grid.plugins.columnReorder = {
             };
         },
 
-        createDragStopHandler: function ($grid, $thSource) {
+        createDragStopHandler: function (grid, $thSource) {
             return function (e, mousePosition) {
                 $('table[data-role="draggable-clone"]').draggable('destroy').remove();
-                $grid.removeClass('gj-unselectable');
+                grid.removeClass('gj-unselectable');
                 $thSource.siblings('th').each(function () {
                     var $thTarget = $(this),
-                        data = $grid.data(),
+                        data = grid.getConfig(),
                         targetPosition = gj.grid.methods.getColumnPosition(data.columns, $thTarget.data('field')),
                         sourcePosition = gj.grid.methods.getColumnPosition(data.columns, $thSource.data('field'));
 
@@ -135,7 +135,7 @@ gj.grid.plugins.columnReorder = {
                         } else {
                             $thTarget.after($thSource);
                         }
-                        gj.grid.plugins.columnReorder.private.moveRowCells($grid, sourcePosition, targetPosition);
+                        gj.grid.plugins.columnReorder.private.moveRowCells(grid, sourcePosition, targetPosition);
                         data.columns.splice(targetPosition, 0, data.columns.splice(sourcePosition, 1)[0]);
                     }
                     $thTarget.droppable('destroy');
@@ -143,8 +143,8 @@ gj.grid.plugins.columnReorder = {
             }
         },
 
-        moveRowCells: function ($grid, sourcePosition, targetPosition) {
-            var i, $row, $rows = $grid.find('tbody tr[data-role="row"]');
+        moveRowCells: function (grid, sourcePosition, targetPosition) {
+            var i, $row, $rows = grid.find('tbody tr[data-role="row"]');
             for (i = 0; i < $rows.length; i++) {
                 $row = $($rows[i]);
                 if (targetPosition < sourcePosition) {
@@ -155,18 +155,18 @@ gj.grid.plugins.columnReorder = {
             }
         },
 
-        createDroppableOverHandler: function ($grid, $thSource) {
+        createDroppableOverHandler: function (grid, $thSource) {
             return function (e) {
                 var $thTarget = $(this),
-                    data = $grid.data(),
+                    data = grid.getConfig(),
                     targetPosition = gj.grid.methods.getColumnPosition(data.columns, $thTarget.data('field')),
                     sourcePosition = gj.grid.methods.getColumnPosition(data.columns, $thSource.data('field'));
                 if (targetPosition < sourcePosition) {
                     $thTarget.addClass('gj-grid-left-border');
-                    $grid.find('tbody tr[data-role="row"] td:nth-child(' + ($thTarget.index() + 1) + ')').addClass('gj-grid-left-border');
+                    grid.find('tbody tr[data-role="row"] td:nth-child(' + ($thTarget.index() + 1) + ')').addClass('gj-grid-left-border');
                 } else {
                     $thTarget.addClass('gj-grid-right-border');
-                    $grid.find('tbody tr[data-role="row"] td:nth-child(' + ($thTarget.index() + 1) + ')').addClass('gj-grid-right-border');
+                    grid.find('tbody tr[data-role="row"] td:nth-child(' + ($thTarget.index() + 1) + ')').addClass('gj-grid-right-border');
                 }
             };
         },
@@ -181,11 +181,11 @@ gj.grid.plugins.columnReorder = {
     public: {
     },
 
-    configure: function ($grid, fullConfig, clientConfig) {
-        $.extend(true, $grid, gj.grid.plugins.columnReorder.public);
+    configure: function (grid, fullConfig, clientConfig) {
+        grid.extend(grid, gj.grid.plugins.columnReorder.public);
         if (fullConfig.columnReorder) {
-            $grid.on('initialized', function () {
-                gj.grid.plugins.columnReorder.private.init($grid);
+            grid.on('initialized', function () {
+                gj.grid.plugins.columnReorder.private.init(grid);
             });
         }
     }

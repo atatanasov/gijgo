@@ -177,10 +177,10 @@ gj.grid.plugins.responsiveDesign = {
             return result;
         },
         
-        updateDetails: function ($grid) {      
+        updateDetails: function (grid) {      
             var rows, data, i, j, $row, details, $placeholder, column, tmp;
-            rows = $grid.find('tbody > tr[data-role="row"]');
-            data = $grid.data();
+            rows = grid.find('tbody > tr[data-role="row"]');
+            data = grid.getConfig();
             for (i = 0; i < rows.length; i++) {
                 $row = $(rows[i]);
                 details = $row.data('details');
@@ -203,7 +203,7 @@ gj.grid.plugins.responsiveDesign = {
                         $placeholder.remove();
                     }
                 }
-                $grid.updateDetails($row);
+                grid.updateDetails($row);
             }
         }
     },
@@ -238,7 +238,7 @@ gj.grid.plugins.responsiveDesign = {
         makeResponsive: function () {
             var i, $column,
                 extraWidth = 0,
-                config = this.data(),
+                config = this.getConfig(),
                 columns = gj.grid.plugins.responsiveDesign.private.orderColumns(config);
             //calculate extra width
             for (i = 0; i < columns.length; i++) {
@@ -290,46 +290,46 @@ gj.grid.plugins.responsiveDesign = {
          *     });
          * </script>
          */
-        resize: function ($grid, newWidth, oldWidth) {
-            $grid.triggerHandler('resize', [newWidth, oldWidth]);
+        resize: function (grid, newWidth, oldWidth) {
+            grid.triggerHandler('resize', [newWidth, oldWidth]);
         }
     },
 
-    'configure': function ($grid, fullConfig, clientConfig) {
-        $.extend(true, $grid, gj.grid.plugins.responsiveDesign.public);
+    'configure': function (grid, fullConfig, clientConfig) {
+        grid.extend(grid, gj.grid.plugins.responsiveDesign.public);
         if (fullConfig.responsive) {
-            $grid.on('initialized', function () {
-                $grid.makeResponsive();
-                $grid.oldWidth = $grid.width();
-                $grid.resizeCheckIntervalId = setInterval(function () {
-                    var newWidth = $grid.width();
-                    if (newWidth !== $grid.oldWidth) {
-                        gj.grid.plugins.responsiveDesign.events.resize($grid, newWidth, $grid.oldWidth);
+            grid.on('initialized', function () {
+                grid.makeResponsive();
+                grid.oldWidth = grid.width();
+                grid.resizeCheckIntervalId = setInterval(function () {
+                    var newWidth = grid.width();
+                    if (newWidth !== grid.oldWidth) {
+                        gj.grid.plugins.responsiveDesign.events.resize(grid, newWidth, grid.oldWidth);
                     }
-                    $grid.oldWidth = newWidth;
+                    grid.oldWidth = newWidth;
                 }, fullConfig.resizeCheckInterval);
             });
-            $grid.on('destroy', function () {
-                if ($grid.resizeCheckIntervalId) {
-                    clearInterval($grid.resizeCheckIntervalId);
+            grid.on('destroy', function () {
+                if (grid.resizeCheckIntervalId) {
+                    clearInterval(grid.resizeCheckIntervalId);
                 }
             });
-            $grid.on('resize', function () {
-                $grid.makeResponsive();
+            grid.on('resize', function () {
+                grid.makeResponsive();
             });
         }
         if (fullConfig.showHiddenColumnsAsDetails && gj.grid.plugins.expandCollapseRows) {
-            $grid.on('dataBound', function () {
-                gj.grid.plugins.responsiveDesign.private.updateDetails($grid);
+            grid.on('dataBound', function () {
+                gj.grid.plugins.responsiveDesign.private.updateDetails(grid);
             });
-            $grid.on('columnHide', function () {
-                gj.grid.plugins.responsiveDesign.private.updateDetails($grid);
+            grid.on('columnHide', function () {
+                gj.grid.plugins.responsiveDesign.private.updateDetails(grid);
             });
-            $grid.on('columnShow', function () {
-                gj.grid.plugins.responsiveDesign.private.updateDetails($grid);
+            grid.on('columnShow', function () {
+                gj.grid.plugins.responsiveDesign.private.updateDetails(grid);
             });
-            $grid.on('rowDataBound', function () {
-                gj.grid.plugins.responsiveDesign.private.updateDetails($grid);
+            grid.on('rowDataBound', function () {
+                gj.grid.plugins.responsiveDesign.private.updateDetails(grid);
             });
         }
     }

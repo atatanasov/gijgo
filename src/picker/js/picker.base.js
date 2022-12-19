@@ -23,7 +23,7 @@ gj.picker.methods = {
         gj.core.addClasses(wrapper, data.style.wrapper);
 
         if (data.width) {
-            wrapper.style.width = data.width + 'px';
+            gj.core.css(wrapper, 'width', data.width);
         }
 
         input.value = data.value || '';
@@ -119,7 +119,7 @@ gj.picker.widget.constructor = gj.picker.widget;
 
 gj.picker.widget.prototype.init = function (jsConfig, type, methods) {
     this.type = type;
-    gj.widget.prototype.initJS.call(this, jsConfig);
+    gj.widget.prototype.init.call(this, jsConfig);
     this.element.setAttribute('data-' + type, 'true');
     gj.picker.methods.initialize(this, gijgoStorage.get(this.element, this.type), gj[type].methods);
     return this;

@@ -334,6 +334,11 @@ var gj = {};
             }
         }
         return arguments[0];
+    },
+
+    css: function(el, prop, val) {
+        val = isNaN(val) ? val : val + 'px';
+        el.style[prop] = val;
     }
 };
 
@@ -386,6 +391,24 @@ gj.widget = function () {
     self.setRecords = function(records) {
         window.gijgoStorage.put(this.element, 'records', records);
     };
+
+    self.getTotalRecords = function() {
+        return window.gijgoStorage.get(this.element, 'totalRecords');
+    };
+
+    self.setTotalRecords = function(records) {
+        window.gijgoStorage.put(this.element, 'totalRecords', records);
+    };
+
+    self.on = function(event, func) {
+        this.element.addEventListener(event, func);
+        return this;
+    }
+
+    self.off = function(event, func) {
+        this.element.removeEventListener(event, func);
+        return this;
+    }
 
     self.generateGUID = function () {
         function s4() {
@@ -457,20 +480,19 @@ gj.widget = function () {
     };
 };
 
-gj.widget.prototype.init = function (jsConfig, type) {
-    var option, clientConfig, fullConfig;
+gj.widget.prototype.init = function (jsConfig) {
+    var option, clientConfig, fullConfig, type = this.type;
 
-    this.element.setAttribute('data-type', type);
-    clientConfig = $.extend(true, {}, this.readHTMLConfig() || {});
-    $.extend(true, clientConfig, jsConfig || {});
-    fullConfig = this.readConfig(clientConfig, type);
+    clientConfig = this.extend({}, this.readHTMLConfig() || {});
+    this.extend(clientConfig, jsConfig || {});
+    fullConfig = this.buildConfigJS(clientConfig);
     this.element.setAttribute('data-gj-guid', fullConfig.guid);
-    this.data(fullConfig);
+    this.setConfig(fullConfig);
 
     // Initialize events configured as options
     for (option in fullConfig) {
         if (gj[type].events.hasOwnProperty(option)) {
-            this.on(option, fullConfig[option]);
+            this.element.addEventListener(option, fullConfig[option]);
             delete fullConfig[option];
         }
     }
@@ -522,8 +544,8 @@ gj.widget.prototype.readConfig = function (clientConfig, type) {
 };
 
 gj.widget.prototype.readHTMLConfig = function () {
-    var result = this.data(),
-        attrs = this[0].attributes;
+    var result = {},
+        attrs = this.element.attributes;
     if (attrs['width']) {
         result.width = attrs['width'].value;
     }
@@ -536,38 +558,19 @@ gj.widget.prototype.readHTMLConfig = function () {
     if (attrs['align']) {
         result.align = attrs['align'].value;
     }
+    if (attrs['placeholder']) {
+        result.placeholder = attrs['placeholder'].value;
+    }
+    for (var dataEl in this.element.dataset) {
+        if (dataEl.startsWith('gj')) {
+            result[dataEl.charAt(2).toLowerCase() + dataEl.slice(3)] = this.element.dataset[dataEl];
+        }
+    }
     if (result && result.source) {
         result.dataSource = result.source;
         delete result.source;
     }
     return result;
-};
-
-gj.widget.prototype.initJS = function (jsConfig) {
-    var option, clientConfig, fullConfig, type = this.type;
-
-    clientConfig = this.extend({}, this.readHTMLConfigJS() || {});
-    this.extend(clientConfig, jsConfig || {});
-    fullConfig = this.buildConfigJS(clientConfig);
-    this.element.setAttribute('data-gj-guid', fullConfig.guid);
-    this.setConfig(fullConfig);
-
-    // Initialize events configured as options
-    for (option in fullConfig) {
-        if (gj[type].events.hasOwnProperty(option)) {
-            this.element.addEventListener(option, fullConfig[option]);
-            delete fullConfig[option];
-        }
-    }
-
-    // Initialize all plugins
-    for (plugin in gj[type].plugins) {
-        if (gj[type].plugins.hasOwnProperty(plugin)) {
-            gj[type].plugins[plugin].configure(this, fullConfig, clientConfig);
-        }
-    }
-
-    return this;
 };
 
 gj.widget.prototype.buildConfigJS = function (clientConfig) {
@@ -604,36 +607,6 @@ gj.widget.prototype.buildConfigJS = function (clientConfig) {
     }
 
     return config;
-}
-
-gj.widget.prototype.readHTMLConfigJS = function () {
-    var result = {},
-        attrs = this.element.attributes;
-    if (attrs['width']) {
-        result.width = attrs['width'].value;
-    }
-    if (attrs['height']) {
-        result.height = attrs['height'].value;
-    }
-    if (attrs['value']) {
-        result.value = attrs['value'].value;
-    }
-    if (attrs['align']) {
-        result.align = attrs['align'].value;
-    }
-    if (attrs['placeholder']) {
-        result.placeholder = attrs['placeholder'].value;
-    }
-    for (var dataEl in this.element.dataset) {
-        if (dataEl.startsWith('gj')) {
-            result[dataEl.charAt(2).toLowerCase() + dataEl.slice(3)] = this.element.dataset[dataEl];
-        }
-    }
-    if (result && result.source) {
-        result.dataSource = result.source;
-        delete result.source;
-    }
-    return result;
 };
 
 gj.widget.prototype.createDoneHandler = function () {
@@ -760,7 +733,7 @@ gj.picker.methods = {
         gj.core.addClasses(wrapper, data.style.wrapper);
 
         if (data.width) {
-            wrapper.style.width = data.width + 'px';
+            gj.core.css(wrapper, 'width', data.width);
         }
 
         input.value = data.value || '';
@@ -856,7 +829,7 @@ gj.picker.widget.constructor = gj.picker.widget;
 
 gj.picker.widget.prototype.init = function (jsConfig, type, methods) {
     this.type = type;
-    gj.widget.prototype.initJS.call(this, jsConfig);
+    gj.widget.prototype.init.call(this, jsConfig);
     this.element.setAttribute('data-' + type, 'true');
     gj.picker.methods.initialize(this, gijgoStorage.get(this.element, this.type), gj[type].methods);
     return this;

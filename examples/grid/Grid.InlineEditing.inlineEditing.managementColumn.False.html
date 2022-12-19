@@ -21,31 +21,31 @@
          { 'ID': 5, 'Name': 'James Rodríguez', 'PlaceOfBirth': 'Cúcuta, Colombia' },
          { 'ID': 6, 'Name': 'Dimitar Berbatov', 'PlaceOfBirth': 'Blagoevgrad, Bulgaria' }
      ];
-     editManager = function (value, record, $cell, $displayEl, id, $grid) {
-         var data = $grid.data(),
+     editManager = function (value, record, $cell, $displayEl, id, grid) {
+         var data = grid.getConfig(),
              $edit = $('<button class="gj-button-md"><i class="material-icons">mode_edit</i> Edit</button>').attr('data-key', id),
              $delete = $('<button class="gj-button-md"><i class="material-icons">delete</i> Delete</button>').attr('data-key', id),
              $update = $('<button class="gj-button-md"><i class="material-icons">check_circle</i> Update</button>').attr('data-key', id).hide(),
              $cancel = $('<button class="gj-button-md"><i class="material-icons">cancel</i> Cancel</button>').attr('data-key', id).hide();
          $edit.on('click', function (e) {
-             $grid.edit($(this).data('key'));
+             grid.edit($(this).data('key'));
              $edit.hide();
              $delete.hide();
              $update.show();
              $cancel.show();
          });
          $delete.on('click', function (e) {
-             $grid.removeRow($(this).data('key'));
+             grid.removeRow($(this).data('key'));
          });
          $update.on('click', function (e) {
-             $grid.update($(this).data('key'));
+             grid.update($(this).data('key'));
              $edit.show();
              $delete.show();
              $update.hide();
              $cancel.hide();
          });
          $cancel.on('click', function (e) {
-             $grid.cancel($(this).data('key'));
+             grid.cancel($(this).data('key'));
              $edit.show();
              $delete.show();
              $update.hide();

@@ -147,7 +147,7 @@ gj.checkbox.config = {
 gj.checkbox.methods = {
     init: function (jsConfig) {
         this.type = 'checkbox';
-        gj.widget.prototype.initJS.call(this, jsConfig);
+        gj.widget.prototype.init.call(this, jsConfig);
         this.element.setAttribute('data-gj-checkbox', 'true');
         gj.checkbox.methods.initialize(this, this.getConfig());
         return this;

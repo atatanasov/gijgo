@@ -42,7 +42,7 @@ gj.grid.plugins.export = {
          */
         getCSV: function (includeAllRecords) {
             var i, j, line = '', str = '',
-                columns = this.data().columns,
+                columns = this.getConfig().columns,
                 records = this.getAll(includeAllRecords);
 
             if (records.length) {
@@ -124,7 +124,7 @@ gj.grid.plugins.export = {
         }
     },
 
-    configure: function ($grid) {
-        $.extend(true, $grid, gj.grid.plugins.export.public);
+    configure: function (grid) {
+        grid.extend(grid, gj.grid.plugins.export.public);
     }
 };

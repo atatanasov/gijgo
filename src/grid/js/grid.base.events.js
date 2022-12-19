@@ -7,7 +7,6 @@ gj.grid.events = {
      * Event fires before addition of an empty row to the grid.
      * @event beforeEmptyRowInsert
      * @param {object} e - event data
-     * @param {object} $row - The empty row as jquery object
      * @example sample <!-- grid -->
      * <table id="grid"></table>
      * <script>
@@ -18,13 +17,13 @@ gj.grid.events = {
      *         },
      *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
      *     });
-     *     grid.on('beforeEmptyRowInsert', function (e, $row) {
+     *     grid.on('beforeEmptyRowInsert', function (e) {
      *         alert('beforeEmptyRowInsert is fired.');
      *     });
      * </script>
      */
-    beforeEmptyRowInsert: function ($grid, $row) {
-        return $grid.triggerHandler('beforeEmptyRowInsert', [$row]);
+    beforeEmptyRowInsert: function (el) {
+        return el.dispatchEvent(new Event('beforeEmptyRowInsert'));
     },
 
     /**
@@ -45,8 +44,8 @@ gj.grid.events = {
      *     });
      * </script>
      */
-    dataBinding: function ($grid, records) {
-        return $grid.triggerHandler('dataBinding', [records]);
+    dataBinding: function (el, records) {
+        return el.dispatchEvent(new CustomEvent('dataBinding', { detail: { records: records } }));
     },
 
     /**
@@ -91,8 +90,8 @@ gj.grid.events = {
      *     });
      * </script>
      */
-    rowDataBound: function ($grid, $row, id, record) {
-        return $grid.triggerHandler('rowDataBound', [$row, id, record]);
+    rowDataBound: function (el, row, id, record) {
+        return el.dispatchEvent(new CustomEvent('rowDataBound', { detail: { row: row, id: id, record: record } }));
     },
 
     /**
@@ -100,10 +99,10 @@ gj.grid.events = {
      *
      * @event cellDataBound
      * @param {object} e - event data
-     * @param {object} $displayEl - inner div element for display of the cell value presented as jquery object
-     * @param {string} id - the id of the record
-     * @param {object} column - the column configuration data
-     * @param {object} record - the data of the row record
+     * @param {object} e.detail.displayEl - inner div element for display of the cell value presented as jquery object
+     * @param {string} e.detail.id - the id of the record
+     * @param {object} e.detail.column - the column configuration data
+     * @param {object} e.detail.record - the data of the row record
      * @example sample <!-- grid -->
      * <table id="grid"></table>
      * <script>
@@ -118,8 +117,11 @@ gj.grid.events = {
      *     });
      * </script>
      */
-    cellDataBound: function ($grid, $displayEl, id, column, record) {
-        return $grid.triggerHandler('cellDataBound', [$displayEl, id, column, record]);
+    cellDataBound: function (el, displayEl, id, column, record) {
+        return el.dispatchEvent(new CustomEvent('cellDataBound', { detail: { 
+                displayEl: displayEl, id: id, column: column, record: record
+            } 
+        }));
     },
 
     /**
@@ -290,8 +292,8 @@ gj.grid.events = {
      *     });
      * </script>
      */
-    initialized: function ($grid) {
-        return $grid.triggerHandler('initialized');
+    initialized: function (el) {
+        return el.dispatchEvent(new Event('initialized'));
     },
 
     /**

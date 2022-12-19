@@ -143,13 +143,13 @@ gj.grid.plugins.grouping = {
     },
 
     private: {
-        init: function ($grid) {
-            var previousValue, data = $grid.data();
+        init: function (grid) {
+            var previousValue, data = grid.getConfig();
 
             previousValue = undefined;
-            $grid.on('rowDataBound', function (e, $row, id, record) {
+            grid.on('rowDataBound', function (e, $row, id, record) {
                 if (previousValue !== record[data.grouping.groupBy] || $row[0].rowIndex === 1) {
-                    var colspan = gj.grid.methods.countVisibleColumns($grid) - 1,
+                    var colspan = gj.grid.methods.countVisibleColumns(grid) - 1,
                         $groupRow = $('<tr role="group" />'),
                         $expandCollapseCell = $('<td class="gj-text-align-center gj-unselectable gj-cursor-pointer" />');
 
@@ -167,8 +167,8 @@ gj.grid.plugins.grouping = {
             data.params[data.paramNames.groupByDirection] = data.grouping.direction;
         },
 
-        grouping: function ($grid, records) {
-            var data = $grid.data();
+        grouping: function (grid, records) {
+            var data = grid.getConfig();
             records.sort(gj.grid.methods.createDefaultSorter(data.grouping.direction, data.grouping.groupBy));
         },
 
@@ -203,9 +203,9 @@ gj.grid.plugins.grouping = {
 
     public: { },
 
-    configure: function ($grid) {
-        var column, data = $grid.data();
-        $.extend(true, $grid, gj.grid.plugins.grouping.public);
+    configure: function (grid) {
+        var column, data = grid.getConfig();
+        grid.extend(grid, gj.grid.plugins.grouping.public);
         if (data.grouping && data.grouping.groupBy) {
             column = {
                 title: '',
@@ -216,12 +216,12 @@ gj.grid.plugins.grouping = {
             };
             data.columns = [column].concat(data.columns);
 
-            $grid.on('initialized', function () {
-                gj.grid.plugins.grouping.private.init($grid);
+            grid.on('initialized', function () {
+                gj.grid.plugins.grouping.private.init(grid);
             });
 
-            $grid.on('dataFiltered', function (e, records) {
-                gj.grid.plugins.grouping.private.grouping($grid, records);
+            grid.on('dataFiltered', function (e, records) {
+                gj.grid.plugins.grouping.private.grouping(grid, records);
             });
         }
     }

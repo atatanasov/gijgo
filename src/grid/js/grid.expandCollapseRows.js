@@ -132,14 +132,14 @@ gj.grid.plugins.expandCollapseRows = {
     },
 
     'private': {
-        expandDetail: function ($grid, $cell, id) {
+        expandDetail: function (grid, $cell, id) {
             var $contentRow = $cell.closest('tr'),
                 $detailsRow = $('<tr data-role="details" />'),
-                $detailsCell = $('<td colspan="' + gj.grid.methods.countVisibleColumns($grid) + '" />'),
+                $detailsCell = $('<td colspan="' + gj.grid.methods.countVisibleColumns(grid) + '" />'),
                 $detailsWrapper = $('<div data-role="display" />'),
-                data = $grid.data(),
+                data = grid.getConfig(),
                 position = $contentRow.data('position'),
-                record = $grid.get(position),
+                record = grid.get(position),
                 plugin = gj.grid.plugins.expandCollapseRows;
 
             if (typeof (id) === undefined) {
@@ -148,15 +148,15 @@ gj.grid.plugins.expandCollapseRows = {
             $detailsRow.append($detailsCell.append($detailsWrapper.append($contentRow.data('details'))));
             $detailsRow.insertAfter($contentRow);
             $cell.children('div[data-role="display"]').empty().append(data.icons.collapseRow);
-            $grid.updateDetails($contentRow);
-            plugin.private.keepSelection($grid, id);
-            plugin.events.detailExpand($grid, $detailsRow.find('td>div'), id);
+            grid.updateDetails($contentRow);
+            plugin.private.keepSelection(grid, id);
+            plugin.events.detailExpand(grid, $detailsRow.find('td>div'), id);
         },
 
-        collapseDetail: function ($grid, $cell, id) {
+        collapseDetail: function (grid, $cell, id) {
             var $contentRow = $cell.closest('tr'),
                 $detailsRow = $contentRow.next('tr[data-role="details"]'),
-                data = $grid.data(),
+                data = grid.getConfig(),
                 plugin = gj.grid.plugins.expandCollapseRows;
 
             if (typeof (id) === undefined) {
@@ -164,14 +164,14 @@ gj.grid.plugins.expandCollapseRows = {
             }
             $detailsRow.remove();
             $cell.children('div[data-role="display"]').empty().append(data.icons.expandRow);
-            plugin.private.removeSelection($grid, id);
-            plugin.events.detailCollapse($grid, $detailsRow.find('td>div'), id);
+            plugin.private.removeSelection(grid, id);
+            plugin.events.detailCollapse(grid, $detailsRow.find('td>div'), id);
         },
 
-        keepSelection: function($grid, id) {
-            var data = $grid.data();
+        keepSelection: function(grid, id) {
+            var data = grid.getConfig();
             if (data.keepExpandedRows) {
-                if ($.isArray(data.expandedRows)) {
+                if (Array.isArray(data.expandedRows)) {
                     if (data.expandedRows.indexOf(id) == -1) {
                         data.expandedRows.push(id);
                     }
@@ -181,17 +181,17 @@ gj.grid.plugins.expandCollapseRows = {
             }
         },
 
-        removeSelection: function ($grid, id) {
-            var data = $grid.data();
+        removeSelection: function (grid, id) {
+            var data = grid.getConfig();
             if (data.keepExpandedRows && $.isArray(data.expandedRows) && data.expandedRows.indexOf(id) > -1) {
                 data.expandedRows.splice(data.expandedRows.indexOf(id), 1);
             }
         },
 
-        updateDetailsColSpan: function ($grid) {
-            var $cells = $grid.find('tbody > tr[data-role="details"] > td');
+        updateDetailsColSpan: function (grid) {
+            var $cells = grid.find('tbody > tr[data-role="details"] > td');
             if ($cells && $cells.length) {
-                $cells.attr('colspan', gj.grid.methods.countVisibleColumns($grid));
+                $cells.attr('colspan', gj.grid.methods.countVisibleColumns(grid));
             }
         }        
     },
@@ -217,22 +217,22 @@ gj.grid.plugins.expandCollapseRows = {
          * </script>
          */
         collapseAll: function () {
-            var $grid = this, data = $grid.data(), position;
+            var grid = this, data = grid.getConfig(), position;
                 
 
             if (typeof (data.detailTemplate) !== 'undefined') {
-                position = gj.grid.methods.getColumnPositionByRole($grid, 'expander');
-                $grid.find('tbody tr[data-role="row"]').each(function () {
-                    gj.grid.plugins.expandCollapseRows.private.collapseDetail($grid, $(this).find('td:eq(' + position + ')'));
+                position = gj.grid.methods.getColumnPositionByRole(grid, 'expander');
+                grid.find('tbody tr[data-role="row"]').each(function () {
+                    gj.grid.plugins.expandCollapseRows.private.collapseDetail(grid, $(this).find('td:eq(' + position + ')'));
                 });
             }
 
             if (typeof (data.grouping) !== 'undefined') {
-                $grid.find('tbody tr[role="group"]').each(function () {
+                grid.find('tbody tr[role="group"]').each(function () {
                     gj.grid.plugins.grouping.private.collapseGroup(data, $(this).find('td:eq(0)'));
                 });
             }
-            return $grid;
+            return grid;
         },
 
         /**
@@ -254,38 +254,38 @@ gj.grid.plugins.expandCollapseRows = {
          * </script>
          */
         expandAll: function () {
-            var $grid = this, data = $grid.data(), position;
+            var grid = this, data = grid.getConfig(), position;
 
             if (typeof (data.detailTemplate) !== 'undefined') {
-                position = gj.grid.methods.getColumnPositionByRole($grid, 'expander');
-                $grid.find('tbody tr[data-role="row"]').each(function () {
-                    gj.grid.plugins.expandCollapseRows.private.expandDetail($grid, $(this).find('td:eq(' + position + ')'));
+                position = gj.grid.methods.getColumnPositionByRole(grid, 'expander');
+                grid.find('tbody tr[data-role="row"]').each(function () {
+                    gj.grid.plugins.expandCollapseRows.private.expandDetail(grid, $(this).find('td:eq(' + position + ')'));
                 });
             }
 
             if (typeof (data.grouping) !== 'undefined') {
-                $grid.find('tbody tr[role="group"]').each(function () {
+                grid.find('tbody tr[role="group"]').each(function () {
                     gj.grid.plugins.grouping.private.expandGroup(data, $(this).find('td:eq(0)'));
                 });
             }
-            return $grid;
+            return grid;
         },
 
         //TODO: add documentation
         updateDetails: function ($contentRow) {
-            var $grid = this,
+            var grid = this,
                 $detailWrapper = $contentRow.data('details'),
                 content = $detailWrapper.html(),
-                record = $grid.get($contentRow.data('position'));
+                record = grid.get($contentRow.data('position'));
 
             if (record && content) {
                 $detailWrapper.html().replace(/\{(.+?)\}/g, function ($0, $1) {
-                    var column = gj.grid.methods.getColumnInfo($grid, $1);
+                    var column = gj.grid.methods.getColumnInfo(grid, $1);
                     content = content.replace($0, gj.grid.methods.formatText(record[$1], column));
                 });
                 $detailWrapper.html(content);
             }
-            return $grid;
+            return grid;
         }
     },
 
@@ -312,8 +312,8 @@ gj.grid.plugins.expandCollapseRows = {
          *     });
          * </script>
          */
-        detailExpand: function ($grid, $detailWrapper, id) {
-            $grid.triggerHandler('detailExpand', [$detailWrapper, id]);
+        detailExpand: function (grid, $detailWrapper, id) {
+            grid.triggerHandler('detailExpand', [$detailWrapper, id]);
         },
 
         /**
@@ -342,15 +342,15 @@ gj.grid.plugins.expandCollapseRows = {
          *     });
          * </script>
          */
-        detailCollapse: function ($grid, $detailWrapper, id) {
-            $grid.triggerHandler('detailCollapse', [$detailWrapper, id]);
+        detailCollapse: function (grid, $detailWrapper, id) {
+            grid.triggerHandler('detailCollapse', [$detailWrapper, id]);
         }
     },
 
-    'configure': function ($grid) {
-        var column, data = $grid.data();
+    'configure': function (grid) {
+        var column, data = grid.getConfig();
 
-        $.extend(true, $grid, gj.grid.plugins.expandCollapseRows.public);
+        grid.extend(grid, gj.grid.plugins.expandCollapseRows.public);
 
         if (typeof (data.detailTemplate) !== 'undefined') {
             column = {
@@ -365,43 +365,43 @@ gj.grid.plugins.expandCollapseRows = {
                     'click': function (e) {
                         var $cell = $(this), methods = gj.grid.plugins.expandCollapseRows.private;
                         if ($cell.closest('tr').next().attr('data-role') === 'details') {
-                            methods.collapseDetail($grid, $cell, e.data.id);
+                            methods.collapseDetail(grid, $cell, e.data.id);
                         } else {
-                            methods.expandDetail($grid, $(this), e.data.id);
+                            methods.expandDetail(grid, $(this), e.data.id);
                         }
                     }
                 }
             };
             data.columns = [column].concat(data.columns);
 
-            $grid.on('rowDataBound', function (e, $row, id, record) {
+            grid.on('rowDataBound', function (e, $row, id, record) {
                 $row.data('details', $(data.detailTemplate));
             });
-            $grid.on('columnShow', function (e, column) {
-                gj.grid.plugins.expandCollapseRows.private.updateDetailsColSpan($grid);
+            grid.on('columnShow', function (e, column) {
+                gj.grid.plugins.expandCollapseRows.private.updateDetailsColSpan(grid);
             });
-            $grid.on('columnHide', function (e, column) {
-                gj.grid.plugins.expandCollapseRows.private.updateDetailsColSpan($grid);
+            grid.on('columnHide', function (e, column) {
+                gj.grid.plugins.expandCollapseRows.private.updateDetailsColSpan(grid);
             });
-            $grid.on('rowRemoving', function (e, $row, id, record) {
-                gj.grid.plugins.expandCollapseRows.private.collapseDetail($grid, $row.children('td').first(), id);
+            grid.on('rowRemoving', function (e, $row, id, record) {
+                gj.grid.plugins.expandCollapseRows.private.collapseDetail(grid, $row.children('td').first(), id);
             });
-            $grid.on('dataBinding', function () {
-                $grid.collapseAll();
+            grid.on('dataBinding', function () {
+                grid.collapseAll();
             });
-            $grid.on('pageChanging', function () {
-                $grid.collapseAll();
+            grid.on('pageChanging', function () {
+                grid.collapseAll();
             });
-            $grid.on('dataBound', function () {
-                var i, $cell, $row, position, data = $grid.data();
-                if (data.keepExpandedRows && $.isArray(data.expandedRows)) {
+            grid.on('dataBound', function () {
+                var i, $cell, $row, position, data = grid.getConfig();
+                if (data.keepExpandedRows && Array.isArray(data.expandedRows)) {
                     for (i = 0; i < data.expandedRows.length; i++) {
-                        $row = gj.grid.methods.getRowById($grid, data.expandedRows[i]);
+                        $row = gj.grid.methods.getRowById(grid, data.expandedRows[i]);
                         if ($row && $row.length) {
-                            position = gj.grid.methods.getColumnPositionByRole($grid, 'expander');
+                            position = gj.grid.methods.getColumnPositionByRole(grid, 'expander');
                             $cell = $row.children('td:eq(' + position + ')');
                             if ($cell && $cell.length) {
-                                gj.grid.plugins.expandCollapseRows.private.expandDetail($grid, $cell);
+                                gj.grid.plugins.expandCollapseRows.private.expandDetail(grid, $cell);
                             }
                         }
                     }

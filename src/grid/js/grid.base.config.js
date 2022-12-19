@@ -16,26 +16,26 @@ gj.grid.config = {
          * If set to array, then the grid is going to use the array as data for rows.
          * @type (string|object|array)
          * @default undefined
-         * @example Remote.JS.Configuration <!-- grid -->
+         * @example Remote.JS.Configuration <!-- jquery, grid -->
          * <table id="grid"></table>
          * <script>
-         *     $('#grid').grid({
+         *     new GijgoGrid(document.getElementById('grid'), {
          *         dataSource: '/Players/Get',
          *         columns: [ { field: 'Name' }, { field: 'PlaceOfBirth' } ]
          *     });
          * </script>
          * @example Remote.Html.Configuration <!-- grid -->
-         * <table id="grid" data-source="/Players/Get">
+         * <table id="grid" data-gj-source="/Players/Get">
          *     <thead>
          *         <tr>
-         *             <th width="56" data-field="ID">#</th>
+         *             <th width="56" data-gj-field="ID">#</th>
          *             <th>Name</th>
          *             <th>PlaceOfBirth</th>
          *         </tr>
          *     </thead>
          * </table>
          * <script>
-         *     $('#grid').grid();
+         *     new GijgoGrid(document.getElementById('grid'));
          * </script>
          * @example Local.DataSource <!-- grid -->
          * <table id="grid"></table>
@@ -54,9 +54,9 @@ gj.grid.config = {
          * <table id="grid">
          *     <thead>
          *         <tr>
-         *             <th width="56" data-field="ID">#</th>
-         *             <th data-sortable="true">Name</th>
-         *             <th data-field="PlaceOfBirth" data-sortable="true">Place Of Birth</th>
+         *             <th width="56" data-gj-field="ID">#</th>
+         *             <th data-gj-sortable="true">Name</th>
+         *             <th data-gj-field="PlaceOfBirth" data-gj-sortable="true">Place Of Birth</th>
          *         </tr>
          *     </thead>
          *     <tbody>
@@ -542,13 +542,13 @@ gj.grid.config = {
              *     });
              * </script>
              * @example html.configuration <!-- bootstrap, grid -->
-             * <table id="grid" data-source="/Players/Get" data-ui-library="bootstrap">
+             * <table id="grid" data-gj-source="/Players/Get" data-gj-ui-library="bootstrap">
              *     <thead>
              *         <tr>
-             *             <th data-field="ID" width="34">ID</th>
-             *             <th data-events="mouseenter: onMouseEnter, mouseleave: onMouseLeave">Name</th>
-             *             <th data-field="PlaceOfBirth">Place Of Birth</th>
-             *             <th data-events="click: onClick" data-type="icon" data-icon="glyphicon-info-sign" width="32"></th>
+             *             <th data-gj-field="ID" width="34">ID</th>
+             *             <th data-gj-events="mouseenter: onMouseEnter, mouseleave: onMouseLeave">Name</th>
+             *             <th data-gj-field="PlaceOfBirth">Place Of Birth</th>
+             *             <th data-gj-events="click: onClick" data-gj-type="icon" data-gj-icon="glyphicon-info-sign" width="32"></th>
              *         </tr>
              *     </thead>
              * </table>
@@ -635,7 +635,7 @@ gj.grid.config = {
              * @type boolean
              * @default false
              * @example sample <!-- bootstrap, grid -->
-             * <table id="grid" data-source="/Players/Get"></table>
+             * <table id="grid" data-gj-source="/Players/Get"></table>
              * <script>
              *     $('#grid').grid({
              *         uiLibrary: 'bootstrap',
@@ -662,7 +662,7 @@ gj.grid.config = {
              * @param {object} $displayEl - inner div element for display of the cell value presented as jquery object
              * @param {string} id - the id of the record
              * @example sample <!-- grid -->
-             * <table id="grid" data-source="/Players/Get"></table>
+             * <table id="grid" data-gj-source="/Players/Get"></table>
              * <script>
              *     var nameRenderer = function (value, record, $cell, $displayEl) { 
              *         $cell.css('font-style', 'italic'); 

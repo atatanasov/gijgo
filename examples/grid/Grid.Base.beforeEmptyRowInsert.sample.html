@@ -19,7 +19,7 @@
          },
          columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
      });
-     grid.on('beforeEmptyRowInsert', function (e, $row) {
+     grid.on('beforeEmptyRowInsert', function (e) {
          alert('beforeEmptyRowInsert is fired.');
      });
  </script>

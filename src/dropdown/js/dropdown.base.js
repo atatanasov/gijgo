@@ -340,7 +340,7 @@ gj.dropdown.config = {
 gj.dropdown.methods = {
     init: function (jsConfig) {
         this.type = 'dropdown';
-        gj.widget.prototype.initJS.call(this, jsConfig);
+        gj.widget.prototype.init.call(this, jsConfig);
         this.element.setAttribute('data-gj-dropdown', 'true');
         gj.dropdown.methods.initialize(this);
         return this;
@@ -519,9 +519,8 @@ gj.dropdown.methods = {
         }
 
         if (data.width) {
-            width = isNaN(data.width) ? data.width : data.width + 'px';
-            parent.style.width = width;
-            presenter.style.width = width;
+            gj.core.css(parent, 'width', data.width);
+            gj.core.css(presenter, 'width', data.width);
         }
 
         if (data.fontSize) {

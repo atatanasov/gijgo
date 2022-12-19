@@ -58,7 +58,7 @@ gj.slider.config = {
 gj.slider.methods = {
     init: function (jsConfig) {
         this.type = 'slider';
-        gj.widget.prototype.initJS.call(this, jsConfig);
+        gj.widget.prototype.init.call(this, jsConfig);
         this.element.setAttribute('data-slider', 'true');
         gj.slider.methods.initialize(this.element, this.getConfig());
         return this;
@@ -69,17 +69,10 @@ gj.slider.methods = {
 
         el.style.display = 'none';
 
-        if (el.parentElement.attributes.role !== 'wrapper') {
-            wrapper = document.createElement('div');
-            wrapper.setAttribute('role', 'wrapper');
-            el.parentNode.insertBefore(wrapper, el);
-            wrapper.appendChild(el);
-        } else {
-            wrapper = el.parentElement;
-        }
+        wrapper = this.wrap();
 
         if (data.width) {
-            wrapper.style.width = data.width + 'px';
+            gj.core.css(wrapper, 'width', data.width);
         }
         
         gj.core.addClasses(wrapper, data.style.wrapper);

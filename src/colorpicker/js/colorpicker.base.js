@@ -78,7 +78,7 @@ gj.colorpicker.config = {
 gj.colorpicker.methods = {
     init: function (jsConfig) {
         this.type = 'colorpicker';
-        gj.picker.widget.prototype.initJS.call(this, jsConfig);
+        gj.picker.widget.prototype.init.call(this, jsConfig);
         gj.colorpicker.methods.initialize(this);
         return this;
     },

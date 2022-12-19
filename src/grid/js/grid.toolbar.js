@@ -76,32 +76,35 @@ gj.grid.plugins.toolbar = {
     },
 
     private: {
-        init: function ($grid) {
-            var data, $toolbar, $title;
-            data = $grid.data();
-            $toolbar = $grid.prev('div[data-role="toolbar"]');
-            if (typeof (data.toolbarTemplate) !== 'undefined' || typeof (data.title) !== 'undefined' || $toolbar.length > 0) {
-                if ($toolbar.length === 0) {
-                    $toolbar = $('<div data-role="toolbar"></div>');
-                    $grid.before($toolbar);
+        init: function (grid) {
+            var data, toolbar, $title;
+            data = grid.getConfig();
+            toolbar = grid.element.parentNode.querySelector('div[data-gj-role="toolbar"]');
+            if (typeof (data.toolbarTemplate) !== 'undefined' || typeof (data.title) !== 'undefined' || toolbar) {
+                if (!toolbar) {
+                    toolbar = document.createElement('div');
+                    toolbar.setAttribute('data-gj-role', 'toolbar');
+                    $('<div data-role="toolbar"></div>');
+                    grid.element.parentNode.insertBefore(toolbar, grid.element);
                 }
-                $toolbar.addClass(data.style.toolbar);
+                gj.core.addClasses(toolbar, data.style.toolbar);
 
-                if ($toolbar.children().length === 0 && data.toolbarTemplate) {
-                    $toolbar.append(data.toolbarTemplate);
+                if (!toolbar.firstChild && data.toolbarTemplate) {
+                    toolbar.innerHTML = data.toolbarTemplate;
                 }
 
-                $title = $toolbar.find('[data-role="title"]');
-                if ($title.length === 0) {
-                    $title = $('<div data-role="title"/>');
-                    $toolbar.prepend($title);
+                title = toolbar.querySelector('[data-gj-role="title"]');
+                if (!title) {
+                    title = document.createElement('div');
+                    title.setAttribute('data-gj-role', 'title');
+                    toolbar.appendChild(title);
                 }
                 if (data.title) {
-                    $title.text(data.title);
+                    title.innerHTML = data.title;
                 }
 
                 if (data.minWidth) {
-                    $toolbar.css('min-width', data.minWidth);
+                    gj.core.css(toolbar, 'minWidth', data.minWidth);
                 }
             }
         }
@@ -152,13 +155,13 @@ gj.grid.plugins.toolbar = {
         }
     },
 
-    configure: function ($grid) {
-        $.extend(true, $grid, gj.grid.plugins.toolbar.public);
-        $grid.on('initialized', function () {
-            gj.grid.plugins.toolbar.private.init($grid);
+    configure: function (grid) {
+        grid.extend(grid, gj.grid.plugins.toolbar.public);
+        grid.on('initialized', function () {
+            gj.grid.plugins.toolbar.private.init(grid);
         });
-        $grid.on('destroying', function () {
-            $grid.prev('[data-role="toolbar"]').remove();
+        grid.on('destroying', function () {
+            grid.prev('[data-role="toolbar"]').remove();
         });
     }
 };

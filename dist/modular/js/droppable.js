@@ -18,7 +18,7 @@ gj.droppable.methods = {
     init: function (jsConfig) {
         this.type = 'droppable';
 
-        gj.widget.prototype.initJS.call(this, jsConfig);
+        gj.widget.prototype.init.call(this, jsConfig);
         this.element.setAttribute('data-gj-droppable', 'true');
         
         gj.documentManager.subscribeForEvent('mousedown', this.element.getAttribute('data-gj-guid'), gj.droppable.methods.createMouseDownHandler(this));

@@ -157,7 +157,7 @@ gj.dialog.methods = {
     init: function (jsConfig) {
         var config;
         this.type = 'dialog';
-        gj.widget.prototype.initJS.call(this, jsConfig);
+        gj.widget.prototype.init.call(this, jsConfig);
 
         config = this.getConfig();
         gj.dialog.methods.localization(config);
@@ -168,7 +168,7 @@ gj.dialog.methods = {
     },
 
     readHTMLConfig: function () {
-        var result = gj.widget.prototype.readHTMLConfigJS.call(this),
+        var result = gj.widget.prototype.readHTMLConfig.call(this),
             attrs = this.element.attributes;
         if (attrs['title']) {
             result.title = attrs['title'].value;
@@ -278,10 +278,10 @@ gj.dialog.methods = {
 
     setSize: function (el, data) {
         if (data.width) {
-            el.style.width = isNaN(data.width) ? data.width : data.width + 'px';
+            gj.core.css(el, 'width', data.width);
         }
         if (data.height) {
-            el.style.height = isNaN(data.height) ? data.height : data.height + 'px';
+            gj.core.css(el, 'height', data.height);
         }
     },
 
@@ -578,7 +578,7 @@ gj.dialog.methods = {
 GijgoDialog.prototype = new gj.widget();
 GijgoDialog.constructor = GijgoDialog;
 
-GijgoDialog.prototype.readHTMLConfigJS = gj.dialog.methods.readHTMLConfig;
+GijgoDialog.prototype.readHTMLConfig = gj.dialog.methods.readHTMLConfig;
 
 
 if (typeof (jQuery) !== "undefined") {
