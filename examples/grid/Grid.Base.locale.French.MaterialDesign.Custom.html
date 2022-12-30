@@ -15,7 +15,7 @@
  <table id="grid"></table>
  <script>
      gj.grid.messages['fr-fr'].DisplayingRecords = 'Mes résultats';
-     $('#grid').grid({
+     new GijgoGrid(document.getElementById('grid'), {
          dataSource: '/Players/Get',
          uiLibrary: 'materialdesign',
          locale: 'fr-fr',

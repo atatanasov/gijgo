@@ -24,7 +24,7 @@ gj.grid.config = {
          *         columns: [ { field: 'Name' }, { field: 'PlaceOfBirth' } ]
          *     });
          * </script>
-         * @example Remote.Html.Configuration <!-- grid -->
+         * @example Remote.Html.Configuration <!-- jquery, grid -->
          * <table id="grid" data-gj-source="/Players/Get">
          *     <thead>
          *         <tr>
@@ -45,7 +45,7 @@ gj.grid.config = {
          *         { 'ID': 2, 'Name': 'Ronaldo Luis Nazario de Lima', 'PlaceOfBirth': 'Rio de Janeiro, Brazil' },
          *         { 'ID': 3, 'Name': 'David Platt', 'PlaceOfBirth': 'Chadderton, Lancashire, England' }
          *     ];
-         *     $('#grid').grid({
+         *     new GijgoGrid(document.getElementById('grid'), {
          *         dataSource: data,
          *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
          *     });
@@ -78,27 +78,27 @@ gj.grid.config = {
          *     </tbody>
          * </table>
          * <script>
-         *     $('#grid').grid({ pager: { limit: 2, sizes: [2, 5, 10, 20] }});
+         *     new GijgoGrid(document.getElementById('grid'), { pager: { limit: 2, sizes: [2, 5, 10, 20] }});
          * </script>
-         * @example Remote.Custom.Render <!-- grid -->
+         * @example Remote.Custom.Render <!-- jquery, grid -->
          * <table id="grid"></table>
          * <script>
          *     var grid, onSuccessFunc = function (response) {
          *         alert('The result contains ' + response.records.length + ' records.');
          *         grid.render(response);
          *     };
-         *     grid = $('#grid').grid({
+         *     new GijgoGrid(document.getElementById('grid'), {
          *         dataSource: { url: '/Players/Get', data: {}, success: onSuccessFunc },
          *         columns: [ { field: 'Name' }, { field: 'PlaceOfBirth' } ]
          *     });
          * </script>
-         * @example Remote.Custom.Error <!-- grid -->
+         * @example Remote.Custom.Error <!-- jquery, grid -->
          * <table id="grid"></table>
          * <script>
          *     var grid, onErrorFunc = function (response) {
          *         alert('Server error.');
          *     };
-         *     grid = $('#grid').grid({
+         *     grid = new GijgoGrid(document.getElementById('grid'), {
          *         dataSource: { url: '/DataSources/InvalidUrl', error: onErrorFunc },
          *         columns: [ { field: 'Name' }, { field: 'PlaceOfBirth' } ]
          *     });
@@ -108,10 +108,10 @@ gj.grid.config = {
 
         /** An array that holds the configurations of each column from the grid.
          * @type array
-         * @example JS.Configuration <!-- grid -->
+         * @example JS.Configuration <!-- jquery, grid -->
          * <table id="grid"></table>
          * <script>
-         *     $('#grid').grid({
+         *     new GijgoGrid(document.getElementById('grid'), {
          *         dataSource: '/Players/Get',
          *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth', name: 'Birth Place' } ]
          *     });
@@ -124,7 +124,7 @@ gj.grid.config = {
          * @example sample <!-- grid -->
          * <table id="grid"></table>
          * <script>
-         *     $('#grid').grid({
+         *     new GijgoGrid(document.getElementById('grid'), {
          *         dataSource: '/Players/Get',
          *         autoGenerateColumns: true
          *     });
@@ -137,7 +137,7 @@ gj.grid.config = {
          * @example sample <!-- grid -->
          * <table id="grid"></table>
          * <script>
-         *     $('#grid').grid({
+         *     new GijgoGrid(document.getElementById('grid'), {
          *         dataSource: '/Players/Get',
          *         defaultColumnSettings: { align: 'right' },
          *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth', name: 'Birth Place' } ]
@@ -153,7 +153,7 @@ gj.grid.config = {
              * @example sample <!-- grid -->
              * <table id="grid"></table>
              * <script>
-             *     $('#grid').grid({
+             *     new GijgoGrid(document.getElementById('grid'), {
              *         dataSource: '/Players/Get',
              *         columns: [
              *            { field: 'ID', width: 56 },
@@ -173,7 +173,7 @@ gj.grid.config = {
              * @example sample <!-- grid -->
              * <table id="grid"></table>
              * <script>
-             *     $('#grid').grid({
+             *     new GijgoGrid(document.getElementById('grid'), {
              *         dataSource: '/Players/Get',
              *         columns: [
              *             { field: 'ID', width: 56 },
@@ -193,7 +193,7 @@ gj.grid.config = {
              * @example Remote <!-- grid -->
              * <table id="grid"></table>
              * <script>
-             *     $('#grid').grid({
+             *     new GijgoGrid(document.getElementById('grid'), {
              *         dataSource: '/Players/Get',
              *         columns: [
              *             { field: 'ID', width: 56 },
@@ -218,7 +218,7 @@ gj.grid.config = {
              *             return (direction === 'asc') ? a < b : b < a;
              *         };
              *     };
-             *     $('#grid').grid({
+             *     new GijgoGrid(document.getElementById('grid'), {
              *         dataSource: data,
              *         columns: [
              *             { field: 'ID' },
@@ -230,7 +230,7 @@ gj.grid.config = {
              * @example Remote.Bootstrap.3 <!-- bootstrap, grid -->
              * <table id="grid"></table>
              * <script>
-             *     $('#grid').grid({
+             *     new GijgoGrid(document.getElementById('grid'), {
              *         uiLibrary: 'bootstrap',
              *         dataSource: '/Players/Get',
              *         columns: [
@@ -243,7 +243,7 @@ gj.grid.config = {
              * @example Remote.Bootstrap.4.Material.Icons <!-- bootstrap4, grid -->
              * <table id="grid"></table>
              * <script>
-             *     $('#grid').grid({
+             *     new GijgoGrid(document.getElementById('grid'), {
              *         uiLibrary: 'bootstrap4',
              *         dataSource: '/Players/Get',
              *         columns: [
@@ -256,7 +256,7 @@ gj.grid.config = {
              * @example Remote.Bootstrap.4.FontAwesome <!-- bootstrap4, fontawesome, grid -->
              * <table id="grid"></table>
              * <script>
-             *     $('#grid').grid({
+             *     new GijgoGrid(document.getElementById('grid'), {
              *         uiLibrary: 'bootstrap4',
              *         iconsLibrary: 'fontawesome',
              *         dataSource: '/Players/Get',
@@ -277,7 +277,7 @@ gj.grid.config = {
              * @example Bootstrap.3.Icon <!-- grid, bootstrap -->
              * <table id="grid"></table>
              * <script>
-             *     $('#grid').grid({
+             *     new GijgoGrid(document.getElementById('grid'), {
              *         dataSource: '/Players/Get',
              *         uiLibrary: 'bootstrap',
              *         columns: [
@@ -298,7 +298,7 @@ gj.grid.config = {
              * @example Bootstrap.4.Icon <!-- grid, bootstrap4, fontawesome -->
              * <table id="grid"></table>
              * <script>
-             *     $('#grid').grid({
+             *     new GijgoGrid(document.getElementById('grid'), {
              *         dataSource: '/Players/Get',
              *         uiLibrary: 'bootstrap4',
              *         columns: [
@@ -319,7 +319,7 @@ gj.grid.config = {
              * @example Bootstrap.3.Checkbox <!-- grid, checkbox, bootstrap -->
              * <table id="grid"></table>
              * <script>
-             *     $('#grid').grid({
+             *     new GijgoGrid(document.getElementById('grid'), {
              *         dataSource: '/Players/Get',
              *         uiLibrary: 'bootstrap',
              *         columns: [
@@ -333,7 +333,7 @@ gj.grid.config = {
              * @example Bootstrap.4.Checkbox <!-- grid, checkbox, bootstrap4 -->
              * <table id="grid"></table>
              * <script>
-             *     $('#grid').grid({
+             *     new GijgoGrid(document.getElementById('grid'), {
              *         dataSource: '/Players/Get',
              *         uiLibrary: 'bootstrap4',
              *         columns: [
@@ -354,7 +354,7 @@ gj.grid.config = {
              * @example sample <!-- grid -->
              * <table id="grid"></table>
              * <script>
-             *     $('#grid').grid({
+             *     new GijgoGrid(document.getElementById('grid'), {
              *         dataSource: '/Players/Get',
              *         columns: [
              *             { field: 'ID', width: 56 },
@@ -374,7 +374,7 @@ gj.grid.config = {
              * @example sample <!-- grid -->
              * <table id="grid"></table>
              * <script>
-             *     $('#grid').grid({
+             *     new GijgoGrid(document.getElementById('grid'), {
              *         dataSource: '/Players/Get',
              *         columns: [
              *             { field: 'ID', width: 56 },
@@ -393,7 +393,7 @@ gj.grid.config = {
              * @example Material.Design <!-- grid -->
              * <table id="grid"></table>
              * <script>
-             *     $('#grid').grid({
+             *     new GijgoGrid(document.getElementById('grid'), {
              *         dataSource: '/Players/Get',
              *         columns: [
              *             { field: 'ID', width: 100, align: 'center' },
@@ -405,7 +405,7 @@ gj.grid.config = {
              * @example Bootstrap.4 <!-- grid, bootstrap4 -->
              * <table id="grid"></table>
              * <script>
-             *     $('#grid').grid({
+             *     new GijgoGrid(document.getElementById('grid'), {
              *         dataSource: '/Players/Get',
              *         uiLibrary: 'bootstrap4',
              *         columns: [
@@ -429,7 +429,7 @@ gj.grid.config = {
              * .bold { font-weight: bold }
              * </style>
              * <script>
-             *     $('#grid').grid({
+             *     new GijgoGrid(document.getElementById('grid'), {
              *         dataSource: '/Players/Get',
              *         columns: [
              *             { field: 'ID', width: 56 },
@@ -451,7 +451,7 @@ gj.grid.config = {
              * .italic { font-style: italic }
              * </style>
              * <script>
-             *     $('#grid').grid({
+             *     new GijgoGrid(document.getElementById('grid'), {
              *         dataSource: '/Players/Get',
              *         columns: [
              *             { field: 'ID', width: 56 },
@@ -470,7 +470,7 @@ gj.grid.config = {
              * @example sample <!-- grid -->
              * <table id="grid"></table>
              * <script>
-             *     $('#grid').grid({
+             *     new GijgoGrid(document.getElementById('grid'), {
              *         dataSource: '/Players/Get',
              *         columns: [
              *             { field: 'ID', width: 56, tooltip: 'This is my tooltip 1.' },
@@ -490,7 +490,7 @@ gj.grid.config = {
              * @example sample <!-- bootstrap, grid -->
              * <table id="grid"></table>
              * <script>
-             *     $('#grid').grid({
+             *     new GijgoGrid(document.getElementById('grid'), {
              *         dataSource: '/Players/Get',
              *         uiLibrary: 'bootstrap',
              *         columns: [
@@ -512,7 +512,7 @@ gj.grid.config = {
              * @example javascript.configuration <!-- bootstrap, grid -->
              * <table id="grid"></table>
              * <script>
-             *     $('#grid').grid({
+             *     new GijgoGrid(document.getElementById('grid'), {
              *         dataSource: '/Players/Get',
              *         uiLibrary: 'bootstrap',
              *         columns: [
@@ -562,7 +562,7 @@ gj.grid.config = {
              *     function onClick(e) {
              *         alert('record with id=' + e.data.id + ' is clicked.');
              *     }
-             *     $('#grid').grid();
+             *     new GijgoGrid(document.getElementById('grid'), );
              * </script>
              */
             events: undefined,
@@ -590,7 +590,7 @@ gj.grid.config = {
              * @example sample <!-- grid -->
              * <table id="grid"></table>
              * <script>
-             *     $('#grid').grid({
+             *     new GijgoGrid(document.getElementById('grid'), {
              *         dataSource: '/Players/Get',
              *         columns: [
              *             { field: 'ID', width: 56 },
@@ -618,7 +618,7 @@ gj.grid.config = {
              * @example sample <!-- grid -->
              * <table id="grid"></table>
              * <script>
-             *     $('#grid').grid({
+             *     new GijgoGrid(document.getElementById('grid'), {
              *         dataSource: '/Players/Get',
              *         columns: [
              *             { field: 'ID', width: 56 },
@@ -637,7 +637,7 @@ gj.grid.config = {
              * @example sample <!-- bootstrap, grid -->
              * <table id="grid" data-gj-source="/Players/Get"></table>
              * <script>
-             *     $('#grid').grid({
+             *     new GijgoGrid(document.getElementById('grid'), {
              *         uiLibrary: 'bootstrap',
              *         columns: [
              *             { field: 'ID', width: 34 },
@@ -669,7 +669,7 @@ gj.grid.config = {
              *         $displayEl.css('background-color', '#EEE');
              *         $displayEl.text(value);
              *     };
-             *     $('#grid').grid({
+             *     new GijgoGrid(document.getElementById('grid'), {
              *         columns: [
              *             { field: 'ID', width: 56 },
              *             { field: 'Name', renderer: nameRenderer },
@@ -702,7 +702,7 @@ gj.grid.config = {
              *         caseSensitiveFilter = function (value, searchStr) { 
              *             return value.indexOf(searchStr) > -1;
              *         };
-             *     grid = $('#grid').grid({
+             *     grid = new GijgoGrid(document.getElementById('grid'), {
              *         dataSource: data,
              *         columns: [
              *             { field: 'ID', width: 56 },
@@ -762,7 +762,7 @@ gj.grid.config = {
          * @example Material.Design.With.Icons <!-- dropdown, grid -->
          * <table id="grid"></table>
          * <script>
-         *     $('#grid').grid({
+         *     new GijgoGrid(document.getElementById('grid'), {
          *         dataSource: '/Players/Get',
          *         columns: [ { field: 'ID', width: 56 }, { field: 'Name', sortable: true }, { field: 'PlaceOfBirth' } ],
          *         pager: { limit: 2, sizes: [2, 5, 10, 20] }
@@ -771,7 +771,7 @@ gj.grid.config = {
          * @example Material.Design.Without.Icons <!-- grid -->
          * <table id="grid"></table>
          * <script>
-         *     $('#grid').grid({
+         *     new GijgoGrid(document.getElementById('grid'), {
          *         dataSource: '/Players/Get',
          *         uiLibrary: 'materialdesign',
          *         iconsLibrary: '',
@@ -782,7 +782,7 @@ gj.grid.config = {
          * @example Bootstrap.3 <!-- grid, dropdown, bootstrap -->
          * <div class="container"><table id="grid"></table></div>
          * <script>
-         *     $('#grid').grid({
+         *     new GijgoGrid(document.getElementById('grid'), {
          *         dataSource: '/Players/Get',
          *         uiLibrary: 'bootstrap',
          *         columns: [
@@ -796,7 +796,7 @@ gj.grid.config = {
          * @example Bootstrap.4.Font.Awesome <!-- bootstrap4, fontawesome, dropdown, grid -->
          * <table id="grid"></table>
          * <script>
-         *     $('#grid').grid({
+         *     new GijgoGrid(document.getElementById('grid'), {
          *         dataSource: '/Players/Get',
          *         uiLibrary: 'bootstrap4',
          *         iconsLibrary: 'fontawesome',
@@ -816,7 +816,7 @@ gj.grid.config = {
          * @example Font.Awesome <!-- fontawesome, grid, dropdown -->
          * <table id="grid"></table>
          * <script>
-         *     $('#grid').grid({
+         *     new GijgoGrid(document.getElementById('grid'), {
          *         dataSource: '/Players/Get',
          *         iconsLibrary: 'fontawesome',
          *         columns: [ { field: 'ID', width: 56 }, { field: 'Name', sortable: true }, { field: 'PlaceOfBirth' } ],
@@ -833,7 +833,7 @@ gj.grid.config = {
          * @example Multiple.Material.Design.Checkbox <!-- checkbox, grid -->
          * <table id="grid"></table>
          * <script>
-         *     $('#grid').grid({
+         *     new GijgoGrid(document.getElementById('grid'), {
          *         dataSource: '/Players/Get',
          *         selectionType: 'multiple',
          *         selectionMethod: 'checkbox',
@@ -843,7 +843,7 @@ gj.grid.config = {
          * @example Multiple.Bootstrap.3.Checkbox <!-- bootstrap, checkbox, grid -->
          * <table id="grid"></table>
          * <script>
-         *     $('#grid').grid({
+         *     new GijgoGrid(document.getElementById('grid'), {
          *         primaryKey: 'ID',
          *         uiLibrary: 'bootstrap',
          *         dataSource: '/Players/Get',
@@ -855,7 +855,7 @@ gj.grid.config = {
          * @example Multiple.Bootstrap.4.Checkbox <!-- bootstrap4, checkbox, grid -->
          * <table id="grid"></table>
          * <script>
-         *     $('#grid').grid({
+         *     new GijgoGrid(document.getElementById('grid'), {
          *         uiLibrary: 'bootstrap4',
          *         dataSource: '/Players/Get',
          *         selectionType: 'multiple',
@@ -866,7 +866,7 @@ gj.grid.config = {
          * @example Single.Checkbox <!-- checkbox, grid -->
          * <table id="grid"></table>
          * <script>
-         *     $('#grid').grid({
+         *     new GijgoGrid(document.getElementById('grid'), {
          *         dataSource: '/Players/Get',
          *         selectionType: 'single',
          *         selectionMethod: 'checkbox',
@@ -884,7 +884,7 @@ gj.grid.config = {
          * @example sample <!-- checkbox, grid -->
          * <table id="grid"></table>
          * <script>
-         *     $('#grid').grid({
+         *     new GijgoGrid(document.getElementById('grid'), {
          *         dataSource: '/Players/Get',
          *         selectionType: 'single',
          *         selectionMethod: 'checkbox',
@@ -900,7 +900,7 @@ gj.grid.config = {
          * @example disabled <!-- grid -->
          * <table id="grid"></table>
          * <script>
-         *     var grid = $('#grid').grid({
+         *     var grid = new GijgoGrid(document.getElementById('grid'), {
          *         dataSource: '/Players/Get',
          *         autoLoad: false,
          *         columns: [ { field: 'ID' }, { field: 'Name' } ]
@@ -910,7 +910,7 @@ gj.grid.config = {
          * @example enabled <!-- grid -->
          * <table id="grid"></table>
          * <script>
-         *     $('#grid').grid({
+         *     new GijgoGrid(document.getElementById('grid'), {
          *         dataSource: '/Players/Get',
          *         autoLoad: true,
          *         columns: [ { field: 'ID' }, { field: 'Name' } ]
@@ -925,7 +925,7 @@ gj.grid.config = {
          * @example sample <!-- grid -->
          * <table id="grid"></table>
          * <script>
-         *     $('#grid').grid({
+         *     new GijgoGrid(document.getElementById('grid'), {
          *         dataSource: { url: '/Players/Get', data: { name: 'not existing name' } },
          *         notFoundText: 'No records found custom message',
          *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
@@ -935,7 +935,7 @@ gj.grid.config = {
          * <table id="grid"></table>
          * <script src="../../dist/modular/grid/js/messages/messages.de-de.js"></script>
          * <script>
-         *     $('#grid').grid({
+         *     new GijgoGrid(document.getElementById('grid'), {
          *         dataSource: { url: '/Players/Get', data: { name: 'not existing name' } },
          *         locale: 'de-de',
          *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
@@ -950,7 +950,7 @@ gj.grid.config = {
          * @example sample <!-- grid -->
          * <table id="grid"></table>
          * <script>
-         *     $('#grid').grid({
+         *     new GijgoGrid(document.getElementById('grid'), {
          *         dataSource: '/Players/Get',
          *         width: 400,
          *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
@@ -977,7 +977,7 @@ gj.grid.config = {
          *         { 'ID': 2, 'Name': 'Ronaldo Luis Nazario de Lima', 'PlaceOfBirth': 'Rio de Janeiro, Brazil' },
          *         { 'ID': 3, 'Name': 'David Platt', 'PlaceOfBirth': 'Chadderton, Lancashire, England' }
          *     ];
-         *     $('#grid').grid({
+         *     new GijgoGrid(document.getElementById('grid'), {
          *         dataSource: '/Players/Get',
          *         width: 500,
          *         headerRowHeight: 'autogrow',
@@ -992,7 +992,7 @@ gj.grid.config = {
          *         { 'ID': 2, 'Name': 'Ronaldo Luis Nazario de Lima', 'PlaceOfBirth': 'Rio de Janeiro, Brazil' },
          *         { 'ID': 3, 'Name': 'David Platt', 'PlaceOfBirth': 'Chadderton, Lancashire, England' }
          *     ];
-         *     $('#grid').grid({
+         *     new GijgoGrid(document.getElementById('grid'), {
          *         dataSource: '/Players/Get',
          *         width: 500,
          *         headerRowHeight: 'fixed',
@@ -1014,7 +1014,7 @@ gj.grid.config = {
          *         { 'ID': 2, 'Name': 'Ronaldo Luis Nazario de Lima', 'PlaceOfBirth': 'Rio de Janeiro, Brazil' },
          *         { 'ID': 3, 'Name': 'David Platt', 'PlaceOfBirth': 'Chadderton, Lancashire, England' }
          *     ];
-         *     $('#grid').grid({
+         *     new GijgoGrid(document.getElementById('grid'), {
          *         dataSource: '/Players/Get',
          *         width: 500,
          *         bodyRowHeight: 'autogrow',
@@ -1029,7 +1029,7 @@ gj.grid.config = {
          *         { 'ID': 2, 'Name': 'Ronaldo Luis Nazario de Lima', 'PlaceOfBirth': 'Rio de Janeiro, Brazil' },
          *         { 'ID': 3, 'Name': 'David Platt', 'PlaceOfBirth': 'Chadderton, Lancashire, England' }
          *     ];
-         *     $('#grid').grid({
+         *     new GijgoGrid(document.getElementById('grid'), {
          *         dataSource: '/Players/Get',
          *         width: 500,
          *         bodyRowHeight: 'fixed',
@@ -1045,7 +1045,7 @@ gj.grid.config = {
          * @example sample <!-- grid -->
          * <table id="grid"></table>
          * <script>
-         *     $('#grid').grid({
+         *     new GijgoGrid(document.getElementById('grid'), {
          *         dataSource: '/Players/Get',
          *         fontSize: '16px',
          *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
@@ -1068,7 +1068,7 @@ gj.grid.config = {
          *         { 'ID': 102, 'Name': 'Ronaldo Luis Nazario de Lima', 'PlaceOfBirth': 'Rio de Janeiro, Brazil' },
          *         { 'ID': 103, 'Name': 'David Platt', 'PlaceOfBirth': 'Chadderton, Lancashire, England' }
          *     ];
-         *     $('#grid').grid({
+         *     new GijgoGrid(document.getElementById('grid'), {
          *         dataSource: data,
          *         primaryKey: 'ID',
          *         columns: [ 
@@ -1087,7 +1087,7 @@ gj.grid.config = {
          *         { 'ID': 102, 'Name': 'Ronaldo Luis Nazario de Lima', 'PlaceOfBirth': 'Rio de Janeiro, Brazil' },
          *         { 'ID': 103, 'Name': 'David Platt', 'PlaceOfBirth': 'Chadderton, Lancashire, England' }
          *     ];
-         *     $('#grid').grid({
+         *     new GijgoGrid(document.getElementById('grid'), {
          *         dataSource: data,
          *         columns: [ 
          *             { field: 'ID', width: 70 },
@@ -1106,7 +1106,7 @@ gj.grid.config = {
          * @example German.Bootstrap.Default <!-- bootstrap, grid, dropdown -->
          * <table id="grid"></table>
          * <script>
-         *     $('#grid').grid({
+         *     new GijgoGrid(document.getElementById('grid'), {
          *         dataSource: '/Players/Get',
          *         uiLibrary: 'bootstrap',
          *         locale: 'de-de',
@@ -1122,7 +1122,7 @@ gj.grid.config = {
          * <table id="grid"></table>
          * <script>
          *     gj.grid.messages['fr-fr'].DisplayingRecords = 'Mes résultats';
-         *     $('#grid').grid({
+         *     new GijgoGrid(document.getElementById('grid'), {
          *         dataSource: '/Players/Get',
          *         uiLibrary: 'materialdesign',
          *         locale: 'fr-fr',

@@ -13,11 +13,11 @@
 <body style="padding: 8px;">
  <style>
  .icon-disabled { color: #ccc; }
- table.gj-grid div[data-role="display"] div.custom-item { display: table; margin-right: 5px; }
+ table.gj-grid div[data-gj-role="display"] div.custom-item { display: table; margin-right: 5px; }
  </style>
  <table id="grid"></table>
  <script>
-     var grid = $('#grid').grid({
+     let grid = ('#grid').grid({
          dataSource: '/Players/Get',
          columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
          style: {
@@ -29,24 +29,24 @@
              limit: 2,
              sizes: [2, 5, 10, 20],
              leftControls: [
-                 $('<div title="First" data-role="page-first" class="custom-item"><i class="fa fa-fast-backward" aria-hidden="true" /></div>'),
-                 $('<div title="Previous" data-role="page-previous" class="custom-item"><i class="fa fa-backward" aria-hidden="true" /></div>'),
-                 $('<div> Page </div>'),
-                 $('<div class="custom-item"></div>').append($('<input type="text" data-role="page-number" style="margin: 0 5px; width: 34px; height: 16px; text-align: right;" value="0">')),
-                 $('<div>of&nbsp;</div>'),
-                 $('<div data-role="page-label-last" style="margin-right: 5px;">0</div>'),
-                 $('<div title="Next" data-role="page-next" class="custom-item"><i class="fa fa-forward" aria-hidden="true" /></div>'),
-                 $('<div title="Last" data-role="page-last" class="custom-item"><i class="fa fa-fast-forward" aria-hidden="true" /></div>'),
-                 $('<div title="Reload" data-role="page-refresh" class="custom-item"><i class="fa fa-refresh" aria-hidden="true" /></div>'),
-                 $('<div class="custom-item"></div>').append($('<select data-role="page-size" style="margin: 0 5px; width: 50px;"></select>'))
+                 ('<div title="First" data-gj-role="page-first" class="custom-item"><i class="fa fa-fast-backward" aria-hidden="true" /></div>'),
+                 ('<div title="Previous" data-gj-role="page-previous" class="custom-item"><i class="fa fa-backward" aria-hidden="true" /></div>'),
+                 ('<div> Page </div>'),
+                 ('<div class="custom-item"></div>').appendChild(('<input type="text" data-gj-role="page-number" style="margin: 0 5px; width: 34px; height: 16px; text-align: right;" value="0">')),
+                 ('<div>of&nbsp;</div>'),
+                 ('<div data-gj-role="page-label-last" style="margin-right: 5px;">0</div>'),
+                 ('<div title="Next" data-gj-role="page-next" class="custom-item"><i class="fa fa-forward" aria-hidden="true" /></div>'),
+                 ('<div title="Last" data-gj-role="page-last" class="custom-item"><i class="fa fa-fast-forward" aria-hidden="true" /></div>'),
+                 ('<div title="Reload" data-gj-role="page-refresh" class="custom-item"><i class="fa fa-refresh" aria-hidden="true" /></div>'),
+                 ('<div class="custom-item"></div>').appendChild(('<select data-gj-role="page-size" style="margin: 0 5px; width: 50px;"></select>'))
              ],
              rightControls: [
-                 $('<div>Displaying records&nbsp;</div>'),
-                 $('<div data-role="record-first">0</div>'),
-                 $('<div>&nbsp;-&nbsp;</div>'),
-                 $('<div data-role="record-last">0</div>'),
-                 $('<div>&nbsp;of&nbsp;</div>'),
-                 $('<div data-role="record-total">0</div>').css({ "margin-right": "5px" })
+                 ('<div>Displaying records&nbsp;</div>'),
+                 ('<div data-gj-role="record-first">0</div>'),
+                 ('<div>&nbsp;-&nbsp;</div>'),
+                 ('<div data-gj-role="record-last">0</div>'),
+                 ('<div>&nbsp;of&nbsp;</div>'),
+                 ('<div data-gj-role="record-total">0</div>').css({ "margin-right": "5px" })
              ]
          }
      });

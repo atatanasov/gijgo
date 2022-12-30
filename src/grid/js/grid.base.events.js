@@ -67,15 +67,15 @@ gj.grid.events = {
      *     });
      * </script>
      */
-    dataBound: function ($grid, records, totalRecords) {
-        return $grid.triggerHandler('dataBound', [records, totalRecords]);
+    dataBound: function (el, records, totalRecords) {
+        return el.dispatchEvent(new CustomEvent('dataBound', { detail: { records: records, totalRecords: totalRecords } }));
     },
 
     /**
      * Event fires after insert of a row in the grid during the loading of the data.
      * @event rowDataBound
      * @param {object} e - event data
-     * @param {object} $row - the row presented as jquery object
+     * @param {object} row - the row element
      * @param {string} id - the id of the record
      * @param {object} record - the data of the row record
      * @example sample <!-- grid -->
@@ -85,7 +85,7 @@ gj.grid.events = {
      *         dataSource: '/Players/Get',
      *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
      *     });
-     *     grid.on('rowDataBound', function (e, $row, id, record) {
+     *     grid.on('rowDataBound', function (e, row, id, record) {
      *         alert('rowDataBound is fired for row with id=' + id + '.');
      *     });
      * </script>
@@ -129,7 +129,7 @@ gj.grid.events = {
      *
      * @event rowSelect
      * @param {object} e - event data
-     * @param {object} $row - the row presented as jquery object
+     * @param {object} row - the row element
      * @param {string} id - the id of the record
      * @param {object} record - the data of the row record
      * @example sample <!-- checkbox, grid -->
@@ -140,13 +140,13 @@ gj.grid.events = {
      *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
      *         selectionMethod: 'checkbox'
      *     });
-     *     grid.on('rowSelect', function (e, $row, id, record) {
+     *     grid.on('rowSelect', function (e, row, id, record) {
      *         alert('Row with id=' + id + ' is selected.');
      *     });
      * </script>
      */
-    rowSelect: function ($grid, $row, id, record) {
-        return $grid.triggerHandler('rowSelect', [$row, id, record]);
+    rowSelect: function (el, row, id, record) {
+        return el.dispatchEvent(new CustomEvent('rowSelect', { detail: { row: row, id: id, record: record } }));
     },
 
     /**
@@ -154,7 +154,7 @@ gj.grid.events = {
      *
      * @event rowUnselect
      * @param {object} e - event data
-     * @param {object} $row - the row presented as jquery object
+     * @param {object} row - the row element
      * @param {string} id - the id of the record
      * @param {object} record - the data of the row record
      * @example sample <!-- checkbox, grid -->
@@ -165,20 +165,20 @@ gj.grid.events = {
      *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
      *         selectionMethod: 'checkbox'
      *     });
-     *     grid.on('rowUnselect', function (e, $row, id, record) {
+     *     grid.on('rowUnselect', function (e, row, id, record) {
      *         alert('Row with id=' + id + ' is unselected.');
      *     });
      * </script>
      */
-    rowUnselect: function ($grid, $row, id, record) {
-        return $grid.triggerHandler('rowUnselect', [$row, id, record]);
+    rowUnselect: function (el, row, id, record) {
+        return el.dispatchEvent(new CustomEvent('rowUnselect', { detail: { row: row, id: id, record: record } }));
     },
 
     /**
      * Event fires before deletion of row in the grid.
      * @event rowRemoving
      * @param {object} e - event data
-     * @param {object} $row - the row presented as jquery object
+     * @param {object} row - the row element
      * @param {string} id - the id of the record
      * @param {object} record - the data of the row record
      * @example sample <!-- grid -->
@@ -194,13 +194,13 @@ gj.grid.events = {
      *         ],
      *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
      *     });
-     *     grid.on('rowRemoving', function (e, $row, id, record) {
+     *     grid.on('rowRemoving', function (e, row, id, record) {
      *         alert('rowRemoving is fired for row with id=' + id + '.');
      *     });
      * </script>
      */
-    rowRemoving: function ($grid, $row, id, record) {
-        return $grid.triggerHandler('rowRemoving', [$row, id, record]);
+    rowRemoving: function (el, row, id, record) {
+        return el.dispatchEvent(new CustomEvent('rowRemoving', { detail: { row: row, id: id, record: record } }));
     },
 
     /**
@@ -225,8 +225,8 @@ gj.grid.events = {
      *     });
      * </script>
      */
-    destroying: function ($grid) {
-        return $grid.triggerHandler('destroying');
+    destroying: function (el) {
+        return el.dispatchEvent(new Event('destroying'));
     },
 
     /**
@@ -248,8 +248,8 @@ gj.grid.events = {
      *     grid.hideColumn('PlaceOfBirth');
      * </script>
      */
-    columnHide: function ($grid, column) {
-        return $grid.triggerHandler('columnHide', [column]);
+    columnHide: function (el, column) {
+        return el.dispatchEvent(new CustomEvent('columnHide', { detail: { column: column } }));
     },
 
     /**
@@ -271,8 +271,8 @@ gj.grid.events = {
      *     grid.showColumn('PlaceOfBirth');
      * </script>
      */
-    columnShow: function ($grid, column) {
-        return $grid.triggerHandler('columnShow', [column]);
+    columnShow: function (el, column) {
+        return el.triggerHandler(new CustomEvent('columnShow', { detail: { column: column } }));
     },
 
     /**
@@ -324,7 +324,7 @@ gj.grid.events = {
      *     });
      * </script>
      */
-    dataFiltered: function ($grid, records) {
-        return $grid.triggerHandler('dataFiltered', [records]);
+    dataFiltered: function (el, records) {
+        return el.dispatchEvent(new CustomEvent('dataFiltered', { detail: { records: records } }));
     }
 };

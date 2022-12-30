@@ -197,8 +197,8 @@ gj.grid.config = {
 
     /**
      * Event fires after the loading of the data in the grid.
-     *     */    dataBound: function ($grid, records, totalRecords) {
-        return $grid.triggerHandler('dataBound', [records, totalRecords]);
+     *     */    dataBound: function (el, records, totalRecords) {
+        return el.dispatchEvent(new CustomEvent('dataBound', { detail: { records: records, totalRecords: totalRecords } }));
     },
 
     /**
@@ -217,37 +217,37 @@ gj.grid.config = {
 
     /**
      * Event fires on selection of row
-     *     */    rowSelect: function ($grid, $row, id, record) {
-        return $grid.triggerHandler('rowSelect', [$row, id, record]);
+     *     */    rowSelect: function (el, row, id, record) {
+        return el.dispatchEvent(new CustomEvent('rowSelect', { detail: { row: row, id: id, record: record } }));
     },
 
     /**
      * Event fires on un selection of row
-     *     */    rowUnselect: function ($grid, $row, id, record) {
-        return $grid.triggerHandler('rowUnselect', [$row, id, record]);
+     *     */    rowUnselect: function (el, row, id, record) {
+        return el.dispatchEvent(new CustomEvent('rowUnselect', { detail: { row: row, id: id, record: record } }));
     },
 
     /**
-     * Event fires before deletion of row in the grid.     */    rowRemoving: function ($grid, $row, id, record) {
-        return $grid.triggerHandler('rowRemoving', [$row, id, record]);
+     * Event fires before deletion of row in the grid.     */    rowRemoving: function (el, row, id, record) {
+        return el.dispatchEvent(new CustomEvent('rowRemoving', { detail: { row: row, id: id, record: record } }));
     },
 
     /**
      * Event fires when the grid.destroy method is called.
-     *     */    destroying: function ($grid) {
-        return $grid.triggerHandler('destroying');
+     *     */    destroying: function (el) {
+        return el.dispatchEvent(new Event('destroying'));
     },
 
     /**
      * Event fires when column is hidding
-     *     */    columnHide: function ($grid, column) {
-        return $grid.triggerHandler('columnHide', [column]);
+     *     */    columnHide: function (el, column) {
+        return el.dispatchEvent(new CustomEvent('columnHide', { detail: { column: column } }));
     },
 
     /**
      * Event fires when column is showing
-     *     */    columnShow: function ($grid, column) {
-        return $grid.triggerHandler('columnShow', [column]);
+     *     */    columnShow: function (el, column) {
+        return el.triggerHandler(new CustomEvent('columnShow', { detail: { column: column } }));
     },
 
     /**
@@ -258,8 +258,8 @@ gj.grid.config = {
 
     /**
      * Event fires when the grid data is filtered.
-     *     */    dataFiltered: function ($grid, records) {
-        return $grid.triggerHandler('dataFiltered', [records]);
+     *     */    dataFiltered: function (el, records) {
+        return el.dispatchEvent(new CustomEvent('dataFiltered', { detail: { records: records } }));
     }
 };
 
@@ -301,7 +301,7 @@ gj.grid.methods = {
         result.columns = [];
         for (const el of columns) {
             let title = el.innerText,
-                config = gj.widget.prototype.readHTMLConfig.call(el);
+                config = gj.widget.prototype.readHTMLConfig.call({ element: el });
             config.title = title;
             if (!config.field) {
                 config.field = title;
@@ -540,14 +540,14 @@ gj.grid.methods = {
         cell.style.width = '100%';
         cell.style.textAlign = 'center';
         cell.setAttribute('colspan', gj.grid.methods.countVisibleColumns(grid));
-        text = document.createElement('tr');
+        text = document.createElement('div');
         text.innerHTML = caption || data.notFoundText;
         cell.appendChild(text);
         row.appendChild(cell);
 
         gj.grid.events.beforeEmptyRowInsert(grid.element);
 
-        grid.element.appendChild(row);
+        grid.element.querySelector('tbody').appendChild(row);
     },
 
     autoGenerateColumns: function (grid, records) {
@@ -1003,9 +1003,9 @@ gj.grid.methods = {
 
     clone: function (source) {
         var target = [];
-        $.each(source, function () {
-            target.push(this.clone());
-        });
+        for(let i = 0; i < source.length; i++) {
+            target.push(source[i].cloneNode());
+        };
         return target;
     },
 
@@ -1066,7 +1066,7 @@ gj.grid.methods = {
             }
         }
 
-        gj.grid.events.dataFiltered(grid, records);
+        gj.grid.events.dataFiltered(grid.element, records);
 
         return records;
     },
@@ -2204,7 +2204,7 @@ gj.grid.plugins.inlineEditing.configure = function (grid, fullConfig, clientConf
 
     private: {
         init: function (grid) {
-            var $row, $cell, data, controls, $leftPanel, $rightPanel, $tfoot, leftControls, rightControls, i;
+            let row, cell, data, controls, leftPanel, rightPanel, tfoot, leftControls, rightControls;
 
             data = grid.getConfig();
 
@@ -2218,32 +2218,41 @@ gj.grid.plugins.inlineEditing.configure = function (grid, fullConfig, clientConf
 
                 gj.grid.plugins.pagination.private.localization(data);
 
-                $row = $('<tr data-role="pager"/>');
-                $cell = $('<th/>');
-                $row.append($cell);
+                row = document.createElement('tr');
+                row.setAttribute('data-gj-role', 'pager');
+                cell = document.createElement('th');
+                row.appendChild(cell);
 
-                $leftPanel = $('<div data-role="display" />').addClass(data.style.pager.panel).css({ 'float': 'left' });
-                $rightPanel = $('<div data-role="display" />').addClass(data.style.pager.panel).css({ 'float': 'right' });
+                leftPanel = document.createElement('div');
+                leftPanel.setAttribute('data-gj-role', 'display');
+                gj.core.addClasses(leftPanel, data.style.pager.panel);
+                leftPanel.style.float = 'left';
+                rightPanel = document.createElement('div');
+                rightPanel.setAttribute('data-gj-role', 'display');
+                gj.core.addClasses(rightPanel, data.style.pager.panel);
+                rightPanel.style.float = 'right';
 
-                $cell.append($leftPanel).append($rightPanel);
+                cell.appendChild(leftPanel)
+                cell.appendChild(rightPanel);
 
-                $tfoot = $('<tfoot />').append($row);
-                grid.append($tfoot);
+                tfoot = document.createElement('tfoot');
+                tfoot.appendChild(row);
+                grid.element.appendChild(tfoot);
                 gj.grid.plugins.pagination.private.updatePagerColSpan(grid);
 
                 leftControls = gj.grid.methods.clone(data.pager.leftControls); //clone array
-                $.each(leftControls, function () {
-                    $leftPanel.append(this);
-                });
+                for (let i = 0; i < leftControls.length; i++) {
+                    leftPanel.appendChild(leftControls[i]);
+                };
 
                 rightControls = gj.grid.methods.clone(data.pager.rightControls); //clone array
-                $.each(rightControls, function () {
-                    $rightPanel.append(this);
-                });
+                for (let i = 0; i < rightControls.length; i++) {
+                    rightPanel.appendChild(rightControls[i]);
+                };
 
-                controls = grid.find('tfoot [data-role]');
-                for (i = 0; i < controls.length; i++) {
-                    gj.grid.plugins.pagination.private.initPagerControl($(controls[i]), grid);
+                controls = grid.querySelector('tfoot [data-gj-role]');
+                for (let i = 0; i < controls.length; i++) {
+                    gj.grid.plugins.pagination.private.initPagerControl((controls[i]), grid);
                 }
             }
         },
@@ -2251,7 +2260,7 @@ gj.grid.plugins.inlineEditing.configure = function (grid, fullConfig, clientConf
         localization: function (data) {
             if (data.uiLibrary === 'bootstrap') {
                 gj.grid.plugins.pagination.private.localizationBootstrap(data);
-            } else if (data.uiLibrary === 'bootstrap4') {
+            } else if (data.uiLibrary === 'bootstrap4' || data.uiLibrary === 'bootstrap5') {
                 gj.grid.plugins.pagination.private.localizationBootstrap4(data);
             } else {
                 gj.grid.plugins.pagination.private.localizationMaterialDesign(data);
@@ -2259,123 +2268,127 @@ gj.grid.plugins.inlineEditing.configure = function (grid, fullConfig, clientConf
         },
 
         localizationBootstrap: function (data) {
-            var msg = gj.grid.messages[data.locale];
+            let msg = gj.grid.messages[data.locale];
             if (typeof (data.pager.leftControls) === 'undefined') {
                 data.pager.leftControls = [
-                    $('<button type="button" class="btn btn-default btn-sm">' + (data.icons.first || msg.First) + '</button>').attr('title', msg.FirstPageTooltip).attr('data-role', 'page-first'),
-                    $('<button type="button" class="btn btn-default btn-sm">' + (data.icons.previous || msg.Previous) + '</button>').attr('title', msg.PreviousPageTooltip).attr('data-role', 'page-previous'),
-                    $('<div>' + msg.Page + '</div>'),
-                    $('<input data-role="page-number" class="form-control input-sm" type="text" value="0">'),
-                    $('<div>' + msg.Of + '</div>'),
-                    $('<div data-role="page-label-last">0</div>'),
-                    $('<button type="button" class="btn btn-default btn-sm">' + (data.icons.next || msg.Next) + '</button>').attr('title', msg.NextPageTooltip).attr('data-role', 'page-next'),
-                    $('<button type="button" class="btn btn-default btn-sm">' + (data.icons.last || msg.Last) + '</button>').attr('title', msg.LastPageTooltip).attr('data-role', 'page-last'),
-                    $('<button type="button" class="btn btn-default btn-sm">' + (data.icons.refresh || msg.Refresh) + '</button>').attr('title', msg.Refresh).attr('data-role', 'page-refresh'),
-                    $('<select data-role="page-size" class="form-control input-sm" width="60"></select>')
+                    ('<button type="button" class="btn btn-default btn-sm">' + (data.icons.first || msg.First) + '</button>').attr('title', msg.FirstPageTooltip).attr('data-gj-role', 'page-first'),
+                    ('<button type="button" class="btn btn-default btn-sm">' + (data.icons.previous || msg.Previous) + '</button>').attr('title', msg.PreviousPageTooltip).attr('data-gj-role', 'page-previous'),
+                    ('<div>' + msg.Page + '</div>'),
+                    ('<input data-gj-role="page-number" class="form-control input-sm" type="text" value="0">'),
+                    ('<div>' + msg.Of + '</div>'),
+                    ('<div data-gj-role="page-label-last">0</div>'),
+                    ('<button type="button" class="btn btn-default btn-sm">' + (data.icons.next || msg.Next) + '</button>').attr('title', msg.NextPageTooltip).attr('data-gj-role', 'page-next'),
+                    ('<button type="button" class="btn btn-default btn-sm">' + (data.icons.last || msg.Last) + '</button>').attr('title', msg.LastPageTooltip).attr('data-gj-role', 'page-last'),
+                    ('<button type="button" class="btn btn-default btn-sm">' + (data.icons.refresh || msg.Refresh) + '</button>').attr('title', msg.Refresh).attr('data-gj-role', 'page-refresh'),
+                    ('<select data-gj-role="page-size" class="form-control input-sm" width="60"></select>')
                 ];
             }
             if (typeof (data.pager.rightControls) === 'undefined') {
                 data.pager.rightControls = [
-                    $('<div>' + msg.DisplayingRecords + '</div>'),
-                    $('<div data-role="record-first">0</div>'),
-                    $('<div>-</div>'),
-                    $('<div data-role="record-last">0</div>'),
-                    $('<div>' + msg.Of + '</div>'),
-                    $('<div data-role="record-total">0</div>')
+                    ('<div>' + msg.DisplayingRecords + '</div>'),
+                    ('<div data-gj-role="record-first">0</div>'),
+                    ('<div>-</div>'),
+                    ('<div data-gj-role="record-last">0</div>'),
+                    ('<div>' + msg.Of + '</div>'),
+                    ('<div data-gj-role="record-total">0</div>')
                 ];
             }
         },
 
         localizationBootstrap4: function (data) {
-            var msg = gj.grid.messages[data.locale];
+            let msg = gj.grid.messages[data.locale];
             if (typeof (data.pager.leftControls) === 'undefined') {
                 data.pager.leftControls = [
-                    $('<button class="btn btn-default btn-sm gj-cursor-pointer">' + (data.icons.first || msg.First) + '</button>').attr('title', msg.FirstPageTooltip).attr('data-role', 'page-first'),
-                    $('<button class="btn btn-default btn-sm gj-cursor-pointer">' + (data.icons.previous || msg.Previous) + '</button>').attr('title', msg.PreviousPageTooltip).attr('data-role', 'page-previous'),
-                    $('<div>' + msg.Page + '</div>'),
-                    $('<div class="input-group"><input data-role="page-number" class="form-control form-control-sm" type="text" value="0"></div>'),
-                    $('<div>' + msg.Of + '</div>'),
-                    $('<div data-role="page-label-last">0</div>'),
-                    $('<button class="btn btn-default btn-sm gj-cursor-pointer">' + (data.icons.next || msg.Next) + '</button>').attr('title', msg.NextPageTooltip).attr('data-role', 'page-next'),
-                    $('<button class="btn btn-default btn-sm gj-cursor-pointer">' + (data.icons.last || msg.Last) + '</button>').attr('title', msg.LastPageTooltip).attr('data-role', 'page-last'),
-                    $('<button class="btn btn-default btn-sm gj-cursor-pointer">' + (data.icons.refresh || msg.Refresh) + '</button>').attr('title', msg.Refresh).attr('data-role', 'page-refresh'),
-                    $('<select data-role="page-size" class="form-control input-sm" width="60"></select>')
+                    ('<button class="btn btn-default btn-sm gj-cursor-pointer">' + (data.icons.first || msg.First) + '</button>').attr('title', msg.FirstPageTooltip).attr('data-gj-role', 'page-first'),
+                    ('<button class="btn btn-default btn-sm gj-cursor-pointer">' + (data.icons.previous || msg.Previous) + '</button>').attr('title', msg.PreviousPageTooltip).attr('data-gj-role', 'page-previous'),
+                    ('<div>' + msg.Page + '</div>'),
+                    ('<div class="input-group"><input data-gj-role="page-number" class="form-control form-control-sm" type="text" value="0"></div>'),
+                    ('<div>' + msg.Of + '</div>'),
+                    ('<div data-gj-role="page-label-last">0</div>'),
+                    ('<button class="btn btn-default btn-sm gj-cursor-pointer">' + (data.icons.next || msg.Next) + '</button>').attr('title', msg.NextPageTooltip).attr('data-gj-role', 'page-next'),
+                    ('<button class="btn btn-default btn-sm gj-cursor-pointer">' + (data.icons.last || msg.Last) + '</button>').attr('title', msg.LastPageTooltip).attr('data-gj-role', 'page-last'),
+                    ('<button class="btn btn-default btn-sm gj-cursor-pointer">' + (data.icons.refresh || msg.Refresh) + '</button>').attr('title', msg.Refresh).attr('data-gj-role', 'page-refresh'),
+                    ('<select data-gj-role="page-size" class="form-control input-sm" width="60"></select>')
                 ];
             }
             if (typeof (data.pager.rightControls) === 'undefined') {
                 data.pager.rightControls = [
-                    $('<div>' + msg.DisplayingRecords + '&nbsp;</div>'),
-                    $('<div data-role="record-first">0</div>'),
-                    $('<div>-</div>'),
-                    $('<div data-role="record-last">0</div>'),
-                    $('<div>' + msg.Of + '</div>'),
-                    $('<div data-role="record-total">0</div>')
+                    ('<div>' + msg.DisplayingRecords + '&nbsp;</div>'),
+                    ('<div data-gj-role="record-first">0</div>'),
+                    ('<div>-</div>'),
+                    ('<div data-gj-role="record-last">0</div>'),
+                    ('<div>' + msg.Of + '</div>'),
+                    ('<div data-gj-role="record-total">0</div>')
                 ];
             }
         },
 
         localizationMaterialDesign: function (data) {
-            var msg = gj.grid.messages[data.locale];
+            let msg = gj.grid.messages[data.locale], parser = new DOMParser();
             if (typeof (data.pager.leftControls) === 'undefined') {
                 data.pager.leftControls = [];
             }
             if (typeof (data.pager.rightControls) === 'undefined') {
                 data.pager.rightControls = [
-                    $('<span class="">' + msg.RowsPerPage + '</span>'),
-                    $('<select data-role="page-size" class="gj-grid-md-limit-select" width="52"></select></div>'),
-                    $('<span class="gj-md-spacer-32">&nbsp;</span>'),
-                    $('<span data-role="record-first" class="">0</span>'),
-                    $('<span class="">-</span>'),
-                    $('<span data-role="record-last" class="">0</span>'),
-                    $('<span class="gj-grid-mdl-pager-label">' + msg.Of + '</span>'),
-                    $('<span data-role="record-total" class="">0</span>'),
-                    $('<span class="gj-md-spacer-32">&nbsp;</span>'),
-                    $('<button class="gj-button-md">' + (data.icons.previous || msg.Previous) + '</button>').attr('title', msg.PreviousPageTooltip).attr('data-role', 'page-previous').addClass(data.icons.first ? 'gj-button-md-icon' : ''),
-                    $('<span class="gj-md-spacer-24">&nbsp;</span>'),
-                    $('<button class="gj-button-md">' + (data.icons.next || msg.Next) + '</button>').attr('title', msg.NextPageTooltip).attr('data-role', 'page-next').addClass(data.icons.first ? 'gj-button-md-icon' : '')
+                    parser.parseFromString('<span class="">' + msg.RowsPerPage + '</span>', 'text/xml').firstChild,
+                    parser.parseFromString('<select data-gj-role="page-size" class="gj-grid-md-limit-select" width="52"></select></div>', 'text/xml').firstChild,
+                    parser.parseFromString('<span class="gj-md-spacer-32">&nbsp;</span>', 'text/xml').firstChild,
+                    parser.parseFromString('<span data-gj-role="record-first" class="">0</span>', 'text/xml').firstChild,
+                    parser.parseFromString('<span class="">-</span>', 'text/xml').firstChild,
+                    parser.parseFromString('<span data-gj-role="record-last" class="">0</span>', 'text/xml').firstChild,
+                    parser.parseFromString('<span class="gj-grid-mdl-pager-label">' + msg.Of + '</span>', 'text/xml').firstChild,
+                    parser.parseFromString('<span data-gj-role="record-total" class="">0</span>', 'text/xml').firstChild,
+                    parser.parseFromString('<span class="gj-md-spacer-32">&nbsp;</span>', 'text/xml').firstChild,
+                    gj.core.addClasses(parser.parseFromString('<button class="gj-button-md" title="' + msg.PreviousPageTooltip + '" data-gj-role="page-previous">' + (data.icons.previous || msg.Previous) + '</button>', 'text/xml').firstChild, data.icons.first ? 'gj-button-md-icon' : ''),
+                    parser.parseFromString('<span class="gj-md-spacer-24">&nbsp;</span>', 'text/xml').firstChild,
+                    gj.core.addClasses(parser.parseFromString('<button class="gj-button-md" title="' + msg.NextPageTooltip + '" data-gj-role="page-next">' + (data.icons.next || msg.Next) + '</button>', 'text/xml').firstChild, data.icons.first ? 'gj-button-md-icon' : '')
                 ];
             }
         },
 
-        initPagerControl: function ($control, grid) {
-            var data = grid.getConfig();
-            switch ($control.data('role')) {
+        initPagerControl: function (control, grid) {
+            let data = grid.getConfig();
+            switch (control.data('role')) {
                 case 'page-size':
                     if (data.pager.sizes && 0 < data.pager.sizes.length) {
-                        $control.show();
-                        $.each(data.pager.sizes, function () {
-                            $control.append($('<option/>').attr('value', this.toString()).text(this.toString()));
-                        });
-                        $control.change(function () {
-                            var newSize = parseInt(this.value, 10);
+                        control.show();
+                        for (let i = 0; i < data.pager.sizes.length; i++) {
+                            let option = document.createElement('option'),
+                                value = data.pager.sizes[i].toString();
+                            option.setAttribute('value', value);
+                            option.innerText = value
+                            control.appendChild(option);
+                        };
+                        control.change(function () {
+                            let newSize = parseInt(this.value, 10);
                             data.params[data.paramNames.limit] = newSize;
                             gj.grid.plugins.pagination.private.changePage(grid, 1);
                             gj.grid.plugins.pagination.events.pageSizeChange(grid, newSize);
                         });
-                        $control.val(data.params[data.paramNames.limit]);
+                        control.val(data.params[data.paramNames.limit]);
                         if (gj.dropdown) {
-                            $control.dropdown({
+                            control.dropdown({
                                 uiLibrary: data.uiLibrary,
                                 iconsLibrary: data.iconsLibrary,
-                                fontSize: $control.css('font-size'),
+                                fontSize: control.style.fontSize,
                                 style: {
                                     presenter: 'btn btn-default btn-sm'
                                 }
                             });
                         }
                     } else {
-                        $control.hide();
+                        control.hide();
                     }
                     break;
                 case 'page-refresh':
-                    $control.on('click', function () { grid.reload(); });
+                    control.on('click', function () { grid.reload(); });
                     break;
             }
 
         },
 
         reloadPager: function (grid, totalRecords) {
-            var page, limit, lastPage, firstRecord, lastRecord, data, controls, i;
+            let page, limit, lastPage, firstRecord, lastRecord, data, controls, i;
 
             data = grid.getConfig();
 
@@ -2386,81 +2399,81 @@ gj.grid.plugins.inlineEditing.configure = function (grid, fullConfig, clientConf
                 firstRecord = (0 === page) ? 0 : (limit * (page - 1)) + 1;
                 lastRecord = (firstRecord + limit) > totalRecords ? totalRecords : (firstRecord + limit) - 1;
 
-                controls = grid.find('TFOOT [data-role]');
+                controls = grid.querySelector('TFOOT [data-gj-role]');
                 for (i = 0; i < controls.length; i++) {
-                    gj.grid.plugins.pagination.private.reloadPagerControl($(controls[i]), grid, page, lastPage, firstRecord, lastRecord, totalRecords);
+                    gj.grid.plugins.pagination.private.reloadPagerControl((controls[i]), grid, page, lastPage, firstRecord, lastRecord, totalRecords);
                 }
 
                 gj.grid.plugins.pagination.private.updatePagerColSpan(grid);
             }
         },
 
-        reloadPagerControl: function ($control, grid, page, lastPage, firstRecord, lastRecord, totalRecords) {
-            var newPage;
-            switch ($control.data('role')) {
+        reloadPagerControl: function (control, grid, page, lastPage, firstRecord, lastRecord, totalRecords) {
+            let newPage;
+            switch (control.data('role')) {
                 case 'page-first':
-                    gj.grid.plugins.pagination.private.assignPageHandler(grid, $control, 1, page < 2);
+                    gj.grid.plugins.pagination.private.assignPageHandler(grid, control, 1, page < 2);
                     break;
                 case 'page-previous':
-                    gj.grid.plugins.pagination.private.assignPageHandler(grid, $control, page - 1, page < 2);
+                    gj.grid.plugins.pagination.private.assignPageHandler(grid, control, page - 1, page < 2);
                     break;
                 case 'page-number':
-                    $control.val(page).off('change').on('change', gj.grid.plugins.pagination.private.createChangePageHandler(grid, page));
+                    control.val(page).off('change').on('change', gj.grid.plugins.pagination.private.createChangePageHandler(grid, page));
                     break;
                 case 'page-label-last':
-                    $control.text(lastPage);
+                    control.text(lastPage);
                     break;
                 case 'page-next':
-                    gj.grid.plugins.pagination.private.assignPageHandler(grid, $control, page + 1, lastPage === page);
+                    gj.grid.plugins.pagination.private.assignPageHandler(grid, control, page + 1, lastPage === page);
                     break;
                 case 'page-last':
-                    gj.grid.plugins.pagination.private.assignPageHandler(grid, $control, lastPage, lastPage === page);
+                    gj.grid.plugins.pagination.private.assignPageHandler(grid, control, lastPage, lastPage === page);
                     break;
                 case 'page-button-one':
                     newPage = (page === 1) ? 1 : ((page == lastPage) ? (page - 2) : (page - 1));
-                    gj.grid.plugins.pagination.private.assignButtonHandler(grid, $control, page, newPage, lastPage);
+                    gj.grid.plugins.pagination.private.assignButtonHandler(grid, control, page, newPage, lastPage);
                     break;
                 case 'page-button-two':
                     newPage = (page === 1) ? 2 : ((page == lastPage) ? lastPage - 1 : page);
-                    gj.grid.plugins.pagination.private.assignButtonHandler(grid, $control, page, newPage, lastPage);
+                    gj.grid.plugins.pagination.private.assignButtonHandler(grid, control, page, newPage, lastPage);
                     break;
                 case 'page-button-three':
                     newPage = (page === 1) ? page + 2 : ((page == lastPage) ? page : (page + 1));
-                    gj.grid.plugins.pagination.private.assignButtonHandler(grid, $control, page, newPage, lastPage);
+                    gj.grid.plugins.pagination.private.assignButtonHandler(grid, control, page, newPage, lastPage);
                     break;
                 case 'record-first':
-                    $control.text(firstRecord);
+                    control.text(firstRecord);
                     break;
                 case 'record-last':
-                    $control.text(lastRecord);
+                    control.text(lastRecord);
                     break;
                 case 'record-total':
-                    $control.text(totalRecords);
+                    control.text(totalRecords);
                     break;
             }
         },
 
-        assignPageHandler: function (grid, $control, newPage, disabled) {
-            var style = grid.getConfig().style.pager;
+        assignPageHandler: function (grid, control, newPage, disabled) {
+            let style = grid.getConfig().style.pager;
             if (disabled) {
-                $control.addClass(style.stateDisabled).prop('disabled', true).off('click');
+                control.addClass(style.stateDisabled).prop('disabled', true).off('click');
             } else {
-                $control.removeClass(style.stateDisabled).prop('disabled', false).off('click').on('click', function () {
+                control.removeClass(style.stateDisabled).prop('disabled', false).off('click').on('click', function () {
                     gj.grid.plugins.pagination.private.changePage(grid, newPage);
                 });
             }
         },
 
-        assignButtonHandler: function (grid, $control, page, newPage, lastPage) {
-            var style = grid.getConfig().style.pager;
+        assignButtonHandler: function (grid, control, page, newPage, lastPage) {
+            let style = grid.getConfig().style.pager;
             if (newPage < 1 || newPage > lastPage) {
-                $control.hide();
+                control.hide();
             } else {
-                $control.show().off('click').text(newPage);
+                control.show().off('click').text(newPage);
                 if (newPage === page) {
-                    $control.addClass(style.activeButton);
+                    control.addClass(style.activeButton);
                 } else {
-                    $control.removeClass(style.activeButton).on('click', function () {
+                    control.removeClass(style.activeButton).on('click', function () {
                         gj.grid.plugins.pagination.private.changePage(grid, newPage);
                     });
                 }
@@ -2469,30 +2482,30 @@ gj.grid.plugins.inlineEditing.configure = function (grid, fullConfig, clientConf
 
         createChangePageHandler: function (grid, currentPage) {
             return function () {
-                var data = grid.getConfig(),
+                let data = grid.getConfig(),
                     newPage = parseInt(this.value, 10);
                 gj.grid.plugins.pagination.private.changePage(grid, newPage);
             };
         },
 
         changePage: function (grid, newPage) {
-            var data = grid.getConfig();
+            let data = grid.getConfig();
             if (gj.grid.plugins.pagination.events.pageChanging(grid, newPage) !== false && !isNaN(newPage)) {
-                grid.find('TFOOT [data-role="page-number"]').val(newPage);
+                grid.element.querySelector('TFOOT [data-gj-role="page-number"]').innerText = newPage;
                 data.params[data.paramNames.page] = newPage;
             }
             grid.reload();
         },
 
         updatePagerColSpan: function (grid) {
-            var $cell = grid.find('tfoot > tr[data-role="pager"] > th');
-            if ($cell && $cell.length) {
-                $cell.attr('colspan', gj.grid.methods.countVisibleColumns(grid));
+            let cell = grid.element.querySelector('tfoot > tr[data-gj-role="pager"] > th');
+            if (cell && cell.length) {
+                cell.setAttribute('colspan', gj.grid.methods.countVisibleColumns(grid));
             }
         },
         
         isLastRecordVisible: function (grid) {
-            var result = true,
+            let result = true,
                 data = grid.getConfig(),
                 limit = parseInt(data.params[data.paramNames.limit], 10),
                 page = parseInt(data.params[data.paramNames.page], 10),
@@ -2542,7 +2555,7 @@ gj.grid.plugins.inlineEditing.configure = function (grid, fullConfig, clientConf
 
     configure: function (grid, fullConfig, clientConfig) {
         grid.extend(grid, gj.grid.plugins.pagination.public);
-        var data = grid.getConfig();
+        let data = grid.getConfig();
         if (clientConfig.pager) {
             gj.grid.methods.isLastRecordVisible = gj.grid.plugins.pagination.private.isLastRecordVisible;
 

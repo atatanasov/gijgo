@@ -12,7 +12,7 @@
 <body style="padding: 8px;">
  <table id="grid"></table>
  <script>
-     $('#grid').grid({
+     new GijgoGrid(document.getElementById('grid'), {
          dataSource: '/Players/Get',
          defaultColumnSettings: { align: 'right' },
          columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth', name: 'Birth Place' } ]

@@ -16,7 +16,7 @@
          dataSource: '/Players/Get',
          columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
      });
-     grid.on('rowDataBound', function (e, $row, id, record) {
+     grid.on('rowDataBound', function (e, row, id, record) {
          alert('rowDataBound is fired for row with id=' + id + '.');
      });
  </script>

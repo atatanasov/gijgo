@@ -36,7 +36,7 @@ gj.grid.methods = {
         result.columns = [];
         for (const el of columns) {
             let title = el.innerText,
-                config = gj.widget.prototype.readHTMLConfig.call(el);
+                config = gj.widget.prototype.readHTMLConfig.call({ element: el });
             config.title = title;
             if (!config.field) {
                 config.field = title;
@@ -275,14 +275,14 @@ gj.grid.methods = {
         cell.style.width = '100%';
         cell.style.textAlign = 'center';
         cell.setAttribute('colspan', gj.grid.methods.countVisibleColumns(grid));
-        text = document.createElement('tr');
+        text = document.createElement('div');
         text.innerHTML = caption || data.notFoundText;
         cell.appendChild(text);
         row.appendChild(cell);
 
         gj.grid.events.beforeEmptyRowInsert(grid.element);
 
-        grid.element.appendChild(row);
+        grid.element.querySelector('tbody').appendChild(row);
     },
 
     autoGenerateColumns: function (grid, records) {
@@ -738,9 +738,9 @@ gj.grid.methods = {
 
     clone: function (source) {
         var target = [];
-        $.each(source, function () {
-            target.push(this.clone());
-        });
+        for(let i = 0; i < source.length; i++) {
+            target.push(source[i].cloneNode(true));
+        };
         return target;
     },
 
@@ -801,7 +801,7 @@ gj.grid.methods = {
             }
         }
 
-        gj.grid.events.dataFiltered(grid, records);
+        gj.grid.events.dataFiltered(grid.element, records);
 
         return records;
     },

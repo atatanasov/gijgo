@@ -22,7 +22,7 @@
          ],
          columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
      });
-     grid.on('rowRemoving', function (e, $row, id, record) {
+     grid.on('rowRemoving', function (e, row, id, record) {
          alert('rowRemoving is fired for row with id=' + id + '.');
      });
  </script>

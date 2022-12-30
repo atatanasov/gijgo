@@ -15,7 +15,7 @@
 <body style="padding: 8px;">
  <table id="grid"></table>
  <script>
-     $('#grid').grid({
+     new GijgoGrid(document.getElementById('grid'), {
          primaryKey: 'ID',
          uiLibrary: 'bootstrap',
          dataSource: '/Players/Get',

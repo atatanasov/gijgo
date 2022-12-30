@@ -24,7 +24,7 @@
          caseSensitiveFilter = function (value, searchStr) {
              return value.indexOf(searchStr) > -1;
          };
-     grid = $('#grid').grid({
+     grid = new GijgoGrid(document.getElementById('grid'), {
          dataSource: data,
          columns: [
              { field: 'ID', width: 56 },

@@ -16,7 +16,7 @@
  .bold { font-weight: bold }
  </style>
  <script>
-     $('#grid').grid({
+     new GijgoGrid(document.getElementById('grid'), {
          dataSource: '/Players/Get',
          columns: [
              { field: 'ID', width: 56 },

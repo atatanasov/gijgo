@@ -17,7 +17,7 @@
          $displayEl.css('background-color', '#EEE');
          $displayEl.text(value);
      };
-     $('#grid').grid({
+     new GijgoGrid(document.getElementById('grid'), {
          columns: [
              { field: 'ID', width: 56 },
              { field: 'Name', renderer: nameRenderer },

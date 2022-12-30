@@ -25,7 +25,7 @@
              return (direction === 'asc') ? a < b : b < a;
          };
      };
-     $('#grid').grid({
+     new GijgoGrid(document.getElementById('grid'), {
          dataSource: data,
          columns: [
              { field: 'ID' },

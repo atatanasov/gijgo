@@ -19,7 +19,7 @@
          columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
          selectionMethod: 'checkbox'
      });
-     grid.on('rowSelect', function (e, $row, id, record) {
+     grid.on('rowSelect', function (e, row, id, record) {
          alert('Row with id=' + id + ' is selected.');
      });
  </script>
