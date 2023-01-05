@@ -206,15 +206,21 @@
             combined: {
                 files: [
                     { 'dist/combined/js/gijgo.min.js': ['dist/combined/js/gijgo.js'] },
+                    { 'dist/combined/js/messages/messages.az-az.min.js': ['dist/combined/js/messages/messages.az-az.js'] },
                     { 'dist/combined/js/messages/messages.bg-bg.min.js': ['dist/combined/js/messages/messages.bg-bg.js'] },
+                    { 'dist/combined/js/messages/messages.cs-cz.min.js': ['dist/combined/js/messages/messages.cs-cz.js'] },
                     { 'dist/combined/js/messages/messages.de-de.min.js': ['dist/combined/js/messages/messages.de-de.js'] },
+                    { 'dist/combined/js/messages/messages.el-gr.min.js': ['dist/combined/js/messages/messages.el-gr.js'] },
+                    { 'dist/combined/js/messages/messages.es-es.min.js': ['dist/combined/js/messages/messages.es-es.js'] },
                     { 'dist/combined/js/messages/messages.fr-fr.min.js': ['dist/combined/js/messages/messages.fr-fr.js'] },
+                    { 'dist/combined/js/messages/messages.hu-hu.min.js': ['dist/combined/js/messages/messages.hu-hu.js'] },
+                    { 'dist/combined/js/messages/messages.it-it.min.js': ['dist/combined/js/messages/messages.it-it.js'] },
+                    { 'dist/combined/js/messages/messages.ja-jp.min.js': ['dist/combined/js/messages/messages.ja-jp.js'] },
+                    { 'dist/combined/js/messages/messages.lv-lv.min.js': ['dist/combined/js/messages/messages.lv-lv.js'] },
+                    { 'dist/combined/js/messages/messages.nl-nl.min.js': ['dist/combined/js/messages/messages.nl-nl.js'] },
                     { 'dist/combined/js/messages/messages.pt-br.min.js': ['dist/combined/js/messages/messages.pt-br.js'] },
                     { 'dist/combined/js/messages/messages.ru-ru.min.js': ['dist/combined/js/messages/messages.ru-ru.js'] },
-                    { 'dist/combined/js/messages/messages.es-es.min.js': ['dist/combined/js/messages/messages.es-es.js'] },
-                    { 'dist/combined/js/messages/messages.it-it.min.js': ['dist/combined/js/messages/messages.it-it.js'] },
                     { 'dist/combined/js/messages/messages.tr-tr.min.js': ['dist/combined/js/messages/messages.tr-tr.js'] },
-                    { 'dist/combined/js/messages/messages.ja-jp.min.js': ['dist/combined/js/messages/messages.ja-jp.js'] },
                     { 'dist/combined/js/messages/messages.zh-cn.min.js': ['dist/combined/js/messages/messages.zh-cn.js'] },
                     { 'dist/combined/js/messages/messages.zh-tw.min.js': ['dist/combined/js/messages/messages.zh-tw.js'] }
                 ]

@@ -12,15 +12,15 @@ TABLE.gj-grid {
     table-layout: fixed;
 }
 
-TABLE.gj-grid THEAD TH [data-role="selectAll"] {
+TABLE.gj-grid THEAD TH [data-gj-gj-role="selectAll"] {
     margin: auto;
 }
 
-TABLE.gj-grid THEAD TH [data-role="title"] {
+TABLE.gj-grid THEAD TH [data-gj-role="title"] {
     display: inline-block;
 }
 
-TABLE.gj-grid THEAD TH [data-role="sorticon"] {
+TABLE.gj-grid THEAD TH [data-gj-role="sorticon"] {
     display: inline-block;
 }
 
@@ -42,7 +42,7 @@ TABLE.gj-grid > tbody > tr > td {
     position: relative;
 }
 
-table.gj-grid tbody div[data-role="display"] {
+table.gj-grid tbody div[data-gj-role="display"] {
     vertical-align: middle;
     text-indent: 0;
     white-space: pre-wrap;
@@ -50,7 +50,7 @@ table.gj-grid tbody div[data-role="display"] {
     word-break: break-word;
 }
 
-table.gj-grid.fixed-body-rows tbody div[data-role="display"] {
+table.gj-grid.fixed-body-rows tbody div[data-gj-role="display"] {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -58,7 +58,7 @@ table.gj-grid.fixed-body-rows tbody div[data-role="display"] {
     word-break: initial;
 }
 
-table.gj-grid tfoot DIV[data-role="display"] {
+table.gj-grid tfoot DIV[data-gj-role="display"] {
     vertical-align: middle;
     text-indent: 0;
     display: flex;
@@ -93,18 +93,18 @@ table.gj-grid-bootstrap thead th {
     vertical-align:middle;
 }
 
-table.gj-grid-bootstrap thead th [data-role="sorticon"] {
+table.gj-grid-bootstrap thead th [data-gj-role="sorticon"] {
     margin-left: 5px;
 }
 
-table.gj-grid-bootstrap thead th [data-role="sorticon"] i.gj-icon,
-table.gj-grid-bootstrap thead th [data-role="sorticon"] i.material-icons {
+table.gj-grid-bootstrap thead th [data-gj-role="sorticon"] i.gj-icon,
+table.gj-grid-bootstrap thead th [data-gj-role="sorticon"] i.material-icons {
     position: absolute;
     font-size: 20px;
     top: 15px;
 }
 
-table.gj-grid-bootstrap tbody tr td div[data-role="display"] {
+table.gj-grid-bootstrap tbody tr td div[data-gj-role="display"] {
     padding: 0px;
 }
 
@@ -175,12 +175,12 @@ table.gj-grid-bootstrap tbody tr td div[data-role="display"] {
 }
 
 
-table.gj-grid-md thead th [data-role="sorticon"] {
+table.gj-grid-md thead th [data-gj-role="sorticon"] {
     margin-left: 5px;
 }
 
-table.gj-grid-md thead th [data-role="sorticon"] i.gj-icon,
-table.gj-grid-md thead th [data-role="sorticon"] i.material-icons {
+table.gj-grid-md thead th [data-gj-role="sorticon"] i.gj-icon,
+table.gj-grid-md thead th [data-gj-role="sorticon"] i.material-icons {
     position: absolute;
     font-size: 16px;
     top: 19px;

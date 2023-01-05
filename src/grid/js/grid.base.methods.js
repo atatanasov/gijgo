@@ -201,14 +201,14 @@ gj.grid.methods = {
             data = grid.getConfig(),
             sortBy = data.params[data.paramNames.sortBy],
             direction = data.params[data.paramNames.direction],
-            softIcon = grid.element.querySelector('thead tr th [data-role="sorticon"]');
+            softIcon = grid.element.querySelector('thead tr th [data-gj-role="sorticon"]');
 
         softIcon && softIcon.remove();
 
         if (sortBy) {
             position = gj.grid.methods.getColumnPosition(grid.getConfig().columns, sortBy);
             if (position > -1) {
-                cellTitle = grid.querySelector('thead tr th:eq(' + position + ') div[data-role="title"]');
+                cellTitle = grid.querySelector('thead tr th:eq(' + position + ') div[data-gj-role="title"]');
                 sortIcon = document.createElement('div');
                 sortIcon.setAttribute('data-gj-role', 'sorticon');
                 sortIcon.classList.add('gj-unselectable');
@@ -220,7 +220,7 @@ gj.grid.methods = {
 
     useHtmlDataSource: function (grid, data) {
         var dataSource = [], i, j, cells, record,
-            rows = grid.querySelectorAll('tbody tr[data-gj-role != "empty"]');
+            rows = grid.element.querySelectorAll('tbody tr:not([data-gj-role="empty"])');
         for (i = 0; i < rows.length; i++) {
             cells = rows[i].querySelectorAll('td');
             record = {};
@@ -308,7 +308,7 @@ gj.grid.methods = {
     },
 
     loadData: function (grid) {
-        var data, records, i, recLen, rowCount, tbody, rows, row;
+        let data, records, i, recLen, rowCount, tbody, rows;
 
         data = grid.getConfig();
         records = grid.getAll();
@@ -322,10 +322,10 @@ gj.grid.methods = {
 
         tbody = grid.element.querySelector('tbody');
         if ('checkbox' === data.selectionMethod && 'multiple' === data.selectionType) {
-            grid.element.querySelector('thead input[data-role="selectAll"]').checked = false;
+            grid.element.querySelector('thead input[data-gj-role="selectAll"]').checked = false;
         }
-        row = tbody.querySelector('[data-gj-role="empty"]')
-        row && row.remove();
+        rows = tbody.querySelectorAll('tr:not([data-gj-role="row"])')
+        rows && rows.forEach(row => row.remove());
         if (0 === recLen) {
             tbody.innerHTML = '';
             gj.grid.methods.appendEmptyRow(grid);
@@ -337,11 +337,9 @@ gj.grid.methods = {
 
         for (i = 0; i < rowCount; i++) {
             if (i < recLen) {
-                row = rows[i];
-                gj.grid.methods.renderRow(grid, row, records[i], i);
+                gj.grid.methods.renderRow(grid, rows[i], records[i], i);
             } else {
-                tbody.querySelectorAll('tr[data-role="row"]:gt(' + (i - 1) + ')').remove();
-                break;
+                rows[i].remove();
             }
         }
 
@@ -376,7 +374,7 @@ gj.grid.methods = {
         }
         for (i = 0; i < data.columns.length; i++) {
             if (mode === 'update') {
-                cell = row.querySelector('td:eq(' + i + ')');
+                cell = row.children[i];
                 gj.grid.methods.renderCell(grid, cell, data.columns[i], record, id);
             } else {
                 cell = gj.grid.methods.renderCell(grid, null, data.columns[i], record, id);
@@ -389,7 +387,7 @@ gj.grid.methods = {
     renderCell: function (grid, cell, column, record, id, mode) {
         var displayEl, key;
 
-        if (!cell || cell.length === 0) {
+        if (!cell) {
             cell = document.createElement('td');
             displayEl = document.createElement('div');
             displayEl.setAttribute('data-gj-role', 'display');
@@ -402,7 +400,7 @@ gj.grid.methods = {
             cell.appendChild(displayEl);
             mode = 'create';
         } else {
-            displayEl = cell.querySelector('div[data-role="display"]');
+            displayEl = cell.querySelector('div[data-gj-role="display"]');
             mode = 'update';
         }
 
@@ -533,10 +531,10 @@ gj.grid.methods = {
         $row.addClass(data.style.content.rowSelected);
         $row.attr('data-selected', 'true');
         if ('checkbox' === data.selectionMethod) {
-            $checkbox = $row.find('input[type="checkbox"][data-role="selectRow"]');
+            $checkbox = $row.find('input[type="checkbox"][data-gj-role="selectRow"]');
             $checkbox.length && !$checkbox.prop('checked') && $checkbox.prop('checked', true);
             if ('multiple' === data.selectionType && grid.getSelections().length === grid.count(false)) {
-                grid.find('thead input[data-role="selectAll"]').prop('checked', true);
+                grid.find('thead input[data-gj-role="selectAll"]').prop('checked', true);
             }
         }
         return gj.grid.events.rowSelect(grid, $row, id, grid.getById(id));
@@ -547,10 +545,10 @@ gj.grid.methods = {
         if ($row.attr('data-selected') === 'true') {
             $row.removeClass(data.style.content.rowSelected);
             if ('checkbox' === data.selectionMethod) {
-                $checkbox = $row.find('td input[type="checkbox"][data-role="selectRow"]');
+                $checkbox = $row.find('td input[type="checkbox"][data-gj-role="selectRow"]');
                 $checkbox.length && $checkbox.prop('checked') && $checkbox.prop('checked', false);
                 if ('multiple' === data.selectionType) {
-                    grid.find('thead input[data-role="selectAll"]').prop('checked', false);
+                    grid.find('thead input[data-gj-role="selectAll"]').prop('checked', false);
                 }
             }
             $row.removeAttr('data-selected');
@@ -582,14 +580,14 @@ gj.grid.methods = {
 
     selectAll: function (grid) {
         var data = grid.getConfig();
-        grid.find('tbody tr[data-role="row"]').each(function () {
+        grid.find('tbody tr[data-gj-role="row"]').each(function () {
             var $row = $(this),
                 position = $row.data('position'),
                 record = grid.get(position),
                 id = gj.grid.methods.getId(record, data.primaryKey, position);
             gj.grid.methods.selectRow(grid, data, $row, id);
         });
-        grid.find('thead input[data-role="selectAll"]').prop('checked', true);
+        grid.find('thead input[data-gj-role="selectAll"]').prop('checked', true);
         return grid;
     },
 
@@ -601,9 +599,9 @@ gj.grid.methods = {
                 record = grid.get(position),
                 id = gj.grid.methods.getId(record, data.primaryKey, position);
             gj.grid.methods.unselectRow(grid, data, $row, id);
-            $row.find('input[type="checkbox"][data-role="selectRow"]').prop('checked', false);
+            $row.find('input[type="checkbox"][data-gj-role="selectRow"]').prop('checked', false);
         });
-        grid.find('thead input[data-role="selectAll"]').prop('checked', false);
+        grid.find('thead input[data-gj-role="selectAll"]').prop('checked', false);
         return grid;
     },
 
@@ -718,7 +716,7 @@ gj.grid.methods = {
         position = gj.grid.methods.getColumnPosition(grid.getConfig().columns, field);
         if (position > -1) {
             $row = gj.grid.methods.getRowById(grid, id);
-            $result = $row.find('td:eq(' + position + ') div[data-role="display"]');
+            $result = $row.find('td:eq(' + position + ') div[data-gj-role="display"]');
         }
         return $result;
     },
@@ -821,7 +819,7 @@ gj.grid.methods = {
             gj.grid.methods.stopLoading(grid);
             grid.xhr && grid.xhr.abort();
             grid.off();
-            if (keepWrapperTag === false && grid.parent('div[data-role="wrapper"]').length > 0) {
+            if (keepWrapperTag === false && grid.parent('div[data-gj-role="wrapper"]').length > 0) {
                 grid.unwrap();
             }
             grid.removeData();
@@ -849,7 +847,7 @@ gj.grid.methods = {
             });
             data.columns[position].hidden = false;
 
-            $cells = grid.find('tbody > tr[data-role="empty"] > td');
+            $cells = grid.find('tbody > tr[data-gj-role="empty"] > td');
             if ($cells && $cells.length) {
                 $cells.attr('colspan', gj.grid.methods.countVisibleColumns(grid));
             }
