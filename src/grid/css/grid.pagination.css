@@ -3,12 +3,12 @@
     padding-right: 14px;
 }
 
-.gj-grid-md tfoot tr[data-gj-gj-role="pager"] .gj-grid-mdl-pager-label {
+.gj-grid-md tfoot tr[data-gj-role="pager"] .gj-grid-mdl-pager-label {
     padding-left: 5px;
     padding-right: 5px;
 }
 
-.gj-grid-md tfoot tr[data-gj-gj-role="pager"] .gj-dropdown-md {
+.gj-grid-md tfoot tr[data-gj-role="pager"] .gj-dropdown-md {
     margin-left: 12px;
 }
 
@@ -36,39 +36,11 @@
 }
 
 .gj-grid-bootstrap tfoot tr[data-gj-role="pager"] th > div > div {
-    margin-right: 5px;
+    margin-right: .4rem;
 }
 
 .gj-grid-bootstrap tfoot tr[data-gj-role="pager"] th > div > button {
-    margin-right: 5px;
-}
-
-.gj-grid-bootstrap-4 tfoot tr[data-gj-role="pager"] th > div button {
-    height: 34px;
-}
-
-.gj-grid-bootstrap-4 tfoot tr[data-gj-role="pager"] th div .gj-dropdown-bootstrap-4 .gj-dropdown-expander-mi .gj-icon {
-    top: 5px;
-}
-
-.gj-grid-bootstrap-3 tfoot tr[data-gj-role="pager"] th > div > input {
-    margin-right: 5px;
-    width: 40px;
-    text-align: right;
-    display: inline-block;
-    font-weight: bold;
-}
-
-.gj-grid-bootstrap-4 tfoot tr[data-gj-role="pager"] th > div > div.input-group {
-    width: 40px;
-}
-
-.gj-grid-bootstrap-4 tfoot tr[data-gj-role="pager"] th > div > div.input-group input {
-    text-align: right;
-    font-weight: bold;
-    height: 34px;
-    padding-top: 2px;
-    padding-bottom: 6px;
+    margin-right: .4rem;
 }
 
 .gj-grid-bootstrap tfoot tr[data-gj-role="pager"] th > div > select {
@@ -91,4 +63,55 @@
 
 .gj-grid-bootstrap tfoot tr[data-gj-role="pager"] th .gj-dropdown-bootstrap-4 [role="presenter"] {
     padding: 1px 8px;
+}
+
+/* Bootstrap 3 */
+.gj-grid-bootstrap-3 tfoot tr[data-gj-role="pager"] th > div > input {
+    margin-right: 5px;
+    width: 40px;
+    text-align: right;
+    display: inline-block;
+    font-weight: bold;
+}
+
+/* Bootstrap 4 */
+.gj-grid-bootstrap-4 tfoot tr[data-gj-role="pager"] th div button {
+    height: 2.125rem;
+}
+
+.gj-grid-bootstrap-4 tfoot tr[data-gj-role="pager"] th div .gj-dropdown-bootstrap-4 .gj-dropdown-expander-mi .gj-icon {
+    top: .3rem;
+}
+
+.gj-grid-bootstrap-4 tfoot tr[data-gj-role="pager"] th > div > div.input-group {
+    width: 40px;
+}
+
+.gj-grid-bootstrap-4 tfoot tr[data-gj-role="pager"] th > div > div.input-group input {
+    text-align: right;
+    font-weight: bold;
+    height: 34px;
+    padding-top: 2px;
+    padding-bottom: 6px;
+}
+
+/* Bootstrap 5 */
+.gj-grid-bootstrap-5 tfoot tr[data-gj-role="pager"] th div button {
+    height: 2.125rem;
+}
+
+.gj-grid-bootstrap-5 tfoot tr[data-gj-role="pager"] th div .gj-dropdown-bootstrap-5 .gj-dropdown-expander-mi .gj-icon {
+    top: .3rem;
+}
+
+.gj-grid-bootstrap-5 tfoot tr[data-gj-role="pager"] th > div > div.input-group {
+    width: 40px;
+}
+
+.gj-grid-bootstrap-5 tfoot tr[data-gj-role="pager"] th > div > div.input-group input {
+    text-align: right;
+    font-weight: bold;
+    height: 34px;
+    padding-top: 2px;
+    padding-bottom: 6px;
 }

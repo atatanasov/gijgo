@@ -611,7 +611,8 @@ gj.widget.prototype.buildConfigJS = function (clientConfig) {
 
 gj.widget.prototype.createDoneHandler = function () {
     var widget = this;
-    return function (response) {
+    return function (e) {
+        let response = this.response;
         if (typeof (response) === 'string' && JSON) {
             response = JSON.parse(response);
         }
@@ -628,7 +629,7 @@ gj.widget.prototype.createErrorHandler = function () {
 };
 
 gj.widget.prototype.reload = function (params) {
-    var ajaxOptions, result, data = this.getConfig();
+    var url, ajaxOptions, result, data = this.getConfig();
     if (data.dataSource === undefined) {
         gj[this.type].methods.useHtmlDataSource(this, data);
     }
@@ -637,11 +638,18 @@ gj.widget.prototype.reload = function (params) {
         result = gj[this.type].methods.filter(this);
         gj[this.type].methods.render(this, result);
     } else if (typeof(data.dataSource) === 'string') {
-        ajaxOptions = { url: data.dataSource, data: data.params };
+        url = data.dataSource;
+        if (data.params && Object.keys(data.params).length > 0) {
+            url = url + '?' + new URLSearchParams(data.params).toString();
+        }
         if (this.xhr) {
             this.xhr.abort();
         }
-        this.xhr = $.ajax(ajaxOptions).done(this.createDoneHandler()).fail(this.createErrorHandler());
+        this.xhr = new XMLHttpRequest();
+        this.xhr.open('GET', url , true);
+        this.xhr.onload = this.createDoneHandler();
+        this.xhr.onerror = this.createErrorHandler();
+        this.xhr.send();
     } else if (typeof (data.dataSource) === 'object') {
         if (!data.dataSource.data) {
             data.dataSource.data = {};
@@ -651,16 +659,15 @@ gj.widget.prototype.reload = function (params) {
         if (ajaxOptions.dataType === 'json' && typeof(ajaxOptions.data) === 'object') {
             ajaxOptions.data = JSON.stringify(ajaxOptions.data);
         }
-        if (!ajaxOptions.success) {
-            ajaxOptions.success = this.createDoneHandler();
-        }
-        if (!ajaxOptions.error) {
-            ajaxOptions.error = this.createErrorHandler();
-        }
+
         if (this.xhr) {
             this.xhr.abort();
         }
-        this.xhr = $.ajax(ajaxOptions);
+        this.xhr = new XMLHttpRequest();
+        this.xhr.open('GET', data.dataSource.url, true);
+        this.xhr.onload = (ajaxOptions.success) ? ajaxOptions.success : this.createDoneHandler();
+        this.xhr.onerror = (ajaxOptions.error) ? ajaxOptions.error : this.createErrorHandler();
+        this.xhr.send();
     }
     return this;
 }

@@ -276,28 +276,77 @@ gj.grid.plugins.pagination = {
         localization: function (data) {
             if (data.uiLibrary === 'bootstrap') {
                 gj.grid.plugins.pagination.private.localizationBootstrap(data);
-            } else if (data.uiLibrary === 'bootstrap4' || data.uiLibrary === 'bootstrap5') {
+            } else if (data.uiLibrary === 'bootstrap4') {
                 gj.grid.plugins.pagination.private.localizationBootstrap4(data);
+            } else if (data.uiLibrary === 'bootstrap5') {
+                gj.grid.plugins.pagination.private.localizationBootstrap5(data);
             } else {
                 gj.grid.plugins.pagination.private.localizationMaterialDesign(data);
             }
         },
 
         localizationBootstrap: function (data) {
-            let msg = gj.grid.messages[data.locale], parser = new DOMParser();
+            let msg = gj.grid.messages[data.locale],
+            parser = new DOMParser(),
+            pageFirst = document.createElement('button'),
+            pagePrevious = document.createElement('button'),
+            pageNext = document.createElement('button'),
+            pageLast = document.createElement('button'),
+            pageRefresh = document.createElement('button'),
+            labelLast = document.createElement('div'),
+            labelPage = document.createElement('div'),
+            labelOf = document.createElement('div'),
+            pageNumber = document.createElement('input'),
+            pager = document.createElement('select');
+
             if (typeof (data.pager.leftControls) === 'undefined') {
-                data.pager.leftControls = [
-                    parser.parseFromString('<button type="button" class="btn btn-default btn-sm">' + (data.icons.first || msg.First) + '</button>').attr('title', msg.FirstPageTooltip).attr('data-gj-role', 'page-first'),
-                    parser.parseFromString('<button type="button" class="btn btn-default btn-sm">' + (data.icons.previous || msg.Previous) + '</button>').attr('title', msg.PreviousPageTooltip).attr('data-gj-role', 'page-previous'),
-                    parser.parseFromString('<div>' + msg.Page + '</div>', 'text/xml').firstChild,
-                    parser.parseFromString('<input data-gj-role="page-number" class="form-control input-sm" type="text" value="0">', 'text/xml').firstChild,
-                    parser.parseFromString('<div>' + msg.Of + '</div>', 'text/xml').firstChild,
-                    parser.parseFromString('<div data-gj-role="page-label-last">0</div>', 'text/xml').firstChild,
-                    parser.parseFromString('<button type="button" class="btn btn-default btn-sm">' + (data.icons.next || msg.Next) + '</button>').attr('title', msg.NextPageTooltip).attr('data-gj-role', 'page-next'),
-                    parser.parseFromString('<button type="button" class="btn btn-default btn-sm">' + (data.icons.last || msg.Last) + '</button>').attr('title', msg.LastPageTooltip).attr('data-gj-role', 'page-last'),
-                    parser.parseFromString('<button type="button" class="btn btn-default btn-sm">' + (data.icons.refresh || msg.Refresh) + '</button>').attr('title', msg.Refresh).attr('data-gj-role', 'page-refresh'),
-                    parser.parseFromString('<select data-gj-role="page-size" class="form-control input-sm" width="60"></select>', 'text/xml').firstChild
-                ];
+                gj.core.addClasses(pageFirst, 'btn btn-default btn-sm');
+                pageFirst.setAttribute('data-gj-role', 'page-first');
+                pageFirst.setAttribute('type', 'button');
+                pageFirst.setAttribute('title', msg.FirstPageTooltip);
+                pageFirst.innerHTML = (data.icons.first || msg.First);
+                
+                gj.core.addClasses(pagePrevious, 'btn btn-default btn-sm');
+                pagePrevious.setAttribute('data-gj-role', 'page-previous');
+                pagePrevious.setAttribute('type', 'button');
+                pagePrevious.setAttribute('title', msg.PreviousPageTooltip);
+                pagePrevious.innerHTML = (data.icons.previous || msg.Previous);
+                
+                gj.core.addClasses(pageNext, 'btn btn-default btn-sm');
+                pageNext.setAttribute('data-gj-role', 'page-next');
+                pageNext.setAttribute('type', 'button');
+                pageNext.setAttribute('title', msg.NextPageTooltip);
+                pageNext.innerHTML = (data.icons.next || msg.Next);
+                
+                gj.core.addClasses(pageLast, 'btn btn-default btn-sm');
+                pageLast.setAttribute('data-gj-role', 'page-last');
+                pageLast.setAttribute('type', 'button');
+                pageLast.setAttribute('title', msg.LastPageTooltip);
+                pageLast.innerHTML = (data.icons.last || msg.Last);
+                
+                gj.core.addClasses(pageRefresh, 'btn btn-default btn-sm');
+                pageRefresh.setAttribute('data-gj-role', 'page-refresh');
+                pageRefresh.setAttribute('type', 'button');
+                pageRefresh.setAttribute('title', msg.Refresh);
+                pageRefresh.innerHTML = (data.icons.refresh || msg.Refresh);
+
+                labelLast.setAttribute('data-gj-role', 'page-label-last');
+                labelLast.innerHTML = '0';
+
+                labelPage.innerHTML = msg.Page;
+
+                labelOf.innerHTML = msg.Of;
+
+                pageNumber.setAttribute('data-gj-role', 'page-number');
+                pageNumber.setAttribute('type', 'text');
+                pageNumber.setAttribute('value', '0');
+                gj.core.addClasses(pageNumber, 'form-control input-sm');
+
+                gj.core.addClasses(pager, 'form-control input-sm');
+                pager.style.width = '3.75rem';
+                pager.setAttribute('data-gj-role', 'page-size');
+
+                data.pager.leftControls = [pageFirst, pagePrevious, labelPage, pageNumber, labelOf, labelLast, pageNext, pageLast, pageRefresh, pager];
             }
             if (typeof (data.pager.rightControls) === 'undefined') {
                 data.pager.rightControls = [
@@ -312,24 +361,141 @@ gj.grid.plugins.pagination = {
         },
 
         localizationBootstrap4: function (data) {
-            let msg = gj.grid.messages[data.locale], parser = new DOMParser();
+            let msg = gj.grid.messages[data.locale],
+                parser = new DOMParser(),
+                pageFirst = document.createElement('button'),
+                pagePrevious = document.createElement('button'),
+                pageNext = document.createElement('button'),
+                pageLast = document.createElement('button'),
+                pageRefresh = document.createElement('button'),
+                labelLast = document.createElement('div'),
+                labelPage = document.createElement('div'),
+                labelOf = document.createElement('div'),
+                pageNumber = document.createElement('div'),
+                input = document.createElement('input'),
+                pager = document.createElement('select');
             if (typeof (data.pager.leftControls) === 'undefined') {
-                data.pager.leftControls = [
-                    parser.parseFromString('<button class="btn btn-default btn-sm gj-cursor-pointer">' + (data.icons.first || msg.First) + '</button>').attr('title', msg.FirstPageTooltip).attr('data-gj-role', 'page-first'),
-                    parser.parseFromString('<button class="btn btn-default btn-sm gj-cursor-pointer">' + (data.icons.previous || msg.Previous) + '</button>').attr('title', msg.PreviousPageTooltip).attr('data-gj-role', 'page-previous'),
-                    parser.parseFromString('<div>' + msg.Page + '</div>', 'text/xml').firstChild,
-                    parser.parseFromString('<div class="input-group"><input data-gj-role="page-number" class="form-control form-control-sm" type="text" value="0"></div>'),
-                    parser.parseFromString('<div>' + msg.Of + '</div>', 'text/xml').firstChild,
-                    parser.parseFromString('<div data-gj-role="page-label-last">0</div>', 'text/xml').firstChild,
-                    parser.parseFromString('<button class="btn btn-default btn-sm gj-cursor-pointer">' + (data.icons.next || msg.Next) + '</button>').attr('title', msg.NextPageTooltip).attr('data-gj-role', 'page-next'),
-                    parser.parseFromString('<button class="btn btn-default btn-sm gj-cursor-pointer">' + (data.icons.last || msg.Last) + '</button>').attr('title', msg.LastPageTooltip).attr('data-gj-role', 'page-last'),
-                    parser.parseFromString('<button class="btn btn-default btn-sm gj-cursor-pointer">' + (data.icons.refresh || msg.Refresh) + '</button>').attr('title', msg.Refresh).attr('data-gj-role', 'page-refresh'),
-                    parser.parseFromString('<select data-gj-role="page-size" class="form-control input-sm" width="60"></select>', 'text/xml').firstChild
-                ];
+                gj.core.addClasses(pageFirst, 'btn btn-default btn-sm gj-cursor-pointer');
+                pageFirst.setAttribute('data-gj-role', 'page-first');
+                pageFirst.setAttribute('title', msg.FirstPageTooltip);
+                pageFirst.innerHTML = (data.icons.first || msg.First);
+                
+                gj.core.addClasses(pagePrevious, 'btn btn-default btn-sm gj-cursor-pointer');
+                pagePrevious.setAttribute('data-gj-role', 'page-previous');
+                pagePrevious.setAttribute('title', msg.PreviousPageTooltip);
+                pagePrevious.innerHTML = (data.icons.previous || msg.Previous);
+                
+                gj.core.addClasses(pageNext, 'btn btn-default btn-sm gj-cursor-pointer');
+                pageNext.setAttribute('data-gj-role', 'page-next');
+                pageNext.setAttribute('title', msg.NextPageTooltip);
+                pageNext.innerHTML = (data.icons.next || msg.Next);
+                
+                gj.core.addClasses(pageLast, 'btn btn-default btn-sm gj-cursor-pointer');
+                pageLast.setAttribute('data-gj-role', 'page-last');
+                pageLast.setAttribute('title', msg.LastPageTooltip);
+                pageLast.innerHTML = (data.icons.last || msg.Last);
+                
+                gj.core.addClasses(pageRefresh, 'btn btn-default btn-sm gj-cursor-pointer');
+                pageRefresh.setAttribute('data-gj-role', 'page-refresh');
+                pageRefresh.setAttribute('title', msg.Refresh);
+                pageRefresh.innerHTML = (data.icons.refresh || msg.Refresh);
+
+                labelLast.setAttribute('data-gj-role', 'page-label-last');
+                labelLast.innerHTML = '0';
+
+                labelPage.innerHTML = msg.Page;
+
+                labelOf.innerHTML = msg.Of;
+
+                pageNumber.classList.add('input-group');
+                input.setAttribute('data-gj-role', 'page-number');
+                input.setAttribute('type', 'text');
+                input.setAttribute('value', '0');
+                gj.core.addClasses(input, 'form-control form-control-sm');
+                pageNumber.appendChild(input);
+
+                gj.core.addClasses(pager, 'form-control input-sm');
+                pager.style.width = '3.75rem';
+                pager.setAttribute('data-gj-role', 'page-size');
+
+                data.pager.leftControls = [pageFirst, pagePrevious, labelPage, pageNumber, labelOf, labelLast, pageNext, pageLast, pageRefresh, pager];
             }
             if (typeof (data.pager.rightControls) === 'undefined') {
                 data.pager.rightControls = [
-                    parser.parseFromString('<div>' + msg.DisplayingRecords + '&nbsp;</div>', 'text/xml').firstChild,
+                    parser.parseFromString('<div>' + msg.DisplayingRecords + ' </div>', 'text/xml').firstChild,
+                    parser.parseFromString('<div data-gj-role="record-first">0</div>', 'text/xml').firstChild,
+                    parser.parseFromString('<div>-</div>', 'text/xml').firstChild,
+                    parser.parseFromString('<div data-gj-role="record-last">0</div>', 'text/xml').firstChild,
+                    parser.parseFromString('<div>' + msg.Of + '</div>', 'text/xml').firstChild,
+                    parser.parseFromString('<div data-gj-role="record-total">0</div>', 'text/xml').firstChild
+                ];
+            }
+        },
+
+        localizationBootstrap5: function (data) {
+            let msg = gj.grid.messages[data.locale],
+                parser = new DOMParser(),
+                pageFirst = document.createElement('button'),
+                pagePrevious = document.createElement('button'),
+                pageNext = document.createElement('button'),
+                pageLast = document.createElement('button'),
+                pageRefresh = document.createElement('button'),
+                labelLast = document.createElement('div'),
+                labelPage = document.createElement('div'),
+                labelOf = document.createElement('div'),
+                pageNumber = document.createElement('div'),
+                input = document.createElement('input'),
+                pager = document.createElement('select');
+
+            if (typeof (data.pager.leftControls) === 'undefined') {
+                gj.core.addClasses(pageFirst, 'btn btn-secondary btn-sm gj-cursor-pointer');
+                pageFirst.setAttribute('data-gj-role', 'page-first');
+                pageFirst.setAttribute('title', msg.FirstPageTooltip);
+                pageFirst.innerHTML = (data.icons.first || msg.First);
+                
+                gj.core.addClasses(pagePrevious, 'btn btn-secondary btn-sm gj-cursor-pointer');
+                pagePrevious.setAttribute('data-gj-role', 'page-previous');
+                pagePrevious.setAttribute('title', msg.PreviousPageTooltip);
+                pagePrevious.innerHTML = (data.icons.previous || msg.Previous);
+                
+                gj.core.addClasses(pageNext, 'btn btn-secondary btn-sm gj-cursor-pointer');
+                pageNext.setAttribute('data-gj-role', 'page-next');
+                pageNext.setAttribute('title', msg.NextPageTooltip);
+                pageNext.innerHTML = (data.icons.next || msg.Next);
+                
+                gj.core.addClasses(pageLast, 'btn btn-secondary btn-sm gj-cursor-pointer');
+                pageLast.setAttribute('data-gj-role', 'page-last');
+                pageLast.setAttribute('title', msg.LastPageTooltip);
+                pageLast.innerHTML = (data.icons.last || msg.Last);
+                
+                gj.core.addClasses(pageRefresh, 'btn btn-secondary btn-sm gj-cursor-pointer');
+                pageRefresh.setAttribute('data-gj-role', 'page-refresh');
+                pageRefresh.setAttribute('title', msg.Refresh);
+                pageRefresh.innerHTML = (data.icons.refresh || msg.Refresh);
+
+                labelLast.setAttribute('data-gj-role', 'page-label-last');
+                labelLast.innerHTML = '0';
+
+                labelPage.innerHTML = msg.Page;
+
+                labelOf.innerHTML = msg.Of;
+
+                pageNumber.classList.add('input-group');
+                input.setAttribute('data-gj-role', 'page-number');
+                input.setAttribute('type', 'text');
+                input.setAttribute('value', '0');
+                gj.core.addClasses(input, 'form-control form-control-sm');
+                pageNumber.appendChild(input);
+
+                gj.core.addClasses(pager, 'form-control input-sm');
+                pager.style.width = '3.75rem';
+                pager.setAttribute('data-gj-role', 'page-size');
+
+                data.pager.leftControls = [pageFirst, pagePrevious, labelPage, pageNumber, labelOf, labelLast, pageNext, pageLast, pageRefresh, pager];
+            }
+            if (typeof (data.pager.rightControls) === 'undefined') {
+                data.pager.rightControls = [
+                    parser.parseFromString('<div>' + msg.DisplayingRecords + ' </div>', 'text/xml').firstChild,
                     parser.parseFromString('<div data-gj-role="record-first">0</div>', 'text/xml').firstChild,
                     parser.parseFromString('<div>-</div>', 'text/xml').firstChild,
                     parser.parseFromString('<div data-gj-role="record-last">0</div>', 'text/xml').firstChild,
@@ -341,7 +507,7 @@ gj.grid.plugins.pagination = {
 
         localizationMaterialDesign: function (data) {
             let msg = gj.grid.messages[data.locale],
-                parser = new DOMParser()
+                parser = new DOMParser(),
                 pager = document.createElement('select');
             if (typeof (data.pager.leftControls) === 'undefined') {
                 data.pager.leftControls = [];
@@ -381,7 +547,7 @@ gj.grid.plugins.pagination = {
                             control.appendChild(option);
                         };
                         control.value = data.params[data.paramNames.limit];
-                        if (GijgoDropDown) {
+                        if (gj.dropdown) {
                             new GijgoDropDown(control, {
                                 uiLibrary: data.uiLibrary,
                                 iconsLibrary: data.iconsLibrary,
@@ -443,7 +609,7 @@ gj.grid.plugins.pagination = {
                     //control.off('change').on('change', gj.grid.plugins.pagination.private.createChangePageHandler(grid, page));
                     break;
                 case 'page-label-last':
-                    control.innerText = lastPage;
+                    control.innerHTML = lastPage;
                     break;
                 case 'page-next':
                     gj.grid.plugins.pagination.private.assignPageHandler(grid, control, page + 1, lastPage === page);
@@ -464,13 +630,13 @@ gj.grid.plugins.pagination = {
                     gj.grid.plugins.pagination.private.assignButtonHandler(grid, control, page, newPage, lastPage);
                     break;
                 case 'record-first':
-                    control.innerText = firstRecord;
+                    control.innerHTML = firstRecord;
                     break;
                 case 'record-last':
-                    control.innerText = lastRecord;
+                    control.innerHTML = lastRecord;
                     break;
                 case 'record-total':
-                    control.innerText = totalRecords;
+                    control.innerHTML = totalRecords;
                     break;
             }
         },
@@ -633,8 +799,8 @@ gj.grid.plugins.pagination = {
             grid.on('initialized', function () {
                 gj.grid.plugins.pagination.private.init(grid);
             });
-            grid.on('dataBound', function (e, records, totalRecords) {
-                gj.grid.plugins.pagination.private.reloadPager(grid, totalRecords);
+            grid.on('dataBound', function (e) {
+                gj.grid.plugins.pagination.private.reloadPager(grid, e.detail.totalRecords);
             });
             grid.on('columnShow', function () {
                 gj.grid.plugins.pagination.private.updatePagerColSpan(grid);

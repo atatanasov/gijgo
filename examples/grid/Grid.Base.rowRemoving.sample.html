@@ -13,7 +13,7 @@
  <button onclick="grid.removeRow('1')" class="gj-button-md">Remove Row</button><br/><br/>
  <table id="grid"></table>
  <script>
-     var grid = $('#grid').grid({
+     var grid = new GijgoGrid(document.getElementById('grid'), {
          primaryKey: 'ID',
          dataSource: [
              { 'ID': 1, 'Name': 'Hristo Stoichkov', 'PlaceOfBirth': 'Plovdiv, Bulgaria' },
@@ -22,8 +22,8 @@
          ],
          columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
      });
-     grid.on('rowRemoving', function (e, row, id, record) {
-         alert('rowRemoving is fired for row with id=' + id + '.');
+     grid.on('rowRemoving', function (e) {
+         alert('rowRemoving is fired for row with id=' + e.detail.id + '.');
      });
  </script>
 </body>

@@ -16,7 +16,7 @@
  <br/><br/>
  <table id="grid"></table>
  <script>
-     var grid = $('#grid').grid({
+     var grid = new GijgoGrid(document.getElementById('grid'), {
          primaryKey: 'ID',
          dataSource: [
              { 'ID': 1, 'Name': 'Hristo Stoichkov', 'PlaceOfBirth': 'Plovdiv, Bulgaria' },

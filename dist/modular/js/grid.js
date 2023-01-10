@@ -161,6 +161,19 @@ gj.grid.config = {
         defaultCheckBoxColumnWidth: 44
     },
 
+    bootstrap5: {
+        style: {
+            wrapper: 'gj-grid-wrapper',
+            table: 'gj-grid gj-grid-bootstrap gj-grid-bootstrap-5 table table-bordered table-hover',
+            content: {
+                rowSelected: 'active'
+            }
+        },
+
+        defaultIconColumnWidth: 42,
+        defaultCheckBoxColumnWidth: 44
+    },
+
     materialicons: {
         icons: {
             asc: '<i class="gj-icon arrow-upward" />',
@@ -247,7 +260,7 @@ gj.grid.config = {
     /**
      * Event fires when column is showing
      *     */    columnShow: function (el, column) {
-        return el.triggerHandler(new CustomEvent('columnShow', { detail: { column: column } }));
+        return el.dispatchEvent(new CustomEvent('columnShow', { detail: { column: column } }));
     },
 
     /**
@@ -279,17 +292,17 @@ gj.grid.methods = {
     },
 
     readConfig: function (jsConfig, type) {
-        var config = gj.widget.prototype.readConfig.call(this, jsConfig, type);
+        let config = gj.widget.prototype.readConfig.call(this, jsConfig, type);
         gj.grid.methods.setDefaultColumnConfig(config.columns, config.defaultColumnSettings);
         return config;
     },
 
     setDefaultColumnConfig: function (columns, defaultColumnSettings) {
-        var column, i;
+        let column, i;
         if (columns && columns.length) {
             for (i = 0; i < columns.length; i++) {
-                column = grid.extend({}, defaultColumnSettings);
-                grid.extend(column, columns[i]);
+                column = gj.core.extend({}, defaultColumnSettings);
+                column = gj.core.extend(column, columns[i]);
                 columns[i] = column;
             }
         }
@@ -315,7 +328,7 @@ gj.grid.methods = {
     },
 
     eventsParser: function (events) {
-        var result = {}, list, i, key, func, position;
+        let result = {}, list, i, key, func, position;
         list = events.split(',');
         for (i = 0; i < list.length; i++) {
             position = list[i].indexOf(':');
@@ -336,13 +349,13 @@ gj.grid.methods = {
         wrapper = grid.wrap('div');
 
         if (data.width) {
-            wrapper.style.css('width', data.width);
+            gj.core.css(wrapper, 'width', data.width);
         }
         if (data.minWidth) {
             grid.element.style.minWidth = data.minWidth;
         }
         if (data.fontSize) {
-            grid.css('font-size', data.fontSize);
+            gj.core.css(grid.element, 'fontSize', data.fontSize);
         }
         if (data.headerRowHeight === 'autogrow') {
             grid.element.classList.add('autogrow-header-row');
@@ -359,8 +372,8 @@ gj.grid.methods = {
                 type: 'checkbox',
                 role: 'selectRow',
                 events: {
-                    click: function (e) {
-                        gj.grid.methods.setSelected(grid, e.data.id, this.element.closest('tr'));
+                    change: function (e) {
+                        gj.grid.methods.setSelected(grid, e.detail.id, this.closest('tr'));
                     }
                 },
                 headerCssClass: 'gj-grid-select-all',
@@ -384,7 +397,7 @@ gj.grid.methods = {
     },
 
     renderHeader: function (grid) {
-        var data, columns, style, thead, row, cell, title, i, checkAllBoxes;
+        let data, columns, style, thead, row, cell, title, i, checkAllBoxes;
 
         data = grid.getConfig();
         columns = data.columns;
@@ -450,7 +463,7 @@ gj.grid.methods = {
 
     createSortHandler: function (grid, column) {
         return function () {
-            var data, params = {};
+            let data, params = {};
             if (grid.count() > 0) {
                 data = grid.getConfig();
                 params[data.paramNames.sortBy] = column.field;
@@ -462,7 +475,7 @@ gj.grid.methods = {
     },
 
     updateHeader: function (grid) {
-        let cellTitle,
+        let cellTitle, columns,
             data = grid.getConfig(),
             sortBy = data.params[data.paramNames.sortBy],
             direction = data.params[data.paramNames.direction],
@@ -473,7 +486,8 @@ gj.grid.methods = {
         if (sortBy) {
             position = gj.grid.methods.getColumnPosition(grid.getConfig().columns, sortBy);
             if (position > -1) {
-                cellTitle = grid.querySelector('thead tr th:eq(' + position + ') div[data-gj-role="title"]');
+                columns = grid.element.querySelectorAll('thead tr th div[data-gj-role="title"]');
+                cellTitle = columns[position];
                 sortIcon = document.createElement('div');
                 sortIcon.setAttribute('data-gj-role', 'sorticon');
                 sortIcon.classList.add('gj-unselectable');
@@ -484,7 +498,7 @@ gj.grid.methods = {
     },
 
     useHtmlDataSource: function (grid, data) {
-        var dataSource = [], i, j, cells, record,
+        let dataSource = [], i, j, cells, record,
             rows = grid.element.querySelectorAll('tbody tr:not([data-gj-role="empty"])');
         for (i = 0; i < rows.length; i++) {
             cells = rows[i].querySelectorAll('td');
@@ -498,7 +512,7 @@ gj.grid.methods = {
     },
 
     startLoading: function (grid) {
-        var tbody, cover, loading, width, height, top, data;
+        let tbody, cover, loading, width, height, top, data;
         gj.grid.methods.stopLoading(grid);
         data = grid.getConfig();
         if (0 === gj.core.height(grid.element)) {
@@ -507,7 +521,7 @@ gj.grid.methods = {
         tbody = grid.element.querySelector('tbody');
         width = gj.core.width(tbody);
         height = gj.core.height(tbody);
-        top = Math.abs(grid.element.parentNode.offsetTop - tbody.offsetTop);
+        top = gj.core.height(grid.element.querySelector('thead'));
         cover = document.createElement('div');
         cover.setAttribute('data-gj-role','loading-cover');
         gj.core.addClasses(cover, data.style.loadingCover);
@@ -532,7 +546,7 @@ gj.grid.methods = {
     },
 
     appendEmptyRow: function (grid, caption) {
-        var data, row, cell, text;
+        let data, row, cell, text;
         data = grid.getConfig();
         row = document.createElement('tr');
         row.setAttribute('data-gj-role', 'empty');
@@ -551,7 +565,7 @@ gj.grid.methods = {
     },
 
     autoGenerateColumns: function (grid, records) {
-        var names, value, type, i, data = grid.getConfig();
+        let names, value, type, i, data = grid.getConfig();
         data.columns = [];
         if (records.length > 0) {
             names = Object.getOwnPropertyNames(records[0]);
@@ -596,7 +610,7 @@ gj.grid.methods = {
             gj.grid.methods.appendEmptyRow(grid);
         }
 
-        rows = tbody.querySelectorAll('tr');
+        rows = tbody.querySelectorAll('tr[data-gj-role="row"]');
 
         rowCount = rows.length;
 
@@ -611,7 +625,7 @@ gj.grid.methods = {
         for (i = rowCount; i < recLen; i++) {
             gj.grid.methods.renderRow(grid, null, records[i], i);
         }
-        gj.grid.events.dataBound(grid.element, records, data.totalRecords);
+        gj.grid.events.dataBound(grid.element, records, grid.getTotalRecords());
     },
 
     getId: function (record, primaryKey, position) {
@@ -619,7 +633,7 @@ gj.grid.methods = {
     },
 
     renderRow: function (grid, row, record, position) {
-        var id, $cell, i, data, mode;
+        let id, cell, i, data, mode;
         data = grid.getConfig();
         if (!row) {
             mode = 'create';
@@ -629,11 +643,11 @@ gj.grid.methods = {
         } else {
             mode = 'update';
             row.classList.remove(data.style.content.rowSelected)
-            row.removeAttribute('data-selected')
-            //TODO: $row.off('click');
+            row.removeAttribute('data-gj-selected')
+            //TODO: row.off('click');
         }
         id = gj.grid.methods.getId(record, data.primaryKey, (position + 1));
-        row.setAttribute('data-position', position + 1);
+        row.setAttribute('data-gj-position', position + 1);
         if (data.selectionMethod !== 'checkbox') {
             row.addEventListener('click', gj.grid.methods.createRowClickHandler(grid, id));
         }
@@ -650,7 +664,7 @@ gj.grid.methods = {
     },
 
     renderCell: function (grid, cell, column, record, id, mode) {
-        var displayEl, key;
+        let displayEl, key;
 
         if (!cell) {
             cell = document.createElement('td');
@@ -679,7 +693,7 @@ gj.grid.methods = {
         if (column.events) {
             for (key in column.events) {
                 if (column.events.hasOwnProperty(key)) {
-                    cell.addEventListener(key, { id: id, field: column.field, record: record }, gj.grid.methods.createCellEventHandler(column, column.events[key]));
+                    cell.addEventListener(key, gj.grid.methods.createCellEventHandler(column, column.events[key], { id: id, field: column.field, record: record }));
                 }
             }
         }
@@ -692,21 +706,23 @@ gj.grid.methods = {
         return cell;
     },
 
-    createCellEventHandler: function (column, func) {
+    createCellEventHandler: function (column, func, detail) {
         return function (e) {
             if (column.stopPropagation) {
                 e.stopPropagation();
             }
+            e.detail = detail;
             func.call(this, e);
         };
     },
 
     renderDisplayElement: function (grid, displayEl, column, record, id, mode) {
-        var text, checkbox, icon;
+        let text, checkbox, icon;
 
         if ('checkbox' === column.type && gj.checkbox) {
             if ('create' === mode) {
                 checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
                 checkbox.value = id;
                 checkbox.checked = record[column.field] ? true : false;
                 column.role && checkbox.setAttribute('data-gj-role', column.role);
@@ -767,7 +783,7 @@ gj.grid.methods = {
     },
 
     setRecordsData: function (grid, response) {
-        var records = [],
+        let records = [],
             totalRecords = 0,
             data = grid.getConfig();
         if (Array.isArray(response)) {
@@ -787,94 +803,107 @@ gj.grid.methods = {
 
     createRowClickHandler: function (grid, id) {
         return function () {
-            gj.grid.methods.setSelected(grid, id, $(this));
+            gj.grid.methods.setSelected(grid, id, this);
         };
     },
 
-    selectRow: function (grid, data, $row, id) {
-        var $checkbox;
-        $row.addClass(data.style.content.rowSelected);
-        $row.attr('data-selected', 'true');
+    selectRow: function (grid, data, row, id) {
+        let checkbox;
+        gj.core.addClasses(row, data.style.content.rowSelected);
+        row.setAttribute('data-gj-selected', 'true');
         if ('checkbox' === data.selectionMethod) {
-            $checkbox = $row.find('input[type="checkbox"][data-gj-role="selectRow"]');
-            $checkbox.length && !$checkbox.prop('checked') && $checkbox.prop('checked', true);
-            if ('multiple' === data.selectionType && grid.getSelections().length === grid.count(false)) {
-                grid.find('thead input[data-gj-role="selectAll"]').prop('checked', true);
+            checkbox = row.querySelector('input[type="checkbox"][data-gj-role="selectRow"]');
+            if (checkbox && !checkbox.checked) {
+                checkbox.checked = true;
             }
-        }
-        return gj.grid.events.rowSelect(grid, $row, id, grid.getById(id));
-    },
-
-    unselectRow: function (grid, data, $row, id) {
-        var $checkbox;
-        if ($row.attr('data-selected') === 'true') {
-            $row.removeClass(data.style.content.rowSelected);
-            if ('checkbox' === data.selectionMethod) {
-                $checkbox = $row.find('td input[type="checkbox"][data-gj-role="selectRow"]');
-                $checkbox.length && $checkbox.prop('checked') && $checkbox.prop('checked', false);
-                if ('multiple' === data.selectionType) {
-                    grid.find('thead input[data-gj-role="selectAll"]').prop('checked', false);
+            if ('multiple' === data.selectionType && grid.getSelections().length === grid.count(false)) {
+                checkbox = grid.querySelector('thead input[data-gj-role="selectAll"]');
+                if (checkbox && !checkbox.checked) {
+                    checkbox.checked = true;
                 }
             }
-            $row.removeAttr('data-selected');
-            return gj.grid.events.rowUnselect(grid, $row, id, grid.getById(id));
+        }
+        return gj.grid.events.rowSelect(grid.element, row, id, grid.getById(id));
+    },
+
+    unselectRow: function (grid, data, row, id) {
+        let checkbox;
+        if (row.getAttribute('data-gj-selected') === 'true') {
+            gj.core.removeClasses(row, data.style.content.rowSelected);
+            if ('checkbox' === data.selectionMethod) {
+                checkbox = row.querySelector('td input[type="checkbox"][data-gj-role="selectRow"]');
+                if (checkbox && checkbox.checked) {
+                    checkbox.checked = false;
+                }
+                if ('multiple' === data.selectionType) {
+                    checkbox = grid.element.querySelector('thead input[data-gj-role="selectAll"]');
+                    if (checkbox && checkbox.checked) {
+                        checkbox.checked = false;
+                    }
+                }
+            }
+            row.removeAttribute('data-gj-selected');
+            return gj.grid.events.rowUnselect(grid.element, row, id, grid.getById(id));
         }
     },
 
-    setSelected: function (grid, id, $row) {
-        var data = grid.getConfig();
-        if (!$row || !$row.length) {
-            $row = gj.grid.methods.getRowById(grid, id);
+    setSelected: function (grid, id, row) {
+        let data = grid.getConfig(), rows;
+        if (!row) {
+            row = gj.grid.methods.getRowById(grid, id);
         }
-        if ($row) {
-            if ($row.attr('data-selected') === 'true') {
-                gj.grid.methods.unselectRow(grid, data, $row, id);
+        if (row) {
+            if (row.getAttribute('data-gj-selected') === 'true') {
+                gj.grid.methods.unselectRow(grid, data, row, id);
             } else {
                 if ('single' === data.selectionType) {
-                    $row.siblings('[data-selected="true"]').each(function () {
-                        var $row = $(this),
-                            id = gj.grid.methods.getId($row, data.primaryKey, $row.data('position'));
-                        gj.grid.methods.unselectRow(grid, data, $row, id);
-                    });
+                    rows = row.parentNode.querySelectorAll('[data-gj-selected="true"]');
+                    for (let i = 0; i < rows.length; i++)
+                    {
+                        gj.grid.methods.unselectRow(grid, data, rows[i], gj.grid.methods.getId(rows[i], data.primaryKey, rows[i].getAttribute('data-gj-position')));
+                    }
                 }
-                gj.grid.methods.selectRow(grid, data, $row, id);
+                gj.grid.methods.selectRow(grid, data, row, id);
             }
         }
         return grid;
     },
 
     selectAll: function (grid) {
-        var data = grid.getConfig();
-        grid.find('tbody tr[data-gj-role="row"]').each(function () {
-            var $row = $(this),
-                position = $row.data('position'),
-                record = grid.get(position),
-                id = gj.grid.methods.getId(record, data.primaryKey, position);
-            gj.grid.methods.selectRow(grid, data, $row, id);
-        });
-        grid.find('thead input[data-gj-role="selectAll"]').prop('checked', true);
+        let data = grid.getConfig(), row, position, record, id,
+            rows = grid.element.querySelectorAll('tbody tr[data-gj-role="row"]');
+        
+        for (let i = 0; i < rows.length; i++)
+        {
+            position = rows[i].getAttribute('data-gj-position'),
+            record = grid.get(position),
+            id = gj.grid.methods.getId(record, data.primaryKey, position);
+            gj.grid.methods.selectRow(grid, data, rows[i], id);
+        };
+        grid.element.querySelector('thead input[data-gj-role="selectAll"]').checked = true;
         return grid;
     },
 
     unSelectAll: function (grid) {
-        var data = grid.getConfig();
-        grid.find('tbody tr').each(function () {
-            var $row = $(this),
-                position = $row.data('position'),
-                record = grid.get(position),
-                id = gj.grid.methods.getId(record, data.primaryKey, position);
-            gj.grid.methods.unselectRow(grid, data, $row, id);
-            $row.find('input[type="checkbox"][data-gj-role="selectRow"]').prop('checked', false);
-        });
-        grid.find('thead input[data-gj-role="selectAll"]').prop('checked', false);
+        let data = grid.getConfig(), row, position, record, id,
+            rows = grid.element.querySelectorAll('tbody tr[data-gj-role="row"]');
+        
+        for (let i = 0; i < rows.length; i++)
+        {
+            position = rows[i].getAttribute('data-gj-position'),
+            record = grid.get(position),
+            id = gj.grid.methods.getId(record, data.primaryKey, position);
+            gj.grid.methods.unselectRow(grid, data, rows[i], id);
+        };
+        grid.element.querySelector('thead input[data-gj-role="selectAll"]').checked = false;
         return grid;
     },
 
     getSelected: function (grid) {
-        var result = null, selections, record, position;
-        selections = grid.find('tbody>tr[data-selected="true"]');
+        let result = null, selections, record, position;
+        selections = grid.querySelector('tbody>tr[data-gj-selected="true"]');
         if (selections.length > 0) {
-            position = $(selections[0]).data('position');
+            position = selections[0].getAttribute('data-gj-position');
             record = grid.get(position);
             result = gj.grid.methods.getId(record, grid.getConfig().primaryKey, position);
         }
@@ -882,26 +911,25 @@ gj.grid.methods = {
     },
 
     getSelectedRows: function (grid) {
-        var data = grid.getConfig();
-        return grid.find('tbody>tr[data-selected="true"]');
+        return grid.element.querySelector('tbody>tr[data-gj-selected="true"]');
     },
 
     getSelections: function (grid) {
-        var result = [], position, record,
+        let result = [], position, record,
             data = grid.getConfig(),
-            $selections = gj.grid.methods.getSelectedRows(grid);
-        if (0 < $selections.length) {
-            $selections.each(function () {
-                position = $(this).data('position');
+            selections = gj.grid.methods.getSelectedRows(grid);
+        if (0 < selections.length) {
+            for (let i = 0; i < rows.length; i++) {
+                position = rows[i].getAttribute('data-gj-position');
                 record = grid.get(position);
                 result.push(gj.grid.methods.getId(record, data.primaryKey, position));
-            });
+            }
         }
         return result;
     },
 
     getById: function (grid, id) {
-        var result = null, i, primaryKey = grid.getConfig().primaryKey, records = grid.getRecords();
+        let result = null, i, primaryKey = grid.getConfig().primaryKey, records = grid.getRecords();
         if (primaryKey) {
             for (i = 0; i < records.length; i++) {
                 if (records[i][primaryKey] == id) {
@@ -916,7 +944,7 @@ gj.grid.methods = {
     },
 
     getRecVPosById: function (grid, id) {
-        var result = id, i, data = grid.getConfig();
+        let result = id, i, data = grid.getConfig();
         if (data.primaryKey) {
             for (i = 0; i < data.dataSource.length; i++) {
                 if (data.dataSource[i][data.primaryKey] == id) {
@@ -929,9 +957,9 @@ gj.grid.methods = {
     },
 
     getRowById: function (grid, id) {
-        var records = grid.getAll(false),
+        let records = grid.getAll(false),
             primaryKey = grid.getConfig().primaryKey,
-            $result = undefined,
+            result = undefined,
             position,
             i;
         if (primaryKey) {
@@ -945,9 +973,9 @@ gj.grid.methods = {
             position = id;
         }
         if (position) {
-            $result = grid.children('tbody').children('tr[data-position="' + position + '"]');
+            result = grid.element.querySelector('tbody tr[data-gj-position="' + position + '"]');
         }
-        return $result;
+        return result;
     },
 
     getByPosition: function (grid, position) {
@@ -955,7 +983,7 @@ gj.grid.methods = {
     },
 
     getColumnPosition: function (columns, field) {
-        var position = -1, i;
+        let position = -1, i;
         for (i = 0; i < columns.length; i++) {
             if (columns[i].field === field) {
                 position = i;
@@ -966,7 +994,7 @@ gj.grid.methods = {
     },
 
     getColumnInfo: function (grid, field) {
-        var i, result = {}, data = grid.getConfig();
+        let i, result = {}, data = grid.getConfig();
         for (i = 0; i < data.columns.length; i += 1) {
             if (data.columns[i].field === field) {
                 result = data.columns[i];
@@ -977,17 +1005,17 @@ gj.grid.methods = {
     },
 
     getCell: function (grid, id, field) {
-        var position, $row, $result = null;
+        let position, row, result = null;
         position = gj.grid.methods.getColumnPosition(grid.getConfig().columns, field);
         if (position > -1) {
-            $row = gj.grid.methods.getRowById(grid, id);
-            $result = $row.find('td:eq(' + position + ') div[data-gj-role="display"]');
+            row = gj.grid.methods.getRowById(grid, id);
+            result = row.querySelector('td:eq(' + position + ') div[data-gj-role="display"]');
         }
-        return $result;
+        return result;
     },
 
     setCellContent: function (grid, id, field, value) {
-        var column, displayEl = gj.grid.methods.getCell(grid, id, field);
+        let column, displayEl = gj.grid.methods.getCell(grid, id, field);
         if (displayEl) {
             displayEl.innerHTML = '';
             if (typeof (value) === 'object') {
@@ -1000,7 +1028,7 @@ gj.grid.methods = {
     },
 
     clone: function (source) {
-        var target = [];
+        let target = [];
         for(let i = 0; i < source.length; i++) {
             target.push(source[i].cloneNode(true));
         };
@@ -1012,7 +1040,7 @@ gj.grid.methods = {
     },
 
     countVisibleColumns: function (grid) {
-        var columns, count, i;
+        let columns, count, i;
         columns = grid.getConfig().columns;
         count = 0;
         for (i = 0; i < columns.length; i++) {
@@ -1024,13 +1052,13 @@ gj.grid.methods = {
     },
 
     clear: function (grid, showNotFoundText) {
-        var data = grid.getConfig();
+        let data = grid.getConfig();
         grid.xhr && grid.xhr.abort();
-        grid.children('tbody').empty();
-        data.records = [];
+        grid.element.querySelector('tbody').innerHTML = '';
+        grid.setRecords([]);
         gj.grid.methods.stopLoading(grid);
         gj.grid.methods.appendEmptyRow(grid, showNotFoundText ? data.notFoundText : '&nbsp;');
-        gj.grid.events.dataBound(grid, [], 0);
+        gj.grid.events.dataBound(grid.element, [], 0);
         return grid;
     },
 
@@ -1044,7 +1072,7 @@ gj.grid.methods = {
     },
 
     filter: function (grid) {
-        var field, column,
+        let field, column,
             data = grid.getConfig(),
             records = data.dataSource.slice();
 
@@ -1057,7 +1085,7 @@ gj.grid.methods = {
             if (data.params[field] && !data.paramNames[field]) {
                 column = gj.grid.methods.getColumnInfo(grid, field);
                 records = $.grep(records, function (record) {
-                    var value = record[field] || '',
+                    let value = record[field] || '',
                         searchStr = data.params[field] || '';
                     return column && typeof (column.filter) === 'function' ? column.filter(value, searchStr) : (value.toUpperCase().indexOf(searchStr.toUpperCase()) > -1);
                 });
@@ -1071,78 +1099,83 @@ gj.grid.methods = {
 
     createDefaultSorter: function (direction, field) {
         return function (recordA, recordB) {
-            var a = (recordA[field] || '').toString(),
+            let a = (recordA[field] || '').toString(),
                 b = (recordB[field] || '').toString();
             return (direction === 'asc') ? a.localeCompare(b) : b.localeCompare(a);
         };
     },
 
     destroy: function (grid, keepTableTag, keepWrapperTag) {
-        var data = grid.getConfig();
+        let data = grid.getConfig();
         if (data) {
-            gj.grid.events.destroying(grid);
+            gj.grid.events.destroying(grid.element);
             gj.grid.methods.stopLoading(grid);
             grid.xhr && grid.xhr.abort();
-            grid.off();
+            //TODO: grid.off();
             if (keepWrapperTag === false && grid.parent('div[data-gj-role="wrapper"]').length > 0) {
                 grid.unwrap();
             }
-            grid.removeData();
+            grid.removeConfig();
             if (keepTableTag === false) {
-                grid.remove();
+                grid.element.remove();
             } else {
-                grid.removeClass().empty();
+                grid.element.className = '';
             }
-            grid.removeAttr('data-type');
+            grid.element.removeAttribute('data-gj-type');
+            grid.element.removeAttribute('data-gj-guid');
         }
         return grid;
     },
 
     showColumn: function (grid, field) {
-        var data = grid.getConfig(),
+        let data = grid.getConfig(),
             position = gj.grid.methods.getColumnPosition(data.columns, field),
-            $cells;
+            rows, cell;
 
         if (position > -1) {
-            grid.find('thead>tr').each(function() {
-                $(this).children('th').eq(position).show();
-            });
-            $.each(grid.find('tbody>tr'), function () {
-                $(this).children('td').eq(position).show();
-            });
+            rows = grid.element.querySelectorAll('thead > tr');
+            for (let i = 0; i < rows.length; i++) {
+                rows[i].children[position].style.display = 'block';
+            }
+            rows = grid.element.querySelectorAll('tbody > tr[data-gj-role="row"]');
+            for (let i = 0; i < rows.length; i++) {
+                rows[i].children[position].style.display = 'block';
+            }
             data.columns[position].hidden = false;
 
-            $cells = grid.find('tbody > tr[data-gj-role="empty"] > td');
-            if ($cells && $cells.length) {
-                $cells.attr('colspan', gj.grid.methods.countVisibleColumns(grid));
+            cell = grid.element.querySelector('tbody > tr[data-gj-role="empty"] > td');
+            if (cell) {
+                cell.setAttribute('colspan', gj.grid.methods.countVisibleColumns(grid));
             }
 
-            gj.grid.events.columnShow(grid, data.columns[position]);
+            gj.grid.events.columnShow(grid.element, data.columns[position]);
         }
 
         return grid;
     },
 
     hideColumn: function (grid, field) {
-        var data = grid.getConfig(),
+        let data = grid.getConfig(),
             position = gj.grid.methods.getColumnPosition(data.columns, field),
-            $cells;
+            rows, cell;
 
         if (position > -1) {
-            grid.find('thead>tr').each(function () {
-                $(this).children('th').eq(position).hide();
-            });
-            $.each(grid.find('tbody>tr'), function () {
-                $(this).children('td').eq(position).hide();
-            });
+            rows = grid.element.querySelectorAll('thead > tr');
+            for (let i = 0; i < rows.length; i++) {
+                rows[i].children[position].style.display = 'none';
+            }
+            rows = grid.element.querySelectorAll('tbody > tr[data-gj-role="row"]');
+            for (let i = 0; i < rows.length; i++) {
+                rows[i].children[position].style.display = 'none';
+            }
             data.columns[position].hidden = true;
 
-            cells = grid.querySelector('tbody > tr[data-gj-role="empty"] > td');
-            if ($cells && $cells.length) {
-                $cells.attr('colspan', gj.grid.methods.countVisibleColumns(grid));
+            cell = grid.element.querySelector('tbody > tr[data-gj-role="empty"] > td');
+            if (cell) {
+                cell.setAttribute('colspan', gj.grid.methods.countVisibleColumns(grid));
             }
 
-            gj.grid.events.columnHide(grid, data.columns[position]);
+            gj.grid.events.columnHide(grid.element, data.columns[position]);
         }
 
         return grid;
@@ -1153,7 +1186,7 @@ gj.grid.methods = {
     },
 
     addRow: function (grid, record) {
-        var data = grid.getConfig();
+        let data = grid.getConfig();
         data.totalRecords = grid.getTotalRecords() + 1;
         gj.grid.events.dataBinding(grid, [record]);
         data.records.push(record);
@@ -1171,23 +1204,23 @@ gj.grid.methods = {
     },
 
     updateRow: function (grid, id, record) {
-        var $row = gj.grid.methods.getRowById(grid, id),
+        let row = gj.grid.methods.getRowById(grid, id),
             data = grid.getConfig(), position;
-        data.records[$row.data('position') - 1] = record;
+        data.records[row.data('position') - 1] = record;
         if (Array.isArray(data.dataSource)) {
             position = gj.grid.methods.getRecVPosById(grid, id);
             data.dataSource[position] = record;
         }
-        gj.grid.methods.renderRow(grid, $row, record, $row.index());
+        gj.grid.methods.renderRow(grid, row, record, row.index());
         return grid;
     },
 
     removeRow: function (grid, id) {
-        var position,
+        let position,
             data = grid.getConfig(),
-            $row = gj.grid.methods.getRowById(grid, id);
+            row = gj.grid.methods.getRowById(grid, id);
 
-        gj.grid.events.rowRemoving(grid, $row, id, grid.getById(id));
+        gj.grid.events.rowRemoving(grid.element, row, id, grid.getById(id));
         if (Array.isArray(data.dataSource)) {
             position = gj.grid.methods.getRecVPosById(grid, id);
             data.dataSource.splice(position, 1);
@@ -1201,7 +1234,7 @@ gj.grid.methods = {
     },
 
     getColumnPositionByRole: function (grid, role) {
-        var i, result, columns = grid.getConfig().columns;
+        let i, result, columns = grid.getConfig().columns;
         for (i = 0; i < columns.length; i++) {
             if (columns[i].role === role) {
                 result = i;
@@ -1212,7 +1245,7 @@ gj.grid.methods = {
     },
 
     getColumnPositionNotInRole: function (grid) {
-        var i, result = 0, columns = grid.getConfig().columns;
+        let i, result = 0, columns = grid.getConfig().columns;
         for (i = 0; i < columns.length; i++) {
             if (!columns[i].role) {
                 result = i;
@@ -1247,7 +1280,7 @@ gj.grid.methods = {
 
     /**
      * Render data in the grid     */    self.render = function (response) {
-        return methods.render($grid, response);
+        return methods.render(this, response);
     };
 
     /**
@@ -2258,28 +2291,77 @@ gj.grid.plugins.inlineEditing.configure = function (grid, fullConfig, clientConf
         localization: function (data) {
             if (data.uiLibrary === 'bootstrap') {
                 gj.grid.plugins.pagination.private.localizationBootstrap(data);
-            } else if (data.uiLibrary === 'bootstrap4' || data.uiLibrary === 'bootstrap5') {
+            } else if (data.uiLibrary === 'bootstrap4') {
                 gj.grid.plugins.pagination.private.localizationBootstrap4(data);
+            } else if (data.uiLibrary === 'bootstrap5') {
+                gj.grid.plugins.pagination.private.localizationBootstrap5(data);
             } else {
                 gj.grid.plugins.pagination.private.localizationMaterialDesign(data);
             }
         },
 
         localizationBootstrap: function (data) {
-            let msg = gj.grid.messages[data.locale], parser = new DOMParser();
+            let msg = gj.grid.messages[data.locale],
+            parser = new DOMParser(),
+            pageFirst = document.createElement('button'),
+            pagePrevious = document.createElement('button'),
+            pageNext = document.createElement('button'),
+            pageLast = document.createElement('button'),
+            pageRefresh = document.createElement('button'),
+            labelLast = document.createElement('div'),
+            labelPage = document.createElement('div'),
+            labelOf = document.createElement('div'),
+            pageNumber = document.createElement('input'),
+            pager = document.createElement('select');
+
             if (typeof (data.pager.leftControls) === 'undefined') {
-                data.pager.leftControls = [
-                    parser.parseFromString('<button type="button" class="btn btn-default btn-sm">' + (data.icons.first || msg.First) + '</button>').attr('title', msg.FirstPageTooltip).attr('data-gj-role', 'page-first'),
-                    parser.parseFromString('<button type="button" class="btn btn-default btn-sm">' + (data.icons.previous || msg.Previous) + '</button>').attr('title', msg.PreviousPageTooltip).attr('data-gj-role', 'page-previous'),
-                    parser.parseFromString('<div>' + msg.Page + '</div>', 'text/xml').firstChild,
-                    parser.parseFromString('<input data-gj-role="page-number" class="form-control input-sm" type="text" value="0">', 'text/xml').firstChild,
-                    parser.parseFromString('<div>' + msg.Of + '</div>', 'text/xml').firstChild,
-                    parser.parseFromString('<div data-gj-role="page-label-last">0</div>', 'text/xml').firstChild,
-                    parser.parseFromString('<button type="button" class="btn btn-default btn-sm">' + (data.icons.next || msg.Next) + '</button>').attr('title', msg.NextPageTooltip).attr('data-gj-role', 'page-next'),
-                    parser.parseFromString('<button type="button" class="btn btn-default btn-sm">' + (data.icons.last || msg.Last) + '</button>').attr('title', msg.LastPageTooltip).attr('data-gj-role', 'page-last'),
-                    parser.parseFromString('<button type="button" class="btn btn-default btn-sm">' + (data.icons.refresh || msg.Refresh) + '</button>').attr('title', msg.Refresh).attr('data-gj-role', 'page-refresh'),
-                    parser.parseFromString('<select data-gj-role="page-size" class="form-control input-sm" width="60"></select>', 'text/xml').firstChild
-                ];
+                gj.core.addClasses(pageFirst, 'btn btn-default btn-sm');
+                pageFirst.setAttribute('data-gj-role', 'page-first');
+                pageFirst.setAttribute('type', 'button');
+                pageFirst.setAttribute('title', msg.FirstPageTooltip);
+                pageFirst.innerHTML = (data.icons.first || msg.First);
+                
+                gj.core.addClasses(pagePrevious, 'btn btn-default btn-sm');
+                pagePrevious.setAttribute('data-gj-role', 'page-previous');
+                pagePrevious.setAttribute('type', 'button');
+                pagePrevious.setAttribute('title', msg.PreviousPageTooltip);
+                pagePrevious.innerHTML = (data.icons.previous || msg.Previous);
+                
+                gj.core.addClasses(pageNext, 'btn btn-default btn-sm');
+                pageNext.setAttribute('data-gj-role', 'page-next');
+                pageNext.setAttribute('type', 'button');
+                pageNext.setAttribute('title', msg.NextPageTooltip);
+                pageNext.innerHTML = (data.icons.next || msg.Next);
+                
+                gj.core.addClasses(pageLast, 'btn btn-default btn-sm');
+                pageLast.setAttribute('data-gj-role', 'page-last');
+                pageLast.setAttribute('type', 'button');
+                pageLast.setAttribute('title', msg.LastPageTooltip);
+                pageLast.innerHTML = (data.icons.last || msg.Last);
+                
+                gj.core.addClasses(pageRefresh, 'btn btn-default btn-sm');
+                pageRefresh.setAttribute('data-gj-role', 'page-refresh');
+                pageRefresh.setAttribute('type', 'button');
+                pageRefresh.setAttribute('title', msg.Refresh);
+                pageRefresh.innerHTML = (data.icons.refresh || msg.Refresh);
+
+                labelLast.setAttribute('data-gj-role', 'page-label-last');
+                labelLast.innerHTML = '0';
+
+                labelPage.innerHTML = msg.Page;
+
+                labelOf.innerHTML = msg.Of;
+
+                pageNumber.setAttribute('data-gj-role', 'page-number');
+                pageNumber.setAttribute('type', 'text');
+                pageNumber.setAttribute('value', '0');
+                gj.core.addClasses(pageNumber, 'form-control input-sm');
+
+                gj.core.addClasses(pager, 'form-control input-sm');
+                pager.style.width = '3.75rem';
+                pager.setAttribute('data-gj-role', 'page-size');
+
+                data.pager.leftControls = [pageFirst, pagePrevious, labelPage, pageNumber, labelOf, labelLast, pageNext, pageLast, pageRefresh, pager];
             }
             if (typeof (data.pager.rightControls) === 'undefined') {
                 data.pager.rightControls = [
@@ -2294,24 +2376,141 @@ gj.grid.plugins.inlineEditing.configure = function (grid, fullConfig, clientConf
         },
 
         localizationBootstrap4: function (data) {
-            let msg = gj.grid.messages[data.locale], parser = new DOMParser();
+            let msg = gj.grid.messages[data.locale],
+                parser = new DOMParser(),
+                pageFirst = document.createElement('button'),
+                pagePrevious = document.createElement('button'),
+                pageNext = document.createElement('button'),
+                pageLast = document.createElement('button'),
+                pageRefresh = document.createElement('button'),
+                labelLast = document.createElement('div'),
+                labelPage = document.createElement('div'),
+                labelOf = document.createElement('div'),
+                pageNumber = document.createElement('div'),
+                input = document.createElement('input'),
+                pager = document.createElement('select');
             if (typeof (data.pager.leftControls) === 'undefined') {
-                data.pager.leftControls = [
-                    parser.parseFromString('<button class="btn btn-default btn-sm gj-cursor-pointer">' + (data.icons.first || msg.First) + '</button>').attr('title', msg.FirstPageTooltip).attr('data-gj-role', 'page-first'),
-                    parser.parseFromString('<button class="btn btn-default btn-sm gj-cursor-pointer">' + (data.icons.previous || msg.Previous) + '</button>').attr('title', msg.PreviousPageTooltip).attr('data-gj-role', 'page-previous'),
-                    parser.parseFromString('<div>' + msg.Page + '</div>', 'text/xml').firstChild,
-                    parser.parseFromString('<div class="input-group"><input data-gj-role="page-number" class="form-control form-control-sm" type="text" value="0"></div>'),
-                    parser.parseFromString('<div>' + msg.Of + '</div>', 'text/xml').firstChild,
-                    parser.parseFromString('<div data-gj-role="page-label-last">0</div>', 'text/xml').firstChild,
-                    parser.parseFromString('<button class="btn btn-default btn-sm gj-cursor-pointer">' + (data.icons.next || msg.Next) + '</button>').attr('title', msg.NextPageTooltip).attr('data-gj-role', 'page-next'),
-                    parser.parseFromString('<button class="btn btn-default btn-sm gj-cursor-pointer">' + (data.icons.last || msg.Last) + '</button>').attr('title', msg.LastPageTooltip).attr('data-gj-role', 'page-last'),
-                    parser.parseFromString('<button class="btn btn-default btn-sm gj-cursor-pointer">' + (data.icons.refresh || msg.Refresh) + '</button>').attr('title', msg.Refresh).attr('data-gj-role', 'page-refresh'),
-                    parser.parseFromString('<select data-gj-role="page-size" class="form-control input-sm" width="60"></select>', 'text/xml').firstChild
-                ];
+                gj.core.addClasses(pageFirst, 'btn btn-default btn-sm gj-cursor-pointer');
+                pageFirst.setAttribute('data-gj-role', 'page-first');
+                pageFirst.setAttribute('title', msg.FirstPageTooltip);
+                pageFirst.innerHTML = (data.icons.first || msg.First);
+                
+                gj.core.addClasses(pagePrevious, 'btn btn-default btn-sm gj-cursor-pointer');
+                pagePrevious.setAttribute('data-gj-role', 'page-previous');
+                pagePrevious.setAttribute('title', msg.PreviousPageTooltip);
+                pagePrevious.innerHTML = (data.icons.previous || msg.Previous);
+                
+                gj.core.addClasses(pageNext, 'btn btn-default btn-sm gj-cursor-pointer');
+                pageNext.setAttribute('data-gj-role', 'page-next');
+                pageNext.setAttribute('title', msg.NextPageTooltip);
+                pageNext.innerHTML = (data.icons.next || msg.Next);
+                
+                gj.core.addClasses(pageLast, 'btn btn-default btn-sm gj-cursor-pointer');
+                pageLast.setAttribute('data-gj-role', 'page-last');
+                pageLast.setAttribute('title', msg.LastPageTooltip);
+                pageLast.innerHTML = (data.icons.last || msg.Last);
+                
+                gj.core.addClasses(pageRefresh, 'btn btn-default btn-sm gj-cursor-pointer');
+                pageRefresh.setAttribute('data-gj-role', 'page-refresh');
+                pageRefresh.setAttribute('title', msg.Refresh);
+                pageRefresh.innerHTML = (data.icons.refresh || msg.Refresh);
+
+                labelLast.setAttribute('data-gj-role', 'page-label-last');
+                labelLast.innerHTML = '0';
+
+                labelPage.innerHTML = msg.Page;
+
+                labelOf.innerHTML = msg.Of;
+
+                pageNumber.classList.add('input-group');
+                input.setAttribute('data-gj-role', 'page-number');
+                input.setAttribute('type', 'text');
+                input.setAttribute('value', '0');
+                gj.core.addClasses(input, 'form-control form-control-sm');
+                pageNumber.appendChild(input);
+
+                gj.core.addClasses(pager, 'form-control input-sm');
+                pager.style.width = '3.75rem';
+                pager.setAttribute('data-gj-role', 'page-size');
+
+                data.pager.leftControls = [pageFirst, pagePrevious, labelPage, pageNumber, labelOf, labelLast, pageNext, pageLast, pageRefresh, pager];
             }
             if (typeof (data.pager.rightControls) === 'undefined') {
                 data.pager.rightControls = [
-                    parser.parseFromString('<div>' + msg.DisplayingRecords + '&nbsp;</div>', 'text/xml').firstChild,
+                    parser.parseFromString('<div>' + msg.DisplayingRecords + ' </div>', 'text/xml').firstChild,
+                    parser.parseFromString('<div data-gj-role="record-first">0</div>', 'text/xml').firstChild,
+                    parser.parseFromString('<div>-</div>', 'text/xml').firstChild,
+                    parser.parseFromString('<div data-gj-role="record-last">0</div>', 'text/xml').firstChild,
+                    parser.parseFromString('<div>' + msg.Of + '</div>', 'text/xml').firstChild,
+                    parser.parseFromString('<div data-gj-role="record-total">0</div>', 'text/xml').firstChild
+                ];
+            }
+        },
+
+        localizationBootstrap5: function (data) {
+            let msg = gj.grid.messages[data.locale],
+                parser = new DOMParser(),
+                pageFirst = document.createElement('button'),
+                pagePrevious = document.createElement('button'),
+                pageNext = document.createElement('button'),
+                pageLast = document.createElement('button'),
+                pageRefresh = document.createElement('button'),
+                labelLast = document.createElement('div'),
+                labelPage = document.createElement('div'),
+                labelOf = document.createElement('div'),
+                pageNumber = document.createElement('div'),
+                input = document.createElement('input'),
+                pager = document.createElement('select');
+
+            if (typeof (data.pager.leftControls) === 'undefined') {
+                gj.core.addClasses(pageFirst, 'btn btn-secondary btn-sm gj-cursor-pointer');
+                pageFirst.setAttribute('data-gj-role', 'page-first');
+                pageFirst.setAttribute('title', msg.FirstPageTooltip);
+                pageFirst.innerHTML = (data.icons.first || msg.First);
+                
+                gj.core.addClasses(pagePrevious, 'btn btn-secondary btn-sm gj-cursor-pointer');
+                pagePrevious.setAttribute('data-gj-role', 'page-previous');
+                pagePrevious.setAttribute('title', msg.PreviousPageTooltip);
+                pagePrevious.innerHTML = (data.icons.previous || msg.Previous);
+                
+                gj.core.addClasses(pageNext, 'btn btn-secondary btn-sm gj-cursor-pointer');
+                pageNext.setAttribute('data-gj-role', 'page-next');
+                pageNext.setAttribute('title', msg.NextPageTooltip);
+                pageNext.innerHTML = (data.icons.next || msg.Next);
+                
+                gj.core.addClasses(pageLast, 'btn btn-secondary btn-sm gj-cursor-pointer');
+                pageLast.setAttribute('data-gj-role', 'page-last');
+                pageLast.setAttribute('title', msg.LastPageTooltip);
+                pageLast.innerHTML = (data.icons.last || msg.Last);
+                
+                gj.core.addClasses(pageRefresh, 'btn btn-secondary btn-sm gj-cursor-pointer');
+                pageRefresh.setAttribute('data-gj-role', 'page-refresh');
+                pageRefresh.setAttribute('title', msg.Refresh);
+                pageRefresh.innerHTML = (data.icons.refresh || msg.Refresh);
+
+                labelLast.setAttribute('data-gj-role', 'page-label-last');
+                labelLast.innerHTML = '0';
+
+                labelPage.innerHTML = msg.Page;
+
+                labelOf.innerHTML = msg.Of;
+
+                pageNumber.classList.add('input-group');
+                input.setAttribute('data-gj-role', 'page-number');
+                input.setAttribute('type', 'text');
+                input.setAttribute('value', '0');
+                gj.core.addClasses(input, 'form-control form-control-sm');
+                pageNumber.appendChild(input);
+
+                gj.core.addClasses(pager, 'form-control input-sm');
+                pager.style.width = '3.75rem';
+                pager.setAttribute('data-gj-role', 'page-size');
+
+                data.pager.leftControls = [pageFirst, pagePrevious, labelPage, pageNumber, labelOf, labelLast, pageNext, pageLast, pageRefresh, pager];
+            }
+            if (typeof (data.pager.rightControls) === 'undefined') {
+                data.pager.rightControls = [
+                    parser.parseFromString('<div>' + msg.DisplayingRecords + ' </div>', 'text/xml').firstChild,
                     parser.parseFromString('<div data-gj-role="record-first">0</div>', 'text/xml').firstChild,
                     parser.parseFromString('<div>-</div>', 'text/xml').firstChild,
                     parser.parseFromString('<div data-gj-role="record-last">0</div>', 'text/xml').firstChild,
@@ -2323,7 +2522,7 @@ gj.grid.plugins.inlineEditing.configure = function (grid, fullConfig, clientConf
 
         localizationMaterialDesign: function (data) {
             let msg = gj.grid.messages[data.locale],
-                parser = new DOMParser()
+                parser = new DOMParser(),
                 pager = document.createElement('select');
             if (typeof (data.pager.leftControls) === 'undefined') {
                 data.pager.leftControls = [];
@@ -2363,7 +2562,7 @@ gj.grid.plugins.inlineEditing.configure = function (grid, fullConfig, clientConf
                             control.appendChild(option);
                         };
                         control.value = data.params[data.paramNames.limit];
-                        if (GijgoDropDown) {
+                        if (gj.dropdown) {
                             new GijgoDropDown(control, {
                                 uiLibrary: data.uiLibrary,
                                 iconsLibrary: data.iconsLibrary,
@@ -2425,7 +2624,7 @@ gj.grid.plugins.inlineEditing.configure = function (grid, fullConfig, clientConf
                     //control.off('change').on('change', gj.grid.plugins.pagination.private.createChangePageHandler(grid, page));
                     break;
                 case 'page-label-last':
-                    control.innerText = lastPage;
+                    control.innerHTML = lastPage;
                     break;
                 case 'page-next':
                     gj.grid.plugins.pagination.private.assignPageHandler(grid, control, page + 1, lastPage === page);
@@ -2446,13 +2645,13 @@ gj.grid.plugins.inlineEditing.configure = function (grid, fullConfig, clientConf
                     gj.grid.plugins.pagination.private.assignButtonHandler(grid, control, page, newPage, lastPage);
                     break;
                 case 'record-first':
-                    control.innerText = firstRecord;
+                    control.innerHTML = firstRecord;
                     break;
                 case 'record-last':
-                    control.innerText = lastRecord;
+                    control.innerHTML = lastRecord;
                     break;
                 case 'record-total':
-                    control.innerText = totalRecords;
+                    control.innerHTML = totalRecords;
                     break;
             }
         },
@@ -2573,8 +2772,8 @@ gj.grid.plugins.inlineEditing.configure = function (grid, fullConfig, clientConf
             grid.on('initialized', function () {
                 gj.grid.plugins.pagination.private.init(grid);
             });
-            grid.on('dataBound', function (e, records, totalRecords) {
-                gj.grid.plugins.pagination.private.reloadPager(grid, totalRecords);
+            grid.on('dataBound', function (e) {
+                gj.grid.plugins.pagination.private.reloadPager(grid, e.detail.totalRecords);
             });
             grid.on('columnShow', function () {
                 gj.grid.plugins.pagination.private.updatePagerColSpan(grid);
@@ -2847,7 +3046,8 @@ gj.grid.plugins.inlineEditing.configure = function (grid, fullConfig, clientConf
             gj.grid.plugins.toolbar.private.init(grid);
         });
         grid.on('destroying', function () {
-            grid.prev('[data-role="toolbar"]').remove();
+            let el = grid.element.parentNode.querySelector('[data-role="toolbar"]');
+            el && el.remove();
         });
     }
 };

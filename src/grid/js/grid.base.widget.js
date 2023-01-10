@@ -20,12 +20,12 @@ GijgoGrid = function (element, jsConfig) {
      * <br/><br/>
      * <table id="grid"></table>
      * <script>
-     *     var grid = $('#grid').grid({
+     *     var grid = new GijgoGrid(document.getElementById('grid'), {
      *         dataSource: '/Players/Get',
      *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
      *     });
-     *     $('#btnSearch').on('click', function () {
-     *         grid.reload({ name: $('#txtSearch').val() });
+     *     document.getElementById('btnSearch').addEventListener('click', function () {
+     *         grid.reload({ name: document.getElementById('txtSearch').value });
      *     });
      * </script>
      */
@@ -44,12 +44,12 @@ GijgoGrid = function (element, jsConfig) {
      * <br/><br/>
      * <table id="grid"></table>
      * <script>
-     *     var grid = $('#grid').grid({
+     *     var grid = new GijgoGrid(document.getElementById('grid'), {
      *         dataSource: '/Players/Get',
      *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
      *         pager: { limit: 5 }
      *     });
-     *     $('#btnClear').on('click', function () {
+     *     document.getElementById('btnClear').addEventListener('click', function () {
      *         grid.clear();
      *     });
      * </script>
@@ -63,9 +63,9 @@ GijgoGrid = function (element, jsConfig) {
      * @method
      * @param {boolean} includeAllRecords - include records that are not visible when you are using local dataSource.
      * @return number
-     * @example Local.DataSource <!-- bootstrap, grid, grid.pagination -->
-     * <button class="btn btn-default" onclick="alert(grid.count())">Count Visible Records</button>
-     * <button class="btn btn-default" onclick="alert(grid.count(true))">Count All Records</button>
+     * @example Local.DataSource <!-- grid, dropdown, bootstrap5 -->
+     * <button class="btn btn-primary" onclick="alert(grid.count())">Count Visible Records</button>
+     * <button class="btn btn-primary" onclick="alert(grid.count(true))">Count All Records</button>
      * <br/><br/>
      * <table id="grid"></table>
      * <script>
@@ -75,23 +75,23 @@ GijgoGrid = function (element, jsConfig) {
      *         { 'ID': 2, 'Name': 'Ronaldo Luis Nazario de Lima', 'PlaceOfBirth': 'Rio de Janeiro, Brazil' },
      *         { 'ID': 3, 'Name': 'David Platt', 'PlaceOfBirth': 'Chadderton, Lancashire, England' }
      *     ];
-     *     grid = $('#grid').grid({
+     *     grid = new GijgoGrid(document.getElementById('grid'), {
      *         dataSource: data,
      *         columns: [ { field: 'ID', width: 34 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
-     *         uiLibrary: 'bootstrap',
+     *         uiLibrary: 'bootstrap5',
      *         pager: { limit: 2, sizes: [2, 5, 10, 20] }
      *     });
      * </script>
-     * @example Remote.DataSource <!-- bootstrap, grid, grid.pagination -->
-     * <button onclick="alert(grid.count())">Count Visible Records</button>
-     * <button onclick="alert(grid.count(true))">Count All Records</button>
+     * @example Remote.DataSource <!-- grid, dropdown, bootstrap5 -->
+     * <button class="btn btn-primary" onclick="alert(grid.count())">Count Visible Records</button>
+     * <button class="btn btn-primary" onclick="alert(grid.count(true))">Count All Records</button>
      * <br/><br/>
      * <table id="grid"></table>
      * <script>
-     *     var grid = $('#grid').grid({
+     *     var grid = new GijgoGrid(document.getElementById('grid'), {
      *         dataSource: '/Players/Get',
      *         columns: [ { field: 'ID', width: 34 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
-     *         uiLibrary: 'bootstrap',
+     *         uiLibrary: 'bootstrap5',
      *         pager: { limit: 2, sizes: [2, 5, 10, 20] }
      *     });
      * </script>
@@ -110,18 +110,18 @@ GijgoGrid = function (element, jsConfig) {
      * <table id="grid"></table>
      * <script>
      *     var grid, onSuccessFunc;
-     *     onSuccessFunc = function (response) {
+     *     onSuccessFunc = function (e) {
      *         //you can modify the response here if needed
-     *         grid.render(response);
+     *         grid.render(JSON.parse(this.response));
      *     };
-     *     grid = $('#grid').grid({
+     *     grid = new GijgoGrid(document.getElementById('grid'), {
      *         dataSource: { url: '/Players/Get', success: onSuccessFunc },
      *         columns: [ { field: 'Name' }, { field: 'PlaceOfBirth' } ]
      *     });
      * </script>
      */
     self.render = function (response) {
-        return methods.render($grid, response);
+        return methods.render(this, response);
     };
 
     /**
@@ -139,17 +139,17 @@ GijgoGrid = function (element, jsConfig) {
      * <br/><br/>
      * <table id="grid"></table>
      * <script>
-     *     var createFunc = function() {
-     *         $('#grid').grid({
+     *     let grid, createFunc = function() {
+     *         grid = new GijgoGrid(document.getElementById('grid'), {
      *             dataSource: '/Players/Get',
      *             columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
      *         });
      *     };
      *     createFunc();
-     *     $('#btnDestroy').on('click', function () {
-     *         $('#grid').grid('destroy', true, true);
+     *     document.getElementById('btnDestroy').addEventListener('click', function () {
+     *         grid.destroy(true, true);
      *     });
-     *     $('#btnCreate').on('click', function () {
+     *     document.getElementById('btnCreate').addEventListener('click', function () {
      *         createFunc();
      *     });
      * </script>
@@ -158,11 +158,11 @@ GijgoGrid = function (element, jsConfig) {
      * <br/><br/>
      * <table id="grid"></table>
      * <script>
-     *     var grid = $('#grid').grid({
+     *     var grid = new GijgoGrid(document.getElementById('grid'), {
      *         dataSource: '/Players/Get',
      *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
      *     });
-     *     $('#btnRemove').on('click', function () {
+     *     document.getElementById('btnRemove').addEventListener('click', function () {
      *         grid.destroy();
      *     });
      * </script>
@@ -182,7 +182,7 @@ GijgoGrid = function (element, jsConfig) {
      * <br/><br/>
      * <table id="grid"></table>
      * <script>
-     *     var grid = $('#grid').grid({
+     *     var grid = new GijgoGrid(document.getElementById('grid'), {
      *         dataSource: '/Players/Get',
      *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
      *         selectionMethod: 'checkbox'
@@ -206,7 +206,7 @@ GijgoGrid = function (element, jsConfig) {
      * <br/><br/>
      * <table id="grid"></table>
      * <script>
-     *     var grid = $('#grid').grid({
+     *     var grid = new GijgoGrid(document.getElementById('grid'), {
      *         dataSource: '/Players/Get',
      *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
      *         selectionMethod: 'checkbox'
@@ -236,7 +236,7 @@ GijgoGrid = function (element, jsConfig) {
      *         { 'ID': 103, 'Name': 'David Platt', 'PlaceOfBirth': 'Chadderton, Lancashire, England' },
      *         { 'ID': 104, 'Name': 'Manuel Neuer', 'PlaceOfBirth': 'Gelsenkirchen, West Germany' }
      *     ];
-     *     grid = $('#grid').grid({
+     *     grid = new GijgoGrid(document.getElementById('grid'), {
      *         dataSource: data,
      *         primaryKey: 'ID',
      *         columns: [ { field: 'ID', width: 70 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
@@ -260,7 +260,7 @@ GijgoGrid = function (element, jsConfig) {
      *         { 'ID': 103, 'Name': 'David Platt', 'PlaceOfBirth': 'Chadderton, Lancashire, England' },
      *         { 'ID': 104, 'Name': 'Manuel Neuer', 'PlaceOfBirth': 'Gelsenkirchen, West Germany' }
      *     ];
-     *     grid = $('#grid').grid({
+     *     grid = new GijgoGrid(document.getElementById('grid'), {
      *         dataSource: data,
      *         columns: [ { field: 'ID', width: 70 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
      *         selectionMethod: 'checkbox',
@@ -286,7 +286,7 @@ GijgoGrid = function (element, jsConfig) {
      * <br/><br/>
      * <table id="grid"></table>
      * <script>
-     *     var grid = $('#grid').grid({
+     *     var grid = new GijgoGrid(document.getElementById('grid'), {
      *         dataSource: '/Players/Get',
      *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
      *         selectionMethod: 'checkbox',
@@ -311,7 +311,7 @@ GijgoGrid = function (element, jsConfig) {
      * <br/><br/>
      * <table id="grid"></table>
      * <script>
-     *     var grid = $('#grid').grid({
+     *     var grid = new GijgoGrid(document.getElementById('grid'), {
      *         dataSource: '/Players/Get',
      *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
      *         selectionMethod: 'checkbox',
@@ -339,7 +339,7 @@ GijgoGrid = function (element, jsConfig) {
      * <br/><br/>
      * <table id="grid"></table>
      * <script>
-     *     var grid = $('#grid').grid({
+     *     var grid = new GijgoGrid(document.getElementById('grid'), {
      *         dataSource: '/Players/Get',
      *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
      *         primaryKey: 'ID' //define the name of the column that you want to use as ID here.
@@ -364,7 +364,7 @@ GijgoGrid = function (element, jsConfig) {
      * <br/><br/>
      * <table id="grid"></table>
      * <script>
-     *     var grid = $('#grid').grid({
+     *     var grid = new GijgoGrid(document.getElementById('grid'), {
      *         dataSource: '/Players/Get',
      *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
      *     });
@@ -383,7 +383,7 @@ GijgoGrid = function (element, jsConfig) {
      * @method
      * @param {boolean} includeAllRecords - include records that are not visible when you are using local dataSource.
      * @return number
-     * @example Local.DataSource <!-- bootstrap, grid, grid.pagination -->
+     * @example Local.DataSource <!-- grid, bootstrap5 -->
      * <button onclick="alert(JSON.stringify(grid.getAll()))" class="btn btn-default">Get All Visible Records</button>
      * <button onclick="alert(JSON.stringify(grid.getAll(true)))" class="btn btn-default">Get All Records</button>
      * <br/><br/>
@@ -395,23 +395,23 @@ GijgoGrid = function (element, jsConfig) {
      *         { 'ID': 2, 'Name': 'Ronaldo Luis Nazario de Lima', 'PlaceOfBirth': 'Rio de Janeiro, Brazil' },
      *         { 'ID': 3, 'Name': 'David Platt', 'PlaceOfBirth': 'Chadderton, Lancashire, England' }
      *     ];
-     *     grid = $('#grid').grid({
+     *     grid = new GijgoGrid(document.getElementById('grid'), {
      *         dataSource: data,
      *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
-     *         uiLibrary: 'bootstrap',
+     *         uiLibrary: 'bootstrap5',
      *         pager: { limit: 2, sizes: [2, 5, 10, 20] }
      *     });
      * </script>
-     * @example Remote.DataSource <!-- bootstrap, grid, grid.pagination -->
+     * @example Remote.DataSource <!-- grid, bootstrap5 -->
      * <button onclick="alert(JSON.stringify(grid.getAll()))" class="btn btn-default">Get All Visible Records</button>
      * <button onclick="alert(JSON.stringify(grid.getAll(true)))" class="btn btn-default">Get All Records</button>
      * <br/><br/>
      * <table id="grid"></table>
      * <script>
-     *     var grid = $('#grid').grid({
+     *     var grid = new GijgoGrid(document.getElementById('grid'), {
      *         dataSource: '/Players/Get',
      *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
-     *         uiLibrary: 'bootstrap',
+     *         uiLibrary: 'bootstrap5',
      *         pager: { limit: 2, sizes: [2, 5, 10, 20] }
      *     });
      * </script>
@@ -430,7 +430,7 @@ GijgoGrid = function (element, jsConfig) {
      * <br/><br/>
      * <table id="grid"></table>
      * <script>
-     *     var grid = $('#grid').grid({
+     *     var grid = new GijgoGrid(document.getElementById('grid'), {
      *         dataSource: '/Players/Get',
      *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth', hidden: true } ]
      *     });
@@ -453,7 +453,7 @@ GijgoGrid = function (element, jsConfig) {
      * <br/><br/>
      * <table id="grid"></table>
      * <script>
-     *     var grid = $('#grid').grid({
+     *     var grid = new GijgoGrid(document.getElementById('grid'), {
      *         dataSource: '/Players/Get',
      *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
      *     });
@@ -476,7 +476,7 @@ GijgoGrid = function (element, jsConfig) {
      * <br/><br/>
      * <table id="grid"></table>
      * <script>
-     *     var grid = $('#grid').grid({
+     *     var grid = new GijgoGrid(document.getElementById('grid'), {
      *         dataSource: [
      *             { 'ID': 1, 'Name': 'Hristo Stoichkov', 'PlaceOfBirth': 'Plovdiv, Bulgaria' },
      *             { 'ID': 2, 'Name': 'Ronaldo Luis Nazario de Lima', 'PlaceOfBirth': 'Rio de Janeiro, Brazil' },
@@ -493,7 +493,7 @@ GijgoGrid = function (element, jsConfig) {
      * <br/><br/>
      * <table id="grid"></table>
      * <script>
-     *     var grid = $('#grid').grid({
+     *     var grid = new GijgoGrid(document.getElementById('grid'), {
      *         primaryKey: 'ID',
      *         dataSource: [
      *             { 'ID': 1, 'Name': 'Hristo Stoichkov', 'PlaceOfBirth': 'Plovdiv, Bulgaria' },
@@ -527,7 +527,7 @@ GijgoGrid = function (element, jsConfig) {
      * <table id="grid"></table>
      * <script>
      *     var grid;
-     *     grid = $('#grid').grid({
+     *     grid = new GijgoGrid(document.getElementById('grid'), {
      *         primaryKey: 'ID',
      *         dataSource: [
      *             { 'ID': 1, 'Name': 'Hristo Stoichkov', 'PlaceOfBirth': 'Plovdiv, Bulgaria' },
@@ -571,7 +571,7 @@ GijgoGrid = function (element, jsConfig) {
      *             grid.removeRow(e.data.id);
      *         }
      *     }
-     *     grid = $('#grid').grid({
+     *     grid = new GijgoGrid(document.getElementById('grid'), {
      *         primaryKey: 'ID',
      *         dataSource: [
      *             { 'ID': 1, 'Name': 'Hristo Stoichkov', 'PlaceOfBirth': 'Plovdiv, Bulgaria' },
@@ -595,7 +595,7 @@ GijgoGrid = function (element, jsConfig) {
      *             grid.removeRow(e.data.id);
      *         }
      *     }
-     *     grid = $('#grid').grid({
+     *     grid = new GijgoGrid(document.getElementById('grid'), {
      *         primaryKey: 'ID',
      *         dataSource: [
      *             { 'ID': 1, 'Name': 'Hristo Stoichkov', 'PlaceOfBirth': 'Plovdiv, Bulgaria' },

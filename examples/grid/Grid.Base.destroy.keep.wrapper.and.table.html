@@ -15,17 +15,17 @@
  <br/><br/>
  <table id="grid"></table>
  <script>
-     var createFunc = function() {
-         $('#grid').grid({
+     let grid, createFunc = function() {
+         grid = new GijgoGrid(document.getElementById('grid'), {
              dataSource: '/Players/Get',
              columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
          });
      };
      createFunc();
-     $('#btnDestroy').on('click', function () {
-         $('#grid').grid('destroy', true, true);
+     document.getElementById('btnDestroy').addEventListener('click', function () {
+         grid.destroy(true, true);
      });
-     $('#btnCreate').on('click', function () {
+     document.getElementById('btnCreate').addEventListener('click', function () {
          createFunc();
      });
  </script>

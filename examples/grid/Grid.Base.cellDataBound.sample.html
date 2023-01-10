@@ -6,19 +6,20 @@
   <title>Example</title>
   <script src="../../dist/modular/js/core.js" type="text/javascript"></script>
   <link href="../../dist/modular/css/core.css" rel="stylesheet" type="text/css">
+  <script src="../../dist/libraries/jquery/jquery.js"></script>
   <link href="../../dist/modular/css/grid.css" rel="stylesheet" type="text/css">
   <script src="../../dist/modular/js/grid.js"></script>
 </head>
 <body style="padding: 8px;">
  <table id="grid"></table>
  <script>
-     var grid = $('#grid').grid({
+     var grid = new GijgoGrid(document.getElementById('grid'), {
          dataSource: '/Players/Get',
          columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' }, { field: 'Bulgarian', title: 'Is Bulgarian?' } ]
      });
-     grid.on('cellDataBound', function (e, $displayEl, id, column, record) {
-         if ('Bulgarian' === column.field) {
-             $displayEl.text(record.PlaceOfBirth.indexOf('Bulgaria') > -1 ? 'Yes' : 'No');
+     grid.on('cellDataBound', function (e) {
+         if ('Bulgarian' === e.detail.column.field) {
+             e.detail.displayEl.innerHTML = e.detail.record.PlaceOfBirth.indexOf('Bulgaria') > -1 ? 'Yes' : 'No';
          }
      });
  </script>

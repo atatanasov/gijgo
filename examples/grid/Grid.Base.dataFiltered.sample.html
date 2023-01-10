@@ -20,12 +20,12 @@
          { 'ID': 5, 'Name': 'James Rodríguez', 'PlaceOfBirth': 'Cúcuta, Colombia', CountryName: 'Colombia' },
          { 'ID': 6, 'Name': 'Dimitar Berbatov', 'PlaceOfBirth': 'Blagoevgrad, Bulgaria', CountryName: 'Bulgaria' }
      ];
-     grid = $('#grid').grid({
+     grid = new GijgoGrid(document.getElementById('grid'), {
          dataSource: data,
          columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
-         dataFiltered: function (e, records) {
-             records.reverse(); // reverse the data
-             records.splice(3, 2); // remove 2 elements after the 3rd record
+         dataFiltered: function (e) {
+             e.detail.records.reverse(); // reverse the data
+             e.detail.records.splice(3, 2); // remove 2 elements after the 3rd record
          }
      });
  </script>

@@ -24,7 +24,7 @@
          { 'ID': 103, 'Name': 'David Platt', 'PlaceOfBirth': 'Chadderton, Lancashire, England' },
          { 'ID': 104, 'Name': 'Manuel Neuer', 'PlaceOfBirth': 'Gelsenkirchen, West Germany' }
      ];
-     grid = $('#grid').grid({
+     grid = new GijgoGrid(document.getElementById('grid'), {
          dataSource: data,
          columns: [ { field: 'ID', width: 70 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
          selectionMethod: 'checkbox',

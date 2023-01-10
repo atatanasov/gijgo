@@ -17,7 +17,7 @@
          alert('The result contains ' + response.records.length + ' records.');
          grid.render(response);
      };
-     new GijgoGrid(document.getElementById('grid'), {
+     grid = new GijgoGrid(document.getElementById('grid'), {
          dataSource: { url: '/Players/Get', data: {}, success: onSuccessFunc },
          columns: [ { field: 'Name' }, { field: 'PlaceOfBirth' } ]
      });

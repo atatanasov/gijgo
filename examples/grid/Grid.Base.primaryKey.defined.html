@@ -24,7 +24,16 @@
              { field: 'ID', width: 70 },
              { field: 'Name' },
              { field: 'PlaceOfBirth' } ,
-             { tmpl: '<a href="#">click me</a>', events: { click: function(e) { alert('Your id is ' + e.data.id); } }, width: 100, stopPropagation: true }
+             {
+                 tmpl: '<a href="#">click me</a>',
+                 events: {
+                    click: function(e) {
+                      alert('Your id is ' + e.data.id);
+                    }
+                 },
+                 width: 100,
+                 stopPropagation: true
+             }
          ]
      });
  </script>

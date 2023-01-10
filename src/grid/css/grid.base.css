@@ -104,6 +104,13 @@ table.gj-grid-bootstrap thead th [data-gj-role="sorticon"] i.material-icons {
     top: 15px;
 }
 
+table.gj-grid-bootstrap.gj-grid-bootstrap-5 thead th [data-gj-role="sorticon"] i.gj-icon,
+table.gj-grid-bootstrap.gj-grid-bootstrap-5 thead th [data-gj-role="sorticon"] i.material-icons {
+    position: absolute;
+    font-size: 1.25rem;
+    top: .75rem;
+}
+
 table.gj-grid-bootstrap tbody tr td div[data-gj-role="display"] {
     padding: 0px;
 }
@@ -115,6 +122,22 @@ table.gj-grid-bootstrap tbody tr td div[data-gj-role="display"] {
 
 .gj-grid-bootstrap-4 tbody tr.active {
     background-color: rgba(0,0,0,.075);
+}
+
+.gj-grid-bootstrap-5 .gj-checkbox-bootstrap {
+    display: inline-block;
+    vertical-align: sub;
+}
+
+.gj-grid-bootstrap-5 tbody tr.active > * {
+    color: #fff;
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+    border-width: 1px;
+}
+
+.gj-grid-bootstrap-5 tbody tr.active:hover > * {
+    color: #fff;
 }
 
 /* Material Design Theme */

@@ -7,10 +7,10 @@ gj.grid.events = {
      * Event fires before addition of an empty row to the grid.
      * @event beforeEmptyRowInsert
      * @param {object} e - event data
-     * @example sample <!-- grid -->
+     * @example sample <!-- jquery, grid -->
      * <table id="grid"></table>
      * <script>
-     *     var grid = $('#grid').grid({
+     *     var grid = new GijgoGrid(document.getElementById('grid'), {
      *         dataSource: {
      *             url: '/Players/Get',
      *             data: { name: 'not existing data' } //search for not existing data in order to fire the event
@@ -31,16 +31,16 @@ gj.grid.events = {
      *
      * @event dataBinding
      * @param {object} e - event data
-     * @param {array} records - the list of records
-     * @example sample <!-- grid -->
+     * @param {array} e.detail.records - the list of records
+     * @example sample <!-- jquery, grid -->
      * <table id="grid"></table>
      * <script>
-     *     var grid = $('#grid').grid({
+     *     var grid = new GijgoGrid(document.getElementById('grid'), {
      *         dataSource: '/Players/Get',
-     *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
-     *     });
-     *     grid.on('dataBinding', function (e, records) {
-     *         alert('dataBinding is fired. ' + records.length + ' records will be loaded in the grid.');
+     *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
+     *         dataBinding: function (e) {
+     *             alert('dataBinding is fired. ' + e.detail.records.length + ' records will be loaded in the grid.');
+     *         }
      *     });
      * </script>
      */
@@ -53,17 +53,17 @@ gj.grid.events = {
      *
      * @event dataBound
      * @param {object} e - event data
-     * @param {array} records - the list of records
-     * @param {number} totalRecords - the number of the all records that can be presented in the grid
-     * @example sample <!-- grid -->
+     * @param {array} e.detail.records - the list of records
+     * @param {number} e.detail.totalRecords - the number of the all records that can be presented in the grid
+     * @example sample <!-- jquery, grid -->
      * <table id="grid"></table>
      * <script>
-     *     var grid = $('#grid').grid({
+     *     var grid = new GijgoGrid(document.getElementById('grid'), {
      *         dataSource: '/Players/Get',
      *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
      *     });
-     *     grid.on('dataBound', function (e, records, totalRecords) {
-     *         alert('dataBound is fired. ' + records.length + ' records are bound to the grid.');
+     *     grid.on('dataBound', function (e) {
+     *         alert('dataBound is fired. ' + e.detail.records.length + ' records are bound to the grid.');
      *     });
      * </script>
      */
@@ -75,18 +75,18 @@ gj.grid.events = {
      * Event fires after insert of a row in the grid during the loading of the data.
      * @event rowDataBound
      * @param {object} e - event data
-     * @param {object} row - the row element
-     * @param {string} id - the id of the record
-     * @param {object} record - the data of the row record
-     * @example sample <!-- grid -->
+     * @param {object} e.detail.row - the row element
+     * @param {string} e.detail.id - the id of the record
+     * @param {object} e.detail.record - the data of the row record
+     * @example sample <!-- jquery, grid -->
      * <table id="grid"></table>
      * <script>
-     *     var grid = $('#grid').grid({
+     *     var grid = new GijgoGrid(document.getElementById('grid'), {
      *         dataSource: '/Players/Get',
      *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
      *     });
-     *     grid.on('rowDataBound', function (e, row, id, record) {
-     *         alert('rowDataBound is fired for row with id=' + id + '.');
+     *     grid.on('rowDataBound', function (e) {
+     *         alert('rowDataBound is fired for row with id=' + e.detail.id + '.');
      *     });
      * </script>
      */
@@ -103,16 +103,16 @@ gj.grid.events = {
      * @param {string} e.detail.id - the id of the record
      * @param {object} e.detail.column - the column configuration data
      * @param {object} e.detail.record - the data of the row record
-     * @example sample <!-- grid -->
+     * @example sample <!-- jquery, grid -->
      * <table id="grid"></table>
      * <script>
-     *     var grid = $('#grid').grid({
+     *     var grid = new GijgoGrid(document.getElementById('grid'), {
      *         dataSource: '/Players/Get',
      *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' }, { field: 'Bulgarian', title: 'Is Bulgarian?' } ]
      *     });
-     *     grid.on('cellDataBound', function (e, $displayEl, id, column, record) {
-     *         if ('Bulgarian' === column.field) {
-     *             $displayEl.text(record.PlaceOfBirth.indexOf('Bulgaria') > -1 ? 'Yes' : 'No');
+     *     grid.on('cellDataBound', function (e) {
+     *         if ('Bulgarian' === e.detail.column.field) {
+     *             e.detail.displayEl.innerHTML = e.detail.record.PlaceOfBirth.indexOf('Bulgaria') > -1 ? 'Yes' : 'No';
      *         }
      *     });
      * </script>
@@ -129,19 +129,19 @@ gj.grid.events = {
      *
      * @event rowSelect
      * @param {object} e - event data
-     * @param {object} row - the row element
-     * @param {string} id - the id of the record
-     * @param {object} record - the data of the row record
-     * @example sample <!-- checkbox, grid -->
+     * @param {object} e.detail.row - the row element
+     * @param {string} e.detail.id - the id of the record
+     * @param {object} e.detail.record - the data of the row record
+     * @example sample <!-- jquery, checkbox, grid -->
      * <table id="grid"></table>
      * <script>
-     *     var grid = $('#grid').grid({
+     *     var grid = new GijgoGrid(document.getElementById('grid'), {
      *         dataSource: '/Players/Get',
      *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
      *         selectionMethod: 'checkbox'
      *     });
-     *     grid.on('rowSelect', function (e, row, id, record) {
-     *         alert('Row with id=' + id + ' is selected.');
+     *     grid.on('rowSelect', function (e) {
+     *         alert('Row with id=' + e.detail.id + ' is selected.');
      *     });
      * </script>
      */
@@ -154,19 +154,19 @@ gj.grid.events = {
      *
      * @event rowUnselect
      * @param {object} e - event data
-     * @param {object} row - the row element
-     * @param {string} id - the id of the record
-     * @param {object} record - the data of the row record
-     * @example sample <!-- checkbox, grid -->
+     * @param {object} e.detail.row - the row element
+     * @param {string} e.detail.id - the id of the record
+     * @param {object} e.detail.record - the data of the row record
+     * @example sample <!-- jquery, checkbox, grid -->
      * <table id="grid"></table>
      * <script>
-     *     var grid = $('#grid').grid({
+     *     var grid = new GijgoGrid(document.getElementById('grid'), {
      *         dataSource: '/Players/Get',
      *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
      *         selectionMethod: 'checkbox'
      *     });
-     *     grid.on('rowUnselect', function (e, row, id, record) {
-     *         alert('Row with id=' + id + ' is unselected.');
+     *     grid.on('rowUnselect', function (e) {
+     *         alert('Row with id=' + e.detail.id + ' is unselected.');
      *     });
      * </script>
      */
@@ -178,14 +178,14 @@ gj.grid.events = {
      * Event fires before deletion of row in the grid.
      * @event rowRemoving
      * @param {object} e - event data
-     * @param {object} row - the row element
-     * @param {string} id - the id of the record
-     * @param {object} record - the data of the row record
+     * @param {object} e.detail.row - the row element
+     * @param {string} e.detail.id - the id of the record
+     * @param {object} e.detail.record - the data of the row record
      * @example sample <!-- grid -->
      * <button onclick="grid.removeRow('1')" class="gj-button-md">Remove Row</button><br/><br/>
      * <table id="grid"></table>
      * <script>
-     *     var grid = $('#grid').grid({
+     *     var grid = new GijgoGrid(document.getElementById('grid'), {
      *         primaryKey: 'ID',
      *         dataSource: [
      *             { 'ID': 1, 'Name': 'Hristo Stoichkov', 'PlaceOfBirth': 'Plovdiv, Bulgaria' },
@@ -194,8 +194,8 @@ gj.grid.events = {
      *         ],
      *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
      *     });
-     *     grid.on('rowRemoving', function (e, row, id, record) {
-     *         alert('rowRemoving is fired for row with id=' + id + '.');
+     *     grid.on('rowRemoving', function (e) {
+     *         alert('rowRemoving is fired for row with id=' + e.detail.id + '.');
      *     });
      * </script>
      */
@@ -208,12 +208,12 @@ gj.grid.events = {
      *
      * @event destroying
      * @param {object} e - event data
-     * @example sample <!-- grid -->
+     * @example sample <!-- jquery, grid -->
      * <button id="btnDestroy" class="gj-button-md">Destroy</button>
      * <br/><br/>
      * <table id="grid"></table>
      * <script>
-     *     var grid = $('#grid').grid({
+     *     var grid = new GijgoGrid(document.getElementById('grid'), {
      *         dataSource: '/Players/Get',
      *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
      *     });
@@ -234,16 +234,16 @@ gj.grid.events = {
      *
      * @event columnHide
      * @param {object} e - event data
-     * @param {object} column - The data about the column that is hidding
-     * @example sample <!-- grid -->
+     * @param {object} e.detail.column - The data about the column that is hidding
+     * @example sample <!-- jquery, grid -->
      * <table id="grid"></table>
      * <script>
-     *     var grid = $('#grid').grid({
+     *     var grid = new GijgoGrid(document.getElementById('grid'), {
      *         dataSource: '/Players/Get',
      *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
      *     });
-     *     grid.on('columnHide', function (e, column) {
-     *         alert('The ' + column.field + ' column is hidden.');
+     *     grid.on('columnHide', function (e) {
+     *         alert('The ' + e.detail.column.field + ' column is hidden.');
      *     });
      *     grid.hideColumn('PlaceOfBirth');
      * </script>
@@ -257,22 +257,22 @@ gj.grid.events = {
      *
      * @event columnShow
      * @param {object} e - event data
-     * @param {object} column - The data about the column that is showing
-     * @example sample <!-- grid -->
+     * @param {object} e.detail.column - The data about the column that is showing
+     * @example sample <!-- jquery, grid -->
      * <table id="grid"></table>
      * <script>
-     *     var grid = $('#grid').grid({
+     *     var grid = new GijgoGrid(document.getElementById('grid'), {
      *         dataSource: '/Players/Get',
      *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth', hidden: true } ]
      *     });
-     *     grid.on('columnShow', function (e, column) {
-     *         alert('The ' + column.field + ' column is shown.');
+     *     grid.on('columnShow', function (e) {
+     *         alert('The ' + e.detail.column.field + ' column is shown.');
      *     });
      *     grid.showColumn('PlaceOfBirth');
      * </script>
      */
     columnShow: function (el, column) {
-        return el.triggerHandler(new CustomEvent('columnShow', { detail: { column: column } }));
+        return el.dispatchEvent(new CustomEvent('columnShow', { detail: { column: column } }));
     },
 
     /**
@@ -280,10 +280,10 @@ gj.grid.events = {
      *
      * @event initialized
      * @param {object} e - event data
-     * @example sample <!-- grid -->
+     * @example sample <!-- jquery, grid -->
      * <table id="grid"></table>
      * <script>
-     *     var grid = $('#grid').grid({
+     *     var grid = new GijgoGrid(document.getElementById('grid'), {
      *         dataSource: '/Players/Get',
      *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth', hidden: true } ],
      *         initialized: function (e) {
@@ -314,12 +314,12 @@ gj.grid.events = {
      *         { 'ID': 5, 'Name': 'James Rodríguez', 'PlaceOfBirth': 'Cúcuta, Colombia', CountryName: 'Colombia' },
      *         { 'ID': 6, 'Name': 'Dimitar Berbatov', 'PlaceOfBirth': 'Blagoevgrad, Bulgaria', CountryName: 'Bulgaria' }
      *     ];
-     *     grid = $('#grid').grid({
+     *     grid = new GijgoGrid(document.getElementById('grid'), {
      *         dataSource: data,
      *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
-     *         dataFiltered: function (e, records) {
-     *             records.reverse(); // reverse the data
-     *             records.splice(3, 2); // remove 2 elements after the 3rd record
+     *         dataFiltered: function (e) {
+     *             e.detail.records.reverse(); // reverse the data
+     *             e.detail.records.splice(3, 2); // remove 2 elements after the 3rd record
      *         }
      *     });
      * </script>

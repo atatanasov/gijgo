@@ -13,11 +13,11 @@
  <table id="grid"></table>
  <script>
      var grid, onSuccessFunc;
-     onSuccessFunc = function (response) {
+     onSuccessFunc = function (e) {
          //you can modify the response here if needed
-         grid.render(response);
+         grid.render(JSON.parse(this.response));
      };
-     grid = $('#grid').grid({
+     grid = new GijgoGrid(document.getElementById('grid'), {
          dataSource: { url: '/Players/Get', success: onSuccessFunc },
          columns: [ { field: 'Name' }, { field: 'PlaceOfBirth' } ]
      });

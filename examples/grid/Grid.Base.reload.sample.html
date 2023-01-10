@@ -15,12 +15,12 @@
  <br/><br/>
  <table id="grid"></table>
  <script>
-     var grid = $('#grid').grid({
+     var grid = new GijgoGrid(document.getElementById('grid'), {
          dataSource: '/Players/Get',
          columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
      });
-     $('#btnSearch').on('click', function () {
-         grid.reload({ name: $('#txtSearch').val() });
+     document.getElementById('btnSearch').addEventListener('click', function () {
+         grid.reload({ name: document.getElementById('txtSearch').value });
      });
  </script>
 </body>

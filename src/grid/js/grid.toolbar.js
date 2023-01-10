@@ -161,7 +161,8 @@ gj.grid.plugins.toolbar = {
             gj.grid.plugins.toolbar.private.init(grid);
         });
         grid.on('destroying', function () {
-            grid.prev('[data-role="toolbar"]').remove();
+            let el = grid.element.parentNode.querySelector('[data-role="toolbar"]');
+            el && el.remove();
         });
     }
 };

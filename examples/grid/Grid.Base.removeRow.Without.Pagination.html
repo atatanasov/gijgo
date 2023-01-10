@@ -18,7 +18,7 @@
              grid.removeRow(e.data.id);
          }
      }
-     grid = $('#grid').grid({
+     grid = new GijgoGrid(document.getElementById('grid'), {
          primaryKey: 'ID',
          dataSource: [
              { 'ID': 1, 'Name': 'Hristo Stoichkov', 'PlaceOfBirth': 'Plovdiv, Bulgaria' },

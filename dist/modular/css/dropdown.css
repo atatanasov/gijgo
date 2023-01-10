@@ -104,20 +104,20 @@
 }
 
 .gj-dropdown-bootstrap-4 [data-gj-role="presenter"] [data-gj-role="display"] {
-    line-height: 24px;
+    line-height: 1.5rem;
 }
 
 .gj-dropdown-bootstrap-4 [data-gj-role="presenter"] [data-gj-role="expander"].gj-dropdown-expander-mi .gj-icon,
 .gj-dropdown-bootstrap-4 [data-gj-role="presenter"] [data-gj-role="expander"].gj-dropdown-expander-mi .material-icons {
-    top: 7px;
-    right: 10px;
+    top: .5rem;
+    right: .6rem;
     position: absolute;
 }
 
 .gj-dropdown-list-bootstrap {
     position: absolute;
-    top: 32px;
-    left: 0px;
-    margin: 0px;
+    top: 1rem;
+    left: 0;
+    margin: 0;
     z-index: 1203;
 }
