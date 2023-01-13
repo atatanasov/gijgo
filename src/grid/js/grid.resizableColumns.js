@@ -55,7 +55,7 @@ gj.grid.plugins.resizableColumns = {
 
     private: {
         init: function (grid, config) {
-            var $columns, $column, i, $wrapper, $resizer, marginRight;
+            var $columns, column, i, $wrapper, $resizer, marginRight;
             $columns = grid.find('thead tr[data-role="caption"] th');
             if ($columns.length) {
                 for (i = 0; i < $columns.length - 1; i++) {
@@ -65,8 +65,8 @@ gj.grid.plugins.resizableColumns = {
                     $resizer = $('<span class="gj-grid-column-resizer" />').css('margin-right', '-' + marginRight + 'px');
                     $resizer.draggable({
                         start: function () {
-                            grid.addClass('gj-unselectable');
-                            grid.addClass('gj-grid-resize-cursor');
+                            grid.element.classList.add('gj-unselectable');
+                            grid.element.classList.add('gj-grid-resize-cursor');
                         },
                         stop: function () {
                             grid.removeClass('gj-unselectable');
@@ -79,10 +79,9 @@ gj.grid.plugins.resizableColumns = {
                     });
                     $column.append($wrapper.append($resizer));
                 }
-                for (i = 0; i < $columns.length; i++) {
-                    $column = $($columns[i]);
-                    if (!$column.attr('width')) {
-                        $column.attr('width', $column.outerWidth());
+                for (i = 0; i < columns.length; i++) {
+                    if (!columns[i].getAttribute('width')) {
+                        columns[i].setAttribute('width', gj.core.width(column, true));
                     }
                 }
             }

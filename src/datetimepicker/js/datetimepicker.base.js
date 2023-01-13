@@ -268,7 +268,6 @@ gj.datetimepicker.config = {
 
 gj.datetimepicker.methods = {
     init: function (jsConfig) {
-        this.type = 'datetimepicker';
         gj.widget.prototype.init.call(this, jsConfig);
         this.element.setAttribute('data-datetimepicker', 'true');
         gj.datetimepicker.methods.initialize(this, this.getConfig());
@@ -498,6 +497,7 @@ GijgoDateTimePicker = function (element, jsConfig) {
     var self = this,
         methods = gj.datetimepicker.methods;
 
+    self.type = 'datetimepicker';
     self.element = element;
     self.mouseMove = false;
 

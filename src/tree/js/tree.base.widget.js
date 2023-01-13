@@ -6,6 +6,7 @@ GijgoTree = function (element, jsConfig) {
     var self = this,
         methods = gj.datepicker.methods;
 
+    self.type = 'tree';
     self.element = element;
 
     /**

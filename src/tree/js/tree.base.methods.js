@@ -2,7 +2,6 @@
 gj.tree.methods = {
 
     init: function (jsConfig) {
-        this.type = 'tree';
         gj.widget.prototype.init.call(this, jsConfig);
 
         gj.tree.methods.initialize.call(this);

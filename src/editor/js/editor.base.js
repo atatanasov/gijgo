@@ -186,7 +186,6 @@ gj.editor.config = {
 
 gj.editor.methods = {
     init: function (jsConfig) {
-        this.type = 'editor';
         gj.widget.prototype.init.call(this, jsConfig);
         this.element.setAttribute('data-editor', 'true');
         gj.editor.methods.initialize(this, this.getConfig());
@@ -198,9 +197,9 @@ gj.editor.methods = {
 
         editor.element.style.display = 'none';
 
-        if (editor.element.parentElement.attributes.role !== 'wrapper') {
+        if (editor.element.parentElement.getAttributes('data-gj-role') !== 'wrapper') {
             wrapper = document.createElement('div');
-            wrapper.setAttribute('role', 'wrapper');
+            wrapper.setAttribute('data-gj-role', 'wrapper');
             editor.element.parentNode.insertBefore(wrapper, editor.element);
             wrapper.appendChild(editor.element);
         }
@@ -211,10 +210,10 @@ gj.editor.methods = {
             wrapper.style.width = data.width;
         }
 
-        body = wrapper.querySelector('div[role="body"]');
+        body = wrapper.querySelector('div[data-gj-role="body"]');
         if (!body) {
             body = document.createElement('div');
-            body.setAttribute('role', 'body');
+            body.setAttribute('data-gj-role', 'body');
             wrapper.appendChild(body);
             if (editor.element.innerText) {
                 body.innerHTML = editor.element.innerText;
@@ -233,10 +232,10 @@ gj.editor.methods = {
             editor.html(body.html());
         });
 
-        toolbar = wrapper.querySelector('div[role="toolbar"]');
+        toolbar = wrapper.querySelector('div[data-gj-role="toolbar"]');
         if (!toolbar) {
             toolbar = document.createElement('div');
-            toolbar.setAttribute('role', 'toolbar');
+            toolbar.setAttribute('data-gj-role', 'toolbar');
             body.parentNode.insertBefore(toolbar, body);
 
             for (group in data.buttons) {
@@ -261,34 +260,34 @@ gj.editor.methods = {
         if (typeof (data.buttons) === 'undefined') {
             data.buttons = [
                 [
-                    '<button type="button" class="' + data.style.button + '" title="' + msg.bold + '" role="bold">' + data.icons.bold + '</button>',
-                    '<button type="button" class="' + data.style.button + '" title="' + msg.italic + '" role="italic">' + data.icons.italic + '</button>',
-                    '<button type="button" class="' + data.style.button + '" title="' + msg.strikethrough + '" role="strikethrough">' + data.icons.strikethrough + '</button>',
-                    '<button type="button" class="' + data.style.button + '" title="' + msg.underline + '" role="underline">' + data.icons.underline + '</button>'
+                    '<button type="button" class="' + data.style.button + '" title="' + msg.bold + '" data-gj-role="bold">' + data.icons.bold + '</button>',
+                    '<button type="button" class="' + data.style.button + '" title="' + msg.italic + '" data-gj-role="italic">' + data.icons.italic + '</button>',
+                    '<button type="button" class="' + data.style.button + '" title="' + msg.strikethrough + '" data-gj-role="strikethrough">' + data.icons.strikethrough + '</button>',
+                    '<button type="button" class="' + data.style.button + '" title="' + msg.underline + '" data-gj-role="underline">' + data.icons.underline + '</button>'
                 ],
                 [
-                    '<button type="button" class="' + data.style.button + '" title="' + msg.listBulleted + '" role="insertunorderedlist">' + data.icons.listBulleted + '</button>',
-                    '<button type="button" class="' + data.style.button + '" title="' + msg.listNumbered + '" role="insertorderedlist">' + data.icons.listNumbered + '</button>',
-                    '<button type="button" class="' + data.style.button + '" title="' + msg.indentDecrease + '" role="outdent">' + data.icons.indentDecrease + '</button>',
-                    '<button type="button" class="' + data.style.button + '" title="' + msg.indentIncrease + '" role="indent">' + data.icons.indentIncrease + '</button>'
+                    '<button type="button" class="' + data.style.button + '" title="' + msg.listBulleted + '" data-gj-role="insertunorderedlist">' + data.icons.listBulleted + '</button>',
+                    '<button type="button" class="' + data.style.button + '" title="' + msg.listNumbered + '" data-gj-role="insertorderedlist">' + data.icons.listNumbered + '</button>',
+                    '<button type="button" class="' + data.style.button + '" title="' + msg.indentDecrease + '" data-gj-role="outdent">' + data.icons.indentDecrease + '</button>',
+                    '<button type="button" class="' + data.style.button + '" title="' + msg.indentIncrease + '" data-gj-role="indent">' + data.icons.indentIncrease + '</button>'
                 ],
                 [
-                    '<button type="button" class="' + data.style.button + '" title="' + msg.alignLeft + '" role="justifyleft">' + data.icons.alignLeft + '</button>',
-                    '<button type="button" class="' + data.style.button + '" title="' + msg.alignCenter + '" role="justifycenter">' + data.icons.alignCenter + '</button>',
-                    '<button type="button" class="' + data.style.button + '" title="' + msg.alignRight + '" role="justifyright">' + data.icons.alignRight + '</button>',
-                    '<button type="button" class="' + data.style.button + '" title="' + msg.alignJustify + '" role="justifyfull">' + data.icons.alignJustify + '</button>'
+                    '<button type="button" class="' + data.style.button + '" title="' + msg.alignLeft + '" data-gj-role="justifyleft">' + data.icons.alignLeft + '</button>',
+                    '<button type="button" class="' + data.style.button + '" title="' + msg.alignCenter + '" data-gj-role="justifycenter">' + data.icons.alignCenter + '</button>',
+                    '<button type="button" class="' + data.style.button + '" title="' + msg.alignRight + '" data-gj-role="justifyright">' + data.icons.alignRight + '</button>',
+                    '<button type="button" class="' + data.style.button + '" title="' + msg.alignJustify + '" data-gj-role="justifyfull">' + data.icons.alignJustify + '</button>'
                 ],
                 [
-                    '<button type="button" class="' + data.style.button + '" title="' + msg.undo + '" role="undo">' + data.icons.undo + '</button>',
-                    '<button type="button" class="' + data.style.button + '" title="' + msg.redo + '" role="redo">' + data.icons.redo + '</button>'
+                    '<button type="button" class="' + data.style.button + '" title="' + msg.undo + '" data-gj-role="undo">' + data.icons.undo + '</button>',
+                    '<button type="button" class="' + data.style.button + '" title="' + msg.redo + '" data-gj-role="redo">' + data.icons.redo + '</button>'
                 ]
             ];
         }
     },
 
     updateToolbar: function (editor, toolbar, data) {
-        buttons = toolbar.querySelectorAll('[role]').forEach(function(btn) {
-            var cmd = btn.getAttribute('role');
+        buttons = toolbar.querySelectorAll('[data-gj-role]').forEach(function(btn) {
+            var cmd = btn.getAttribute('data-gj-role');
 
             if (cmd && document.queryCommandEnabled(cmd) && document.queryCommandValue(cmd) === "true") {
                 btn.classList.add(data.style.buttonActive);
@@ -300,12 +299,12 @@ gj.editor.methods = {
 
     executeCmd: function (editor, body, toolbar, btn, data) {
         body.focus();
-        document.execCommand(btn.getAttribute('role'), false);
+        document.execCommand(btn.getAttribute('data-gj-role'), false);
         gj.editor.methods.updateToolbar(editor, toolbar, data);
     },
 
     content: function (editor, html) {
-        var body = editor.element.parentElement.querySelector('div[role="body"]');
+        var body = editor.element.parentElement.querySelector('div[data-gj-role="body"]');
         if (typeof html === "undefined") {
             return body.innerHTML;
         } else {
@@ -317,8 +316,8 @@ gj.editor.methods = {
         var wrapper;
         if (editor.element.getAttribute('data-editor') === 'true') {
             wrapper = editor.element.parentElement;
-            wrapper.querySelector('div[role="body"]').remove();
-            wrapper.querySelector('div[role="toolbar"]').remove();
+            wrapper.querySelector('div[data-gj-role="body"]').remove();
+            wrapper.querySelector('div[data-gj-role="toolbar"]').remove();
             editor.element.outerHTML = editor.element.innerHTML;
             editor.removeConfig();
             editor.element.removeAttribute('data-gj-guid');
@@ -376,6 +375,7 @@ GijgoEditor = function (element, jsConfig) {
     var self = this,
         methods = gj.editor.methods;
 
+    self.type = 'editor';
     self.element = element;
 
     /** Get or set html content in the body.

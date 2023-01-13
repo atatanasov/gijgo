@@ -2,7 +2,6 @@
 
     init: function (jsConfig) {
         var config;
-        this.type = 'dialog';
         gj.widget.prototype.init.call(this, jsConfig);
 
         config = this.getConfig();

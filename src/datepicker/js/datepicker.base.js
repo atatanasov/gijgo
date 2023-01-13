@@ -826,7 +826,6 @@ gj.datepicker.config = {
 
 gj.datepicker.methods = {
     init: function (jsConfig) {
-        this.type = 'datepicker';
         gj.widget.prototype.init.call(this, jsConfig);
         this.element.setAttribute('data-gj-datepicker', 'true');
         gj.datepicker.methods.initialize(this, this.getConfig());
@@ -1858,6 +1857,7 @@ GijgoDatePicker = function (element, jsConfig) {
     var self = this,
         methods = gj.datepicker.methods;
 
+    self.type = 'datepicker';
     self.element = element;
 
     /** Gets or sets the value of the datepicker.

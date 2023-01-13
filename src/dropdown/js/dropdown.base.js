@@ -339,7 +339,6 @@ gj.dropdown.config = {
 
 gj.dropdown.methods = {
     init: function (jsConfig) {
-        this.type = 'dropdown';
         gj.widget.prototype.init.call(this, jsConfig);
         this.element.setAttribute('data-gj-dropdown', 'true');
         gj.dropdown.methods.initialize(this);
@@ -697,6 +696,7 @@ GijgoDropDown = function (element, jsConfig) {
     let self = this,
         methods = gj.dropdown.methods;
 
+    self.type = 'dropdown';
     self.element = element;
 
     /** Gets or sets the value of the DropDown.

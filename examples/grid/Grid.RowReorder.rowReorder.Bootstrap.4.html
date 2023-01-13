@@ -16,7 +16,7 @@
  <p>Drag and Drop rows in order to reorder them.</p>
  <table id="grid"></table>
  <script>
-     $('#grid').grid({
+     new GijgoGrid(document.getElementById('grid'), {
          dataSource: '/Players/Get',
          rowReorder: true,
          uiLibrary: 'bootstrap4',

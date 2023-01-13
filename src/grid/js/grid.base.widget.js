@@ -6,6 +6,7 @@ GijgoGrid = function (element, jsConfig) {
     var self = this,
         methods = gj.grid.methods;
 
+    self.type = 'grid';
     self.element = element;
 
     /**

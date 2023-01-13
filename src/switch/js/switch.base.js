@@ -96,9 +96,8 @@ gj.switch.config = {
 
 gj.switch.methods = {
     init: function (jsConfig) {
-        this.type = 'switch';
         gj.widget.prototype.init.call(this, jsConfig);
-        this.attr('data-switch', 'true');
+        this.setAttribute('data-gj-switch', 'true');
         gj.switch.methods.initialize(this);
         return this;
     },
@@ -111,9 +110,9 @@ gj.switch.methods = {
         if (data) {
             obj.off();
             obj.removeConfig();
-            obj.removeAttribute('data-type')
+            obj.removeAttribute('data-gj-type')
             obj.removeAttribute('data-gj-guid')
-            obj.removeAttribute('data-switch');
+            obj.removeAttribute('data-gj-switch');
             obj.removeClass();
         }
         return obj;
@@ -145,6 +144,7 @@ GijgoSwitch = function (element, jsConfig) {
     var self = this,
         methods = gj.datepicker.methods;
 
+    self.type = 'switch';
     self.element = element;
 
     /** Gets or sets the value of the switch.
@@ -184,7 +184,7 @@ GijgoSwitch = function (element, jsConfig) {
         return methods.destroy(this);
     };
 
-    if ('true' !== element.attr('data-switch')) {
+    if ('true' !== element.attr('data-gj-switch')) {
         methods.init.call(self, jsConfig);
     }
 

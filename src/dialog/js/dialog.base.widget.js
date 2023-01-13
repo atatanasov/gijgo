@@ -6,6 +6,7 @@ GijgoDialog = function (element, jsConfig) {
     var self = this,
         methods = gj.dialog.methods;
 
+    self.type = 'dialog';
     self.element = element;
 
     /**

@@ -5,24 +5,35 @@
 gj.grid.plugins.inlineEditing = {
     renderers: {
         editManager: function (value, record, cell, displayEl, id, grid) {
-            // let data = grid.getConfig(),
-            //     edit = data.inlineEditing.editButton.attr('key', id),
-            //     delete = data.inlineEditing.deleteButton.attr('key', id),
-            //     update = data.inlineEditing.updateButton.attr('key', id).hide(),
-            //     cancel = data.inlineEditing.cancelButton.attr('key', id).hide();
-            // edit.on('click', function (e) {
-            //     grid.edit((this).attr('key'));
-            // });
-            // delete.on('click', function (e) {
-            //     grid.removeRow((this).attr('key'));
-            // });
-            // update.on('click', function (e) {
-            //     grid.update((this).attr('key'));
-            // });
-            // cancel.on('click', function (e) {
-            //     grid.cancel((this).attr('key'));
-            // });
-            // displayEl.empty().append(edit).append(delete).append(update).append(cancel);
+            let data = grid.getConfig(),
+                edit = data.inlineEditing.editButton.cloneNode(true),
+                del = data.inlineEditing.deleteButton.cloneNode(true),
+                update = data.inlineEditing.updateButton.cloneNode(true),
+                cancel = data.inlineEditing.cancelButton.cloneNode(true);
+
+            edit.setAttribute('data-gj-key', id);
+            del.setAttribute('data-gj-key', id);
+            update.setAttribute('data-gj-key', id);
+            cancel.setAttribute('data-gj-key', id);
+            update.style.display = 'none';
+            cancel.style.display = 'none';
+            edit.addEventListener('click', function (e) {
+                grid.edit(this.getAttribute('data-gj-key'));
+            });
+            del.addEventListener('click', function (e) {
+                grid.removeRow(this.getAttribute('data-gj-key'));
+            });
+            update.addEventListener('click', function (e) {
+                grid.update(this.getAttribute('data-gj-key'));
+            });
+            cancel.addEventListener('click', function (e) {
+                grid.cancel(this.getAttribute('data-gj-key'));
+            });
+            displayEl.innerHTML = '';
+            displayEl.appendChild(edit);
+            displayEl.appendChild(del);
+            displayEl.appendChild(update);
+            displayEl.appendChild(cancel);
         }
     }
 };
@@ -56,6 +67,7 @@ gj.grid.plugins.inlineEditing.config = {
              *     function select2editor(editorContainer, value, record) {
              *         let select = document.createElement('select');
              *         select.innerHTML = '<option value="Bulgaria">Bulgaria</option><option value="Brazil">Brazil</option><option value="England">England</option><option value="Germany">Germany</option><option value="Colombia">Colombia</option><option value="Poland">Poland</option>';
+             *         select.value = value;
              *         editorContainer.appendChild(select);
              *         $(select).select2();
              *     }
@@ -89,6 +101,20 @@ gj.grid.plugins.inlineEditing.config = {
              * <script>
              *     new GijgoGrid(document.getElementById('grid'), {
              *         uiLibrary: 'bootstrap4',
+             *         dataSource: '/Players/Get',
+             *         columns: [
+             *             { field: 'Name', editor: true },
+             *             { field: 'CountryName', type: 'dropdown', editor: { dataSource: '/Locations/GetCountries', valueField: 'id' }, editField: 'CountryID'  },
+             *             { field: 'DateOfBirth', type: 'date', editor: true },
+             *             { field: 'IsActive', title: 'Active?', type:'checkbox', editor: true, mode: 'editOnly', width: 80, align: 'center' }
+             *         ]
+             *     });
+             * </script>
+             * @example Bootstrap.5 <!-- bootstrap5, grid, datepicker, dropdown, checkbox -->
+             * <table id="grid"></table>
+             * <script>
+             *     new GijgoGrid(document.getElementById('grid'), {
+             *         uiLibrary: 'bootstrap5',
              *         dataSource: '/Players/Get',
              *         columns: [
              *             { field: 'Name', editor: true },
@@ -339,6 +365,30 @@ gj.grid.plugins.inlineEditing.config = {
              *         pager: { limit: 3, sizes: [3, 5, 10, 20] }
              *     });
              * </script>
+             * @example Bootstrap.5 <!-- bootstrap5, grid, dropdown -->
+             * <table id="grid"></table>
+             * <script>
+             *     let grid, data = [
+             *         { 'ID': 1, 'Name': 'Hristo Stoichkov', 'PlaceOfBirth': 'Plovdiv, Bulgaria' },
+             *         { 'ID': 2, 'Name': 'Ronaldo Luís Nazário de Lima', 'PlaceOfBirth': 'Rio de Janeiro, Brazil' },
+             *         { 'ID': 3, 'Name': 'David Platt', 'PlaceOfBirth': 'Chadderton, Lancashire, England' },
+             *         { 'ID': 4, 'Name': 'Manuel Neuer', 'PlaceOfBirth': 'Gelsenkirchen, West Germany' },
+             *         { 'ID': 5, 'Name': 'James Rodríguez', 'PlaceOfBirth': 'Cúcuta, Colombia' },
+             *         { 'ID': 6, 'Name': 'Dimitar Berbatov', 'PlaceOfBirth': 'Blagoevgrad, Bulgaria' }
+             *     ];
+             *     grid = new GijgoGrid(document.getElementById('grid'), {
+             *         dataSource: data,
+             *         primaryKey: 'ID',
+             *         inlineEditing: { mode: 'command' },
+             *         uiLibrary: 'bootstrap5',
+             *         columns: [
+             *             { field: 'ID', width: 42 },
+             *             { field: 'Name', editor: true },
+             *             { field: 'PlaceOfBirth', editor: true }
+             *         ],
+             *         pager: { limit: 3, sizes: [3, 5, 10, 20] }
+             *     });
+             * </script>
             */
             managementColumn: true,
 
@@ -361,16 +411,33 @@ gj.grid.plugins.inlineEditing.config = {
 
 gj.grid.plugins.inlineEditing.private = {
     localization: function (data) {
+        let edit = document.createElement('button'),
+            del = document.createElement('button'),
+            update = document.createElement('button'),
+            cancel = document.createElement('button');
+        
+        edit.setAttribute('data-gj-role', 'edit');
+        del.setAttribute('data-gj-role', 'delete');
+        update.setAttribute('data-gj-role', 'update');
+        cancel.setAttribute('data-gj-role', 'cancel');
         if (data.uiLibrary === 'bootstrap') {
             data.inlineEditing.editButton = '<button role="edit" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> ' + gj.grid.messages[data.locale].Edit + '</button>';
             data.inlineEditing.deleteButton = '<button role="delete" class="btn btn-default btn-sm gj-margin-left-10"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> ' + gj.grid.messages[data.locale].Delete + '</button>';
             data.inlineEditing.updateButton = '<button role="update" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> ' + gj.grid.messages[data.locale].Update + '</button>';
             data.inlineEditing.cancelButton = '<button role="cancel" class="btn btn-default btn-sm gj-margin-left-10"><span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span> ' + gj.grid.messages[data.locale].Cancel + '</button>';
         } else {
-            data.inlineEditing.editButton = '<button role="edit" class="gj-button-md"><i class="gj-icon pencil" /> ' + gj.grid.messages[data.locale].Edit.toUpperCase() + '</button>';
-            data.inlineEditing.deleteButton = '<button role="delete" class="gj-button-md"><i class="gj-icon delete" /> ' + gj.grid.messages[data.locale].Delete.toUpperCase() + '</button>';
-            data.inlineEditing.updateButton = '<button role="update" class="gj-button-md"><i class="gj-icon check-circle" /> ' + gj.grid.messages[data.locale].Update.toUpperCase() + '</button>';
-            data.inlineEditing.cancelButton = '<button role="cancel" class="gj-button-md"><i class="gj-icon cancel" /> ' +gj.grid.messages[data.locale].Cancel.toUpperCase() + '</button>';
+            edit.classList.add('gj-button-md');
+            edit.innerHTML = '<i class="gj-icon pencil" /> ' + gj.grid.messages[data.locale].Edit.toUpperCase();
+            data.inlineEditing.editButton = edit;
+            del.classList.add('gj-button-md');
+            del.innerHTML = '<i class="gj-icon pencil" /> ' + gj.grid.messages[data.locale].Delete.toUpperCase();
+            data.inlineEditing.deleteButton = del;
+            update.classList.add('gj-button-md');
+            update.innerHTML = '<i class="gj-icon pencil" /> ' + gj.grid.messages[data.locale].Update.toUpperCase();
+            data.inlineEditing.updateButton = update;
+            cancel.classList.add('gj-button-md');
+            cancel.innerHTML = '<i class="gj-icon pencil" /> ' + gj.grid.messages[data.locale].Cancel.toUpperCase();
+            data.inlineEditing.cancelButton = cancel;
         }
     },
 
@@ -409,7 +476,7 @@ gj.grid.plugins.inlineEditing.private = {
                         config = typeof column.editor === "object" ? column.editor : {};
                         config.uiLibrary = data.uiLibrary;
                         config.iconsLibrary = data.iconsLibrary;
-                        config.fontSize = grid.element.style.fontSize;
+                        config.fontSize = window.getComputedStyle(grid.element, null).getPropertyValue('font-size');
                         config.showOnFocus = false;
                         if ('checkbox' === column.type && gj.checkbox) {
                             editorField = document.createElement('input');
@@ -439,25 +506,30 @@ gj.grid.plugins.inlineEditing.private = {
                             if (editorField.value) {
                                 editorField.value(value);
                             }
+                            editorField = editorField.element;
                         } else if ('dropdown' === column.type && gj.dropdown) {
                             editorField = document.createElement('select');
                             editorField.setAttribute('width', '100%');
                             editorContainer.appendChild(editorField);
                             config.dataBound = function (e) {
-                                let dropdown = (this).dropdown();
+                                let dropdown = new GijgoDropDown(this);
                                 if (column.editField) {
                                     dropdown.value(record[column.editField]);
                                 } else {
                                     dropdown.value(record[column.field]);
                                 }
                             };
-                            editorField = editorField.dropdown(config);
+                            editorField = new GijgoDropDown(editorField, config);
                         } else {
-                            editorField = ('<input type="text" value="' + value + '" class="gj-width-full"/>');
+                            editorField = document.createElement('input');
+                            editorField.setAttribute('type', 'text');
+                            editorField.classList.add('gj-width-full');
+                            editorField.value = value;
                             if (data.uiLibrary === 'materialdesign') {
-                                editorField.addClass('gj-textbox-md').css('font-size', grid.css('font-size'));
+                                editorField.classList.add('gj-textbox-md');
+                                editorField.style.fontSize = window.getComputedStyle(grid.element, null).getPropertyValue('font-size');
                             }
-                            editorContainer.append(editorField);
+                            editorContainer.appendChild(editorField);
                         }
                     }
                     if (data.inlineEditing.mode !== 'command' && column.mode !== 'editOnly') {
@@ -476,10 +548,10 @@ gj.grid.plugins.inlineEditing.private = {
                 }
                 cell.setAttribute('data-gj-mode', 'edit');
             } else if (column.role === 'managementColumn') {
-                cell.querySelector('[role="edit"]').style.display = 'none';
-                cell.querySelector('[role="delete"]').style.display = 'none';
-                cell.querySelector('[role="update"]').style.display = 'block';
-                cell.querySelector('[role="cancel"]').style.display = 'block';
+                cell.querySelector('[data-gj-role="edit"]').style.display = 'none';
+                cell.querySelector('[data-gj-role="delete"]').style.display = 'none';
+                cell.querySelector('[data-gj-role="update"]').style.display = 'block';
+                cell.querySelector('[data-gj-role="cancel"]').style.display = 'block';
             }
         }
     },
@@ -520,10 +592,10 @@ gj.grid.plugins.inlineEditing.private = {
                 cell.setAttribute('data-gj-mode', 'display');
             }
             if (column.role === 'managementColumn') {
-                cell.querySelector('[role="update"]').style.display = 'none';
-                cell.querySelector('[role="cancel"]').style.display = 'none';
-                cell.querySelector('[role="edit"]').style.display = 'block';
-                cell.querySelector('[role="delete"]').style.display = 'block';
+                cell.querySelector('[data-gj-role="update"]').style.display = 'none';
+                cell.querySelector('[data-gj-role="cancel"]').style.display = 'none';
+                cell.querySelector('[data-gj-role="edit"]').style.display = 'block';
+                cell.querySelector('[data-gj-role="delete"]').style.display = 'block';
             }
         }
     },
@@ -544,9 +616,6 @@ gj.grid.plugins.inlineEditing.private = {
 
     updateChanges: function (grid, column, sourceRecord, newValue) {
         let targetRecords, filterResult, newRecord, data = grid.getConfig();
-        if (!data.guid) {
-            data.guid = gj.grid.plugins.inlineEditing.private.generateGUID();
-        }
         if (data.primaryKey) {
             targetRecords = JSON.parse(sessionStorage.getItem('gj.grid.' + data.guid));
             if (targetRecords) {
@@ -568,15 +637,6 @@ gj.grid.plugins.inlineEditing.private = {
             }
             sessionStorage.setItem('gj.grid.' + data.guid, JSON.stringify(targetRecords));
         }
-    },
-
-    generateGUID: function () {
-        function s4() {
-            return Math.floor((1 + Math.random()) * 0x10000)
-              .toString(16)
-              .substring(1);
-        }
-        return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
     }
 };
 
@@ -644,11 +704,11 @@ gj.grid.plugins.inlineEditing.public = {
      */
     edit: function (id) {
         let i, record = this.getById(id),
-            cells = gj.grid.methods.getRowById(this, id).children('td'),
-            columns = this.data('columns');
+            cells = gj.grid.methods.getRowById(this, id).children,
+            columns = this.getConfig().columns;
 
         for (i = 0; i < cells.length; i++) {
-            gj.grid.plugins.inlineEditing.private.editMode(this, (cells[i]), columns[i], record);
+            gj.grid.plugins.inlineEditing.private.editMode(this, cells[i], columns[i], record);
         }
             
         return this;
@@ -695,11 +755,11 @@ gj.grid.plugins.inlineEditing.public = {
      */
     update: function (id) {
         let i, record = this.getById(id),
-            cells = gj.grid.methods.getRowById(this, id).children('td'),
-            columns = this.data('columns');
+            cells = gj.grid.methods.getRowById(this, id).children,
+            columns = this.getConfig().columns;
 
         for (i = 0; i < cells.length; i++) {
-            gj.grid.plugins.inlineEditing.private.displayMode(this, (cells[i]), columns[i], false);
+            gj.grid.plugins.inlineEditing.private.displayMode(this, cells[i], columns[i], false);
         }
 
         gj.grid.plugins.inlineEditing.events.rowDataChanged(this.element, id, record);
@@ -747,11 +807,11 @@ gj.grid.plugins.inlineEditing.public = {
      */
     cancel: function (id) {
         let i, record = this.getById(id),
-            cells = gj.grid.methods.getRowById(this, id).children('td'),
-            columns = this.data('columns');
+            cells = gj.grid.methods.getRowById(this, id).children,
+            columns = this.getConfig().columns;
 
         for (i = 0; i < cells.length; i++) {
-            gj.grid.plugins.inlineEditing.private.displayMode(this, (cells[i]), columns[i], true);
+            gj.grid.plugins.inlineEditing.private.displayMode(this, cells[i], columns[i], true);
         }
 
         return this;
@@ -816,10 +876,10 @@ gj.grid.plugins.inlineEditing.configure = function (grid, fullConfig, clientConf
     grid.extend(grid, gj.grid.plugins.inlineEditing.public);
     if (clientConfig.inlineEditing) {
         grid.on('dataBound', function () {
-            grid.element.querySelector('span.gj-dirty').remove();
+            grid.element.querySelectorAll('span.gj-dirty').forEach(function(el) { el.remove(); }); 
         });
-        grid.on('rowDataBound', function (e, row, id, record) {
-            grid.cancel(id);
+        grid.on('rowDataBound', function (e) {
+            grid.cancel(e.detail.id);
         });
     }
     if (data.inlineEditing.mode === 'command') {
