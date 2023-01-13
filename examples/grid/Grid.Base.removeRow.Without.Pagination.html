@@ -13,9 +13,9 @@
  <table id="grid"></table>
  <script>
      var grid;
-     function Delete(e) {
+     function Delete(e, id, field, record) {
          if (confirm('Are you sure?')) {
-             grid.removeRow(e.data.id);
+             grid.removeRow(id);
          }
      }
      grid = new GijgoGrid(document.getElementById('grid'), {
@@ -29,7 +29,7 @@
              { field: 'ID', width: 56 },
              { field: 'Name' },
              { field: 'PlaceOfBirth' },
-             { width: 100, align: 'center', tmpl: '<u class="gj-cursor-pointer">Delete</u>', events: { 'click': Delete } }
+             { title: '', width: 100, align: 'center', tmpl: '<u class="gj-cursor-pointer">Delete</u>', events: { 'click': Delete } }
          ]
      });
  </script>

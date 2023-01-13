@@ -12,15 +12,16 @@
 <body style="padding: 8px;">
  <table id="grid"></table>
  <script>
-     var grid = $('#grid').grid({
+     let grid = new GijgoGrid(document.getElementById('grid'), {
          primaryKey: 'ID',
          dataSource: '/Players/Get',
          detailTemplate: '<div></div>',
          columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'DateOfBirth', type: 'date' } ]
      });
-     grid.on('detailExpand', function (e, $detailWrapper, id) {
-         var record = grid.getById(id);
-         $detailWrapper.empty().append('<b>Place Of Birth:</b> ' + record.PlaceOfBirth);
+     grid.on('detailExpand', function (e) {
+         let record = grid.getById(e.detail.id);
+         e.detail.detailWrapper.innerHTML = '';
+         e.detail.detailWrapper.innerHTML = '<b>Place Of Birth:</b> ' + record.PlaceOfBirth;
      });
  </script>
 </body>

@@ -55,8 +55,8 @@ gj.grid.methods = {
         for (i = 0; i < list.length; i++) {
             position = list[i].indexOf(':');
             if (position > 0) {
-                key = $.trim(list[i].substr(0, position));
-                func = $.trim(list[i].substr(position + 1, list[i].length));
+                key = list[i].substr(0, position).trim();
+                func = list[i].substr(position + 1, list[i].length).trim();
                 result[key] = eval('window.' + func); //window[func]; //TODO: eveluate functions from string
             }
         }
@@ -434,7 +434,7 @@ gj.grid.methods = {
                 e.stopPropagation();
             }
             e.detail = detail;
-            func.call(this, e);
+            func.call(this, e, detail.id, detail.field, detail.record);
         };
     },
 
@@ -539,7 +539,7 @@ gj.grid.methods = {
                 checkbox.checked = true;
             }
             if ('multiple' === data.selectionType && grid.getSelections().length === grid.count(false)) {
-                checkbox = grid.querySelector('thead input[data-gj-role="selectAll"]');
+                checkbox = grid.element.querySelector('thead input[data-gj-role="selectAll"]');
                 if (checkbox && !checkbox.checked) {
                     checkbox.checked = true;
                 }
@@ -622,10 +622,10 @@ gj.grid.methods = {
     },
 
     getSelected: function (grid) {
-        let result = null, selections, record, position;
-        selections = grid.querySelector('tbody>tr[data-gj-selected="true"]');
-        if (selections.length > 0) {
-            position = selections[0].getAttribute('data-gj-position');
+        let result = null, selection, record, position;
+        selection = grid.element.querySelector('tbody>tr[data-gj-selected="true"]');
+        if (selection) {
+            position = selection.getAttribute('data-gj-position');
             record = grid.get(position);
             result = gj.grid.methods.getId(record, grid.getConfig().primaryKey, position);
         }
@@ -633,7 +633,7 @@ gj.grid.methods = {
     },
 
     getSelectedRows: function (grid) {
-        return grid.element.querySelector('tbody>tr[data-gj-selected="true"]');
+        return grid.element.querySelectorAll('tbody>tr[data-gj-selected="true"]');
     },
 
     getSelections: function (grid) {
@@ -641,8 +641,8 @@ gj.grid.methods = {
             data = grid.getConfig(),
             selections = gj.grid.methods.getSelectedRows(grid);
         if (0 < selections.length) {
-            for (let i = 0; i < rows.length; i++) {
-                position = rows[i].getAttribute('data-gj-position');
+            for (let i = 0; i < selections.length; i++) {
+                position = selections[i].getAttribute('data-gj-position');
                 record = grid.get(position);
                 result.push(gj.grid.methods.getId(record, data.primaryKey, position));
             }
@@ -806,7 +806,7 @@ gj.grid.methods = {
         for (field in data.params) {
             if (data.params[field] && !data.paramNames[field]) {
                 column = gj.grid.methods.getColumnInfo(grid, field);
-                records = $.grep(records, function (record) {
+                records = records.filter(function (record) {
                     let value = record[field] || '',
                         searchStr = data.params[field] || '';
                     return column && typeof (column.filter) === 'function' ? column.filter(value, searchStr) : (value.toUpperCase().indexOf(searchStr.toUpperCase()) > -1);
@@ -834,7 +834,7 @@ gj.grid.methods = {
             gj.grid.methods.stopLoading(grid);
             grid.xhr && grid.xhr.abort();
             //TODO: grid.off();
-            if (keepWrapperTag === false && grid.parent('div[data-gj-role="wrapper"]').length > 0) {
+            if (!keepWrapperTag && grid.element.parentNode.getAttribute('data-gj-role') === 'wrapper') {
                 grid.unwrap();
             }
             grid.removeConfig();
@@ -908,32 +908,35 @@ gj.grid.methods = {
     },
 
     addRow: function (grid, record) {
-        let data = grid.getConfig();
+        let data = grid.getConfig(),
+            records = grid.getRecords();
         data.totalRecords = grid.getTotalRecords() + 1;
-        gj.grid.events.dataBinding(grid, [record]);
-        data.records.push(record);
+        gj.grid.events.dataBinding(grid.element, [record]);
+        records.push(record);
+        grid.setRecords(records);
         if (Array.isArray(data.dataSource)) {
             data.dataSource.push(record);
         }
-        if (data.totalRecords === 1) {
-            grid.children('tbody').empty();
+        if (grid.getTotalRecords() === 0) {
+            grid.element.querySelector('tbody').innerHTML = '';
         }
         if (gj.grid.methods.isLastRecordVisible(grid)) {
             gj.grid.methods.renderRow(grid, null, record, grid.count() - 1);
         }
-        gj.grid.events.dataBound(grid, [record], data.totalRecords);
+        gj.grid.events.dataBound(grid.element, [record], data.totalRecords);
         return grid;
     },
 
     updateRow: function (grid, id, record) {
         let row = gj.grid.methods.getRowById(grid, id),
-            data = grid.getConfig(), position;
-        data.records[row.data('position') - 1] = record;
+            data = grid.getConfig(), records = grid.getRecords(), position;
+        records[row.getAttribute('data-gj-position') - 1] = record;
+        grid.setRecords(records);
         if (Array.isArray(data.dataSource)) {
             position = gj.grid.methods.getRecVPosById(grid, id);
             data.dataSource[position] = record;
         }
-        gj.grid.methods.renderRow(grid, row, record, row.index());
+        gj.grid.methods.renderRow(grid, row, record, Array.from(row.parentNode.children).indexOf(row));
         return grid;
     },
 

@@ -20,7 +20,7 @@
          { 'ID': 5, 'Name': 'James Rodríguez', 'PlaceOfBirth': 'Cúcuta, Colombia' },
          { 'ID': 6, 'Name': 'Dimitar Berbatov', 'PlaceOfBirth': 'Blagoevgrad, Bulgaria' }
      ];
-     $('#grid').grid({
+     new GijgoGrid(document.getElementById('grid'), {
          dataSource: data,
          headerFilter: true,
          columns: [

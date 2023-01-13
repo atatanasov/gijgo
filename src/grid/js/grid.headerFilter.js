@@ -13,7 +13,7 @@ gj.grid.plugins.headerFilter = {
                  * @example Material.Design <!-- grid -->
                  * <table id="grid"></table>
                  * <script>
-                 *     $('#grid').grid({
+                 *     new GijgoGrid(document.getElementById('grid'), {
                  *         dataSource: '/Players/Get',
                  *         headerFilter: true,
                  *         columns: [
@@ -26,7 +26,7 @@ gj.grid.plugins.headerFilter = {
                  * @example Bootstrap.3 <!-- bootstrap, grid -->
                  * <table id="grid"></table>
                  * <script>
-                 *     $('#grid').grid({
+                 *     new GijgoGrid(document.getElementById('grid'), {
                  *         dataSource: '/Players/Get',
                  *         headerFilter: true,
                  *         uiLibrary: 'bootstrap',
@@ -47,7 +47,7 @@ gj.grid.plugins.headerFilter = {
              * @example Remote.DataSource <!-- grid -->
              * <table id="grid"></table>
              * <script>
-             *     $('#grid').grid({
+             *     new GijgoGrid(document.getElementById('grid'), {
              *         dataSource: '/Players/Get',
              *         headerFilter: true,
              *         columns: [ { field: 'ID', width: 56, filterable: false }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
@@ -64,7 +64,7 @@ gj.grid.plugins.headerFilter = {
              *         { 'ID': 5, 'Name': 'James Rodríguez', 'PlaceOfBirth': 'Cúcuta, Colombia' },
              *         { 'ID': 6, 'Name': 'Dimitar Berbatov', 'PlaceOfBirth': 'Blagoevgrad, Bulgaria' }
              *     ];
-             *     $('#grid').grid({
+             *     new GijgoGrid(document.getElementById('grid'), {
              *         dataSource: data,
              *         headerFilter: true,
              *         columns: [ 
@@ -84,7 +84,7 @@ gj.grid.plugins.headerFilter = {
                  * @example OnEnterKeyPress <!-- grid -->
                  * <table id="grid"></table>
                  * <script>
-                 *     $('#grid').grid({
+                 *     new GijgoGrid(document.getElementById('grid'), {
                  *         dataSource: '/Players/Get',
                  *         headerFilter: {
                  *             type: 'onenterkeypress'
@@ -95,7 +95,7 @@ gj.grid.plugins.headerFilter = {
                  * @example OnChange <!-- grid -->
                  * <table id="grid"></table>
                  * <script>
-                 *     $('#grid').grid({
+                 *     new GijgoGrid(document.getElementById('grid'), {
                  *         dataSource: '/Players/Get',
                  *         headerFilter: {
                  *             type: 'onchange'
@@ -111,41 +111,50 @@ gj.grid.plugins.headerFilter = {
 
     private: {
         init: function (grid) {
-            var i, $th, $ctrl, data = grid.getConfig(),
-                $filterTr = $('<tr data-role="filter"/>');
+            var i, th, ctrl, data = grid.getConfig(),
+                filterTr = document.createElement('tr');
 
+            filterTr.setAttribute('data-gj-role', 'filter');
             for (i = 0; i < data.columns.length; i++) {
-                $th = $('<th/>');
+                th = document.createElement('th');
                 if (data.columns[i].filterable) {
-                    $ctrl = $('<input data-field="' + data.columns[i].field + '" class="gj-width-full" />');
+                    ctrl = document.createElement('input');
+                    ctrl.setAttribute('data-gj-field', data.columns[i].field);
+                    ctrl.classList.add('gj-width-full');
                     if ('onchange' === data.headerFilter.type) {
-                        $ctrl.on('input propertychange', function (e) {
-                            gj.grid.plugins.headerFilter.private.reload(grid, $(this));
+                        ctrl.addEventListener('keyup', function (e) {
+                            gj.grid.plugins.headerFilter.private.reload(grid, this);
+                        });
+                        ctrl.addEventListener('change', function (e) {
+                            gj.grid.plugins.headerFilter.private.reload(grid, this);
+                        });
+                        ctrl.addEventListener('paste', function (e) {
+                            gj.grid.plugins.headerFilter.private.reload(grid, this);
                         });
                     } else {
-                        $ctrl.on('keypress', function (e) {
-                            if (e.which == 13) {
-                                gj.grid.plugins.headerFilter.private.reload(grid, $(this));
+                        ctrl.addEventListener('keypress', function (e) {
+                            if (e.key === 'Enter') {
+                                gj.grid.plugins.headerFilter.private.reload(grid, this);
                             }
                         });
-                        $ctrl.on('blur', function (e) {
-                            gj.grid.plugins.headerFilter.private.reload(grid, $(this));
+                        ctrl.addEventListener('blur', function (e) {
+                            gj.grid.plugins.headerFilter.private.reload(grid, this);
                         });
                     }
-                    $th.append($ctrl);
+                    th.appendChild(ctrl);
                 }
                 if (data.columns[i].hidden) {
-                    $th.hide();
+                    th.style.display = 'none';
                 }
-                $filterTr.append($th);
+                filterTr.appendChild(th);
             }
 
-            grid.children('thead').append($filterTr);
+            grid.element.querySelector('thead').appendChild(filterTr);
         },
 
-        reload: function (grid, $ctrl) {
+        reload: function (grid, ctrl) {
             var params = {};
-            params[$ctrl.data('field')] = $ctrl.val();
+            params[ctrl.getAttribute('data-gj-field')] = ctrl.value;
             grid.reload(params);
         }
     },

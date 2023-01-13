@@ -22,8 +22,8 @@
          columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
          selectionMethod: 'checkbox'
      });
-     $('#btnSelect').on('click', function () {
-         grid.setSelected(parseInt($('#txtNumber').val(), 10));
+     document.getElementById('btnSelect').addEventListener('click', function () {
+         grid.setSelected(parseInt(document.getElementById('txtNumber').value, 10));
      });
  </script>
 </body>

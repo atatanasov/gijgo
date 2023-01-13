@@ -13,7 +13,7 @@ gj.grid.plugins.responsiveDesign = {
              * <p>Change browser window size in order to fire resize event.</p>
              * <table id="grid"></table>
              * <script>
-             *     var grid = $('#grid').grid({
+             *     var grid = new GijgoGrid(document.getElementById('grid'), {
              *         dataSource: '/Players/Get',
              *         responsive: true,
              *         resizeCheckInterval: 2000, //check if the grid is resized on each 2 second
@@ -35,7 +35,7 @@ gj.grid.plugins.responsiveDesign = {
              * <p>Resize browser window in order to see his responsive behaviour.</p>
              * <table id="grid"></table>
              * <script>
-             *     $('#grid').grid({
+             *     new GijgoGrid(document.getElementById('grid'), {
              *         dataSource: '/Players/Get',
              *         responsive: true,
              *         columns: [
@@ -56,7 +56,7 @@ gj.grid.plugins.responsiveDesign = {
              * @example Remote.Data.Source <!-- bootstrap, grid, grid.expandCollapseRows, grid.responsiveDesign -->
              * <table id="grid"></table>
              * <script>
-             *     $('#grid').grid({
+             *     new GijgoGrid(document.getElementById('grid'), {
              *         dataSource: '/Players/Get',
              *         detailTemplate: '<div class="row"></div>',
              *         responsive: true,
@@ -77,7 +77,7 @@ gj.grid.plugins.responsiveDesign = {
              *         { 'ID': 2, 'Name': 'Ronaldo Luis Nazario de Lima', 'PlaceOfBirth': 'Rio de Janeiro, Brazil' },
              *         { 'ID': 3, 'Name': 'David Platt', 'PlaceOfBirth': 'Chadderton, Lancashire, England' }
              *     ];
-             *     $('#grid').grid({
+             *     new GijgoGrid(document.getElementById('grid'), {
              *         dataSource: data,
              *         detailTemplate: '<div class="row"></div>',
              *         responsive: true,
@@ -104,7 +104,7 @@ gj.grid.plugins.responsiveDesign = {
                  * @example sample <!-- grid, grid.responsiveDesign -->
                  * <table id="grid"></table>
                  * <script>
-                 *     $('#grid').grid({
+                 *     new GijgoGrid(document.getElementById('grid'), {
                  *         dataSource: '/Players/Get',
                  *         responsive: true,
                  *         columns: [
@@ -126,7 +126,7 @@ gj.grid.plugins.responsiveDesign = {
                  * @example sample <!-- grid, grid.responsiveDesign -->
                  * <table id="grid"></table>
                  * <script>
-                 *     $('#grid').grid({
+                 *     new GijgoGrid(document.getElementById('grid'), {
                  *         dataSource: '/Players/Get',
                  *         responsive: true,
                  *         columns: [
@@ -224,7 +224,7 @@ gj.grid.plugins.responsiveDesign = {
          * <br/><br/>
          * <table id="grid"></table>
          * <script>
-         *     var grid = $('#grid').grid({
+         *     var grid = new GijgoGrid(document.getElementById('grid'), {
          *         dataSource: '/Players/Get',
          *         responsive: false,
          *         columns: [
@@ -280,7 +280,7 @@ gj.grid.plugins.responsiveDesign = {
          * @example sample <!-- grid, grid.responsiveDesign -->
          * <table id="grid"></table>
          * <script>
-         *     var grid = $('#grid').grid({
+         *     var grid = new GijgoGrid(document.getElementById('grid'), {
          *         dataSource: '/Players/Get',
          *         responsive: true,
          *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]

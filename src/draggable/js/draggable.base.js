@@ -231,8 +231,8 @@ gj.draggable.events = {
      *
      * @event drag
      * @param {object} e - event data
-     * @param {object} newPosition - New position of the draggable element as { top, left } object.
-     * @param {object} mousePosition - Current mouse position as { x, y } object.
+     * @param {object} e.detail.newPosition - New position of the draggable element as { top, left } object.
+     * @param {object} e.detail.mousePosition - Current mouse position as { x, y } object.
      * @example sample <!-- draggable -->
      * <style>
      * .element { border: 1px solid #999; width: 300px; height: 200px; cursor: move; text-align: center; background-color: #DDD; }
@@ -261,7 +261,7 @@ gj.draggable.events = {
      *
      * @event start
      * @param {object} e - event data
-     * @param {object} mousePosition - Current mouse position as { x, y } object.
+     * @param {object} e.detail  - Current mouse position as { x, y } object.
      * @example sample <!-- draggable -->
      * <style>
      * .element { border: 1px solid #999; width: 300px; height: 200px; cursor: move; text-align: center; background-color: #DDD; }
@@ -278,7 +278,7 @@ gj.draggable.events = {
      * </script>
      */
     start: function (el, mouseX, mouseY) {
-        return el.dispatchEvent(new CustomEvent('start', { x: mouseX, y: mouseY }));
+        return el.dispatchEvent(new CustomEvent('start', { detail: { x: mouseX, y: mouseY } }));
     },
 
     /**
@@ -286,7 +286,7 @@ gj.draggable.events = {
      *
      * @event stop
      * @param {object} e - event data
-     * @param {object} mousePosition - Current mouse position as { x, y } object.
+     * @param {object} e.detail - Current mouse position as { x, y } object.
      * @example sample <!-- draggable -->
      * <style>
      * .element { border: 1px solid #999; width: 300px; height: 200px; cursor: move; text-align: center; background-color: #DDD; }
@@ -302,7 +302,7 @@ gj.draggable.events = {
      * </script>
      */
     stop: function (el, mousePosition) {
-        return el.dispatchEvent(new CustomEvent('stop', mousePosition));
+        return el.dispatchEvent(new CustomEvent('stop', { detail: mousePosition }));
     }
 };
 

@@ -17,7 +17,7 @@ gj.grid.plugins.optimisticPersistence = {
                  * <p>Change the page and/or page size and then refresh the grid.</p>
                  * <table id="grid"></table>
                  * <script>
-                 *     var grid = $('#grid').grid({
+                 *     var grid = new GijgoGrid(document.getElementById('grid'), {
                  *         guid: '58d47231-ac7b-e6d2-ddba-5e0195b31f2e',
                  *         uiLibrary: 'bootstrap',
                  *         dataSource: '/Players/Get',
@@ -39,7 +39,7 @@ gj.grid.plugins.optimisticPersistence = {
                  * <p>Change the page and/or page size and then refresh the grid. </p>
                  * <table id="grid"></table>
                  * <script>
-                 *     var grid = $('#grid').grid({
+                 *     var grid = new GijgoGrid(document.getElementById('grid'), {
                  *         guid: '58d47231-ac7b-e6d2-ddba-5e0195b31f2f',
                  *         uiLibrary: 'bootstrap',
                  *         dataSource: '/Players/Get',

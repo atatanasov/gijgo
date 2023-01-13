@@ -13,23 +13,23 @@
  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
  <table id="grid"></table>
  <script>
-     var grid, renderer;
-     renderer = function (value, record, $cell, $displayEl, id) {
-         var $editBtn = $('<i class="fa fa-pencil gj-cursor-pointer" data-key="' + id + '"></i>'),
-             $updateBtn = $('<i class="fa fa-save gj-cursor-pointer" data-key="' + id + '"></i>').hide();
-         $editBtn.on('click', function (e) {
-             grid.edit($(this).data('key'));
-             $editBtn.hide();
-             $updateBtn.show();
+     let grid, renderer;
+     renderer = function (value, record, cell, displayEl, id) {
+         let editBtn = ('<i class="fa fa-pencil gj-cursor-pointer" data-gj-key="' + id + '"></i>'),
+             updateBtn = ('<i class="fa fa-save gj-cursor-pointer" data-gj-key="' + id + '"></i>').hide();
+         editBtn.on('click', function (e) {
+             grid.edit((this).data('key'));
+             editBtn.hide();
+             updateBtn.show();
          });
-         $updateBtn.on('click', function (e) {
-             grid.update($(this).data('key'));
-             $editBtn.show();
-             $updateBtn.hide();
+         updateBtn.on('click', function (e) {
+             grid.update((this).data('key'));
+             editBtn.show();
+             updateBtn.hide();
          });
-         $displayEl.append($editBtn).append($updateBtn);
+         displayEl.append(editBtn).append(updateBtn);
      }
-     grid = $('#grid').grid({
+     grid = new GijgoGrid(document.getElementById('grid'), {
          primaryKey: 'ID',
          dataSource: '/Players/Get',
          inlineEditing: { mode: 'command', managementColumn: false },

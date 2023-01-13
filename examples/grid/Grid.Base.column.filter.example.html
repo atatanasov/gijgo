@@ -32,8 +32,8 @@
              { field: 'Value2', filter: caseSensitiveFilter }
          ]
      });
-     $('#btnSearch').on('click', function () {
-         grid.reload({ Value1: $('#txtValue1').val(), Value2: $('#txtValue2').val() });
+     document.getElementById('btnSearch').addEventListener('click', function () {
+         grid.reload({ Value1: document.getElementById('txtValue1').value, Value2: document.getElementById('txtValue2').value });
      });
  </script>
 </body>

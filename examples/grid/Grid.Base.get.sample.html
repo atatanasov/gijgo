@@ -18,7 +18,7 @@
          dataSource: '/Players/Get',
          columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
      });
-     $('#btnGetData').on('click', function () {
+     document.getElementById('btnGetData').addEventListener('click', function () {
          var data = grid.get(3);
          alert(data.Name + ' born in ' + data.PlaceOfBirth);
      });

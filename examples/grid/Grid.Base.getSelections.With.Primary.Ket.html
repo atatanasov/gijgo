@@ -32,7 +32,7 @@
          selectionType: 'multiple',
          pager: { limit: 2, sizes: [2, 5, 10, 20] }
      });
-     $('#btnShowSelection').on('click', function () {
+     document.getElementById('btnShowSelection').addEventListener('click', function () {
          var selections = grid.getSelections();
          alert(selections.join());
      });

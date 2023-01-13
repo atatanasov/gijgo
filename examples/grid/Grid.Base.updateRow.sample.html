@@ -30,8 +30,8 @@
          ],
          pager: { limit: 2, sizes: [2, 5, 10, 20] }
      });
-     function Edit(e) {
-         grid.updateRow(e.data.id, { 'ID': e.data.id, 'Name': 'Ronaldo', 'PlaceOfBirth': 'Rio, Brazil' });
+     function Edit(e, id, field, record) {
+         grid.updateRow(id, { 'ID': id, 'Name': 'Ronaldo', 'PlaceOfBirth': 'Rio, Brazil' });
      }
  </script>
 </body>

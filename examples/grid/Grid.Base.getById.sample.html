@@ -19,7 +19,7 @@
          columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
          primaryKey: 'ID' //define the name of the column that you want to use as ID here.
      });
-     $('#btnGetData').on('click', function () {
+     document.getElementById('btnGetData').addEventListener('click', function () {
          var data = grid.getById('2');
          alert(data.Name + ' born in ' + data.PlaceOfBirth);
      });

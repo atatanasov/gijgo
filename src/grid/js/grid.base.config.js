@@ -515,7 +515,7 @@ gj.grid.config = {
              * @alias column.icon
              * @type string
              * @default undefined
-             * @example sample <!-- jquery, bootstrap, grid -->
+             * @example sample <!-- bootstrap, grid -->
              * <table id="grid"></table>
              * <script>
              *     new GijgoGrid(document.getElementById('grid'), {
@@ -525,7 +525,14 @@ gj.grid.config = {
              *             { field: 'ID', width: 34 },
              *             { field: 'Name' },
              *             { field: 'PlaceOfBirth' },
-             *             { title: '', field: 'Edit', width: 32, type: 'icon', icon: 'glyphicon-pencil', events: { 'click': function (e) { alert('name=' + e.data.record.Name); } } }
+             *             { 
+             *                 title: '', field: 'Edit', width: 32, type: 'icon', icon: 'glyphicon-pencil',
+             *                 events: 
+             *                 { 'click': function (e, id, field, record) { 
+             *                        alert('name=' + record.Name); 
+             *                    }
+             *                 }
+             *             }
              *         ]
              *     });
              * </script>
@@ -537,7 +544,7 @@ gj.grid.config = {
              * @alias column.events
              * @type object
              * @default undefined
-             * @example javascript.configuration <!-- jquery, bootstrap, grid -->
+             * @example javascript.configuration <!-- bootstrap, grid -->
              * <table id="grid"></table>
              * <script>
              *     new GijgoGrid(document.getElementById('grid'), {
@@ -549,12 +556,10 @@ gj.grid.config = {
              *               field: 'Name',
              *               events: {
              *                 'mouseenter': function (e) {
-             *                     e.stopPropagation();
-             *                     $(e.currentTarget).css('background-color', 'red');
+             *                     e.currentTarget.style.backgroundColor = 'red';
              *                 },
              *                 'mouseleave': function (e) {
-             *                     e.stopPropagation();
-             *                     $(e.currentTarget).css('background-color', '');
+             *                     e.currentTarget.style.backgroundColor = '';
              *                 }
              *               }
              *             },
@@ -562,14 +567,14 @@ gj.grid.config = {
              *             {
              *               title: '', field: 'Info', width: 34, type: 'icon', icon: 'glyphicon-info-sign',
              *               events: {
-             *                 'click': function (e) {
-             *                     alert('record with id=' + e.data.id + ' is clicked.'); }
+             *                 'click': function (e, id, field, record) {
+             *                     alert('record with id=' + id + ' is clicked.'); }
              *                 }
              *             }
              *         ]
              *     });
              * </script>
-             * @example html.configuration <!-- jquery, bootstrap, grid -->
+             * @example html.configuration <!-- bootstrap, grid -->
              * <table id="grid" data-gj-source="/Players/Get" data-gj-ui-library="bootstrap">
              *     <thead>
              *         <tr>
@@ -582,13 +587,13 @@ gj.grid.config = {
              * </table>
              * <script>
              *     function onMouseEnter (e) {
-             *         $(e.currentTarget).css('background-color', 'red');
+*                     e.currentTarget.style.backgroundColor = 'red';
              *     }
              *     function onMouseLeave (e) {
-             *         $(e.currentTarget).css('background-color', '');
+             *        e.currentTarget.style.backgroundColor = '';
              *     }
-             *     function onClick(e) {
-             *         alert('record with id=' + e.data.id + ' is clicked.');
+             *     function onClick(e, id, field, record) {
+             *         alert('record with id=' + id + ' is clicked.');
              *     }
              *     new GijgoGrid(document.getElementById('grid'), );
              * </script>
@@ -669,9 +674,9 @@ gj.grid.config = {
              *         uiLibrary: 'bootstrap',
              *         columns: [
              *             { field: 'ID', width: 34 },
-             *             { field: 'Name', events: { 'click': function (e) { alert('name=' + e.data.record.Name); } }  },
-             *             { field: 'PlaceOfBirth', stopPropagation: true, events: { 'click': function (e) { alert('name=' + e.data.record.Name); } }   },
-             *             { title: '', field: 'Edit', width: 32, type: 'icon', icon: 'glyphicon-pencil', events: { 'click': function (e) { alert('name=' + e.data.record.Name); } } }
+             *             { field: 'Name', events: { 'click': function (e, id, field, record) { alert('name=' + record.Name); } }  },
+             *             { field: 'PlaceOfBirth', stopPropagation: true, events: { 'click': function (e, id, field, record) { alert('name=' + record.Name); } }   },
+             *             { title: '', field: 'Edit', width: 32, type: 'icon', icon: 'glyphicon-pencil', events: { 'click': function (e, id, field, record) { alert('name=' + record.Name); } } }
              *         ]
              *     });
              * </script>
@@ -686,16 +691,16 @@ gj.grid.config = {
              * @default undefined
              * @param {string} value - the record field value
              * @param {object} record - the data of the row record
-             * @param {object} $cell - the current table cell presented as jquery object
-             * @param {object} $displayEl - inner div element for display of the cell value presented as jquery object
+             * @param {object} cell - the current table cell presented as html object
+             * @param {object} displayEl - inner div element for display of the cell value presented as html object
              * @param {string} id - the id of the record
-             * @example sample <!-- jquery, grid -->
+             * @example sample <!-- grid -->
              * <table id="grid" data-gj-source="/Players/Get"></table>
              * <script>
-             *     var nameRenderer = function (value, record, $cell, $displayEl) { 
-             *         $cell.css('font-style', 'italic'); 
-             *         $displayEl.css('background-color', '#EEE');
-             *         $displayEl.text(value);
+             *     var nameRenderer = function (value, record, cell, displayEl) { 
+             *         cell.style.fontStyle = 'italic'; 
+             *         displayEl.style.backgroundColor = '#EEE';
+             *         displayEl.innerHTML = value;
              *     };
              *     new GijgoGrid(document.getElementById('grid'), {
              *         columns: [
@@ -738,8 +743,8 @@ gj.grid.config = {
              *             { field: 'Value2', filter: caseSensitiveFilter }
              *         ]
              *     });
-             *     $('#btnSearch').on('click', function () {
-             *         grid.reload({ Value1: $('#txtValue1').val(), Value2: $('#txtValue2').val() });
+             *     document.getElementById('btnSearch').addEventListener('click', function () {
+             *         grid.reload({ Value1: document.getElementById('txtValue1').value, Value2: document.getElementById('txtValue2').value });
              *     });
              * </script>
              */

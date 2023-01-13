@@ -12,7 +12,7 @@
 <body style="padding: 8px;">
  <table id="grid"></table>
  <script>
-     var grid, data = [
+     let grid, data = [
          { 'ID': 1, 'Name': 'Hristo Stoichkov', 'PlaceOfBirth': 'Plovdiv, Bulgaria', CountryName: 'Bulgaria' },
          { 'ID': 2, 'Name': 'Ronaldo Luís Nazário de Lima', 'PlaceOfBirth': 'Rio de Janeiro, Brazil', CountryName: 'Brazil' },
          { 'ID': 3, 'Name': 'David Platt', 'PlaceOfBirth': 'Chadderton, Lancashire, England', CountryName: 'England' },
@@ -20,7 +20,7 @@
          { 'ID': 5, 'Name': 'James Rodríguez', 'PlaceOfBirth': 'Cúcuta, Colombia', CountryName: 'Colombia' },
          { 'ID': 6, 'Name': 'Dimitar Berbatov', 'PlaceOfBirth': 'Blagoevgrad, Bulgaria', CountryName: 'Bulgaria' }
      ];
-     $('#grid').grid({
+     new GijgoGrid(document.getElementById('grid'), {
          dataSource: data,
          grouping: { groupBy: 'CountryName' },
          columns: [ { field: 'Name', sortable: true }, { field: 'PlaceOfBirth' } ]

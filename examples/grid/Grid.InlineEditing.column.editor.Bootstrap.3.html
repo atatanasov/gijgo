@@ -19,8 +19,8 @@
 <body style="padding: 8px;">
  <table id="grid"></table>
  <script>
-     var countries = [ 'Bulgaria', 'Brazil', 'England', 'Germany', 'Colombia', 'Poland' ];
-     $('#grid').grid({
+     let countries = [ 'Bulgaria', 'Brazil', 'England', 'Germany', 'Colombia', 'Poland' ];
+     new GijgoGrid(document.getElementById('grid'), {
          uiLibrary: 'bootstrap',
          dataSource: '/Players/Get',
          columns: [

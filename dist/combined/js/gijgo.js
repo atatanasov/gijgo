@@ -570,7 +570,7 @@ gj.widget.prototype.init = function (jsConfig) {
 
     clientConfig = this.extend({}, this.readHTMLConfig() || {});
     this.extend(clientConfig, jsConfig || {});
-    fullConfig = this.buildConfigJS(clientConfig);
+    fullConfig = this.readConfig(clientConfig);
     this.element.setAttribute('data-gj-guid', fullConfig.guid);
     this.setConfig(fullConfig);
 
@@ -593,33 +593,33 @@ gj.widget.prototype.init = function (jsConfig) {
 };
 
 gj.widget.prototype.readConfig = function (clientConfig, type) {
-    var config, uiLibrary, iconsLibrary, plugin;
+    var config, uiLibrary, iconsLibrary, plugin, type = this.type;
 
-    config = $.extend(true, {}, gj[type].config.base);
+    config = this.extend({}, gj[type].config.base);
 
     uiLibrary = clientConfig.hasOwnProperty('uiLibrary') ? clientConfig.uiLibrary : config.uiLibrary;
     if (gj[type].config[uiLibrary]) {
-        $.extend(true, config, gj[type].config[uiLibrary]);
+        this.extend(config, gj[type].config[uiLibrary]);
     }
 
     iconsLibrary = clientConfig.hasOwnProperty('iconsLibrary') ? clientConfig.iconsLibrary : config.iconsLibrary;
     if (gj[type].config[iconsLibrary]) {
-        $.extend(true, config, gj[type].config[iconsLibrary]);
+        this.extend(config, gj[type].config[iconsLibrary]);
     }
 
     for (plugin in gj[type].plugins) {
         if (gj[type].plugins.hasOwnProperty(plugin)) {
-            $.extend(true, config, gj[type].plugins[plugin].config.base);
+            this.extend(config, gj[type].plugins[plugin].config.base);
             if (gj[type].plugins[plugin].config[uiLibrary]) {
-                $.extend(true, config, gj[type].plugins[plugin].config[uiLibrary]);
+                this.extend(config, gj[type].plugins[plugin].config[uiLibrary]);
             }
             if (gj[type].plugins[plugin].config[iconsLibrary]) {
-                $.extend(true, config, gj[type].plugins[plugin].config[iconsLibrary]);
+                this.extend(config, gj[type].plugins[plugin].config[iconsLibrary]);
             }
         }
     }
 
-    $.extend(true, config, clientConfig);
+    this.extend(config, clientConfig);
 
     if (!config.guid) {
         config.guid = this.generateGUID();
@@ -656,42 +656,6 @@ gj.widget.prototype.readHTMLConfig = function () {
         delete result.source;
     }
     return result;
-};
-
-gj.widget.prototype.buildConfigJS = function (clientConfig) {
-    var config, uiLibrary, iconsLibrary, plugin, type = this.type;
-
-    config = this.extend({}, gj[type].config.base);
-
-    uiLibrary = clientConfig.hasOwnProperty('uiLibrary') ? clientConfig.uiLibrary : config.uiLibrary;
-    if (gj[type].config[uiLibrary]) {
-        this.extend(config, gj[type].config[uiLibrary]);
-    }
-
-    iconsLibrary = clientConfig.hasOwnProperty('iconsLibrary') ? clientConfig.iconsLibrary : config.iconsLibrary;
-    if (gj[type].config[iconsLibrary]) {
-        this.extend(config, gj[type].config[iconsLibrary]);
-    }
-
-    for (plugin in gj[type].plugins) {
-        if (gj[type].plugins.hasOwnProperty(plugin)) {
-            this.extend(config, gj[type].plugins[plugin].config.base);
-            if (gj[type].plugins[plugin].config[uiLibrary]) {
-                this.extend(config, gj[type].plugins[plugin].config[uiLibrary]);
-            }
-            if (gj[type].plugins[plugin].config[iconsLibrary]) {
-                this.extend(config, gj[type].plugins[plugin].config[iconsLibrary]);
-            }
-        }
-    }
-
-    this.extend(config, clientConfig);
-
-    if (!config.guid) {
-        config.guid = this.generateGUID();
-    }
-
-    return config;
 };
 
 gj.widget.prototype.createDoneHandler = function () {
@@ -2520,8 +2484,8 @@ gj.draggable.events = {
      *
      * @event drag
      * @param {object} e - event data
-     * @param {object} newPosition - New position of the draggable element as { top, left } object.
-     * @param {object} mousePosition - Current mouse position as { x, y } object.
+     * @param {object} e.detail.newPosition - New position of the draggable element as { top, left } object.
+     * @param {object} e.detail.mousePosition - Current mouse position as { x, y } object.
      * @example sample <!-- draggable -->
      * <style>
      * .element { border: 1px solid #999; width: 300px; height: 200px; cursor: move; text-align: center; background-color: #DDD; }
@@ -2550,7 +2514,7 @@ gj.draggable.events = {
      *
      * @event start
      * @param {object} e - event data
-     * @param {object} mousePosition - Current mouse position as { x, y } object.
+     * @param {object} e.detail  - Current mouse position as { x, y } object.
      * @example sample <!-- draggable -->
      * <style>
      * .element { border: 1px solid #999; width: 300px; height: 200px; cursor: move; text-align: center; background-color: #DDD; }
@@ -2567,7 +2531,7 @@ gj.draggable.events = {
      * </script>
      */
     start: function (el, mouseX, mouseY) {
-        return el.dispatchEvent(new CustomEvent('start', { x: mouseX, y: mouseY }));
+        return el.dispatchEvent(new CustomEvent('start', { detail: { x: mouseX, y: mouseY } }));
     },
 
     /**
@@ -2575,7 +2539,7 @@ gj.draggable.events = {
      *
      * @event stop
      * @param {object} e - event data
-     * @param {object} mousePosition - Current mouse position as { x, y } object.
+     * @param {object} e.detail - Current mouse position as { x, y } object.
      * @example sample <!-- draggable -->
      * <style>
      * .element { border: 1px solid #999; width: 300px; height: 200px; cursor: move; text-align: center; background-color: #DDD; }
@@ -2591,7 +2555,7 @@ gj.draggable.events = {
      * </script>
      */
     stop: function (el, mousePosition) {
-        return el.dispatchEvent(new CustomEvent('stop', mousePosition));
+        return el.dispatchEvent(new CustomEvent('stop', { detail: mousePosition }));
     }
 };
 
@@ -2742,8 +2706,8 @@ gj.droppable.methods = {
     isOver: function (droppable, mousePosition) {
         let offsetTop = droppable.element.offsetTop,
             offsetLeft = droppable.element.offsetLeft;
-        return mousePosition.left > offsetLeft && mousePosition.left < (offsetLeft + gj.core.width(droppable.element))
-            && mousePosition.top > offsetTop && mousePosition.top < (offsetTop + gj.core.height(droppable.element));
+        return mousePosition.x > offsetLeft && mousePosition.x < (offsetLeft + gj.core.width(droppable.element))
+            && mousePosition.y > offsetTop && mousePosition.y < (offsetTop + gj.core.height(droppable.element));
     },
 
     destroy: function (droppable) {
@@ -3424,7 +3388,7 @@ gj.grid.config = {
              * @alias column.icon
              * @type string
              * @default undefined
-             * @example sample <!-- jquery, bootstrap, grid -->
+             * @example sample <!-- bootstrap, grid -->
              * <table id="grid"></table>
              * <script>
              *     new GijgoGrid(document.getElementById('grid'), {
@@ -3434,7 +3398,14 @@ gj.grid.config = {
              *             { field: 'ID', width: 34 },
              *             { field: 'Name' },
              *             { field: 'PlaceOfBirth' },
-             *             { title: '', field: 'Edit', width: 32, type: 'icon', icon: 'glyphicon-pencil', events: { 'click': function (e) { alert('name=' + e.data.record.Name); } } }
+             *             { 
+             *                 title: '', field: 'Edit', width: 32, type: 'icon', icon: 'glyphicon-pencil',
+             *                 events: 
+             *                 { 'click': function (e, id, field, record) { 
+             *                        alert('name=' + record.Name); 
+             *                    }
+             *                 }
+             *             }
              *         ]
              *     });
              * </script>
@@ -3446,7 +3417,7 @@ gj.grid.config = {
              * @alias column.events
              * @type object
              * @default undefined
-             * @example javascript.configuration <!-- jquery, bootstrap, grid -->
+             * @example javascript.configuration <!-- bootstrap, grid -->
              * <table id="grid"></table>
              * <script>
              *     new GijgoGrid(document.getElementById('grid'), {
@@ -3458,12 +3429,10 @@ gj.grid.config = {
              *               field: 'Name',
              *               events: {
              *                 'mouseenter': function (e) {
-             *                     e.stopPropagation();
-             *                     $(e.currentTarget).css('background-color', 'red');
+             *                     e.currentTarget.style.backgroundColor = 'red';
              *                 },
              *                 'mouseleave': function (e) {
-             *                     e.stopPropagation();
-             *                     $(e.currentTarget).css('background-color', '');
+             *                     e.currentTarget.style.backgroundColor = '';
              *                 }
              *               }
              *             },
@@ -3471,14 +3440,14 @@ gj.grid.config = {
              *             {
              *               title: '', field: 'Info', width: 34, type: 'icon', icon: 'glyphicon-info-sign',
              *               events: {
-             *                 'click': function (e) {
-             *                     alert('record with id=' + e.data.id + ' is clicked.'); }
+             *                 'click': function (e, id, field, record) {
+             *                     alert('record with id=' + id + ' is clicked.'); }
              *                 }
              *             }
              *         ]
              *     });
              * </script>
-             * @example html.configuration <!-- jquery, bootstrap, grid -->
+             * @example html.configuration <!-- bootstrap, grid -->
              * <table id="grid" data-gj-source="/Players/Get" data-gj-ui-library="bootstrap">
              *     <thead>
              *         <tr>
@@ -3491,13 +3460,13 @@ gj.grid.config = {
              * </table>
              * <script>
              *     function onMouseEnter (e) {
-             *         $(e.currentTarget).css('background-color', 'red');
+*                     e.currentTarget.style.backgroundColor = 'red';
              *     }
              *     function onMouseLeave (e) {
-             *         $(e.currentTarget).css('background-color', '');
+             *        e.currentTarget.style.backgroundColor = '';
              *     }
-             *     function onClick(e) {
-             *         alert('record with id=' + e.data.id + ' is clicked.');
+             *     function onClick(e, id, field, record) {
+             *         alert('record with id=' + id + ' is clicked.');
              *     }
              *     new GijgoGrid(document.getElementById('grid'), );
              * </script>
@@ -3578,9 +3547,9 @@ gj.grid.config = {
              *         uiLibrary: 'bootstrap',
              *         columns: [
              *             { field: 'ID', width: 34 },
-             *             { field: 'Name', events: { 'click': function (e) { alert('name=' + e.data.record.Name); } }  },
-             *             { field: 'PlaceOfBirth', stopPropagation: true, events: { 'click': function (e) { alert('name=' + e.data.record.Name); } }   },
-             *             { title: '', field: 'Edit', width: 32, type: 'icon', icon: 'glyphicon-pencil', events: { 'click': function (e) { alert('name=' + e.data.record.Name); } } }
+             *             { field: 'Name', events: { 'click': function (e, id, field, record) { alert('name=' + record.Name); } }  },
+             *             { field: 'PlaceOfBirth', stopPropagation: true, events: { 'click': function (e, id, field, record) { alert('name=' + record.Name); } }   },
+             *             { title: '', field: 'Edit', width: 32, type: 'icon', icon: 'glyphicon-pencil', events: { 'click': function (e, id, field, record) { alert('name=' + record.Name); } } }
              *         ]
              *     });
              * </script>
@@ -3595,16 +3564,16 @@ gj.grid.config = {
              * @default undefined
              * @param {string} value - the record field value
              * @param {object} record - the data of the row record
-             * @param {object} $cell - the current table cell presented as jquery object
-             * @param {object} $displayEl - inner div element for display of the cell value presented as jquery object
+             * @param {object} cell - the current table cell presented as html object
+             * @param {object} displayEl - inner div element for display of the cell value presented as html object
              * @param {string} id - the id of the record
-             * @example sample <!-- jquery, grid -->
+             * @example sample <!-- grid -->
              * <table id="grid" data-gj-source="/Players/Get"></table>
              * <script>
-             *     var nameRenderer = function (value, record, $cell, $displayEl) { 
-             *         $cell.css('font-style', 'italic'); 
-             *         $displayEl.css('background-color', '#EEE');
-             *         $displayEl.text(value);
+             *     var nameRenderer = function (value, record, cell, displayEl) { 
+             *         cell.style.fontStyle = 'italic'; 
+             *         displayEl.style.backgroundColor = '#EEE';
+             *         displayEl.innerHTML = value;
              *     };
              *     new GijgoGrid(document.getElementById('grid'), {
              *         columns: [
@@ -3647,8 +3616,8 @@ gj.grid.config = {
              *             { field: 'Value2', filter: caseSensitiveFilter }
              *         ]
              *     });
-             *     $('#btnSearch').on('click', function () {
-             *         grid.reload({ Value1: $('#txtValue1').val(), Value2: $('#txtValue2').val() });
+             *     document.getElementById('btnSearch').addEventListener('click', function () {
+             *         grid.reload({ Value1: document.getElementById('txtValue1').value, Value2: document.getElementById('txtValue2').value });
              *     });
              * </script>
              */
@@ -4568,8 +4537,8 @@ gj.grid.methods = {
         for (i = 0; i < list.length; i++) {
             position = list[i].indexOf(':');
             if (position > 0) {
-                key = $.trim(list[i].substr(0, position));
-                func = $.trim(list[i].substr(position + 1, list[i].length));
+                key = list[i].substr(0, position).trim();
+                func = list[i].substr(position + 1, list[i].length).trim();
                 result[key] = eval('window.' + func); //window[func]; //TODO: eveluate functions from string
             }
         }
@@ -4947,7 +4916,7 @@ gj.grid.methods = {
                 e.stopPropagation();
             }
             e.detail = detail;
-            func.call(this, e);
+            func.call(this, e, detail.id, detail.field, detail.record);
         };
     },
 
@@ -5052,7 +5021,7 @@ gj.grid.methods = {
                 checkbox.checked = true;
             }
             if ('multiple' === data.selectionType && grid.getSelections().length === grid.count(false)) {
-                checkbox = grid.querySelector('thead input[data-gj-role="selectAll"]');
+                checkbox = grid.element.querySelector('thead input[data-gj-role="selectAll"]');
                 if (checkbox && !checkbox.checked) {
                     checkbox.checked = true;
                 }
@@ -5135,10 +5104,10 @@ gj.grid.methods = {
     },
 
     getSelected: function (grid) {
-        let result = null, selections, record, position;
-        selections = grid.querySelector('tbody>tr[data-gj-selected="true"]');
-        if (selections.length > 0) {
-            position = selections[0].getAttribute('data-gj-position');
+        let result = null, selection, record, position;
+        selection = grid.element.querySelector('tbody>tr[data-gj-selected="true"]');
+        if (selection) {
+            position = selection.getAttribute('data-gj-position');
             record = grid.get(position);
             result = gj.grid.methods.getId(record, grid.getConfig().primaryKey, position);
         }
@@ -5146,7 +5115,7 @@ gj.grid.methods = {
     },
 
     getSelectedRows: function (grid) {
-        return grid.element.querySelector('tbody>tr[data-gj-selected="true"]');
+        return grid.element.querySelectorAll('tbody>tr[data-gj-selected="true"]');
     },
 
     getSelections: function (grid) {
@@ -5154,8 +5123,8 @@ gj.grid.methods = {
             data = grid.getConfig(),
             selections = gj.grid.methods.getSelectedRows(grid);
         if (0 < selections.length) {
-            for (let i = 0; i < rows.length; i++) {
-                position = rows[i].getAttribute('data-gj-position');
+            for (let i = 0; i < selections.length; i++) {
+                position = selections[i].getAttribute('data-gj-position');
                 record = grid.get(position);
                 result.push(gj.grid.methods.getId(record, data.primaryKey, position));
             }
@@ -5319,7 +5288,7 @@ gj.grid.methods = {
         for (field in data.params) {
             if (data.params[field] && !data.paramNames[field]) {
                 column = gj.grid.methods.getColumnInfo(grid, field);
-                records = $.grep(records, function (record) {
+                records = records.filter(function (record) {
                     let value = record[field] || '',
                         searchStr = data.params[field] || '';
                     return column && typeof (column.filter) === 'function' ? column.filter(value, searchStr) : (value.toUpperCase().indexOf(searchStr.toUpperCase()) > -1);
@@ -5347,7 +5316,7 @@ gj.grid.methods = {
             gj.grid.methods.stopLoading(grid);
             grid.xhr && grid.xhr.abort();
             //TODO: grid.off();
-            if (keepWrapperTag === false && grid.parent('div[data-gj-role="wrapper"]').length > 0) {
+            if (!keepWrapperTag && grid.element.parentNode.getAttribute('data-gj-role') === 'wrapper') {
                 grid.unwrap();
             }
             grid.removeConfig();
@@ -5421,32 +5390,35 @@ gj.grid.methods = {
     },
 
     addRow: function (grid, record) {
-        let data = grid.getConfig();
+        let data = grid.getConfig(),
+            records = grid.getRecords();
         data.totalRecords = grid.getTotalRecords() + 1;
-        gj.grid.events.dataBinding(grid, [record]);
-        data.records.push(record);
+        gj.grid.events.dataBinding(grid.element, [record]);
+        records.push(record);
+        grid.setRecords(records);
         if (Array.isArray(data.dataSource)) {
             data.dataSource.push(record);
         }
-        if (data.totalRecords === 1) {
-            grid.children('tbody').empty();
+        if (grid.getTotalRecords() === 0) {
+            grid.element.querySelector('tbody').innerHTML = '';
         }
         if (gj.grid.methods.isLastRecordVisible(grid)) {
             gj.grid.methods.renderRow(grid, null, record, grid.count() - 1);
         }
-        gj.grid.events.dataBound(grid, [record], data.totalRecords);
+        gj.grid.events.dataBound(grid.element, [record], data.totalRecords);
         return grid;
     },
 
     updateRow: function (grid, id, record) {
         let row = gj.grid.methods.getRowById(grid, id),
-            data = grid.getConfig(), position;
-        data.records[row.data('position') - 1] = record;
+            data = grid.getConfig(), records = grid.getRecords(), position;
+        records[row.getAttribute('data-gj-position') - 1] = record;
+        grid.setRecords(records);
         if (Array.isArray(data.dataSource)) {
             position = gj.grid.methods.getRecVPosById(grid, id);
             data.dataSource[position] = record;
         }
-        gj.grid.methods.renderRow(grid, row, record, row.index());
+        gj.grid.methods.renderRow(grid, row, record, Array.from(row.parentNode.children).indexOf(row));
         return grid;
     },
 
@@ -5680,8 +5652,8 @@ GijgoGrid = function (element, jsConfig) {
      *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
      *         selectionMethod: 'checkbox'
      *     });
-     *     $('#btnSelect').on('click', function () {
-     *         grid.setSelected(parseInt($('#txtNumber').val(), 10));
+     *     document.getElementById('btnSelect').addEventListener('click', function () {
+     *         grid.setSelected(parseInt(document.getElementById('txtNumber').value, 10));
      *     });
      * </script>
      */
@@ -5704,7 +5676,7 @@ GijgoGrid = function (element, jsConfig) {
      *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
      *         selectionMethod: 'checkbox'
      *     });
-     *     $('#btnShowSelection').on('click', function () {
+     *     document.getElementById('btnShowSelection').addEventListener('click', function () {
      *         alert(grid.getSelected());
      *     });
      * </script>
@@ -5737,7 +5709,7 @@ GijgoGrid = function (element, jsConfig) {
      *         selectionType: 'multiple',
      *         pager: { limit: 2, sizes: [2, 5, 10, 20] }
      *     });
-     *     $('#btnShowSelection').on('click', function () {
+     *     document.getElementById('btnShowSelection').addEventListener('click', function () {
      *         var selections = grid.getSelections();
      *         alert(selections.join());
      *     });
@@ -5760,7 +5732,7 @@ GijgoGrid = function (element, jsConfig) {
      *         selectionType: 'multiple',
      *         pager: { limit: 2, sizes: [2, 5, 10, 20] }
      *     });
-     *     $('#btnShowSelection').on('click', function () {
+     *     document.getElementById('btnShowSelection').addEventListener('click', function () {
      *         var selections = grid.getSelections();
      *         alert(selections.join());
      *     });
@@ -5785,7 +5757,7 @@ GijgoGrid = function (element, jsConfig) {
      *         selectionMethod: 'checkbox',
      *         selectionType: 'multiple'
      *     });
-     *     $('#btnSelectAll').on('click', function () {
+     *     document.getElementById('btnSelectAll').addEventListener('click', function () {
      *         grid.selectAll();
      *     });
      * </script>
@@ -5810,10 +5782,10 @@ GijgoGrid = function (element, jsConfig) {
      *         selectionMethod: 'checkbox',
      *         selectionType: 'multiple'
      *     });
-     *     $('#btnSelectAll').on('click', function () {
+     *     document.getElementById('btnSelectAll').addEventListener('click', function () {
      *         grid.selectAll();
      *     });
-     *     $('#btnUnSelectAll').on('click', function () {
+     *     document.getElementById('btnUnSelectAll').addEventListener('click', function () {
      *         grid.unSelectAll();
      *     });
      * </script>
@@ -5837,7 +5809,7 @@ GijgoGrid = function (element, jsConfig) {
      *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
      *         primaryKey: 'ID' //define the name of the column that you want to use as ID here.
      *     });
-     *     $('#btnGetData').on('click', function () {
+     *     document.getElementById('btnGetData').addEventListener('click', function () {
      *         var data = grid.getById('2');
      *         alert(data.Name + ' born in ' + data.PlaceOfBirth);
      *     });
@@ -5861,7 +5833,7 @@ GijgoGrid = function (element, jsConfig) {
      *         dataSource: '/Players/Get',
      *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
      *     });
-     *     $('#btnGetData').on('click', function () {
+     *     document.getElementById('btnGetData').addEventListener('click', function () {
      *         var data = grid.get(3);
      *         alert(data.Name + ' born in ' + data.PlaceOfBirth);
      *     });
@@ -5927,7 +5899,7 @@ GijgoGrid = function (element, jsConfig) {
      *         dataSource: '/Players/Get',
      *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth', hidden: true } ]
      *     });
-     *     $('#btnShowColumn').on('click', function () {
+     *     document.getElementById('btnShowColumn').addEventListener('click', function () {
      *         grid.showColumn('PlaceOfBirth');
      *     });
      * </script>
@@ -5950,7 +5922,7 @@ GijgoGrid = function (element, jsConfig) {
      *         dataSource: '/Players/Get',
      *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
      *     });
-     *     $('#btnHideColumn').on('click', function () {
+     *     document.getElementById('btnHideColumn').addEventListener('click', function () {
      *         grid.hideColumn('PlaceOfBirth');
      *     });
      * </script>
@@ -5977,7 +5949,7 @@ GijgoGrid = function (element, jsConfig) {
      *         ],
      *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
      *     });
-     *     $('#btnAdd').on('click', function () {
+     *     document.getElementById('btnAdd').addEventListener('click', function () {
      *         grid.addRow({ 'ID': grid.count(true) + 1, 'Name': 'Test Player', 'PlaceOfBirth': 'Test City, Test Country' });
      *     });
      * </script>
@@ -5997,11 +5969,21 @@ GijgoGrid = function (element, jsConfig) {
      *             { field: 'ID', width: 56 },
      *             { field: 'Name' },
      *             { field: 'PlaceOfBirth' },
-     *             { width: 100, align: 'center', tmpl: '<i class="material-icons">delete</i>', events: { 'click': function(e) { grid.removeRow(e.data.id); } } }
+     *             {
+     *                 title: '',
+     *                 width: 100,
+     *                 align: 'center',
+     *                 tmpl: '<i class="material-icons">delete</i>',
+     *                 events: { 
+     *                     'click': function(e) {
+     *                          grid.removeRow(e.detail.id);
+     *                     }
+     *                 }
+     *             }
      *         ],
      *         pager: { limit: 2, sizes: [2, 5, 10, 20] }
      *     });
-     *     $('#btnAdd').on('click', function () {
+     *     document.getElementById('btnAdd').addEventListener('click', function () {
      *         grid.addRow({ 'ID': grid.count(true) + 1, 'Name': 'Test Player', 'PlaceOfBirth': 'Test City, Test Country' });
      *     });
      * </script>
@@ -6035,8 +6017,8 @@ GijgoGrid = function (element, jsConfig) {
      *         ],
      *         pager: { limit: 2, sizes: [2, 5, 10, 20] }
      *     });
-     *     function Edit(e) {
-     *         grid.updateRow(e.data.id, { 'ID': e.data.id, 'Name': 'Ronaldo', 'PlaceOfBirth': 'Rio, Brazil' });
+     *     function Edit(e, id, field, record) {
+     *         grid.updateRow(id, { 'ID': id, 'Name': 'Ronaldo', 'PlaceOfBirth': 'Rio, Brazil' });
      *     }
      * </script>
      */
@@ -6059,9 +6041,9 @@ GijgoGrid = function (element, jsConfig) {
      * <table id="grid"></table>
      * <script>
      *     var grid;
-     *     function Delete(e) {
+     *     function Delete(e, id, field, record) {
      *         if (confirm('Are you sure?')) {
-     *             grid.removeRow(e.data.id);
+     *             grid.removeRow(id);
      *         }
      *     }
      *     grid = new GijgoGrid(document.getElementById('grid'), {
@@ -6075,7 +6057,7 @@ GijgoGrid = function (element, jsConfig) {
      *             { field: 'ID', width: 56 },
      *             { field: 'Name' },
      *             { field: 'PlaceOfBirth' },
-     *             { width: 100, align: 'center', tmpl: '<u class="gj-cursor-pointer">Delete</u>', events: { 'click': Delete } }
+     *             { title: '', width: 100, align: 'center', tmpl: '<u class="gj-cursor-pointer">Delete</u>', events: { 'click': Delete } }
      *         ]
      *     });
      * </script>
@@ -6083,9 +6065,9 @@ GijgoGrid = function (element, jsConfig) {
      * <table id="grid"></table>
      * <script>
      *     var grid;
-     *     function Delete(e) {
+     *     function Delete(e, id, field, record) {
      *         if (confirm('Are you sure?')) {
-     *             grid.removeRow(e.data.id);
+     *             grid.removeRow(id);
      *         }
      *     }
      *     grid = new GijgoGrid(document.getElementById('grid'), {
@@ -6157,7 +6139,7 @@ gj.grid.plugins.fixedHeader = {
              * @example Material.Design.Without.Pager <!-- grid -->
              * <table id="grid"></table>
              * <script>
-             *     $('#grid').grid({
+             *     new GijgoGrid(document.getElementById('grid'), {
              *         dataSource: '/Players/Get',
              *         fixedHeader: true,
              *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
@@ -6166,7 +6148,7 @@ gj.grid.plugins.fixedHeader = {
              * @example Material.Design.With.Pager <!-- grid, dropdown -->
              * <table id="grid"></table>
              * <script>
-             *     $('#grid').grid({
+             *     new GijgoGrid(document.getElementById('grid'), {
              *         dataSource: '/Players/Get',
              *         fixedHeader: true,
              *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
@@ -6176,7 +6158,7 @@ gj.grid.plugins.fixedHeader = {
              * @example Bootstrap.3.Without.Pager <!-- bootstrap, grid -->
              * <div class="container"><table id="grid"></table></div>
              * <script>
-             *     $('#grid').grid({
+             *     new GijgoGrid(document.getElementById('grid'), {
              *         uiLibrary: 'bootstrap',
              *         dataSource: '/Players/Get',
              *         fixedHeader: true,
@@ -6191,7 +6173,7 @@ gj.grid.plugins.fixedHeader = {
              * @example Bootstrap.3.With.Pager <!-- bootstrap, grid -->
              * <div class="container"><table id="grid"></table></div>
              * <script>
-             *     $('#grid').grid({
+             *     new GijgoGrid(document.getElementById('grid'), {
              *         uiLibrary: 'bootstrap',
              *         dataSource: '/Players/Get',
              *         fixedHeader: true,
@@ -6207,8 +6189,38 @@ gj.grid.plugins.fixedHeader = {
              * @example Bootstrap.4 <!-- bootstrap4, grid -->
              * <div class="container"><table id="grid"></table></div>
              * <script>
-             *     $('#grid').grid({
+             *     new GijgoGrid(document.getElementById('grid'), {
              *         uiLibrary: 'bootstrap4',
+             *         dataSource: '/Players/Get',
+             *         fixedHeader: true,
+             *         columns: [ 
+             *             { field: 'ID', width: 42 }, 
+             *             { field: 'Name' }, 
+             *             { field: 'PlaceOfBirth' } 
+             *         ],
+             *         pager: { limit: 5 }
+             *     });
+             * </script>
+             * @example Bootstrap.5.Without.Pager <!-- bootstrap5, grid -->
+             * <div class="container"><table id="grid"></table></div>
+             * <script>
+             *     new GijgoGrid(document.getElementById('grid'), {
+             *         uiLibrary: 'bootstrap5',
+             *         dataSource: '/Players/Get',
+             *         fixedHeader: true,
+             *         height: 200,
+             *         columns: [ 
+             *             { field: 'ID', width: 34 },
+             *             { field: 'Name' },
+             *             { field: 'PlaceOfBirth' }
+             *         ]
+             *     });
+             * </script>
+             * @example Bootstrap.5.With.Pager <!-- bootstrap5, grid -->
+             * <div class="container"><table id="grid"></table></div>
+             * <script>
+             *     new GijgoGrid(document.getElementById('grid'), {
+             *         uiLibrary: 'bootstrap5',
              *         dataSource: '/Players/Get',
              *         fixedHeader: true,
              *         columns: [ 
@@ -6228,52 +6240,53 @@ gj.grid.plugins.fixedHeader = {
 
     private: {
         init: function (grid) {
-            var data = grid.getConfig(),
-                $tbody = grid.children('tbody'),
-                $thead = grid.children('thead'),
-                bodyHeight = data.height - $thead.outerHeight() - (grid.children('tfoot').outerHeight() || 0);
-            grid.addClass('gj-grid-scrollable');
-            $tbody.css('width', $thead.outerWidth());
-            $tbody.height(bodyHeight);
+            let data = grid.getConfig(),
+                tbody = grid.element.querySelector('tbody'),
+                thead = grid.element.querySelector('thead'),
+                tfoot = grid.element.querySelector('tfoot'),
+                bodyHeight = data.height - gj.core.height(thead, true) - (tfoot ? gj.core.height(tfoot, true) : 0);
+            grid.element.classList.add('gj-grid-scrollable');
+            tbody.setAttribute('width', gj.core.height(thead, true));
+            tbody.style.height = bodyHeight + 'px';
         },
 
         refresh: function (grid) {
-            var i, width,
+            let i, width,
                 data = grid.getConfig(),
-                $tbody = grid.children('tbody'),
-                $thead = grid.children('thead'),
-                $tbodyCells = grid.find('tbody tr[data-role="row"] td'),
-                $theadCells = grid.find('thead tr[data-role="caption"] th');
+                tbody = grid.element.querySelector('tbody'),
+                thead = grid.element.querySelector('thead'),
+                tbodyCells = grid.element.querySelectorAll('tbody tr[data-gj-role="row"] td'),
+                theadCells = grid.element.querySelectorAll('thead tr[data-gj-role="caption"] th');
 
-            if (grid.children('tbody').height() < gj.grid.plugins.fixedHeader.private.getRowsHeight(grid)) {
-                $tbody.css('width', $thead.outerWidth() + gj.grid.plugins.fixedHeader.private.getScrollBarWidth() + (navigator.userAgent.toLowerCase().indexOf('firefox') > -1 ? 1 : 0));
+            if (gj.core.height(tbody) < gj.grid.plugins.fixedHeader.private.getRowsHeight(grid)) {
+                tbody.style.width = (gj.core.width(thead, true) + gj.grid.plugins.fixedHeader.private.getScrollBarWidth() + (navigator.userAgent.toLowerCase().indexOf('firefox') > -1 ? 1 : 0)) + 'px';
             } else {
-                $tbody.css('width', $thead.outerWidth());
+                tbody.style.width = gj.core.width(thead, true) + 'px';
             }
 
-            for (i = 0; i < $theadCells.length; i++) {
-                width = $($theadCells[i]).outerWidth();
+            for (i = 0; i < theadCells.length; i++) {
+                width = gj.core.width(theadCells[i], true);
                 if (i === 0 && gj.core.isIE()) {
                     width = width - 1;
                 }
-                $($tbodyCells[i]).attr('width', width);
+                tbodyCells[i].setAttribute('width', width);
             }
         },
 
         getRowsHeight: function (grid) {
-            var total = 0;
-            grid.find('tbody tr').each(function () {
-                total += $(this).height();
-            });
+            let total = 0, rows = grid.element.querySelectorAll('tbody tr');
+            for (const row of rows) {
+                total += gj.core.height(row);
+            };
             return total;
         },
 
         getScrollBarWidth: function () {
-            var inner = document.createElement('p');
+            let inner = document.createElement('p');
             inner.style.width = "100%";
             inner.style.height = "200px";
 
-            var outer = document.createElement('div');
+            let outer = document.createElement('div');
             outer.style.position = "absolute";
             outer.style.top = "0px";
             outer.style.left = "0px";
@@ -6284,9 +6297,9 @@ gj.grid.plugins.fixedHeader = {
             outer.appendChild(inner);
 
             document.body.appendChild(outer);
-            var w1 = inner.offsetWidth;
+            let w1 = inner.offsetWidth;
             outer.style.overflow = 'scroll';
-            var w2 = inner.offsetWidth;
+            let w2 = inner.offsetWidth;
             if (w1 == w2) w2 = outer.clientWidth;
 
             document.body.removeChild(outer);
@@ -6303,7 +6316,7 @@ gj.grid.plugins.fixedHeader = {
 
     configure: function (grid, fullConfig, clientConfig) {
         grid.extend(grid, gj.grid.plugins.fixedHeader.public);
-        var data = grid.getConfig();
+        let data = grid.getConfig();
         if (clientConfig.fixedHeader) {
             grid.on('initialized', function () {
                 gj.grid.plugins.fixedHeader.private.init(grid);
@@ -6329,32 +6342,43 @@ gj.grid.plugins.expandCollapseRows = {
              * Automatically add expand collapse column as a first column in the grid during initialization.
              * @type string
              * @default undefined
-             * @example Material.Design <!-- grid, grid.expandCollapseRows -->
+             * @example Material.Design <!-- grid -->
              * <table id="grid"></table>
              * <script>
-             *     $('#grid').grid({
+             *     new GijgoGrid(document.getElementById('grid'), {
              *         dataSource: '/Players/Get',
              *         uiLibrary: 'materialdesign',
              *         detailTemplate: '<div style="text-align: left"><b>Place Of Birth:</b> {PlaceOfBirth}</div>',
              *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'DateOfBirth', type: 'date' } ]
              *     });
              * </script>
-             * @example Bootstrap.3 <!-- bootstrap, grid, grid.expandCollapseRows -->
+             * @example Bootstrap.3 <!-- bootstrap, grid -->
              * <table id="grid"></table>
              * <script>
-             *     $('#grid').grid({
+             *     new GijgoGrid(document.getElementById('grid'), {
              *         dataSource: '/Players/Get',
              *         uiLibrary: 'bootstrap',
              *         detailTemplate: '<div><b>Place Of Birth:</b> {PlaceOfBirth}</div>',
              *         columns: [ { field: 'ID', width: 34 }, { field: 'Name' }, { field: 'DateOfBirth', type: 'date' } ]
              *     });
              * </script>
-             * @example Bootstrap.4.Font.Awesome <!-- bootstrap4, fontawesome, grid, grid.expandCollapseRows -->
+             * @example Bootstrap.4.Font.Awesome <!-- bootstrap4, fontawesome, grid -->
              * <table id="grid"></table>
              * <script>
-             *     $('#grid').grid({
+             *     new GijgoGrid(document.getElementById('grid'), {
              *         dataSource: '/Players/Get',
              *         uiLibrary: 'bootstrap4',
+             *         iconsLibrary: 'fontawesome',
+             *         detailTemplate: '<div><b>Place Of Birth:</b> {PlaceOfBirth}</div>',
+             *         columns: [ { field: 'ID', width: 34 }, { field: 'Name' }, { field: 'DateOfBirth', type: 'date' } ]
+             *     });
+             * </script>
+             * @example Bootstrap.5.Font.Awesome <!-- bootstrap5, fontawesome, grid -->
+             * <table id="grid"></table>
+             * <script>
+             *     new GijgoGrid(document.getElementById('grid'), {
+             *         dataSource: '/Players/Get',
+             *         uiLibrary: 'bootstrap5',
              *         iconsLibrary: 'fontawesome',
              *         detailTemplate: '<div><b>Place Of Birth:</b> {PlaceOfBirth}</div>',
              *         columns: [ { field: 'ID', width: 34 }, { field: 'Name' }, { field: 'DateOfBirth', type: 'date' } ]
@@ -6376,7 +6400,7 @@ gj.grid.plugins.expandCollapseRows = {
              *     </div>
              * </div>
              * <script>
-             *     var grid = $('#grid').grid({
+             *     let grid = new GijgoGrid(document.getElementById('grid'), {
              *         uiLibrary: 'bootstrap',
              *         primaryKey: 'ID',
              *         dataSource: '/Players/Get',
@@ -6399,7 +6423,7 @@ gj.grid.plugins.expandCollapseRows = {
                  * @example Plus.Minus.Icons <!-- materialicons, grid -->
                  * <table id="grid"></table>
                  * <script>
-                 *     $('#grid').grid({
+                 *     new GijgoGrid(document.getElementById('grid'), {
                  *         primaryKey: 'ID',
                  *         dataSource: '/Players/Get',
                  *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' } ],
@@ -6420,7 +6444,7 @@ gj.grid.plugins.expandCollapseRows = {
                  * @example Plus.Minus.Icons <!-- materialicons, grid -->
                  * <table id="grid"></table>
                  * <script>
-                 *     $('#grid').grid({
+                 *     new GijgoGrid(document.getElementById('grid'), {
                  *         primaryKey: 'ID',
                  *         dataSource: '/Players/Get',
                  *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' } ],
@@ -6452,44 +6476,56 @@ gj.grid.plugins.expandCollapseRows = {
     },
 
     'private': {
-        expandDetail: function (grid, $cell, id) {
-            var $contentRow = $cell.closest('tr'),
-                $detailsRow = $('<tr data-role="details" />'),
-                $detailsCell = $('<td colspan="' + gj.grid.methods.countVisibleColumns(grid) + '" />'),
-                $detailsWrapper = $('<div data-role="display" />'),
+        expandDetail: function (grid, cell, id) {
+            let contentRow = cell.closest('tr'),
+                contentRowIcon = cell.querySelector('div[data-gj-role="display"]'),
+                detailsRow = document.createElement('tr'),
+                detailsCell = document.createElement('td'), 
+                detailsWrapper = document.createElement('div'), 
                 data = grid.getConfig(),
-                position = $contentRow.data('position'),
+                position = contentRow.getAttribute('data-gj-position'),
                 record = grid.get(position),
                 plugin = gj.grid.plugins.expandCollapseRows;
 
+            detailsRow.setAttribute('data-gj-role', 'details');
+            detailsCell.setAttribute('colspan', gj.grid.methods.countVisibleColumns(grid));
+            detailsWrapper.setAttribute('data-gj-role', 'display');
+            detailsRow.appendChild(detailsCell);
+            detailsCell.appendChild(detailsWrapper);
+            detailsWrapper.innerHTML = window.gijgoStorage.get(contentRow, 'details');
+
             if (typeof (id) === undefined) {
                 id = gj.grid.methods.getId(record, data.primaryKey, record);
             }
-            $detailsRow.append($detailsCell.append($detailsWrapper.append($contentRow.data('details'))));
-            $detailsRow.insertAfter($contentRow);
-            $cell.children('div[data-role="display"]').empty().append(data.icons.collapseRow);
-            grid.updateDetails($contentRow);
+            contentRow.parentNode.insertBefore(detailsRow, contentRow.nextSibling);
+            contentRowIcon.innerHTML = '';
+            contentRowIcon.innerHTML = data.icons.collapseRow;
+            grid.updateDetails(position);
             plugin.private.keepSelection(grid, id);
-            plugin.events.detailExpand(grid, $detailsRow.find('td>div'), id);
+            plugin.events.detailExpand(grid.element, detailsWrapper, id);
         },
 
-        collapseDetail: function (grid, $cell, id) {
-            var $contentRow = $cell.closest('tr'),
-                $detailsRow = $contentRow.next('tr[data-role="details"]'),
+        collapseDetail: function (grid, cell, id) {
+            let contentRow = cell.closest('tr'),
+                detailsRow = contentRow.nextSibling,
+                contentRowIcon = cell.querySelector('div[data-gj-role="display"]'),
                 data = grid.getConfig(),
                 plugin = gj.grid.plugins.expandCollapseRows;
 
             if (typeof (id) === undefined) {
                 id = gj.grid.methods.getId(record, data.primaryKey, record);
             }
-            $detailsRow.remove();
-            $cell.children('div[data-role="display"]').empty().append(data.icons.expandRow);
-            plugin.private.removeSelection(grid, id);
-            plugin.events.detailCollapse(grid, $detailsRow.find('td>div'), id);
+            if (detailsRow) {
+                detailsRow.remove();
+                contentRowIcon.innerHTML = '';
+                contentRowIcon.innerHTML = data.icons.expandRow;
+                plugin.private.removeSelection(grid, id);
+                plugin.events.detailCollapse(grid.element, detailsRow.querySelector('td>div'), id);
+            }
         },
 
         keepSelection: function(grid, id) {
-            var data = grid.getConfig();
+            let data = grid.getConfig();
             if (data.keepExpandedRows) {
                 if (Array.isArray(data.expandedRows)) {
                     if (data.expandedRows.indexOf(id) == -1) {
@@ -6502,16 +6538,16 @@ gj.grid.plugins.expandCollapseRows = {
         },
 
         removeSelection: function (grid, id) {
-            var data = grid.getConfig();
-            if (data.keepExpandedRows && $.isArray(data.expandedRows) && data.expandedRows.indexOf(id) > -1) {
+            let data = grid.getConfig();
+            if (data.keepExpandedRows && Array.isArray(data.expandedRows) && data.expandedRows.indexOf(id) > -1) {
                 data.expandedRows.splice(data.expandedRows.indexOf(id), 1);
             }
         },
 
         updateDetailsColSpan: function (grid) {
-            var $cells = grid.find('tbody > tr[data-role="details"] > td');
-            if ($cells && $cells.length) {
-                $cells.attr('colspan', gj.grid.methods.countVisibleColumns(grid));
+            let cell = grid.element.querySelector('tbody > tr[data-role="details"] > td');
+            if (cell) {
+                cell.setAttribute('colspan', gj.grid.methods.countVisibleColumns(grid));
             }
         }        
     },
@@ -6528,7 +6564,7 @@ gj.grid.plugins.expandCollapseRows = {
          * <br/><br/>
          * <table id="grid"></table>
          * <script>
-         *     var grid = $('#grid').grid({
+         *     let grid = new GijgoGrid(document.getElementById('grid'), {
          *         dataSource: '/Players/Get',
          *         detailTemplate: '<div style="text-align: left"><b>Place Of Birth:</b> {PlaceOfBirth}</div>',
          *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'DateOfBirth', type: 'date' } ],
@@ -6537,20 +6573,22 @@ gj.grid.plugins.expandCollapseRows = {
          * </script>
          */
         collapseAll: function () {
-            var grid = this, data = grid.getConfig(), position;
+            let grid = this, data = grid.getConfig(), position, rows;
                 
 
             if (typeof (data.detailTemplate) !== 'undefined') {
                 position = gj.grid.methods.getColumnPositionByRole(grid, 'expander');
-                grid.find('tbody tr[data-role="row"]').each(function () {
-                    gj.grid.plugins.expandCollapseRows.private.collapseDetail(grid, $(this).find('td:eq(' + position + ')'));
-                });
+                rows = grid.element.querySelectorAll('tbody tr[data-gj-role="row"]');
+                for (const row of rows) {
+                    gj.grid.plugins.expandCollapseRows.private.collapseDetail(grid, row.children[position]);
+                };
             }
 
             if (typeof (data.grouping) !== 'undefined') {
-                grid.find('tbody tr[role="group"]').each(function () {
-                    gj.grid.plugins.grouping.private.collapseGroup(data, $(this).find('td:eq(0)'));
-                });
+                rows = grid.element.querySelectorAll('tbody tr[data-gj-role="group"]');
+                for (const row of rows) {
+                    gj.grid.plugins.grouping.private.collapseGroup(data, row.children[0]);
+                };
             }
             return grid;
         },
@@ -6565,7 +6603,7 @@ gj.grid.plugins.expandCollapseRows = {
          * <br/><br/>
          * <table id="grid"></table>
          * <script>
-         *     var grid = $('#grid').grid({
+         *     let grid = new GijgoGrid(document.getElementById('grid'), {
          *         dataSource: '/Players/Get',
          *         detailTemplate: '<div style="text-align: left"><b>Place Of Birth:</b> {PlaceOfBirth}</div>',
          *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'DateOfBirth', type: 'date' } ],
@@ -6574,36 +6612,38 @@ gj.grid.plugins.expandCollapseRows = {
          * </script>
          */
         expandAll: function () {
-            var grid = this, data = grid.getConfig(), position;
+            let grid = this, data = grid.getConfig(), position, rows;
 
             if (typeof (data.detailTemplate) !== 'undefined') {
                 position = gj.grid.methods.getColumnPositionByRole(grid, 'expander');
-                grid.find('tbody tr[data-role="row"]').each(function () {
-                    gj.grid.plugins.expandCollapseRows.private.expandDetail(grid, $(this).find('td:eq(' + position + ')'));
-                });
+                rows = grid.element.querySelectorAll('tbody tr[data-gj-role="row"]');
+                for (const row of rows) {
+                    gj.grid.plugins.expandCollapseRows.private.expandDetail(grid, row.children[position]);
+                };
             }
 
             if (typeof (data.grouping) !== 'undefined') {
-                grid.find('tbody tr[role="group"]').each(function () {
-                    gj.grid.plugins.grouping.private.expandGroup(data, $(this).find('td:eq(0)'));
-                });
+                rows = grid.element.querySelectorAll('tbody tr[data-gj-role="group"]');
+                for (const row of rows) {
+                    gj.grid.plugins.grouping.private.expandGroup(data, row.children[0]);
+                };
             }
             return grid;
         },
 
         //TODO: add documentation
-        updateDetails: function ($contentRow) {
-            var grid = this,
-                $detailWrapper = $contentRow.data('details'),
-                content = $detailWrapper.html(),
-                record = grid.get($contentRow.data('position'));
+        updateDetails: function (position) {
+            let grid = this,
+                detailWrapper = grid.element.querySelector('tbody tr[data-gj-position="' + position + '"]').nextSibling.querySelector('div[data-gj-role="display"]'),
+                content = detailWrapper.innerHTML,
+                record = grid.get(position);
 
             if (record && content) {
-                $detailWrapper.html().replace(/\{(.+?)\}/g, function ($0, $1) {
-                    var column = gj.grid.methods.getColumnInfo(grid, $1);
+                detailWrapper.innerHTML.replace(/\{(.+?)\}/g, function ($0, $1) {
+                    let column = gj.grid.methods.getColumnInfo(grid, $1);
                     content = content.replace($0, gj.grid.methods.formatText(record[$1], column));
                 });
-                $detailWrapper.html(content);
+                detailWrapper.innerHTML = content;
             }
             return grid;
         }
@@ -6615,25 +6655,26 @@ gj.grid.plugins.expandCollapseRows = {
          *
          * @event detailExpand
          * @param {object} e - event data
-         * @param {object} detailWrapper - the detail wrapper as jQuery object 
-         * @param {string} id - the id of the record
+         * @param {object} e.detail.detailWrapper - the detail wrapper as jQuery object 
+         * @param {string} e.detail.id - the id of the record
          * @example sample <!-- grid -->
          * <table id="grid"></table>
          * <script>
-         *     var grid = $('#grid').grid({
+         *     let grid = new GijgoGrid(document.getElementById('grid'), {
          *         primaryKey: 'ID',
          *         dataSource: '/Players/Get',
          *         detailTemplate: '<div></div>',
          *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'DateOfBirth', type: 'date' } ]
          *     });
-         *     grid.on('detailExpand', function (e, $detailWrapper, id) {
-         *         var record = grid.getById(id);
-         *         $detailWrapper.empty().append('<b>Place Of Birth:</b> ' + record.PlaceOfBirth);
+         *     grid.on('detailExpand', function (e) {
+         *         let record = grid.getById(e.detail.id);
+         *         e.detail.detailWrapper.innerHTML = '';
+         *         e.detail.detailWrapper.innerHTML = '<b>Place Of Birth:</b> ' + record.PlaceOfBirth;
          *     });
          * </script>
          */
-        detailExpand: function (grid, $detailWrapper, id) {
-            grid.triggerHandler('detailExpand', [$detailWrapper, id]);
+        detailExpand: function (el, detailWrapper, id) {
+            el.dispatchEvent(new CustomEvent('detailExpand', { detail: { detailWrapper: detailWrapper, id: id } }));
         },
 
         /**
@@ -6641,34 +6682,34 @@ gj.grid.plugins.expandCollapseRows = {
          *
          * @event detailCollapse
          * @param {object} e - event data
-         * @param {object} detailWrapper - the detail wrapper as jQuery object 
-         * @param {string} id - the id of the record
+         * @param {object} e.detail.detailWrapper - the detail wrapper as jQuery object 
+         * @param {string} e.detail.id - the id of the record
          * @example sample <!-- grid -->
          * <table id="grid"></table>
          * <script>
-         *     var grid = $('#grid').grid({
+         *     let grid = new GijgoGrid(document.getElementById('grid'), {
          *         primaryKey: 'ID',
          *         dataSource: '/Players/Get',
          *         detailTemplate: '<div></div>',
          *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'DateOfBirth', type: 'date' } ]
          *     });
-         *     grid.on('detailExpand', function (e, $detailWrapper, id) {
-         *         var record = grid.getById(id);
-         *         $detailWrapper.append('<b>Place Of Birth:</b>' + record.PlaceOfBirth);
+         *     grid.on('detailExpand', function (e) {
+         *         let record = grid.getById(e.detail.id);
+         *         e.detail.detailWrapper.innerHTML = '<b>Place Of Birth:</b>' + record.PlaceOfBirth;
          *     });
-         *     grid.on('detailCollapse', function (e, $detailWrapper, id) {
-         *         $detailWrapper.empty();
+         *     grid.on('detailCollapse', function (e) {
+         *         e.detail.detailWrapper.innerHTML = '';
          *         alert('detailCollapse is fired.');
          *     });
          * </script>
          */
-        detailCollapse: function (grid, $detailWrapper, id) {
-            grid.triggerHandler('detailCollapse', [$detailWrapper, id]);
+        detailCollapse: function (el, detailWrapper, id) {
+            el.dispatchEvent(new CustomEvent('detailCollapse', { detail: { detailWrapper: detailWrapper, id: id } }));
         }
     },
 
     'configure': function (grid) {
-        var column, data = grid.getConfig();
+        let column, data = grid.getConfig();
 
         grid.extend(grid, gj.grid.plugins.expandCollapseRows.public);
 
@@ -6682,20 +6723,21 @@ gj.grid.plugins.expandCollapseRows = {
                 tmpl: data.icons.expandRow,
                 role: 'expander',
                 events: {
-                    'click': function (e) {
-                        var $cell = $(this), methods = gj.grid.plugins.expandCollapseRows.private;
-                        if ($cell.closest('tr').next().attr('data-role') === 'details') {
-                            methods.collapseDetail(grid, $cell, e.data.id);
+                    'click': function (e, id, field, record) {
+                        let methods = gj.grid.plugins.expandCollapseRows.private,
+                            nextRow = this.closest('tr').nextElementSibling;
+                        if (nextRow && nextRow.getAttribute('data-gj-role') === 'details') {
+                            methods.collapseDetail(grid, this, id);
                         } else {
-                            methods.expandDetail(grid, $(this), e.data.id);
+                            methods.expandDetail(grid, this, id);
                         }
                     }
                 }
             };
             data.columns = [column].concat(data.columns);
 
-            grid.on('rowDataBound', function (e, $row, id, record) {
-                $row.data('details', $(data.detailTemplate));
+            grid.on('rowDataBound', function (e) {
+                window.gijgoStorage.put(e.detail.row, 'details', data.detailTemplate);
             });
             grid.on('columnShow', function (e, column) {
                 gj.grid.plugins.expandCollapseRows.private.updateDetailsColSpan(grid);
@@ -6703,8 +6745,8 @@ gj.grid.plugins.expandCollapseRows = {
             grid.on('columnHide', function (e, column) {
                 gj.grid.plugins.expandCollapseRows.private.updateDetailsColSpan(grid);
             });
-            grid.on('rowRemoving', function (e, $row, id, record) {
-                gj.grid.plugins.expandCollapseRows.private.collapseDetail(grid, $row.children('td').first(), id);
+            grid.on('rowRemoving', function (e) {
+                gj.grid.plugins.expandCollapseRows.private.collapseDetail(grid, e.detail.row.children[0], e.detail.id);
             });
             grid.on('dataBinding', function () {
                 grid.collapseAll();
@@ -6713,15 +6755,15 @@ gj.grid.plugins.expandCollapseRows = {
                 grid.collapseAll();
             });
             grid.on('dataBound', function () {
-                var i, $cell, $row, position, data = grid.getConfig();
+                let i, cell, row, position, data = grid.getConfig();
                 if (data.keepExpandedRows && Array.isArray(data.expandedRows)) {
                     for (i = 0; i < data.expandedRows.length; i++) {
-                        $row = gj.grid.methods.getRowById(grid, data.expandedRows[i]);
-                        if ($row && $row.length) {
+                        row = gj.grid.methods.getRowById(grid, data.expandedRows[i]);
+                        if (row) {
                             position = gj.grid.methods.getColumnPositionByRole(grid, 'expander');
-                            $cell = $row.children('td:eq(' + position + ')');
-                            if ($cell && $cell.length) {
-                                gj.grid.plugins.expandCollapseRows.private.expandDetail(grid, $cell);
+                            cell = row.children[position];
+                            if (cell) {
+                                gj.grid.plugins.expandCollapseRows.private.expandDetail(grid, cell);
                             }
                         }
                     }
@@ -6736,25 +6778,25 @@ gj.grid.plugins.expandCollapseRows = {
  */
 gj.grid.plugins.inlineEditing = {
     renderers: {
-        editManager: function (value, record, $cell, $displayEl, id, grid) {
-            var data = grid.getConfig(),
-                $edit = $(data.inlineEditing.editButton).attr('key', id),
-                $delete = $(data.inlineEditing.deleteButton).attr('key', id),
-                $update = $(data.inlineEditing.updateButton).attr('key', id).hide(),
-                $cancel = $(data.inlineEditing.cancelButton).attr('key', id).hide();
-            $edit.on('click', function (e) {
-                grid.edit($(this).attr('key'));
-            });
-            $delete.on('click', function (e) {
-                grid.removeRow($(this).attr('key'));
-            });
-            $update.on('click', function (e) {
-                grid.update($(this).attr('key'));
-            });
-            $cancel.on('click', function (e) {
-                grid.cancel($(this).attr('key'));
-            });
-            $displayEl.empty().append($edit).append($delete).append($update).append($cancel);
+        editManager: function (value, record, cell, displayEl, id, grid) {
+            // let data = grid.getConfig(),
+            //     edit = data.inlineEditing.editButton.attr('key', id),
+            //     delete = data.inlineEditing.deleteButton.attr('key', id),
+            //     update = data.inlineEditing.updateButton.attr('key', id).hide(),
+            //     cancel = data.inlineEditing.cancelButton.attr('key', id).hide();
+            // edit.on('click', function (e) {
+            //     grid.edit((this).attr('key'));
+            // });
+            // delete.on('click', function (e) {
+            //     grid.removeRow((this).attr('key'));
+            // });
+            // update.on('click', function (e) {
+            //     grid.update((this).attr('key'));
+            // });
+            // cancel.on('click', function (e) {
+            //     grid.cancel((this).attr('key'));
+            // });
+            // displayEl.empty().append(edit).append(delete).append(update).append(cancel);
         }
     }
 };
@@ -6769,8 +6811,8 @@ gj.grid.plugins.inlineEditing.config = {
              * @example Material.Design <!-- grid, datepicker, dropdown, checkbox -->
              * <table id="grid"></table>
              * <script>
-             *     var countries = [ 'Bulgaria', 'Brazil', 'England', 'Germany', 'Colombia', 'Poland' ];
-             *     $('#grid').grid({
+             *     let countries = [ 'Bulgaria', 'Brazil', 'England', 'Germany', 'Colombia', 'Poland' ];
+             *     new GijgoGrid(document.getElementById('grid'), {
              *         dataSource: '/Players/Get',
              *         columns: [
              *             { field: 'Name', editor: true },
@@ -6780,17 +6822,18 @@ gj.grid.plugins.inlineEditing.config = {
              *         ]
              *     });
              * </script>
-             * @example Custom.With.Select2 <!-- grid, datepicker, checkbox -->
+             * @example Custom.With.Select2 <!-- jquery, grid, datepicker, checkbox -->
              * <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
              * <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
              * <table id="grid"></table>
              * <script>
-             *     function select2editor($editorContainer, value, record) {
-             *         var select = $('<select><option value="Bulgaria">Bulgaria</option><option value="Brazil">Brazil</option><option value="England">England</option><option value="Germany">Germany</option><option value="Colombia">Colombia</option><option value="Poland">Poland</option></select>');
-             *         $editorContainer.append(select);
-             *         select.select2();
+             *     function select2editor(editorContainer, value, record) {
+             *         let select = document.createElement('select');
+             *         select.innerHTML = '<option value="Bulgaria">Bulgaria</option><option value="Brazil">Brazil</option><option value="England">England</option><option value="Germany">Germany</option><option value="Colombia">Colombia</option><option value="Poland">Poland</option>';
+             *         editorContainer.appendChild(select);
+             *         $(select).select2();
              *     }
-             *     $('#grid').grid({
+             *     new GijgoGrid(document.getElementById('grid'), {
              *         dataSource: '/Players/Get',
              *         columns: [
              *             { field: 'Name', editor: true },
@@ -6803,8 +6846,8 @@ gj.grid.plugins.inlineEditing.config = {
              * @example Bootstrap.3 <!-- bootstrap, grid, datepicker, dropdown, checkbox -->
              * <table id="grid"></table>
              * <script>
-             *     var countries = [ 'Bulgaria', 'Brazil', 'England', 'Germany', 'Colombia', 'Poland' ];
-             *     $('#grid').grid({
+             *     let countries = [ 'Bulgaria', 'Brazil', 'England', 'Germany', 'Colombia', 'Poland' ];
+             *     new GijgoGrid(document.getElementById('grid'), {
              *         uiLibrary: 'bootstrap',
              *         dataSource: '/Players/Get',
              *         columns: [
@@ -6818,7 +6861,7 @@ gj.grid.plugins.inlineEditing.config = {
              * @example Bootstrap.4 <!-- bootstrap4, grid, datepicker, dropdown, checkbox -->
              * <table id="grid"></table>
              * <script>
-             *     $('#grid').grid({
+             *     new GijgoGrid(document.getElementById('grid'), {
              *         uiLibrary: 'bootstrap4',
              *         dataSource: '/Players/Get',
              *         columns: [
@@ -6840,7 +6883,7 @@ gj.grid.plugins.inlineEditing.config = {
              * @example Bootstrap.4 <!-- bootstrap4, grid, datepicker, dropdown, checkbox -->
              * <table id="grid"></table>
              * <script>
-             *     $('#grid').grid({
+             *     new GijgoGrid(document.getElementById('grid'), {
              *         uiLibrary: 'bootstrap4',
              *         dataSource: '/Players/Get',
              *         columns: [
@@ -6861,7 +6904,7 @@ gj.grid.plugins.inlineEditing.config = {
              * @example sample <!-- grid -->
              * <table id="grid"></table>
              * <script>
-             *     $('#grid').grid({
+             *     new GijgoGrid(document.getElementById('grid'), {
              *         dataSource: '/Players/Get',
              *         columns: [
              *             { field: 'ID', width: 56 },
@@ -6882,7 +6925,7 @@ gj.grid.plugins.inlineEditing.config = {
              * @example Double.Click <!-- grid -->
              * <table id="grid"></table>
              * <script>
-             *     var grid = $('#grid').grid({
+             *     let grid = new GijgoGrid(document.getElementById('grid'), {
              *         dataSource: '/Players/Get',
              *         primaryKey: 'ID',
              *         inlineEditing: { mode: 'dblclick' },
@@ -6896,7 +6939,7 @@ gj.grid.plugins.inlineEditing.config = {
              * @example Command <!-- dropdown, grid -->
              * <table id="grid"></table>
              * <script>
-             *     var grid, data = [
+             *     let grid, data = [
              *         { 'ID': 1, 'Name': 'Hristo Stoichkov', 'PlaceOfBirth': 'Plovdiv, Bulgaria' },
              *         { 'ID': 2, 'Name': 'Ronaldo Luís Nazário de Lima', 'PlaceOfBirth': 'Rio de Janeiro, Brazil' },
              *         { 'ID': 3, 'Name': 'David Platt', 'PlaceOfBirth': 'Chadderton, Lancashire, England' },
@@ -6904,7 +6947,7 @@ gj.grid.plugins.inlineEditing.config = {
              *         { 'ID': 5, 'Name': 'James Rodríguez', 'PlaceOfBirth': 'Cúcuta, Colombia' },
              *         { 'ID': 6, 'Name': 'Dimitar Berbatov', 'PlaceOfBirth': 'Blagoevgrad, Bulgaria' }
              *     ];
-             *     grid = $('#grid').grid({
+             *     grid = new GijgoGrid(document.getElementById('grid'), {
              *         dataSource: data,
              *         primaryKey: 'ID',
              *         inlineEditing: { mode: 'command' },
@@ -6919,12 +6962,12 @@ gj.grid.plugins.inlineEditing.config = {
              * @example DateTime <!-- datetimepicker, grid -->
              * <table id="grid"></table>
              * <script>
-             *     var grid, data = [
+             *     let grid, data = [
              *         { 'ID': 1, 'Date': '05/15/2018', 'Time': '21:12', 'DateTime': '21:12 05/15/2018' },
              *         { 'ID': 2, 'Date': '05/16/2018', 'Time': '22:12', 'DateTime': '22:12 05/16/2018' },
              *         { 'ID': 3, 'Date': '05/17/2018', 'Time': '23:12', 'DateTime': '23:12 05/17/2018' }
              *     ];
-             *     grid = $('#grid').grid({
+             *     grid = new GijgoGrid(document.getElementById('grid'), {
              *         dataSource: data,
              *         primaryKey: 'ID',
              *         inlineEditing: { mode: 'command' },
@@ -6946,7 +6989,7 @@ gj.grid.plugins.inlineEditing.config = {
              * @example True <!-- grid, checkbox, datepicker -->
              * <table id="grid"></table>
              * <script>
-             *     var grid, data = [
+             *     let grid, data = [
              *         { 'ID': 1, 'Name': 'Hristo Stoichkov', 'PlaceOfBirth': 'Plovdiv, Bulgaria', 'DateOfBirth': '\/Date(-122954400000)\/', IsActive: false },
              *         { 'ID': 2, 'Name': 'Ronaldo Luís Nazário de Lima', 'PlaceOfBirth': 'Rio de Janeiro, Brazil', 'DateOfBirth': '\/Date(211842000000)\/', IsActive: false },
              *         { 'ID': 3, 'Name': 'David Platt', 'PlaceOfBirth': 'Chadderton, Lancashire, England', 'DateOfBirth': '\/Date(-112417200000)\/', IsActive: false },
@@ -6954,7 +6997,7 @@ gj.grid.plugins.inlineEditing.config = {
              *         { 'ID': 5, 'Name': 'James Rodríguez', 'PlaceOfBirth': 'Cúcuta, Colombia', 'DateOfBirth': '\/Date(679266000000)\/', IsActive: true },
              *         { 'ID': 6, 'Name': 'Dimitar Berbatov', 'PlaceOfBirth': 'Blagoevgrad, Bulgaria', 'DateOfBirth': '\/Date(349653600000)\/', IsActive: false }
              *     ];
-             *     grid = $('#grid').grid({
+             *     grid = new GijgoGrid(document.getElementById('grid'), {
              *         dataSource: data,
              *         primaryKey: 'ID',
              *         inlineEditing: { mode: 'command', managementColumn: true },
@@ -6970,7 +7013,7 @@ gj.grid.plugins.inlineEditing.config = {
              * @example False <!-- materialicons, grid -->
              * <table id="grid"></table>
              * <script>
-             *     var grid, editManager, data = [
+             *     let grid, editManager, data = [
              *         { 'ID': 1, 'Name': 'Hristo Stoichkov', 'PlaceOfBirth': 'Plovdiv, Bulgaria' },
              *         { 'ID': 2, 'Name': 'Ronaldo Luís Nazário de Lima', 'PlaceOfBirth': 'Rio de Janeiro, Brazil' },
              *         { 'ID': 3, 'Name': 'David Platt', 'PlaceOfBirth': 'Chadderton, Lancashire, England' },
@@ -6978,39 +7021,39 @@ gj.grid.plugins.inlineEditing.config = {
              *         { 'ID': 5, 'Name': 'James Rodríguez', 'PlaceOfBirth': 'Cúcuta, Colombia' },
              *         { 'ID': 6, 'Name': 'Dimitar Berbatov', 'PlaceOfBirth': 'Blagoevgrad, Bulgaria' }
              *     ];
-             *     editManager = function (value, record, $cell, $displayEl, id, grid) {
-             *         var data = grid.getConfig(),
-             *             $edit = $('<button class="gj-button-md"><i class="material-icons">mode_edit</i> Edit</button>').attr('data-key', id),
-             *             $delete = $('<button class="gj-button-md"><i class="material-icons">delete</i> Delete</button>').attr('data-key', id),
-             *             $update = $('<button class="gj-button-md"><i class="material-icons">check_circle</i> Update</button>').attr('data-key', id).hide(),
-             *             $cancel = $('<button class="gj-button-md"><i class="material-icons">cancel</i> Cancel</button>').attr('data-key', id).hide();
-             *         $edit.on('click', function (e) {
-             *             grid.edit($(this).data('key'));
-             *             $edit.hide();
-             *             $delete.hide();
-             *             $update.show();
-             *             $cancel.show();
+             *     editManager = function (value, record, cell, displayEl, id, grid) {
+             *         let data = grid.getConfig(),
+             *             edit = ('<button class="gj-button-md"><i class="material-icons">mode_edit</i> Edit</button>').attr('data-gj-key', id),
+             *             delete = ('<button class="gj-button-md"><i class="material-icons">delete</i> Delete</button>').attr('data-gj-key', id),
+             *             update = ('<button class="gj-button-md"><i class="material-icons">check_circle</i> Update</button>').attr('data-gj-key', id).hide(),
+             *             cancel = ('<button class="gj-button-md"><i class="material-icons">cancel</i> Cancel</button>').attr('data-gj-key', id).hide();
+             *         edit.on('click', function (e) {
+             *             grid.edit((this).data('key'));
+             *             edit.hide();
+             *             delete.hide();
+             *             update.show();
+             *             cancel.show();
              *         });
-             *         $delete.on('click', function (e) {
-             *             grid.removeRow($(this).data('key'));
+             *         delete.on('click', function (e) {
+             *             grid.removeRow((this).data('key'));
              *         });
-             *         $update.on('click', function (e) {
-             *             grid.update($(this).data('key'));
-             *             $edit.show();
-             *             $delete.show();
-             *             $update.hide();
-             *             $cancel.hide();
+             *         update.on('click', function (e) {
+             *             grid.update((this).data('key'));
+             *             edit.show();
+             *             delete.show();
+             *             update.hide();
+             *             cancel.hide();
              *         });
-             *         $cancel.on('click', function (e) {
-             *             grid.cancel($(this).data('key'));
-             *             $edit.show();
-             *             $delete.show();
-             *             $update.hide();
-             *             $cancel.hide();
+             *         cancel.on('click', function (e) {
+             *             grid.cancel((this).data('key'));
+             *             edit.show();
+             *             delete.show();
+             *             update.hide();
+             *             cancel.hide();
              *         });
-             *         $displayEl.empty().append($edit).append($delete).append($update).append($cancel);
+             *         displayEl.empty().append(edit).append(delete).append(update).append(cancel);
              *     }
-             *     grid = $('#grid').grid({
+             *     grid = new GijgoGrid(document.getElementById('grid'), {
              *         dataSource: data,
              *         primaryKey: 'ID',
              *         inlineEditing: { mode: 'command', managementColumn: false },
@@ -7025,7 +7068,7 @@ gj.grid.plugins.inlineEditing.config = {
              * @example Bootstrap <!-- bootstrap, grid, dropdown -->
              * <table id="grid"></table>
              * <script>
-             *     var grid, data = [
+             *     let grid, data = [
              *         { 'ID': 1, 'Name': 'Hristo Stoichkov', 'PlaceOfBirth': 'Plovdiv, Bulgaria' },
              *         { 'ID': 2, 'Name': 'Ronaldo Luís Nazário de Lima', 'PlaceOfBirth': 'Rio de Janeiro, Brazil' },
              *         { 'ID': 3, 'Name': 'David Platt', 'PlaceOfBirth': 'Chadderton, Lancashire, England' },
@@ -7033,7 +7076,7 @@ gj.grid.plugins.inlineEditing.config = {
              *         { 'ID': 5, 'Name': 'James Rodríguez', 'PlaceOfBirth': 'Cúcuta, Colombia' },
              *         { 'ID': 6, 'Name': 'Dimitar Berbatov', 'PlaceOfBirth': 'Blagoevgrad, Bulgaria' }
              *     ];
-             *     grid = $('#grid').grid({
+             *     grid = new GijgoGrid(document.getElementById('grid'), {
              *         dataSource: data,
              *         primaryKey: 'ID',
              *         inlineEditing: { mode: 'command' },
@@ -7049,7 +7092,7 @@ gj.grid.plugins.inlineEditing.config = {
              * @example Bootstrap.4 <!-- bootstrap4, grid, dropdown -->
              * <table id="grid"></table>
              * <script>
-             *     var grid, data = [
+             *     let grid, data = [
              *         { 'ID': 1, 'Name': 'Hristo Stoichkov', 'PlaceOfBirth': 'Plovdiv, Bulgaria' },
              *         { 'ID': 2, 'Name': 'Ronaldo Luís Nazário de Lima', 'PlaceOfBirth': 'Rio de Janeiro, Brazil' },
              *         { 'ID': 3, 'Name': 'David Platt', 'PlaceOfBirth': 'Chadderton, Lancashire, England' },
@@ -7057,7 +7100,7 @@ gj.grid.plugins.inlineEditing.config = {
              *         { 'ID': 5, 'Name': 'James Rodríguez', 'PlaceOfBirth': 'Cúcuta, Colombia' },
              *         { 'ID': 6, 'Name': 'Dimitar Berbatov', 'PlaceOfBirth': 'Blagoevgrad, Bulgaria' }
              *     ];
-             *     grid = $('#grid').grid({
+             *     grid = new GijgoGrid(document.getElementById('grid'), {
              *         dataSource: data,
              *         primaryKey: 'ID',
              *         inlineEditing: { mode: 'command' },
@@ -7105,124 +7148,132 @@ gj.grid.plugins.inlineEditing.private = {
         }
     },
 
-    editMode: function (grid, $cell, column, record) {
-        var $displayContainer, $editorContainer, $editorField, value, config, data = grid.getConfig();
-        if ($cell.attr('data-mode') !== 'edit') {
+    editMode: function (grid, cell, column, record) {
+        let displayContainer, editorContainer, editorField, value, config, data = grid.getConfig();
+        if (cell.getAttribute('data-gj-mode') !== 'edit') {
             if (column.editor) {
                 gj.grid.plugins.inlineEditing.private.updateOtherCells(grid, column.mode);
-                $displayContainer = $cell.find('div[data-role="display"]').hide();
-                $editorContainer = $cell.find('div[data-role="edit"]').show();
-                if ($editorContainer.length === 0) {
-                    $editorContainer = $('<div data-role="edit" />');
-                    $cell.append($editorContainer);
+                displayContainer = cell.querySelector('div[data-gj-role="display"]');
+                displayContainer.style.display = 'none';
+                editorContainer = cell.querySelector('div[data-gj-role="edit"]');
+                if (!editorContainer) {
+                    editorContainer = document.createElement('div');
+                    editorContainer.setAttribute('data-gj-role', 'edit');
+                    cell.appendChild(editorContainer);
                 }
+                editorContainer.style.display = 'block';
                 value = record[column.editField || column.field];
-                $editorField = $editorContainer.find('input, select, textarea').first();
-                if ($editorField.length) {
+                editorField = editorContainer.querySelector('input, select, textarea');
+                if (editorField) {
                     switch (column.type) {
                         case 'checkbox':
-                            $editorField.prop('checked', value);
+                            editorField.checked = value;
                             break;
                         case 'dropdown':
-                            $editorField = $editorField.dropdown('value', value);
+                            editorField = editorField.value;
                             break;
                         default:
-                            $editorField.val(value);
+                            editorField.value = value;
                     }
                 } else {
                     if (typeof (column.editor) === 'function') {
-                        column.editor($editorContainer, value, record);
-                        $editorField = $editorContainer.find('input, select, textarea').first();
+                        column.editor(editorContainer, value, record);
+                        editorField = editorContainer.querySelector('input, select, textarea');
                     } else {
                         config = typeof column.editor === "object" ? column.editor : {};
                         config.uiLibrary = data.uiLibrary;
                         config.iconsLibrary = data.iconsLibrary;
-                        config.fontSize = grid.css('font-size');
+                        config.fontSize = grid.element.style.fontSize;
                         config.showOnFocus = false;
                         if ('checkbox' === column.type && gj.checkbox) {
-                            $editorField = $('<input type="checkbox" />').prop('checked', value);
-                            $editorContainer.append($editorField);
-                            $editorField.checkbox(config);
+                            editorField = document.createElement('input');
+                            editorField.setAttribute('type', 'checkbox');
+                            editorField.checked = value;
+                            editorContainer.appendChild(editorField);
+                            new GijgoCheckBox(editorField, config);
                         } else if (('date' === column.type && gj.datepicker) || ('time' === column.type && gj.timepicker) || ('datetime' === column.type && gj.datetimepicker)) {
-                            $editorField = $('<input type="text" width="100%"/>');
-                            $editorContainer.append($editorField);
+                            editorField = document.createElement('input');
+                            editorField.setAttribute('type', 'text');
+                            editorField.setAttribute('width', '100%');
+                            editorContainer.appendChild(editorField);
                             if (column.format) {
                                 config.format = column.format;
                             }
                             switch (column.type) {
                                 case 'date':
-                                    $editorField = $editorField.datepicker(config);
+                                    editorField = new GijgoDatePicker(editorField, config);
                                     break;
                                 case 'time':
-                                    $editorField = $editorField.timepicker(config);
+                                    editorField = new GijgoTimePicker(editorField, config);
                                     break;
                                 case 'datetime':
-                                    $editorField = $editorField.datetimepicker(config);
+                                    editorField = new GijgoDateTimePicker(editorField, config);
                                     break;
                             }
-                            if ($editorField.value) {
-                                $editorField.value($displayContainer.html());
+                            if (editorField.value) {
+                                editorField.value(value);
                             }
                         } else if ('dropdown' === column.type && gj.dropdown) {
-                            $editorField = $('<select type="text" width="100%"/>');
-                            $editorContainer.append($editorField);
+                            editorField = document.createElement('select');
+                            editorField.setAttribute('width', '100%');
+                            editorContainer.appendChild(editorField);
                             config.dataBound = function (e) {
-                                var $dropdown = $(this).dropdown();
+                                let dropdown = (this).dropdown();
                                 if (column.editField) {
-                                    $dropdown.value(record[column.editField]);
+                                    dropdown.value(record[column.editField]);
                                 } else {
-                                    $dropdown.value(record[column.field]);
+                                    dropdown.value(record[column.field]);
                                 }
                             };
-                            $editorField = $editorField.dropdown(config);
+                            editorField = editorField.dropdown(config);
                         } else {
-                            $editorField = $('<input type="text" value="' + value + '" class="gj-width-full"/>');
+                            editorField = ('<input type="text" value="' + value + '" class="gj-width-full"/>');
                             if (data.uiLibrary === 'materialdesign') {
-                                $editorField.addClass('gj-textbox-md').css('font-size', grid.css('font-size'));
+                                editorField.addClass('gj-textbox-md').css('font-size', grid.css('font-size'));
                             }
-                            $editorContainer.append($editorField);
+                            editorContainer.append(editorField);
                         }
                     }
                     if (data.inlineEditing.mode !== 'command' && column.mode !== 'editOnly') {
-                        $editorField = $editorContainer.find('input, select, textarea').first();
-                        $editorField.on('keyup', function (e) {
+                        editorField = editorContainer.querySelectorAll('input, select, textarea')[0];
+                        editorField.addEventListener('keyup', function (e) {
                             if (e.keyCode === 13 || e.keyCode === 27) {
-                                gj.grid.plugins.inlineEditing.private.displayMode(grid, $cell, column);
+                                gj.grid.plugins.inlineEditing.private.displayMode(grid, cell, column);
                             }
                         });
                     }
                 }
-                if ($editorField.prop('tagName').toUpperCase() === "INPUT" && $editorField.prop('type').toUpperCase() === 'TEXT') {
-                    gj.core.setCaretAtEnd($editorField[0]);
+                if (editorField.tagName.toUpperCase() === "INPUT" && editorField.getAttribute('type').toUpperCase() === 'TEXT') {
+                    gj.core.setCaretAtEnd(editorField[0]);
                 } else {
-                    $editorField.focus();
+                    editorField.focus();
                 }
-                $cell.attr('data-mode', 'edit');
+                cell.setAttribute('data-gj-mode', 'edit');
             } else if (column.role === 'managementColumn') {
-                $cell.find('[role="edit"]').hide();
-                $cell.find('[role="delete"]').hide();
-                $cell.find('[role="update"]').show();
-                $cell.find('[role="cancel"]').show();
+                cell.querySelector('[role="edit"]').style.display = 'none';
+                cell.querySelector('[role="delete"]').style.display = 'none';
+                cell.querySelector('[role="update"]').style.display = 'block';
+                cell.querySelector('[role="cancel"]').style.display = 'block';
             }
         }
     },
 
-    displayMode: function (grid, $cell, column, cancel) {
-        var $editorContainer, $displayContainer, $ele, newValue, newEditFieldValue, record, position, style = '';
+    displayMode: function (grid, cell, column, cancel) {
+        let editorContainer, displayContainer, ele, newValue, newEditFieldValue, record, position, style = '';
         if (column.mode !== 'editOnly') {
-            if ($cell.attr('data-mode') === 'edit') {
-                $editorContainer = $cell.find('div[data-role="edit"]');
-                $displayContainer = $cell.find('div[data-role="display"]');
-                $ele = $editorContainer.find('input, select, textarea').first();
-                if ($ele[0].tagName.toUpperCase() === "SELECT" && $ele[0].selectedIndex > -1) {
-                    newValue = $ele[0].options[$ele[0].selectedIndex].innerHTML;
-                    newEditFieldValue = $ele[0].value;
-                } else if ($ele[0].tagName.toUpperCase() === "INPUT" && $ele[0].type.toUpperCase() === "CHECKBOX") {
-                    newValue = $ele[0].checked;
+            if (cell.getAttribute('data-gj-mode') === 'edit') {
+                editorContainer = cell.querySelector('div[data-gj-role="edit"]');
+                displayContainer = cell.querySelector('div[data-gj-role="display"]');
+                ele = editorContainer.querySelectorAll('input, select, textarea');
+                if (ele[0].tagName.toUpperCase() === "SELECT" && ele[0].selectedIndex > -1) {
+                    newValue = ele[0].options[ele[0].selectedIndex].innerHTML;
+                    newEditFieldValue = ele[0].value;
+                } else if (ele[0].tagName.toUpperCase() === "INPUT" && ele[0].type.toUpperCase() === "CHECKBOX") {
+                    newValue = ele[0].checked;
                 } else {
-                    newValue = $ele.val();
+                    newValue = ele[0].value;
                 }
-                position = $cell.parent().data('position');
+                position = cell.parentNode.getAttribute('data-gj-position');
                 record = grid.get(position);
                 if (cancel !== true && newValue !== record[column.field]) {
                     record[column.field] = column.type === 'date' ? gj.core.parseDate(newValue, column.format) : newValue;
@@ -7230,40 +7281,43 @@ gj.grid.plugins.inlineEditing.private = {
                         record[column.editField] = newEditFieldValue || newValue;
                     }
                     if (column.mode !== 'editOnly') {
-                        gj.grid.methods.renderDisplayElement(grid, $displayContainer, column, record, gj.grid.methods.getId(record, grid.getConfig().primaryKey, position), 'update');
-                        if ($cell.find('span.gj-dirty').length === 0) {
-                            $cell.prepend($('<span class="gj-dirty" />'));
+                        gj.grid.methods.renderDisplayElement(grid, displayContainer, column, record, gj.grid.methods.getId(record, grid.getConfig().primaryKey, position), 'update');
+                        if (cell.querySelector('span.gj-dirty')) {
+                            cell.insertBefore('<span class="gj-dirty" />', cell.firstChild);
                         }
                     }
-                    gj.grid.plugins.inlineEditing.events.cellDataChanged(grid, $cell, column, record, newValue);
+                    gj.grid.plugins.inlineEditing.events.cellDataChanged(grid.element, cell, column, record, newValue);
                     gj.grid.plugins.inlineEditing.private.updateChanges(grid, column, record, newValue);
                 }
-                $editorContainer.hide();
-                $displayContainer.show();
-                $cell.attr('data-mode', 'display');
+                editorContainer.style.display = 'none';
+                displayContainer.style.display = 'block';
+                cell.setAttribute('data-gj-mode', 'display');
             }
             if (column.role === 'managementColumn') {
-                $cell.find('[role="update"]').hide();
-                $cell.find('[role="cancel"]').hide();
-                $cell.find('[role="edit"]').show();
-                $cell.find('[role="delete"]').show();
+                cell.querySelector('[role="update"]').style.display = 'none';
+                cell.querySelector('[role="cancel"]').style.display = 'none';
+                cell.querySelector('[role="edit"]').style.display = 'block';
+                cell.querySelector('[role="delete"]').style.display = 'block';
             }
         }
     },
 
     updateOtherCells: function(grid, mode) {
-        var data = grid.getConfig();
+        let data = grid.getConfig(), editors, cell;
         if (data.inlineEditing.mode !== 'command' && mode !== 'editOnly') {
-            grid.find('div[data-role="edit"]:visible').parent('td').each(function () {
-                var $cell = $(this),
-                    column = data.columns[$cell.index()];
-                gj.grid.plugins.inlineEditing.private.displayMode(grid, $cell, column);
-            });
+            editors = grid.element.querySelectorAll('div[data-gj-role="edit"]');
+            for (const editor of editors) {
+                if (editor.style.display === 'block') {
+                    cell = editor.parentNode;
+                    column = data.columns[Array.from(cell.parentNode.children).indexOf(cell)];
+                    gj.grid.plugins.inlineEditing.private.displayMode(grid, cell, column);
+                }
+            }
         }
     },
 
     updateChanges: function (grid, column, sourceRecord, newValue) {
-        var targetRecords, filterResult, newRecord, data = grid.getConfig();
+        let targetRecords, filterResult, newRecord, data = grid.getConfig();
         if (!data.guid) {
             data.guid = gj.grid.plugins.inlineEditing.private.generateGUID();
         }
@@ -7310,12 +7364,12 @@ gj.grid.plugins.inlineEditing.public = {
      * <br/><br/>
      * <table id="grid"></table>
      * <script>
-     *     var grid = $('#grid').grid({
+     *     let grid = new GijgoGrid(document.getElementById('grid'), {
      *         primaryKey: 'ID',
      *         dataSource: '/Players/Get',
      *         columns: [ { field: 'ID' }, { field: 'Name', editor: true }, { field: 'PlaceOfBirth', editor: true } ]
      *     });
-     *     $('#btnGetChanges').on('click', function () {
+     *     document.getElementById('btnGetChanges').addEventListener('click', function () {
      *         alert(JSON.stringify(grid.getChanges()));
      *     });
      * </script>
@@ -7333,23 +7387,23 @@ gj.grid.plugins.inlineEditing.public = {
      * <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
      * <table id="grid"></table>
      * <script>
-     *     var grid, renderer;
-     *     renderer = function (value, record, $cell, $displayEl, id) {
-     *         var $editBtn = $('<i class="fa fa-pencil gj-cursor-pointer" data-key="' + id + '"></i>'),
-     *             $updateBtn = $('<i class="fa fa-save gj-cursor-pointer" data-key="' + id + '"></i>').hide();
-     *         $editBtn.on('click', function (e) {
-     *             grid.edit($(this).data('key'));
-     *             $editBtn.hide();
-     *             $updateBtn.show();
+     *     let grid, renderer;
+     *     renderer = function (value, record, cell, displayEl, id) {
+     *         let editBtn = ('<i class="fa fa-pencil gj-cursor-pointer" data-gj-key="' + id + '"></i>'),
+     *             updateBtn = ('<i class="fa fa-save gj-cursor-pointer" data-gj-key="' + id + '"></i>').hide();
+     *         editBtn.on('click', function (e) {
+     *             grid.edit((this).data('key'));
+     *             editBtn.hide();
+     *             updateBtn.show();
      *         });
-     *         $updateBtn.on('click', function (e) {
-     *             grid.update($(this).data('key'));
-     *             $editBtn.show();
-     *             $updateBtn.hide();
+     *         updateBtn.on('click', function (e) {
+     *             grid.update((this).data('key'));
+     *             editBtn.show();
+     *             updateBtn.hide();
      *         });
-     *         $displayEl.append($editBtn).append($updateBtn);
+     *         displayEl.append(editBtn).append(updateBtn);
      *     }
-     *     grid = $('#grid').grid({
+     *     grid = new GijgoGrid(document.getElementById('grid'), {
      *         primaryKey: 'ID',
      *         dataSource: '/Players/Get',
      *         inlineEditing: { mode: 'command', managementColumn: false },
@@ -7363,12 +7417,12 @@ gj.grid.plugins.inlineEditing.public = {
      * </script>
      */
     edit: function (id) {
-        var i, record = this.getById(id),
-            $cells = gj.grid.methods.getRowById(this, id).children('td'),
+        let i, record = this.getById(id),
+            cells = gj.grid.methods.getRowById(this, id).children('td'),
             columns = this.data('columns');
 
-        for (i = 0; i < $cells.length; i++) {
-            gj.grid.plugins.inlineEditing.private.editMode(this, $($cells[i]), columns[i], record);
+        for (i = 0; i < cells.length; i++) {
+            gj.grid.plugins.inlineEditing.private.editMode(this, (cells[i]), columns[i], record);
         }
             
         return this;
@@ -7384,23 +7438,23 @@ gj.grid.plugins.inlineEditing.public = {
      * <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
      * <table id="grid"></table>
      * <script>
-     *     var grid, renderer;
-     *     renderer = function (value, record, $cell, $displayEl, id) {
-     *         var $editBtn = $('<i class="fa fa-pencil gj-cursor-pointer" data-key="' + id + '"></i>'),
-     *             $updateBtn = $('<i class="fa fa-save gj-cursor-pointer" data-key="' + id + '"></i>').hide();
-     *         $editBtn.on('click', function (e) {
-     *             grid.edit($(this).data('key'));
-     *             $editBtn.hide();
-     *             $updateBtn.show();
+     *     let grid, renderer;
+     *     renderer = function (value, record, cell, displayEl, id) {
+     *         let editBtn = ('<i class="fa fa-pencil gj-cursor-pointer" data-gj-key="' + id + '"></i>'),
+     *             updateBtn = ('<i class="fa fa-save gj-cursor-pointer" data-gj-key="' + id + '"></i>').hide();
+     *         editBtn.on('click', function (e) {
+     *             grid.edit((this).data('key'));
+     *             editBtn.hide();
+     *             updateBtn.show();
      *         });
-     *         $updateBtn.on('click', function (e) {
-     *             grid.update($(this).data('key'));
-     *             $editBtn.show();
-     *             $updateBtn.hide();
+     *         updateBtn.on('click', function (e) {
+     *             grid.update((this).data('key'));
+     *             editBtn.show();
+     *             updateBtn.hide();
      *         });
-     *         $displayEl.append($editBtn).append($updateBtn);
+     *         displayEl.append(editBtn).append(updateBtn);
      *     }
-     *     grid = $('#grid').grid({
+     *     grid = new GijgoGrid(document.getElementById('grid'), {
      *         primaryKey: 'ID',
      *         dataSource: '/Players/Get',
      *         inlineEditing: { mode: 'command', managementColumn: false },
@@ -7414,15 +7468,15 @@ gj.grid.plugins.inlineEditing.public = {
      * </script>
      */
     update: function (id) {
-        var i, record = this.getById(id),
-            $cells = gj.grid.methods.getRowById(this, id).children('td'),
+        let i, record = this.getById(id),
+            cells = gj.grid.methods.getRowById(this, id).children('td'),
             columns = this.data('columns');
 
-        for (i = 0; i < $cells.length; i++) {
-            gj.grid.plugins.inlineEditing.private.displayMode(this, $($cells[i]), columns[i], false);
+        for (i = 0; i < cells.length; i++) {
+            gj.grid.plugins.inlineEditing.private.displayMode(this, (cells[i]), columns[i], false);
         }
 
-        gj.grid.plugins.inlineEditing.events.rowDataChanged(this, id, record);
+        gj.grid.plugins.inlineEditing.events.rowDataChanged(this.element, id, record);
 
         return this;
     },
@@ -7436,23 +7490,23 @@ gj.grid.plugins.inlineEditing.public = {
      * <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
      * <table id="grid"></table>
      * <script>
-     *     var grid, renderer;
-     *     renderer = function (value, record, $cell, $displayEl, id) {
-     *         var $editBtn = $('<i class="fa fa-pencil gj-cursor-pointer" data-key="' + id + '"></i>'),
-     *             $cancelBtn = $('<i class="fa fa-undo gj-cursor-pointer" data-key="' + id + '"></i>').hide();
-     *         $editBtn.on('click', function (e) {
-     *             grid.edit($(this).data('key'));
-     *             $editBtn.hide();
-     *             $cancelBtn.show();
+     *     let grid, renderer;
+     *     renderer = function (value, record, cell, displayEl, id) {
+     *         let editBtn = ('<i class="fa fa-pencil gj-cursor-pointer" data-gj-key="' + id + '"></i>'),
+     *             cancelBtn = ('<i class="fa fa-undo gj-cursor-pointer" data-gj-key="' + id + '"></i>').hide();
+     *         editBtn.on('click', function (e) {
+     *             grid.edit((this).data('key'));
+     *             editBtn.hide();
+     *             cancelBtn.show();
      *         });
-     *         $cancelBtn.on('click', function (e) {
-     *             grid.cancel($(this).data('key'));
-     *             $editBtn.show();
-     *             $cancelBtn.hide();
+     *         cancelBtn.on('click', function (e) {
+     *             grid.cancel((this).data('key'));
+     *             editBtn.show();
+     *             cancelBtn.hide();
      *         });
-     *         $displayEl.append($editBtn).append($cancelBtn);
+     *         displayEl.append(editBtn).append(cancelBtn);
      *     }
-     *     grid = $('#grid').grid({
+     *     grid = new GijgoGrid(document.getElementById('grid'), {
      *         primaryKey: 'ID',
      *         dataSource: '/Players/Get',
      *         inlineEditing: { mode: 'command', managementColumn: false },
@@ -7466,12 +7520,12 @@ gj.grid.plugins.inlineEditing.public = {
      * </script>
      */
     cancel: function (id) {
-        var i, record = this.getById(id),
-            $cells = gj.grid.methods.getRowById(this, id).children('td'),
+        let i, record = this.getById(id),
+            cells = gj.grid.methods.getRowById(this, id).children('td'),
             columns = this.data('columns');
 
-        for (i = 0; i < $cells.length; i++) {
-            gj.grid.plugins.inlineEditing.private.displayMode(this, $($cells[i]), columns[i], true);
+        for (i = 0; i < cells.length; i++) {
+            gj.grid.plugins.inlineEditing.private.displayMode(this, (cells[i]), columns[i], true);
         }
 
         return this;
@@ -7484,24 +7538,25 @@ gj.grid.plugins.inlineEditing.events = {
      *
      * @event cellDataChanged
      * @param {object} e - event data
-     * @param {object} $cell - the cell presented as jquery object 
-     * @param {object} column - the column configuration data
-     * @param {object} record - the data of the row record
-     * @param {object} newValue - the new cell value
+     * @param {object} e.detail.cell - the cell presented as jquery object 
+     * @param {object} e.detail.column - the column configuration data
+     * @param {object} e.detail.record - the data of the row record
+     * @param {object} e.detail.oldValue - the old cell value
+     * @param {object} e.detail.newValue - the new cell value
      * @example sample <!-- grid -->
      * <table id="grid"></table>
      * <script>
-     *     var grid = $('#grid').grid({
+     *     let grid = new GijgoGrid(document.getElementById('grid'), {
      *         dataSource: '/Players/Get',
      *         columns: [ { field: 'ID', width: 56 }, { field: 'Name', editor: true }, { field: 'PlaceOfBirth', editor: true } ]
      *     });
-     *     grid.on('cellDataChanged', function (e, $cell, column, record, newValue) {
-     *         alert('The value for "' + column.field + '" is changed to "' + newValue + '"');
+     *     grid.on('cellDataChanged', function (e) {
+     *         alert('The value for "' + e.detail.column.field + '" is changed to "' + e.detail.newValue + '"');
      *     });
      * </script>
      */
-    cellDataChanged: function (grid, $cell, column, record, oldValue, newValue) {
-        grid.triggerHandler('cellDataChanged', [$cell, column, record, oldValue, newValue]);
+    cellDataChanged: function (el, cell, column, record, oldValue, newValue) {
+        el.dispatchEvent(new CustomEvent('cellDataChanged', { detail: { cell: cell, column: column, record: record, oldValue: oldValue, newValue: newValue } }));
     },
 
     /**
@@ -7509,35 +7564,35 @@ gj.grid.plugins.inlineEditing.events = {
      *
      * @event rowDataChanged
      * @param {object} e - event data
-     * @param {object} id - the id of the record
-     * @param {object} record - the data of the row record
+     * @param {object} e.detail.id - the id of the record
+     * @param {object} e.detail.record - the data of the row record
      * @example sample <!-- grid -->
      * <table id="grid"></table>
      * <script>
-     *     var grid = $('#grid').grid({
+     *     let grid = new GijgoGrid(document.getElementById('grid'), {
      *         primaryKey: 'ID',
      *         dataSource: '/Players/Get',
      *         inlineEditing: { mode: 'command' },
      *         columns: [ { field: 'ID', width: 56 }, { field: 'Name', editor: true }, { field: 'PlaceOfBirth', editor: true } ]
      *     });
-     *     grid.on('rowDataChanged', function (e, id, record) {
-     *         alert('Record with id="' + id + '" is changed to "' + JSON.stringify(record) + '"');
+     *     grid.on('rowDataChanged', function (e) {
+     *         alert('Record with id="' + e.detail.id + '" is changed to "' + JSON.stringify(e.detail.record) + '"');
      *     });
      * </script>
      */
-    rowDataChanged: function (grid, id, record) {
-        grid.triggerHandler('rowDataChanged', [id, record]);
+    rowDataChanged: function (el, id, record) {
+        el.dispatchEvent(new CustomEvent('rowDataChanged', { detail: { id: id, record: record } }));
     }
 };
 
 gj.grid.plugins.inlineEditing.configure = function (grid, fullConfig, clientConfig) {
-    var data = grid.getConfig();
+    let data = grid.getConfig();
     grid.extend(grid, gj.grid.plugins.inlineEditing.public);
     if (clientConfig.inlineEditing) {
         grid.on('dataBound', function () {
-            grid.find('span.gj-dirty').remove();
+            grid.element.querySelector('span.gj-dirty').remove();
         });
-        grid.on('rowDataBound', function (e, $row, id, record) {
+        grid.on('rowDataBound', function (e, row, id, record) {
             grid.cancel(id);
         });
     }
@@ -7552,7 +7607,7 @@ gj.grid.plugins.inlineEditing.configure = function (grid, fullConfig, clientConf
                 if (e.detail.column.mode === 'editOnly') {
                     gj.grid.plugins.inlineEditing.private.editMode(grid, e.detail.displayEl.parentNode, e.detail.column, e.detail.record);
                 } else {
-                    displayEl.closest('td').on(data.inlineEditing.mode === 'dblclick' ? 'dblclick' : 'click', function () {
+                    e.detail.displayEl.closest('td').addEventListener(data.inlineEditing.mode === 'dblclick' ? 'dblclick' : 'click', function () {
                         gj.grid.plugins.inlineEditing.private.editMode(grid, e.detail.displayEl.parentNode, e.detail.column, e.detail.record);
                     });
                 }
@@ -7580,7 +7635,7 @@ gj.grid.plugins.optimisticPersistence = {
                  * <p>Change the page and/or page size and then refresh the grid.</p>
                  * <table id="grid"></table>
                  * <script>
-                 *     var grid = $('#grid').grid({
+                 *     var grid = new GijgoGrid(document.getElementById('grid'), {
                  *         guid: '58d47231-ac7b-e6d2-ddba-5e0195b31f2e',
                  *         uiLibrary: 'bootstrap',
                  *         dataSource: '/Players/Get',
@@ -7602,7 +7657,7 @@ gj.grid.plugins.optimisticPersistence = {
                  * <p>Change the page and/or page size and then refresh the grid. </p>
                  * <table id="grid"></table>
                  * <script>
-                 *     var grid = $('#grid').grid({
+                 *     var grid = new GijgoGrid(document.getElementById('grid'), {
                  *         guid: '58d47231-ac7b-e6d2-ddba-5e0195b31f2f',
                  *         uiLibrary: 'bootstrap',
                  *         dataSource: '/Players/Get',
@@ -8498,7 +8553,7 @@ gj.grid.plugins.responsiveDesign = {
              * <p>Change browser window size in order to fire resize event.</p>
              * <table id="grid"></table>
              * <script>
-             *     var grid = $('#grid').grid({
+             *     var grid = new GijgoGrid(document.getElementById('grid'), {
              *         dataSource: '/Players/Get',
              *         responsive: true,
              *         resizeCheckInterval: 2000, //check if the grid is resized on each 2 second
@@ -8520,7 +8575,7 @@ gj.grid.plugins.responsiveDesign = {
              * <p>Resize browser window in order to see his responsive behaviour.</p>
              * <table id="grid"></table>
              * <script>
-             *     $('#grid').grid({
+             *     new GijgoGrid(document.getElementById('grid'), {
              *         dataSource: '/Players/Get',
              *         responsive: true,
              *         columns: [
@@ -8541,7 +8596,7 @@ gj.grid.plugins.responsiveDesign = {
              * @example Remote.Data.Source <!-- bootstrap, grid, grid.expandCollapseRows, grid.responsiveDesign -->
              * <table id="grid"></table>
              * <script>
-             *     $('#grid').grid({
+             *     new GijgoGrid(document.getElementById('grid'), {
              *         dataSource: '/Players/Get',
              *         detailTemplate: '<div class="row"></div>',
              *         responsive: true,
@@ -8562,7 +8617,7 @@ gj.grid.plugins.responsiveDesign = {
              *         { 'ID': 2, 'Name': 'Ronaldo Luis Nazario de Lima', 'PlaceOfBirth': 'Rio de Janeiro, Brazil' },
              *         { 'ID': 3, 'Name': 'David Platt', 'PlaceOfBirth': 'Chadderton, Lancashire, England' }
              *     ];
-             *     $('#grid').grid({
+             *     new GijgoGrid(document.getElementById('grid'), {
              *         dataSource: data,
              *         detailTemplate: '<div class="row"></div>',
              *         responsive: true,
@@ -8589,7 +8644,7 @@ gj.grid.plugins.responsiveDesign = {
                  * @example sample <!-- grid, grid.responsiveDesign -->
                  * <table id="grid"></table>
                  * <script>
-                 *     $('#grid').grid({
+                 *     new GijgoGrid(document.getElementById('grid'), {
                  *         dataSource: '/Players/Get',
                  *         responsive: true,
                  *         columns: [
@@ -8611,7 +8666,7 @@ gj.grid.plugins.responsiveDesign = {
                  * @example sample <!-- grid, grid.responsiveDesign -->
                  * <table id="grid"></table>
                  * <script>
-                 *     $('#grid').grid({
+                 *     new GijgoGrid(document.getElementById('grid'), {
                  *         dataSource: '/Players/Get',
                  *         responsive: true,
                  *         columns: [
@@ -8709,7 +8764,7 @@ gj.grid.plugins.responsiveDesign = {
          * <br/><br/>
          * <table id="grid"></table>
          * <script>
-         *     var grid = $('#grid').grid({
+         *     var grid = new GijgoGrid(document.getElementById('grid'), {
          *         dataSource: '/Players/Get',
          *         responsive: false,
          *         columns: [
@@ -8765,7 +8820,7 @@ gj.grid.plugins.responsiveDesign = {
          * @example sample <!-- grid, grid.responsiveDesign -->
          * <table id="grid"></table>
          * <script>
-         *     var grid = $('#grid').grid({
+         *     var grid = new GijgoGrid(document.getElementById('grid'), {
          *         dataSource: '/Players/Get',
          *         responsive: true,
          *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
@@ -9002,7 +9057,7 @@ gj.grid.plugins.resizableColumns = {
              * @example Material.Design <!-- grid, draggable -->
              * <table id="grid"></table>
              * <script>
-             *     var grid = $('#grid').grid({
+             *     var grid = new GijgoGrid(document.getElementById('grid'), {
              *         dataSource: '/Players/Get',
              *         resizableColumns: true,
              *         columns: [ { field: 'ID', width: 56 }, { field: 'Name', sortable: true }, { field: 'PlaceOfBirth' } ]
@@ -9011,7 +9066,7 @@ gj.grid.plugins.resizableColumns = {
              * @example Bootstrap <!-- bootstrap, grid, draggable -->
              * <table id="grid"></table>
              * <script>
-             *     var grid = $('#grid').grid({
+             *     var grid = new GijgoGrid(document.getElementById('grid'), {
              *         dataSource: '/Players/Get',
              *         resizableColumns: true,
              *         uiLibrary: 'bootstrap',
@@ -9021,7 +9076,7 @@ gj.grid.plugins.resizableColumns = {
              * @example Bootstrap.4 <!-- bootstrap4, grid, draggable -->
              * <table id="grid"></table>
              * <script>
-             *     var grid = $('#grid').grid({
+             *     var grid = new GijgoGrid(document.getElementById('grid'), {
              *         dataSource: '/Players/Get',
              *         resizableColumns: true,
              *         uiLibrary: 'bootstrap4',
@@ -9031,7 +9086,7 @@ gj.grid.plugins.resizableColumns = {
              * @example Bootstrap.4.FixedHeader <!-- bootstrap4, grid, draggable -->
              * <table id="grid" width="900"></table>
              * <script>
-             *     var grid = $('#grid').grid({
+             *     var grid = new GijgoGrid(document.getElementById('grid'), {
              *         dataSource: '/Players/Get',
              *         resizableColumns: true,
              *         fixedHeader: true,
@@ -9383,7 +9438,7 @@ gj.grid.plugins.export = {
          *         { 'ID': 2, 'Name': 'Ronaldo Luis Nazario de Lima', 'PlaceOfBirth': 'Rio de Janeiro, Brazil' },
          *         { 'ID': 3, 'Name': 'David Platt', 'PlaceOfBirth': 'Chadderton, Lancashire, England' }
          *     ];
-         *     grid = $('#grid').grid({
+         *     grid = new GijgoGrid(document.getElementById('grid'), {
          *         dataSource: data,
          *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
          *         pager: { limit: 2, sizes: [2, 5, 10, 20] }
@@ -9394,7 +9449,7 @@ gj.grid.plugins.export = {
          * <br/><br/>
          * <table id="grid"></table>
          * <script>
-         *     var grid = $('#grid').grid({
+         *     var grid = new GijgoGrid(document.getElementById('grid'), {
          *         dataSource: '/Players/Get',
          *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
          *         pager: { limit: 5 }
@@ -9448,7 +9503,7 @@ gj.grid.plugins.export = {
          *         { 'ID': 2, 'Name': 'Ronaldo Luis Nazario de Lima', 'PlaceOfBirth': 'Rio de Janeiro, Brazil' },
          *         { 'ID': 3, 'Name': 'David Platt', 'PlaceOfBirth': 'Chadderton, Lancashire, England' }
          *     ];
-         *     grid = $('#grid').grid({
+         *     grid = new GijgoGrid(document.getElementById('grid'), {
          *         dataSource: data,
          *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
          *         pager: { limit: 2, sizes: [2, 5, 10, 20] }
@@ -9459,7 +9514,7 @@ gj.grid.plugins.export = {
          * <br/><br/>
          * <table id="grid"></table>
          * <script>
-         *     var grid = $('#grid').grid({
+         *     var grid = new GijgoGrid(document.getElementById('grid'), {
          *         dataSource: '/Players/Get',
          *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
          *         pager: { limit: 5 }
@@ -9504,7 +9559,7 @@ gj.grid.plugins.columnReorder = {
              * <p>Drag and Drop column headers in order to reorder the columns.</p>
              * <table id="grid"></table>
              * <script>
-             *     $('#grid').grid({
+             *     new GijgoGrid(document.getElementById('grid'), {
              *         dataSource: '/Players/Get',
              *         columnReorder: true,
              *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
@@ -9514,7 +9569,7 @@ gj.grid.plugins.columnReorder = {
              * <p>Drag and Drop column headers in order to reorder the columns.</p>
              * <table id="grid"></table>
              * <script>
-             *     $('#grid').grid({
+             *     new GijgoGrid(document.getElementById('grid'), {
              *         dataSource: '/Players/Get',
              *         uiLibrary: 'bootstrap',
              *         columnReorder: true,
@@ -9525,9 +9580,20 @@ gj.grid.plugins.columnReorder = {
              * <p>Drag and Drop column headers in order to reorder the columns.</p>
              * <table id="grid"></table>
              * <script>
-             *     $('#grid').grid({
+             *     new GijgoGrid(document.getElementById('grid'), {
              *         dataSource: '/Players/Get',
              *         uiLibrary: 'bootstrap4',
+             *         columnReorder: true,
+             *         columns: [ { field: 'ID', width: 48 }, { field: 'Name', sortable: true }, { field: 'PlaceOfBirth', sortable: true } ]
+             *     });
+             * </script>
+             * @example Bootstrap.5 <!-- bootstrap5, grid, draggable, droppable -->
+             * <p>Drag and Drop column headers in order to reorder the columns.</p>
+             * <table id="grid"></table>
+             * <script>
+             *     new GijgoGrid(document.getElementById('grid'), {
+             *         dataSource: '/Players/Get',
+             *         uiLibrary: 'bootstrap5',
              *         columnReorder: true,
              *         columns: [ { field: 'ID', width: 48 }, { field: 'Name', sortable: true }, { field: 'PlaceOfBirth', sortable: true } ]
              *     });
@@ -9546,13 +9612,11 @@ gj.grid.plugins.columnReorder = {
 
     private: {
         init: function (grid) {
-            var i, $cell,
-                $cells = grid.find('thead tr th');
-            for (i = 0; i < $cells.length; i++) {
-                $cell = $($cells[i]);
-                $cell.on('mousedown', gj.grid.plugins.columnReorder.private.createMouseDownHandler(grid, $cell));
-                $cell.on('mousemove', gj.grid.plugins.columnReorder.private.createMouseMoveHandler(grid, $cell));
-                $cell.on('mouseup', gj.grid.plugins.columnReorder.private.createMouseUpHandler(grid, $cell));
+            let i, cells = grid.element.querySelectorAll('thead tr th');
+            for (i = 0; i < cells.length; i++) {
+                cells[i].addEventListener('mousedown', gj.grid.plugins.columnReorder.private.createMouseDownHandler(grid, cells[i]));
+                cells[i].addEventListener('mousemove', gj.grid.plugins.columnReorder.private.createMouseMoveHandler(grid, cells[i]));
+                cells[i].addEventListener('mouseup', gj.grid.plugins.columnReorder.private.createMouseUpHandler(grid, cells[i]));
             }
         },
 
@@ -9571,102 +9635,134 @@ gj.grid.plugins.columnReorder = {
             }
         },
 
-        createMouseMoveHandler: function (grid, $thSource) {
+        createMouseMoveHandler: function (grid, thSource) {
             return function (e) {
-                var $dragEl, srcIndex;
-                if (grid.element.getAttribute('data-gj-drag-ready')) {
+                if (grid.element.getAttribute('data-gj-drag-ready') === 'true') {
+                    let dragEl, srcIndex, elements, srcEl;
+
                     grid.element.setAttribute('data-gj-drag-ready', false);
-                    $dragEl = grid.clone();
-                    srcIndex = $thSource.index();
-                    grid.addClass('gj-unselectable');
-                    $('body').append($dragEl);
-                    $dragEl.attr('data-role', 'draggable-clone').css('cursor', 'move');
-                    $dragEl.find('thead tr th:eq(' + srcIndex + ')').siblings().remove();
-                    $dragEl.find('tbody tr[data-role != "row"]').remove();
-                    $dragEl.find('tbody tr td:nth-child(' + (srcIndex + 1) + ')').siblings().remove();
-                    $dragEl.find('tfoot').remove();
-                    $dragEl.draggable({
-                        stop: gj.grid.plugins.columnReorder.private.createDragStopHandler(grid, $thSource)
-                    });
-                    $dragEl.css({
-                        position: 'absolute', top: $thSource.offset().top, left: $thSource.offset().left, width: $thSource.width(), zIndex: 1
-                    });
-                    if ($thSource.attr('data-droppable') === 'true') {
-                        $thSource.droppable('destroy');
-                    }
-                    $thSource.siblings('th').each(function () {
-                        var $dropEl = $(this);
-                        if ($dropEl.attr('data-droppable') === 'true') {
-                            $dropEl.droppable('destroy');
+                    dragEl = grid.element.cloneNode(true);
+                    grid.element.classList.add('gj-unselectable');
+                    dragEl.classList.add('gj-unselectable');
+                    document.body.appendChild(dragEl);
+                    dragEl.setAttribute('data-gj-role', 'draggable-clone')
+                    dragEl.style.cursor = 'move';
+                    srcIndex = Array.from(thSource.parentNode.children).indexOf(thSource);
+                    
+                    elements = dragEl.querySelectorAll('thead tr th');
+                    for (let i = 0; i < elements.length; i++) {
+                        if (i !== srcIndex) {
+                            elements[i].remove();
                         }
-                        $dropEl.droppable({
-                            over: gj.grid.plugins.columnReorder.private.createDroppableOverHandler(grid, $thSource),
-                            out: gj.grid.plugins.columnReorder.private.droppableOut
-                        });
+                    }
+                    elements = dragEl.querySelectorAll('tbody tr:not([data-gj-role="row"])');
+                    for (let i = 0; i < elements.length; i++) {
+                        elements[i].remove();
+                    }
+                    
+                    elements = dragEl.querySelectorAll('tbody tr');
+                    for (let i = 0; i < elements.length; i++) {
+                        srcEl = elements[i].children[srcIndex];
+                        for (const element of elements[i].children) {
+                            if (srcEl !== element) {
+                                elements[i].removeChild(element)
+                            }
+                        }
+                    }
+                    elements = dragEl.querySelector('tfoot');
+                    elements && elements.remove();
+
+                    new GijgoDraggable(dragEl, {
+                        stop: gj.grid.plugins.columnReorder.private.createDragStopHandler(grid, thSource)
                     });
-                    $dragEl.trigger('mousedown');
+                    dragEl.style.position = 'absolute';
+                    dragEl.style.top = thSource.getBoundingClientRect().top + 'px';
+                    dragEl.style.left = thSource.getBoundingClientRect().left + 'px';
+                    dragEl.style.width = gj.core.width(thSource) + 'px';
+                    dragEl.style.zIndex = 1;
+                    
+                    if (thSource.getAttribute('data-droppable') === 'true') {
+                        thSource.droppable('destroy');
+                    }
+
+                    for (const dropEl of thSource.parentNode.children) {
+                        if (thSource !== dropEl) {
+                            if (dropEl.getAttribute('data-gj-droppable') === 'true') {
+                                new GijgoDroppable(dropEl).destroy();
+                            }
+                            new GijgoDroppable(dropEl, {
+                                over: gj.grid.plugins.columnReorder.private.createDroppableOverHandler(grid, thSource),
+                                out: gj.grid.plugins.columnReorder.private.droppableOut
+                            });
+                        }
+                    }
+                    dragEl.dispatchEvent(new Event('mousedown'));
                 }
             };
         },
 
-        createDragStopHandler: function (grid, $thSource) {
-            return function (e, mousePosition) {
-                $('table[data-role="draggable-clone"]').draggable('destroy').remove();
-                grid.removeClass('gj-unselectable');
-                $thSource.siblings('th').each(function () {
-                    var $thTarget = $(this),
-                        data = grid.getConfig(),
-                        targetPosition = gj.grid.methods.getColumnPosition(data.columns, $thTarget.data('field')),
-                        sourcePosition = gj.grid.methods.getColumnPosition(data.columns, $thSource.data('field'));
+        createDragStopHandler: function (grid, thSource) {
+            return function (e) {
+                let elements = thSource.parentNode.children;
+                document.body.querySelector('table[data-gj-role="draggable-clone"]').remove();
+                grid.element.classList.remove('gj-unselectable');
+                for (const thTarget of elements) {
+                    let data = grid.getConfig(),
+                        targetPosition = gj.grid.methods.getColumnPosition(data.columns, thTarget.getAttribute('data-gj-field')),
+                        sourcePosition = gj.grid.methods.getColumnPosition(data.columns, thSource.getAttribute('data-gj-field'))
+                        droppable = new GijgoDroppable(thTarget);
 
-                    $thTarget.removeClass('gj-grid-left-border').removeClass('gj-grid-right-border');
-                    $thTarget.closest('table').find('tbody tr[data-role="row"] td:nth-child(' + ($thTarget.index() + 1) + ')').removeClass('gj-grid-left-border').removeClass('gj-grid-right-border');
-                    if ($thTarget.droppable('isOver', mousePosition)) {
+                    gj.core.removeClasses(thTarget, 'gj-grid-left-border gj-grid-right-border');
+                    if (thTarget.nextElementSibling) {
+                        gj.core.removeClasses(thTarget.nextElementSibling, 'gj-grid-left-border gj-grid-right-border');
+                    }
+                    
+                    if (droppable.isOver(e.detail)) {
                         if (targetPosition < sourcePosition) {
-                            $thTarget.before($thSource);
+                            thTarget.parentNode.insertBefore(thSource, thTarget);
                         } else {
-                            $thTarget.after($thSource);
+                            thTarget.parentNode.insertBefore(thSource, thTarget.nextSibling);
                         }
                         gj.grid.plugins.columnReorder.private.moveRowCells(grid, sourcePosition, targetPosition);
                         data.columns.splice(targetPosition, 0, data.columns.splice(sourcePosition, 1)[0]);
                     }
-                    $thTarget.droppable('destroy');
-                });
+                    droppable.destroy();
+                };
             }
         },
 
         moveRowCells: function (grid, sourcePosition, targetPosition) {
-            var i, $row, $rows = grid.find('tbody tr[data-role="row"]');
-            for (i = 0; i < $rows.length; i++) {
-                $row = $($rows[i]);
+            let i, row, rows = grid.find('tbody tr[data-gj-role="row"]');
+            for (i = 0; i < rows.length; i++) {
+                row = (rows[i]);
                 if (targetPosition < sourcePosition) {
-                    $row.find('td:eq(' + targetPosition + ')').before($row.find('td:eq(' + sourcePosition + ')'));
+                    row.find('td:eq(' + targetPosition + ')').before(row.find('td:eq(' + sourcePosition + ')'));
                 } else {
-                    $row.find('td:eq(' + targetPosition + ')').after($row.find('td:eq(' + sourcePosition + ')'));
+                    row.find('td:eq(' + targetPosition + ')').after(row.find('td:eq(' + sourcePosition + ')'));
                 }                
             }
         },
 
-        createDroppableOverHandler: function (grid, $thSource) {
+        createDroppableOverHandler: function (grid, thSource) {
             return function (e) {
-                var $thTarget = $(this),
+                let thTarget = (this),
                     data = grid.getConfig(),
-                    targetPosition = gj.grid.methods.getColumnPosition(data.columns, $thTarget.data('field')),
-                    sourcePosition = gj.grid.methods.getColumnPosition(data.columns, $thSource.data('field'));
+                    targetPosition = gj.grid.methods.getColumnPosition(data.columns, thTarget.data('field')),
+                    sourcePosition = gj.grid.methods.getColumnPosition(data.columns, thSource.data('field'));
                 if (targetPosition < sourcePosition) {
-                    $thTarget.addClass('gj-grid-left-border');
-                    grid.find('tbody tr[data-role="row"] td:nth-child(' + ($thTarget.index() + 1) + ')').addClass('gj-grid-left-border');
+                    thTarget.addClass('gj-grid-left-border');
+                    grid.find('tbody tr[data-gj-role="row"] td:nth-child(' + (thTarget.index() + 1) + ')').addClass('gj-grid-left-border');
                 } else {
-                    $thTarget.addClass('gj-grid-right-border');
-                    grid.find('tbody tr[data-role="row"] td:nth-child(' + ($thTarget.index() + 1) + ')').addClass('gj-grid-right-border');
+                    thTarget.addClass('gj-grid-right-border');
+                    grid.find('tbody tr[data-gj-role="row"] td:nth-child(' + (thTarget.index() + 1) + ')').addClass('gj-grid-right-border');
                 }
             };
         },
 
         droppableOut: function () {
-            var $thTarget = $(this);
-            $thTarget.removeClass('gj-grid-left-border').removeClass('gj-grid-right-border');
-            $thTarget.closest('table').find('tbody tr[data-role="row"] td:nth-child(' + ($thTarget.index() + 1) + ')').removeClass('gj-grid-left-border').removeClass('gj-grid-right-border');
+            let thTarget = (this);
+            thTarget.removeClass('gj-grid-left-border').removeClass('gj-grid-right-border');
+            thTarget.closest('table').find('tbody tr[data-gj-role="row"] td:nth-child(' + (thTarget.index() + 1) + ')').removeClass('gj-grid-left-border').removeClass('gj-grid-right-border');
         }
     },
 
@@ -9698,7 +9794,7 @@ gj.grid.plugins.headerFilter = {
                  * @example Material.Design <!-- grid -->
                  * <table id="grid"></table>
                  * <script>
-                 *     $('#grid').grid({
+                 *     new GijgoGrid(document.getElementById('grid'), {
                  *         dataSource: '/Players/Get',
                  *         headerFilter: true,
                  *         columns: [
@@ -9711,7 +9807,7 @@ gj.grid.plugins.headerFilter = {
                  * @example Bootstrap.3 <!-- bootstrap, grid -->
                  * <table id="grid"></table>
                  * <script>
-                 *     $('#grid').grid({
+                 *     new GijgoGrid(document.getElementById('grid'), {
                  *         dataSource: '/Players/Get',
                  *         headerFilter: true,
                  *         uiLibrary: 'bootstrap',
@@ -9732,7 +9828,7 @@ gj.grid.plugins.headerFilter = {
              * @example Remote.DataSource <!-- grid -->
              * <table id="grid"></table>
              * <script>
-             *     $('#grid').grid({
+             *     new GijgoGrid(document.getElementById('grid'), {
              *         dataSource: '/Players/Get',
              *         headerFilter: true,
              *         columns: [ { field: 'ID', width: 56, filterable: false }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
@@ -9749,7 +9845,7 @@ gj.grid.plugins.headerFilter = {
              *         { 'ID': 5, 'Name': 'James Rodríguez', 'PlaceOfBirth': 'Cúcuta, Colombia' },
              *         { 'ID': 6, 'Name': 'Dimitar Berbatov', 'PlaceOfBirth': 'Blagoevgrad, Bulgaria' }
              *     ];
-             *     $('#grid').grid({
+             *     new GijgoGrid(document.getElementById('grid'), {
              *         dataSource: data,
              *         headerFilter: true,
              *         columns: [ 
@@ -9769,7 +9865,7 @@ gj.grid.plugins.headerFilter = {
                  * @example OnEnterKeyPress <!-- grid -->
                  * <table id="grid"></table>
                  * <script>
-                 *     $('#grid').grid({
+                 *     new GijgoGrid(document.getElementById('grid'), {
                  *         dataSource: '/Players/Get',
                  *         headerFilter: {
                  *             type: 'onenterkeypress'
@@ -9780,7 +9876,7 @@ gj.grid.plugins.headerFilter = {
                  * @example OnChange <!-- grid -->
                  * <table id="grid"></table>
                  * <script>
-                 *     $('#grid').grid({
+                 *     new GijgoGrid(document.getElementById('grid'), {
                  *         dataSource: '/Players/Get',
                  *         headerFilter: {
                  *             type: 'onchange'
@@ -9796,41 +9892,50 @@ gj.grid.plugins.headerFilter = {
 
     private: {
         init: function (grid) {
-            var i, $th, $ctrl, data = grid.getConfig(),
-                $filterTr = $('<tr data-role="filter"/>');
+            var i, th, ctrl, data = grid.getConfig(),
+                filterTr = document.createElement('tr');
 
+            filterTr.setAttribute('data-gj-role', 'filter');
             for (i = 0; i < data.columns.length; i++) {
-                $th = $('<th/>');
+                th = document.createElement('th');
                 if (data.columns[i].filterable) {
-                    $ctrl = $('<input data-field="' + data.columns[i].field + '" class="gj-width-full" />');
+                    ctrl = document.createElement('input');
+                    ctrl.setAttribute('data-gj-field', data.columns[i].field);
+                    ctrl.classList.add('gj-width-full');
                     if ('onchange' === data.headerFilter.type) {
-                        $ctrl.on('input propertychange', function (e) {
-                            gj.grid.plugins.headerFilter.private.reload(grid, $(this));
+                        ctrl.addEventListener('keyup', function (e) {
+                            gj.grid.plugins.headerFilter.private.reload(grid, this);
+                        });
+                        ctrl.addEventListener('change', function (e) {
+                            gj.grid.plugins.headerFilter.private.reload(grid, this);
+                        });
+                        ctrl.addEventListener('paste', function (e) {
+                            gj.grid.plugins.headerFilter.private.reload(grid, this);
                         });
                     } else {
-                        $ctrl.on('keypress', function (e) {
-                            if (e.which == 13) {
-                                gj.grid.plugins.headerFilter.private.reload(grid, $(this));
+                        ctrl.addEventListener('keypress', function (e) {
+                            if (e.key === 'Enter') {
+                                gj.grid.plugins.headerFilter.private.reload(grid, this);
                             }
                         });
-                        $ctrl.on('blur', function (e) {
-                            gj.grid.plugins.headerFilter.private.reload(grid, $(this));
+                        ctrl.addEventListener('blur', function (e) {
+                            gj.grid.plugins.headerFilter.private.reload(grid, this);
                         });
                     }
-                    $th.append($ctrl);
+                    th.appendChild(ctrl);
                 }
                 if (data.columns[i].hidden) {
-                    $th.hide();
+                    th.style.display = 'none';
                 }
-                $filterTr.append($th);
+                filterTr.appendChild(th);
             }
 
-            grid.children('thead').append($filterTr);
+            grid.element.querySelector('thead').appendChild(filterTr);
         },
 
-        reload: function (grid, $ctrl) {
+        reload: function (grid, ctrl) {
             var params = {};
-            params[$ctrl.data('field')] = $ctrl.val();
+            params[ctrl.getAttribute('data-gj-field')] = ctrl.value;
             grid.reload(params);
         }
     },
@@ -9885,7 +9990,7 @@ gj.grid.plugins.grouping = {
                   * @example Local.Data <!-- grid -->
                   * <table id="grid"></table>
                   * <script>
-                  *     var grid, data = [
+                  *     let grid, data = [
                   *         { 'ID': 1, 'Name': 'Hristo Stoichkov', 'PlaceOfBirth': 'Plovdiv, Bulgaria', CountryName: 'Bulgaria' },
                   *         { 'ID': 2, 'Name': 'Ronaldo Luís Nazário de Lima', 'PlaceOfBirth': 'Rio de Janeiro, Brazil', CountryName: 'Brazil' },
                   *         { 'ID': 3, 'Name': 'David Platt', 'PlaceOfBirth': 'Chadderton, Lancashire, England', CountryName: 'England' },
@@ -9893,7 +9998,7 @@ gj.grid.plugins.grouping = {
                   *         { 'ID': 5, 'Name': 'James Rodríguez', 'PlaceOfBirth': 'Cúcuta, Colombia', CountryName: 'Colombia' },
                   *         { 'ID': 6, 'Name': 'Dimitar Berbatov', 'PlaceOfBirth': 'Blagoevgrad, Bulgaria', CountryName: 'Bulgaria' }
                   *     ];
-                  *     $('#grid').grid({
+                  *     new GijgoGrid(document.getElementById('grid'), {
                   *         dataSource: data,
                   *         grouping: { groupBy: 'CountryName' },
                   *         columns: [ { field: 'Name', sortable: true }, { field: 'PlaceOfBirth' } ]
@@ -9902,7 +10007,7 @@ gj.grid.plugins.grouping = {
                   * @example Remote.Data <!-- grid -->
                   * <table id="grid"></table>
                   * <script>
-                  *     $('#grid').grid({
+                  *     new GijgoGrid(document.getElementById('grid'), {
                   *         dataSource: '/Players/Get',
                   *         grouping: { groupBy: 'CountryName' },
                   *         columns: [ { field: 'Name', sortable: true }, { field: 'PlaceOfBirth' } ]
@@ -9911,7 +10016,7 @@ gj.grid.plugins.grouping = {
                   * @example Bootstrap.3 <!-- bootstrap, grid -->
                   * <table id="grid"></table>
                   * <script>
-                  *     $('#grid').grid({
+                  *     new GijgoGrid(document.getElementById('grid'), {
                   *         dataSource: '/Players/Get',
                   *         uiLibrary: 'bootstrap',
                   *         grouping: { groupBy: 'CountryName' },
@@ -9922,7 +10027,7 @@ gj.grid.plugins.grouping = {
                   * @example Bootstrap.4 <!-- bootstrap4, fontawesome, grid -->
                   * <table id="grid"></table>
                   * <script>
-                  *     $('#grid').grid({
+                  *     new GijgoGrid(document.getElementById('grid'), {
                   *         dataSource: '/Players/Get',
                   *         uiLibrary: 'bootstrap4',
                   *         iconsLibrary: 'fontawesome',
@@ -9944,7 +10049,7 @@ gj.grid.plugins.grouping = {
                  * @example Right.Down.Icons <!-- materialicons, grid -->
                  * <table id="grid"></table>
                  * <script>
-                 *     $('#grid').grid({
+                 *     new GijgoGrid(document.getElementById('grid'), {
                  *         primaryKey: 'ID',
                  *         dataSource: '/Players/Get',
                  *         columns: [ { field: 'Name', sortable: true }, { field: 'PlaceOfBirth' } ],
@@ -9965,7 +10070,7 @@ gj.grid.plugins.grouping = {
                  * @example Right.Down.Icons <!-- materialicons, grid -->
                  * <table id="grid"></table>
                  * <script>
-                 *     $('#grid').grid({
+                 *     new GijgoGrid(document.getElementById('grid'), {
                  *         primaryKey: 'ID',
                  *         dataSource: '/Players/Get',
                  *         columns: [ { field: 'Name', sortable: true }, { field: 'PlaceOfBirth' } ],
@@ -9998,23 +10103,29 @@ gj.grid.plugins.grouping = {
 
     private: {
         init: function (grid) {
-            var previousValue, data = grid.getConfig();
+            let previousValue, data = grid.getConfig();
 
             previousValue = undefined;
-            grid.on('rowDataBound', function (e, $row, id, record) {
-                if (previousValue !== record[data.grouping.groupBy] || $row[0].rowIndex === 1) {
-                    var colspan = gj.grid.methods.countVisibleColumns(grid) - 1,
-                        $groupRow = $('<tr role="group" />'),
-                        $expandCollapseCell = $('<td class="gj-text-align-center gj-unselectable gj-cursor-pointer" />');
+            grid.on('rowDataBound', function (e) {
+                if (previousValue !== e.detail.record[data.grouping.groupBy] || e.detail.row.rowIndex === 1) {
+                    let colspan = gj.grid.methods.countVisibleColumns(grid) - 1,
+                        groupRow = document.createElement('tr'),
+                        expandCollapseCell = document.createElement('td'),
+                        icon = document.createElement('div');
 
-                    $expandCollapseCell.append('<div data-role="display">' + data.icons.collapseGroup + '</div>');
-                    $expandCollapseCell.on('click', gj.grid.plugins.grouping.private.createExpandCollapseHandler(data));
-                    $groupRow.append($expandCollapseCell);
-                    $groupRow.append('<td colspan="' + colspan + '"><div data-role="display">' + data.grouping.groupBy + ': ' + record[data.grouping.groupBy] + '</div></td>');
-                    $groupRow.insertBefore($row);
-                    previousValue = record[data.grouping.groupBy];
+                    groupRow.setAttribute('data-gj-gj-role', 'group');
+                    gj.core.addClasses(expandCollapseCell, 'gj-text-align-center gj-unselectable gj-cursor-pointer');
+
+                    icon.setAttribute('data-gj-role', 'display');
+                    icon.innerHTML = data.icons.collapseGroup;
+                    icon.addEventListener('click', gj.grid.plugins.grouping.private.createExpandCollapseHandler(data));
+                    expandCollapseCell.appendChild(icon);
+                    groupRow.appendChild(expandCollapseCell);
+                    groupRow.innerHTML += '<td colspan="' + colspan + '"><div data-gj-role="display">' + data.grouping.groupBy + ': ' + e.detail.record[data.grouping.groupBy] + '</div></td>';
+                    e.detail.row.parentNode.insertBefore(groupRow, e.detail.row);
+                    previousValue = e.detail.record[data.grouping.groupBy];
                 }
-                $row.show();
+                //TODO: row.show();
             });
 
             data.params[data.paramNames.groupBy] = data.grouping.groupBy;
@@ -10022,43 +10133,56 @@ gj.grid.plugins.grouping = {
         },
 
         grouping: function (grid, records) {
-            var data = grid.getConfig();
+            let data = grid.getConfig();
             records.sort(gj.grid.methods.createDefaultSorter(data.grouping.direction, data.grouping.groupBy));
         },
 
         createExpandCollapseHandler: function (data) {
             return function (e) {
-                var $cell = $(this),
-                    methods = gj.grid.plugins.grouping.private;
-                if ($cell.closest('tr').next(':visible').data('role') === 'row') {
-                    methods.collapseGroup(data, $cell);
+                let methods = gj.grid.plugins.grouping.private;
+                if (this.closest('tr:visible').getAttribute('data-gj-role') === 'row') {
+                    methods.collapseGroup(data, this);
                 } else {
-                    methods.expandGroup(data, $cell);
+                    methods.expandGroup(data, this);
                 }
             };
         },
 
-        collapseGroup: function (data, $cell) {
-            var $display = $cell.children('div[data-role="display"]'),
-                $groupRow = $cell.closest('tr');
-
-            $groupRow.nextUntil('[role="group"]').hide();
-            $display.empty().append(data.icons.expandGroup);
+        collapseGroup: function (data, cell) {
+            let display = cell.querySelector('div[data-gj-role="display"]'),
+                nextEl = cell.parentNode.nextSubling;
+            
+            while (nextEl) {
+                if (nextEl.getAttribute('data-gj-role') === 'group') {
+                    break;
+                } else {
+                    nextEl.style.display = 'none';
+                    nextEl = nextEl.nextSubling;
+                }
+            }
+            display.innerHTML = data.icons.expandGroup;
         },
 
-        expandGroup: function (data, $cell) {
-            var $display = $cell.children('div[data-role="display"]'),
-                $groupRow = $cell.closest('tr');
-
-            $groupRow.nextUntil('[role="group"]').show();
-            $display.empty().append(data.icons.collapseGroup);
+        expandGroup: function (data, cell) {
+            let display = cell.querySelector('div[data-gj-role="display"]'),
+                nextEl = cell.parentNode.nextSubling;
+            
+            while (nextEl) {
+                if (nextEl.getAttribute('data-gj-role') === 'group') {
+                    break;
+                } else {
+                    nextEl.style.display = 'block';
+                    nextEl = nextEl.nextSubling;
+                }
+            }
+            display.innerHTML = data.icons.collapseGroup;
         }
     },
 
     public: { },
 
     configure: function (grid) {
-        var column, data = grid.getConfig();
+        let column, data = grid.getConfig();
         grid.extend(grid, gj.grid.plugins.grouping.public);
         if (data.grouping && data.grouping.groupBy) {
             column = {
@@ -10074,8 +10198,8 @@ gj.grid.plugins.grouping = {
                 gj.grid.plugins.grouping.private.init(grid);
             });
 
-            grid.on('dataFiltered', function (e, records) {
-                gj.grid.plugins.grouping.private.grouping(grid, records);
+            grid.on('dataFiltered', function (e) {
+                gj.grid.plugins.grouping.private.grouping(grid, e.detail.records);
             });
         }
     }
@@ -17766,8 +17890,8 @@ gj.datetimepicker.methods = {
         return this;
     },
 
-    buildConfig: function (clientConfig, type) {
-        var config = gj.widget.prototype.buildConfigJS.call(this, clientConfig, type);
+    readConfig: function (clientConfig, type) {
+        var config = gj.widget.prototype.readConfig.call(this, clientConfig, type);
 
         uiLibrary = clientConfig.hasOwnProperty('uiLibrary') ? clientConfig.uiLibrary : config.uiLibrary;
         if (gj.datepicker.config[uiLibrary]) {
@@ -18071,7 +18195,7 @@ GijgoDateTimePicker = function (element, jsConfig) {
 
 GijgoDateTimePicker.prototype = new gj.widget();
 GijgoDateTimePicker.constructor = GijgoDatePicker;
-GijgoDateTimePicker.prototype.buildConfigJS = gj.datetimepicker.methods.buildConfig;
+GijgoDateTimePicker.prototype.readConfig = gj.datetimepicker.methods.readConfig;
 
 if (typeof jQuery !== "undefined") {
     (function ($) {

@@ -12,12 +12,12 @@
 <body style="padding: 8px;">
  <table id="grid"></table>
  <script>
-     var grid = $('#grid').grid({
+     let grid = new GijgoGrid(document.getElementById('grid'), {
          dataSource: '/Players/Get',
          columns: [ { field: 'ID', width: 56 }, { field: 'Name', editor: true }, { field: 'PlaceOfBirth', editor: true } ]
      });
-     grid.on('cellDataChanged', function (e, $cell, column, record, newValue) {
-         alert('The value for "' + column.field + '" is changed to "' + newValue + '"');
+     grid.on('cellDataChanged', function (e) {
+         alert('The value for "' + e.detail.column.field + '" is changed to "' + e.detail.newValue + '"');
      });
  </script>
 </body>

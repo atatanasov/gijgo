@@ -485,7 +485,7 @@ gj.widget.prototype.init = function (jsConfig) {
 
     clientConfig = this.extend({}, this.readHTMLConfig() || {});
     this.extend(clientConfig, jsConfig || {});
-    fullConfig = this.buildConfigJS(clientConfig);
+    fullConfig = this.readConfig(clientConfig);
     this.element.setAttribute('data-gj-guid', fullConfig.guid);
     this.setConfig(fullConfig);
 
@@ -508,33 +508,33 @@ gj.widget.prototype.init = function (jsConfig) {
 };
 
 gj.widget.prototype.readConfig = function (clientConfig, type) {
-    var config, uiLibrary, iconsLibrary, plugin;
+    var config, uiLibrary, iconsLibrary, plugin, type = this.type;
 
-    config = $.extend(true, {}, gj[type].config.base);
+    config = this.extend({}, gj[type].config.base);
 
     uiLibrary = clientConfig.hasOwnProperty('uiLibrary') ? clientConfig.uiLibrary : config.uiLibrary;
     if (gj[type].config[uiLibrary]) {
-        $.extend(true, config, gj[type].config[uiLibrary]);
+        this.extend(config, gj[type].config[uiLibrary]);
     }
 
     iconsLibrary = clientConfig.hasOwnProperty('iconsLibrary') ? clientConfig.iconsLibrary : config.iconsLibrary;
     if (gj[type].config[iconsLibrary]) {
-        $.extend(true, config, gj[type].config[iconsLibrary]);
+        this.extend(config, gj[type].config[iconsLibrary]);
     }
 
     for (plugin in gj[type].plugins) {
         if (gj[type].plugins.hasOwnProperty(plugin)) {
-            $.extend(true, config, gj[type].plugins[plugin].config.base);
+            this.extend(config, gj[type].plugins[plugin].config.base);
             if (gj[type].plugins[plugin].config[uiLibrary]) {
-                $.extend(true, config, gj[type].plugins[plugin].config[uiLibrary]);
+                this.extend(config, gj[type].plugins[plugin].config[uiLibrary]);
             }
             if (gj[type].plugins[plugin].config[iconsLibrary]) {
-                $.extend(true, config, gj[type].plugins[plugin].config[iconsLibrary]);
+                this.extend(config, gj[type].plugins[plugin].config[iconsLibrary]);
             }
         }
     }
 
-    $.extend(true, config, clientConfig);
+    this.extend(config, clientConfig);
 
     if (!config.guid) {
         config.guid = this.generateGUID();
@@ -571,42 +571,6 @@ gj.widget.prototype.readHTMLConfig = function () {
         delete result.source;
     }
     return result;
-};
-
-gj.widget.prototype.buildConfigJS = function (clientConfig) {
-    var config, uiLibrary, iconsLibrary, plugin, type = this.type;
-
-    config = this.extend({}, gj[type].config.base);
-
-    uiLibrary = clientConfig.hasOwnProperty('uiLibrary') ? clientConfig.uiLibrary : config.uiLibrary;
-    if (gj[type].config[uiLibrary]) {
-        this.extend(config, gj[type].config[uiLibrary]);
-    }
-
-    iconsLibrary = clientConfig.hasOwnProperty('iconsLibrary') ? clientConfig.iconsLibrary : config.iconsLibrary;
-    if (gj[type].config[iconsLibrary]) {
-        this.extend(config, gj[type].config[iconsLibrary]);
-    }
-
-    for (plugin in gj[type].plugins) {
-        if (gj[type].plugins.hasOwnProperty(plugin)) {
-            this.extend(config, gj[type].plugins[plugin].config.base);
-            if (gj[type].plugins[plugin].config[uiLibrary]) {
-                this.extend(config, gj[type].plugins[plugin].config[uiLibrary]);
-            }
-            if (gj[type].plugins[plugin].config[iconsLibrary]) {
-                this.extend(config, gj[type].plugins[plugin].config[iconsLibrary]);
-            }
-        }
-    }
-
-    this.extend(config, clientConfig);
-
-    if (!config.guid) {
-        config.guid = this.generateGUID();
-    }
-
-    return config;
 };
 
 gj.widget.prototype.createDoneHandler = function () {

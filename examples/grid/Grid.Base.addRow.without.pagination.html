@@ -22,7 +22,7 @@
          ],
          columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
      });
-     $('#btnAdd').on('click', function () {
+     document.getElementById('btnAdd').addEventListener('click', function () {
          grid.addRow({ 'ID': grid.count(true) + 1, 'Name': 'Test Player', 'PlaceOfBirth': 'Test City, Test Country' });
      });
  </script>

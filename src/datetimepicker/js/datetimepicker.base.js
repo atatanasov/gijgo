@@ -275,8 +275,8 @@ gj.datetimepicker.methods = {
         return this;
     },
 
-    buildConfig: function (clientConfig, type) {
-        var config = gj.widget.prototype.buildConfigJS.call(this, clientConfig, type);
+    readConfig: function (clientConfig, type) {
+        var config = gj.widget.prototype.readConfig.call(this, clientConfig, type);
 
         uiLibrary = clientConfig.hasOwnProperty('uiLibrary') ? clientConfig.uiLibrary : config.uiLibrary;
         if (gj.datepicker.config[uiLibrary]) {
@@ -580,7 +580,7 @@ GijgoDateTimePicker = function (element, jsConfig) {
 
 GijgoDateTimePicker.prototype = new gj.widget();
 GijgoDateTimePicker.constructor = GijgoDatePicker;
-GijgoDateTimePicker.prototype.buildConfigJS = gj.datetimepicker.methods.buildConfig;
+GijgoDateTimePicker.prototype.readConfig = gj.datetimepicker.methods.readConfig;
 
 if (typeof jQuery !== "undefined") {
     (function ($) {

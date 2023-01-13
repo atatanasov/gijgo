@@ -18,7 +18,7 @@
          dataSource: '/Players/Get',
          columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
      });
-     $('#btnHideColumn').on('click', function () {
+     document.getElementById('btnHideColumn').addEventListener('click', function () {
          grid.hideColumn('PlaceOfBirth');
      });
  </script>

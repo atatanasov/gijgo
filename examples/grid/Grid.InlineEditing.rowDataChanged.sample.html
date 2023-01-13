@@ -12,14 +12,14 @@
 <body style="padding: 8px;">
  <table id="grid"></table>
  <script>
-     var grid = $('#grid').grid({
+     let grid = new GijgoGrid(document.getElementById('grid'), {
          primaryKey: 'ID',
          dataSource: '/Players/Get',
          inlineEditing: { mode: 'command' },
          columns: [ { field: 'ID', width: 56 }, { field: 'Name', editor: true }, { field: 'PlaceOfBirth', editor: true } ]
      });
-     grid.on('rowDataChanged', function (e, id, record) {
-         alert('Record with id="' + id + '" is changed to "' + JSON.stringify(record) + '"');
+     grid.on('rowDataChanged', function (e) {
+         alert('Record with id="' + e.detail.id + '" is changed to "' + JSON.stringify(e.detail.record) + '"');
      });
  </script>
 </body>

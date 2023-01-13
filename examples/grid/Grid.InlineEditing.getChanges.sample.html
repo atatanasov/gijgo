@@ -14,12 +14,12 @@
  <br/><br/>
  <table id="grid"></table>
  <script>
-     var grid = $('#grid').grid({
+     let grid = new GijgoGrid(document.getElementById('grid'), {
          primaryKey: 'ID',
          dataSource: '/Players/Get',
          columns: [ { field: 'ID' }, { field: 'Name', editor: true }, { field: 'PlaceOfBirth', editor: true } ]
      });
-     $('#btnGetChanges').on('click', function () {
+     document.getElementById('btnGetChanges').addEventListener('click', function () {
          alert(JSON.stringify(grid.getChanges()));
      });
  </script>

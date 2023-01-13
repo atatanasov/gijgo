@@ -13,7 +13,7 @@
 <body style="padding: 8px;">
  <div class="container"><table id="grid"></table></div>
  <script>
-     $('#grid').grid({
+     new GijgoGrid(document.getElementById('grid'), {
          uiLibrary: 'bootstrap',
          dataSource: '/Players/Get',
          fixedHeader: true,

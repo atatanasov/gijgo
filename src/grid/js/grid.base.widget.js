@@ -187,8 +187,8 @@ GijgoGrid = function (element, jsConfig) {
      *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
      *         selectionMethod: 'checkbox'
      *     });
-     *     $('#btnSelect').on('click', function () {
-     *         grid.setSelected(parseInt($('#txtNumber').val(), 10));
+     *     document.getElementById('btnSelect').addEventListener('click', function () {
+     *         grid.setSelected(parseInt(document.getElementById('txtNumber').value, 10));
      *     });
      * </script>
      */
@@ -211,7 +211,7 @@ GijgoGrid = function (element, jsConfig) {
      *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
      *         selectionMethod: 'checkbox'
      *     });
-     *     $('#btnShowSelection').on('click', function () {
+     *     document.getElementById('btnShowSelection').addEventListener('click', function () {
      *         alert(grid.getSelected());
      *     });
      * </script>
@@ -244,7 +244,7 @@ GijgoGrid = function (element, jsConfig) {
      *         selectionType: 'multiple',
      *         pager: { limit: 2, sizes: [2, 5, 10, 20] }
      *     });
-     *     $('#btnShowSelection').on('click', function () {
+     *     document.getElementById('btnShowSelection').addEventListener('click', function () {
      *         var selections = grid.getSelections();
      *         alert(selections.join());
      *     });
@@ -267,7 +267,7 @@ GijgoGrid = function (element, jsConfig) {
      *         selectionType: 'multiple',
      *         pager: { limit: 2, sizes: [2, 5, 10, 20] }
      *     });
-     *     $('#btnShowSelection').on('click', function () {
+     *     document.getElementById('btnShowSelection').addEventListener('click', function () {
      *         var selections = grid.getSelections();
      *         alert(selections.join());
      *     });
@@ -292,7 +292,7 @@ GijgoGrid = function (element, jsConfig) {
      *         selectionMethod: 'checkbox',
      *         selectionType: 'multiple'
      *     });
-     *     $('#btnSelectAll').on('click', function () {
+     *     document.getElementById('btnSelectAll').addEventListener('click', function () {
      *         grid.selectAll();
      *     });
      * </script>
@@ -317,10 +317,10 @@ GijgoGrid = function (element, jsConfig) {
      *         selectionMethod: 'checkbox',
      *         selectionType: 'multiple'
      *     });
-     *     $('#btnSelectAll').on('click', function () {
+     *     document.getElementById('btnSelectAll').addEventListener('click', function () {
      *         grid.selectAll();
      *     });
-     *     $('#btnUnSelectAll').on('click', function () {
+     *     document.getElementById('btnUnSelectAll').addEventListener('click', function () {
      *         grid.unSelectAll();
      *     });
      * </script>
@@ -344,7 +344,7 @@ GijgoGrid = function (element, jsConfig) {
      *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
      *         primaryKey: 'ID' //define the name of the column that you want to use as ID here.
      *     });
-     *     $('#btnGetData').on('click', function () {
+     *     document.getElementById('btnGetData').addEventListener('click', function () {
      *         var data = grid.getById('2');
      *         alert(data.Name + ' born in ' + data.PlaceOfBirth);
      *     });
@@ -368,7 +368,7 @@ GijgoGrid = function (element, jsConfig) {
      *         dataSource: '/Players/Get',
      *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
      *     });
-     *     $('#btnGetData').on('click', function () {
+     *     document.getElementById('btnGetData').addEventListener('click', function () {
      *         var data = grid.get(3);
      *         alert(data.Name + ' born in ' + data.PlaceOfBirth);
      *     });
@@ -434,7 +434,7 @@ GijgoGrid = function (element, jsConfig) {
      *         dataSource: '/Players/Get',
      *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth', hidden: true } ]
      *     });
-     *     $('#btnShowColumn').on('click', function () {
+     *     document.getElementById('btnShowColumn').addEventListener('click', function () {
      *         grid.showColumn('PlaceOfBirth');
      *     });
      * </script>
@@ -457,7 +457,7 @@ GijgoGrid = function (element, jsConfig) {
      *         dataSource: '/Players/Get',
      *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
      *     });
-     *     $('#btnHideColumn').on('click', function () {
+     *     document.getElementById('btnHideColumn').addEventListener('click', function () {
      *         grid.hideColumn('PlaceOfBirth');
      *     });
      * </script>
@@ -484,7 +484,7 @@ GijgoGrid = function (element, jsConfig) {
      *         ],
      *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
      *     });
-     *     $('#btnAdd').on('click', function () {
+     *     document.getElementById('btnAdd').addEventListener('click', function () {
      *         grid.addRow({ 'ID': grid.count(true) + 1, 'Name': 'Test Player', 'PlaceOfBirth': 'Test City, Test Country' });
      *     });
      * </script>
@@ -504,11 +504,21 @@ GijgoGrid = function (element, jsConfig) {
      *             { field: 'ID', width: 56 },
      *             { field: 'Name' },
      *             { field: 'PlaceOfBirth' },
-     *             { width: 100, align: 'center', tmpl: '<i class="material-icons">delete</i>', events: { 'click': function(e) { grid.removeRow(e.data.id); } } }
+     *             {
+     *                 title: '',
+     *                 width: 100,
+     *                 align: 'center',
+     *                 tmpl: '<i class="material-icons">delete</i>',
+     *                 events: { 
+     *                     'click': function(e) {
+     *                          grid.removeRow(e.detail.id);
+     *                     }
+     *                 }
+     *             }
      *         ],
      *         pager: { limit: 2, sizes: [2, 5, 10, 20] }
      *     });
-     *     $('#btnAdd').on('click', function () {
+     *     document.getElementById('btnAdd').addEventListener('click', function () {
      *         grid.addRow({ 'ID': grid.count(true) + 1, 'Name': 'Test Player', 'PlaceOfBirth': 'Test City, Test Country' });
      *     });
      * </script>
@@ -542,8 +552,8 @@ GijgoGrid = function (element, jsConfig) {
      *         ],
      *         pager: { limit: 2, sizes: [2, 5, 10, 20] }
      *     });
-     *     function Edit(e) {
-     *         grid.updateRow(e.data.id, { 'ID': e.data.id, 'Name': 'Ronaldo', 'PlaceOfBirth': 'Rio, Brazil' });
+     *     function Edit(e, id, field, record) {
+     *         grid.updateRow(id, { 'ID': id, 'Name': 'Ronaldo', 'PlaceOfBirth': 'Rio, Brazil' });
      *     }
      * </script>
      */
@@ -566,9 +576,9 @@ GijgoGrid = function (element, jsConfig) {
      * <table id="grid"></table>
      * <script>
      *     var grid;
-     *     function Delete(e) {
+     *     function Delete(e, id, field, record) {
      *         if (confirm('Are you sure?')) {
-     *             grid.removeRow(e.data.id);
+     *             grid.removeRow(id);
      *         }
      *     }
      *     grid = new GijgoGrid(document.getElementById('grid'), {
@@ -582,7 +592,7 @@ GijgoGrid = function (element, jsConfig) {
      *             { field: 'ID', width: 56 },
      *             { field: 'Name' },
      *             { field: 'PlaceOfBirth' },
-     *             { width: 100, align: 'center', tmpl: '<u class="gj-cursor-pointer">Delete</u>', events: { 'click': Delete } }
+     *             { title: '', width: 100, align: 'center', tmpl: '<u class="gj-cursor-pointer">Delete</u>', events: { 'click': Delete } }
      *         ]
      *     });
      * </script>
@@ -590,9 +600,9 @@ GijgoGrid = function (element, jsConfig) {
      * <table id="grid"></table>
      * <script>
      *     var grid;
-     *     function Delete(e) {
+     *     function Delete(e, id, field, record) {
      *         if (confirm('Are you sure?')) {
-     *             grid.removeRow(e.data.id);
+     *             grid.removeRow(id);
      *         }
      *     }
      *     grid = new GijgoGrid(document.getElementById('grid'), {

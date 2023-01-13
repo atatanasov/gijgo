@@ -78,8 +78,8 @@ gj.droppable.methods = {
     isOver: function (droppable, mousePosition) {
         let offsetTop = droppable.element.offsetTop,
             offsetLeft = droppable.element.offsetLeft;
-        return mousePosition.left > offsetLeft && mousePosition.left < (offsetLeft + gj.core.width(droppable.element))
-            && mousePosition.top > offsetTop && mousePosition.top < (offsetTop + gj.core.height(droppable.element));
+        return mousePosition.x > offsetLeft && mousePosition.x < (offsetLeft + gj.core.width(droppable.element))
+            && mousePosition.y > offsetTop && mousePosition.y < (offsetTop + gj.core.height(droppable.element));
     },
 
     destroy: function (droppable) {

@@ -12,7 +12,7 @@
 <body style="padding: 8px;">
  <table id="grid"></table>
  <script>
-     var grid = $('#grid').grid({
+     let grid = new GijgoGrid(document.getElementById('grid'), {
          dataSource: '/Players/Get',
          primaryKey: 'ID',
          inlineEditing: { mode: 'dblclick' },

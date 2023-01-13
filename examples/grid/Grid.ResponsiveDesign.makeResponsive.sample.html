@@ -14,7 +14,7 @@
  <br/><br/>
  <table id="grid"></table>
  <script>
-     var grid = $('#grid').grid({
+     var grid = new GijgoGrid(document.getElementById('grid'), {
          dataSource: '/Players/Get',
          responsive: false,
          columns: [

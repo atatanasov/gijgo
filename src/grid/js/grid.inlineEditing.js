@@ -4,25 +4,25 @@
  */
 gj.grid.plugins.inlineEditing = {
     renderers: {
-        editManager: function (value, record, $cell, $displayEl, id, grid) {
-            var data = grid.getConfig(),
-                $edit = $(data.inlineEditing.editButton).attr('key', id),
-                $delete = $(data.inlineEditing.deleteButton).attr('key', id),
-                $update = $(data.inlineEditing.updateButton).attr('key', id).hide(),
-                $cancel = $(data.inlineEditing.cancelButton).attr('key', id).hide();
-            $edit.on('click', function (e) {
-                grid.edit($(this).attr('key'));
-            });
-            $delete.on('click', function (e) {
-                grid.removeRow($(this).attr('key'));
-            });
-            $update.on('click', function (e) {
-                grid.update($(this).attr('key'));
-            });
-            $cancel.on('click', function (e) {
-                grid.cancel($(this).attr('key'));
-            });
-            $displayEl.empty().append($edit).append($delete).append($update).append($cancel);
+        editManager: function (value, record, cell, displayEl, id, grid) {
+            // let data = grid.getConfig(),
+            //     edit = data.inlineEditing.editButton.attr('key', id),
+            //     delete = data.inlineEditing.deleteButton.attr('key', id),
+            //     update = data.inlineEditing.updateButton.attr('key', id).hide(),
+            //     cancel = data.inlineEditing.cancelButton.attr('key', id).hide();
+            // edit.on('click', function (e) {
+            //     grid.edit((this).attr('key'));
+            // });
+            // delete.on('click', function (e) {
+            //     grid.removeRow((this).attr('key'));
+            // });
+            // update.on('click', function (e) {
+            //     grid.update((this).attr('key'));
+            // });
+            // cancel.on('click', function (e) {
+            //     grid.cancel((this).attr('key'));
+            // });
+            // displayEl.empty().append(edit).append(delete).append(update).append(cancel);
         }
     }
 };
@@ -37,8 +37,8 @@ gj.grid.plugins.inlineEditing.config = {
              * @example Material.Design <!-- grid, datepicker, dropdown, checkbox -->
              * <table id="grid"></table>
              * <script>
-             *     var countries = [ 'Bulgaria', 'Brazil', 'England', 'Germany', 'Colombia', 'Poland' ];
-             *     $('#grid').grid({
+             *     let countries = [ 'Bulgaria', 'Brazil', 'England', 'Germany', 'Colombia', 'Poland' ];
+             *     new GijgoGrid(document.getElementById('grid'), {
              *         dataSource: '/Players/Get',
              *         columns: [
              *             { field: 'Name', editor: true },
@@ -48,17 +48,18 @@ gj.grid.plugins.inlineEditing.config = {
              *         ]
              *     });
              * </script>
-             * @example Custom.With.Select2 <!-- grid, datepicker, checkbox -->
+             * @example Custom.With.Select2 <!-- jquery, grid, datepicker, checkbox -->
              * <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
              * <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
              * <table id="grid"></table>
              * <script>
-             *     function select2editor($editorContainer, value, record) {
-             *         var select = $('<select><option value="Bulgaria">Bulgaria</option><option value="Brazil">Brazil</option><option value="England">England</option><option value="Germany">Germany</option><option value="Colombia">Colombia</option><option value="Poland">Poland</option></select>');
-             *         $editorContainer.append(select);
-             *         select.select2();
+             *     function select2editor(editorContainer, value, record) {
+             *         let select = document.createElement('select');
+             *         select.innerHTML = '<option value="Bulgaria">Bulgaria</option><option value="Brazil">Brazil</option><option value="England">England</option><option value="Germany">Germany</option><option value="Colombia">Colombia</option><option value="Poland">Poland</option>';
+             *         editorContainer.appendChild(select);
+             *         $(select).select2();
              *     }
-             *     $('#grid').grid({
+             *     new GijgoGrid(document.getElementById('grid'), {
              *         dataSource: '/Players/Get',
              *         columns: [
              *             { field: 'Name', editor: true },
@@ -71,8 +72,8 @@ gj.grid.plugins.inlineEditing.config = {
              * @example Bootstrap.3 <!-- bootstrap, grid, datepicker, dropdown, checkbox -->
              * <table id="grid"></table>
              * <script>
-             *     var countries = [ 'Bulgaria', 'Brazil', 'England', 'Germany', 'Colombia', 'Poland' ];
-             *     $('#grid').grid({
+             *     let countries = [ 'Bulgaria', 'Brazil', 'England', 'Germany', 'Colombia', 'Poland' ];
+             *     new GijgoGrid(document.getElementById('grid'), {
              *         uiLibrary: 'bootstrap',
              *         dataSource: '/Players/Get',
              *         columns: [
@@ -86,7 +87,7 @@ gj.grid.plugins.inlineEditing.config = {
              * @example Bootstrap.4 <!-- bootstrap4, grid, datepicker, dropdown, checkbox -->
              * <table id="grid"></table>
              * <script>
-             *     $('#grid').grid({
+             *     new GijgoGrid(document.getElementById('grid'), {
              *         uiLibrary: 'bootstrap4',
              *         dataSource: '/Players/Get',
              *         columns: [
@@ -108,7 +109,7 @@ gj.grid.plugins.inlineEditing.config = {
              * @example Bootstrap.4 <!-- bootstrap4, grid, datepicker, dropdown, checkbox -->
              * <table id="grid"></table>
              * <script>
-             *     $('#grid').grid({
+             *     new GijgoGrid(document.getElementById('grid'), {
              *         uiLibrary: 'bootstrap4',
              *         dataSource: '/Players/Get',
              *         columns: [
@@ -129,7 +130,7 @@ gj.grid.plugins.inlineEditing.config = {
              * @example sample <!-- grid -->
              * <table id="grid"></table>
              * <script>
-             *     $('#grid').grid({
+             *     new GijgoGrid(document.getElementById('grid'), {
              *         dataSource: '/Players/Get',
              *         columns: [
              *             { field: 'ID', width: 56 },
@@ -150,7 +151,7 @@ gj.grid.plugins.inlineEditing.config = {
              * @example Double.Click <!-- grid -->
              * <table id="grid"></table>
              * <script>
-             *     var grid = $('#grid').grid({
+             *     let grid = new GijgoGrid(document.getElementById('grid'), {
              *         dataSource: '/Players/Get',
              *         primaryKey: 'ID',
              *         inlineEditing: { mode: 'dblclick' },
@@ -164,7 +165,7 @@ gj.grid.plugins.inlineEditing.config = {
              * @example Command <!-- dropdown, grid -->
              * <table id="grid"></table>
              * <script>
-             *     var grid, data = [
+             *     let grid, data = [
              *         { 'ID': 1, 'Name': 'Hristo Stoichkov', 'PlaceOfBirth': 'Plovdiv, Bulgaria' },
              *         { 'ID': 2, 'Name': 'Ronaldo Luís Nazário de Lima', 'PlaceOfBirth': 'Rio de Janeiro, Brazil' },
              *         { 'ID': 3, 'Name': 'David Platt', 'PlaceOfBirth': 'Chadderton, Lancashire, England' },
@@ -172,7 +173,7 @@ gj.grid.plugins.inlineEditing.config = {
              *         { 'ID': 5, 'Name': 'James Rodríguez', 'PlaceOfBirth': 'Cúcuta, Colombia' },
              *         { 'ID': 6, 'Name': 'Dimitar Berbatov', 'PlaceOfBirth': 'Blagoevgrad, Bulgaria' }
              *     ];
-             *     grid = $('#grid').grid({
+             *     grid = new GijgoGrid(document.getElementById('grid'), {
              *         dataSource: data,
              *         primaryKey: 'ID',
              *         inlineEditing: { mode: 'command' },
@@ -187,12 +188,12 @@ gj.grid.plugins.inlineEditing.config = {
              * @example DateTime <!-- datetimepicker, grid -->
              * <table id="grid"></table>
              * <script>
-             *     var grid, data = [
+             *     let grid, data = [
              *         { 'ID': 1, 'Date': '05/15/2018', 'Time': '21:12', 'DateTime': '21:12 05/15/2018' },
              *         { 'ID': 2, 'Date': '05/16/2018', 'Time': '22:12', 'DateTime': '22:12 05/16/2018' },
              *         { 'ID': 3, 'Date': '05/17/2018', 'Time': '23:12', 'DateTime': '23:12 05/17/2018' }
              *     ];
-             *     grid = $('#grid').grid({
+             *     grid = new GijgoGrid(document.getElementById('grid'), {
              *         dataSource: data,
              *         primaryKey: 'ID',
              *         inlineEditing: { mode: 'command' },
@@ -214,7 +215,7 @@ gj.grid.plugins.inlineEditing.config = {
              * @example True <!-- grid, checkbox, datepicker -->
              * <table id="grid"></table>
              * <script>
-             *     var grid, data = [
+             *     let grid, data = [
              *         { 'ID': 1, 'Name': 'Hristo Stoichkov', 'PlaceOfBirth': 'Plovdiv, Bulgaria', 'DateOfBirth': '\/Date(-122954400000)\/', IsActive: false },
              *         { 'ID': 2, 'Name': 'Ronaldo Luís Nazário de Lima', 'PlaceOfBirth': 'Rio de Janeiro, Brazil', 'DateOfBirth': '\/Date(211842000000)\/', IsActive: false },
              *         { 'ID': 3, 'Name': 'David Platt', 'PlaceOfBirth': 'Chadderton, Lancashire, England', 'DateOfBirth': '\/Date(-112417200000)\/', IsActive: false },
@@ -222,7 +223,7 @@ gj.grid.plugins.inlineEditing.config = {
              *         { 'ID': 5, 'Name': 'James Rodríguez', 'PlaceOfBirth': 'Cúcuta, Colombia', 'DateOfBirth': '\/Date(679266000000)\/', IsActive: true },
              *         { 'ID': 6, 'Name': 'Dimitar Berbatov', 'PlaceOfBirth': 'Blagoevgrad, Bulgaria', 'DateOfBirth': '\/Date(349653600000)\/', IsActive: false }
              *     ];
-             *     grid = $('#grid').grid({
+             *     grid = new GijgoGrid(document.getElementById('grid'), {
              *         dataSource: data,
              *         primaryKey: 'ID',
              *         inlineEditing: { mode: 'command', managementColumn: true },
@@ -238,7 +239,7 @@ gj.grid.plugins.inlineEditing.config = {
              * @example False <!-- materialicons, grid -->
              * <table id="grid"></table>
              * <script>
-             *     var grid, editManager, data = [
+             *     let grid, editManager, data = [
              *         { 'ID': 1, 'Name': 'Hristo Stoichkov', 'PlaceOfBirth': 'Plovdiv, Bulgaria' },
              *         { 'ID': 2, 'Name': 'Ronaldo Luís Nazário de Lima', 'PlaceOfBirth': 'Rio de Janeiro, Brazil' },
              *         { 'ID': 3, 'Name': 'David Platt', 'PlaceOfBirth': 'Chadderton, Lancashire, England' },
@@ -246,39 +247,39 @@ gj.grid.plugins.inlineEditing.config = {
              *         { 'ID': 5, 'Name': 'James Rodríguez', 'PlaceOfBirth': 'Cúcuta, Colombia' },
              *         { 'ID': 6, 'Name': 'Dimitar Berbatov', 'PlaceOfBirth': 'Blagoevgrad, Bulgaria' }
              *     ];
-             *     editManager = function (value, record, $cell, $displayEl, id, grid) {
-             *         var data = grid.getConfig(),
-             *             $edit = $('<button class="gj-button-md"><i class="material-icons">mode_edit</i> Edit</button>').attr('data-key', id),
-             *             $delete = $('<button class="gj-button-md"><i class="material-icons">delete</i> Delete</button>').attr('data-key', id),
-             *             $update = $('<button class="gj-button-md"><i class="material-icons">check_circle</i> Update</button>').attr('data-key', id).hide(),
-             *             $cancel = $('<button class="gj-button-md"><i class="material-icons">cancel</i> Cancel</button>').attr('data-key', id).hide();
-             *         $edit.on('click', function (e) {
-             *             grid.edit($(this).data('key'));
-             *             $edit.hide();
-             *             $delete.hide();
-             *             $update.show();
-             *             $cancel.show();
+             *     editManager = function (value, record, cell, displayEl, id, grid) {
+             *         let data = grid.getConfig(),
+             *             edit = ('<button class="gj-button-md"><i class="material-icons">mode_edit</i> Edit</button>').attr('data-gj-key', id),
+             *             delete = ('<button class="gj-button-md"><i class="material-icons">delete</i> Delete</button>').attr('data-gj-key', id),
+             *             update = ('<button class="gj-button-md"><i class="material-icons">check_circle</i> Update</button>').attr('data-gj-key', id).hide(),
+             *             cancel = ('<button class="gj-button-md"><i class="material-icons">cancel</i> Cancel</button>').attr('data-gj-key', id).hide();
+             *         edit.on('click', function (e) {
+             *             grid.edit((this).data('key'));
+             *             edit.hide();
+             *             delete.hide();
+             *             update.show();
+             *             cancel.show();
              *         });
-             *         $delete.on('click', function (e) {
-             *             grid.removeRow($(this).data('key'));
+             *         delete.on('click', function (e) {
+             *             grid.removeRow((this).data('key'));
              *         });
-             *         $update.on('click', function (e) {
-             *             grid.update($(this).data('key'));
-             *             $edit.show();
-             *             $delete.show();
-             *             $update.hide();
-             *             $cancel.hide();
+             *         update.on('click', function (e) {
+             *             grid.update((this).data('key'));
+             *             edit.show();
+             *             delete.show();
+             *             update.hide();
+             *             cancel.hide();
              *         });
-             *         $cancel.on('click', function (e) {
-             *             grid.cancel($(this).data('key'));
-             *             $edit.show();
-             *             $delete.show();
-             *             $update.hide();
-             *             $cancel.hide();
+             *         cancel.on('click', function (e) {
+             *             grid.cancel((this).data('key'));
+             *             edit.show();
+             *             delete.show();
+             *             update.hide();
+             *             cancel.hide();
              *         });
-             *         $displayEl.empty().append($edit).append($delete).append($update).append($cancel);
+             *         displayEl.empty().append(edit).append(delete).append(update).append(cancel);
              *     }
-             *     grid = $('#grid').grid({
+             *     grid = new GijgoGrid(document.getElementById('grid'), {
              *         dataSource: data,
              *         primaryKey: 'ID',
              *         inlineEditing: { mode: 'command', managementColumn: false },
@@ -293,7 +294,7 @@ gj.grid.plugins.inlineEditing.config = {
              * @example Bootstrap <!-- bootstrap, grid, dropdown -->
              * <table id="grid"></table>
              * <script>
-             *     var grid, data = [
+             *     let grid, data = [
              *         { 'ID': 1, 'Name': 'Hristo Stoichkov', 'PlaceOfBirth': 'Plovdiv, Bulgaria' },
              *         { 'ID': 2, 'Name': 'Ronaldo Luís Nazário de Lima', 'PlaceOfBirth': 'Rio de Janeiro, Brazil' },
              *         { 'ID': 3, 'Name': 'David Platt', 'PlaceOfBirth': 'Chadderton, Lancashire, England' },
@@ -301,7 +302,7 @@ gj.grid.plugins.inlineEditing.config = {
              *         { 'ID': 5, 'Name': 'James Rodríguez', 'PlaceOfBirth': 'Cúcuta, Colombia' },
              *         { 'ID': 6, 'Name': 'Dimitar Berbatov', 'PlaceOfBirth': 'Blagoevgrad, Bulgaria' }
              *     ];
-             *     grid = $('#grid').grid({
+             *     grid = new GijgoGrid(document.getElementById('grid'), {
              *         dataSource: data,
              *         primaryKey: 'ID',
              *         inlineEditing: { mode: 'command' },
@@ -317,7 +318,7 @@ gj.grid.plugins.inlineEditing.config = {
              * @example Bootstrap.4 <!-- bootstrap4, grid, dropdown -->
              * <table id="grid"></table>
              * <script>
-             *     var grid, data = [
+             *     let grid, data = [
              *         { 'ID': 1, 'Name': 'Hristo Stoichkov', 'PlaceOfBirth': 'Plovdiv, Bulgaria' },
              *         { 'ID': 2, 'Name': 'Ronaldo Luís Nazário de Lima', 'PlaceOfBirth': 'Rio de Janeiro, Brazil' },
              *         { 'ID': 3, 'Name': 'David Platt', 'PlaceOfBirth': 'Chadderton, Lancashire, England' },
@@ -325,7 +326,7 @@ gj.grid.plugins.inlineEditing.config = {
              *         { 'ID': 5, 'Name': 'James Rodríguez', 'PlaceOfBirth': 'Cúcuta, Colombia' },
              *         { 'ID': 6, 'Name': 'Dimitar Berbatov', 'PlaceOfBirth': 'Blagoevgrad, Bulgaria' }
              *     ];
-             *     grid = $('#grid').grid({
+             *     grid = new GijgoGrid(document.getElementById('grid'), {
              *         dataSource: data,
              *         primaryKey: 'ID',
              *         inlineEditing: { mode: 'command' },
@@ -373,124 +374,132 @@ gj.grid.plugins.inlineEditing.private = {
         }
     },
 
-    editMode: function (grid, $cell, column, record) {
-        var $displayContainer, $editorContainer, $editorField, value, config, data = grid.getConfig();
-        if ($cell.attr('data-mode') !== 'edit') {
+    editMode: function (grid, cell, column, record) {
+        let displayContainer, editorContainer, editorField, value, config, data = grid.getConfig();
+        if (cell.getAttribute('data-gj-mode') !== 'edit') {
             if (column.editor) {
                 gj.grid.plugins.inlineEditing.private.updateOtherCells(grid, column.mode);
-                $displayContainer = $cell.find('div[data-role="display"]').hide();
-                $editorContainer = $cell.find('div[data-role="edit"]').show();
-                if ($editorContainer.length === 0) {
-                    $editorContainer = $('<div data-role="edit" />');
-                    $cell.append($editorContainer);
+                displayContainer = cell.querySelector('div[data-gj-role="display"]');
+                displayContainer.style.display = 'none';
+                editorContainer = cell.querySelector('div[data-gj-role="edit"]');
+                if (!editorContainer) {
+                    editorContainer = document.createElement('div');
+                    editorContainer.setAttribute('data-gj-role', 'edit');
+                    cell.appendChild(editorContainer);
                 }
+                editorContainer.style.display = 'block';
                 value = record[column.editField || column.field];
-                $editorField = $editorContainer.find('input, select, textarea').first();
-                if ($editorField.length) {
+                editorField = editorContainer.querySelector('input, select, textarea');
+                if (editorField) {
                     switch (column.type) {
                         case 'checkbox':
-                            $editorField.prop('checked', value);
+                            editorField.checked = value;
                             break;
                         case 'dropdown':
-                            $editorField = $editorField.dropdown('value', value);
+                            editorField = editorField.value;
                             break;
                         default:
-                            $editorField.val(value);
+                            editorField.value = value;
                     }
                 } else {
                     if (typeof (column.editor) === 'function') {
-                        column.editor($editorContainer, value, record);
-                        $editorField = $editorContainer.find('input, select, textarea').first();
+                        column.editor(editorContainer, value, record);
+                        editorField = editorContainer.querySelector('input, select, textarea');
                     } else {
                         config = typeof column.editor === "object" ? column.editor : {};
                         config.uiLibrary = data.uiLibrary;
                         config.iconsLibrary = data.iconsLibrary;
-                        config.fontSize = grid.css('font-size');
+                        config.fontSize = grid.element.style.fontSize;
                         config.showOnFocus = false;
                         if ('checkbox' === column.type && gj.checkbox) {
-                            $editorField = $('<input type="checkbox" />').prop('checked', value);
-                            $editorContainer.append($editorField);
-                            $editorField.checkbox(config);
+                            editorField = document.createElement('input');
+                            editorField.setAttribute('type', 'checkbox');
+                            editorField.checked = value;
+                            editorContainer.appendChild(editorField);
+                            new GijgoCheckBox(editorField, config);
                         } else if (('date' === column.type && gj.datepicker) || ('time' === column.type && gj.timepicker) || ('datetime' === column.type && gj.datetimepicker)) {
-                            $editorField = $('<input type="text" width="100%"/>');
-                            $editorContainer.append($editorField);
+                            editorField = document.createElement('input');
+                            editorField.setAttribute('type', 'text');
+                            editorField.setAttribute('width', '100%');
+                            editorContainer.appendChild(editorField);
                             if (column.format) {
                                 config.format = column.format;
                             }
                             switch (column.type) {
                                 case 'date':
-                                    $editorField = $editorField.datepicker(config);
+                                    editorField = new GijgoDatePicker(editorField, config);
                                     break;
                                 case 'time':
-                                    $editorField = $editorField.timepicker(config);
+                                    editorField = new GijgoTimePicker(editorField, config);
                                     break;
                                 case 'datetime':
-                                    $editorField = $editorField.datetimepicker(config);
+                                    editorField = new GijgoDateTimePicker(editorField, config);
                                     break;
                             }
-                            if ($editorField.value) {
-                                $editorField.value($displayContainer.html());
+                            if (editorField.value) {
+                                editorField.value(value);
                             }
                         } else if ('dropdown' === column.type && gj.dropdown) {
-                            $editorField = $('<select type="text" width="100%"/>');
-                            $editorContainer.append($editorField);
+                            editorField = document.createElement('select');
+                            editorField.setAttribute('width', '100%');
+                            editorContainer.appendChild(editorField);
                             config.dataBound = function (e) {
-                                var $dropdown = $(this).dropdown();
+                                let dropdown = (this).dropdown();
                                 if (column.editField) {
-                                    $dropdown.value(record[column.editField]);
+                                    dropdown.value(record[column.editField]);
                                 } else {
-                                    $dropdown.value(record[column.field]);
+                                    dropdown.value(record[column.field]);
                                 }
                             };
-                            $editorField = $editorField.dropdown(config);
+                            editorField = editorField.dropdown(config);
                         } else {
-                            $editorField = $('<input type="text" value="' + value + '" class="gj-width-full"/>');
+                            editorField = ('<input type="text" value="' + value + '" class="gj-width-full"/>');
                             if (data.uiLibrary === 'materialdesign') {
-                                $editorField.addClass('gj-textbox-md').css('font-size', grid.css('font-size'));
+                                editorField.addClass('gj-textbox-md').css('font-size', grid.css('font-size'));
                             }
-                            $editorContainer.append($editorField);
+                            editorContainer.append(editorField);
                         }
                     }
                     if (data.inlineEditing.mode !== 'command' && column.mode !== 'editOnly') {
-                        $editorField = $editorContainer.find('input, select, textarea').first();
-                        $editorField.on('keyup', function (e) {
+                        editorField = editorContainer.querySelectorAll('input, select, textarea')[0];
+                        editorField.addEventListener('keyup', function (e) {
                             if (e.keyCode === 13 || e.keyCode === 27) {
-                                gj.grid.plugins.inlineEditing.private.displayMode(grid, $cell, column);
+                                gj.grid.plugins.inlineEditing.private.displayMode(grid, cell, column);
                             }
                         });
                     }
                 }
-                if ($editorField.prop('tagName').toUpperCase() === "INPUT" && $editorField.prop('type').toUpperCase() === 'TEXT') {
-                    gj.core.setCaretAtEnd($editorField[0]);
+                if (editorField.tagName.toUpperCase() === "INPUT" && editorField.getAttribute('type').toUpperCase() === 'TEXT') {
+                    gj.core.setCaretAtEnd(editorField[0]);
                 } else {
-                    $editorField.focus();
+                    editorField.focus();
                 }
-                $cell.attr('data-mode', 'edit');
+                cell.setAttribute('data-gj-mode', 'edit');
             } else if (column.role === 'managementColumn') {
-                $cell.find('[role="edit"]').hide();
-                $cell.find('[role="delete"]').hide();
-                $cell.find('[role="update"]').show();
-                $cell.find('[role="cancel"]').show();
+                cell.querySelector('[role="edit"]').style.display = 'none';
+                cell.querySelector('[role="delete"]').style.display = 'none';
+                cell.querySelector('[role="update"]').style.display = 'block';
+                cell.querySelector('[role="cancel"]').style.display = 'block';
             }
         }
     },
 
-    displayMode: function (grid, $cell, column, cancel) {
-        var $editorContainer, $displayContainer, $ele, newValue, newEditFieldValue, record, position, style = '';
+    displayMode: function (grid, cell, column, cancel) {
+        let editorContainer, displayContainer, ele, newValue, newEditFieldValue, record, position, style = '';
         if (column.mode !== 'editOnly') {
-            if ($cell.attr('data-mode') === 'edit') {
-                $editorContainer = $cell.find('div[data-role="edit"]');
-                $displayContainer = $cell.find('div[data-role="display"]');
-                $ele = $editorContainer.find('input, select, textarea').first();
-                if ($ele[0].tagName.toUpperCase() === "SELECT" && $ele[0].selectedIndex > -1) {
-                    newValue = $ele[0].options[$ele[0].selectedIndex].innerHTML;
-                    newEditFieldValue = $ele[0].value;
-                } else if ($ele[0].tagName.toUpperCase() === "INPUT" && $ele[0].type.toUpperCase() === "CHECKBOX") {
-                    newValue = $ele[0].checked;
+            if (cell.getAttribute('data-gj-mode') === 'edit') {
+                editorContainer = cell.querySelector('div[data-gj-role="edit"]');
+                displayContainer = cell.querySelector('div[data-gj-role="display"]');
+                ele = editorContainer.querySelectorAll('input, select, textarea');
+                if (ele[0].tagName.toUpperCase() === "SELECT" && ele[0].selectedIndex > -1) {
+                    newValue = ele[0].options[ele[0].selectedIndex].innerHTML;
+                    newEditFieldValue = ele[0].value;
+                } else if (ele[0].tagName.toUpperCase() === "INPUT" && ele[0].type.toUpperCase() === "CHECKBOX") {
+                    newValue = ele[0].checked;
                 } else {
-                    newValue = $ele.val();
+                    newValue = ele[0].value;
                 }
-                position = $cell.parent().data('position');
+                position = cell.parentNode.getAttribute('data-gj-position');
                 record = grid.get(position);
                 if (cancel !== true && newValue !== record[column.field]) {
                     record[column.field] = column.type === 'date' ? gj.core.parseDate(newValue, column.format) : newValue;
@@ -498,40 +507,43 @@ gj.grid.plugins.inlineEditing.private = {
                         record[column.editField] = newEditFieldValue || newValue;
                     }
                     if (column.mode !== 'editOnly') {
-                        gj.grid.methods.renderDisplayElement(grid, $displayContainer, column, record, gj.grid.methods.getId(record, grid.getConfig().primaryKey, position), 'update');
-                        if ($cell.find('span.gj-dirty').length === 0) {
-                            $cell.prepend($('<span class="gj-dirty" />'));
+                        gj.grid.methods.renderDisplayElement(grid, displayContainer, column, record, gj.grid.methods.getId(record, grid.getConfig().primaryKey, position), 'update');
+                        if (cell.querySelector('span.gj-dirty')) {
+                            cell.insertBefore('<span class="gj-dirty" />', cell.firstChild);
                         }
                     }
-                    gj.grid.plugins.inlineEditing.events.cellDataChanged(grid, $cell, column, record, newValue);
+                    gj.grid.plugins.inlineEditing.events.cellDataChanged(grid.element, cell, column, record, newValue);
                     gj.grid.plugins.inlineEditing.private.updateChanges(grid, column, record, newValue);
                 }
-                $editorContainer.hide();
-                $displayContainer.show();
-                $cell.attr('data-mode', 'display');
+                editorContainer.style.display = 'none';
+                displayContainer.style.display = 'block';
+                cell.setAttribute('data-gj-mode', 'display');
             }
             if (column.role === 'managementColumn') {
-                $cell.find('[role="update"]').hide();
-                $cell.find('[role="cancel"]').hide();
-                $cell.find('[role="edit"]').show();
-                $cell.find('[role="delete"]').show();
+                cell.querySelector('[role="update"]').style.display = 'none';
+                cell.querySelector('[role="cancel"]').style.display = 'none';
+                cell.querySelector('[role="edit"]').style.display = 'block';
+                cell.querySelector('[role="delete"]').style.display = 'block';
             }
         }
     },
 
     updateOtherCells: function(grid, mode) {
-        var data = grid.getConfig();
+        let data = grid.getConfig(), editors, cell;
         if (data.inlineEditing.mode !== 'command' && mode !== 'editOnly') {
-            grid.find('div[data-role="edit"]:visible').parent('td').each(function () {
-                var $cell = $(this),
-                    column = data.columns[$cell.index()];
-                gj.grid.plugins.inlineEditing.private.displayMode(grid, $cell, column);
-            });
+            editors = grid.element.querySelectorAll('div[data-gj-role="edit"]');
+            for (const editor of editors) {
+                if (editor.style.display === 'block') {
+                    cell = editor.parentNode;
+                    column = data.columns[Array.from(cell.parentNode.children).indexOf(cell)];
+                    gj.grid.plugins.inlineEditing.private.displayMode(grid, cell, column);
+                }
+            }
         }
     },
 
     updateChanges: function (grid, column, sourceRecord, newValue) {
-        var targetRecords, filterResult, newRecord, data = grid.getConfig();
+        let targetRecords, filterResult, newRecord, data = grid.getConfig();
         if (!data.guid) {
             data.guid = gj.grid.plugins.inlineEditing.private.generateGUID();
         }
@@ -578,12 +590,12 @@ gj.grid.plugins.inlineEditing.public = {
      * <br/><br/>
      * <table id="grid"></table>
      * <script>
-     *     var grid = $('#grid').grid({
+     *     let grid = new GijgoGrid(document.getElementById('grid'), {
      *         primaryKey: 'ID',
      *         dataSource: '/Players/Get',
      *         columns: [ { field: 'ID' }, { field: 'Name', editor: true }, { field: 'PlaceOfBirth', editor: true } ]
      *     });
-     *     $('#btnGetChanges').on('click', function () {
+     *     document.getElementById('btnGetChanges').addEventListener('click', function () {
      *         alert(JSON.stringify(grid.getChanges()));
      *     });
      * </script>
@@ -601,23 +613,23 @@ gj.grid.plugins.inlineEditing.public = {
      * <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
      * <table id="grid"></table>
      * <script>
-     *     var grid, renderer;
-     *     renderer = function (value, record, $cell, $displayEl, id) {
-     *         var $editBtn = $('<i class="fa fa-pencil gj-cursor-pointer" data-key="' + id + '"></i>'),
-     *             $updateBtn = $('<i class="fa fa-save gj-cursor-pointer" data-key="' + id + '"></i>').hide();
-     *         $editBtn.on('click', function (e) {
-     *             grid.edit($(this).data('key'));
-     *             $editBtn.hide();
-     *             $updateBtn.show();
+     *     let grid, renderer;
+     *     renderer = function (value, record, cell, displayEl, id) {
+     *         let editBtn = ('<i class="fa fa-pencil gj-cursor-pointer" data-gj-key="' + id + '"></i>'),
+     *             updateBtn = ('<i class="fa fa-save gj-cursor-pointer" data-gj-key="' + id + '"></i>').hide();
+     *         editBtn.on('click', function (e) {
+     *             grid.edit((this).data('key'));
+     *             editBtn.hide();
+     *             updateBtn.show();
      *         });
-     *         $updateBtn.on('click', function (e) {
-     *             grid.update($(this).data('key'));
-     *             $editBtn.show();
-     *             $updateBtn.hide();
+     *         updateBtn.on('click', function (e) {
+     *             grid.update((this).data('key'));
+     *             editBtn.show();
+     *             updateBtn.hide();
      *         });
-     *         $displayEl.append($editBtn).append($updateBtn);
+     *         displayEl.append(editBtn).append(updateBtn);
      *     }
-     *     grid = $('#grid').grid({
+     *     grid = new GijgoGrid(document.getElementById('grid'), {
      *         primaryKey: 'ID',
      *         dataSource: '/Players/Get',
      *         inlineEditing: { mode: 'command', managementColumn: false },
@@ -631,12 +643,12 @@ gj.grid.plugins.inlineEditing.public = {
      * </script>
      */
     edit: function (id) {
-        var i, record = this.getById(id),
-            $cells = gj.grid.methods.getRowById(this, id).children('td'),
+        let i, record = this.getById(id),
+            cells = gj.grid.methods.getRowById(this, id).children('td'),
             columns = this.data('columns');
 
-        for (i = 0; i < $cells.length; i++) {
-            gj.grid.plugins.inlineEditing.private.editMode(this, $($cells[i]), columns[i], record);
+        for (i = 0; i < cells.length; i++) {
+            gj.grid.plugins.inlineEditing.private.editMode(this, (cells[i]), columns[i], record);
         }
             
         return this;
@@ -652,23 +664,23 @@ gj.grid.plugins.inlineEditing.public = {
      * <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
      * <table id="grid"></table>
      * <script>
-     *     var grid, renderer;
-     *     renderer = function (value, record, $cell, $displayEl, id) {
-     *         var $editBtn = $('<i class="fa fa-pencil gj-cursor-pointer" data-key="' + id + '"></i>'),
-     *             $updateBtn = $('<i class="fa fa-save gj-cursor-pointer" data-key="' + id + '"></i>').hide();
-     *         $editBtn.on('click', function (e) {
-     *             grid.edit($(this).data('key'));
-     *             $editBtn.hide();
-     *             $updateBtn.show();
+     *     let grid, renderer;
+     *     renderer = function (value, record, cell, displayEl, id) {
+     *         let editBtn = ('<i class="fa fa-pencil gj-cursor-pointer" data-gj-key="' + id + '"></i>'),
+     *             updateBtn = ('<i class="fa fa-save gj-cursor-pointer" data-gj-key="' + id + '"></i>').hide();
+     *         editBtn.on('click', function (e) {
+     *             grid.edit((this).data('key'));
+     *             editBtn.hide();
+     *             updateBtn.show();
      *         });
-     *         $updateBtn.on('click', function (e) {
-     *             grid.update($(this).data('key'));
-     *             $editBtn.show();
-     *             $updateBtn.hide();
+     *         updateBtn.on('click', function (e) {
+     *             grid.update((this).data('key'));
+     *             editBtn.show();
+     *             updateBtn.hide();
      *         });
-     *         $displayEl.append($editBtn).append($updateBtn);
+     *         displayEl.append(editBtn).append(updateBtn);
      *     }
-     *     grid = $('#grid').grid({
+     *     grid = new GijgoGrid(document.getElementById('grid'), {
      *         primaryKey: 'ID',
      *         dataSource: '/Players/Get',
      *         inlineEditing: { mode: 'command', managementColumn: false },
@@ -682,15 +694,15 @@ gj.grid.plugins.inlineEditing.public = {
      * </script>
      */
     update: function (id) {
-        var i, record = this.getById(id),
-            $cells = gj.grid.methods.getRowById(this, id).children('td'),
+        let i, record = this.getById(id),
+            cells = gj.grid.methods.getRowById(this, id).children('td'),
             columns = this.data('columns');
 
-        for (i = 0; i < $cells.length; i++) {
-            gj.grid.plugins.inlineEditing.private.displayMode(this, $($cells[i]), columns[i], false);
+        for (i = 0; i < cells.length; i++) {
+            gj.grid.plugins.inlineEditing.private.displayMode(this, (cells[i]), columns[i], false);
         }
 
-        gj.grid.plugins.inlineEditing.events.rowDataChanged(this, id, record);
+        gj.grid.plugins.inlineEditing.events.rowDataChanged(this.element, id, record);
 
         return this;
     },
@@ -704,23 +716,23 @@ gj.grid.plugins.inlineEditing.public = {
      * <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
      * <table id="grid"></table>
      * <script>
-     *     var grid, renderer;
-     *     renderer = function (value, record, $cell, $displayEl, id) {
-     *         var $editBtn = $('<i class="fa fa-pencil gj-cursor-pointer" data-key="' + id + '"></i>'),
-     *             $cancelBtn = $('<i class="fa fa-undo gj-cursor-pointer" data-key="' + id + '"></i>').hide();
-     *         $editBtn.on('click', function (e) {
-     *             grid.edit($(this).data('key'));
-     *             $editBtn.hide();
-     *             $cancelBtn.show();
+     *     let grid, renderer;
+     *     renderer = function (value, record, cell, displayEl, id) {
+     *         let editBtn = ('<i class="fa fa-pencil gj-cursor-pointer" data-gj-key="' + id + '"></i>'),
+     *             cancelBtn = ('<i class="fa fa-undo gj-cursor-pointer" data-gj-key="' + id + '"></i>').hide();
+     *         editBtn.on('click', function (e) {
+     *             grid.edit((this).data('key'));
+     *             editBtn.hide();
+     *             cancelBtn.show();
      *         });
-     *         $cancelBtn.on('click', function (e) {
-     *             grid.cancel($(this).data('key'));
-     *             $editBtn.show();
-     *             $cancelBtn.hide();
+     *         cancelBtn.on('click', function (e) {
+     *             grid.cancel((this).data('key'));
+     *             editBtn.show();
+     *             cancelBtn.hide();
      *         });
-     *         $displayEl.append($editBtn).append($cancelBtn);
+     *         displayEl.append(editBtn).append(cancelBtn);
      *     }
-     *     grid = $('#grid').grid({
+     *     grid = new GijgoGrid(document.getElementById('grid'), {
      *         primaryKey: 'ID',
      *         dataSource: '/Players/Get',
      *         inlineEditing: { mode: 'command', managementColumn: false },
@@ -734,12 +746,12 @@ gj.grid.plugins.inlineEditing.public = {
      * </script>
      */
     cancel: function (id) {
-        var i, record = this.getById(id),
-            $cells = gj.grid.methods.getRowById(this, id).children('td'),
+        let i, record = this.getById(id),
+            cells = gj.grid.methods.getRowById(this, id).children('td'),
             columns = this.data('columns');
 
-        for (i = 0; i < $cells.length; i++) {
-            gj.grid.plugins.inlineEditing.private.displayMode(this, $($cells[i]), columns[i], true);
+        for (i = 0; i < cells.length; i++) {
+            gj.grid.plugins.inlineEditing.private.displayMode(this, (cells[i]), columns[i], true);
         }
 
         return this;
@@ -752,24 +764,25 @@ gj.grid.plugins.inlineEditing.events = {
      *
      * @event cellDataChanged
      * @param {object} e - event data
-     * @param {object} $cell - the cell presented as jquery object 
-     * @param {object} column - the column configuration data
-     * @param {object} record - the data of the row record
-     * @param {object} newValue - the new cell value
+     * @param {object} e.detail.cell - the cell presented as jquery object 
+     * @param {object} e.detail.column - the column configuration data
+     * @param {object} e.detail.record - the data of the row record
+     * @param {object} e.detail.oldValue - the old cell value
+     * @param {object} e.detail.newValue - the new cell value
      * @example sample <!-- grid -->
      * <table id="grid"></table>
      * <script>
-     *     var grid = $('#grid').grid({
+     *     let grid = new GijgoGrid(document.getElementById('grid'), {
      *         dataSource: '/Players/Get',
      *         columns: [ { field: 'ID', width: 56 }, { field: 'Name', editor: true }, { field: 'PlaceOfBirth', editor: true } ]
      *     });
-     *     grid.on('cellDataChanged', function (e, $cell, column, record, newValue) {
-     *         alert('The value for "' + column.field + '" is changed to "' + newValue + '"');
+     *     grid.on('cellDataChanged', function (e) {
+     *         alert('The value for "' + e.detail.column.field + '" is changed to "' + e.detail.newValue + '"');
      *     });
      * </script>
      */
-    cellDataChanged: function (grid, $cell, column, record, oldValue, newValue) {
-        grid.triggerHandler('cellDataChanged', [$cell, column, record, oldValue, newValue]);
+    cellDataChanged: function (el, cell, column, record, oldValue, newValue) {
+        el.dispatchEvent(new CustomEvent('cellDataChanged', { detail: { cell: cell, column: column, record: record, oldValue: oldValue, newValue: newValue } }));
     },
 
     /**
@@ -777,35 +790,35 @@ gj.grid.plugins.inlineEditing.events = {
      *
      * @event rowDataChanged
      * @param {object} e - event data
-     * @param {object} id - the id of the record
-     * @param {object} record - the data of the row record
+     * @param {object} e.detail.id - the id of the record
+     * @param {object} e.detail.record - the data of the row record
      * @example sample <!-- grid -->
      * <table id="grid"></table>
      * <script>
-     *     var grid = $('#grid').grid({
+     *     let grid = new GijgoGrid(document.getElementById('grid'), {
      *         primaryKey: 'ID',
      *         dataSource: '/Players/Get',
      *         inlineEditing: { mode: 'command' },
      *         columns: [ { field: 'ID', width: 56 }, { field: 'Name', editor: true }, { field: 'PlaceOfBirth', editor: true } ]
      *     });
-     *     grid.on('rowDataChanged', function (e, id, record) {
-     *         alert('Record with id="' + id + '" is changed to "' + JSON.stringify(record) + '"');
+     *     grid.on('rowDataChanged', function (e) {
+     *         alert('Record with id="' + e.detail.id + '" is changed to "' + JSON.stringify(e.detail.record) + '"');
      *     });
      * </script>
      */
-    rowDataChanged: function (grid, id, record) {
-        grid.triggerHandler('rowDataChanged', [id, record]);
+    rowDataChanged: function (el, id, record) {
+        el.dispatchEvent(new CustomEvent('rowDataChanged', { detail: { id: id, record: record } }));
     }
 };
 
 gj.grid.plugins.inlineEditing.configure = function (grid, fullConfig, clientConfig) {
-    var data = grid.getConfig();
+    let data = grid.getConfig();
     grid.extend(grid, gj.grid.plugins.inlineEditing.public);
     if (clientConfig.inlineEditing) {
         grid.on('dataBound', function () {
-            grid.find('span.gj-dirty').remove();
+            grid.element.querySelector('span.gj-dirty').remove();
         });
-        grid.on('rowDataBound', function (e, $row, id, record) {
+        grid.on('rowDataBound', function (e, row, id, record) {
             grid.cancel(id);
         });
     }
@@ -820,7 +833,7 @@ gj.grid.plugins.inlineEditing.configure = function (grid, fullConfig, clientConf
                 if (e.detail.column.mode === 'editOnly') {
                     gj.grid.plugins.inlineEditing.private.editMode(grid, e.detail.displayEl.parentNode, e.detail.column, e.detail.record);
                 } else {
-                    displayEl.closest('td').on(data.inlineEditing.mode === 'dblclick' ? 'dblclick' : 'click', function () {
+                    e.detail.displayEl.closest('td').addEventListener(data.inlineEditing.mode === 'dblclick' ? 'dblclick' : 'click', function () {
                         gj.grid.plugins.inlineEditing.private.editMode(grid, e.detail.displayEl.parentNode, e.detail.column, e.detail.record);
                     });
                 }

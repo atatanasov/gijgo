@@ -333,8 +333,8 @@ gj.grid.methods = {
         for (i = 0; i < list.length; i++) {
             position = list[i].indexOf(':');
             if (position > 0) {
-                key = $.trim(list[i].substr(0, position));
-                func = $.trim(list[i].substr(position + 1, list[i].length));
+                key = list[i].substr(0, position).trim();
+                func = list[i].substr(position + 1, list[i].length).trim();
                 result[key] = eval('window.' + func); //window[func]; //TODO: eveluate functions from string
             }
         }
@@ -712,7 +712,7 @@ gj.grid.methods = {
                 e.stopPropagation();
             }
             e.detail = detail;
-            func.call(this, e);
+            func.call(this, e, detail.id, detail.field, detail.record);
         };
     },
 
@@ -817,7 +817,7 @@ gj.grid.methods = {
                 checkbox.checked = true;
             }
             if ('multiple' === data.selectionType && grid.getSelections().length === grid.count(false)) {
-                checkbox = grid.querySelector('thead input[data-gj-role="selectAll"]');
+                checkbox = grid.element.querySelector('thead input[data-gj-role="selectAll"]');
                 if (checkbox && !checkbox.checked) {
                     checkbox.checked = true;
                 }
@@ -900,10 +900,10 @@ gj.grid.methods = {
     },
 
     getSelected: function (grid) {
-        let result = null, selections, record, position;
-        selections = grid.querySelector('tbody>tr[data-gj-selected="true"]');
-        if (selections.length > 0) {
-            position = selections[0].getAttribute('data-gj-position');
+        let result = null, selection, record, position;
+        selection = grid.element.querySelector('tbody>tr[data-gj-selected="true"]');
+        if (selection) {
+            position = selection.getAttribute('data-gj-position');
             record = grid.get(position);
             result = gj.grid.methods.getId(record, grid.getConfig().primaryKey, position);
         }
@@ -911,7 +911,7 @@ gj.grid.methods = {
     },
 
     getSelectedRows: function (grid) {
-        return grid.element.querySelector('tbody>tr[data-gj-selected="true"]');
+        return grid.element.querySelectorAll('tbody>tr[data-gj-selected="true"]');
     },
 
     getSelections: function (grid) {
@@ -919,8 +919,8 @@ gj.grid.methods = {
             data = grid.getConfig(),
             selections = gj.grid.methods.getSelectedRows(grid);
         if (0 < selections.length) {
-            for (let i = 0; i < rows.length; i++) {
-                position = rows[i].getAttribute('data-gj-position');
+            for (let i = 0; i < selections.length; i++) {
+                position = selections[i].getAttribute('data-gj-position');
                 record = grid.get(position);
                 result.push(gj.grid.methods.getId(record, data.primaryKey, position));
             }
@@ -1084,7 +1084,7 @@ gj.grid.methods = {
         for (field in data.params) {
             if (data.params[field] && !data.paramNames[field]) {
                 column = gj.grid.methods.getColumnInfo(grid, field);
-                records = $.grep(records, function (record) {
+                records = records.filter(function (record) {
                     let value = record[field] || '',
                         searchStr = data.params[field] || '';
                     return column && typeof (column.filter) === 'function' ? column.filter(value, searchStr) : (value.toUpperCase().indexOf(searchStr.toUpperCase()) > -1);
@@ -1112,7 +1112,7 @@ gj.grid.methods = {
             gj.grid.methods.stopLoading(grid);
             grid.xhr && grid.xhr.abort();
             //TODO: grid.off();
-            if (keepWrapperTag === false && grid.parent('div[data-gj-role="wrapper"]').length > 0) {
+            if (!keepWrapperTag && grid.element.parentNode.getAttribute('data-gj-role') === 'wrapper') {
                 grid.unwrap();
             }
             grid.removeConfig();
@@ -1186,32 +1186,35 @@ gj.grid.methods = {
     },
 
     addRow: function (grid, record) {
-        let data = grid.getConfig();
+        let data = grid.getConfig(),
+            records = grid.getRecords();
         data.totalRecords = grid.getTotalRecords() + 1;
-        gj.grid.events.dataBinding(grid, [record]);
-        data.records.push(record);
+        gj.grid.events.dataBinding(grid.element, [record]);
+        records.push(record);
+        grid.setRecords(records);
         if (Array.isArray(data.dataSource)) {
             data.dataSource.push(record);
         }
-        if (data.totalRecords === 1) {
-            grid.children('tbody').empty();
+        if (grid.getTotalRecords() === 0) {
+            grid.element.querySelector('tbody').innerHTML = '';
         }
         if (gj.grid.methods.isLastRecordVisible(grid)) {
             gj.grid.methods.renderRow(grid, null, record, grid.count() - 1);
         }
-        gj.grid.events.dataBound(grid, [record], data.totalRecords);
+        gj.grid.events.dataBound(grid.element, [record], data.totalRecords);
         return grid;
     },
 
     updateRow: function (grid, id, record) {
         let row = gj.grid.methods.getRowById(grid, id),
-            data = grid.getConfig(), position;
-        data.records[row.data('position') - 1] = record;
+            data = grid.getConfig(), records = grid.getRecords(), position;
+        records[row.getAttribute('data-gj-position') - 1] = record;
+        grid.setRecords(records);
         if (Array.isArray(data.dataSource)) {
             position = gj.grid.methods.getRecVPosById(grid, id);
             data.dataSource[position] = record;
         }
-        gj.grid.methods.renderRow(grid, row, record, row.index());
+        gj.grid.methods.renderRow(grid, row, record, Array.from(row.parentNode.children).indexOf(row));
         return grid;
     },
 
@@ -1405,52 +1408,53 @@ if (typeof (jQuery) !== "undefined") {
 
     private: {
         init: function (grid) {
-            var data = grid.getConfig(),
-                $tbody = grid.children('tbody'),
-                $thead = grid.children('thead'),
-                bodyHeight = data.height - $thead.outerHeight() - (grid.children('tfoot').outerHeight() || 0);
-            grid.addClass('gj-grid-scrollable');
-            $tbody.css('width', $thead.outerWidth());
-            $tbody.height(bodyHeight);
+            let data = grid.getConfig(),
+                tbody = grid.element.querySelector('tbody'),
+                thead = grid.element.querySelector('thead'),
+                tfoot = grid.element.querySelector('tfoot'),
+                bodyHeight = data.height - gj.core.height(thead, true) - (tfoot ? gj.core.height(tfoot, true) : 0);
+            grid.element.classList.add('gj-grid-scrollable');
+            tbody.setAttribute('width', gj.core.height(thead, true));
+            tbody.style.height = bodyHeight + 'px';
         },
 
         refresh: function (grid) {
-            var i, width,
+            let i, width,
                 data = grid.getConfig(),
-                $tbody = grid.children('tbody'),
-                $thead = grid.children('thead'),
-                $tbodyCells = grid.find('tbody tr[data-role="row"] td'),
-                $theadCells = grid.find('thead tr[data-role="caption"] th');
+                tbody = grid.element.querySelector('tbody'),
+                thead = grid.element.querySelector('thead'),
+                tbodyCells = grid.element.querySelectorAll('tbody tr[data-gj-role="row"] td'),
+                theadCells = grid.element.querySelectorAll('thead tr[data-gj-role="caption"] th');
 
-            if (grid.children('tbody').height() < gj.grid.plugins.fixedHeader.private.getRowsHeight(grid)) {
-                $tbody.css('width', $thead.outerWidth() + gj.grid.plugins.fixedHeader.private.getScrollBarWidth() + (navigator.userAgent.toLowerCase().indexOf('firefox') > -1 ? 1 : 0));
+            if (gj.core.height(tbody) < gj.grid.plugins.fixedHeader.private.getRowsHeight(grid)) {
+                tbody.style.width = (gj.core.width(thead, true) + gj.grid.plugins.fixedHeader.private.getScrollBarWidth() + (navigator.userAgent.toLowerCase().indexOf('firefox') > -1 ? 1 : 0)) + 'px';
             } else {
-                $tbody.css('width', $thead.outerWidth());
+                tbody.style.width = gj.core.width(thead, true) + 'px';
             }
 
-            for (i = 0; i < $theadCells.length; i++) {
-                width = $($theadCells[i]).outerWidth();
+            for (i = 0; i < theadCells.length; i++) {
+                width = gj.core.width(theadCells[i], true);
                 if (i === 0 && gj.core.isIE()) {
                     width = width - 1;
                 }
-                $($tbodyCells[i]).attr('width', width);
+                tbodyCells[i].setAttribute('width', width);
             }
         },
 
         getRowsHeight: function (grid) {
-            var total = 0;
-            grid.find('tbody tr').each(function () {
-                total += $(this).height();
-            });
+            let total = 0, rows = grid.element.querySelectorAll('tbody tr');
+            for (const row of rows) {
+                total += gj.core.height(row);
+            };
             return total;
         },
 
         getScrollBarWidth: function () {
-            var inner = document.createElement('p');
+            let inner = document.createElement('p');
             inner.style.width = "100%";
             inner.style.height = "200px";
 
-            var outer = document.createElement('div');
+            let outer = document.createElement('div');
             outer.style.position = "absolute";
             outer.style.top = "0px";
             outer.style.left = "0px";
@@ -1461,9 +1465,9 @@ if (typeof (jQuery) !== "undefined") {
             outer.appendChild(inner);
 
             document.body.appendChild(outer);
-            var w1 = inner.offsetWidth;
+            let w1 = inner.offsetWidth;
             outer.style.overflow = 'scroll';
-            var w2 = inner.offsetWidth;
+            let w2 = inner.offsetWidth;
             if (w1 == w2) w2 = outer.clientWidth;
 
             document.body.removeChild(outer);
@@ -1480,7 +1484,7 @@ if (typeof (jQuery) !== "undefined") {
 
     configure: function (grid, fullConfig, clientConfig) {
         grid.extend(grid, gj.grid.plugins.fixedHeader.public);
-        var data = grid.getConfig();
+        let data = grid.getConfig();
         if (clientConfig.fixedHeader) {
             grid.on('initialized', function () {
                 gj.grid.plugins.fixedHeader.private.init(grid);
@@ -1529,44 +1533,56 @@ if (typeof (jQuery) !== "undefined") {
     },
 
     'private': {
-        expandDetail: function (grid, $cell, id) {
-            var $contentRow = $cell.closest('tr'),
-                $detailsRow = $('<tr data-role="details" />'),
-                $detailsCell = $('<td colspan="' + gj.grid.methods.countVisibleColumns(grid) + '" />'),
-                $detailsWrapper = $('<div data-role="display" />'),
+        expandDetail: function (grid, cell, id) {
+            let contentRow = cell.closest('tr'),
+                contentRowIcon = cell.querySelector('div[data-gj-role="display"]'),
+                detailsRow = document.createElement('tr'),
+                detailsCell = document.createElement('td'), 
+                detailsWrapper = document.createElement('div'), 
                 data = grid.getConfig(),
-                position = $contentRow.data('position'),
+                position = contentRow.getAttribute('data-gj-position'),
                 record = grid.get(position),
                 plugin = gj.grid.plugins.expandCollapseRows;
 
+            detailsRow.setAttribute('data-gj-role', 'details');
+            detailsCell.setAttribute('colspan', gj.grid.methods.countVisibleColumns(grid));
+            detailsWrapper.setAttribute('data-gj-role', 'display');
+            detailsRow.appendChild(detailsCell);
+            detailsCell.appendChild(detailsWrapper);
+            detailsWrapper.innerHTML = window.gijgoStorage.get(contentRow, 'details');
+
             if (typeof (id) === undefined) {
                 id = gj.grid.methods.getId(record, data.primaryKey, record);
             }
-            $detailsRow.append($detailsCell.append($detailsWrapper.append($contentRow.data('details'))));
-            $detailsRow.insertAfter($contentRow);
-            $cell.children('div[data-role="display"]').empty().append(data.icons.collapseRow);
-            grid.updateDetails($contentRow);
+            contentRow.parentNode.insertBefore(detailsRow, contentRow.nextSibling);
+            contentRowIcon.innerHTML = '';
+            contentRowIcon.innerHTML = data.icons.collapseRow;
+            grid.updateDetails(position);
             plugin.private.keepSelection(grid, id);
-            plugin.events.detailExpand(grid, $detailsRow.find('td>div'), id);
+            plugin.events.detailExpand(grid.element, detailsWrapper, id);
         },
 
-        collapseDetail: function (grid, $cell, id) {
-            var $contentRow = $cell.closest('tr'),
-                $detailsRow = $contentRow.next('tr[data-role="details"]'),
+        collapseDetail: function (grid, cell, id) {
+            let contentRow = cell.closest('tr'),
+                detailsRow = contentRow.nextSibling,
+                contentRowIcon = cell.querySelector('div[data-gj-role="display"]'),
                 data = grid.getConfig(),
                 plugin = gj.grid.plugins.expandCollapseRows;
 
             if (typeof (id) === undefined) {
                 id = gj.grid.methods.getId(record, data.primaryKey, record);
             }
-            $detailsRow.remove();
-            $cell.children('div[data-role="display"]').empty().append(data.icons.expandRow);
-            plugin.private.removeSelection(grid, id);
-            plugin.events.detailCollapse(grid, $detailsRow.find('td>div'), id);
+            if (detailsRow) {
+                detailsRow.remove();
+                contentRowIcon.innerHTML = '';
+                contentRowIcon.innerHTML = data.icons.expandRow;
+                plugin.private.removeSelection(grid, id);
+                plugin.events.detailCollapse(grid.element, detailsRow.querySelector('td>div'), id);
+            }
         },
 
         keepSelection: function(grid, id) {
-            var data = grid.getConfig();
+            let data = grid.getConfig();
             if (data.keepExpandedRows) {
                 if (Array.isArray(data.expandedRows)) {
                     if (data.expandedRows.indexOf(id) == -1) {
@@ -1579,16 +1595,16 @@ if (typeof (jQuery) !== "undefined") {
         },
 
         removeSelection: function (grid, id) {
-            var data = grid.getConfig();
-            if (data.keepExpandedRows && $.isArray(data.expandedRows) && data.expandedRows.indexOf(id) > -1) {
+            let data = grid.getConfig();
+            if (data.keepExpandedRows && Array.isArray(data.expandedRows) && data.expandedRows.indexOf(id) > -1) {
                 data.expandedRows.splice(data.expandedRows.indexOf(id), 1);
             }
         },
 
         updateDetailsColSpan: function (grid) {
-            var $cells = grid.find('tbody > tr[data-role="details"] > td');
-            if ($cells && $cells.length) {
-                $cells.attr('colspan', gj.grid.methods.countVisibleColumns(grid));
+            let cell = grid.element.querySelector('tbody > tr[data-role="details"] > td');
+            if (cell) {
+                cell.setAttribute('colspan', gj.grid.methods.countVisibleColumns(grid));
             }
         }        
     },
@@ -1597,56 +1613,60 @@ if (typeof (jQuery) !== "undefined") {
 
         /**
          * Collapse all grid rows.         */        collapseAll: function () {
-            var grid = this, data = grid.getConfig(), position;
+            let grid = this, data = grid.getConfig(), position, rows;
                 
 
             if (typeof (data.detailTemplate) !== 'undefined') {
                 position = gj.grid.methods.getColumnPositionByRole(grid, 'expander');
-                grid.find('tbody tr[data-role="row"]').each(function () {
-                    gj.grid.plugins.expandCollapseRows.private.collapseDetail(grid, $(this).find('td:eq(' + position + ')'));
-                });
+                rows = grid.element.querySelectorAll('tbody tr[data-gj-role="row"]');
+                for (const row of rows) {
+                    gj.grid.plugins.expandCollapseRows.private.collapseDetail(grid, row.children[position]);
+                };
             }
 
             if (typeof (data.grouping) !== 'undefined') {
-                grid.find('tbody tr[role="group"]').each(function () {
-                    gj.grid.plugins.grouping.private.collapseGroup(data, $(this).find('td:eq(0)'));
-                });
+                rows = grid.element.querySelectorAll('tbody tr[data-gj-role="group"]');
+                for (const row of rows) {
+                    gj.grid.plugins.grouping.private.collapseGroup(data, row.children[0]);
+                };
             }
             return grid;
         },
 
         /**
          * Expand all grid rows.         */        expandAll: function () {
-            var grid = this, data = grid.getConfig(), position;
+            let grid = this, data = grid.getConfig(), position, rows;
 
             if (typeof (data.detailTemplate) !== 'undefined') {
                 position = gj.grid.methods.getColumnPositionByRole(grid, 'expander');
-                grid.find('tbody tr[data-role="row"]').each(function () {
-                    gj.grid.plugins.expandCollapseRows.private.expandDetail(grid, $(this).find('td:eq(' + position + ')'));
-                });
+                rows = grid.element.querySelectorAll('tbody tr[data-gj-role="row"]');
+                for (const row of rows) {
+                    gj.grid.plugins.expandCollapseRows.private.expandDetail(grid, row.children[position]);
+                };
             }
 
             if (typeof (data.grouping) !== 'undefined') {
-                grid.find('tbody tr[role="group"]').each(function () {
-                    gj.grid.plugins.grouping.private.expandGroup(data, $(this).find('td:eq(0)'));
-                });
+                rows = grid.element.querySelectorAll('tbody tr[data-gj-role="group"]');
+                for (const row of rows) {
+                    gj.grid.plugins.grouping.private.expandGroup(data, row.children[0]);
+                };
             }
             return grid;
         },
 
         //TODO: add documentation
-        updateDetails: function ($contentRow) {
-            var grid = this,
-                $detailWrapper = $contentRow.data('details'),
-                content = $detailWrapper.html(),
-                record = grid.get($contentRow.data('position'));
+        updateDetails: function (position) {
+            let grid = this,
+                detailWrapper = grid.element.querySelector('tbody tr[data-gj-position="' + position + '"]').nextSibling.querySelector('div[data-gj-role="display"]'),
+                content = detailWrapper.innerHTML,
+                record = grid.get(position);
 
             if (record && content) {
-                $detailWrapper.html().replace(/\{(.+?)\}/g, function ($0, $1) {
-                    var column = gj.grid.methods.getColumnInfo(grid, $1);
+                detailWrapper.innerHTML.replace(/\{(.+?)\}/g, function ($0, $1) {
+                    let column = gj.grid.methods.getColumnInfo(grid, $1);
                     content = content.replace($0, gj.grid.methods.formatText(record[$1], column));
                 });
-                $detailWrapper.html(content);
+                detailWrapper.innerHTML = content;
             }
             return grid;
         }
@@ -1655,19 +1675,19 @@ if (typeof (jQuery) !== "undefined") {
     'events': {
         /**
          * Event fires when detail row is showing
-         *         */        detailExpand: function (grid, $detailWrapper, id) {
-            grid.triggerHandler('detailExpand', [$detailWrapper, id]);
+         *         */        detailExpand: function (el, detailWrapper, id) {
+            el.dispatchEvent(new CustomEvent('detailExpand', { detail: { detailWrapper: detailWrapper, id: id } }));
         },
 
         /**
          * Event fires when detail row is hiding
-         *         */        detailCollapse: function (grid, $detailWrapper, id) {
-            grid.triggerHandler('detailCollapse', [$detailWrapper, id]);
+         *         */        detailCollapse: function (el, detailWrapper, id) {
+            el.dispatchEvent(new CustomEvent('detailCollapse', { detail: { detailWrapper: detailWrapper, id: id } }));
         }
     },
 
     'configure': function (grid) {
-        var column, data = grid.getConfig();
+        let column, data = grid.getConfig();
 
         grid.extend(grid, gj.grid.plugins.expandCollapseRows.public);
 
@@ -1681,20 +1701,21 @@ if (typeof (jQuery) !== "undefined") {
                 tmpl: data.icons.expandRow,
                 role: 'expander',
                 events: {
-                    'click': function (e) {
-                        var $cell = $(this), methods = gj.grid.plugins.expandCollapseRows.private;
-                        if ($cell.closest('tr').next().attr('data-role') === 'details') {
-                            methods.collapseDetail(grid, $cell, e.data.id);
+                    'click': function (e, id, field, record) {
+                        let methods = gj.grid.plugins.expandCollapseRows.private,
+                            nextRow = this.closest('tr').nextElementSibling;
+                        if (nextRow && nextRow.getAttribute('data-gj-role') === 'details') {
+                            methods.collapseDetail(grid, this, id);
                         } else {
-                            methods.expandDetail(grid, $(this), e.data.id);
+                            methods.expandDetail(grid, this, id);
                         }
                     }
                 }
             };
             data.columns = [column].concat(data.columns);
 
-            grid.on('rowDataBound', function (e, $row, id, record) {
-                $row.data('details', $(data.detailTemplate));
+            grid.on('rowDataBound', function (e) {
+                window.gijgoStorage.put(e.detail.row, 'details', data.detailTemplate);
             });
             grid.on('columnShow', function (e, column) {
                 gj.grid.plugins.expandCollapseRows.private.updateDetailsColSpan(grid);
@@ -1702,8 +1723,8 @@ if (typeof (jQuery) !== "undefined") {
             grid.on('columnHide', function (e, column) {
                 gj.grid.plugins.expandCollapseRows.private.updateDetailsColSpan(grid);
             });
-            grid.on('rowRemoving', function (e, $row, id, record) {
-                gj.grid.plugins.expandCollapseRows.private.collapseDetail(grid, $row.children('td').first(), id);
+            grid.on('rowRemoving', function (e) {
+                gj.grid.plugins.expandCollapseRows.private.collapseDetail(grid, e.detail.row.children[0], e.detail.id);
             });
             grid.on('dataBinding', function () {
                 grid.collapseAll();
@@ -1712,15 +1733,15 @@ if (typeof (jQuery) !== "undefined") {
                 grid.collapseAll();
             });
             grid.on('dataBound', function () {
-                var i, $cell, $row, position, data = grid.getConfig();
+                let i, cell, row, position, data = grid.getConfig();
                 if (data.keepExpandedRows && Array.isArray(data.expandedRows)) {
                     for (i = 0; i < data.expandedRows.length; i++) {
-                        $row = gj.grid.methods.getRowById(grid, data.expandedRows[i]);
-                        if ($row && $row.length) {
+                        row = gj.grid.methods.getRowById(grid, data.expandedRows[i]);
+                        if (row) {
                             position = gj.grid.methods.getColumnPositionByRole(grid, 'expander');
-                            $cell = $row.children('td:eq(' + position + ')');
-                            if ($cell && $cell.length) {
-                                gj.grid.plugins.expandCollapseRows.private.expandDetail(grid, $cell);
+                            cell = row.children[position];
+                            if (cell) {
+                                gj.grid.plugins.expandCollapseRows.private.expandDetail(grid, cell);
                             }
                         }
                     }
@@ -1731,25 +1752,25 @@ if (typeof (jQuery) !== "undefined") {
 };
 /**  */gj.grid.plugins.inlineEditing = {
     renderers: {
-        editManager: function (value, record, $cell, $displayEl, id, grid) {
-            var data = grid.getConfig(),
-                $edit = $(data.inlineEditing.editButton).attr('key', id),
-                $delete = $(data.inlineEditing.deleteButton).attr('key', id),
-                $update = $(data.inlineEditing.updateButton).attr('key', id).hide(),
-                $cancel = $(data.inlineEditing.cancelButton).attr('key', id).hide();
-            $edit.on('click', function (e) {
-                grid.edit($(this).attr('key'));
-            });
-            $delete.on('click', function (e) {
-                grid.removeRow($(this).attr('key'));
-            });
-            $update.on('click', function (e) {
-                grid.update($(this).attr('key'));
-            });
-            $cancel.on('click', function (e) {
-                grid.cancel($(this).attr('key'));
-            });
-            $displayEl.empty().append($edit).append($delete).append($update).append($cancel);
+        editManager: function (value, record, cell, displayEl, id, grid) {
+            // let data = grid.getConfig(),
+            //     edit = data.inlineEditing.editButton.attr('key', id),
+            //     delete = data.inlineEditing.deleteButton.attr('key', id),
+            //     update = data.inlineEditing.updateButton.attr('key', id).hide(),
+            //     cancel = data.inlineEditing.cancelButton.attr('key', id).hide();
+            // edit.on('click', function (e) {
+            //     grid.edit((this).attr('key'));
+            // });
+            // delete.on('click', function (e) {
+            //     grid.removeRow((this).attr('key'));
+            // });
+            // update.on('click', function (e) {
+            //     grid.update((this).attr('key'));
+            // });
+            // cancel.on('click', function (e) {
+            //     grid.cancel((this).attr('key'));
+            // });
+            // displayEl.empty().append(edit).append(delete).append(update).append(cancel);
         }
     }
 };
@@ -1801,124 +1822,132 @@ gj.grid.plugins.inlineEditing.private = {
         }
     },
 
-    editMode: function (grid, $cell, column, record) {
-        var $displayContainer, $editorContainer, $editorField, value, config, data = grid.getConfig();
-        if ($cell.attr('data-mode') !== 'edit') {
+    editMode: function (grid, cell, column, record) {
+        let displayContainer, editorContainer, editorField, value, config, data = grid.getConfig();
+        if (cell.getAttribute('data-gj-mode') !== 'edit') {
             if (column.editor) {
                 gj.grid.plugins.inlineEditing.private.updateOtherCells(grid, column.mode);
-                $displayContainer = $cell.find('div[data-role="display"]').hide();
-                $editorContainer = $cell.find('div[data-role="edit"]').show();
-                if ($editorContainer.length === 0) {
-                    $editorContainer = $('<div data-role="edit" />');
-                    $cell.append($editorContainer);
+                displayContainer = cell.querySelector('div[data-gj-role="display"]');
+                displayContainer.style.display = 'none';
+                editorContainer = cell.querySelector('div[data-gj-role="edit"]');
+                if (!editorContainer) {
+                    editorContainer = document.createElement('div');
+                    editorContainer.setAttribute('data-gj-role', 'edit');
+                    cell.appendChild(editorContainer);
                 }
+                editorContainer.style.display = 'block';
                 value = record[column.editField || column.field];
-                $editorField = $editorContainer.find('input, select, textarea').first();
-                if ($editorField.length) {
+                editorField = editorContainer.querySelector('input, select, textarea');
+                if (editorField) {
                     switch (column.type) {
                         case 'checkbox':
-                            $editorField.prop('checked', value);
+                            editorField.checked = value;
                             break;
                         case 'dropdown':
-                            $editorField = $editorField.dropdown('value', value);
+                            editorField = editorField.value;
                             break;
                         default:
-                            $editorField.val(value);
+                            editorField.value = value;
                     }
                 } else {
                     if (typeof (column.editor) === 'function') {
-                        column.editor($editorContainer, value, record);
-                        $editorField = $editorContainer.find('input, select, textarea').first();
+                        column.editor(editorContainer, value, record);
+                        editorField = editorContainer.querySelector('input, select, textarea');
                     } else {
                         config = typeof column.editor === "object" ? column.editor : {};
                         config.uiLibrary = data.uiLibrary;
                         config.iconsLibrary = data.iconsLibrary;
-                        config.fontSize = grid.css('font-size');
+                        config.fontSize = grid.element.style.fontSize;
                         config.showOnFocus = false;
                         if ('checkbox' === column.type && gj.checkbox) {
-                            $editorField = $('<input type="checkbox" />').prop('checked', value);
-                            $editorContainer.append($editorField);
-                            $editorField.checkbox(config);
+                            editorField = document.createElement('input');
+                            editorField.setAttribute('type', 'checkbox');
+                            editorField.checked = value;
+                            editorContainer.appendChild(editorField);
+                            new GijgoCheckBox(editorField, config);
                         } else if (('date' === column.type && gj.datepicker) || ('time' === column.type && gj.timepicker) || ('datetime' === column.type && gj.datetimepicker)) {
-                            $editorField = $('<input type="text" width="100%"/>');
-                            $editorContainer.append($editorField);
+                            editorField = document.createElement('input');
+                            editorField.setAttribute('type', 'text');
+                            editorField.setAttribute('width', '100%');
+                            editorContainer.appendChild(editorField);
                             if (column.format) {
                                 config.format = column.format;
                             }
                             switch (column.type) {
                                 case 'date':
-                                    $editorField = $editorField.datepicker(config);
+                                    editorField = new GijgoDatePicker(editorField, config);
                                     break;
                                 case 'time':
-                                    $editorField = $editorField.timepicker(config);
+                                    editorField = new GijgoTimePicker(editorField, config);
                                     break;
                                 case 'datetime':
-                                    $editorField = $editorField.datetimepicker(config);
+                                    editorField = new GijgoDateTimePicker(editorField, config);
                                     break;
                             }
-                            if ($editorField.value) {
-                                $editorField.value($displayContainer.html());
+                            if (editorField.value) {
+                                editorField.value(value);
                             }
                         } else if ('dropdown' === column.type && gj.dropdown) {
-                            $editorField = $('<select type="text" width="100%"/>');
-                            $editorContainer.append($editorField);
+                            editorField = document.createElement('select');
+                            editorField.setAttribute('width', '100%');
+                            editorContainer.appendChild(editorField);
                             config.dataBound = function (e) {
-                                var $dropdown = $(this).dropdown();
+                                let dropdown = (this).dropdown();
                                 if (column.editField) {
-                                    $dropdown.value(record[column.editField]);
+                                    dropdown.value(record[column.editField]);
                                 } else {
-                                    $dropdown.value(record[column.field]);
+                                    dropdown.value(record[column.field]);
                                 }
                             };
-                            $editorField = $editorField.dropdown(config);
+                            editorField = editorField.dropdown(config);
                         } else {
-                            $editorField = $('<input type="text" value="' + value + '" class="gj-width-full"/>');
+                            editorField = ('<input type="text" value="' + value + '" class="gj-width-full"/>');
                             if (data.uiLibrary === 'materialdesign') {
-                                $editorField.addClass('gj-textbox-md').css('font-size', grid.css('font-size'));
+                                editorField.addClass('gj-textbox-md').css('font-size', grid.css('font-size'));
                             }
-                            $editorContainer.append($editorField);
+                            editorContainer.append(editorField);
                         }
                     }
                     if (data.inlineEditing.mode !== 'command' && column.mode !== 'editOnly') {
-                        $editorField = $editorContainer.find('input, select, textarea').first();
-                        $editorField.on('keyup', function (e) {
+                        editorField = editorContainer.querySelectorAll('input, select, textarea')[0];
+                        editorField.addEventListener('keyup', function (e) {
                             if (e.keyCode === 13 || e.keyCode === 27) {
-                                gj.grid.plugins.inlineEditing.private.displayMode(grid, $cell, column);
+                                gj.grid.plugins.inlineEditing.private.displayMode(grid, cell, column);
                             }
                         });
                     }
                 }
-                if ($editorField.prop('tagName').toUpperCase() === "INPUT" && $editorField.prop('type').toUpperCase() === 'TEXT') {
-                    gj.core.setCaretAtEnd($editorField[0]);
+                if (editorField.tagName.toUpperCase() === "INPUT" && editorField.getAttribute('type').toUpperCase() === 'TEXT') {
+                    gj.core.setCaretAtEnd(editorField[0]);
                 } else {
-                    $editorField.focus();
+                    editorField.focus();
                 }
-                $cell.attr('data-mode', 'edit');
+                cell.setAttribute('data-gj-mode', 'edit');
             } else if (column.role === 'managementColumn') {
-                $cell.find('[role="edit"]').hide();
-                $cell.find('[role="delete"]').hide();
-                $cell.find('[role="update"]').show();
-                $cell.find('[role="cancel"]').show();
+                cell.querySelector('[role="edit"]').style.display = 'none';
+                cell.querySelector('[role="delete"]').style.display = 'none';
+                cell.querySelector('[role="update"]').style.display = 'block';
+                cell.querySelector('[role="cancel"]').style.display = 'block';
             }
         }
     },
 
-    displayMode: function (grid, $cell, column, cancel) {
-        var $editorContainer, $displayContainer, $ele, newValue, newEditFieldValue, record, position, style = '';
+    displayMode: function (grid, cell, column, cancel) {
+        let editorContainer, displayContainer, ele, newValue, newEditFieldValue, record, position, style = '';
         if (column.mode !== 'editOnly') {
-            if ($cell.attr('data-mode') === 'edit') {
-                $editorContainer = $cell.find('div[data-role="edit"]');
-                $displayContainer = $cell.find('div[data-role="display"]');
-                $ele = $editorContainer.find('input, select, textarea').first();
-                if ($ele[0].tagName.toUpperCase() === "SELECT" && $ele[0].selectedIndex > -1) {
-                    newValue = $ele[0].options[$ele[0].selectedIndex].innerHTML;
-                    newEditFieldValue = $ele[0].value;
-                } else if ($ele[0].tagName.toUpperCase() === "INPUT" && $ele[0].type.toUpperCase() === "CHECKBOX") {
-                    newValue = $ele[0].checked;
+            if (cell.getAttribute('data-gj-mode') === 'edit') {
+                editorContainer = cell.querySelector('div[data-gj-role="edit"]');
+                displayContainer = cell.querySelector('div[data-gj-role="display"]');
+                ele = editorContainer.querySelectorAll('input, select, textarea');
+                if (ele[0].tagName.toUpperCase() === "SELECT" && ele[0].selectedIndex > -1) {
+                    newValue = ele[0].options[ele[0].selectedIndex].innerHTML;
+                    newEditFieldValue = ele[0].value;
+                } else if (ele[0].tagName.toUpperCase() === "INPUT" && ele[0].type.toUpperCase() === "CHECKBOX") {
+                    newValue = ele[0].checked;
                 } else {
-                    newValue = $ele.val();
+                    newValue = ele[0].value;
                 }
-                position = $cell.parent().data('position');
+                position = cell.parentNode.getAttribute('data-gj-position');
                 record = grid.get(position);
                 if (cancel !== true && newValue !== record[column.field]) {
                     record[column.field] = column.type === 'date' ? gj.core.parseDate(newValue, column.format) : newValue;
@@ -1926,40 +1955,43 @@ gj.grid.plugins.inlineEditing.private = {
                         record[column.editField] = newEditFieldValue || newValue;
                     }
                     if (column.mode !== 'editOnly') {
-                        gj.grid.methods.renderDisplayElement(grid, $displayContainer, column, record, gj.grid.methods.getId(record, grid.getConfig().primaryKey, position), 'update');
-                        if ($cell.find('span.gj-dirty').length === 0) {
-                            $cell.prepend($('<span class="gj-dirty" />'));
+                        gj.grid.methods.renderDisplayElement(grid, displayContainer, column, record, gj.grid.methods.getId(record, grid.getConfig().primaryKey, position), 'update');
+                        if (cell.querySelector('span.gj-dirty')) {
+                            cell.insertBefore('<span class="gj-dirty" />', cell.firstChild);
                         }
                     }
-                    gj.grid.plugins.inlineEditing.events.cellDataChanged(grid, $cell, column, record, newValue);
+                    gj.grid.plugins.inlineEditing.events.cellDataChanged(grid.element, cell, column, record, newValue);
                     gj.grid.plugins.inlineEditing.private.updateChanges(grid, column, record, newValue);
                 }
-                $editorContainer.hide();
-                $displayContainer.show();
-                $cell.attr('data-mode', 'display');
+                editorContainer.style.display = 'none';
+                displayContainer.style.display = 'block';
+                cell.setAttribute('data-gj-mode', 'display');
             }
             if (column.role === 'managementColumn') {
-                $cell.find('[role="update"]').hide();
-                $cell.find('[role="cancel"]').hide();
-                $cell.find('[role="edit"]').show();
-                $cell.find('[role="delete"]').show();
+                cell.querySelector('[role="update"]').style.display = 'none';
+                cell.querySelector('[role="cancel"]').style.display = 'none';
+                cell.querySelector('[role="edit"]').style.display = 'block';
+                cell.querySelector('[role="delete"]').style.display = 'block';
             }
         }
     },
 
     updateOtherCells: function(grid, mode) {
-        var data = grid.getConfig();
+        let data = grid.getConfig(), editors, cell;
         if (data.inlineEditing.mode !== 'command' && mode !== 'editOnly') {
-            grid.find('div[data-role="edit"]:visible').parent('td').each(function () {
-                var $cell = $(this),
-                    column = data.columns[$cell.index()];
-                gj.grid.plugins.inlineEditing.private.displayMode(grid, $cell, column);
-            });
+            editors = grid.element.querySelectorAll('div[data-gj-role="edit"]');
+            for (const editor of editors) {
+                if (editor.style.display === 'block') {
+                    cell = editor.parentNode;
+                    column = data.columns[Array.from(cell.parentNode.children).indexOf(cell)];
+                    gj.grid.plugins.inlineEditing.private.displayMode(grid, cell, column);
+                }
+            }
         }
     },
 
     updateChanges: function (grid, column, sourceRecord, newValue) {
-        var targetRecords, filterResult, newRecord, data = grid.getConfig();
+        let targetRecords, filterResult, newRecord, data = grid.getConfig();
         if (!data.guid) {
             data.guid = gj.grid.plugins.inlineEditing.private.generateGUID();
         }
@@ -2004,12 +2036,12 @@ gj.grid.plugins.inlineEditing.public = {
 
     /**
      * Enable edit mode for all editable cells within a row.     */    edit: function (id) {
-        var i, record = this.getById(id),
-            $cells = gj.grid.methods.getRowById(this, id).children('td'),
+        let i, record = this.getById(id),
+            cells = gj.grid.methods.getRowById(this, id).children('td'),
             columns = this.data('columns');
 
-        for (i = 0; i < $cells.length; i++) {
-            gj.grid.plugins.inlineEditing.private.editMode(this, $($cells[i]), columns[i], record);
+        for (i = 0; i < cells.length; i++) {
+            gj.grid.plugins.inlineEditing.private.editMode(this, (cells[i]), columns[i], record);
         }
             
         return this;
@@ -2017,27 +2049,27 @@ gj.grid.plugins.inlineEditing.public = {
 
     /**
      * Update all editable cells within a row, when the row is in edit mode.     */    update: function (id) {
-        var i, record = this.getById(id),
-            $cells = gj.grid.methods.getRowById(this, id).children('td'),
+        let i, record = this.getById(id),
+            cells = gj.grid.methods.getRowById(this, id).children('td'),
             columns = this.data('columns');
 
-        for (i = 0; i < $cells.length; i++) {
-            gj.grid.plugins.inlineEditing.private.displayMode(this, $($cells[i]), columns[i], false);
+        for (i = 0; i < cells.length; i++) {
+            gj.grid.plugins.inlineEditing.private.displayMode(this, (cells[i]), columns[i], false);
         }
 
-        gj.grid.plugins.inlineEditing.events.rowDataChanged(this, id, record);
+        gj.grid.plugins.inlineEditing.events.rowDataChanged(this.element, id, record);
 
         return this;
     },
 
     /**
      * Cancel the edition of all editable cells, when the row is in edit mode.     */    cancel: function (id) {
-        var i, record = this.getById(id),
-            $cells = gj.grid.methods.getRowById(this, id).children('td'),
+        let i, record = this.getById(id),
+            cells = gj.grid.methods.getRowById(this, id).children('td'),
             columns = this.data('columns');
 
-        for (i = 0; i < $cells.length; i++) {
-            gj.grid.plugins.inlineEditing.private.displayMode(this, $($cells[i]), columns[i], true);
+        for (i = 0; i < cells.length; i++) {
+            gj.grid.plugins.inlineEditing.private.displayMode(this, (cells[i]), columns[i], true);
         }
 
         return this;
@@ -2047,25 +2079,25 @@ gj.grid.plugins.inlineEditing.public = {
 gj.grid.plugins.inlineEditing.events = {
     /**
      * Event fires after inline edit of a cell in the grid.
-     *     */    cellDataChanged: function (grid, $cell, column, record, oldValue, newValue) {
-        grid.triggerHandler('cellDataChanged', [$cell, column, record, oldValue, newValue]);
+     *     */    cellDataChanged: function (el, cell, column, record, oldValue, newValue) {
+        el.dispatchEvent(new CustomEvent('cellDataChanged', { detail: { cell: cell, column: column, record: record, oldValue: oldValue, newValue: newValue } }));
     },
 
     /**
      * Event fires after inline edit of a row in the grid.
-     *     */    rowDataChanged: function (grid, id, record) {
-        grid.triggerHandler('rowDataChanged', [id, record]);
+     *     */    rowDataChanged: function (el, id, record) {
+        el.dispatchEvent(new CustomEvent('rowDataChanged', { detail: { id: id, record: record } }));
     }
 };
 
 gj.grid.plugins.inlineEditing.configure = function (grid, fullConfig, clientConfig) {
-    var data = grid.getConfig();
+    let data = grid.getConfig();
     grid.extend(grid, gj.grid.plugins.inlineEditing.public);
     if (clientConfig.inlineEditing) {
         grid.on('dataBound', function () {
-            grid.find('span.gj-dirty').remove();
+            grid.element.querySelector('span.gj-dirty').remove();
         });
-        grid.on('rowDataBound', function (e, $row, id, record) {
+        grid.on('rowDataBound', function (e, row, id, record) {
             grid.cancel(id);
         });
     }
@@ -2080,7 +2112,7 @@ gj.grid.plugins.inlineEditing.configure = function (grid, fullConfig, clientConf
                 if (e.detail.column.mode === 'editOnly') {
                     gj.grid.plugins.inlineEditing.private.editMode(grid, e.detail.displayEl.parentNode, e.detail.column, e.detail.record);
                 } else {
-                    displayEl.closest('td').on(data.inlineEditing.mode === 'dblclick' ? 'dblclick' : 'click', function () {
+                    e.detail.displayEl.closest('td').addEventListener(data.inlineEditing.mode === 'dblclick' ? 'dblclick' : 'click', function () {
                         gj.grid.plugins.inlineEditing.private.editMode(grid, e.detail.displayEl.parentNode, e.detail.column, e.detail.record);
                     });
                 }
@@ -3360,13 +3392,11 @@ gj.grid.plugins.inlineEditing.configure = function (grid, fullConfig, clientConf
 
     private: {
         init: function (grid) {
-            var i, $cell,
-                $cells = grid.find('thead tr th');
-            for (i = 0; i < $cells.length; i++) {
-                $cell = $($cells[i]);
-                $cell.on('mousedown', gj.grid.plugins.columnReorder.private.createMouseDownHandler(grid, $cell));
-                $cell.on('mousemove', gj.grid.plugins.columnReorder.private.createMouseMoveHandler(grid, $cell));
-                $cell.on('mouseup', gj.grid.plugins.columnReorder.private.createMouseUpHandler(grid, $cell));
+            let i, cells = grid.element.querySelectorAll('thead tr th');
+            for (i = 0; i < cells.length; i++) {
+                cells[i].addEventListener('mousedown', gj.grid.plugins.columnReorder.private.createMouseDownHandler(grid, cells[i]));
+                cells[i].addEventListener('mousemove', gj.grid.plugins.columnReorder.private.createMouseMoveHandler(grid, cells[i]));
+                cells[i].addEventListener('mouseup', gj.grid.plugins.columnReorder.private.createMouseUpHandler(grid, cells[i]));
             }
         },
 
@@ -3385,102 +3415,134 @@ gj.grid.plugins.inlineEditing.configure = function (grid, fullConfig, clientConf
             }
         },
 
-        createMouseMoveHandler: function (grid, $thSource) {
+        createMouseMoveHandler: function (grid, thSource) {
             return function (e) {
-                var $dragEl, srcIndex;
-                if (grid.element.getAttribute('data-gj-drag-ready')) {
+                if (grid.element.getAttribute('data-gj-drag-ready') === 'true') {
+                    let dragEl, srcIndex, elements, srcEl;
+
                     grid.element.setAttribute('data-gj-drag-ready', false);
-                    $dragEl = grid.clone();
-                    srcIndex = $thSource.index();
-                    grid.addClass('gj-unselectable');
-                    $('body').append($dragEl);
-                    $dragEl.attr('data-role', 'draggable-clone').css('cursor', 'move');
-                    $dragEl.find('thead tr th:eq(' + srcIndex + ')').siblings().remove();
-                    $dragEl.find('tbody tr[data-role != "row"]').remove();
-                    $dragEl.find('tbody tr td:nth-child(' + (srcIndex + 1) + ')').siblings().remove();
-                    $dragEl.find('tfoot').remove();
-                    $dragEl.draggable({
-                        stop: gj.grid.plugins.columnReorder.private.createDragStopHandler(grid, $thSource)
-                    });
-                    $dragEl.css({
-                        position: 'absolute', top: $thSource.offset().top, left: $thSource.offset().left, width: $thSource.width(), zIndex: 1
-                    });
-                    if ($thSource.attr('data-droppable') === 'true') {
-                        $thSource.droppable('destroy');
-                    }
-                    $thSource.siblings('th').each(function () {
-                        var $dropEl = $(this);
-                        if ($dropEl.attr('data-droppable') === 'true') {
-                            $dropEl.droppable('destroy');
+                    dragEl = grid.element.cloneNode(true);
+                    grid.element.classList.add('gj-unselectable');
+                    dragEl.classList.add('gj-unselectable');
+                    document.body.appendChild(dragEl);
+                    dragEl.setAttribute('data-gj-role', 'draggable-clone')
+                    dragEl.style.cursor = 'move';
+                    srcIndex = Array.from(thSource.parentNode.children).indexOf(thSource);
+                    
+                    elements = dragEl.querySelectorAll('thead tr th');
+                    for (let i = 0; i < elements.length; i++) {
+                        if (i !== srcIndex) {
+                            elements[i].remove();
                         }
-                        $dropEl.droppable({
-                            over: gj.grid.plugins.columnReorder.private.createDroppableOverHandler(grid, $thSource),
-                            out: gj.grid.plugins.columnReorder.private.droppableOut
-                        });
+                    }
+                    elements = dragEl.querySelectorAll('tbody tr:not([data-gj-role="row"])');
+                    for (let i = 0; i < elements.length; i++) {
+                        elements[i].remove();
+                    }
+                    
+                    elements = dragEl.querySelectorAll('tbody tr');
+                    for (let i = 0; i < elements.length; i++) {
+                        srcEl = elements[i].children[srcIndex];
+                        for (const element of elements[i].children) {
+                            if (srcEl !== element) {
+                                elements[i].removeChild(element)
+                            }
+                        }
+                    }
+                    elements = dragEl.querySelector('tfoot');
+                    elements && elements.remove();
+
+                    new GijgoDraggable(dragEl, {
+                        stop: gj.grid.plugins.columnReorder.private.createDragStopHandler(grid, thSource)
                     });
-                    $dragEl.trigger('mousedown');
+                    dragEl.style.position = 'absolute';
+                    dragEl.style.top = thSource.getBoundingClientRect().top + 'px';
+                    dragEl.style.left = thSource.getBoundingClientRect().left + 'px';
+                    dragEl.style.width = gj.core.width(thSource) + 'px';
+                    dragEl.style.zIndex = 1;
+                    
+                    if (thSource.getAttribute('data-droppable') === 'true') {
+                        thSource.droppable('destroy');
+                    }
+
+                    for (const dropEl of thSource.parentNode.children) {
+                        if (thSource !== dropEl) {
+                            if (dropEl.getAttribute('data-gj-droppable') === 'true') {
+                                new GijgoDroppable(dropEl).destroy();
+                            }
+                            new GijgoDroppable(dropEl, {
+                                over: gj.grid.plugins.columnReorder.private.createDroppableOverHandler(grid, thSource),
+                                out: gj.grid.plugins.columnReorder.private.droppableOut
+                            });
+                        }
+                    }
+                    dragEl.dispatchEvent(new Event('mousedown'));
                 }
             };
         },
 
-        createDragStopHandler: function (grid, $thSource) {
-            return function (e, mousePosition) {
-                $('table[data-role="draggable-clone"]').draggable('destroy').remove();
-                grid.removeClass('gj-unselectable');
-                $thSource.siblings('th').each(function () {
-                    var $thTarget = $(this),
-                        data = grid.getConfig(),
-                        targetPosition = gj.grid.methods.getColumnPosition(data.columns, $thTarget.data('field')),
-                        sourcePosition = gj.grid.methods.getColumnPosition(data.columns, $thSource.data('field'));
+        createDragStopHandler: function (grid, thSource) {
+            return function (e) {
+                let elements = thSource.parentNode.children;
+                document.body.querySelector('table[data-gj-role="draggable-clone"]').remove();
+                grid.element.classList.remove('gj-unselectable');
+                for (const thTarget of elements) {
+                    let data = grid.getConfig(),
+                        targetPosition = gj.grid.methods.getColumnPosition(data.columns, thTarget.getAttribute('data-gj-field')),
+                        sourcePosition = gj.grid.methods.getColumnPosition(data.columns, thSource.getAttribute('data-gj-field'))
+                        droppable = new GijgoDroppable(thTarget);
 
-                    $thTarget.removeClass('gj-grid-left-border').removeClass('gj-grid-right-border');
-                    $thTarget.closest('table').find('tbody tr[data-role="row"] td:nth-child(' + ($thTarget.index() + 1) + ')').removeClass('gj-grid-left-border').removeClass('gj-grid-right-border');
-                    if ($thTarget.droppable('isOver', mousePosition)) {
+                    gj.core.removeClasses(thTarget, 'gj-grid-left-border gj-grid-right-border');
+                    if (thTarget.nextElementSibling) {
+                        gj.core.removeClasses(thTarget.nextElementSibling, 'gj-grid-left-border gj-grid-right-border');
+                    }
+                    
+                    if (droppable.isOver(e.detail)) {
                         if (targetPosition < sourcePosition) {
-                            $thTarget.before($thSource);
+                            thTarget.parentNode.insertBefore(thSource, thTarget);
                         } else {
-                            $thTarget.after($thSource);
+                            thTarget.parentNode.insertBefore(thSource, thTarget.nextSibling);
                         }
                         gj.grid.plugins.columnReorder.private.moveRowCells(grid, sourcePosition, targetPosition);
                         data.columns.splice(targetPosition, 0, data.columns.splice(sourcePosition, 1)[0]);
                     }
-                    $thTarget.droppable('destroy');
-                });
+                    droppable.destroy();
+                };
             }
         },
 
         moveRowCells: function (grid, sourcePosition, targetPosition) {
-            var i, $row, $rows = grid.find('tbody tr[data-role="row"]');
-            for (i = 0; i < $rows.length; i++) {
-                $row = $($rows[i]);
+            let i, row, rows = grid.find('tbody tr[data-gj-role="row"]');
+            for (i = 0; i < rows.length; i++) {
+                row = (rows[i]);
                 if (targetPosition < sourcePosition) {
-                    $row.find('td:eq(' + targetPosition + ')').before($row.find('td:eq(' + sourcePosition + ')'));
+                    row.find('td:eq(' + targetPosition + ')').before(row.find('td:eq(' + sourcePosition + ')'));
                 } else {
-                    $row.find('td:eq(' + targetPosition + ')').after($row.find('td:eq(' + sourcePosition + ')'));
+                    row.find('td:eq(' + targetPosition + ')').after(row.find('td:eq(' + sourcePosition + ')'));
                 }                
             }
         },
 
-        createDroppableOverHandler: function (grid, $thSource) {
+        createDroppableOverHandler: function (grid, thSource) {
             return function (e) {
-                var $thTarget = $(this),
+                let thTarget = (this),
                     data = grid.getConfig(),
-                    targetPosition = gj.grid.methods.getColumnPosition(data.columns, $thTarget.data('field')),
-                    sourcePosition = gj.grid.methods.getColumnPosition(data.columns, $thSource.data('field'));
+                    targetPosition = gj.grid.methods.getColumnPosition(data.columns, thTarget.data('field')),
+                    sourcePosition = gj.grid.methods.getColumnPosition(data.columns, thSource.data('field'));
                 if (targetPosition < sourcePosition) {
-                    $thTarget.addClass('gj-grid-left-border');
-                    grid.find('tbody tr[data-role="row"] td:nth-child(' + ($thTarget.index() + 1) + ')').addClass('gj-grid-left-border');
+                    thTarget.addClass('gj-grid-left-border');
+                    grid.find('tbody tr[data-gj-role="row"] td:nth-child(' + (thTarget.index() + 1) + ')').addClass('gj-grid-left-border');
                 } else {
-                    $thTarget.addClass('gj-grid-right-border');
-                    grid.find('tbody tr[data-role="row"] td:nth-child(' + ($thTarget.index() + 1) + ')').addClass('gj-grid-right-border');
+                    thTarget.addClass('gj-grid-right-border');
+                    grid.find('tbody tr[data-gj-role="row"] td:nth-child(' + (thTarget.index() + 1) + ')').addClass('gj-grid-right-border');
                 }
             };
         },
 
         droppableOut: function () {
-            var $thTarget = $(this);
-            $thTarget.removeClass('gj-grid-left-border').removeClass('gj-grid-right-border');
-            $thTarget.closest('table').find('tbody tr[data-role="row"] td:nth-child(' + ($thTarget.index() + 1) + ')').removeClass('gj-grid-left-border').removeClass('gj-grid-right-border');
+            let thTarget = (this);
+            thTarget.removeClass('gj-grid-left-border').removeClass('gj-grid-right-border');
+            thTarget.closest('table').find('tbody tr[data-gj-role="row"] td:nth-child(' + (thTarget.index() + 1) + ')').removeClass('gj-grid-left-border').removeClass('gj-grid-right-border');
         }
     },
 
@@ -3512,41 +3574,50 @@ gj.grid.plugins.inlineEditing.configure = function (grid, fullConfig, clientConf
 
     private: {
         init: function (grid) {
-            var i, $th, $ctrl, data = grid.getConfig(),
-                $filterTr = $('<tr data-role="filter"/>');
+            var i, th, ctrl, data = grid.getConfig(),
+                filterTr = document.createElement('tr');
 
+            filterTr.setAttribute('data-gj-role', 'filter');
             for (i = 0; i < data.columns.length; i++) {
-                $th = $('<th/>');
+                th = document.createElement('th');
                 if (data.columns[i].filterable) {
-                    $ctrl = $('<input data-field="' + data.columns[i].field + '" class="gj-width-full" />');
+                    ctrl = document.createElement('input');
+                    ctrl.setAttribute('data-gj-field', data.columns[i].field);
+                    ctrl.classList.add('gj-width-full');
                     if ('onchange' === data.headerFilter.type) {
-                        $ctrl.on('input propertychange', function (e) {
-                            gj.grid.plugins.headerFilter.private.reload(grid, $(this));
+                        ctrl.addEventListener('keyup', function (e) {
+                            gj.grid.plugins.headerFilter.private.reload(grid, this);
+                        });
+                        ctrl.addEventListener('change', function (e) {
+                            gj.grid.plugins.headerFilter.private.reload(grid, this);
+                        });
+                        ctrl.addEventListener('paste', function (e) {
+                            gj.grid.plugins.headerFilter.private.reload(grid, this);
                         });
                     } else {
-                        $ctrl.on('keypress', function (e) {
-                            if (e.which == 13) {
-                                gj.grid.plugins.headerFilter.private.reload(grid, $(this));
+                        ctrl.addEventListener('keypress', function (e) {
+                            if (e.key === 'Enter') {
+                                gj.grid.plugins.headerFilter.private.reload(grid, this);
                             }
                         });
-                        $ctrl.on('blur', function (e) {
-                            gj.grid.plugins.headerFilter.private.reload(grid, $(this));
+                        ctrl.addEventListener('blur', function (e) {
+                            gj.grid.plugins.headerFilter.private.reload(grid, this);
                         });
                     }
-                    $th.append($ctrl);
+                    th.appendChild(ctrl);
                 }
                 if (data.columns[i].hidden) {
-                    $th.hide();
+                    th.style.display = 'none';
                 }
-                $filterTr.append($th);
+                filterTr.appendChild(th);
             }
 
-            grid.children('thead').append($filterTr);
+            grid.element.querySelector('thead').appendChild(filterTr);
         },
 
-        reload: function (grid, $ctrl) {
+        reload: function (grid, ctrl) {
             var params = {};
-            params[$ctrl.data('field')] = $ctrl.val();
+            params[ctrl.getAttribute('data-gj-field')] = ctrl.value;
             grid.reload(params);
         }
     },
@@ -3609,23 +3680,29 @@ gj.grid.plugins.inlineEditing.configure = function (grid, fullConfig, clientConf
 
     private: {
         init: function (grid) {
-            var previousValue, data = grid.getConfig();
+            let previousValue, data = grid.getConfig();
 
             previousValue = undefined;
-            grid.on('rowDataBound', function (e, $row, id, record) {
-                if (previousValue !== record[data.grouping.groupBy] || $row[0].rowIndex === 1) {
-                    var colspan = gj.grid.methods.countVisibleColumns(grid) - 1,
-                        $groupRow = $('<tr role="group" />'),
-                        $expandCollapseCell = $('<td class="gj-text-align-center gj-unselectable gj-cursor-pointer" />');
+            grid.on('rowDataBound', function (e) {
+                if (previousValue !== e.detail.record[data.grouping.groupBy] || e.detail.row.rowIndex === 1) {
+                    let colspan = gj.grid.methods.countVisibleColumns(grid) - 1,
+                        groupRow = document.createElement('tr'),
+                        expandCollapseCell = document.createElement('td'),
+                        icon = document.createElement('div');
 
-                    $expandCollapseCell.append('<div data-role="display">' + data.icons.collapseGroup + '</div>');
-                    $expandCollapseCell.on('click', gj.grid.plugins.grouping.private.createExpandCollapseHandler(data));
-                    $groupRow.append($expandCollapseCell);
-                    $groupRow.append('<td colspan="' + colspan + '"><div data-role="display">' + data.grouping.groupBy + ': ' + record[data.grouping.groupBy] + '</div></td>');
-                    $groupRow.insertBefore($row);
-                    previousValue = record[data.grouping.groupBy];
+                    groupRow.setAttribute('data-gj-gj-role', 'group');
+                    gj.core.addClasses(expandCollapseCell, 'gj-text-align-center gj-unselectable gj-cursor-pointer');
+
+                    icon.setAttribute('data-gj-role', 'display');
+                    icon.innerHTML = data.icons.collapseGroup;
+                    icon.addEventListener('click', gj.grid.plugins.grouping.private.createExpandCollapseHandler(data));
+                    expandCollapseCell.appendChild(icon);
+                    groupRow.appendChild(expandCollapseCell);
+                    groupRow.innerHTML += '<td colspan="' + colspan + '"><div data-gj-role="display">' + data.grouping.groupBy + ': ' + e.detail.record[data.grouping.groupBy] + '</div></td>';
+                    e.detail.row.parentNode.insertBefore(groupRow, e.detail.row);
+                    previousValue = e.detail.record[data.grouping.groupBy];
                 }
-                $row.show();
+                //TODO: row.show();
             });
 
             data.params[data.paramNames.groupBy] = data.grouping.groupBy;
@@ -3633,43 +3710,56 @@ gj.grid.plugins.inlineEditing.configure = function (grid, fullConfig, clientConf
         },
 
         grouping: function (grid, records) {
-            var data = grid.getConfig();
+            let data = grid.getConfig();
             records.sort(gj.grid.methods.createDefaultSorter(data.grouping.direction, data.grouping.groupBy));
         },
 
         createExpandCollapseHandler: function (data) {
             return function (e) {
-                var $cell = $(this),
-                    methods = gj.grid.plugins.grouping.private;
-                if ($cell.closest('tr').next(':visible').data('role') === 'row') {
-                    methods.collapseGroup(data, $cell);
+                let methods = gj.grid.plugins.grouping.private;
+                if (this.closest('tr:visible').getAttribute('data-gj-role') === 'row') {
+                    methods.collapseGroup(data, this);
                 } else {
-                    methods.expandGroup(data, $cell);
+                    methods.expandGroup(data, this);
                 }
             };
         },
 
-        collapseGroup: function (data, $cell) {
-            var $display = $cell.children('div[data-role="display"]'),
-                $groupRow = $cell.closest('tr');
-
-            $groupRow.nextUntil('[role="group"]').hide();
-            $display.empty().append(data.icons.expandGroup);
+        collapseGroup: function (data, cell) {
+            let display = cell.querySelector('div[data-gj-role="display"]'),
+                nextEl = cell.parentNode.nextSubling;
+            
+            while (nextEl) {
+                if (nextEl.getAttribute('data-gj-role') === 'group') {
+                    break;
+                } else {
+                    nextEl.style.display = 'none';
+                    nextEl = nextEl.nextSubling;
+                }
+            }
+            display.innerHTML = data.icons.expandGroup;
         },
 
-        expandGroup: function (data, $cell) {
-            var $display = $cell.children('div[data-role="display"]'),
-                $groupRow = $cell.closest('tr');
-
-            $groupRow.nextUntil('[role="group"]').show();
-            $display.empty().append(data.icons.collapseGroup);
+        expandGroup: function (data, cell) {
+            let display = cell.querySelector('div[data-gj-role="display"]'),
+                nextEl = cell.parentNode.nextSubling;
+            
+            while (nextEl) {
+                if (nextEl.getAttribute('data-gj-role') === 'group') {
+                    break;
+                } else {
+                    nextEl.style.display = 'block';
+                    nextEl = nextEl.nextSubling;
+                }
+            }
+            display.innerHTML = data.icons.collapseGroup;
         }
     },
 
     public: { },
 
     configure: function (grid) {
-        var column, data = grid.getConfig();
+        let column, data = grid.getConfig();
         grid.extend(grid, gj.grid.plugins.grouping.public);
         if (data.grouping && data.grouping.groupBy) {
             column = {
@@ -3685,8 +3775,8 @@ gj.grid.plugins.inlineEditing.configure = function (grid, fullConfig, clientConf
                 gj.grid.plugins.grouping.private.init(grid);
             });
 
-            grid.on('dataFiltered', function (e, records) {
-                gj.grid.plugins.grouping.private.grouping(grid, records);
+            grid.on('dataFiltered', function (e) {
+                gj.grid.plugins.grouping.private.grouping(grid, e.detail.records);
             });
         }
     }

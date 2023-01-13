@@ -15,9 +15,9 @@
  <table id="grid"></table>
  <script>
      var grid;
-     function Delete(e) {
+     function Delete(e, id, field, record) {
          if (confirm('Are you sure?')) {
-             grid.removeRow(e.data.id);
+             grid.removeRow(id);
          }
      }
      grid = new GijgoGrid(document.getElementById('grid'), {

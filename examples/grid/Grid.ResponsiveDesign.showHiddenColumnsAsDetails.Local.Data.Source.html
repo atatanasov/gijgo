@@ -18,7 +18,7 @@
          { 'ID': 2, 'Name': 'Ronaldo Luis Nazario de Lima', 'PlaceOfBirth': 'Rio de Janeiro, Brazil' },
          { 'ID': 3, 'Name': 'David Platt', 'PlaceOfBirth': 'Chadderton, Lancashire, England' }
      ];
-     $('#grid').grid({
+     new GijgoGrid(document.getElementById('grid'), {
          dataSource: data,
          detailTemplate: '<div class="row"></div>',
          responsive: true,

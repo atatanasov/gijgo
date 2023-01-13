@@ -176,13 +176,13 @@ gj.draggable.events = {
     /**
      * Triggered when dragging starts.
      *     */    start: function (el, mouseX, mouseY) {
-        return el.dispatchEvent(new CustomEvent('start', { x: mouseX, y: mouseY }));
+        return el.dispatchEvent(new CustomEvent('start', { detail: { x: mouseX, y: mouseY } }));
     },
 
     /**
      * Triggered when dragging stops.
      *     */    stop: function (el, mousePosition) {
-        return el.dispatchEvent(new CustomEvent('stop', mousePosition));
+        return el.dispatchEvent(new CustomEvent('stop', { detail: mousePosition }));
     }
 };
 

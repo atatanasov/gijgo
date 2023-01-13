@@ -31,7 +31,7 @@ gj.grid.plugins.grouping = {
                   * @example Local.Data <!-- grid -->
                   * <table id="grid"></table>
                   * <script>
-                  *     var grid, data = [
+                  *     let grid, data = [
                   *         { 'ID': 1, 'Name': 'Hristo Stoichkov', 'PlaceOfBirth': 'Plovdiv, Bulgaria', CountryName: 'Bulgaria' },
                   *         { 'ID': 2, 'Name': 'Ronaldo Luís Nazário de Lima', 'PlaceOfBirth': 'Rio de Janeiro, Brazil', CountryName: 'Brazil' },
                   *         { 'ID': 3, 'Name': 'David Platt', 'PlaceOfBirth': 'Chadderton, Lancashire, England', CountryName: 'England' },
@@ -39,7 +39,7 @@ gj.grid.plugins.grouping = {
                   *         { 'ID': 5, 'Name': 'James Rodríguez', 'PlaceOfBirth': 'Cúcuta, Colombia', CountryName: 'Colombia' },
                   *         { 'ID': 6, 'Name': 'Dimitar Berbatov', 'PlaceOfBirth': 'Blagoevgrad, Bulgaria', CountryName: 'Bulgaria' }
                   *     ];
-                  *     $('#grid').grid({
+                  *     new GijgoGrid(document.getElementById('grid'), {
                   *         dataSource: data,
                   *         grouping: { groupBy: 'CountryName' },
                   *         columns: [ { field: 'Name', sortable: true }, { field: 'PlaceOfBirth' } ]
@@ -48,7 +48,7 @@ gj.grid.plugins.grouping = {
                   * @example Remote.Data <!-- grid -->
                   * <table id="grid"></table>
                   * <script>
-                  *     $('#grid').grid({
+                  *     new GijgoGrid(document.getElementById('grid'), {
                   *         dataSource: '/Players/Get',
                   *         grouping: { groupBy: 'CountryName' },
                   *         columns: [ { field: 'Name', sortable: true }, { field: 'PlaceOfBirth' } ]
@@ -57,7 +57,7 @@ gj.grid.plugins.grouping = {
                   * @example Bootstrap.3 <!-- bootstrap, grid -->
                   * <table id="grid"></table>
                   * <script>
-                  *     $('#grid').grid({
+                  *     new GijgoGrid(document.getElementById('grid'), {
                   *         dataSource: '/Players/Get',
                   *         uiLibrary: 'bootstrap',
                   *         grouping: { groupBy: 'CountryName' },
@@ -68,7 +68,7 @@ gj.grid.plugins.grouping = {
                   * @example Bootstrap.4 <!-- bootstrap4, fontawesome, grid -->
                   * <table id="grid"></table>
                   * <script>
-                  *     $('#grid').grid({
+                  *     new GijgoGrid(document.getElementById('grid'), {
                   *         dataSource: '/Players/Get',
                   *         uiLibrary: 'bootstrap4',
                   *         iconsLibrary: 'fontawesome',
@@ -90,7 +90,7 @@ gj.grid.plugins.grouping = {
                  * @example Right.Down.Icons <!-- materialicons, grid -->
                  * <table id="grid"></table>
                  * <script>
-                 *     $('#grid').grid({
+                 *     new GijgoGrid(document.getElementById('grid'), {
                  *         primaryKey: 'ID',
                  *         dataSource: '/Players/Get',
                  *         columns: [ { field: 'Name', sortable: true }, { field: 'PlaceOfBirth' } ],
@@ -111,7 +111,7 @@ gj.grid.plugins.grouping = {
                  * @example Right.Down.Icons <!-- materialicons, grid -->
                  * <table id="grid"></table>
                  * <script>
-                 *     $('#grid').grid({
+                 *     new GijgoGrid(document.getElementById('grid'), {
                  *         primaryKey: 'ID',
                  *         dataSource: '/Players/Get',
                  *         columns: [ { field: 'Name', sortable: true }, { field: 'PlaceOfBirth' } ],
@@ -144,23 +144,29 @@ gj.grid.plugins.grouping = {
 
     private: {
         init: function (grid) {
-            var previousValue, data = grid.getConfig();
+            let previousValue, data = grid.getConfig();
 
             previousValue = undefined;
-            grid.on('rowDataBound', function (e, $row, id, record) {
-                if (previousValue !== record[data.grouping.groupBy] || $row[0].rowIndex === 1) {
-                    var colspan = gj.grid.methods.countVisibleColumns(grid) - 1,
-                        $groupRow = $('<tr role="group" />'),
-                        $expandCollapseCell = $('<td class="gj-text-align-center gj-unselectable gj-cursor-pointer" />');
+            grid.on('rowDataBound', function (e) {
+                if (previousValue !== e.detail.record[data.grouping.groupBy] || e.detail.row.rowIndex === 1) {
+                    let colspan = gj.grid.methods.countVisibleColumns(grid) - 1,
+                        groupRow = document.createElement('tr'),
+                        expandCollapseCell = document.createElement('td'),
+                        icon = document.createElement('div');
 
-                    $expandCollapseCell.append('<div data-role="display">' + data.icons.collapseGroup + '</div>');
-                    $expandCollapseCell.on('click', gj.grid.plugins.grouping.private.createExpandCollapseHandler(data));
-                    $groupRow.append($expandCollapseCell);
-                    $groupRow.append('<td colspan="' + colspan + '"><div data-role="display">' + data.grouping.groupBy + ': ' + record[data.grouping.groupBy] + '</div></td>');
-                    $groupRow.insertBefore($row);
-                    previousValue = record[data.grouping.groupBy];
+                    groupRow.setAttribute('data-gj-gj-role', 'group');
+                    gj.core.addClasses(expandCollapseCell, 'gj-text-align-center gj-unselectable gj-cursor-pointer');
+
+                    icon.setAttribute('data-gj-role', 'display');
+                    icon.innerHTML = data.icons.collapseGroup;
+                    icon.addEventListener('click', gj.grid.plugins.grouping.private.createExpandCollapseHandler(data));
+                    expandCollapseCell.appendChild(icon);
+                    groupRow.appendChild(expandCollapseCell);
+                    groupRow.innerHTML += '<td colspan="' + colspan + '"><div data-gj-role="display">' + data.grouping.groupBy + ': ' + e.detail.record[data.grouping.groupBy] + '</div></td>';
+                    e.detail.row.parentNode.insertBefore(groupRow, e.detail.row);
+                    previousValue = e.detail.record[data.grouping.groupBy];
                 }
-                $row.show();
+                //TODO: row.show();
             });
 
             data.params[data.paramNames.groupBy] = data.grouping.groupBy;
@@ -168,43 +174,56 @@ gj.grid.plugins.grouping = {
         },
 
         grouping: function (grid, records) {
-            var data = grid.getConfig();
+            let data = grid.getConfig();
             records.sort(gj.grid.methods.createDefaultSorter(data.grouping.direction, data.grouping.groupBy));
         },
 
         createExpandCollapseHandler: function (data) {
             return function (e) {
-                var $cell = $(this),
-                    methods = gj.grid.plugins.grouping.private;
-                if ($cell.closest('tr').next(':visible').data('role') === 'row') {
-                    methods.collapseGroup(data, $cell);
+                let methods = gj.grid.plugins.grouping.private;
+                if (this.closest('tr:visible').getAttribute('data-gj-role') === 'row') {
+                    methods.collapseGroup(data, this);
                 } else {
-                    methods.expandGroup(data, $cell);
+                    methods.expandGroup(data, this);
                 }
             };
         },
 
-        collapseGroup: function (data, $cell) {
-            var $display = $cell.children('div[data-role="display"]'),
-                $groupRow = $cell.closest('tr');
-
-            $groupRow.nextUntil('[role="group"]').hide();
-            $display.empty().append(data.icons.expandGroup);
+        collapseGroup: function (data, cell) {
+            let display = cell.querySelector('div[data-gj-role="display"]'),
+                nextEl = cell.parentNode.nextSubling;
+            
+            while (nextEl) {
+                if (nextEl.getAttribute('data-gj-role') === 'group') {
+                    break;
+                } else {
+                    nextEl.style.display = 'none';
+                    nextEl = nextEl.nextSubling;
+                }
+            }
+            display.innerHTML = data.icons.expandGroup;
         },
 
-        expandGroup: function (data, $cell) {
-            var $display = $cell.children('div[data-role="display"]'),
-                $groupRow = $cell.closest('tr');
-
-            $groupRow.nextUntil('[role="group"]').show();
-            $display.empty().append(data.icons.collapseGroup);
+        expandGroup: function (data, cell) {
+            let display = cell.querySelector('div[data-gj-role="display"]'),
+                nextEl = cell.parentNode.nextSubling;
+            
+            while (nextEl) {
+                if (nextEl.getAttribute('data-gj-role') === 'group') {
+                    break;
+                } else {
+                    nextEl.style.display = 'block';
+                    nextEl = nextEl.nextSubling;
+                }
+            }
+            display.innerHTML = data.icons.collapseGroup;
         }
     },
 
     public: { },
 
     configure: function (grid) {
-        var column, data = grid.getConfig();
+        let column, data = grid.getConfig();
         grid.extend(grid, gj.grid.plugins.grouping.public);
         if (data.grouping && data.grouping.groupBy) {
             column = {
@@ -220,8 +239,8 @@ gj.grid.plugins.grouping = {
                 gj.grid.plugins.grouping.private.init(grid);
             });
 
-            grid.on('dataFiltered', function (e, records) {
-                gj.grid.plugins.grouping.private.grouping(grid, records);
+            grid.on('dataFiltered', function (e) {
+                gj.grid.plugins.grouping.private.grouping(grid, e.detail.records);
             });
         }
     }

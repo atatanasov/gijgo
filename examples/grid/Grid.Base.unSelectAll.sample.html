@@ -23,10 +23,10 @@
          selectionMethod: 'checkbox',
          selectionType: 'multiple'
      });
-     $('#btnSelectAll').on('click', function () {
+     document.getElementById('btnSelectAll').addEventListener('click', function () {
          grid.selectAll();
      });
-     $('#btnUnSelectAll').on('click', function () {
+     document.getElementById('btnUnSelectAll').addEventListener('click', function () {
          grid.unSelectAll();
      });
  </script>

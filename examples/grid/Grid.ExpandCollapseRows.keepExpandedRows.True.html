@@ -20,7 +20,7 @@
      </div>
  </div>
  <script>
-     var grid = $('#grid').grid({
+     let grid = new GijgoGrid(document.getElementById('grid'), {
          uiLibrary: 'bootstrap',
          primaryKey: 'ID',
          dataSource: '/Players/Get',

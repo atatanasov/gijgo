@@ -18,12 +18,12 @@
 <body style="padding: 8px;">
  <table id="grid"></table>
  <script>
-     var grid, data = [
+     let grid, data = [
          { 'ID': 1, 'Date': '05/15/2018', 'Time': '21:12', 'DateTime': '21:12 05/15/2018' },
          { 'ID': 2, 'Date': '05/16/2018', 'Time': '22:12', 'DateTime': '22:12 05/16/2018' },
          { 'ID': 3, 'Date': '05/17/2018', 'Time': '23:12', 'DateTime': '23:12 05/17/2018' }
      ];
-     grid = $('#grid').grid({
+     grid = new GijgoGrid(document.getElementById('grid'), {
          dataSource: data,
          primaryKey: 'ID',
          inlineEditing: { mode: 'command' },

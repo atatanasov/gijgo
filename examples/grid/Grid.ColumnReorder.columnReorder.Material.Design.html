@@ -15,7 +15,7 @@
  <p>Drag and Drop column headers in order to reorder the columns.</p>
  <table id="grid"></table>
  <script>
-     $('#grid').grid({
+     new GijgoGrid(document.getElementById('grid'), {
          dataSource: '/Players/Get',
          columnReorder: true,
          columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]

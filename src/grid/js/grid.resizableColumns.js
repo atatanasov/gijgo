@@ -11,7 +11,7 @@ gj.grid.plugins.resizableColumns = {
              * @example Material.Design <!-- grid, draggable -->
              * <table id="grid"></table>
              * <script>
-             *     var grid = $('#grid').grid({
+             *     var grid = new GijgoGrid(document.getElementById('grid'), {
              *         dataSource: '/Players/Get',
              *         resizableColumns: true,
              *         columns: [ { field: 'ID', width: 56 }, { field: 'Name', sortable: true }, { field: 'PlaceOfBirth' } ]
@@ -20,7 +20,7 @@ gj.grid.plugins.resizableColumns = {
              * @example Bootstrap <!-- bootstrap, grid, draggable -->
              * <table id="grid"></table>
              * <script>
-             *     var grid = $('#grid').grid({
+             *     var grid = new GijgoGrid(document.getElementById('grid'), {
              *         dataSource: '/Players/Get',
              *         resizableColumns: true,
              *         uiLibrary: 'bootstrap',
@@ -30,7 +30,7 @@ gj.grid.plugins.resizableColumns = {
              * @example Bootstrap.4 <!-- bootstrap4, grid, draggable -->
              * <table id="grid"></table>
              * <script>
-             *     var grid = $('#grid').grid({
+             *     var grid = new GijgoGrid(document.getElementById('grid'), {
              *         dataSource: '/Players/Get',
              *         resizableColumns: true,
              *         uiLibrary: 'bootstrap4',
@@ -40,7 +40,7 @@ gj.grid.plugins.resizableColumns = {
              * @example Bootstrap.4.FixedHeader <!-- bootstrap4, grid, draggable -->
              * <table id="grid" width="900"></table>
              * <script>
-             *     var grid = $('#grid').grid({
+             *     var grid = new GijgoGrid(document.getElementById('grid'), {
              *         dataSource: '/Players/Get',
              *         resizableColumns: true,
              *         fixedHeader: true,

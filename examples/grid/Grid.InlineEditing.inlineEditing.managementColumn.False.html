@@ -13,7 +13,7 @@
 <body style="padding: 8px;">
  <table id="grid"></table>
  <script>
-     var grid, editManager, data = [
+     let grid, editManager, data = [
          { 'ID': 1, 'Name': 'Hristo Stoichkov', 'PlaceOfBirth': 'Plovdiv, Bulgaria' },
          { 'ID': 2, 'Name': 'Ronaldo Luís Nazário de Lima', 'PlaceOfBirth': 'Rio de Janeiro, Brazil' },
          { 'ID': 3, 'Name': 'David Platt', 'PlaceOfBirth': 'Chadderton, Lancashire, England' },
@@ -21,39 +21,39 @@
          { 'ID': 5, 'Name': 'James Rodríguez', 'PlaceOfBirth': 'Cúcuta, Colombia' },
          { 'ID': 6, 'Name': 'Dimitar Berbatov', 'PlaceOfBirth': 'Blagoevgrad, Bulgaria' }
      ];
-     editManager = function (value, record, $cell, $displayEl, id, grid) {
-         var data = grid.getConfig(),
-             $edit = $('<button class="gj-button-md"><i class="material-icons">mode_edit</i> Edit</button>').attr('data-key', id),
-             $delete = $('<button class="gj-button-md"><i class="material-icons">delete</i> Delete</button>').attr('data-key', id),
-             $update = $('<button class="gj-button-md"><i class="material-icons">check_circle</i> Update</button>').attr('data-key', id).hide(),
-             $cancel = $('<button class="gj-button-md"><i class="material-icons">cancel</i> Cancel</button>').attr('data-key', id).hide();
-         $edit.on('click', function (e) {
-             grid.edit($(this).data('key'));
-             $edit.hide();
-             $delete.hide();
-             $update.show();
-             $cancel.show();
+     editManager = function (value, record, cell, displayEl, id, grid) {
+         let data = grid.getConfig(),
+             edit = ('<button class="gj-button-md"><i class="material-icons">mode_edit</i> Edit</button>').attr('data-gj-key', id),
+             delete = ('<button class="gj-button-md"><i class="material-icons">delete</i> Delete</button>').attr('data-gj-key', id),
+             update = ('<button class="gj-button-md"><i class="material-icons">check_circle</i> Update</button>').attr('data-gj-key', id).hide(),
+             cancel = ('<button class="gj-button-md"><i class="material-icons">cancel</i> Cancel</button>').attr('data-gj-key', id).hide();
+         edit.on('click', function (e) {
+             grid.edit((this).data('key'));
+             edit.hide();
+             delete.hide();
+             update.show();
+             cancel.show();
          });
-         $delete.on('click', function (e) {
-             grid.removeRow($(this).data('key'));
+         delete.on('click', function (e) {
+             grid.removeRow((this).data('key'));
          });
-         $update.on('click', function (e) {
-             grid.update($(this).data('key'));
-             $edit.show();
-             $delete.show();
-             $update.hide();
-             $cancel.hide();
+         update.on('click', function (e) {
+             grid.update((this).data('key'));
+             edit.show();
+             delete.show();
+             update.hide();
+             cancel.hide();
          });
-         $cancel.on('click', function (e) {
-             grid.cancel($(this).data('key'));
-             $edit.show();
-             $delete.show();
-             $update.hide();
-             $cancel.hide();
+         cancel.on('click', function (e) {
+             grid.cancel((this).data('key'));
+             edit.show();
+             delete.show();
+             update.hide();
+             cancel.hide();
          });
-         $displayEl.empty().append($edit).append($delete).append($update).append($cancel);
+         displayEl.empty().append(edit).append(delete).append(update).append(cancel);
      }
-     grid = $('#grid').grid({
+     grid = new GijgoGrid(document.getElementById('grid'), {
          dataSource: data,
          primaryKey: 'ID',
          inlineEditing: { mode: 'command', managementColumn: false },

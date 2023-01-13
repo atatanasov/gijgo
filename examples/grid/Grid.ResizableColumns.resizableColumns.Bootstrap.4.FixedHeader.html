@@ -14,7 +14,7 @@
 <body style="padding: 8px;">
  <table id="grid" width="900"></table>
  <script>
-     var grid = $('#grid').grid({
+     var grid = new GijgoGrid(document.getElementById('grid'), {
          dataSource: '/Players/Get',
          resizableColumns: true,
          fixedHeader: true,

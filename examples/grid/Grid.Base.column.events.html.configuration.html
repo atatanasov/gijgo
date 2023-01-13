@@ -6,7 +6,6 @@
   <title>Example</title>
   <script src="../../dist/modular/js/core.js" type="text/javascript"></script>
   <link href="../../dist/modular/css/core.css" rel="stylesheet" type="text/css">
-  <script src="../../dist/libraries/jquery/jquery.js"></script>
   <link href="../../dist/libraries/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
   <link href="../../dist/modular/css/grid.css" rel="stylesheet" type="text/css">
   <script src="../../dist/modular/js/grid.js"></script>
@@ -24,13 +23,13 @@
  </table>
  <script>
      function onMouseEnter (e) {
-         $(e.currentTarget).css('background-color', 'red');
+                     e.currentTarget.style.backgroundColor = 'red';
      }
      function onMouseLeave (e) {
-         $(e.currentTarget).css('background-color', '');
+        e.currentTarget.style.backgroundColor = '';
      }
-     function onClick(e) {
-         alert('record with id=' + e.data.id + ' is clicked.');
+     function onClick(e, id, field, record) {
+         alert('record with id=' + id + ' is clicked.');
      }
      new GijgoGrid(document.getElementById('grid'), );
  </script>
