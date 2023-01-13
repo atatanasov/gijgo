@@ -156,7 +156,6 @@ gj.dialog.methods = {
 
     init: function (jsConfig) {
         var config;
-        this.type = 'dialog';
         gj.widget.prototype.init.call(this, jsConfig);
 
         config = this.getConfig();
@@ -541,6 +540,7 @@ gj.dialog.methods = {
     var self = this,
         methods = gj.dialog.methods;
 
+    self.type = 'dialog';
     self.element = element;
 
     /**

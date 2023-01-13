@@ -182,7 +182,6 @@ gj.tree.config = {
 gj.tree.methods = {
 
     init: function (jsConfig) {
-        this.type = 'tree';
         gj.widget.prototype.init.call(this, jsConfig);
 
         gj.tree.methods.initialize.call(this);
@@ -705,6 +704,7 @@ gj.tree.methods = {
     var self = this,
         methods = gj.datepicker.methods;
 
+    self.type = 'tree';
     self.element = element;
 
     /**

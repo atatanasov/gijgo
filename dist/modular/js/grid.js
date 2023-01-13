@@ -280,7 +280,6 @@ gj.grid.config = {
 gj.grid.methods = {
 
     init: function (jsConfig) {
-        this.type = 'grid';
         gj.widget.prototype.init.call(this, jsConfig);
 
         gj.grid.methods.initialize(this);
@@ -1263,6 +1262,7 @@ gj.grid.methods = {
     var self = this,
         methods = gj.grid.methods;
 
+    self.type = 'grid';
     self.element = element;
 
     /**
@@ -1753,24 +1753,35 @@ if (typeof (jQuery) !== "undefined") {
 /**  */gj.grid.plugins.inlineEditing = {
     renderers: {
         editManager: function (value, record, cell, displayEl, id, grid) {
-            // let data = grid.getConfig(),
-            //     edit = data.inlineEditing.editButton.attr('key', id),
-            //     delete = data.inlineEditing.deleteButton.attr('key', id),
-            //     update = data.inlineEditing.updateButton.attr('key', id).hide(),
-            //     cancel = data.inlineEditing.cancelButton.attr('key', id).hide();
-            // edit.on('click', function (e) {
-            //     grid.edit((this).attr('key'));
-            // });
-            // delete.on('click', function (e) {
-            //     grid.removeRow((this).attr('key'));
-            // });
-            // update.on('click', function (e) {
-            //     grid.update((this).attr('key'));
-            // });
-            // cancel.on('click', function (e) {
-            //     grid.cancel((this).attr('key'));
-            // });
-            // displayEl.empty().append(edit).append(delete).append(update).append(cancel);
+            let data = grid.getConfig(),
+                edit = data.inlineEditing.editButton.cloneNode(true),
+                del = data.inlineEditing.deleteButton.cloneNode(true),
+                update = data.inlineEditing.updateButton.cloneNode(true),
+                cancel = data.inlineEditing.cancelButton.cloneNode(true);
+
+            edit.setAttribute('data-gj-key', id);
+            del.setAttribute('data-gj-key', id);
+            update.setAttribute('data-gj-key', id);
+            cancel.setAttribute('data-gj-key', id);
+            update.style.display = 'none';
+            cancel.style.display = 'none';
+            edit.addEventListener('click', function (e) {
+                grid.edit(this.getAttribute('data-gj-key'));
+            });
+            del.addEventListener('click', function (e) {
+                grid.removeRow(this.getAttribute('data-gj-key'));
+            });
+            update.addEventListener('click', function (e) {
+                grid.update(this.getAttribute('data-gj-key'));
+            });
+            cancel.addEventListener('click', function (e) {
+                grid.cancel(this.getAttribute('data-gj-key'));
+            });
+            displayEl.innerHTML = '';
+            displayEl.appendChild(edit);
+            displayEl.appendChild(del);
+            displayEl.appendChild(update);
+            displayEl.appendChild(cancel);
         }
     }
 };
@@ -1809,16 +1820,33 @@ gj.grid.plugins.inlineEditing.config = {
 
 gj.grid.plugins.inlineEditing.private = {
     localization: function (data) {
+        let edit = document.createElement('button'),
+            del = document.createElement('button'),
+            update = document.createElement('button'),
+            cancel = document.createElement('button');
+        
+        edit.setAttribute('data-gj-role', 'edit');
+        del.setAttribute('data-gj-role', 'delete');
+        update.setAttribute('data-gj-role', 'update');
+        cancel.setAttribute('data-gj-role', 'cancel');
         if (data.uiLibrary === 'bootstrap') {
             data.inlineEditing.editButton = '<button role="edit" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> ' + gj.grid.messages[data.locale].Edit + '</button>';
             data.inlineEditing.deleteButton = '<button role="delete" class="btn btn-default btn-sm gj-margin-left-10"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> ' + gj.grid.messages[data.locale].Delete + '</button>';
             data.inlineEditing.updateButton = '<button role="update" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> ' + gj.grid.messages[data.locale].Update + '</button>';
             data.inlineEditing.cancelButton = '<button role="cancel" class="btn btn-default btn-sm gj-margin-left-10"><span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span> ' + gj.grid.messages[data.locale].Cancel + '</button>';
         } else {
-            data.inlineEditing.editButton = '<button role="edit" class="gj-button-md"><i class="gj-icon pencil" /> ' + gj.grid.messages[data.locale].Edit.toUpperCase() + '</button>';
-            data.inlineEditing.deleteButton = '<button role="delete" class="gj-button-md"><i class="gj-icon delete" /> ' + gj.grid.messages[data.locale].Delete.toUpperCase() + '</button>';
-            data.inlineEditing.updateButton = '<button role="update" class="gj-button-md"><i class="gj-icon check-circle" /> ' + gj.grid.messages[data.locale].Update.toUpperCase() + '</button>';
-            data.inlineEditing.cancelButton = '<button role="cancel" class="gj-button-md"><i class="gj-icon cancel" /> ' +gj.grid.messages[data.locale].Cancel.toUpperCase() + '</button>';
+            edit.classList.add('gj-button-md');
+            edit.innerHTML = '<i class="gj-icon pencil" /> ' + gj.grid.messages[data.locale].Edit.toUpperCase();
+            data.inlineEditing.editButton = edit;
+            del.classList.add('gj-button-md');
+            del.innerHTML = '<i class="gj-icon pencil" /> ' + gj.grid.messages[data.locale].Delete.toUpperCase();
+            data.inlineEditing.deleteButton = del;
+            update.classList.add('gj-button-md');
+            update.innerHTML = '<i class="gj-icon pencil" /> ' + gj.grid.messages[data.locale].Update.toUpperCase();
+            data.inlineEditing.updateButton = update;
+            cancel.classList.add('gj-button-md');
+            cancel.innerHTML = '<i class="gj-icon pencil" /> ' + gj.grid.messages[data.locale].Cancel.toUpperCase();
+            data.inlineEditing.cancelButton = cancel;
         }
     },
 
@@ -1857,7 +1885,7 @@ gj.grid.plugins.inlineEditing.private = {
                         config = typeof column.editor === "object" ? column.editor : {};
                         config.uiLibrary = data.uiLibrary;
                         config.iconsLibrary = data.iconsLibrary;
-                        config.fontSize = grid.element.style.fontSize;
+                        config.fontSize = window.getComputedStyle(grid.element, null).getPropertyValue('font-size');
                         config.showOnFocus = false;
                         if ('checkbox' === column.type && gj.checkbox) {
                             editorField = document.createElement('input');
@@ -1887,25 +1915,30 @@ gj.grid.plugins.inlineEditing.private = {
                             if (editorField.value) {
                                 editorField.value(value);
                             }
+                            editorField = editorField.element;
                         } else if ('dropdown' === column.type && gj.dropdown) {
                             editorField = document.createElement('select');
                             editorField.setAttribute('width', '100%');
                             editorContainer.appendChild(editorField);
                             config.dataBound = function (e) {
-                                let dropdown = (this).dropdown();
+                                let dropdown = new GijgoDropDown(this);
                                 if (column.editField) {
                                     dropdown.value(record[column.editField]);
                                 } else {
                                     dropdown.value(record[column.field]);
                                 }
                             };
-                            editorField = editorField.dropdown(config);
+                            editorField = new GijgoDropDown(editorField, config);
                         } else {
-                            editorField = ('<input type="text" value="' + value + '" class="gj-width-full"/>');
+                            editorField = document.createElement('input');
+                            editorField.setAttribute('type', 'text');
+                            editorField.classList.add('gj-width-full');
+                            editorField.value = value;
                             if (data.uiLibrary === 'materialdesign') {
-                                editorField.addClass('gj-textbox-md').css('font-size', grid.css('font-size'));
+                                editorField.classList.add('gj-textbox-md');
+                                editorField.style.fontSize = window.getComputedStyle(grid.element, null).getPropertyValue('font-size');
                             }
-                            editorContainer.append(editorField);
+                            editorContainer.appendChild(editorField);
                         }
                     }
                     if (data.inlineEditing.mode !== 'command' && column.mode !== 'editOnly') {
@@ -1924,10 +1957,10 @@ gj.grid.plugins.inlineEditing.private = {
                 }
                 cell.setAttribute('data-gj-mode', 'edit');
             } else if (column.role === 'managementColumn') {
-                cell.querySelector('[role="edit"]').style.display = 'none';
-                cell.querySelector('[role="delete"]').style.display = 'none';
-                cell.querySelector('[role="update"]').style.display = 'block';
-                cell.querySelector('[role="cancel"]').style.display = 'block';
+                cell.querySelector('[data-gj-role="edit"]').style.display = 'none';
+                cell.querySelector('[data-gj-role="delete"]').style.display = 'none';
+                cell.querySelector('[data-gj-role="update"]').style.display = 'block';
+                cell.querySelector('[data-gj-role="cancel"]').style.display = 'block';
             }
         }
     },
@@ -1968,10 +2001,10 @@ gj.grid.plugins.inlineEditing.private = {
                 cell.setAttribute('data-gj-mode', 'display');
             }
             if (column.role === 'managementColumn') {
-                cell.querySelector('[role="update"]').style.display = 'none';
-                cell.querySelector('[role="cancel"]').style.display = 'none';
-                cell.querySelector('[role="edit"]').style.display = 'block';
-                cell.querySelector('[role="delete"]').style.display = 'block';
+                cell.querySelector('[data-gj-role="update"]').style.display = 'none';
+                cell.querySelector('[data-gj-role="cancel"]').style.display = 'none';
+                cell.querySelector('[data-gj-role="edit"]').style.display = 'block';
+                cell.querySelector('[data-gj-role="delete"]').style.display = 'block';
             }
         }
     },
@@ -1992,9 +2025,6 @@ gj.grid.plugins.inlineEditing.private = {
 
     updateChanges: function (grid, column, sourceRecord, newValue) {
         let targetRecords, filterResult, newRecord, data = grid.getConfig();
-        if (!data.guid) {
-            data.guid = gj.grid.plugins.inlineEditing.private.generateGUID();
-        }
         if (data.primaryKey) {
             targetRecords = JSON.parse(sessionStorage.getItem('gj.grid.' + data.guid));
             if (targetRecords) {
@@ -2016,15 +2046,6 @@ gj.grid.plugins.inlineEditing.private = {
             }
             sessionStorage.setItem('gj.grid.' + data.guid, JSON.stringify(targetRecords));
         }
-    },
-
-    generateGUID: function () {
-        function s4() {
-            return Math.floor((1 + Math.random()) * 0x10000)
-              .toString(16)
-              .substring(1);
-        }
-        return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
     }
 };
 
@@ -2037,11 +2058,11 @@ gj.grid.plugins.inlineEditing.public = {
     /**
      * Enable edit mode for all editable cells within a row.     */    edit: function (id) {
         let i, record = this.getById(id),
-            cells = gj.grid.methods.getRowById(this, id).children('td'),
-            columns = this.data('columns');
+            cells = gj.grid.methods.getRowById(this, id).children,
+            columns = this.getConfig().columns;
 
         for (i = 0; i < cells.length; i++) {
-            gj.grid.plugins.inlineEditing.private.editMode(this, (cells[i]), columns[i], record);
+            gj.grid.plugins.inlineEditing.private.editMode(this, cells[i], columns[i], record);
         }
             
         return this;
@@ -2050,11 +2071,11 @@ gj.grid.plugins.inlineEditing.public = {
     /**
      * Update all editable cells within a row, when the row is in edit mode.     */    update: function (id) {
         let i, record = this.getById(id),
-            cells = gj.grid.methods.getRowById(this, id).children('td'),
-            columns = this.data('columns');
+            cells = gj.grid.methods.getRowById(this, id).children,
+            columns = this.getConfig().columns;
 
         for (i = 0; i < cells.length; i++) {
-            gj.grid.plugins.inlineEditing.private.displayMode(this, (cells[i]), columns[i], false);
+            gj.grid.plugins.inlineEditing.private.displayMode(this, cells[i], columns[i], false);
         }
 
         gj.grid.plugins.inlineEditing.events.rowDataChanged(this.element, id, record);
@@ -2065,11 +2086,11 @@ gj.grid.plugins.inlineEditing.public = {
     /**
      * Cancel the edition of all editable cells, when the row is in edit mode.     */    cancel: function (id) {
         let i, record = this.getById(id),
-            cells = gj.grid.methods.getRowById(this, id).children('td'),
-            columns = this.data('columns');
+            cells = gj.grid.methods.getRowById(this, id).children,
+            columns = this.getConfig().columns;
 
         for (i = 0; i < cells.length; i++) {
-            gj.grid.plugins.inlineEditing.private.displayMode(this, (cells[i]), columns[i], true);
+            gj.grid.plugins.inlineEditing.private.displayMode(this, cells[i], columns[i], true);
         }
 
         return this;
@@ -2095,10 +2116,10 @@ gj.grid.plugins.inlineEditing.configure = function (grid, fullConfig, clientConf
     grid.extend(grid, gj.grid.plugins.inlineEditing.public);
     if (clientConfig.inlineEditing) {
         grid.on('dataBound', function () {
-            grid.element.querySelector('span.gj-dirty').remove();
+            grid.element.querySelectorAll('span.gj-dirty').forEach(function(el) { el.remove(); }); 
         });
-        grid.on('rowDataBound', function (e, row, id, record) {
-            grid.cancel(id);
+        grid.on('rowDataBound', function (e) {
+            grid.cancel(e.detail.id);
         });
     }
     if (data.inlineEditing.mode === 'command') {
@@ -3093,7 +3114,7 @@ gj.grid.plugins.inlineEditing.configure = function (grid, fullConfig, clientConf
 
     private: {
         init: function (grid, config) {
-            var $columns, $column, i, $wrapper, $resizer, marginRight;
+            var $columns, column, i, $wrapper, $resizer, marginRight;
             $columns = grid.find('thead tr[data-role="caption"] th');
             if ($columns.length) {
                 for (i = 0; i < $columns.length - 1; i++) {
@@ -3103,8 +3124,8 @@ gj.grid.plugins.inlineEditing.configure = function (grid, fullConfig, clientConf
                     $resizer = $('<span class="gj-grid-column-resizer" />').css('margin-right', '-' + marginRight + 'px');
                     $resizer.draggable({
                         start: function () {
-                            grid.addClass('gj-unselectable');
-                            grid.addClass('gj-grid-resize-cursor');
+                            grid.element.classList.add('gj-unselectable');
+                            grid.element.classList.add('gj-grid-resize-cursor');
                         },
                         stop: function () {
                             grid.removeClass('gj-unselectable');
@@ -3117,10 +3138,9 @@ gj.grid.plugins.inlineEditing.configure = function (grid, fullConfig, clientConf
                     });
                     $column.append($wrapper.append($resizer));
                 }
-                for (i = 0; i < $columns.length; i++) {
-                    $column = $($columns[i]);
-                    if (!$column.attr('width')) {
-                        $column.attr('width', $column.outerWidth());
+                for (i = 0; i < columns.length; i++) {
+                    if (!columns[i].getAttribute('width')) {
+                        columns[i].setAttribute('width', gj.core.width(column, true));
                     }
                 }
             }
@@ -3189,50 +3209,54 @@ gj.grid.plugins.inlineEditing.configure = function (grid, fullConfig, clientConf
 
     private: {
         init: function (grid) {
-            let i, columnPosition, $row,
+            let i, columnPosition,
                 config = grid.getConfig(),
-                $rows = grid.find('tbody tr[data-role="row"]');
+                rows = grid.element.querySelectorAll('tbody tr[data-gj-role="row"]');
             if (config.rowReorderColumn) {
                 columnPosition = gj.grid.methods.getColumnPosition(config.columns, config.rowReorderColumn);
             }
-            for (i = 0; i < $rows.length; i++) {
-                $row = $($rows[i]);
+            for (i = 0; i < rows.length; i++) {
                 if (typeof (columnPosition) !== 'undefined') {
-                    $row.find('td:eq(' + columnPosition + ')').on('mousedown', gj.grid.plugins.rowReorder.private.createRowMouseDownHandler(grid, $row));
+                    rows[i].children[columnPosition].addEventListener('mousedown', gj.grid.plugins.rowReorder.private.createRowMouseDownHandler(grid, rows[i]));
                 } else {
-                    $row.on('mousedown', gj.grid.plugins.rowReorder.private.createRowMouseDownHandler(grid, $row));
+                    rows[i].addEventListener('mousedown', gj.grid.plugins.rowReorder.private.createRowMouseDownHandler(grid, $row));
                 }
             }
         },
 
-        createRowMouseDownHandler: function (grid, $trSource) {
+        createRowMouseDownHandler: function (grid, trSource) {
             return function (e) {
-                var $dragEl = grid.clone(),
+                var dragEl = grid.element.cloneNode(true),
                     columns = grid.getConfig().columns,
-                    i, $cells;
-                grid.addClass('gj-unselectable');
-                $('body').append($dragEl);
-                $dragEl.attr('data-role', 'draggable-clone').css('cursor', 'move');
-                $dragEl.children('thead').remove().children('tfoot').remove();
-                $dragEl.find('tbody tr:not([data-position="' + $trSource.data('position') + '"])').remove();
-                $cells = $dragEl.find('tbody tr td');
-                for (i = 0; i < $cells.length; i++) {
+                    i, cells;
+                grid.element.classList.add('gj-unselectable');
+                document.body.appendChild(dragEl);
+                dragEl.setAttribute('data-gj-role', 'draggable-clone');
+                dragEl.classList.add('gj-unselectable');
+                dragEl.style.cursor = 'move';
+                dragEl.querySelector('thead').remove();
+                dragEl.querySelector('tfoot').remove();
+                dragEl.querySelector('tbody tr:not([data-gj-position="' + trSource.getAttribute('data-gj-position') + '"])').remove();
+                cells = dragEl.querySelectorAll('tbody tr td');
+                for (i = 0; i < cells.length; i++) {
                     if (columns[i].width) {
-                        $cells[i].setAttribute('width', columns[i].width);
+                        cells[i].setAttribute('width', columns[i].width);
                     }
                 }
-                $dragEl.draggable({
+                new GijgoDraggable(dragEl, {
                     stop: gj.grid.plugins.rowReorder.private.createDragStopHandler(grid, $trSource)
                 });
-                $dragEl.css({ 
-                    position: 'absolute', top: $trSource.offset().top, left: $trSource.offset().left, width: $trSource.width(), zIndex: 1
-                });
-                if ($trSource.attr('data-droppable') === 'true') {
-                    $trSource.droppable('destroy');
+                dragEl.style.position = 'absolute';
+                dragEl.style.top = thSource.getBoundingClientRect().top + 'px';
+                dragEl.style.left = thSource.getBoundingClientRect().left + 'px';
+                dragEl.style.width = gj.core.width(thSource) + 'px';
+                dragEl.style.zIndex = 1;
+                if (trSource.getAttribute('data-gj-droppable') === 'true') {
+                    new GijgoDroppable(trSource).destroy();
                 }
-                $trSource.siblings('tr[data-role="row"]').each(function () {
+                $trSource.siblings('tr[data-gj-role="row"]').each(function () {
                     var $dropEl = $(this);
-                    if ($dropEl.attr('data-droppable') === 'true') {
+                    if ($dropEl.attr('data-gj-droppable') === 'true') {
                         $dropEl.droppable('destroy');
                     }
                     $dropEl.droppable({
@@ -3246,9 +3270,9 @@ gj.grid.plugins.inlineEditing.configure = function (grid, fullConfig, clientConf
 
         createDragStopHandler: function (grid, $trSource) {
             return function (e, mousePosition) {
-                $('table[data-role="draggable-clone"]').draggable('destroy').remove();
+                $('table[data-gj-role="draggable-clone"]').draggable('destroy').remove();
                 grid.removeClass('gj-unselectable');
-                $trSource.siblings('tr[data-role="row"]').each(function () {
+                $trSource.siblings('tr[data-gj-role="row"]').each(function () {
                     var $trTarget = $(this),
                         targetPosition = $trTarget.data('position'),
                         sourcePosition = $trSource.data('position'),
@@ -3262,9 +3286,9 @@ gj.grid.plugins.inlineEditing.configure = function (grid, fullConfig, clientConf
                             $trTarget.after($trSource);
                         }
                         data.records.splice(targetPosition - 1, 0, data.records.splice(sourcePosition - 1, 1)[0]);
-                        $rows = $trTarget.parent().find('tr[data-role="row"]');
+                        $rows = $trTarget.parent().find('tr[data-gj-role="row"]');
                         for (i = 0; i < $rows.length; i++) {
-                            $($rows[i]).attr('data-position', i + 1);
+                            $($rows[i]).attr('data-gj-position', i + 1);
                         }
                         if (data.orderNumberField) {
                             for (i = 0; i < data.records.length; i++) {
@@ -3272,8 +3296,8 @@ gj.grid.plugins.inlineEditing.configure = function (grid, fullConfig, clientConf
                             }
                             for (i = 0; i < $rows.length; i++) {
                                 $row = $($rows[i]);
-                                id = gj.grid.methods.getId($row, data.primaryKey, $row.attr('data-position'));
-                                record = gj.grid.methods.getByPosition(grid, $row.attr('data-position'));
+                                id = gj.grid.methods.getId($row, data.primaryKey, $row.attr('data-gj-position'));
+                                record = gj.grid.methods.getByPosition(grid, $row.attr('data-gj-position'));
                                 grid.setCellContent(id, data.orderNumberField, record[data.orderNumberField]);
                             }
                         }

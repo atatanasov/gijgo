@@ -68,7 +68,6 @@ gj.checkbox.config = {
 
 gj.checkbox.methods = {
     init: function (jsConfig) {
-        this.type = 'checkbox';
         gj.widget.prototype.init.call(this, jsConfig);
         this.element.setAttribute('data-gj-checkbox', 'true');
         gj.checkbox.methods.initialize(this, this.getConfig());
@@ -154,6 +153,7 @@ GijgoCheckBox = function (element, jsConfig) {
     var self = this,
         methods = gj.checkbox.methods;
 
+    self.type = 'checkbox';
     self.element = element;
 
     /** Toogle the state of the checkbox.     */    self.toggle = function () {

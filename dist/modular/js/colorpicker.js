@@ -46,7 +46,6 @@ gj.colorpicker.config = {
 
 gj.colorpicker.methods = {
     init: function (jsConfig) {
-        this.type = 'colorpicker';
         gj.picker.widget.prototype.init.call(this, jsConfig);
         gj.colorpicker.methods.initialize(this);
         return this;
@@ -104,6 +103,7 @@ GijgoColorPicker = function (element, jsConfig) {
     var self = this,
         methods = gj.colorpicker.methods;
 
+    self.type = 'colorpicker';
     self.element = element;
 
     /** Gets or sets the value of the colorpicker.     */    self.value = function (value) {

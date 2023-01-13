@@ -27,7 +27,6 @@ gj.draggable.methods = {
     init: function (jsConfig) {
         var handleEl, data, dragEl = this.element;
 
-        this.type = 'draggable'
         gj.widget.prototype.init.call(this, jsConfig);
         data = this.getConfig();
         dragEl.setAttribute('data-gj-draggable', 'true');
@@ -190,6 +189,7 @@ GijgoDraggable = function (element, jsConfig) {
     var self = this,
         methods = gj.draggable.methods;
 
+    self.type = 'draggable';
     self.element = element;
     
     /** Remove draggable functionality from the element.        */    self.destroy = function () {

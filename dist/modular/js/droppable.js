@@ -16,8 +16,6 @@ gj.droppable.config = {
 
 gj.droppable.methods = {
     init: function (jsConfig) {
-        this.type = 'droppable';
-
         gj.widget.prototype.init.call(this, jsConfig);
         this.element.setAttribute('data-gj-droppable', 'true');
         
@@ -114,6 +112,7 @@ GijgoDroppable = function (element, jsConfig) {
     let self = this,
         methods = gj.droppable.methods;
     
+    self.type = 'droppable';
     self.element = element;
     self.isOver = false;
     self.isDragging = false;

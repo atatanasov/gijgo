@@ -75,7 +75,6 @@ gj.timepicker.config = {
 
 gj.timepicker.methods = {
     init: function (jsConfig) {
-        this.type = 'timepicker';
         gj.picker.widget.prototype.init.call(this, jsConfig);
         return this;
     },
@@ -541,6 +540,7 @@ GijgoTimePicker = function (element, jsConfig) {
     var self = this,
         methods = gj.timepicker.methods;
 
+    self.type = 'timepicker';
     self.element = element;
 
     self.mouseMove = false;
@@ -562,7 +562,7 @@ GijgoTimePicker = function (element, jsConfig) {
     };
 
     //$.extend($element, self);
-    if ('true' !== element.getAttribute('data-timepicker')) {
+    if ('true' !== element.getAttribute('data-gj-timepicker')) {
         methods.init.call(self, jsConfig);
     }
 

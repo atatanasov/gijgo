@@ -57,7 +57,6 @@ gj.slider.config = {
 
 gj.slider.methods = {
     init: function (jsConfig) {
-        this.type = 'slider';
         gj.widget.prototype.init.call(this, jsConfig);
         this.element.setAttribute('data-slider', 'true');
         gj.slider.methods.initialize(this.element, this.getConfig());
@@ -189,8 +188,8 @@ gj.slider.methods = {
             wrapper.removeChild(wrapper.querySelector('[role="track"]'));
             wrapper.removeChild(wrapper.querySelector('[role="handle"]'));
             wrapper.removeChild(wrapper.querySelector('[role="progress"]'));
-            $(el).unwrap();
-            $(el).off();
+            el.unwrap();
+            //TODO: $(el).off();
             slider.removeConfig();
             el.removeAttribute('data-type');
             el.removeAttribute('data-gj-guid')
@@ -219,6 +218,7 @@ GijgoSlider = function (element, jsConfig) {
     var self = this,
         methods = gj.slider.methods;
 
+    self.type = 'slider';
     self.element = element;
 
     /** Gets or sets the value of the slider.     */    self.value = function (value) {
