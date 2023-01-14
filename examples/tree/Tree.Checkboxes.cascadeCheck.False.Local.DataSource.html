@@ -14,7 +14,7 @@
 <body style="padding: 8px;">
  <ul id="tree"></ul>
  <script>
-     var tree = new GijgoTree(document.getElementById('tree'), {
+     let tree = new GijgoTree(document.getElementById('tree'), {
          checkboxes: true,
          dataSource: [ { text: 'foo', checked: true, children: [ { text: 'bar', checked: true }, { text: 'bar2', checked: false } ] }, { text: 'foo2', checked: true, children: [ { text: 'bar2', checked: false } ] } ],
          cascadeCheck: false

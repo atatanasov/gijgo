@@ -11,7 +11,7 @@ gj.tree.plugins.checkboxes = {
               * @example Material.Design <!-- checkbox, tree -->
               * <ul id="tree"></ul>
               * <script>
-              *     var tree = new GijgoTree(document.getElementById('tree'), {
+              *     let tree = new GijgoTree(document.getElementById('tree'), {
               *         dataSource: '/Locations/Get',
               *         checkboxes: true
               *     });
@@ -19,7 +19,7 @@ gj.tree.plugins.checkboxes = {
               * @example Bootstrap.3 <!-- bootstrap, checkbox, tree -->
               * <ul id="tree"></ul>
               * <script>
-              *     var tree = new GijgoTree(document.getElementById('tree'), {
+              *     let tree = new GijgoTree(document.getElementById('tree'), {
               *         dataSource: '/Locations/Get',
               *         checkboxes: true,
               *         uiLibrary: 'bootstrap'
@@ -28,7 +28,7 @@ gj.tree.plugins.checkboxes = {
               * @example Bootstrap.4 <!-- bootstrap4, checkbox, tree -->
               * <ul id="tree"></ul>
               * <script>
-              *     var tree = new GijgoTree(document.getElementById('tree'), {
+              *     let tree = new GijgoTree(document.getElementById('tree'), {
               *         dataSource: '/Locations/Get',
               *         checkboxes: true,
               *         uiLibrary: 'bootstrap4'
@@ -43,7 +43,7 @@ gj.tree.plugins.checkboxes = {
              * @example Custom.Name <!-- checkbox, tree -->
              * <ul id="tree"></ul>
              * <script>
-             *     var tree = new GijgoTree(document.getElementById('tree'), {
+             *     let tree = new GijgoTree(document.getElementById('tree'), {
              *         checkboxes: true,
              *         checkedField: 'checkedFieldName',
              *         dataSource: [ { text: 'foo', checkedFieldName: false, children: [ { text: 'bar', checkedFieldName: true }, { text: 'bar2', checkedFieldName: false } ] }, { text: 'foo2', children: [ { text: 'bar2' } ] } ]
@@ -58,7 +58,7 @@ gj.tree.plugins.checkboxes = {
              * @example False.Remote.DataSource <!-- checkbox, tree -->
              * <ul id="tree"></ul>
              * <script>
-             *     var tree = new GijgoTree(document.getElementById('tree'), {
+             *     let tree = new GijgoTree(document.getElementById('tree'), {
              *         checkboxes: true,
              *         dataSource: '/Locations/Get',
              *         cascadeCheck: false
@@ -70,7 +70,7 @@ gj.tree.plugins.checkboxes = {
              * @example False.Local.DataSource <!-- checkbox, tree -->
              * <ul id="tree"></ul>
              * <script>
-             *     var tree = new GijgoTree(document.getElementById('tree'), {
+             *     let tree = new GijgoTree(document.getElementById('tree'), {
              *         checkboxes: true,
              *         dataSource: [ { text: 'foo', checked: true, children: [ { text: 'bar', checked: true }, { text: 'bar2', checked: false } ] }, { text: 'foo2', checked: true, children: [ { text: 'bar2', checked: false } ] } ],
              *         cascadeCheck: false
@@ -79,7 +79,7 @@ gj.tree.plugins.checkboxes = {
              * @example True <!-- checkbox, tree -->
              * <ul id="tree"></ul>
              * <script>
-             *     var tree = new GijgoTree(document.getElementById('tree'), {
+             *     let tree = new GijgoTree(document.getElementById('tree'), {
              *         checkboxes: true,
              *         dataSource: '/Locations/Get',
              *         cascadeCheck: true
@@ -94,98 +94,100 @@ gj.tree.plugins.checkboxes = {
     },
 
     private: {
-        dataBound: function ($tree) {
-            var $nodes;
-            if ($tree.data('cascadeCheck')) {
-                $nodes = $tree.find('li[data-role="node"]');
-                $.each($nodes, function () {
-                    var $node = $(this),
-                        state = $node.find('[data-role="checkbox"] input[type="checkbox"]').checkbox('state');
+        dataBound: function (tree) {
+            let nodes;
+            if (tree.data('cascadeCheck')) {
+                nodes = tree.find('li[data-gj-role="node"]');
+                for (const node of nodes) {
+                    let state = gj.checkbox.methods.state(node.querySelector('[data-gj-role="checkbox"] input[type="checkbox"]'));
                     if (state === 'checked') {
-                        gj.tree.plugins.checkboxes.private.updateChildrenState($node, state);
-                        gj.tree.plugins.checkboxes.private.updateParentState($node, state);
+                        gj.tree.plugins.checkboxes.private.updateChildrenState(node, state);
+                        gj.tree.plugins.checkboxes.private.updateParentState(node, state);
                     }
-                });
+                }
             }
         },
 
-        nodeDataBound: function ($tree, $node, id, record) {
-            var data, $expander, $checkbox, $wrapper, disabled;
+        nodeDataBound: function (tree, node, id, record) {
+            let data, expander, checkbox, wrapper, disabled;
             
-            if ($node.find('> [data-role="wrapper"] > [data-role="checkbox"]').length === 0)
+            if (node.querySelector('> [data-gj-role="wrapper"] > [data-gj-role="checkbox"]'))
             {
                 data = tree.getConfig();
-                $expander = $node.find('> [data-role="wrapper"] > [data-role="expander"]');
-                $checkbox = $('<input type="checkbox"/>');
-                $wrapper = $('<span data-role="checkbox"></span>').append($checkbox);
+                expander = node.querySelector('> [data-gj-role="wrapper"] > [data-gj-role="expander"]');
+                checkbox = document.createElement('input');
+                checkbox.setAttribute('type', 'checkbox');
+                // wrapper = document.createElement('span');
+                // wrapper.setAttribute('data-gj-role', 'checkbox');
+                // wrapper.appendChild(checkbox);
                 disabled = typeof (record[data.disabledField]) !== 'undefined' && record[data.disabledField].toString().toLowerCase() === 'true';
 
-                $checkbox = $checkbox.checkbox({
+                checkbox = new GijgoCheckBox(checkbox, {
                     uiLibrary: data.uiLibrary,
                     iconsLibrary: data.iconsLibrary,
-                    change: function (e, state) {
-                        gj.tree.plugins.checkboxes.events.checkboxChange($tree, $node, record, $checkbox.state());
+                    change: function (e) {
+                        gj.tree.plugins.checkboxes.events.checkboxChange(tree.element, node, record, e.detail.state);
                     }
                 });
-                disabled && $checkbox.prop('disabled', true);
-                record[data.checkedField] && $checkbox.state('checked');
-                $checkbox.on('click', function (e) {
-                    var $node = $checkbox.closest('li'),
-                        state = $checkbox.state();
+                if (disabled) {
+                    checkbox.disabled = true;
+                }
+                record[data.checkedField] && checkbox.state('checked');
+                checkbox.on('click', function (e) {
+                    let node = checkbox.closest('li'),
+                        state = checkbox.state();
                     if (data.cascadeCheck) {
-                        gj.tree.plugins.checkboxes.private.updateChildrenState($node, state);
-                        gj.tree.plugins.checkboxes.private.updateParentState($node, state);
+                        gj.tree.plugins.checkboxes.private.updateChildrenState(node, state);
+                        gj.tree.plugins.checkboxes.private.updateParentState(node, state);
                     }
                 });
-                $expander.after($wrapper);
+                expander.parentNode.insertBefore(wrapper, expander.nextSubling);
             }
         },
 
-        updateParentState: function ($node, state) {
-            var $parentNode, $parentCheckbox, $siblingCheckboxes, allChecked, allUnchecked, parentState;
+        updateParentState: function (node, state) {
+            let parentNode, parentCheckbox, siblingCheckboxes, allChecked, allUnchecked, parentState;
 
-            $parentNode = $node.parent('ul').parent('li');
-            if ($parentNode.length === 1) {
-                $parentCheckbox = $node.parent('ul').parent('li').find('> [data-role="wrapper"] > [data-role="checkbox"] input[type="checkbox"]');
-                $siblingCheckboxes = $node.siblings().find('> [data-role="wrapper"] > span[data-role="checkbox"] input[type="checkbox"]');
+            parentNode = node.parentNode.parentNode;
+            if (parentNode) {
+                parentCheckbox = parentNode.querySelector('> [data-gj-role="wrapper"] > [data-gj-role="checkbox"] input[type="checkbox"]');
+                siblingCheckboxes = node.parentNode.querySelectorAll('> [data-gj-role="wrapper"] > span[data-gj-role="checkbox"] input[type="checkbox"]');
                 allChecked = (state === 'checked');
                 allUnchecked = (state === 'unchecked');
                 parentState = 'indeterminate';
-                $.each($siblingCheckboxes, function () {
-                    var state = $(this).checkbox('state');
+                for (const chkb of siblingCheckboxes) {
+                    let state = gj.checkbox.methods.state(chkb);
                     if (allChecked && state !== 'checked') {
                         allChecked = false;
                     }
                     if (allUnchecked && state !== 'unchecked') {
                         allUnchecked = false;
                     }
-                });
+                };
                 if (allChecked && !allUnchecked) {
                     parentState = 'checked';
                 }
                 if (!allChecked && allUnchecked) {
                     parentState = 'unchecked';
                 }
-                $parentCheckbox.checkbox('state', parentState);
-                gj.tree.plugins.checkboxes.private.updateParentState($parentNode, $parentCheckbox.checkbox('state'));
+                gj.checkbox.methods.state(parentCheckbox, parentState);
+                gj.tree.plugins.checkboxes.private.updateParentState(parentNode, parentState);
             }
         },
 
-        updateChildrenState: function ($node, state) {
-            var $childrenCheckboxes = $node.find('ul li [data-role="wrapper"] [data-role="checkbox"] input[type="checkbox"]');
-            if ($childrenCheckboxes.length > 0) {
-                $.each($childrenCheckboxes, function () {
-                    $(this).checkbox('state', state);
-                });
+        updateChildrenState: function (node, state) {
+            let childrenCheckboxes = node.querySelectorAll('ul li [data-gj-role="wrapper"] [data-gj-role="checkbox"] input[type="checkbox"]');
+            for (const chkb of childrenCheckboxes) {
+                gj.checkbox.methods.state(chkb, state);
             }
         },
 
-        update: function ($tree, $node, state) {
-            var checkbox = $node.find('[data-role="checkbox"] input[type="checkbox"]').first();
-            $(checkbox).checkbox('state', state);
+        update: function (tree, node, state) {
+            let checkbox = node.querySelector('[data-gj-role="checkbox"] input[type="checkbox"]');
+            gj.checkbox.methods.state(checkbox, state);
             if (tree.getConfig().cascadeCheck) {
-                gj.tree.plugins.checkboxes.private.updateChildrenState($node, state);
-                gj.tree.plugins.checkboxes.private.updateParentState($node, state);
+                gj.tree.plugins.checkboxes.private.updateChildrenState(node, state);
+                gj.tree.plugins.checkboxes.private.updateParentState(node, state);
             }
         }
     },
@@ -199,25 +201,24 @@ gj.tree.plugins.checkboxes = {
          * <button id="btnGet" class="gj-button-md">Get Checked Nodes</button>
          * <ul id="tree"></ul>
          * <script>
-         *     var tree = new GijgoTree(document.getElementById('tree'), {
+         *     let tree = new GijgoTree(document.getElementById('tree'), {
          *         dataSource: '/Locations/Get',
          *         checkboxes: true
          *     });
-         *     $('#btnGet').on('click', function() {
-         *         var result = tree.getCheckedNodes();
+         *     ('#btnGet').on('click', function() {
+         *         let result = tree.getCheckedNodes();
          *         alert(result.join());
          *     });
          * </script>
          */
         getCheckedNodes: function () {
-            var result = [],
-                checkboxes = this.find('li [data-role="checkbox"] input[type="checkbox"]');
-            $.each(checkboxes, function () {
-                var checkbox = $(this);
-                if (checkbox.checkbox('state') === 'checked') {
-                    result.push(checkbox.closest('li').data('id'));
+            let result = [],
+                checkboxes = this.element.querySelectorAll('li [data-gj-role="checkbox"] input[type="checkbox"]');
+            for (const checkbox of checkboxes) {
+                if (gj.checkbox.methods.state(checkbox) === 'checked') {
+                    result.push(checkbox.closest('li').getAttribute('data-gj-id'));
                 }
-            });
+            };
             return result;
         },
 
@@ -231,7 +232,7 @@ gj.tree.plugins.checkboxes = {
          * <br/><br/>
          * <div id="tree" data-source="/Locations/Get"></div>
          * <script>
-         *     var tree = new GijgoTree(document.getElementById('tree'), {
+         *     let tree = new GijgoTree(document.getElementById('tree'), {
          *         checkboxes: true
          *     });
          *     tree.on('dataBound', function() {
@@ -240,10 +241,10 @@ gj.tree.plugins.checkboxes = {
          * </script>
          */
         checkAll: function () {
-            var $checkboxes = this.find('li [data-role="checkbox"] input[type="checkbox"]');
-            $.each($checkboxes, function () {
-                $(this).checkbox('state', 'checked');
-            });
+            let checkboxes = this.element.querySelectorAll('li [data-gj-role="checkbox"] input[type="checkbox"]');
+            for (const checkbox of checkboxes) {
+                gj.checkbox.methods.state(checkbox, 'checked');
+            };
             return this;
         },
 
@@ -257,7 +258,7 @@ gj.tree.plugins.checkboxes = {
          * <br/><br/>
          * <div id="tree" data-source="/Locations/Get"></div>
          * <script>
-         *     var tree = new GijgoTree(document.getElementById('tree'), {
+         *     let tree = new GijgoTree(document.getElementById('tree'), {
          *         checkboxes: true
          *     });
          *     tree.on('dataBound', function() {
@@ -266,10 +267,10 @@ gj.tree.plugins.checkboxes = {
          * </script>
          */
         uncheckAll: function () {
-            var $checkboxes = this.find('li [data-role="checkbox"] input[type="checkbox"]');
-            $.each($checkboxes, function () {
-                $(this).checkbox('state', 'unchecked');
-            });
+            let checkboxes = this.element.querySelectorAll('li [data-gj-role="checkbox"] input[type="checkbox"]');
+            for (const checkbox of checkboxes) {
+                gj.checkbox.methods.state(checkbox, 'unchecked');
+            };
             return this;
         },
 
@@ -283,7 +284,7 @@ gj.tree.plugins.checkboxes = {
          * <br/>
          * <div id="tree" data-source="/Locations/Get"></div>
          * <script>
-         *     var tree = new GijgoTree(document.getElementById('tree'), {
+         *     let tree = new GijgoTree(document.getElementById('tree'), {
          *         checkboxes: true
          *     });
          *     tree.on('dataBound', function() {
@@ -291,8 +292,8 @@ gj.tree.plugins.checkboxes = {
          *     });
          * </script>
          */
-        check: function ($node) {
-            gj.tree.plugins.checkboxes.private.update(this, $node, 'checked');
+        check: function (node) {
+            gj.tree.plugins.checkboxes.private.update(this, node, 'checked');
             return this;
         },
 
@@ -306,7 +307,7 @@ gj.tree.plugins.checkboxes = {
          * <br/>
          * <div id="tree" data-source="/Locations/Get"></div>
          * <script>
-         *     var tree = new GijgoTree(document.getElementById('tree'), {
+         *     let tree = new GijgoTree(document.getElementById('tree'), {
          *         checkboxes: true
          *     });
          *     tree.on('dataBound', function() {
@@ -315,8 +316,8 @@ gj.tree.plugins.checkboxes = {
          *     });
          * </script>
          */
-        uncheck: function ($node) {
-            gj.tree.plugins.checkboxes.private.update(this, $node, 'unchecked');
+        uncheck: function (node) {
+            gj.tree.plugins.checkboxes.private.update(this, node, 'unchecked');
             return this;
         }
     },
@@ -326,37 +327,43 @@ gj.tree.plugins.checkboxes = {
          * Event fires when the checkbox state is changed.
          * @event checkboxChange
          * @param {object} e - event data
-         * @param {object} $node - the node object as jQuery element
+         * @param {object} node - the node object as jQuery element
          * @param {object} record - the record data
          * @param {string} state - the new state of the checkbox
          * @example Event.Sample <!-- checkbox, tree -->
          * <div id="tree" data-source="/Locations/Get" data-checkboxes="true"></div>
          * <script>
-         *     var tree = new GijgoTree(document.getElementById('tree'), );
-         *     tree.on('checkboxChange', function (e, $node, record, state) {
+         *     let tree = new GijgoTree(document.getElementById('tree'), );
+         *     tree.on('checkboxChange', function (e, node, record, state) {
          *         alert('The new state of record ' + record.text + ' is ' + state);
          *     });
          * </script>
          */
-        checkboxChange: function ($tree, $node, record, state) {
-            return $tree.triggerHandler('checkboxChange', [$node, record, state]);
+        checkboxChange: function (el, node, record, state) {
+            return el.dispatchEvent(new CustomEvent('checkboxChange', { detail: { node: node, record: record, state: state } }));
         }
     },
 
-    configure: function ($tree) {
-        if ($tree.data('checkboxes') && gj.checkbox) {
-            $.extend(true, $tree, gj.tree.plugins.checkboxes.public);
-            $tree.on('nodeDataBound', function (e, $node, id, record) {
-                gj.tree.plugins.checkboxes.private.nodeDataBound($tree, $node, id, record);
+    configure: function (tree) {
+        if (tree.getConfig().checkboxes && gj.checkbox) {
+            this.extend(tree, gj.tree.plugins.checkboxes.public);
+            tree.on('nodeDataBound', function (e, node, id, record) {
+                gj.tree.plugins.checkboxes.private.nodeDataBound(tree, node, id, record);
             });
-            $tree.on('dataBound', function () {
-                gj.tree.plugins.checkboxes.private.dataBound($tree);
+            tree.on('dataBound', function () {
+                gj.tree.plugins.checkboxes.private.dataBound(tree);
             });
-            $tree.on('enable', function (e, $node) {
-                $node.find('>[data-role="wrapper"]>[data-role="checkbox"] input[type="checkbox"]').prop('disabled', false);
+            tree.on('enable', function (e, node) {
+                let checkboxes = node.querySelectorAll('>[data-gj-role="wrapper"]>[data-gj-role="checkbox"] input[type="checkbox"]');
+                for (const chkb of checkboxes) {
+                    chkb.disabled = false;
+                }
             });
-            $tree.on('disable', function (e, $node) {
-                $node.find('>[data-role="wrapper"]>[data-role="checkbox"] input[type="checkbox"]').prop('disabled', true);
+            tree.on('disable', function (e, node) {
+                let checkboxes = node.querySelectorAll('>[data-gj-role="wrapper"]>[data-gj-role="checkbox"] input[type="checkbox"]');
+                for (const chkb of checkboxes) {
+                    chkb.disabled = true;
+                }
             });
         }
     }

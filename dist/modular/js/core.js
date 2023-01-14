@@ -341,6 +341,26 @@ let gj = {};
     css: function(el, prop, val) {
         val = isNaN(val) ? val : val + 'px';
         el.style[prop] = val;
+    },
+
+    wrap: function(el, tagName) {
+        let wrapper = el.parentNode.getAttribute('data-gj-role') === 'wrapper' ? el.parentNode : null;
+        if (!wrapper) {
+            wrapper = document.createElement(tagName);
+            el.parentNode.insertBefore(wrapper, el);
+            wrapper.appendChild(el);
+        }
+        gj.core.addClasses(wrapper, this.getConfig().style.wrapper);
+        wrapper.setAttribute('data-gj-role', 'wrapper');
+        return wrapper;
+    },
+
+    unwrap: function(el) {
+        let wrapper = el.parentNode.getAttribute('data-gj-role') === 'wrapper' ? el.parentNode : null;
+        if (wrapper) {
+            wrapper.parentNode.insertBefore(el, wrapper);
+            wrapper.remove();
+        }
     }
 };
 
@@ -462,23 +482,11 @@ gj.widget = function () {
     };
 
     self.wrap = function(tagName) {
-        let wrapper = this.element.parentNode.getAttribute('data-gj-role') === 'wrapper' ? this.element.parentNode : null;
-        if (!wrapper) {
-            wrapper = document.createElement(tagName);
-            this.element.parentNode.insertBefore(wrapper, this.element);
-            wrapper.appendChild(this.element);
-        }
-        gj.core.addClasses(wrapper, this.getConfig().style.wrapper);
-        wrapper.setAttribute('data-gj-role', 'wrapper');
-        return wrapper;
+        return gj.core.wrap(this.element, tagName);
     };
 
     self.unwrap = function() {
-        let wrapper = this.element.parentNode.getAttribute('data-gj-role') === 'wrapper' ? this.element.parentNode : null;
-        if (wrapper) {
-            wrapper.parentNode.insertBefore(this.element, wrapper);
-            wrapper.remove();
-        }
+        gj.core.unwrap(this.element);
     };
 };
 

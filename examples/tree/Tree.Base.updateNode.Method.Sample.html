@@ -20,12 +20,12 @@
          dataSource: '/Locations/Get'
      });
      tree.on('select', function (e, node, id) {
-         $('#nodeName').val(tree.getDataById(id).text);
+         document.getElementById('nodeName').value = tree.getDataById(id).text;
      });
      function save() {
          var id = tree.getSelections()[0],
              record = tree.getDataById(id);
-         record.text = $('#nodeName').val();
+         record.text = document.getElementById('nodeName').value;
          tree.updateNode(id, record);
      }
  </script>

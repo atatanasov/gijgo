@@ -14,8 +14,8 @@
 <body style="padding: 8px;">
  <div id="tree" data-source="/Locations/Get" data-checkboxes="true"></div>
  <script>
-     var tree = new GijgoTree(document.getElementById('tree'), );
-     tree.on('checkboxChange', function (e, $node, record, state) {
+     let tree = new GijgoTree(document.getElementById('tree'), );
+     tree.on('checkboxChange', function (e, node, record, state) {
          alert('The new state of record ' + record.text + ' is ' + state);
      });
  </script>

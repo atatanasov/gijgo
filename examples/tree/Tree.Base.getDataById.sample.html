@@ -18,7 +18,7 @@
          dataSource: '/Locations/Get',
          primaryKey: 'id' //define the name of the column that you want to use as ID here.
      });
-     $('#btnGetData').on('click', function () {
+     document.getElementById('#tnGetData').addEventListener('click', function () {
          var data = tree.getDataById(9);
          alert('The population of ' + data.text + ' is ' + data.population);
      });

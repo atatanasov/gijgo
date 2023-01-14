@@ -17,7 +17,7 @@
      var tree = new GijgoTree(document.getElementById('tree'), {
          selectionType: 'multiple'
      });
-     $('#btnShowSelection').on('click', function () {
+     document.getElementById('#btnShowSelection').addEventListener('click', function () {
          var selections = tree.getSelections();
          selections && selections.length && alert(selections.join());
      });

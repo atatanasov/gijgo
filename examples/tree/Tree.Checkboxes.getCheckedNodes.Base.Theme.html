@@ -15,12 +15,12 @@
  <button id="btnGet" class="gj-button-md">Get Checked Nodes</button>
  <ul id="tree"></ul>
  <script>
-     var tree = new GijgoTree(document.getElementById('tree'), {
+     let tree = new GijgoTree(document.getElementById('tree'), {
          dataSource: '/Locations/Get',
          checkboxes: true
      });
-     $('#btnGet').on('click', function() {
-         var result = tree.getCheckedNodes();
+     ('#btnGet').on('click', function() {
+         let result = tree.getCheckedNodes();
          alert(result.join());
      });
  </script>

@@ -35,50 +35,51 @@ gj.tree.plugins.lazyLoading = {
     },
 
     private: {
-        nodeDataBound: function ($tree, $node, id, record) {
-            var data = tree.getConfig(),
-                $expander = $node.find('> [data-role="wrapper"] > [data-role="expander"]');
+        nodeDataBound: function (tree, node, id, record) {
+            let data = tree.getConfig(),
+                expander = node.querySelector('> [data-gj-role="wrapper"] > [data-gj-role="expander"]');
 
             if (record.hasChildren) {
-                $expander.empty().append(data.icons.expand);
+                expander.innerHTML = data.icons.expand;
             }
         },
 
-        createDoneHandler: function ($tree, $node) {
+        createDoneHandler: function (tree, node) {
             return function (response) {
-                var i, $expander, $list, data = tree.getConfig();
+                let i, expander, list, data = tree.getConfig();
                 if (typeof (response) === 'string' && JSON) {
                     response = JSON.parse(response);
                 }
                 if (response && response.length) {
-                    $list = $node.children('ul');
-                    if ($list.length === 0) {
-                        $list = $('<ul />').addClass(data.style.list);
-                        $node.append($list);
+                    list = node.children('ul');
+                    if (list.length === 0) {
+                        list = document.createElement('ul');
+                        gj.core.addClasses(list, data.style.list);
+                        node.appendChild(list);
                     }
                     for (i = 0; i < response.length; i++) {
-                        $tree.addNode(response[i], $list);
+                        tree.addNode(response[i], list);
                     }
-                    $expander = $node.find('>[data-role="wrapper"]>[data-role="expander"]'),
-                    $expander.attr('data-mode', 'open');
-                    $expander.empty().append(data.icons.collapse);
-                    gj.tree.events.dataBound($tree);
+                    expander = node.querySelector('>[data-gj-role="wrapper"]>[data-gj-role="expander"]'),
+                    expander.setAttribute('data-gj-mode', 'open');
+                    expander.innerHTML = data.icons.collapse;
+                    gj.tree.events.dataBound(tree.element);
                 }
             };
         },
 
-        expand: function ($tree, $node, id) {
-            var ajaxOptions, data = tree.getConfig(), params = {},
-                $children = $node.find('>ul>li');
+        expand: function (tree, node, id) {
+            let ajaxOptions, data = tree.getConfig(), params = {},
+                children = node.querySelectorAll('>ul>li');
 
-            if (!$children || !$children.length) {
+            if (!children || !children.length) {
                 if (typeof (data.dataSource) === 'string') {
                     params[data.paramNames.parentId] = id;
                     ajaxOptions = { url: data.dataSource, data: params };
-                    if ($tree.xhr) {
-                        $tree.xhr.abort();
+                    if (tree.xhr) {
+                        tree.xhr.abort();
                     }
-                    $tree.xhr = $.ajax(ajaxOptions).done(gj.tree.plugins.lazyLoading.private.createDoneHandler($tree, $node)).fail($tree.createErrorHandler());
+                    tree.xhr = $.ajax(ajaxOptions).done(gj.tree.plugins.lazyLoading.private.createDoneHandler(tree, node)).fail(tree.createErrorHandler());
                 }
             }
         }
@@ -88,13 +89,13 @@ gj.tree.plugins.lazyLoading = {
 
     events: {},
 
-    configure: function ($tree, fullConfig, clientConfig) {
+    configure: function (tree, fullConfig, clientConfig) {
         if (clientConfig.lazyLoading) {
-            $tree.on('nodeDataBound', function (e, $node, id, record) {
-                gj.tree.plugins.lazyLoading.private.nodeDataBound($tree, $node, id, record);
+            tree.on('nodeDataBound', function (e) {
+                gj.tree.plugins.lazyLoading.private.nodeDataBound(tree, e.detail.node, e.detail.id, e.detail.record);
             });
-            $tree.on('expand', function (e, $node, id) {
-                gj.tree.plugins.lazyLoading.private.expand($tree, $node, id);
+            tree.on('expand', function (e) {
+                gj.tree.plugins.lazyLoading.private.expand(tree, e.detail.node, e.detail.id);
             });
         }
     }

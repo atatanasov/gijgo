@@ -33,7 +33,7 @@ GijgoTree = function (element, jsConfig) {
      *         dataSource: '/Locations/Get'
      *     });
      *     function Search() {
-     *         tree.reload({ query: $('#query').val() });
+     *         tree.reload({ query: document.getElementById('query').value });
      *     }
      * </script>
      */
@@ -138,8 +138,8 @@ GijgoTree = function (element, jsConfig) {
      *     }
      * </script>
      */
-    self.addNode = function (data, $parentNode, position) {
-        return methods.addNode(this, data, $parentNode, position);
+    self.addNode = function (data, parentNode, position) {
+        return methods.addNode(this, data, parentNode, position);
     };
 
     /**
@@ -161,8 +161,8 @@ GijgoTree = function (element, jsConfig) {
      *     }
      * </script>
      */
-    self.removeNode = function ($node) {
-        return methods.remove(this, $node);
+    self.removeNode = function (node) {
+        return methods.remove(this, node);
     };
 
     /**
@@ -182,12 +182,12 @@ GijgoTree = function (element, jsConfig) {
      *         dataSource: '/Locations/Get'
      *     });
      *     tree.on('select', function (e, node, id) {
-     *         $('#nodeName').val(tree.getDataById(id).text);
+     *         document.getElementById('nodeName').value = tree.getDataById(id).text;
      *     });
      *     function save() {
      *         var id = tree.getSelections()[0],
      *             record = tree.getDataById(id);
-     *         record.text = $('#nodeName').val();
+     *         record.text = document.getElementById('nodeName').value;
      *         tree.updateNode(id, record);
      *     }
      * </script>
@@ -252,8 +252,8 @@ GijgoTree = function (element, jsConfig) {
      *     }
      * </script>
      */
-    self.expand = function ($node, cascade) {
-        return methods.expand(this, $node, cascade);
+    self.expand = function (node, cascade) {
+        return methods.expand(this, node, cascade);
     };
 
     /**
@@ -294,8 +294,8 @@ GijgoTree = function (element, jsConfig) {
      *     }
      * </script>
      */
-    self.collapse = function ($node, cascade) {
-        return methods.collapse(this, $node, cascade);
+    self.collapse = function (node, cascade) {
+        return methods.collapse(this, node, cascade);
     };
 
     /**
@@ -346,7 +346,7 @@ GijgoTree = function (element, jsConfig) {
      *         dataSource: '/Locations/Get',
      *         primaryKey: 'id' //define the name of the column that you want to use as ID here.
      *     });
-     *     $('#btnGetData').on('click', function () {
+     *     document.getElementById('#tnGetData').addEventListener('click', function () {
      *         var data = tree.getDataById(9);
      *         alert('The population of ' + data.text + ' is ' + data.population);
      *     });
@@ -369,7 +369,7 @@ GijgoTree = function (element, jsConfig) {
      *     var tree = new GijgoTree(document.getElementById('tree'), {
      *         dataSource: '/Locations/Get',
      *     });
-     *     $('#btnGetData').on('click', function () {
+     *     document.getElementById('btnGetData').addEventListener('click', function () {
      *         var data = tree.getDataByText('California');
      *         alert('The population of California is ' + data.population);
      *     });
@@ -464,8 +464,8 @@ GijgoTree = function (element, jsConfig) {
      *     });
      * </script>
      */
-    self.select = function ($node) {
-        return methods.select(this, $node);
+    self.select = function (node) {
+        return methods.select(this, node);
     };
 
     /**
@@ -491,8 +491,8 @@ GijgoTree = function (element, jsConfig) {
      *     });
      * </script>
      */
-    self.unselect = function ($node) {
-        return methods.unselect(this, $node);
+    self.unselect = function (node) {
+        return methods.unselect(this, node);
     };
 
     /**
@@ -551,7 +551,7 @@ GijgoTree = function (element, jsConfig) {
      *     var tree = new GijgoTree(document.getElementById('tree'), {
      *         selectionType: 'multiple'
      *     });
-     *     $('#btnShowSelection').on('click', function () {
+     *     document.getElementById('#btnShowSelection').addEventListener('click', function () {
      *         var selections = tree.getSelections();
      *         selections && selections.length && alert(selections.join());
      *     });
@@ -592,8 +592,8 @@ GijgoTree = function (element, jsConfig) {
      *     });
      * </script>
      */
-    self.getChildren = function ($node, cascade) {
-        return methods.getChildren(this, $node, cascade);
+    self.getChildren = function (node, cascade) {
+        return methods.getChildren(this, node, cascade);
     };
 
     /**
@@ -607,9 +607,9 @@ GijgoTree = function (element, jsConfig) {
      * <script>
      *     var tree = new GijgoTree(document.getElementById('tree'), {
      *         dataSource: '/Locations/Get',
-     *         select: function (e, node, id) {
-     *             var parents = tree.parents(id);
-     *             $('#location').text(parents.join(' / ') + ' / ' + tree.getDataById(id).text);
+     *         select: function (e) {
+     *             var parents = tree.parents(e.detail.id);
+     *             document.getElementById('location').innerHTML = parents.join(' / ') + ' / ' + tree.getDataById(e.detail.id).text;
      *         }
      *     });
      * </script>
@@ -681,8 +681,8 @@ GijgoTree = function (element, jsConfig) {
      *     });
      * </script>
      */
-    self.enable = function ($node, cascade) {
-        return methods.enableNode(this, $node, cascade);
+    self.enable = function (node, cascade) {
+        return methods.enableNode(this, node, cascade);
     };
 
     /**
@@ -728,8 +728,8 @@ GijgoTree = function (element, jsConfig) {
      *     });
      * </script>
      */
-    self.disable = function ($node, cascade) {
-        return methods.disableNode(this, $node, cascade);
+    self.disable = function (node, cascade) {
+        return methods.disableNode(this, node, cascade);
     };
 
     /**

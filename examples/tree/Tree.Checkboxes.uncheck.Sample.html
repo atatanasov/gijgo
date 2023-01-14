@@ -16,7 +16,7 @@
  <br/>
  <div id="tree" data-source="/Locations/Get"></div>
  <script>
-     var tree = new GijgoTree(document.getElementById('tree'), {
+     let tree = new GijgoTree(document.getElementById('tree'), {
          checkboxes: true
      });
      tree.on('dataBound', function() {

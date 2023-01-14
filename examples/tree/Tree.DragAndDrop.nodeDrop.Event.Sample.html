@@ -14,9 +14,9 @@
 <body style="padding: 8px;">
  <div id="tree" data-source="/Locations/Get" data-drag-and-drop="true"></div>
  <script>
-     var tree = new GijgoTree(document.getElementById('tree'), );
+     let tree = new GijgoTree(document.getElementById('tree'), );
      tree.on('nodeDrop', function (e, id, parentId, orderNumber) {
-         var node = tree.getDataById(id),
+         let node = tree.getDataById(id),
              parent = parentId ? tree.getDataById(parentId) : {};
          if (parent.text === 'North America') {
              alert('Can\'t add children to North America.');

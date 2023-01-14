@@ -72,218 +72,228 @@ gj.tree.plugins.dragAndDrop = {
 	},
 
 	private: {
-	    nodeDataBound: function ($tree, $node) {
-	        var $wrapper = $node.children('[data-role="wrapper"]'),
-    	        $display = $node.find('>[data-role="wrapper"]>[data-role="display"]');
-            if ($wrapper.length && $display.length) {
-                $display.on('mousedown', gj.tree.plugins.dragAndDrop.private.createNodeMouseDownHandler($tree));
-                $display.on('mousemove', gj.tree.plugins.dragAndDrop.private.createNodeMouseMoveHandler($tree, $node, $display));
-                $display.on('mouseup', gj.tree.plugins.dragAndDrop.private.createNodeMouseUpHandler($tree));
+	    nodeDataBound: function (tree, node) {
+	        let wrapper = node.querySelector('>[data-gj-role="wrapper"]'),
+    	        display = node.querySelector('>[data-gj-role="wrapper"]>[data-gj-role="display"]');
+            if (wrapper && display) {
+                display.addEventListener('mousedown', gj.tree.plugins.dragAndDrop.private.createNodeMouseDownHandler(tree));
+                display.addEventListener('mousemove', gj.tree.plugins.dragAndDrop.private.createNodeMouseMoveHandler(tree, node, display));
+                display.addEventListener('mouseup', gj.tree.plugins.dragAndDrop.private.createNodeMouseUpHandler(tree));
 		    }
         },
 
-        createNodeMouseDownHandler: function ($tree) {
+        createNodeMouseDownHandler: function (tree) {
             return function (e) {
-                $tree.data('dragReady', true);
+                tree.element.setAttribute('data-gj-drag-ready', true);
             }
         },
 
-        createNodeMouseUpHandler: function ($tree) {
+        createNodeMouseUpHandler: function (tree) {
             return function (e) {
-                $tree.data('dragReady', false);
+                tree.element.setAttribute('data-gj-drag-ready', false);
             }
         },
 
-	    createNodeMouseMoveHandler: function ($tree, $node, $display) {
+	    createNodeMouseMoveHandler: function (tree, node, display) {
             return function (e) {
-                if ($tree.data('dragReady')) {
-                    var data = tree.getConfig(), $dragEl, $wrapper, offsetTop, offsetLeft;
+                if (tree.element.getAttribute('data-gj-drag-ready') === 'true') {
+                    let data = tree.getConfig(), dragEl, wrapper, ul, li, offsetTop, offsetLeft;
 
-                    $tree.data('dragReady', false);
-                    $dragEl = $display.clone().wrap('<div data-role="wrapper"/>').closest('div')
-                        .wrap('<li class="' + data.style.item + '" />').closest('li')
-                        .wrap('<ul class="' + data.style.list + '" />').closest('ul');
-                    $('body').append($dragEl);
-                    $dragEl.attr('data-role', 'draggable-clone').addClass('gj-unselectable').addClass(data.style.dragEl);
-                    $dragEl.find('[data-role="wrapper"]').prepend('<span data-role="indicator" />');
-                    $dragEl.draggable({
-                        drag: gj.tree.plugins.dragAndDrop.private.createDragHandler($tree, $node, $display),
-                        stop: gj.tree.plugins.dragAndDrop.private.createDragStopHandler($tree, $node, $display)
+                    tree.element.setAttribute('data-gj-drag-ready', false);
+                    dragEl = display.cloneNode();
+                    dragEl.setAttribute('data-gj-role', 'draggable-clone');
+                    dragEl.classList.add('gj-unselectable');
+                    gj.core.addClasses(dragEl, data.style.dragEl);
+                    wrapper = gj.core.wrap(dragEl, 'div');
+
+                    ul = document.createElement('ul');
+                    gj.core.addClasses(ul, data.style.list);
+                    wrapper.appendChild(ul);
+
+                    li = document.createElement('li');
+                    gj.core.addClasses(li, data.style.item);
+                    ul.appendChild(li);
+                    document.body.appendChild(dragEl);
+
+                    dragEl.find('[data-gj-role="wrapper"]').prepend('<span data-gj-role="indicator" />');
+                    new GijgoDraggable(dragEl, {
+                        drag: gj.tree.plugins.dragAndDrop.private.createDragHandler(tree, node, display),
+                        stop: gj.tree.plugins.dragAndDrop.private.createDragStopHandler(tree, node, display)
                     });
-                    $wrapper = $display.parent();
-                    offsetTop = $display.offset().top;
-                    offsetTop -= parseInt($wrapper.css("border-top-width")) + parseInt($wrapper.css("margin-top")) + parseInt($wrapper.css("padding-top"));
-                    offsetLeft = $display.offset().left;
-                    offsetLeft -= parseInt($wrapper.css("border-left-width")) + parseInt($wrapper.css("margin-left")) + parseInt($wrapper.css("padding-left"));
-                    offsetLeft -= $dragEl.find('[data-role="indicator"]').outerWidth(true);
-                    $dragEl.css({
-                        position: 'absolute', top: offsetTop, left: offsetLeft, width: $display.outerWidth(true)
+                    wrapper = display.parent();
+                    offsetTop = display.offset().top;
+                    offsetTop -= parseInt(wrapper.css("border-top-width")) + parseInt(wrapper.css("margin-top")) + parseInt(wrapper.css("padding-top"));
+                    offsetLeft = display.offset().left;
+                    offsetLeft -= parseInt(wrapper.css("border-left-width")) + parseInt(wrapper.css("margin-left")) + parseInt(wrapper.css("padding-left"));
+                    offsetLeft -= dragEl.find('[data-gj-role="indicator"]').outerWidth(true);
+                    dragEl.css({
+                        position: 'absolute', top: offsetTop, left: offsetLeft, width: display.outerWidth(true)
                     });
-                    if ($display.attr('data-droppable') === 'true') {
-                        $display.droppable('destroy');
+                    if (display.attr('data-droppable') === 'true') {
+                        display.droppable('destroy');
                     }
-                    gj.tree.plugins.dragAndDrop.private.getTargetDisplays($tree, $node, $display).each(function () {
-                        var $dropEl = $(this);
-                        if ($dropEl.attr('data-droppable') === 'true') {
-                            $dropEl.droppable('destroy');
+                    gj.tree.plugins.dragAndDrop.private.getTargetDisplays(tree, node, display).each(function () {
+                        let dropEl = (this);
+                        if (dropEl.attr('data-droppable') === 'true') {
+                            dropEl.droppable('destroy');
                         }
-                        $dropEl.droppable();
+                        dropEl.droppable();
                     });
-                    gj.tree.plugins.dragAndDrop.private.getTargetDisplays($tree, $node).each(function () {
-                        var $dropEl = $(this);
-                        if ($dropEl.attr('data-droppable') === 'true') {
-                            $dropEl.droppable('destroy');
+                    gj.tree.plugins.dragAndDrop.private.getTargetDisplays(tree, node).each(function () {
+                        let dropEl = (this);
+                        if (dropEl.attr('data-droppable') === 'true') {
+                            dropEl.droppable('destroy');
                         }
-                        $dropEl.droppable();
+                        dropEl.droppable();
                     });
-                    $dragEl.trigger('mousedown');
+                    dragEl.trigger('mousedown');
                 }
 		    };
 	    },
 
-	    getTargetDisplays: function ($tree, $node, $display) {
-	        return $tree.find('[data-role="display"]').not($display).not($node.find('[data-role="display"]'));
+	    getTargetDisplays: function (tree, node, display) {
+	        return tree.find('[data-gj-role="display"]').not(display).not(node.find('[data-gj-role="display"]'));
 	    },
 
-	    getTargetWrappers: function ($tree, $node) {
-	        return $tree.find('[data-role="wrapper"]').not($node.find('[data-role="wrapper"]'));
+	    getTargetWrappers: function (tree, node) {
+	        return tree.find('[data-gj-role="wrapper"]').not(node.find('[data-gj-role="wrapper"]'));
 	    },
 
-	    createDragHandler: function ($tree, $node, $display) {
-	        var $displays = gj.tree.plugins.dragAndDrop.private.getTargetDisplays($tree, $node, $display),
-                $wrappers = gj.tree.plugins.dragAndDrop.private.getTargetWrappers($tree, $node),
+	    createDragHandler: function (tree, node, display) {
+	        let displays = gj.tree.plugins.dragAndDrop.private.getTargetDisplays(tree, node, display),
+                wrappers = gj.tree.plugins.dragAndDrop.private.getTargetWrappers(tree, node),
 	            data = tree.getConfig();
 	        return function (e, offset, mousePosition) {
-	            var $dragEl = $(this), success = false;
-	            $displays.each(function () {
-	                var $targetDisplay = $(this),
-	                    $indicator;
-	                if ($targetDisplay.droppable('isOver', mousePosition)) {
-	                    $indicator = $dragEl.find('[data-role="indicator"]');
-	                    data.style.dropAsChildIcon ? $indicator.addClass(data.style.dropAsChildIcon) : $indicator.text('+');
+	            let dragEl = (this), success = false;
+	            displays.each(function () {
+	                let targetDisplay = (this),
+	                    indicator;
+	                if (targetDisplay.droppable('isOver', mousePosition)) {
+	                    indicator = dragEl.find('[data-gj-role="indicator"]');
+	                    data.style.dropAsChildIcon ? indicator.addClass(data.style.dropAsChildIcon) : indicator.text('+');
 	                    success = true;
 	                    return false;
 	                } else {
-	                    $dragEl.find('[data-role="indicator"]').removeClass(data.style.dropAsChildIcon).empty();
+	                    dragEl.find('[data-gj-role="indicator"]').removeClass(data.style.dropAsChildIcon).empty();
                     }
 	            });
-	            $wrappers.each(function () {
-	                var $wrapper = $(this),
-                        $indicator, middle;
-	                if (!success && $wrapper.droppable('isOver', mousePosition)) {
-	                    middle = $wrapper.position().top + ($wrapper.outerHeight() / 2);
+	            wrappers.each(function () {
+	                let wrapper = (this),
+                        indicator, middle;
+	                if (!success && wrapper.droppable('isOver', mousePosition)) {
+	                    middle = wrapper.position().top + (wrapper.outerHeight() / 2);
 	                    if (mousePosition.y < middle) {
-	                        $wrapper.addClass(data.style.dropAbove).removeClass(data.style.dropBelow);
+	                        wrapper.addClass(data.style.dropAbove).removeClass(data.style.dropBelow);
 	                    } else {
-	                        $wrapper.addClass(data.style.dropBelow).removeClass(data.style.dropAbove);
+	                        wrapper.addClass(data.style.dropBelow).removeClass(data.style.dropAbove);
 	                    }
 	                } else {
-	                    $wrapper.removeClass(data.style.dropAbove).removeClass(data.style.dropBelow);
+	                    wrapper.removeClass(data.style.dropAbove).removeClass(data.style.dropBelow);
 	                }
 	            });
 	        };
         },
 
-	    createDragStopHandler: function ($tree, $sourceNode, $sourceDisplay) {
-	        var $displays = gj.tree.plugins.dragAndDrop.private.getTargetDisplays($tree, $sourceNode, $sourceDisplay),
-                $wrappers = gj.tree.plugins.dragAndDrop.private.getTargetWrappers($tree, $sourceNode),
+	    createDragStopHandler: function (tree, sourceNode, sourceDisplay) {
+	        let displays = gj.tree.plugins.dragAndDrop.private.getTargetDisplays(tree, sourceNode, sourceDisplay),
+                wrappers = gj.tree.plugins.dragAndDrop.private.getTargetWrappers(tree, sourceNode),
 	            data = tree.getConfig();
 	        return function (e, mousePosition) {
-                var success = false, record, $targetNode, $sourceParentNode, parent;
-	            $(this).draggable('destroy').remove();
-	            $displays.each(function () {
-	                var $targetDisplay = $(this), $ul;
-	                if ($targetDisplay.droppable('isOver', mousePosition)) {
-	                    $targetNode = $targetDisplay.closest('li');
-	                    $sourceParentNode = $sourceNode.parent('ul').parent('li');
-	                    $ul = $targetNode.children('ul');
-	                    if ($ul.length === 0) {
-	                        $ul = $('<ul />').addClass(data.style.list);
-	                        $targetNode.append($ul);
+                let success = false, record, targetNode, sourceParentNode, parent;
+	            (this).draggable('destroy').remove();
+	            displays.each(function () {
+	                let targetDisplay = (this), ul;
+	                if (targetDisplay.droppable('isOver', mousePosition)) {
+	                    targetNode = targetDisplay.closest('li');
+	                    sourceParentNode = sourceNode.parent('ul').parent('li');
+	                    ul = targetNode.children('ul');
+	                    if (ul.length === 0) {
+	                        ul = ('<ul />').addClass(data.style.list);
+	                        targetNode.append(ul);
 	                    }
-	                    if (gj.tree.plugins.dragAndDrop.events.nodeDrop($tree, $sourceNode.data('id'), $targetNode.data('id'), $ul.children('li').length + 1) !== false) {
-                            $ul.append($sourceNode);
+	                    if (gj.tree.plugins.dragAndDrop.events.nodeDrop(tree, sourceNode.data('id'), targetNode.data('id'), ul.children('li').length + 1) !== false) {
+                            ul.append(sourceNode);
 
                             //BEGIN: Change node position inside the backend data
-                            record = $tree.getDataById($sourceNode.data('id'));
-                            gj.tree.methods.removeDataById($tree, $sourceNode.data('id'), data.records);
-                            parent = $tree.getDataById($ul.parent().data('id'));
+                            record = tree.getDataById(sourceNode.data('id'));
+                            gj.tree.methods.removeDataById(tree, sourceNode.data('id'), data.records);
+                            parent = tree.getDataById(ul.parent().data('id'));
                             if (parent[data.childrenField] === undefined) {
                                 parent[data.childrenField] = [];
                             }
                             parent[data.childrenField].push(record);
                             //END
 
-	                        gj.tree.plugins.dragAndDrop.private.refresh($tree, $sourceNode, $targetNode, $sourceParentNode);
+	                        gj.tree.plugins.dragAndDrop.private.refresh(tree, sourceNode, targetNode, sourceParentNode);
 	                    }
 	                    success = true;
 	                    return false;
 	                }
-	                $targetDisplay.droppable('destroy');
+	                targetDisplay.droppable('destroy');
 	            });
 	            if (!success) {
-	                $wrappers.each(function () {
-	                    var $targetWrapper = $(this), prepend, orderNumber, sourceNodeId;
-	                    if ($targetWrapper.droppable('isOver', mousePosition)) {
-	                        $targetNode = $targetWrapper.closest('li');
-	                        $sourceParentNode = $sourceNode.parent('ul').parent('li');
-	                        prepend = mousePosition.y < ($targetWrapper.position().top + ($targetWrapper.outerHeight() / 2));
-	                        sourceNodeId = $sourceNode.data('id');
-	                        orderNumber = $targetNode.prevAll('li:not([data-id="' + sourceNodeId + '"])').length + (prepend ? 1 : 2);
-                            if (gj.tree.plugins.dragAndDrop.events.nodeDrop($tree, sourceNodeId, $targetNode.parent('ul').parent('li').data('id'), orderNumber) !== false) {
+	                wrappers.each(function () {
+	                    let targetWrapper = (this), prepend, orderNumber, sourceNodeId;
+	                    if (targetWrapper.droppable('isOver', mousePosition)) {
+	                        targetNode = targetWrapper.closest('li');
+	                        sourceParentNode = sourceNode.parent('ul').parent('li');
+	                        prepend = mousePosition.y < (targetWrapper.position().top + (targetWrapper.outerHeight() / 2));
+	                        sourceNodeId = sourceNode.data('id');
+	                        orderNumber = targetNode.prevAll('li:not([data-id="' + sourceNodeId + '"])').length + (prepend ? 1 : 2);
+                            if (gj.tree.plugins.dragAndDrop.events.nodeDrop(tree, sourceNodeId, targetNode.parent('ul').parent('li').data('id'), orderNumber) !== false) {
                                 //BEGIN: Change node position inside the backend data
-                                record = $tree.getDataById($sourceNode.data('id'));
-                                gj.tree.methods.removeDataById($tree, $sourceNode.data('id'), data.records);
-                                $tree.getDataById($targetNode.parent().data('id'))[data.childrenField].splice($targetNode.index() + (prepend ? 0 : 1), 0, record);
+                                record = tree.getDataById(sourceNode.data('id'));
+                                gj.tree.methods.removeDataById(tree, sourceNode.data('id'), data.records);
+                                tree.getDataById(targetNode.parent().data('id'))[data.childrenField].splice(targetNode.index() + (prepend ? 0 : 1), 0, record);
                                 //END
 
 	                            if (prepend) {
-                                    $sourceNode.insertBefore($targetNode);
+                                    sourceNode.insertBefore(targetNode);
 	                            } else {
-	                                $sourceNode.insertAfter($targetNode);
+	                                sourceNode.insertAfter(targetNode);
                                 }
 
-                                gj.tree.plugins.dragAndDrop.private.refresh($tree, $sourceNode, $targetNode, $sourceParentNode);
+                                gj.tree.plugins.dragAndDrop.private.refresh(tree, sourceNode, targetNode, sourceParentNode);
 	                        }
 	                        return false;
 	                    }
-	                    $targetWrapper.droppable('destroy');
+	                    targetWrapper.droppable('destroy');
 	                });
                 }
 	        }
 	    },
 
-	    refresh: function ($tree, $sourceNode, $targetNode, $sourceParentNode) {
-	        var data = tree.getConfig();
-	        gj.tree.plugins.dragAndDrop.private.refreshNode($tree, $targetNode);
-	        gj.tree.plugins.dragAndDrop.private.refreshNode($tree, $sourceParentNode);
-	        gj.tree.plugins.dragAndDrop.private.refreshNode($tree, $sourceNode);
-	        $sourceNode.find('li[data-role="node"]').each(function () {
-	            gj.tree.plugins.dragAndDrop.private.refreshNode($tree, $(this));
+	    refresh: function (tree, sourceNode, targetNode, sourceParentNode) {
+	        let data = tree.getConfig();
+	        gj.tree.plugins.dragAndDrop.private.refreshNode(tree, targetNode);
+	        gj.tree.plugins.dragAndDrop.private.refreshNode(tree, sourceParentNode);
+	        gj.tree.plugins.dragAndDrop.private.refreshNode(tree, sourceNode);
+	        sourceNode.find('li[data-gj-role="node"]').each(function () {
+	            gj.tree.plugins.dragAndDrop.private.refreshNode(tree, (this));
 	        });
-	        $targetNode.children('[data-role="wrapper"]').removeClass(data.style.dropAbove).removeClass(data.style.dropBelow);
+	        targetNode.children('[data-gj-role="wrapper"]').removeClass(data.style.dropAbove).removeClass(data.style.dropBelow);
         },
 
-	    refreshNode: function ($tree, $node) {
-	        var $wrapper = $node.children('[data-role="wrapper"]'),
-	            $expander = $wrapper.children('[data-role="expander"]'),
-	            $spacer = $wrapper.children('[data-role="spacer"]'),
-	            $list = $node.children('ul'),
+	    refreshNode: function (tree, node) {
+	        let wrapper = node.children('[data-gj-role="wrapper"]'),
+	            expander = wrapper.children('[data-gj-role="expander"]'),
+	            spacer = wrapper.children('[data-gj-role="spacer"]'),
+	            list = node.children('ul'),
                 data = tree.getConfig(),
-	            level = $node.parentsUntil('[data-type="tree"]', 'ul').length;
+	            level = node.parentsUntil('[data-type="tree"]', 'ul').length;
 
-	        if ($list.length && $list.children().length) {
-	            if ($list.is(':visible')) {
-	                $expander.empty().append(data.icons.collapse);
+	        if (list.length && list.children().length) {
+	            if (list.is(':visible')) {
+	                expander.empty().append(data.icons.collapse);
 	            } else {
-	                $expander.empty().append(data.icons.expand);
+	                expander.empty().append(data.icons.expand);
 	            }
 	        } else {
-	            $expander.empty();
+	            expander.empty();
 	        }
-	        $wrapper.removeClass(data.style.dropAbove).removeClass(data.style.dropBelow);
+	        wrapper.removeClass(data.style.dropAbove).removeClass(data.style.dropBelow);
 
-	        $spacer.css('width', (data.indentation * (level - 1)));
+	        spacer.css('width', (data.indentation * (level - 1)));
 	    }
 	},
 
@@ -301,9 +311,9 @@ gj.tree.plugins.dragAndDrop = {
          * @example Event.Sample <!-- draggable, droppable, tree -->
          * <div id="tree" data-source="/Locations/Get" data-drag-and-drop="true"></div>
          * <script>
-         *     var tree = new GijgoTree(document.getElementById('tree'), );
+         *     let tree = new GijgoTree(document.getElementById('tree'), );
          *     tree.on('nodeDrop', function (e, id, parentId, orderNumber) {
-         *         var node = tree.getDataById(id),
+         *         let node = tree.getDataById(id),
          *             parent = parentId ? tree.getDataById(parentId) : {};
          *         if (parent.text === 'North America') {
          *             alert('Can\'t add children to North America.');
@@ -315,16 +325,16 @@ gj.tree.plugins.dragAndDrop = {
          *     });
          * </script>
          */
-	    nodeDrop: function ($tree, id, parentId, orderNumber) {
-	        return $tree.triggerHandler('nodeDrop', [id, parentId, orderNumber]);
+	    nodeDrop: function (tree, id, parentId, orderNumber) {
+	        return tree.triggerHandler('nodeDrop', [id, parentId, orderNumber]);
         }
     },
 
-	configure: function ($tree) {
-		$.extend(true, $tree, gj.tree.plugins.dragAndDrop.public);
-		if ($tree.data('dragAndDrop') && gj.draggable && gj.droppable) {
-			$tree.on('nodeDataBound', function (e, $node) {
-				gj.tree.plugins.dragAndDrop.private.nodeDataBound($tree, $node);
+	configure: function (tree) {
+		tree.extend(tree, gj.tree.plugins.dragAndDrop.public);
+		if (tree.data('dragAndDrop') && gj.draggable && gj.droppable) {
+			tree.on('nodeDataBound', function (e, node) {
+				gj.tree.plugins.dragAndDrop.private.nodeDataBound(tree, node);
 			});
 		}
 	}

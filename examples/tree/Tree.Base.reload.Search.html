@@ -18,7 +18,7 @@
          dataSource: '/Locations/Get'
      });
      function Search() {
-         tree.reload({ query: $('#query').val() });
+         tree.reload({ query: document.getElementById('query').value });
      }
  </script>
 </body>

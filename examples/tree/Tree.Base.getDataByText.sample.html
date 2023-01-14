@@ -17,7 +17,7 @@
      var tree = new GijgoTree(document.getElementById('tree'), {
          dataSource: '/Locations/Get',
      });
-     $('#btnGetData').on('click', function () {
+     document.getElementById('btnGetData').addEventListener('click', function () {
          var data = tree.getDataByText('California');
          alert('The population of California is ' + data.population);
      });
