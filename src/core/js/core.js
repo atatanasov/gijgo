@@ -1,4 +1,4 @@
-﻿var gj = {};
+﻿let gj = {};
 
 /**
   * @widget Core
@@ -59,7 +59,7 @@
      * </script>
      */
     parseDate: function (value, format, locale) {
-        var i, year = 0, month = 0, date = 1, hour = 0, minute = 0, mode = null, dateParts, formatParts, result;
+        let i, year = 0, month = 0, date = 1, hour = 0, minute = 0, mode = null, dateParts, formatParts, result;
 
         if (value && typeof value === 'string') {
             if (/^\d+$/.test(value)) {
@@ -159,7 +159,7 @@
      * </script>
      */
     formatDate: function (date, format, locale) {
-        var result = '', separator, tmp,
+        let result = '', separator, tmp,
             formatParts = format.split(/[\s,-\.//\:]+/),
             separators = format.split(/s+|M+|H+|h+|t+|T+|d+|m+|y+/);
 
@@ -248,7 +248,7 @@
     },
 
     center: function (element) {
-        var left, top;
+        let left, top;
         element.style.position = 'absolute';
         left = (window.innerWidth / 2) - (gj.core.width(element, true) / 2),
         top = (window.innerHeight / 2) - (gj.core.height(element, true) / 2);
@@ -261,7 +261,7 @@
     },
 
     setChildPosition: function (mainEl, childEl) {
-        var mainElRect = mainEl.getBoundingClientRect(),
+        let mainElRect = mainEl.getBoundingClientRect(),
             mainElHeight = gj.core.height(mainEl, true),
             childElHeight = gj.core.height(childEl, true),
             mainElWidth = gj.core.width(mainEl, true),
@@ -283,7 +283,7 @@
     },
 
     height: function (el, margin) {
-        var result, style = window.getComputedStyle(el);
+        let result, style = window.getComputedStyle(el);
 
         if (style.boxSizing === 'border-box') { // border-box include padding and border within the height
             result = parseInt(style.height, 10);
@@ -305,7 +305,7 @@
     },
 
     width: function (el, margin) {
-        var result, style = window.getComputedStyle(el);
+        let result, style = window.getComputedStyle(el);
 
         if (style.boxSizing === 'border-box') { // border-box include padding and border within the width
             result = parseInt(style.width, 10);
@@ -323,33 +323,35 @@
     },
 
     addClasses: function (el, classes) {
-        var i, arr;
+        let i, arr;
         if (classes) {
             arr = classes.split(' ');
             for (i = 0; i < arr.length; i++) {
                 el.classList.add(arr[i]);
             }
         }
+        return el;
     },
 
     removeClasses: function (el, classes) {
-        var i, arr;
+        let i, arr;
         if (classes) {
             arr = classes.split(' ');
             for (i = 0; i < arr.length; i++) {
                 el.classList.remove(arr[i]);
             }
         }
+        return el;
     },
 
     createElement: function (htmlString) {
-        var div = document.createElement('div');
+        let div = document.createElement('div');
         div.innerHTML = htmlString.trim();
         return div.firstChild;
     },
 
     position: function (el) {
-        var xScroll, yScroll, left = 0, top = 0,
+        let xScroll, yScroll, left = 0, top = 0,
             height = gj.core.height(el),
             width = gj.core.width(el);
 
@@ -371,12 +373,12 @@
     },
 
     setCaretAtEnd: function (elem) {
-        var elemLen;
+        let elemLen;
         if (elem) {
             elemLen = elem.value.length;
             if (document.selection) { // For IE Only
                 elem.focus();
-                var oSel = document.selection.createRange();
+                let oSel = document.selection.createRange();
                 oSel.moveStart('character', -elemLen);
                 oSel.moveStart('character', elemLen);
                 oSel.moveEnd('character', 0);
@@ -400,8 +402,8 @@
     },
     
     extend: function () {
-        for (var i = 1; i < arguments.length; i++) {
-            for (var key in arguments[i]) {
+        for (let i = 1; i < arguments.length; i++) {
+            for (let key in arguments[i]) {
                 if (arguments[i].hasOwnProperty(key)) {
                     if (typeof arguments[0][key] === 'object') {
                         arguments[0][key] = gj.core.extend(arguments[0][key], arguments[i][key]);
@@ -435,7 +437,7 @@ window.gijgoStorage = {
         return this._storage.get(el).has(key);
     },
     remove: function (el, key) {
-        var ret = this._storage.get(el).delete(key);
+        let ret = this._storage.get(el).delete(key);
         if (this._storage.get(key) && !this._storage.get(key).size === 0) {
             this._storage.delete(el);
         }
@@ -444,7 +446,7 @@ window.gijgoStorage = {
 };
 
 gj.widget = function () {
-    var self = this;
+    let self = this;
 
     self.xhr = null;
 
@@ -559,7 +561,7 @@ gj.widget = function () {
 };
 
 gj.widget.prototype.init = function (jsConfig) {
-    var option, clientConfig, fullConfig, type = this.type;
+    let option, clientConfig, fullConfig, type = this.type;
 
     clientConfig = this.extend({}, this.readHTMLConfig() || {});
     this.extend(clientConfig, jsConfig || {});
@@ -586,7 +588,7 @@ gj.widget.prototype.init = function (jsConfig) {
 };
 
 gj.widget.prototype.readConfig = function (clientConfig, type) {
-    var config, uiLibrary, iconsLibrary, plugin, type = this.type;
+    let config, uiLibrary, iconsLibrary, plugin, type = this.type;
 
     config = this.extend({}, gj[type].config.base);
 
@@ -622,7 +624,7 @@ gj.widget.prototype.readConfig = function (clientConfig, type) {
 };
 
 gj.widget.prototype.readHTMLConfig = function () {
-    var result = {},
+    let result = {},
         attrs = this.element.attributes;
     if (attrs['width']) {
         result.width = attrs['width'].value;
@@ -639,7 +641,7 @@ gj.widget.prototype.readHTMLConfig = function () {
     if (attrs['placeholder']) {
         result.placeholder = attrs['placeholder'].value;
     }
-    for (var dataEl in this.element.dataset) {
+    for (let dataEl in this.element.dataset) {
         if (dataEl.startsWith('gj')) {
             result[dataEl.charAt(2).toLowerCase() + dataEl.slice(3)] = this.element.dataset[dataEl];
         }
@@ -652,7 +654,7 @@ gj.widget.prototype.readHTMLConfig = function () {
 };
 
 gj.widget.prototype.createDoneHandler = function () {
-    var widget = this;
+    let widget = this;
     return function (e) {
         let response = this.response;
         if (typeof (response) === 'string' && JSON) {
@@ -671,7 +673,7 @@ gj.widget.prototype.createErrorHandler = function () {
 };
 
 gj.widget.prototype.reload = function (params) {
-    var url, ajaxOptions, result, data = this.getConfig();
+    let url, ajaxOptions, result, data = this.getConfig();
     if (data.dataSource === undefined) {
         gj[this.type].methods.useHtmlDataSource(this, data);
     }
@@ -729,19 +731,19 @@ gj.documentManager = {
     },
 
     executeCallbacks: function (e) {
-        var callbacks = gj.documentManager.events[e.type];
+        let callbacks = gj.documentManager.events[e.type];
         if (callbacks) {
-            for (var i = 0; i < callbacks.length; i++) {
+            for (let i = 0; i < callbacks.length; i++) {
                 callbacks[i].callback(e);
             }
         }
     },
 
     unsubscribeForEvent: function (eventName, widgetId) {
-        var success = false,
+        let success = false,
             events = gj.documentManager.events[eventName];
         if (events) {
-            for (var i = 0; i < events.length; i++) {
+            for (let i = 0; i < events.length; i++) {
                 if (events[i].widgetId === widgetId) {
                     events.splice(i, 1);
                     success = true;

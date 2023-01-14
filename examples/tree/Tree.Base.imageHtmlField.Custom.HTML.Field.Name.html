@@ -13,7 +13,7 @@
 <body style="padding: 8px;">
  <div id="tree"></div>
  <script>
-     var tree = $('#tree').tree({
+     var tree = new GijgoTree(document.getElementById('tree'), {
          imageHtmlField: 'icon',
          dataSource: [ { text: 'folder', icon: '<i class="material-icons">folder</i>', children: [ { text: 'file', icon: '<i class="material-icons">insert_drive_file</i>' } ] } ]
      });

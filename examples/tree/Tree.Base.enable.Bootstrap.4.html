@@ -22,7 +22,7 @@
  <div id="tree" data-source="/Locations/Get"></div>
  <script>
      var tree, northAmerica;
-     tree = $('#tree').tree({
+     tree = new GijgoTree(document.getElementById('tree'), {
          checkboxes: true,
          primaryKey: 'ID',
          uiLibrary: 'bootstrap4',

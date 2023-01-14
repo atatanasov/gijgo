@@ -2,7 +2,7 @@
  * Gijgo Grid v2.0.0-alpha-1
  * http://gijgo.com/grid
  *
- * Copyright 2014, 2018 gijgo.com
+ * Copyright 2014, 2023 gijgo.com
  * Released under the MIT license
  */
 /* global window alert jQuery gj */
@@ -3042,6 +3042,12 @@ gj.grid.plugins.inlineEditing.configure = function (grid, fullConfig, clientConf
             style: {
                 toolbar: 'gj-grid-bootstrap-4-toolbar'
             }
+        },
+
+        bootstrap5: {
+            style: {
+                toolbar: 'gj-grid-bootstrap-5-toolbar'
+            }
         }
     },
 
@@ -3054,7 +3060,6 @@ gj.grid.plugins.inlineEditing.configure = function (grid, fullConfig, clientConf
                 if (!toolbar) {
                     toolbar = document.createElement('div');
                     toolbar.setAttribute('data-gj-role', 'toolbar');
-                    $('<div data-role="toolbar"></div>');
                     grid.element.parentNode.insertBefore(toolbar, grid.element);
                 }
                 gj.core.addClasses(toolbar, data.style.toolbar);
@@ -3083,12 +3088,12 @@ gj.grid.plugins.inlineEditing.configure = function (grid, fullConfig, clientConf
     public: {        
         /**
          * Get or set grid title.         */        title: function (text) {
-            var $titleEl = this.parent().find('div[data-role="toolbar"] [data-role="title"]');
+            var titleEl = this.parentNode.querySelector('div[data-gj-role="toolbar"] [data-gj-role="title"]');
             if (typeof (text) !== 'undefined') {
-                $titleEl.text(text);
+                titleEl.innerHTML = text;
                 return this;
             } else {
-                return $titleEl.text();
+                return titleEl.innerText;
             }
         }
     },
@@ -3099,7 +3104,7 @@ gj.grid.plugins.inlineEditing.configure = function (grid, fullConfig, clientConf
             gj.grid.plugins.toolbar.private.init(grid);
         });
         grid.on('destroying', function () {
-            let el = grid.element.parentNode.querySelector('[data-role="toolbar"]');
+            let el = grid.element.parentNode.querySelector('[data-gj-role="toolbar"]');
             el && el.remove();
         });
     }
@@ -3219,7 +3224,7 @@ gj.grid.plugins.inlineEditing.configure = function (grid, fullConfig, clientConf
                 if (typeof (columnPosition) !== 'undefined') {
                     rows[i].children[columnPosition].addEventListener('mousedown', gj.grid.plugins.rowReorder.private.createRowMouseDownHandler(grid, rows[i]));
                 } else {
-                    rows[i].addEventListener('mousedown', gj.grid.plugins.rowReorder.private.createRowMouseDownHandler(grid, $row));
+                    rows[i].addEventListener('mousedown', gj.grid.plugins.rowReorder.private.createRowMouseDownHandler(grid, rows[i]));
                 }
             }
         },
@@ -3302,29 +3307,29 @@ gj.grid.plugins.inlineEditing.configure = function (grid, fullConfig, clientConf
                             }
                         }
                     }
-                    $trTarget.removeClass('gj-grid-top-border');
-                    $trTarget.removeClass('gj-grid-bottom-border');
+                    $trTarget.classList.remove('gj-grid-top-border');
+                    $trTarget.classList.remove('gj-grid-bottom-border');
                     $trTarget.droppable('destroy');
                 });
             }
         },
 
-        createDroppableOverHandler: function ($trSource) {
+        createDroppableOverHandler: function (trSource) {
             return function (e) {
-                var $trTarget = $(this),
-                    targetPosition = $trTarget.data('position'),
-                    sourcePosition = $trSource.data('position');
+                var trTarget = this,
+                    targetPosition = trTarget.getAttribute('data-gj-position'),
+                    sourcePosition = trSource.getAttribute('data-gj-position');
                 if (targetPosition < sourcePosition) {
-                    $trTarget.addClass('gj-grid-top-border');
+                    trTarget.classList.add('gj-grid-top-border');
                 } else {
-                    $trTarget.addClass('gj-grid-bottom-border');
+                    trTarget.classList.add('gj-grid-bottom-border');
                 }
             };
         },
 
         droppableOut: function () {
-            $(this).removeClass('gj-grid-top-border');
-            $(this).removeClass('gj-grid-bottom-border');
+            this.classList.remove('gj-grid-top-border');
+            this.classList.remove('gj-grid-bottom-border');
         }
     },
 

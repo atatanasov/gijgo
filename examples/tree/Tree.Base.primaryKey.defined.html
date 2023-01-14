@@ -13,7 +13,7 @@
  <p>Select a node to see the key.</p>
  <div id="tree"></div>
  <script>
-     $('#tree').tree({
+     new GijgoTree(document.getElementById('tree'), {
          primaryKey: 'id',
          dataSource: [ { id: 101, text: 'foo', children: [ { id: 202, text: 'bar' } ] } ],
          select: function (e, node, id) {

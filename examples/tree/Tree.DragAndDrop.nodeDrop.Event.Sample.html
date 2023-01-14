@@ -14,7 +14,7 @@
 <body style="padding: 8px;">
  <div id="tree" data-source="/Locations/Get" data-drag-and-drop="true"></div>
  <script>
-     var tree = $('#tree').tree();
+     var tree = new GijgoTree(document.getElementById('tree'), );
      tree.on('nodeDrop', function (e, id, parentId, orderNumber) {
          var node = tree.getDataById(id),
              parent = parentId ? tree.getDataById(parentId) : {};

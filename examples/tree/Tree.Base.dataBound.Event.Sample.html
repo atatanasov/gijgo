@@ -10,9 +10,9 @@
   <script src="../../dist/modular/js/tree.js"></script>
 </head>
 <body style="padding: 8px;">
- <div id="tree"></div>
+ <ul id="tree"></ul>
  <script>
-     $('#tree').tree({
+     new GijgoTree(document.getElementById('tree'), {
          dataSource: '/Locations/Get',
          dataBound: function (e) {
              alert('dataBound is fired.');

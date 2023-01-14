@@ -16,7 +16,7 @@
 <body style="padding: 8px;">
  <div id="tree"></div>
  <script>
-     var tree = $('#tree').tree({
+     var tree = new GijgoTree(document.getElementById('tree'), {
          dataSource: '/Locations/Get',
          width: 500,
          uiLibrary: 'bootstrap4',

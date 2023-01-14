@@ -15,7 +15,7 @@
  <br/>
  <div id="tree" data-source="/Locations/Get"></div>
  <script>
-     var tree = $('#tree').tree({
+     var tree = new GijgoTree(document.getElementById('tree'), {
          selectionType: 'multiple'
      });
      tree.on('dataBound', function() {

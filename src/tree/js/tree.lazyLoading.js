@@ -21,9 +21,9 @@ gj.tree.plugins.lazyLoading = {
               * @type Boolean
               * @default false
               * @example Material.Design <!-- tree -->
-              * <div id="tree"></div>
+              * <ul id="tree"></ul>
               * <script>
-              *     $('#tree').tree({
+              *     new GijgoTree(document.getElementById('tree'), {
               *         dataSource: '/Locations/LazyGet',
               *         primaryKey: 'id',
               *         lazyLoading: true
@@ -36,7 +36,7 @@ gj.tree.plugins.lazyLoading = {
 
     private: {
         nodeDataBound: function ($tree, $node, id, record) {
-            var data = $tree.data(),
+            var data = tree.getConfig(),
                 $expander = $node.find('> [data-role="wrapper"] > [data-role="expander"]');
 
             if (record.hasChildren) {
@@ -46,7 +46,7 @@ gj.tree.plugins.lazyLoading = {
 
         createDoneHandler: function ($tree, $node) {
             return function (response) {
-                var i, $expander, $list, data = $tree.data();
+                var i, $expander, $list, data = tree.getConfig();
                 if (typeof (response) === 'string' && JSON) {
                     response = JSON.parse(response);
                 }
@@ -68,7 +68,7 @@ gj.tree.plugins.lazyLoading = {
         },
 
         expand: function ($tree, $node, id) {
-            var ajaxOptions, data = $tree.data(), params = {},
+            var ajaxOptions, data = tree.getConfig(), params = {},
                 $children = $node.find('>ul>li');
 
             if (!$children || !$children.length) {

@@ -116,7 +116,7 @@ gj.grid.plugins.rowReorder = {
                 if (typeof (columnPosition) !== 'undefined') {
                     rows[i].children[columnPosition].addEventListener('mousedown', gj.grid.plugins.rowReorder.private.createRowMouseDownHandler(grid, rows[i]));
                 } else {
-                    rows[i].addEventListener('mousedown', gj.grid.plugins.rowReorder.private.createRowMouseDownHandler(grid, $row));
+                    rows[i].addEventListener('mousedown', gj.grid.plugins.rowReorder.private.createRowMouseDownHandler(grid, rows[i]));
                 }
             }
         },
@@ -199,29 +199,29 @@ gj.grid.plugins.rowReorder = {
                             }
                         }
                     }
-                    $trTarget.removeClass('gj-grid-top-border');
-                    $trTarget.removeClass('gj-grid-bottom-border');
+                    $trTarget.classList.remove('gj-grid-top-border');
+                    $trTarget.classList.remove('gj-grid-bottom-border');
                     $trTarget.droppable('destroy');
                 });
             }
         },
 
-        createDroppableOverHandler: function ($trSource) {
+        createDroppableOverHandler: function (trSource) {
             return function (e) {
-                var $trTarget = $(this),
-                    targetPosition = $trTarget.data('position'),
-                    sourcePosition = $trSource.data('position');
+                var trTarget = this,
+                    targetPosition = trTarget.getAttribute('data-gj-position'),
+                    sourcePosition = trSource.getAttribute('data-gj-position');
                 if (targetPosition < sourcePosition) {
-                    $trTarget.addClass('gj-grid-top-border');
+                    trTarget.classList.add('gj-grid-top-border');
                 } else {
-                    $trTarget.addClass('gj-grid-bottom-border');
+                    trTarget.classList.add('gj-grid-bottom-border');
                 }
             };
         },
 
         droppableOut: function () {
-            $(this).removeClass('gj-grid-top-border');
-            $(this).removeClass('gj-grid-bottom-border');
+            this.classList.remove('gj-grid-top-border');
+            this.classList.remove('gj-grid-bottom-border');
         }
     },
 

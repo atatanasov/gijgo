@@ -12,7 +12,7 @@
 <body style="padding: 8px;">
  <div id="tree" data-source="/Locations/Get"></div>
  <script>
-     var tree = $('#tree').tree();
+     var tree = new GijgoTree(document.getElementById('tree'), );
      tree.on('nodeDataBound', function (e, node, id, record) {
          if ((parseInt(id, 10) % 2) === 0) {
              node.css('background-color', 'red');

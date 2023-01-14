@@ -11,9 +11,9 @@
 </head>
 <body style="padding: 8px;">
  <button id="reload" class="gj-button-md">Reload</button>
- <div id="tree"></div>
+ <ul id="tree"></ul>
  <script>
-     var tree = $('#tree').tree({
+     var tree = new GijgoTree(document.getElementById('tree'), {
          dataSource: '/Locations/Get',
          initialized: function (e) {
              alert('initialized is fired.');

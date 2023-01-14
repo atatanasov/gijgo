@@ -12,9 +12,9 @@
 <body style="padding: 8px;">
  <input type="text" id="query" /> <button onclick="Search()">Search</button>
  <br/><br/>
- <div id="tree"></div>
+ <ul id="tree"></ul>
  <script>
-     var tree = $('#tree').tree({
+     var tree = new GijgoTree(document.getElementById('tree'), {
          dataSource: '/Locations/Get'
      });
      function Search() {

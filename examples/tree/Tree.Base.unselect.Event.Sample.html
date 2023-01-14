@@ -13,7 +13,7 @@
  <p>Select/Unselect tree node in order to fire the event.</p>
  <div id="tree" data-source="/Locations/Get"></div>
  <script>
-     var tree = $('#tree').tree();
+     var tree = new GijgoTree(document.getElementById('tree'), );
      tree.on('unselect', function (e, node, id) {
          alert('unselect is fired for node with id=' + id);
      });

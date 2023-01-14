@@ -28,7 +28,7 @@
          { id: 1, country: 'USA', text: 'California', type: 'state' },
          { id: 2, country: 'USA', text: 'Florida', type: 'state' }
      ];
-     tree = $('#tree').tree({
+     tree = new GijgoTree(document.getElementById('tree'), {
          hasChildrenField: 'anyChildren',
          dataSource: continents
      });

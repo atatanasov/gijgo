@@ -13,9 +13,9 @@
  <input type="text" id="nodeName" />
  <button onclick="save()" class="gj-button-md">Save</button>
  <br/>
- <div id="tree"></div>
+ <ul id="tree"></ul>
  <script>
-     var tree = $('#tree').tree({
+     var tree = new GijgoTree(document.getElementById('tree'), {
          primaryKey: 'id',
          dataSource: '/Locations/Get'
      });

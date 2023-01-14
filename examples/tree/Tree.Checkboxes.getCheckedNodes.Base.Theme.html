@@ -13,9 +13,9 @@
 </head>
 <body style="padding: 8px;">
  <button id="btnGet" class="gj-button-md">Get Checked Nodes</button>
- <div id="tree"></div>
+ <ul id="tree"></ul>
  <script>
-     var tree = $('#tree').tree({
+     var tree = new GijgoTree(document.getElementById('tree'), {
          dataSource: '/Locations/Get',
          checkboxes: true
      });

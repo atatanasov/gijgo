@@ -9,26 +9,26 @@ gj.tree.plugins.checkboxes = {
               * @type Boolean
               * @default undefined
               * @example Material.Design <!-- checkbox, tree -->
-              * <div id="tree"></div>
+              * <ul id="tree"></ul>
               * <script>
-              *     var tree = $('#tree').tree({
+              *     var tree = new GijgoTree(document.getElementById('tree'), {
               *         dataSource: '/Locations/Get',
               *         checkboxes: true
               *     });
               * </script>
               * @example Bootstrap.3 <!-- bootstrap, checkbox, tree -->
-              * <div id="tree"></div>
+              * <ul id="tree"></ul>
               * <script>
-              *     var tree = $('#tree').tree({
+              *     var tree = new GijgoTree(document.getElementById('tree'), {
               *         dataSource: '/Locations/Get',
               *         checkboxes: true,
               *         uiLibrary: 'bootstrap'
               *     });
               * </script>
               * @example Bootstrap.4 <!-- bootstrap4, checkbox, tree -->
-              * <div id="tree"></div>
+              * <ul id="tree"></ul>
               * <script>
-              *     var tree = $('#tree').tree({
+              *     var tree = new GijgoTree(document.getElementById('tree'), {
               *         dataSource: '/Locations/Get',
               *         checkboxes: true,
               *         uiLibrary: 'bootstrap4'
@@ -41,9 +41,9 @@ gj.tree.plugins.checkboxes = {
              * @type string
              * @default 'checked'
              * @example Custom.Name <!-- checkbox, tree -->
-             * <div id="tree"></div>
+             * <ul id="tree"></ul>
              * <script>
-             *     var tree = $('#tree').tree({
+             *     var tree = new GijgoTree(document.getElementById('tree'), {
              *         checkboxes: true,
              *         checkedField: 'checkedFieldName',
              *         dataSource: [ { text: 'foo', checkedFieldName: false, children: [ { text: 'bar', checkedFieldName: true }, { text: 'bar2', checkedFieldName: false } ] }, { text: 'foo2', children: [ { text: 'bar2' } ] } ]
@@ -56,9 +56,9 @@ gj.tree.plugins.checkboxes = {
              * @type boolean
              * @default true
              * @example False.Remote.DataSource <!-- checkbox, tree -->
-             * <div id="tree"></div>
+             * <ul id="tree"></ul>
              * <script>
-             *     var tree = $('#tree').tree({
+             *     var tree = new GijgoTree(document.getElementById('tree'), {
              *         checkboxes: true,
              *         dataSource: '/Locations/Get',
              *         cascadeCheck: false
@@ -68,18 +68,18 @@ gj.tree.plugins.checkboxes = {
              *     });
              * </script>
              * @example False.Local.DataSource <!-- checkbox, tree -->
-             * <div id="tree"></div>
+             * <ul id="tree"></ul>
              * <script>
-             *     var tree = $('#tree').tree({
+             *     var tree = new GijgoTree(document.getElementById('tree'), {
              *         checkboxes: true,
              *         dataSource: [ { text: 'foo', checked: true, children: [ { text: 'bar', checked: true }, { text: 'bar2', checked: false } ] }, { text: 'foo2', checked: true, children: [ { text: 'bar2', checked: false } ] } ],
              *         cascadeCheck: false
              *     });
              * </script>
              * @example True <!-- checkbox, tree -->
-             * <div id="tree"></div>
+             * <ul id="tree"></ul>
              * <script>
-             *     var tree = $('#tree').tree({
+             *     var tree = new GijgoTree(document.getElementById('tree'), {
              *         checkboxes: true,
              *         dataSource: '/Locations/Get',
              *         cascadeCheck: true
@@ -114,7 +114,7 @@ gj.tree.plugins.checkboxes = {
             
             if ($node.find('> [data-role="wrapper"] > [data-role="checkbox"]').length === 0)
             {
-                data = $tree.data();
+                data = tree.getConfig();
                 $expander = $node.find('> [data-role="wrapper"] > [data-role="expander"]');
                 $checkbox = $('<input type="checkbox"/>');
                 $wrapper = $('<span data-role="checkbox"></span>').append($checkbox);
@@ -183,7 +183,7 @@ gj.tree.plugins.checkboxes = {
         update: function ($tree, $node, state) {
             var checkbox = $node.find('[data-role="checkbox"] input[type="checkbox"]').first();
             $(checkbox).checkbox('state', state);
-            if ($tree.data().cascadeCheck) {
+            if (tree.getConfig().cascadeCheck) {
                 gj.tree.plugins.checkboxes.private.updateChildrenState($node, state);
                 gj.tree.plugins.checkboxes.private.updateParentState($node, state);
             }
@@ -197,9 +197,9 @@ gj.tree.plugins.checkboxes = {
          * @return Array
          * @example Base.Theme <!-- checkbox, tree -->
          * <button id="btnGet" class="gj-button-md">Get Checked Nodes</button>
-         * <div id="tree"></div>
+         * <ul id="tree"></ul>
          * <script>
-         *     var tree = $('#tree').tree({
+         *     var tree = new GijgoTree(document.getElementById('tree'), {
          *         dataSource: '/Locations/Get',
          *         checkboxes: true
          *     });
@@ -231,7 +231,7 @@ gj.tree.plugins.checkboxes = {
          * <br/><br/>
          * <div id="tree" data-source="/Locations/Get"></div>
          * <script>
-         *     var tree = $('#tree').tree({
+         *     var tree = new GijgoTree(document.getElementById('tree'), {
          *         checkboxes: true
          *     });
          *     tree.on('dataBound', function() {
@@ -257,7 +257,7 @@ gj.tree.plugins.checkboxes = {
          * <br/><br/>
          * <div id="tree" data-source="/Locations/Get"></div>
          * <script>
-         *     var tree = $('#tree').tree({
+         *     var tree = new GijgoTree(document.getElementById('tree'), {
          *         checkboxes: true
          *     });
          *     tree.on('dataBound', function() {
@@ -283,7 +283,7 @@ gj.tree.plugins.checkboxes = {
          * <br/>
          * <div id="tree" data-source="/Locations/Get"></div>
          * <script>
-         *     var tree = $('#tree').tree({
+         *     var tree = new GijgoTree(document.getElementById('tree'), {
          *         checkboxes: true
          *     });
          *     tree.on('dataBound', function() {
@@ -306,7 +306,7 @@ gj.tree.plugins.checkboxes = {
          * <br/>
          * <div id="tree" data-source="/Locations/Get"></div>
          * <script>
-         *     var tree = $('#tree').tree({
+         *     var tree = new GijgoTree(document.getElementById('tree'), {
          *         checkboxes: true
          *     });
          *     tree.on('dataBound', function() {
@@ -332,7 +332,7 @@ gj.tree.plugins.checkboxes = {
          * @example Event.Sample <!-- checkbox, tree -->
          * <div id="tree" data-source="/Locations/Get" data-checkboxes="true"></div>
          * <script>
-         *     var tree = $('#tree').tree();
+         *     var tree = new GijgoTree(document.getElementById('tree'), );
          *     tree.on('checkboxChange', function (e, $node, record, state) {
          *         alert('The new state of record ' + record.text + ' is ' + state);
          *     });

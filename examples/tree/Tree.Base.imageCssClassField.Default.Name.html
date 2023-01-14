@@ -13,7 +13,7 @@
 <body style="padding: 8px;">
  <div id="tree"></div>
  <script>
-     var tree = $('#tree').tree({
+     var tree = new GijgoTree(document.getElementById('tree'), {
          uiLibrary: 'bootstrap',
          dataSource: [ { text: 'folder', imageCssClass: 'glyphicon glyphicon-folder-close', children: [ { text: 'file', imageCssClass: 'glyphicon glyphicon-file' } ] } ]
      });

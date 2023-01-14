@@ -12,9 +12,9 @@
 <body style="padding: 8px;">
  <button onclick="tree.reload()" class="gj-button-md">Click to load</button>
  <br/><br/>
- <div id="tree"></div>
+ <ul id="tree"></ul>
  <script>
-     var tree = $('#tree').tree({
+     var tree = new GijgoTree(document.getElementById('tree'), {
          dataSource: '/Locations/Get',
          autoLoad: false
      });

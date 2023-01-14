@@ -15,10 +15,10 @@
 <body style="padding: 8px;">
  <div class="container">
      <h3>Drag and Drop Tree Nodes</h3>
-     <div id="tree"></div>
+     <ul id="tree"></ul>
  </div>
  <script>
-     $('#tree').tree({
+     new GijgoTree(document.getElementById('tree'), {
          dataSource: '/Locations/Get',
          dragAndDrop: true,
          uiLibrary: 'bootstrap'

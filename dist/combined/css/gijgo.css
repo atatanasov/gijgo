@@ -1357,6 +1357,13 @@ div.gj-grid-wrapper div.gj-grid-bootstrap-4-toolbar {
     border: 1px solid #ddd;
 }
 
+div.gj-grid-wrapper div.gj-grid-bootstrap-5-toolbar {
+    background-color: #f5f5f5;
+    padding: 12px;
+    font-weight: bold;
+    border: 1px solid #ddd;
+}
+
 div.gj-grid-wrapper div.gj-grid-md-toolbar {
     font-weight: bold;
     font-size: 24px;

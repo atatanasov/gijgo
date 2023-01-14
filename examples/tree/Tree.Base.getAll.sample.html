@@ -13,9 +13,9 @@
  <button onclick="alert(JSON.stringify(tree.getAll()))" class="gj-button-md">Get All Data</button>
  <button onclick="tree.addNode({ text: 'New Node' });" class="gj-button-md">Add New Node</button>
  <br/>
- <div id="tree"></div>
+ <ul id="tree"></ul>
  <script>
-     var tree = $('#tree').tree({
+     var tree = new GijgoTree(document.getElementById('tree'), {
          dataSource: [ { text: 'foo', children: [ { text: 'bar' } ] } ]
      });
  </script>

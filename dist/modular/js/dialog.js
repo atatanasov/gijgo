@@ -2,7 +2,7 @@
  * Gijgo Dialog v2.0.0-alpha-1
  * http://gijgo.com/dialog
  *
- * Copyright 2014, 2018 gijgo.com
+ * Copyright 2014, 2023 gijgo.com
  * Released under the MIT license
  */
 /* global window alert jQuery */

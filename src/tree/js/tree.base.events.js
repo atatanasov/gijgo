@@ -10,9 +10,9 @@ gj.tree.events = {
      * @param {object} e - event data
      * @example Event.Sample <!-- tree -->
      * <button id="reload" class="gj-button-md">Reload</button>
-     * <div id="tree"></div>
+     * <ul id="tree"></ul>
      * <script>
-     *     var tree = $('#tree').tree({
+     *     var tree = new GijgoTree(document.getElementById('tree'), {
      *         dataSource: '/Locations/Get',
      *         initialized: function (e) {
      *             alert('initialized is fired.');
@@ -32,9 +32,9 @@ gj.tree.events = {
      * @event dataBinding
      * @param {object} e - event data
      * @example Event.Sample <!-- tree -->
-     * <div id="tree"></div>
+     * <ul id="tree"></ul>
      * <script>
-     *     $('#tree').tree({
+     *     new GijgoTree(document.getElementById('tree'), {
      *         dataSource: '/Locations/Get',
      *         dataBinding: function (e) {
      *             alert('dataBinding is fired.');
@@ -51,9 +51,9 @@ gj.tree.events = {
      * @event dataBound
      * @param {object} e - event data
      * @example Event.Sample <!-- tree -->
-     * <div id="tree"></div>
+     * <ul id="tree"></ul>
      * <script>
-     *     $('#tree').tree({
+     *     new GijgoTree(document.getElementById('tree'), {
      *         dataSource: '/Locations/Get',
      *         dataBound: function (e) {
      *             alert('dataBound is fired.');
@@ -75,7 +75,7 @@ gj.tree.events = {
      * <p>Select tree node in order to fire the event.</p>
      * <div id="tree" data-source="/Locations/Get"></div>
      * <script>
-     *     var tree = $('#tree').tree();
+     *     var tree = new GijgoTree(document.getElementById('tree'), );
      *     tree.on('select', function (e, node, id) {
      *         alert('select is fired for node with id=' + id);
      *     });
@@ -95,7 +95,7 @@ gj.tree.events = {
      * <p>Select/Unselect tree node in order to fire the event.</p>
      * <div id="tree" data-source="/Locations/Get"></div>
      * <script>
-     *     var tree = $('#tree').tree();
+     *     var tree = new GijgoTree(document.getElementById('tree'), );
      *     tree.on('unselect', function (e, node, id) {
      *         alert('unselect is fired for node with id=' + id);
      *     });
@@ -114,7 +114,7 @@ gj.tree.events = {
      * @example Event.Sample <!-- tree -->
      * <div id="tree" data-source="/Locations/Get"></div>
      * <script>
-     *     var tree = $('#tree').tree();
+     *     var tree = new GijgoTree(document.getElementById('tree'), );
      *     tree.on('expand', function (e, node, id) {
      *         alert('expand is fired.');
      *     });
@@ -133,7 +133,7 @@ gj.tree.events = {
      * @example Event.Sample <!-- tree -->
      * <div id="tree" data-source="/Locations/Get"></div>
      * <script>
-     *     var tree = $('#tree').tree();
+     *     var tree = new GijgoTree(document.getElementById('tree'), );
      *     tree.on('collapse', function (e, node, id) {
      *         alert('collapse is fired.');
      *     });
@@ -155,7 +155,7 @@ gj.tree.events = {
      * <div id="tree" data-source="/Locations/Get"></div>
      * <script>
      *     var tree, northAmerica;
-     *     tree = $('#tree').tree({
+     *     tree = new GijgoTree(document.getElementById('tree'), {
      *         primaryKey: 'ID',
      *         dataBound: function () {
      *             northAmerica = tree.getNodeByText('North America');
@@ -182,7 +182,7 @@ gj.tree.events = {
      * <div id="tree" data-source="/Locations/Get"></div>
      * <script>
      *     var tree, northAmerica;
-     *     tree = $('#tree').tree({
+     *     tree = new GijgoTree(document.getElementById('tree'), {
      *         primaryKey: 'ID',
      *         dataBound: function () {
      *             northAmerica = tree.getNodeByText('North America');
@@ -206,7 +206,7 @@ gj.tree.events = {
      * <br/><br/>
      * <div id="tree" data-source="/Locations/Get"></div>
      * <script>
-     *     var tree = $('#tree').tree();
+     *     var tree = new GijgoTree(document.getElementById('tree'), );
      *     tree.on('destroying', function (e) {
      *         alert('destroying is fired.');
      *     });
@@ -226,7 +226,7 @@ gj.tree.events = {
      * @example Event.Sample <!-- tree -->
      * <div id="tree" data-source="/Locations/Get"></div>
      * <script>
-     *     var tree = $('#tree').tree();
+     *     var tree = new GijgoTree(document.getElementById('tree'), );
      *     tree.on('nodeDataBound', function (e, node, id, record) {
      *         if ((parseInt(id, 10) % 2) === 0) {
      *             node.css('background-color', 'red');

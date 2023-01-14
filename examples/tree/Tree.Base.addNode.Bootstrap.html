@@ -15,7 +15,7 @@
  <br/><br/>
  <div id="tree" data-source="/Locations/Get" data-ui-library="bootstrap"></div>
  <script>
-     var parent, tree = $('#tree').tree();
+     var parent, tree = new GijgoTree(document.getElementById('tree'), );
      tree.on('dataBound', function () {
          parent = tree.getNodeByText('Asia');
          tree.off('dataBound');

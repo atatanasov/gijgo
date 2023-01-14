@@ -10,9 +10,9 @@ gj.tree.plugins.dragAndDrop = {
               * @default undefined
               * @example Material.Design <!-- draggable, droppable, tree -->
               * <h3>Drag and Drop Tree Nodes</h3>
-              * <div id="tree"></div>
+              * <ul id="tree"></ul>
               * <script>
-              *     $('#tree').tree({
+              *     new GijgoTree(document.getElementById('tree'), {
               *         dataSource: '/Locations/Get',
               *         dragAndDrop: true
               *     });
@@ -20,10 +20,10 @@ gj.tree.plugins.dragAndDrop = {
               * @example Bootstrap.3 <!-- bootstrap, draggable, droppable, tree -->
               * <div class="container">
               *     <h3>Drag and Drop Tree Nodes</h3>
-              *     <div id="tree"></div>
+              *     <ul id="tree"></ul>
               * </div>
               * <script>
-              *     $('#tree').tree({
+              *     new GijgoTree(document.getElementById('tree'), {
               *         dataSource: '/Locations/Get',
               *         dragAndDrop: true,
               *         uiLibrary: 'bootstrap'
@@ -32,10 +32,10 @@ gj.tree.plugins.dragAndDrop = {
               * @example Bootstrap.4 <!-- bootstrap4, draggable, droppable, tree -->
               * <div class="container">
               *     <h3>Drag and Drop Tree Nodes</h3>
-              *     <div id="tree"></div>
+              *     <ul id="tree"></ul>
               * </div>
               * <script>
-              *     $('#tree').tree({
+              *     new GijgoTree(document.getElementById('tree'), {
               *         dataSource: '/Locations/Get',
               *         dragAndDrop: true,
               *         uiLibrary: 'bootstrap4'
@@ -97,7 +97,7 @@ gj.tree.plugins.dragAndDrop = {
 	    createNodeMouseMoveHandler: function ($tree, $node, $display) {
             return function (e) {
                 if ($tree.data('dragReady')) {
-                    var data = $tree.data(), $dragEl, $wrapper, offsetTop, offsetLeft;
+                    var data = tree.getConfig(), $dragEl, $wrapper, offsetTop, offsetLeft;
 
                     $tree.data('dragReady', false);
                     $dragEl = $display.clone().wrap('<div data-role="wrapper"/>').closest('div')
@@ -152,7 +152,7 @@ gj.tree.plugins.dragAndDrop = {
 	    createDragHandler: function ($tree, $node, $display) {
 	        var $displays = gj.tree.plugins.dragAndDrop.private.getTargetDisplays($tree, $node, $display),
                 $wrappers = gj.tree.plugins.dragAndDrop.private.getTargetWrappers($tree, $node),
-	            data = $tree.data();
+	            data = tree.getConfig();
 	        return function (e, offset, mousePosition) {
 	            var $dragEl = $(this), success = false;
 	            $displays.each(function () {
@@ -187,7 +187,7 @@ gj.tree.plugins.dragAndDrop = {
 	    createDragStopHandler: function ($tree, $sourceNode, $sourceDisplay) {
 	        var $displays = gj.tree.plugins.dragAndDrop.private.getTargetDisplays($tree, $sourceNode, $sourceDisplay),
                 $wrappers = gj.tree.plugins.dragAndDrop.private.getTargetWrappers($tree, $sourceNode),
-	            data = $tree.data();
+	            data = tree.getConfig();
 	        return function (e, mousePosition) {
                 var success = false, record, $targetNode, $sourceParentNode, parent;
 	            $(this).draggable('destroy').remove();
@@ -254,7 +254,7 @@ gj.tree.plugins.dragAndDrop = {
 	    },
 
 	    refresh: function ($tree, $sourceNode, $targetNode, $sourceParentNode) {
-	        var data = $tree.data();
+	        var data = tree.getConfig();
 	        gj.tree.plugins.dragAndDrop.private.refreshNode($tree, $targetNode);
 	        gj.tree.plugins.dragAndDrop.private.refreshNode($tree, $sourceParentNode);
 	        gj.tree.plugins.dragAndDrop.private.refreshNode($tree, $sourceNode);
@@ -269,7 +269,7 @@ gj.tree.plugins.dragAndDrop = {
 	            $expander = $wrapper.children('[data-role="expander"]'),
 	            $spacer = $wrapper.children('[data-role="spacer"]'),
 	            $list = $node.children('ul'),
-                data = $tree.data(),
+                data = tree.getConfig(),
 	            level = $node.parentsUntil('[data-type="tree"]', 'ul').length;
 
 	        if ($list.length && $list.children().length) {
@@ -301,7 +301,7 @@ gj.tree.plugins.dragAndDrop = {
          * @example Event.Sample <!-- draggable, droppable, tree -->
          * <div id="tree" data-source="/Locations/Get" data-drag-and-drop="true"></div>
          * <script>
-         *     var tree = $('#tree').tree();
+         *     var tree = new GijgoTree(document.getElementById('tree'), );
          *     tree.on('nodeDrop', function (e, id, parentId, orderNumber) {
          *         var node = tree.getDataById(id),
          *             parent = parentId ? tree.getDataById(parentId) : {};

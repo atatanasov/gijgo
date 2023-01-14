@@ -11,10 +11,10 @@ gj.grid.plugins.toolbar = {
               * @example sample <!-- bootstrap, grid, grid.toolbar, grid.pagination -->
               * <table id="grid"></table>
               * <script>
-              *     var grid = $('#grid').grid({
+              *     var grid = new GijgoGrid(document.getElementById('grid'), {
               *         dataSource: '/Players/Get',
               *         uiLibrary: 'bootstrap',
-              *         toolbarTemplate: '<div class="row"><div class="col-xs-8" style="line-height:34px"><span data-role="title">Grid Title</span></div><div class="col-xs-4 text-right"><button onclick="grid.reload()" class="btn btn-default">click here to refresh</button></div></div>',
+              *         toolbarTemplate: '<div class="row"><div class="col-xs-8" style="line-height:34px"><span data-gj-role="title">Grid Title</span></div><div class="col-xs-4 text-right"><button onclick="grid.reload()" class="btn btn-default">click here to refresh</button></div></div>',
               *         columns: [ { field: 'ID', width: 34 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
               *         pager: { limit: 5 }
               *     });
@@ -28,7 +28,7 @@ gj.grid.plugins.toolbar = {
               * @example Material.Design <!-- grid, grid.toolbar -->
               * <table id="grid"></table>
               * <script>
-              *     $('#grid').grid({
+              *     new GijgoGrid(document.getElementById('grid'), {
               *         dataSource: '/Players/Get',
               *         title: 'Players',
               *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
@@ -37,7 +37,7 @@ gj.grid.plugins.toolbar = {
               * @example Bootstrap.3 <!-- bootstrap, grid, grid.toolbar -->
               * <table id="grid"></table>
               * <script>
-              *     $('#grid').grid({
+              *     new GijgoGrid(document.getElementById('grid'), {
               *         dataSource: '/Players/Get',
               *         uiLibrary: 'bootstrap',
               *         title: 'Players',
@@ -47,9 +47,19 @@ gj.grid.plugins.toolbar = {
               * @example Bootstrap.4 <!-- bootstrap4, grid, grid.toolbar -->
               * <table id="grid"></table>
               * <script>
-              *     $('#grid').grid({
+              *     new GijgoGrid(document.getElementById('grid'), {
               *         dataSource: '/Players/Get',
               *         uiLibrary: 'bootstrap4',
+              *         title: 'Players',
+              *         columns: [ { field: 'ID', width: 34 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
+              *     });
+              * </script>
+              * @example Bootstrap.5 <!-- bootstrap5, grid, grid.toolbar -->
+              * <table id="grid"></table>
+              * <script>
+              *     new GijgoGrid(document.getElementById('grid'), {
+              *         dataSource: '/Players/Get',
+              *         uiLibrary: 'bootstrap5',
               *         title: 'Players',
               *         columns: [ { field: 'ID', width: 34 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
               *     });
@@ -72,6 +82,12 @@ gj.grid.plugins.toolbar = {
             style: {
                 toolbar: 'gj-grid-bootstrap-4-toolbar'
             }
+        },
+
+        bootstrap5: {
+            style: {
+                toolbar: 'gj-grid-bootstrap-5-toolbar'
+            }
         }
     },
 
@@ -84,7 +100,6 @@ gj.grid.plugins.toolbar = {
                 if (!toolbar) {
                     toolbar = document.createElement('div');
                     toolbar.setAttribute('data-gj-role', 'toolbar');
-                    $('<div data-role="toolbar"></div>');
                     grid.element.parentNode.insertBefore(toolbar, grid.element);
                 }
                 gj.core.addClasses(toolbar, data.style.toolbar);
@@ -115,7 +130,7 @@ gj.grid.plugins.toolbar = {
          * Get or set grid title.
          * @additionalinfo When you pass value in the text parameter this value with be in use for the new title of the grid and the method will return grid object.<br/>
          * When you don't pass value in the text parameter, then the method will return the text of the current grid title.<br/>
-         * You can use this method in a combination with toolbarTemplate only if the title is wrapped in element with data-role attribute that equals to "title".<br/>
+         * You can use this method in a combination with toolbarTemplate only if the title is wrapped in element with data-gj-role attribute that equals to "title".<br/>
          * @method
          * @param {object} text - The text of the new grid title.
          * @return string or grid object
@@ -125,7 +140,7 @@ gj.grid.plugins.toolbar = {
          * <br/><br/>
          * <table id="grid"></table>
          * <script>
-         *     var grid = $('#grid').grid({
+         *     var grid = new GijgoGrid(document.getElementById('grid'), {
          *         dataSource: '/Players/Get',
          *         title: 'Initial Grid Title',
          *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
@@ -137,20 +152,20 @@ gj.grid.plugins.toolbar = {
          * <br/><br/>
          * <table id="grid"></table>
          * <script>
-         *     var grid = $('#grid').grid({
+         *     var grid = new GijgoGrid(document.getElementById('grid'), {
          *         dataSource: '/Players/Get',
-         *         toolbarTemplate: '<div data-role="title">Initial Grid Title</div>',
+         *         toolbarTemplate: '<div data-gj-role="title">Initial Grid Title</div>',
          *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
          *     });
          * </script>
          */
         title: function (text) {
-            var $titleEl = this.parent().find('div[data-role="toolbar"] [data-role="title"]');
+            var titleEl = this.parentNode.querySelector('div[data-gj-role="toolbar"] [data-gj-role="title"]');
             if (typeof (text) !== 'undefined') {
-                $titleEl.text(text);
+                titleEl.innerHTML = text;
                 return this;
             } else {
-                return $titleEl.text();
+                return titleEl.innerText;
             }
         }
     },
@@ -161,7 +176,7 @@ gj.grid.plugins.toolbar = {
             gj.grid.plugins.toolbar.private.init(grid);
         });
         grid.on('destroying', function () {
-            let el = grid.element.parentNode.querySelector('[data-role="toolbar"]');
+            let el = grid.element.parentNode.querySelector('[data-gj-role="toolbar"]');
             el && el.remove();
         });
     }
