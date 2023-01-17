@@ -18,13 +18,13 @@ gj.tree.events = {
      *             alert('initialized is fired.');
      *         }
      *     });
-     *     $('#reload').on('click', function() { 
-     *         tree.reload(); 
+     *     document.getElementById('reload').addEventListener('click', function() { 
+     *         tree.reload();
      *     });
      * </script>
      */
-    initialized: function ($tree) {
-        $tree.triggerHandler('initialized');
+    initialized: function (el) {
+        el.dispatchEvent(new Event('initialized'));
     },
 
     /**
@@ -42,8 +42,8 @@ gj.tree.events = {
      *     });
      * </script>
      */
-    dataBinding: function ($tree) {
-        $tree.triggerHandler('dataBinding');
+    dataBinding: function (el) {
+        el.dispatchEvent(new Event('dataBinding'));
     },
 
     /**
@@ -61,8 +61,8 @@ gj.tree.events = {
      *     });
      * </script>
      */
-    dataBound: function ($tree) {
-        $tree.triggerHandler('dataBound');
+    dataBound: function (el) {
+        el.dispatchEvent(new Event('dataBound'));
     },
 
     /**
@@ -73,16 +73,16 @@ gj.tree.events = {
      * @param {string} id - the id of the record
      * @example Event.Sample <!-- tree -->
      * <p>Select tree node in order to fire the event.</p>
-     * <div id="tree" data-source="/Locations/Get"></div>
+     * <ul id="tree" data-gj-source="/Locations/Get"></ul>
      * <script>
-     *     var tree = new GijgoTree(document.getElementById('tree'), );
-     *     tree.on('select', function (e, node, id) {
-     *         alert('select is fired for node with id=' + id);
+     *     var tree = new GijgoTree(document.getElementById('tree'));
+     *     tree.on('select', function (e) {
+     *         alert('select is fired for node with id=' + e.detail.id);
      *     });
      * </script>
      */
-    select: function ($tree, $node, id) {
-        return $tree.triggerHandler('select', [$node, id]);
+    select: function (el, node, id) {
+        return el.dispatchEvent(new CustomEvent('select', { detail: { node: node, id: id } }));
     },
 
     /**
@@ -93,16 +93,16 @@ gj.tree.events = {
      * @param {string} id - the id of the record
      * @example Event.Sample <!-- tree -->
      * <p>Select/Unselect tree node in order to fire the event.</p>
-     * <div id="tree" data-source="/Locations/Get"></div>
+     * <ul id="tree" data-gj-source="/Locations/Get" data-gj-selection-type="multiple"></ul>
      * <script>
-     *     var tree = new GijgoTree(document.getElementById('tree'), );
-     *     tree.on('unselect', function (e, node, id) {
-     *         alert('unselect is fired for node with id=' + id);
+     *     var tree = new GijgoTree(document.getElementById('tree'));
+     *     tree.on('unselect', function (e) {
+     *         alert('unselect is fired for node with id=' + e.detail.id);
      *     });
      * </script>
      */
-    unselect: function ($tree, $node, id) {
-        return $tree.triggerHandler('unselect', [$node, id]);
+    unselect: function (el, node, id) {
+        return el.dispatchEvent(new CustomEvent('unselect', { detail: { node: node, id: id } }));
     },
 
     /**
@@ -112,16 +112,16 @@ gj.tree.events = {
      * @param {object} node - the node as jquery object
      * @param {string} id - the id of the record
      * @example Event.Sample <!-- tree -->
-     * <div id="tree" data-source="/Locations/Get"></div>
+     * <ul id="tree" data-gj-source="/Locations/Get"></ul>
      * <script>
-     *     var tree = new GijgoTree(document.getElementById('tree'), );
+     *     var tree = new GijgoTree(document.getElementById('tree'));
      *     tree.on('expand', function (e, node, id) {
      *         alert('expand is fired.');
      *     });
      * </script>
      */
-    expand: function ($tree, $node, id) {
-        return $tree.triggerHandler('expand', [$node, id]);
+    expand: function (el, node, id) {
+        return el.dispatchEvent(new CustomEvent('expand', { detail: { node: node, id: id } }));
     },
 
     /**
@@ -131,16 +131,16 @@ gj.tree.events = {
      * @param {object} node - the node as jquery object
      * @param {string} id - the id of the record
      * @example Event.Sample <!-- tree -->
-     * <div id="tree" data-source="/Locations/Get"></div>
+     * <ul id="tree" data-gj-source="/Locations/Get"></ul>
      * <script>
-     *     var tree = new GijgoTree(document.getElementById('tree'), );
+     *     var tree = new GijgoTree(document.getElementById('tree'));
      *     tree.on('collapse', function (e, node, id) {
      *         alert('collapse is fired.');
      *     });
      * </script>
      */
-    collapse: function ($tree, $node, id) {
-        return $tree.triggerHandler('collapse', [$node, id]);
+    collapse: function (el, node, id) {
+        return el.dispatchEvent(new CustomEvent('collapse', { detail: { node: node, id: id } }));
     },
 
     /**
@@ -152,7 +152,7 @@ gj.tree.events = {
      * <button onclick="tree.enable(northAmerica, false)" class="gj-button-md">Enable North America</button>
      * <button onclick="tree.disable(northAmerica, false)" class="gj-button-md">Disable North America</button>
      * <br/><br/>
-     * <div id="tree" data-source="/Locations/Get"></div>
+     * <ul id="tree" data-gj-source="/Locations/Get"></ul>
      * <script>
      *     var tree, northAmerica;
      *     tree = new GijgoTree(document.getElementById('tree'), {
@@ -161,13 +161,13 @@ gj.tree.events = {
      *             northAmerica = tree.getNodeByText('North America');
      *         }
      *     });
-     *     tree.on('enable', function (e, node) {
-     *         alert(node.text() + ' is enabled.');
+     *     tree.on('enable', function (e) {
+     *         alert(e.detail.node.innerText + ' is enabled.');
      *     });
      * </script>
      */
-    enable: function ($tree, $node) {
-        return $tree.triggerHandler('enable', [$node]);
+    enable: function (el, node) {
+        return el.dispatchEvent(new CustomEvent('enable', { detail: { node: node } }));
     },
 
     /**
@@ -179,7 +179,7 @@ gj.tree.events = {
      * <button onclick="tree.enable(northAmerica, false)" class="gj-button-md">Enable North America</button>
      * <button onclick="tree.disable(northAmerica, false)" class="gj-button-md">Disable North America</button>
      * <br/><br/>
-     * <div id="tree" data-source="/Locations/Get"></div>
+     * <ul id="tree" data-gj-source="/Locations/Get"></ul>
      * <script>
      *     var tree, northAmerica;
      *     tree = new GijgoTree(document.getElementById('tree'), {
@@ -188,13 +188,13 @@ gj.tree.events = {
      *             northAmerica = tree.getNodeByText('North America');
      *         }
      *     });
-     *     tree.on('disable', function (e, node) {
-     *         alert(node.text() + ' is disabled.');
+     *     tree.on('disable', function (e) {
+     *         alert(e.detail.node.innerText + ' is disabled.');
      *     });
      * </script>
      */
-    disable: function ($tree, $node) {
-        return $tree.triggerHandler('disable', [$node]);
+    disable: function (el, node) {
+        return el.dispatchEvent(new CustomEvent('disable', { detail: { node: node } }));
     },
 
     /**
@@ -204,16 +204,16 @@ gj.tree.events = {
      * @example Event.Sample <!-- tree -->
      * <button onclick="tree.destroy()" class="gj-button-md">Destroy</button>
      * <br/><br/>
-     * <div id="tree" data-source="/Locations/Get"></div>
+     * <ul id="tree" data-gj-source="/Locations/Get"></ul>
      * <script>
-     *     var tree = new GijgoTree(document.getElementById('tree'), );
+     *     var tree = new GijgoTree(document.getElementById('tree'));
      *     tree.on('destroying', function (e) {
      *         alert('destroying is fired.');
      *     });
      * </script>
      */
-    destroying: function ($tree) {
-        return $tree.triggerHandler('destroying');
+    destroying: function (el) {
+        return el.dispatchEvent(new Event('destroying'));
     },
 
     /**
@@ -224,17 +224,17 @@ gj.tree.events = {
      * @param {string} id - the id of the record
      * @param {object} record - the data of the node record
      * @example Event.Sample <!-- tree -->
-     * <div id="tree" data-source="/Locations/Get"></div>
+     * <ul id="tree" data-gj-source="/Locations/Get"></ul>
      * <script>
-     *     var tree = new GijgoTree(document.getElementById('tree'), );
-     *     tree.on('nodeDataBound', function (e, node, id, record) {
-     *         if ((parseInt(id, 10) % 2) === 0) {
-     *             node.css('background-color', 'red');
+     *     var tree = new GijgoTree(document.getElementById('tree'));
+     *     tree.on('nodeDataBound', function (e) {
+     *         if ((parseInt(e.detail.id, 10) % 2) === 0) {
+     *             e.detail.node.style.backgroundColor = 'red';
      *         }
      *     });
      * </script>
      */
-    nodeDataBound: function ($tree, $node, id, record) {
-        return $tree.triggerHandler('nodeDataBound', [$node, id, record]);
+    nodeDataBound: function (el, node, id, record) {
+        return el.dispatchEvent(new CustomEvent('nodeDataBound', { detail: { node: node, id: id, record: record } }));
     }
 }

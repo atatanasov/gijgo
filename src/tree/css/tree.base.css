@@ -1,27 +1,27 @@
-﻿ul.gj-list li [data-role="spacer"] {
+﻿ul.gj-list li [data-gj-role="spacer"] {
     display: table-cell;
 }
 
-ul.gj-list li [data-role="expander"] {
+ul.gj-list li [data-gj-role="expander"] {
     display: table-cell;
     vertical-align:middle;
     text-align:center;
     cursor: pointer;
 }
 
-[data-type="tree"] ul li [data-role="expander"].gj-tree-material-icons-expander {
+ul li [data-gj-role="expander"].gj-tree-material-icons-expander {
     width: 24px;
 }
 
-[data-type="tree"] ul li [data-role="expander"].gj-tree-font-awesome-expander {
+ul li [data-gj-role="expander"].gj-tree-font-awesome-expander {
     width: 24px;
 }
 
-[data-type="tree"] ul li [data-role="expander"].gj-tree-glyphicons-expander {
+ul li [data-gj-role="expander"].gj-tree-glyphicons-expander {
     width: 24px;
 }
 
-[data-type="tree"] ul li [data-role="expander"].gj-tree-glyphicons-expander .glyphicon {
+ul li [data-gj-role="expander"].gj-tree-glyphicons-expander .glyphicon {
     top: 4px;
     height: 24px;
 }
@@ -60,6 +60,24 @@ ul.gj-list li [data-role="expander"] {
     width: 100%;
 }
 
+.gj-tree-bootstrap-5 ul.gj-list-bootstrap li.active {
+    color: #fff;
+    background-color: rgb(13, 110, 253);
+}
+
+.gj-tree-bootstrap-5 ul.gj-list-bootstrap li.inactive {
+    color: unset;
+    background-color: unset;
+}
+
+.gj-tree-bootstrap-5 ul.gj-list-bootstrap li.disabled {
+    color: #868e96;
+}
+
+.gj-tree-bootstrap-5 ul.gj-list-bootstrap li ul.gj-list-bootstrap {
+    width: 100%;
+}
+
 .gj-tree-bootstrap-border ul.gj-list-bootstrap li {
     border: 1px solid #ddd;
 }
@@ -90,18 +108,18 @@ ul.gj-list li [data-role="expander"] {
     border-bottom-right-radius: 0px;
 }
 
-ul.gj-list-bootstrap li [data-role="expander"].gj-tree-material-icons-expander {
+ul.gj-list-bootstrap li [data-gj-role="expander"].gj-tree-material-icons-expander {
     padding-top: 8px;
     padding-bottom: 4px;
 }
 
-ul.gj-list-bootstrap li [data-role="expander"].gj-tree-material-icons-expander .gj-icon {
+ul.gj-list-bootstrap li [data-gj-role="expander"].gj-tree-material-icons-expander .gj-icon {
     width: 24px;
     height: 24px;
 }
 
 /* Material Design Theme */
-ul.gj-list-md li.disabled > [data-role="wrapper"] > [data-role="expander"] {
+ul.gj-list-md li.disabled > [data-gj-role="wrapper"] > [data-gj-role="expander"] {
     color: #9E9E9E; /* Gray 500 */
 }
 

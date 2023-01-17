@@ -13,7 +13,7 @@
  <button onclick="tree.enable(northAmerica, false)" class="gj-button-md">Enable North America</button>
  <button onclick="tree.disable(northAmerica, false)" class="gj-button-md">Disable North America</button>
  <br/><br/>
- <div id="tree" data-source="/Locations/Get"></div>
+ <ul id="tree" data-gj-source="/Locations/Get"></ul>
  <script>
      var tree, northAmerica;
      tree = new GijgoTree(document.getElementById('tree'), {
@@ -22,8 +22,8 @@
              northAmerica = tree.getNodeByText('North America');
          }
      });
-     tree.on('disable', function (e, node) {
-         alert(node.text() + ' is disabled.');
+     tree.on('disable', function (e) {
+         alert(e.detail.node.innerText + ' is disabled.');
      });
  </script>
 </body>

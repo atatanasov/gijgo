@@ -220,6 +220,8 @@ ul.gj-list li [data-gj-role="display"]:empty:before {
 ul.gj-list-bootstrap {
     padding-left: 0px;
     margin-bottom: 0px;
+    background: #fff;
+    color: rgb(33, 37, 41);
 }
 
 ul.gj-list-bootstrap li {
@@ -257,6 +259,7 @@ ul.gj-list-md {
     line-height: 24px;
     letter-spacing: 0;
     color: #616161; /* Gray 700 */
+    background: #fff;
 }
 
 ul.gj-list-md li {
@@ -310,7 +313,12 @@ ul.gj-list-md li.disabled>[data-gj-role="wrapper"]>[data-gj-role="display"] {
 
 .gj-list-md-active {
     background: #e0e0e0;
-    color: #3f51b5;
+    /* color: #3f51b5; */
+}
+
+.gj-list-md-inactive {
+    background: unset;
+    color: unset;
 }
 
 

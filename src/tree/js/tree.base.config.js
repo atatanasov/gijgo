@@ -61,12 +61,43 @@ gj.tree.config = {
         /** This setting enable cascade selection and unselection of children
          * @type boolean
          * @default false
-         * @example Sample <!-- tree -->
+         * @example Material.Design <!-- tree -->
          * <ul id="tree"></ul>
          * <script>
          *     new GijgoTree(document.getElementById('tree'), {
          *         dataSource: '/Locations/Get',
+         *         selectionType: 'multiple',
          *         cascadeSelection: true
+         *     });
+         * </script>
+         * @example Bootstrap.3 <!-- tree, bootstrap -->
+         * <ul id="tree"></ul>
+         * <script>
+         *     new GijgoTree(document.getElementById('tree'), {
+         *         dataSource: '/Locations/Get',
+         *         selectionType: 'multiple',
+         *         cascadeSelection: true,
+         *         uiLibrary: 'bootstrap'
+         *     });
+         * </script>
+         * @example Bootstrap.4 <!-- tree, bootstrap4 -->
+         * <ul id="tree"></ul>
+         * <script>
+         *     new GijgoTree(document.getElementById('tree'), {
+         *         dataSource: '/Locations/Get',
+         *         selectionType: 'multiple',
+         *         cascadeSelection: true,
+         *         uiLibrary: 'bootstrap4'
+         *     });
+         * </script>
+         * @example Bootstrap.5 <!-- tree, bootstrap5 -->
+         * <ul id="tree"></ul>
+         * <script>
+         *     new GijgoTree(document.getElementById('tree'), {
+         *         dataSource: '/Locations/Get',
+         *         selectionType: 'multiple',
+         *         cascadeSelection: true,
+         *         uiLibrary: 'bootstrap5'
          *     });
          * </script>
          */
@@ -105,8 +136,8 @@ gj.tree.config = {
          *     new GijgoTree(document.getElementById('tree'), {
          *         primaryKey: 'id',
          *         dataSource: [ { id: 101, text: 'foo', children: [ { id: 202, text: 'bar' } ] } ],
-         *         select: function (e, node, id) {
-         *             alert('Your key is ' + id);
+         *         select: function (e) {
+         *             alert('Your key is ' + e.detail.id);
          *         }
          *     });
          * </script>
@@ -116,8 +147,8 @@ gj.tree.config = {
          * <script>
          *     new GijgoTree(document.getElementById('tree'), {
          *         dataSource: [ { id: 101, text: 'foo', children: [ { id: 202, text: 'bar' } ] } ],
-         *         select: function (e, node, id) {
-         *             alert('Your key is ' + id);
+         *         select: function (e) {
+         *             alert('Your key is ' + e.detail.id);
          *         }
          *     });
          * </script>
@@ -155,7 +186,7 @@ gj.tree.config = {
         /** The name of the field that indicates if the node has children. Shows expand icon if the node has children.
          * @type string
          * @default 'hasChildren'
-         * @example Custom.FieldName <!-- tree -->
+         * @example Custom.FieldName <!-- jquery, tree -->
          * <ul id="tree"></ul>
          * <script>
          *     var continents, countries, states, tree;
@@ -178,18 +209,18 @@ gj.tree.config = {
          *         hasChildrenField: 'anyChildren',
          *         dataSource: continents
          *     });
-         *     tree.on('expand', function (e, $node, id) {
-         *         var i, children, record = tree.getDataById(id);
-         *         if (tree.getChildren($node).length === 0) {
+         *     tree.on('expand', function (e) {
+         *         var i, children, record = tree.getDataById(e.detail.id);
+         *         if (tree.getChildren(e.detail.node).length === 0) {
          *             if (record.type === 'continent') {
          *                 children = $.grep(countries, function (i) { return i.continent === record.text; });
          *                 for (i = 0; i < children.length; i++) {
-         *                     tree.addNode(children[i], $node);
+         *                     tree.addNode(children[i], e.detail.node);
          *                 }
          *             } else if (record.type === 'country') {
          *                 children = $.grep(states, function (i) { return i.country === record.text; });
          *                 for (i = 0; i < children.length; i++) {
-         *                     tree.addNode(children[i], $node);
+         *                     tree.addNode(children[i], e.detail.node);
          *                 }
          *             }
          *         }
@@ -317,6 +348,19 @@ gj.tree.config = {
          *         ]
          *     });
          * </script>
+         * @example Bootstrap.5 <!-- bootstrap5, checkbox, tree -->
+         * <ul id="tree"></ul>
+         * <script>
+         *     var tree = new GijgoTree(document.getElementById('tree'), {
+         *         uiLibrary: 'bootstrap5',
+         *         checkboxes: true,
+         *         dataSource: [ { text: 'foo', children: [
+         *                 { text: 'bar', disabled: true, children: [ { text: 'sub-bar' } ] },
+         *                 { text: 'bar2', disabled: false }
+         *             ] }
+         *         ]
+         *     });
+         * </script>
          */
         disabledField: 'disabled',
 
@@ -334,7 +378,7 @@ gj.tree.config = {
          *     });
          * </script>
          * @example HTML.Config <!-- bootstrap, tree -->
-         * <div id="tree" width="500" data-source="/Locations/Get" data-ui-library="bootstrap" data-border="true"></div>
+         * <ul id="tree" width="500" data-gj-source="/Locations/Get" data-gj-ui-library="bootstrap" data-gj-border="true"></ul>
          * <script>
          *     new GijgoTree(document.getElementById('tree'), );
          * </script>
@@ -483,6 +527,7 @@ gj.tree.config = {
             list: 'gj-list gj-list-md',
             item: undefined,
             active: 'gj-list-md-active',
+            inactive: 'gj-list-md-inactive',
             leafIcon: undefined,
             border: 'gj-tree-md-border'
         },
@@ -532,6 +577,7 @@ gj.tree.config = {
             list: 'gj-list gj-list-bootstrap list-group',
             item: 'list-group-item',
             active: 'active',
+            inactive: '',
             border: 'gj-tree-bootstrap-border'
         },
         iconsLibrary: 'glyphicons'
@@ -543,6 +589,22 @@ gj.tree.config = {
             list: 'gj-list gj-list-bootstrap',
             item: 'list-group-item',
             active: 'active',
+            inactive: '',
+            border: 'gj-tree-bootstrap-border'
+        },
+        icons: {
+            expand: '<i class="gj-icon plus" />',
+            collapse: '<i class="gj-icon minus" />'
+        }
+    },
+
+    bootstrap5: {
+        style: {
+            wrapper: 'gj-unselectable gj-tree-bootstrap-5',
+            list: 'gj-list gj-list-bootstrap',
+            item: 'list-group-item',
+            active: 'active',
+            inactive: 'inactive',
             border: 'gj-tree-bootstrap-border'
         },
         icons: {

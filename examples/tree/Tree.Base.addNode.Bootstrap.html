@@ -13,9 +13,9 @@
 <body style="padding: 8px;">
  <button onclick="append()" class="btn btn-default">Append To Asia</button>
  <br/><br/>
- <div id="tree" data-source="/Locations/Get" data-ui-library="bootstrap"></div>
+ <div id="tree" data-gj-source="/Locations/Get" data-gj-ui-library="bootstrap"></div>
  <script>
-     var parent, tree = new GijgoTree(document.getElementById('tree'), );
+     var parent, tree = new GijgoTree(document.getElementById('tree'));
      tree.on('dataBound', function () {
          parent = tree.getNodeByText('Asia');
          tree.off('dataBound');

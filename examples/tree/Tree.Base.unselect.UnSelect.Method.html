@@ -13,7 +13,7 @@
  <button onclick="tree.select(northAmerica)" class="gj-button-md">Select North America</button>
  <button onclick="tree.unselect(northAmerica)" class="gj-button-md">Unselect North America</button>
  <br/>
- <div id="tree" data-source="/Locations/Get"></div>
+ <ul id="tree" data-gj-source="/Locations/Get"></ul>
  <script>
      var tree, northAmerica;
      tree = new GijgoTree(document.getElementById('tree'), {

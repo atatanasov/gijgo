@@ -6,6 +6,7 @@
   <title>Example</title>
   <script src="../../dist/modular/js/core.js" type="text/javascript"></script>
   <link href="../../dist/modular/css/core.css" rel="stylesheet" type="text/css">
+  <script src="../../dist/libraries/jquery/jquery.js"></script>
   <link href="../../dist/modular/css/tree.css" rel="stylesheet" type="text/css">
   <script src="../../dist/modular/js/tree.js"></script>
 </head>
@@ -32,18 +33,18 @@
          hasChildrenField: 'anyChildren',
          dataSource: continents
      });
-     tree.on('expand', function (e, $node, id) {
-         var i, children, record = tree.getDataById(id);
-         if (tree.getChildren($node).length === 0) {
+     tree.on('expand', function (e) {
+         var i, children, record = tree.getDataById(e.detail.id);
+         if (tree.getChildren(e.detail.node).length === 0) {
              if (record.type === 'continent') {
                  children = $.grep(countries, function (i) { return i.continent === record.text; });
                  for (i = 0; i < children.length; i++) {
-                     tree.addNode(children[i], $node);
+                     tree.addNode(children[i], e.detail.node);
                  }
              } else if (record.type === 'country') {
                  children = $.grep(states, function (i) { return i.country === record.text; });
                  for (i = 0; i < children.length; i++) {
-                     tree.addNode(children[i], $node);
+                     tree.addNode(children[i], e.detail.node);
                  }
              }
          }

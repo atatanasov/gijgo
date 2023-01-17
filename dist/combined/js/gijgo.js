@@ -428,14 +428,16 @@ let gj = {};
         el.style[prop] = val;
     },
 
-    wrap: function(el, tagName) {
+    wrap: function(el, tagName, config) {
         let wrapper = el.parentNode.getAttribute('data-gj-role') === 'wrapper' ? el.parentNode : null;
         if (!wrapper) {
             wrapper = document.createElement(tagName);
             el.parentNode.insertBefore(wrapper, el);
             wrapper.appendChild(el);
         }
-        gj.core.addClasses(wrapper, this.getConfig().style.wrapper);
+        if (config) {
+            gj.core.addClasses(wrapper, config.style.wrapper);
+        }
         wrapper.setAttribute('data-gj-role', 'wrapper');
         return wrapper;
     },
@@ -446,6 +448,51 @@ let gj = {};
             wrapper.parentNode.insertBefore(el, wrapper);
             wrapper.remove();
         }
+    },
+
+    select: function(el, expression) {
+        let result = null,
+            tags = expression.split('>'),
+            children = el.children,
+            tagName, attr, attrVal;
+        for (const tag of tags) {
+            tagName = tag.substring(0, tag.indexOf('['));
+            attr = tag.substring(tag.indexOf('[') + 1, tag.indexOf('='));
+            attrVal = tag.substring(tag.indexOf('=') + 2, tag.lastIndexOf('"'));
+            for (const chld of children) {
+                if ((!tagName || chld.tagName.toUpperCase() === tagName.toUpperCase())
+                 && (!(attr && attrVal) || chld.getAttribute(attr) == attrVal)) {
+                    result = chld;
+                    children = chld.children;
+                    break;
+                } else {
+                    result = null;
+                }
+            }
+        }
+        return result;
+    },
+
+    selectAll: function(el, expression) {
+        let result = [],
+            tags = expression.split('>'),
+            children = el.children,
+            tagName, attr, attrVal;
+        for (const tag of tags) {
+            tagName = tag.substring(0, tag.indexOf('['));
+            attr = tag.substring(tag.indexOf('[') + 1, tag.indexOf('='));
+            attrVal = tag.substring(tag.indexOf('=') + 2, tag.lastIndexOf('"'));
+            for (const chld of children) {
+                if ((!tagName || chld.tagName.toUpperCase() === tagName.toUpperCase())
+                 && (!(attr && attrVal) || chld.getAttribute(attr) == attrVal)) {
+                    if (tag == tags[tags.length - 1]) {
+                        result.push(chld);
+                    }
+                    children = chld.children;
+                }
+            }
+        }
+        return result;
     }
 };
 
@@ -567,7 +614,7 @@ gj.widget = function () {
     };
 
     self.wrap = function(tagName) {
-        return gj.core.wrap(this.element, tagName);
+        return gj.core.wrap(this.element, tagName, this.getConfig());
     };
 
     self.unwrap = function() {
@@ -602,7 +649,7 @@ gj.widget.prototype.init = function (jsConfig) {
     return this;
 };
 
-gj.widget.prototype.readConfig = function (clientConfig, type) {
+gj.widget.prototype.readConfig = function (clientConfig) {
     let config, uiLibrary, iconsLibrary, plugin, type = this.type;
 
     config = this.extend({}, gj[type].config.base);
@@ -4503,8 +4550,8 @@ gj.grid.methods = {
         return this;
     },
 
-    readConfig: function (jsConfig, type) {
-        let config = gj.widget.prototype.readConfig.call(this, jsConfig, type);
+    readConfig: function (jsConfig) {
+        let config = gj.widget.prototype.readConfig.call(this, jsConfig);
         gj.grid.methods.setDefaultColumnConfig(config.columns, config.defaultColumnSettings);
         return config;
     },
@@ -10376,12 +10423,43 @@ gj.tree.config = {
         /** This setting enable cascade selection and unselection of children
          * @type boolean
          * @default false
-         * @example Sample <!-- tree -->
+         * @example Material.Design <!-- tree -->
          * <ul id="tree"></ul>
          * <script>
          *     new GijgoTree(document.getElementById('tree'), {
          *         dataSource: '/Locations/Get',
+         *         selectionType: 'multiple',
          *         cascadeSelection: true
+         *     });
+         * </script>
+         * @example Bootstrap.3 <!-- tree, bootstrap -->
+         * <ul id="tree"></ul>
+         * <script>
+         *     new GijgoTree(document.getElementById('tree'), {
+         *         dataSource: '/Locations/Get',
+         *         selectionType: 'multiple',
+         *         cascadeSelection: true,
+         *         uiLibrary: 'bootstrap'
+         *     });
+         * </script>
+         * @example Bootstrap.4 <!-- tree, bootstrap4 -->
+         * <ul id="tree"></ul>
+         * <script>
+         *     new GijgoTree(document.getElementById('tree'), {
+         *         dataSource: '/Locations/Get',
+         *         selectionType: 'multiple',
+         *         cascadeSelection: true,
+         *         uiLibrary: 'bootstrap4'
+         *     });
+         * </script>
+         * @example Bootstrap.5 <!-- tree, bootstrap5 -->
+         * <ul id="tree"></ul>
+         * <script>
+         *     new GijgoTree(document.getElementById('tree'), {
+         *         dataSource: '/Locations/Get',
+         *         selectionType: 'multiple',
+         *         cascadeSelection: true,
+         *         uiLibrary: 'bootstrap5'
          *     });
          * </script>
          */
@@ -10420,8 +10498,8 @@ gj.tree.config = {
          *     new GijgoTree(document.getElementById('tree'), {
          *         primaryKey: 'id',
          *         dataSource: [ { id: 101, text: 'foo', children: [ { id: 202, text: 'bar' } ] } ],
-         *         select: function (e, node, id) {
-         *             alert('Your key is ' + id);
+         *         select: function (e) {
+         *             alert('Your key is ' + e.detail.id);
          *         }
          *     });
          * </script>
@@ -10431,8 +10509,8 @@ gj.tree.config = {
          * <script>
          *     new GijgoTree(document.getElementById('tree'), {
          *         dataSource: [ { id: 101, text: 'foo', children: [ { id: 202, text: 'bar' } ] } ],
-         *         select: function (e, node, id) {
-         *             alert('Your key is ' + id);
+         *         select: function (e) {
+         *             alert('Your key is ' + e.detail.id);
          *         }
          *     });
          * </script>
@@ -10470,7 +10548,7 @@ gj.tree.config = {
         /** The name of the field that indicates if the node has children. Shows expand icon if the node has children.
          * @type string
          * @default 'hasChildren'
-         * @example Custom.FieldName <!-- tree -->
+         * @example Custom.FieldName <!-- jquery, tree -->
          * <ul id="tree"></ul>
          * <script>
          *     var continents, countries, states, tree;
@@ -10493,18 +10571,18 @@ gj.tree.config = {
          *         hasChildrenField: 'anyChildren',
          *         dataSource: continents
          *     });
-         *     tree.on('expand', function (e, $node, id) {
-         *         var i, children, record = tree.getDataById(id);
-         *         if (tree.getChildren($node).length === 0) {
+         *     tree.on('expand', function (e) {
+         *         var i, children, record = tree.getDataById(e.detail.id);
+         *         if (tree.getChildren(e.detail.node).length === 0) {
          *             if (record.type === 'continent') {
          *                 children = $.grep(countries, function (i) { return i.continent === record.text; });
          *                 for (i = 0; i < children.length; i++) {
-         *                     tree.addNode(children[i], $node);
+         *                     tree.addNode(children[i], e.detail.node);
          *                 }
          *             } else if (record.type === 'country') {
          *                 children = $.grep(states, function (i) { return i.country === record.text; });
          *                 for (i = 0; i < children.length; i++) {
-         *                     tree.addNode(children[i], $node);
+         *                     tree.addNode(children[i], e.detail.node);
          *                 }
          *             }
          *         }
@@ -10632,6 +10710,19 @@ gj.tree.config = {
          *         ]
          *     });
          * </script>
+         * @example Bootstrap.5 <!-- bootstrap5, checkbox, tree -->
+         * <ul id="tree"></ul>
+         * <script>
+         *     var tree = new GijgoTree(document.getElementById('tree'), {
+         *         uiLibrary: 'bootstrap5',
+         *         checkboxes: true,
+         *         dataSource: [ { text: 'foo', children: [
+         *                 { text: 'bar', disabled: true, children: [ { text: 'sub-bar' } ] },
+         *                 { text: 'bar2', disabled: false }
+         *             ] }
+         *         ]
+         *     });
+         * </script>
          */
         disabledField: 'disabled',
 
@@ -10649,7 +10740,7 @@ gj.tree.config = {
          *     });
          * </script>
          * @example HTML.Config <!-- bootstrap, tree -->
-         * <div id="tree" width="500" data-source="/Locations/Get" data-ui-library="bootstrap" data-border="true"></div>
+         * <ul id="tree" width="500" data-gj-source="/Locations/Get" data-gj-ui-library="bootstrap" data-gj-border="true"></ul>
          * <script>
          *     new GijgoTree(document.getElementById('tree'), );
          * </script>
@@ -10798,6 +10889,7 @@ gj.tree.config = {
             list: 'gj-list gj-list-md',
             item: undefined,
             active: 'gj-list-md-active',
+            inactive: 'gj-list-md-inactive',
             leafIcon: undefined,
             border: 'gj-tree-md-border'
         },
@@ -10847,6 +10939,7 @@ gj.tree.config = {
             list: 'gj-list gj-list-bootstrap list-group',
             item: 'list-group-item',
             active: 'active',
+            inactive: '',
             border: 'gj-tree-bootstrap-border'
         },
         iconsLibrary: 'glyphicons'
@@ -10858,6 +10951,22 @@ gj.tree.config = {
             list: 'gj-list gj-list-bootstrap',
             item: 'list-group-item',
             active: 'active',
+            inactive: '',
+            border: 'gj-tree-bootstrap-border'
+        },
+        icons: {
+            expand: '<i class="gj-icon plus" />',
+            collapse: '<i class="gj-icon minus" />'
+        }
+    },
+
+    bootstrap5: {
+        style: {
+            wrapper: 'gj-unselectable gj-tree-bootstrap-5',
+            list: 'gj-list gj-list-bootstrap',
+            item: 'list-group-item',
+            active: 'active',
+            inactive: 'inactive',
             border: 'gj-tree-bootstrap-border'
         },
         icons: {
@@ -10912,13 +11021,13 @@ gj.tree.events = {
      *             alert('initialized is fired.');
      *         }
      *     });
-     *     $('#reload').on('click', function() { 
-     *         tree.reload(); 
+     *     document.getElementById('reload').addEventListener('click', function() { 
+     *         tree.reload();
      *     });
      * </script>
      */
-    initialized: function ($tree) {
-        $tree.triggerHandler('initialized');
+    initialized: function (el) {
+        el.dispatchEvent(new Event('initialized'));
     },
 
     /**
@@ -10936,8 +11045,8 @@ gj.tree.events = {
      *     });
      * </script>
      */
-    dataBinding: function ($tree) {
-        $tree.triggerHandler('dataBinding');
+    dataBinding: function (el) {
+        el.dispatchEvent(new Event('dataBinding'));
     },
 
     /**
@@ -10955,8 +11064,8 @@ gj.tree.events = {
      *     });
      * </script>
      */
-    dataBound: function ($tree) {
-        $tree.triggerHandler('dataBound');
+    dataBound: function (el) {
+        el.dispatchEvent(new Event('dataBound'));
     },
 
     /**
@@ -10967,16 +11076,16 @@ gj.tree.events = {
      * @param {string} id - the id of the record
      * @example Event.Sample <!-- tree -->
      * <p>Select tree node in order to fire the event.</p>
-     * <div id="tree" data-source="/Locations/Get"></div>
+     * <ul id="tree" data-gj-source="/Locations/Get"></ul>
      * <script>
-     *     var tree = new GijgoTree(document.getElementById('tree'), );
-     *     tree.on('select', function (e, node, id) {
-     *         alert('select is fired for node with id=' + id);
+     *     var tree = new GijgoTree(document.getElementById('tree'));
+     *     tree.on('select', function (e) {
+     *         alert('select is fired for node with id=' + e.detail.id);
      *     });
      * </script>
      */
-    select: function ($tree, $node, id) {
-        return $tree.triggerHandler('select', [$node, id]);
+    select: function (el, node, id) {
+        return el.dispatchEvent(new CustomEvent('select', { detail: { node: node, id: id } }));
     },
 
     /**
@@ -10987,16 +11096,16 @@ gj.tree.events = {
      * @param {string} id - the id of the record
      * @example Event.Sample <!-- tree -->
      * <p>Select/Unselect tree node in order to fire the event.</p>
-     * <div id="tree" data-source="/Locations/Get"></div>
+     * <ul id="tree" data-gj-source="/Locations/Get" data-gj-selection-type="multiple"></ul>
      * <script>
-     *     var tree = new GijgoTree(document.getElementById('tree'), );
-     *     tree.on('unselect', function (e, node, id) {
-     *         alert('unselect is fired for node with id=' + id);
+     *     var tree = new GijgoTree(document.getElementById('tree'));
+     *     tree.on('unselect', function (e) {
+     *         alert('unselect is fired for node with id=' + e.detail.id);
      *     });
      * </script>
      */
-    unselect: function ($tree, $node, id) {
-        return $tree.triggerHandler('unselect', [$node, id]);
+    unselect: function (el, node, id) {
+        return el.dispatchEvent(new CustomEvent('unselect', { detail: { node: node, id: id } }));
     },
 
     /**
@@ -11006,16 +11115,16 @@ gj.tree.events = {
      * @param {object} node - the node as jquery object
      * @param {string} id - the id of the record
      * @example Event.Sample <!-- tree -->
-     * <div id="tree" data-source="/Locations/Get"></div>
+     * <ul id="tree" data-gj-source="/Locations/Get"></ul>
      * <script>
-     *     var tree = new GijgoTree(document.getElementById('tree'), );
+     *     var tree = new GijgoTree(document.getElementById('tree'));
      *     tree.on('expand', function (e, node, id) {
      *         alert('expand is fired.');
      *     });
      * </script>
      */
-    expand: function ($tree, $node, id) {
-        return $tree.triggerHandler('expand', [$node, id]);
+    expand: function (el, node, id) {
+        return el.dispatchEvent(new CustomEvent('expand', { detail: { node: node, id: id } }));
     },
 
     /**
@@ -11025,16 +11134,16 @@ gj.tree.events = {
      * @param {object} node - the node as jquery object
      * @param {string} id - the id of the record
      * @example Event.Sample <!-- tree -->
-     * <div id="tree" data-source="/Locations/Get"></div>
+     * <ul id="tree" data-gj-source="/Locations/Get"></ul>
      * <script>
-     *     var tree = new GijgoTree(document.getElementById('tree'), );
+     *     var tree = new GijgoTree(document.getElementById('tree'));
      *     tree.on('collapse', function (e, node, id) {
      *         alert('collapse is fired.');
      *     });
      * </script>
      */
-    collapse: function ($tree, $node, id) {
-        return $tree.triggerHandler('collapse', [$node, id]);
+    collapse: function (el, node, id) {
+        return el.dispatchEvent(new CustomEvent('collapse', { detail: { node: node, id: id } }));
     },
 
     /**
@@ -11046,7 +11155,7 @@ gj.tree.events = {
      * <button onclick="tree.enable(northAmerica, false)" class="gj-button-md">Enable North America</button>
      * <button onclick="tree.disable(northAmerica, false)" class="gj-button-md">Disable North America</button>
      * <br/><br/>
-     * <div id="tree" data-source="/Locations/Get"></div>
+     * <ul id="tree" data-gj-source="/Locations/Get"></ul>
      * <script>
      *     var tree, northAmerica;
      *     tree = new GijgoTree(document.getElementById('tree'), {
@@ -11055,13 +11164,13 @@ gj.tree.events = {
      *             northAmerica = tree.getNodeByText('North America');
      *         }
      *     });
-     *     tree.on('enable', function (e, node) {
-     *         alert(node.text() + ' is enabled.');
+     *     tree.on('enable', function (e) {
+     *         alert(e.detail.node.innerText + ' is enabled.');
      *     });
      * </script>
      */
-    enable: function ($tree, $node) {
-        return $tree.triggerHandler('enable', [$node]);
+    enable: function (el, node) {
+        return el.dispatchEvent(new CustomEvent('enable', { detail: { node: node } }));
     },
 
     /**
@@ -11073,7 +11182,7 @@ gj.tree.events = {
      * <button onclick="tree.enable(northAmerica, false)" class="gj-button-md">Enable North America</button>
      * <button onclick="tree.disable(northAmerica, false)" class="gj-button-md">Disable North America</button>
      * <br/><br/>
-     * <div id="tree" data-source="/Locations/Get"></div>
+     * <ul id="tree" data-gj-source="/Locations/Get"></ul>
      * <script>
      *     var tree, northAmerica;
      *     tree = new GijgoTree(document.getElementById('tree'), {
@@ -11082,13 +11191,13 @@ gj.tree.events = {
      *             northAmerica = tree.getNodeByText('North America');
      *         }
      *     });
-     *     tree.on('disable', function (e, node) {
-     *         alert(node.text() + ' is disabled.');
+     *     tree.on('disable', function (e) {
+     *         alert(e.detail.node.innerText + ' is disabled.');
      *     });
      * </script>
      */
-    disable: function ($tree, $node) {
-        return $tree.triggerHandler('disable', [$node]);
+    disable: function (el, node) {
+        return el.dispatchEvent(new CustomEvent('disable', { detail: { node: node } }));
     },
 
     /**
@@ -11098,16 +11207,16 @@ gj.tree.events = {
      * @example Event.Sample <!-- tree -->
      * <button onclick="tree.destroy()" class="gj-button-md">Destroy</button>
      * <br/><br/>
-     * <div id="tree" data-source="/Locations/Get"></div>
+     * <ul id="tree" data-gj-source="/Locations/Get"></ul>
      * <script>
-     *     var tree = new GijgoTree(document.getElementById('tree'), );
+     *     var tree = new GijgoTree(document.getElementById('tree'));
      *     tree.on('destroying', function (e) {
      *         alert('destroying is fired.');
      *     });
      * </script>
      */
-    destroying: function ($tree) {
-        return $tree.triggerHandler('destroying');
+    destroying: function (el) {
+        return el.dispatchEvent(new Event('destroying'));
     },
 
     /**
@@ -11118,18 +11227,18 @@ gj.tree.events = {
      * @param {string} id - the id of the record
      * @param {object} record - the data of the node record
      * @example Event.Sample <!-- tree -->
-     * <div id="tree" data-source="/Locations/Get"></div>
+     * <ul id="tree" data-gj-source="/Locations/Get"></ul>
      * <script>
-     *     var tree = new GijgoTree(document.getElementById('tree'), );
-     *     tree.on('nodeDataBound', function (e, node, id, record) {
-     *         if ((parseInt(id, 10) % 2) === 0) {
-     *             node.css('background-color', 'red');
+     *     var tree = new GijgoTree(document.getElementById('tree'));
+     *     tree.on('nodeDataBound', function (e) {
+     *         if ((parseInt(e.detail.id, 10) % 2) === 0) {
+     *             e.detail.node.style.backgroundColor = 'red';
      *         }
      *     });
      * </script>
      */
-    nodeDataBound: function ($tree, $node, id, record) {
-        return $tree.triggerHandler('nodeDataBound', [$node, id, record]);
+    nodeDataBound: function (el, node, id, record) {
+        return el.dispatchEvent(new CustomEvent('nodeDataBound', { detail: { node: node, id: id, record: record } }));
     }
 }
 /*global gj $*/
@@ -11148,12 +11257,13 @@ gj.tree.methods = {
 
     initialize: function () {
         let data = this.getConfig(),
-            wrapper = this.wrap('div');;
+            wrapper = this.wrap('div');
 
         gj.core.addClasses(this.element, data.style.list);
         gj.core.addClasses(wrapper, data.style.wrapper);
+        this.element.setAttribute('data-gj-type', this.type);
         if (data.width) {
-            this.width(data.width);
+            gj.core.css(wrapper, 'width', data.width);
         }
         if (data.border) {
             gj.core.addClasses(wrapper, data.style.border);
@@ -11198,7 +11308,7 @@ gj.tree.methods = {
     loadData: function (tree) {
         let i, records = tree.getRecords();
 
-        gj.tree.events.dataBinding(tree);
+        gj.tree.events.dataBinding(tree.element);
         //TODO: tree.element.off()
         tree.element.innerHTML = '';
         for (i = 0; i < records.length; i++) {
@@ -11306,17 +11416,17 @@ gj.tree.methods = {
 
     expand: function (tree, node, cascade) {
         let children, i,
-            expander = node.querySelector('>[data-gj-role="wrapper"]>[data-gj-role="expander"]'),
+            expander = gj.core.select(node, '[data-gj-role="wrapper"]>[data-gj-role="expander"]'),
             data = tree.getConfig(),
             id = node.getAttribute('data-gj-id'),
-            list = node.querySelector('>ul');
+            list = node.querySelector('ul');
 
-        if (gj.tree.events.expand(tree.element, node, id) !== false && list && list.length) {
+        if (gj.tree.events.expand(tree.element, node, id) !== false && list) {
             list.style.display = 'block';
             expander.setAttribute('data-gj-mode', 'open');
             expander.innerHTML = data.icons.collapse;
             if (cascade) {
-                children = node.querySelector('>ul>li');
+                children = node.querySelectorAll('ul>li');
                 for (i = 0; i < children.length; i++) {
                     gj.tree.methods.expand(tree, children[i], cascade);
                 }
@@ -11327,16 +11437,17 @@ gj.tree.methods = {
 
     collapse: function (tree, node, cascade) {
         let children, i,
-            expander = node.querySelector('>[data-gj-role="wrapper"]>[data-gj-role="expander"]'),
+            expander = gj.core.select(node, '[data-gj-role="wrapper"]>[data-gj-role="expander"]'),
             data = tree.getConfig(),
             id = node.getAttribute('data-gj-id'),
-            list = node.children('ul');
-        if (gj.tree.events.collapse(tree, node, id) !== false && list && list.length) {
+            list = node.querySelector('ul');
+
+        if (gj.tree.events.collapse(tree.element, node, id) !== false && list) {
             list.style.display = 'none';
             expander.setAttribute('data-gj-mode', 'close');
             expander.innerHTML = data.icons.expand;
             if (cascade) {
-                children = node.find('>ul>li>[data-gj-role="wrapper"]>span[data-gj-mode="open"]');
+                children = node.querySelectorAll('ul>li>[data-gj-role="wrapper"]>span[data-gj-mode="open"]');
                 for (i = 0; i < children.length; i++) {
                     gj.tree.methods.collapse(tree, children[i], cascade);
                 }
@@ -11346,15 +11457,15 @@ gj.tree.methods = {
     },
 
     expandAll: function (tree) {
-        let i, nodes = tree.find('ul>li');
+        let i, nodes = gj.core.selectAll(tree.element, 'li');
         for (i = 0; i < nodes.length; i++) {
-            gj.tree.methods.expand(tree, $(nodes[i]), true);
+            gj.tree.methods.expand(tree, nodes[i], true);
         }
         return tree;
     },
 
     collapseAll: function (tree) {
-        let i, nodes = tree.querySelectorAll('>ul>li>[data-gj-role="wrapper"]>span[data-gj-mode="open"]');
+        let i, nodes = gj.core.selectAll(tree.element, 'li');
         for (i = 0; i < nodes.length; i++) {
             gj.tree.methods.collapse(tree, nodes[i], true);
         }
@@ -11387,20 +11498,28 @@ gj.tree.methods = {
     },
 
     select: function (tree, node, cascade) {
-        let i, children, data = tree.getConfig();
-        if (node.getAttribute('data-gj-selected') !== 'true' && gj.tree.events.select(tree, node, node.getAttribute('data-gj-id')) !== false) {
-            node.addClass(data.style.active).attr('data-gj-selected', 'true');
-            if (cascade) {
-                children = node.querySelectorAll('ul>li');
-                for (i = 0; i < children.length; i++) {
-                    gj.tree.methods.select(tree, $(children[i]), cascade);
+        let data = tree.getConfig(),
+            allowEvent = gj.tree.events.select(tree.element, node, node.getAttribute('data-gj-id')) !== false;
+        if (node.getAttribute('data-gj-selected') !== 'true' && allowEvent) {
+            gj.core.removeClasses(node, data.style.inactive);
+            gj.core.addClasses(node, data.style.active);
+            node.setAttribute('data-gj-selected', 'true');
+        }
+        if (cascade && allowEvent) {
+            for (let i = 0; i < node.children.length; i++) {
+                if (node.children[i].tagName.toUpperCase() === 'UL') {
+                    for (let j = 0; j < node.children[i].children.length; j++) {
+                        if (node.children[i].children[j].tagName.toUpperCase() === 'LI') {
+                            gj.tree.methods.select(tree, node.children[i].children[j], cascade);
+                        }
+                    }
                 }
             }
         }
     },
     
     unselectAll: function (tree) {
-        let i, nodes = tree.querySelectorAll('>ul>li');
+        let i, nodes = tree.element.querySelectorAll('ul:first-child>li');
         for (i = 0; i < nodes.length; i++) {
             gj.tree.methods.unselect(tree, nodes[i], true);
         }
@@ -11408,33 +11527,33 @@ gj.tree.methods = {
     },
 
     unselect: function (tree, node, cascade) {
-        let i, children, data = tree.getConfig();
-        if (node.getAttribute('data-gj-selected') === 'true' && gj.tree.events.unselect(tree, node, node.getAttribute('data-gj-id')) !== false) {
-            gj.core.removeClasses(node, data.style.active)
+        let data = tree.getConfig(),
+            allowEvent = gj.tree.events.unselect(tree.element, node, node.getAttribute('data-gj-id')) !== false;
+        if (node.getAttribute('data-gj-selected') === 'true' && allowEvent) {
+            gj.core.removeClasses(node, data.style.active);
+            gj.core.addClasses(node, data.style.inactive);
             node.removeAttribute('data-gj-selected');
-            if (cascade) {
-                children = node.querySelectorAll('>ul>li');
-                for (i = 0; i < children.length; i++) {
-                    gj.tree.methods.unselect(tree, children[i], cascade);
+        }
+        if (cascade && allowEvent) {
+            for (let i = 0; i < node.children.length; i++) {
+                if (node.children[i].tagName.toUpperCase() === 'UL') {
+                    for (let j = 0; j < node.children[i].children.length; j++) {
+                        if (node.children[i].children[j].tagName.toUpperCase() === 'LI') {
+                            gj.tree.methods.unselect(tree, node.children[i].children[j], cascade);
+                        }
+                    }
                 }
             }
         }
     },
 
     getSelections: function (list) {
-        let i, node, children,
-            result = [],
-            nodes = list.children;
+        let result = [],
+            nodes = list.querySelectorAll('li');
         if (nodes && nodes.length) {
-            for (i = 0; i < nodes.length; i++) {
-                node = $(nodes[i]);
-                if (node.getAttribute('data-gj-selected') === 'true') {
-                    result.push(node.getAttribute('data-gj-id'));
-                } else if (node.has('ul')) {
-                    children = gj.tree.methods.getSelections(node.querySelector('>ul'));
-                    if (children.length) {
-                        result = result.concat(children);
-                    }
+            for (let i = 0; i < nodes.length; i++) {
+                if (nodes[i].getAttribute('data-gj-selected') === 'true') {
+                    result.push(nodes[i].getAttribute('data-gj-id'));
                 }
             }
         }
@@ -11482,18 +11601,13 @@ gj.tree.methods = {
     getNodeById: function (list, id) {
         let i, node,
             result = undefined,
-            nodes = list.children('li');
+            nodes = list.querySelectorAll('li');
         if (nodes && nodes.length) {
             for (i = 0; i < nodes.length; i++) {
-                node = $(nodes[i]);
+                node = nodes[i];
                 if (id == node.getAttribute('data-gj-id')) {
                     result = node;
                     break;
-                } else if (node.has('ul')) {
-                    result = gj.tree.methods.getNodeById(node.querySelector('>ul'), id);
-                    if (result) {
-                        break;
-                    }
                 }
             }
         }
@@ -11503,18 +11617,13 @@ gj.tree.methods = {
     getNodeByText: function (list, text) {
         let i, node,
             result = undefined,
-            nodes = list.children('li');
+            nodes = list.querySelectorAll('li');
         if (nodes && nodes.length) {
             for (i = 0; i < nodes.length; i++) {
-                node = $(nodes[i]);
-                if (text === node.querySelector('>[data-gj-role="wrapper"]>[data-gj-role="display"]').innerText) {
+                node = nodes[i];
+                if (text === gj.core.select(node, '[data-gj-role="wrapper"]>[data-gj-role="display"]').innerText) {
                     result = node;
                     break;
-                } else if (node.has('ul')) {
-                    result = gj.tree.methods.getNodeByText(node.querySelector('>ul'), text);
-                    if (result) {
-                        break;
-                    }
                 }
             }
         }
@@ -11522,18 +11631,20 @@ gj.tree.methods = {
     },
 
     addNode: function (tree, nodeData, parent, position) {
-        let level, record, data = tree.getConfig();
+        let level, record, records, data = tree.getConfig();
 
-        if (!parent || !parent.length) {
-            parent = tree.children('ul');
-            tree.setRecords(tree.getRecords().push(nodeData));
+        if (!parent) {
+            parent = tree.element;
+            records = tree.getRecords();
+            records.push(nodeData)
+            tree.setRecords(records);
         } else {
-            if (parent[0].tagName.toLowerCase() === 'li') {
-                if (parent.querySelectorAll('>ul').length === 0) {
+            if (parent.tagName.toUpperCase() === 'LI') {
+                if (!parent.querySelector('ul')) {
                     parent.querySelector('[data-gj-role="expander"]').innerHTML = data.icons.collapse;
                     parent.appendChild(gj.core.addClasses(document.createElement('ul'), data.style.list));
                 }
-                parent = parent.querySelector('>ul');
+                parent = parent.querySelector('ul');
             }
             record = tree.getDataById(parent.parentNode.getAttribute('data-gj-id'));
             if (!record[data.childrenField]) {
@@ -11541,7 +11652,7 @@ gj.tree.methods = {
             }
             record[data.childrenField].push(nodeData);
         }
-        level = gj.tree.getLevel(parent);
+        level = gj.tree.methods.getLevel(parent);
         if (!data.primaryKey) {
             gj.tree.methods.genAutoId(data, [nodeData]);
         }
@@ -11553,10 +11664,11 @@ gj.tree.methods = {
 
     getLevel: function(node) {
         let count = 1, el = node.parentNode;
-        while (el && el.getAttribute('data-gj-type') !== 'tree') {
+        while (el && (el.getAttribute('data-gj-type') !== 'tree') && (node.getAttribute('data-gj-type') !== 'tree')) {
             count++;
             el = el.parentNode;
         }
+        return count;
     },
 
     remove: function (tree, node) {
@@ -11590,14 +11702,14 @@ gj.tree.methods = {
         return tree;
     },
 
-    getChildren: function (tree, node, cascade) {
-        let result = [], i, children,
-            cascade = typeof (cascade) === 'undefined' ? true : cascade;
-
+    getChildren: function (node, cascade) {
+        let result = [], i, children;
+        
+        cascade = typeof (cascade) === 'undefined' ? true : cascade;
         if (cascade) {
             children = node.querySelectorAll('ul li');
         } else {
-            children = node.querySelectorAll('>ul>li');
+            children = node.querySelectorAll('ul:first-child>li');
         }
 
         for (i = 0; i < children.length; i++) {
@@ -11617,14 +11729,14 @@ gj.tree.methods = {
 
     enableNode: function (tree, node, cascade) {
         let i, children,
-            expander = node.querySelector('>[data-gj-role="wrapper"]>[data-gj-role="expander"]'),
-            display = node.querySelector('>[data-gj-role="wrapper"]>[data-gj-role="display"]'),
-            cascade = typeof (cascade) === 'undefined' ? true : cascade;
-
+            expander = gj.core.select(node, '[data-gj-role="wrapper"]>[data-gj-role="expander"]'),
+            display = gj.core.select(node, '[data-gj-role="wrapper"]>[data-gj-role="display"]');
+        
+        cascade = typeof (cascade) === 'undefined' ? true : cascade;
         node.classList.remove('disabled');
         expander.addEventListener('click', gj.tree.methods.expanderClickHandler(tree));
         display.addEventListener('click', gj.tree.methods.displayClickHandler(tree));
-        gj.tree.events.enable(tree, node);
+        gj.tree.events.enable(tree.element, node);
         if (cascade) {
             children = node.querySelectorAll('ul>li');
             for (i = 0; i < children.length; i++) {
@@ -11643,10 +11755,10 @@ gj.tree.methods = {
 
     disableNode: function (tree, node, cascade) {
         let i, children,
-            expander = node.querySelector('>[data-gj-role="wrapper"]>[data-gj-role="expander"]'),
-            display = node.querySelector('>[data-gj-role="wrapper"]>[data-gj-role="display"]'),
-            cascade = typeof (cascade) === 'undefined' ? true : cascade;
-
+            expander = node.querySelector('[data-gj-role="wrapper"]>[data-gj-role="expander"]'),
+            display = node.querySelector('[data-gj-role="wrapper"]>[data-gj-role="display"]');
+        
+        cascade = typeof (cascade) === 'undefined' ? true : cascade;
         node.classList.add('disabled');
         //TODO: expander.off('click');
         //TODO: display.off('click');
@@ -11665,10 +11777,11 @@ gj.tree.methods = {
             gj.tree.events.destroying(tree.element);
             tree.xhr && tree.xhr.abort();
             //TODO: tree.off();
-            tree.removeData();
-            tree.removeAttribute('data-gj-type');
-            tree.removeClass()
-            tree.innerHTML = '';
+            tree.removeConfig();
+            tree.element.removeAttribute('data-gj-guid');
+            tree.element.removeAttribute('data-gj-type');
+            tree.element.setAttribute('class', '');
+            tree.element.innerHTML = '';
         }
         return tree;
     },
@@ -11696,7 +11809,7 @@ gj.tree.methods = {
   */
 GijgoTree = function (element, jsConfig) {
     var self = this,
-        methods = gj.datepicker.methods;
+        methods = gj.tree.methods;
 
     self.type = 'tree';
     self.element = element;
@@ -11743,9 +11856,9 @@ GijgoTree = function (element, jsConfig) {
      * <ul id="tree"></ul>
      * <script>
      *     var tree, onSuccessFunc;
-     *     onSuccessFunc = function (response) {
+     *     onSuccessFunc = function () {
      *         //you can modify the response here if needed
-     *         tree.render(response);
+     *         tree.render(this.response);
      *     };
      *     tree = new GijgoTree(document.getElementById('tree'), {
      *         dataSource: { url: '/Locations/Get', success: onSuccessFunc }
@@ -11766,9 +11879,9 @@ GijgoTree = function (element, jsConfig) {
      * @example Append.ToRoot <!-- tree -->
      * <button onclick="append()" class="gj-button-md">Append To Root</button>
      * <br/>
-     * <div id="tree" data-source="/Locations/Get"></div>
+     * <ul id="tree" data-gj-source="/Locations/Get"></ul>
      * <script>
-     *     var tree = new GijgoTree(document.getElementById('tree'), );
+     *     var tree = new GijgoTree(document.getElementById('tree'));
      *     function append() {
      *         tree.addNode({ text: 'New Node' });
      *     }
@@ -11776,9 +11889,9 @@ GijgoTree = function (element, jsConfig) {
      * @example Append.Parent <!-- tree -->
      * <button onclick="append()" class="gj-button-md">Append To Asia</button>
      * <br/>
-     * <div id="tree" data-source="/Locations/Get"></div>
+     * <ul id="tree" data-gj-source="/Locations/Get"></ul>
      * <script>
-     *     var parent, tree = new GijgoTree(document.getElementById('tree'), );
+     *     var parent, tree = new GijgoTree(document.getElementById('tree'));
      *     tree.on('dataBound', function () {
      *         parent = tree.getNodeByText('Asia');
      *         tree.off('dataBound');
@@ -11790,9 +11903,9 @@ GijgoTree = function (element, jsConfig) {
      * @example Bootstrap <!-- bootstrap, tree -->
      * <button onclick="append()" class="btn btn-default">Append To Asia</button>
      * <br/><br/>
-     * <div id="tree" data-source="/Locations/Get" data-ui-library="bootstrap"></div>
+     * <div id="tree" data-gj-source="/Locations/Get" data-gj-ui-library="bootstrap"></div>
      * <script>
-     *     var parent, tree = new GijgoTree(document.getElementById('tree'), );
+     *     var parent, tree = new GijgoTree(document.getElementById('tree'));
      *     tree.on('dataBound', function () {
      *         parent = tree.getNodeByText('Asia');
      *         tree.off('dataBound');
@@ -11804,9 +11917,9 @@ GijgoTree = function (element, jsConfig) {
      * @example Prepend <!-- tree -->
      * <button onclick="append()" class="gj-button-md">Prepend in Asia</button>
      * <br/>
-     * <div id="tree" data-source="/Locations/Get"></div>
+     * <ul id="tree" data-gj-source="/Locations/Get"></ul>
      * <script>
-     *     var parent, tree = new GijgoTree(document.getElementById('tree'), );
+     *     var parent, tree = new GijgoTree(document.getElementById('tree'));
      *     tree.on('dataBound', function () {
      *         parent = tree.getNodeByText('Asia');
      *         tree.off('dataBound');
@@ -11818,9 +11931,9 @@ GijgoTree = function (element, jsConfig) {
      * @example Position <!-- tree -->
      * <button onclick="append()" class="gj-button-md">Append to Asia as second</button>
      * <br/>
-     * <div id="tree" data-source="/Locations/Get"></div>
+     * <ul id="tree" data-gj-source="/Locations/Get"></ul>
      * <script>
-     *     var parent, tree = new GijgoTree(document.getElementById('tree'), );
+     *     var parent, tree = new GijgoTree(document.getElementById('tree'));
      *     tree.on('dataBound', function () {
      *         parent = tree.getNodeByText('Asia');
      *         tree.off('dataBound');
@@ -11873,8 +11986,8 @@ GijgoTree = function (element, jsConfig) {
      *         primaryKey: 'id',
      *         dataSource: '/Locations/Get'
      *     });
-     *     tree.on('select', function (e, node, id) {
-     *         document.getElementById('nodeName').value = tree.getDataById(id).text;
+     *     tree.on('select', function (e) {
+     *         document.getElementById('nodeName').value = tree.getDataById(e.detail.id).text;
      *     });
      *     function save() {
      *         var id = tree.getSelections()[0],
@@ -11998,9 +12111,9 @@ GijgoTree = function (element, jsConfig) {
      * <button onclick="tree.expandAll()" class="gj-button-md">Expand All</button>
      * <button onclick="tree.collapseAll()" class="gj-button-md">Collapse All</button>
      * <br/>
-     * <div id="tree" data-source="/Locations/Get"></div>
+     * <ul id="tree" data-gj-source="/Locations/Get"></ul>
      * <script>
-     *     var tree = new GijgoTree(document.getElementById('tree'), );
+     *     var tree = new GijgoTree(document.getElementById('tree'));
      * </script>
      */
     self.expandAll = function () {
@@ -12015,9 +12128,9 @@ GijgoTree = function (element, jsConfig) {
      * <button onclick="tree.expandAll()" class="gj-button-md">Expand All</button>
      * <button onclick="tree.collapseAll()" class="gj-button-md">Collapse All</button>
      * <br/>
-     * <div id="tree" data-source="/Locations/Get"></div>
+     * <ul id="tree" data-gj-source="/Locations/Get"></ul>
      * <script>
-     *     var tree = new GijgoTree(document.getElementById('tree'), );
+     *     var tree = new GijgoTree(document.getElementById('tree'));
      * </script>
      */
     self.collapseAll = function () {
@@ -12038,14 +12151,14 @@ GijgoTree = function (element, jsConfig) {
      *         dataSource: '/Locations/Get',
      *         primaryKey: 'id' //define the name of the column that you want to use as ID here.
      *     });
-     *     document.getElementById('#tnGetData').addEventListener('click', function () {
+     *     document.getElementById('btnGetData').addEventListener('click', function () {
      *         var data = tree.getDataById(9);
      *         alert('The population of ' + data.text + ' is ' + data.population);
      *     });
      * </script>
      */
     self.getDataById = function (id) {
-        return methods.getDataById(this, id, this.data('records'));
+        return methods.getDataById(this, id, this.getRecords());
     };
 
     /**
@@ -12068,7 +12181,7 @@ GijgoTree = function (element, jsConfig) {
      * </script>
      */
     self.getDataByText = function (text) {
-        return methods.getDataByText(this, text, this.data('records'));
+        return methods.getDataByText(this, text, this.getRecords());
     };
 
     /**
@@ -12085,12 +12198,12 @@ GijgoTree = function (element, jsConfig) {
      *     });
      *     tree.on('dataBound', function() {
      *         var node = tree.getNodeById('1');
-     *         node.css('background-color', 'red');
+     *         node.style.backgroundColor = 'red';
      *     });
      * </script>
      */
     self.getNodeById = function (id) {
-        return methods.getNodeById(this.children('ul'), id);
+        return methods.getNodeById(this.element, id);
     };
 
     /**
@@ -12111,7 +12224,7 @@ GijgoTree = function (element, jsConfig) {
      * </script>
      */
     self.getNodeByText = function (text) {
-        return methods.getNodeByText(this.children('ul'), text);
+        return methods.getNodeByText(this.element, text);
     };
 
     /**
@@ -12130,7 +12243,7 @@ GijgoTree = function (element, jsConfig) {
      * </script>
      */
     self.getAll = function () {
-        return this.data('records');
+        return this.getRecords();
     };
 
     /**
@@ -12142,7 +12255,7 @@ GijgoTree = function (element, jsConfig) {
      * <button onclick="tree.select(northAmerica)" class="gj-button-md">Select North America</button>
      * <button onclick="tree.unselect(northAmerica)" class="gj-button-md">Unselect North America</button>
      * <br/>
-     * <div id="tree" data-source="/Locations/Get"></div>
+     * <ul id="tree" data-gj-source="/Locations/Get"></ul>
      * <script>
      *     var tree, northAmerica;
      *     tree = new GijgoTree(document.getElementById('tree'), {
@@ -12169,7 +12282,7 @@ GijgoTree = function (element, jsConfig) {
      * <button onclick="tree.select(northAmerica)" class="gj-button-md">Select North America</button>
      * <button onclick="tree.unselect(northAmerica)" class="gj-button-md">Unselect North America</button>
      * <br/>
-     * <div id="tree" data-source="/Locations/Get"></div>
+     * <ul id="tree" data-gj-source="/Locations/Get"></ul>
      * <script>
      *     var tree, northAmerica;
      *     tree = new GijgoTree(document.getElementById('tree'), {
@@ -12195,7 +12308,7 @@ GijgoTree = function (element, jsConfig) {
      * <button onclick="tree.selectAll()" class="gj-button-md">Select All</button>
      * <button onclick="tree.unselectAll()" class="gj-button-md">Unselect All</button>
      * <br/>
-     * <div id="tree" data-source="/Locations/Get"></div>
+     * <ul id="tree" data-gj-source="/Locations/Get"></ul>
      * <script>
      *     var tree = new GijgoTree(document.getElementById('tree'), {
      *         selectionType: 'multiple'
@@ -12217,7 +12330,7 @@ GijgoTree = function (element, jsConfig) {
      * <button onclick="tree.selectAll()" class="gj-button-md">Select All</button>
      * <button onclick="tree.unselectAll()" class="gj-button-md">Unselect All</button>
      * <br/>
-     * <div id="tree" data-source="/Locations/Get"></div>
+     * <ul id="tree" data-gj-source="/Locations/Get"></ul>
      * <script>
      *     var tree = new GijgoTree(document.getElementById('tree'), {
      *         selectionType: 'multiple'
@@ -12238,19 +12351,19 @@ GijgoTree = function (element, jsConfig) {
      * @example Sample <!-- tree -->
      * <button id="btnShowSelection" class="gj-button-md">Show Selections</button>
      * <br/>
-     * <div id="tree" data-source="/Locations/Get"></div>
+     * <ul id="tree" data-gj-source="/Locations/Get"></ul>
      * <script>
      *     var tree = new GijgoTree(document.getElementById('tree'), {
      *         selectionType: 'multiple'
      *     });
-     *     document.getElementById('#btnShowSelection').addEventListener('click', function () {
+     *     document.getElementById('btnShowSelection').addEventListener('click', function () {
      *         var selections = tree.getSelections();
      *         selections && selections.length && alert(selections.join());
      *     });
      * </script>
      */
     self.getSelections = function () {
-        return methods.getSelections(this.children('ul'));
+        return methods.getSelections(this.element);
     };
 
     /**
@@ -12285,7 +12398,7 @@ GijgoTree = function (element, jsConfig) {
      * </script>
      */
     self.getChildren = function (node, cascade) {
-        return methods.getChildren(this, node, cascade);
+        return methods.getChildren(node, cascade);
     };
 
     /**
@@ -12307,8 +12420,8 @@ GijgoTree = function (element, jsConfig) {
      * </script>
      */
     self.parents = function (id) {
-        var parents = [], data = this.data();
-        methods.pathFinder(data, data.records, id, parents);
+        var parents = [];
+        methods.pathFinder(data, this.getRecords(), id, parents);
         return parents.reverse();
     };
 
@@ -12324,7 +12437,7 @@ GijgoTree = function (element, jsConfig) {
      * <button onclick="tree.enable(northAmerica, false)" class="gj-button-md">Enable North America (Non-Cascade)</button>
      * <button onclick="tree.disable(northAmerica, false)" class="gj-button-md">Disable North America (Non-Cascade)</button>
      * <br/>
-     * <div id="tree" data-source="/Locations/Get"></div>
+     * <ul id="tree" data-gj-source="/Locations/Get"></ul>
      * <script>
      *     var tree, northAmerica;
      *     tree = new GijgoTree(document.getElementById('tree'), {
@@ -12341,7 +12454,7 @@ GijgoTree = function (element, jsConfig) {
      * <button onclick="tree.enable(northAmerica, false)" class="btn btn-default">Enable North America (Non-Cascade)</button>
      * <button onclick="tree.disable(northAmerica, false)" class="btn btn-default">Disable North America (Non-Cascade)</button>
      * <br/>
-     * <div id="tree" data-source="/Locations/Get"></div>
+     * <ul id="tree" data-gj-source="/Locations/Get"></ul>
      * <script>
      *     var tree, northAmerica;
      *     tree = new GijgoTree(document.getElementById('tree'), {
@@ -12359,7 +12472,7 @@ GijgoTree = function (element, jsConfig) {
      * <button onclick="tree.enable(northAmerica, false)" class="btn btn-default">Enable North America (Non-Cascade)</button>
      * <button onclick="tree.disable(northAmerica, false)" class="btn btn-default">Disable North America (Non-Cascade)</button>
      * <br/><br/>
-     * <div id="tree" data-source="/Locations/Get"></div>
+     * <ul id="tree" data-gj-source="/Locations/Get"></ul>
      * <script>
      *     var tree, northAmerica;
      *     tree = new GijgoTree(document.getElementById('tree'), {
@@ -12385,7 +12498,7 @@ GijgoTree = function (element, jsConfig) {
      * <button onclick="tree.enableAll()" class="gj-button-md">Enable All</button>
      * <button onclick="tree.disableAll()" class="gj-button-md">Disable All</button>
      * <br/>
-     * <div id="tree" data-source="/Locations/Get"></div>
+     * <ul id="tree" data-gj-source="/Locations/Get"></ul>
      * <script>
      *     var tree = new GijgoTree(document.getElementById('tree'), {
      *         checkboxes: true
@@ -12408,7 +12521,7 @@ GijgoTree = function (element, jsConfig) {
      * <button onclick="tree.enable(northAmerica, false)" class="gj-button-md">Enable North America (Non-Cascade)</button>
      * <button onclick="tree.disable(northAmerica, false)" class="gj-button-md">Disable North America (Non-Cascade)</button>
      * <br/>
-     * <div id="tree" data-source="/Locations/Get"></div>
+     * <ul id="tree" data-gj-source="/Locations/Get"></ul>
      * <script>
      *     var tree, northAmerica;
      *     tree = new GijgoTree(document.getElementById('tree'), {
@@ -12432,7 +12545,7 @@ GijgoTree = function (element, jsConfig) {
      * <button onclick="tree.enableAll()" class="gj-button-md">Enable All</button>
      * <button onclick="tree.disableAll()" class="gj-button-md">Disable All</button>
      * <br/>
-     * <div id="tree" data-source="/Locations/Get"></div>
+     * <ul id="tree" data-gj-source="/Locations/Get"></ul>
      * <script>
      *     var tree = new GijgoTree(document.getElementById('tree'), {
      *         checkboxes: true
@@ -12443,7 +12556,7 @@ GijgoTree = function (element, jsConfig) {
         return methods.disableAll(this);
     };
 
-    if ('tree' !== element.attr('data-type')) {
+    if ('tree' !== element.getAttribute('data-gj-type')) {
         methods.init.call(self, jsConfig);
     }
 
@@ -12451,7 +12564,7 @@ GijgoTree = function (element, jsConfig) {
 };
 
 GijgoTree.prototype = new gj.widget();
-GijgoTree.constructor = gj.tree.widget;
+GijgoTree.constructor = GijgoTree;
 
 if (typeof (jQuery) !== "undefined") {
     (function ($) {
@@ -12569,14 +12682,17 @@ gj.tree.plugins.checkboxes = {
 
     private: {
         dataBound: function (tree) {
-            let nodes;
-            if (tree.data('cascadeCheck')) {
-                nodes = tree.find('li[data-gj-role="node"]');
+            let nodes, chkb, state;
+            if (tree.getConfig().cascadeCheck) {
+                nodes = tree.element.querySelectorAll('li[data-gj-role="node"]');
                 for (const node of nodes) {
-                    let state = gj.checkbox.methods.state(node.querySelector('[data-gj-role="checkbox"] input[type="checkbox"]'));
-                    if (state === 'checked') {
-                        gj.tree.plugins.checkboxes.private.updateChildrenState(node, state);
-                        gj.tree.plugins.checkboxes.private.updateParentState(node, state);
+                    chkb = node.querySelector('[data-gj-role="checkbox"] input[type="checkbox"]');
+                    if (chkb) {
+                        state = gj.checkbox.methods.state(chkb);
+                        if (state === 'checked') {
+                            gj.tree.plugins.checkboxes.private.updateChildrenState(node, state);
+                            gj.tree.plugins.checkboxes.private.updateParentState(node, state);
+                        }
                     }
                 }
             }
@@ -12585,37 +12701,38 @@ gj.tree.plugins.checkboxes = {
         nodeDataBound: function (tree, node, id, record) {
             let data, expander, checkbox, wrapper, disabled;
             
-            if (node.querySelector('> [data-gj-role="wrapper"] > [data-gj-role="checkbox"]'))
+            if (!gj.core.select(node, '[data-gj-role="wrapper"]>[data-gj-role="checkbox"]'))
             {
                 data = tree.getConfig();
-                expander = node.querySelector('> [data-gj-role="wrapper"] > [data-gj-role="expander"]');
+                expander = gj.core.select(node, '[data-gj-role="wrapper"]>[data-gj-role="display"]');
                 checkbox = document.createElement('input');
                 checkbox.setAttribute('type', 'checkbox');
-                // wrapper = document.createElement('span');
-                // wrapper.setAttribute('data-gj-role', 'checkbox');
-                // wrapper.appendChild(checkbox);
+                wrapper = document.createElement('span');
+                wrapper.setAttribute('data-gj-role', 'checkbox');
+                wrapper.appendChild(checkbox);
+                expander.parentNode.insertBefore(wrapper, expander);
                 disabled = typeof (record[data.disabledField]) !== 'undefined' && record[data.disabledField].toString().toLowerCase() === 'true';
 
                 checkbox = new GijgoCheckBox(checkbox, {
                     uiLibrary: data.uiLibrary,
                     iconsLibrary: data.iconsLibrary,
                     change: function (e) {
-                        gj.tree.plugins.checkboxes.events.checkboxChange(tree.element, node, record, e.detail.state);
+                        let state = gj.checkbox.methods.state(e.target);
+                        gj.tree.plugins.checkboxes.events.checkboxChange(tree.element, node, record, state);
                     }
                 });
                 if (disabled) {
-                    checkbox.disabled = true;
+                    checkbox.element.disabled = true;
                 }
                 record[data.checkedField] && checkbox.state('checked');
                 checkbox.on('click', function (e) {
-                    let node = checkbox.closest('li'),
-                        state = checkbox.state();
+                    let node = this.closest('li'),
+                        state = gj.checkbox.methods.state(this);
                     if (data.cascadeCheck) {
                         gj.tree.plugins.checkboxes.private.updateChildrenState(node, state);
                         gj.tree.plugins.checkboxes.private.updateParentState(node, state);
                     }
                 });
-                expander.parentNode.insertBefore(wrapper, expander.nextSubling);
             }
         },
 
@@ -12624,8 +12741,8 @@ gj.tree.plugins.checkboxes = {
 
             parentNode = node.parentNode.parentNode;
             if (parentNode) {
-                parentCheckbox = parentNode.querySelector('> [data-gj-role="wrapper"] > [data-gj-role="checkbox"] input[type="checkbox"]');
-                siblingCheckboxes = node.parentNode.querySelectorAll('> [data-gj-role="wrapper"] > span[data-gj-role="checkbox"] input[type="checkbox"]');
+                parentCheckbox = parentNode.querySelector('[data-gj-role="wrapper"] > [data-gj-role="checkbox"] input[type="checkbox"]');
+                siblingCheckboxes = node.parentNode.querySelectorAll('[data-gj-role="wrapper"] > span[data-gj-role="checkbox"] input[type="checkbox"]');
                 allChecked = (state === 'checked');
                 allUnchecked = (state === 'unchecked');
                 parentState = 'indeterminate';
@@ -12820,21 +12937,21 @@ gj.tree.plugins.checkboxes = {
 
     configure: function (tree) {
         if (tree.getConfig().checkboxes && gj.checkbox) {
-            this.extend(tree, gj.tree.plugins.checkboxes.public);
-            tree.on('nodeDataBound', function (e, node, id, record) {
-                gj.tree.plugins.checkboxes.private.nodeDataBound(tree, node, id, record);
+            tree.extend(tree, gj.tree.plugins.checkboxes.public);
+            tree.on('nodeDataBound', function (e) {
+                gj.tree.plugins.checkboxes.private.nodeDataBound(tree, e.detail.node, e.detail.id, e.detail.record);
             });
             tree.on('dataBound', function () {
                 gj.tree.plugins.checkboxes.private.dataBound(tree);
             });
-            tree.on('enable', function (e, node) {
-                let checkboxes = node.querySelectorAll('>[data-gj-role="wrapper"]>[data-gj-role="checkbox"] input[type="checkbox"]');
+            tree.on('enable', function (e) {
+                let checkboxes = e.detail.node.querySelectorAll('[data-gj-role="wrapper"]>[data-gj-role="checkbox"] input[type="checkbox"]');
                 for (const chkb of checkboxes) {
                     chkb.disabled = false;
                 }
             });
-            tree.on('disable', function (e, node) {
-                let checkboxes = node.querySelectorAll('>[data-gj-role="wrapper"]>[data-gj-role="checkbox"] input[type="checkbox"]');
+            tree.on('disable', function (e) {
+                let checkboxes = e.detail.node.querySelectorAll('[data-gj-role="wrapper"]>[data-gj-role="checkbox"] input[type="checkbox"]');
                 for (const chkb of checkboxes) {
                     chkb.disabled = true;
                 }
@@ -13177,7 +13294,7 @@ gj.tree.plugins.dragAndDrop = {
 
 	configure: function (tree) {
 		tree.extend(tree, gj.tree.plugins.dragAndDrop.public);
-		if (tree.data('dragAndDrop') && gj.draggable && gj.droppable) {
+		if (tree.getConfig().dragAndDrop && gj.draggable && gj.droppable) {
 			tree.on('nodeDataBound', function (e, node) {
 				gj.tree.plugins.dragAndDrop.private.nodeDataBound(tree, node);
 			});
@@ -13450,7 +13567,6 @@ gj.checkbox.methods = {
             wrapper.setAttribute('for', chkb.element.getAttribute('id'));
         }
 
-            
         span = document.createElement('span');
         if (data.style.spanCssClass) {
             gj.core.addClasses(span, data.style.spanCssClass);
@@ -13461,20 +13577,20 @@ gj.checkbox.methods = {
     state: function (chkb, value) {
         if (value) {
             if ('checked' === value) {
-                chkb.element.checked = true;
-                chkb.element.indeterminate = false;
+                chkb.checked = true;
+                chkb.indeterminate = false;
             } else if ('unchecked' === value) {
-                chkb.element.checked = false;
-                chkb.element.indeterminate = false;
+                chkb.checked = false;
+                chkb.indeterminate = false;
             } else if ('indeterminate' === value) {
-                chkb.element.checked = false;
-                chkb.element.indeterminate = true;
+                chkb.checked = false;
+                chkb.indeterminate = true;
             }
             return chkb;
         } else {
-            if (chkb.element.indeterminate) {
+            if (chkb.indeterminate) {
                 value = 'indeterminate';
-            } else if (chkb.element.checked) {
+            } else if (chkb.checked) {
                 value = 'checked';
             } else {
                 value = 'unchecked';
@@ -13571,7 +13687,7 @@ GijgoCheckBox = function (element, jsConfig) {
      * </script>
      */
     self.state = function (value) {
-        return methods.state(this, value);
+        return methods.state(this.element, value);
     };
 
     /** Remove checkbox functionality from the element.
@@ -18030,8 +18146,8 @@ gj.datetimepicker.methods = {
         return this;
     },
 
-    readConfig: function (clientConfig, type) {
-        var config = gj.widget.prototype.readConfig.call(this, clientConfig, type);
+    readConfig: function (clientConfig) {
+        var config = gj.widget.prototype.readConfig.call(this, clientConfig);
 
         uiLibrary = clientConfig.hasOwnProperty('uiLibrary') ? clientConfig.uiLibrary : config.uiLibrary;
         if (gj.datepicker.config[uiLibrary]) {
@@ -18539,7 +18655,7 @@ gj.slider.methods = {
 
         el.style.display = 'none';
 
-        wrapper = this.wrap();
+        wrapper = this.wrap('div');
 
         if (data.width) {
             gj.core.css(wrapper, 'width', data.width);

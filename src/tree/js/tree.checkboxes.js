@@ -95,14 +95,17 @@ gj.tree.plugins.checkboxes = {
 
     private: {
         dataBound: function (tree) {
-            let nodes;
-            if (tree.data('cascadeCheck')) {
-                nodes = tree.find('li[data-gj-role="node"]');
+            let nodes, chkb, state;
+            if (tree.getConfig().cascadeCheck) {
+                nodes = tree.element.querySelectorAll('li[data-gj-role="node"]');
                 for (const node of nodes) {
-                    let state = gj.checkbox.methods.state(node.querySelector('[data-gj-role="checkbox"] input[type="checkbox"]'));
-                    if (state === 'checked') {
-                        gj.tree.plugins.checkboxes.private.updateChildrenState(node, state);
-                        gj.tree.plugins.checkboxes.private.updateParentState(node, state);
+                    chkb = node.querySelector('[data-gj-role="checkbox"] input[type="checkbox"]');
+                    if (chkb) {
+                        state = gj.checkbox.methods.state(chkb);
+                        if (state === 'checked') {
+                            gj.tree.plugins.checkboxes.private.updateChildrenState(node, state);
+                            gj.tree.plugins.checkboxes.private.updateParentState(node, state);
+                        }
                     }
                 }
             }
@@ -111,37 +114,38 @@ gj.tree.plugins.checkboxes = {
         nodeDataBound: function (tree, node, id, record) {
             let data, expander, checkbox, wrapper, disabled;
             
-            if (node.querySelector('> [data-gj-role="wrapper"] > [data-gj-role="checkbox"]'))
+            if (!gj.core.select(node, '[data-gj-role="wrapper"]>[data-gj-role="checkbox"]'))
             {
                 data = tree.getConfig();
-                expander = node.querySelector('> [data-gj-role="wrapper"] > [data-gj-role="expander"]');
+                expander = gj.core.select(node, '[data-gj-role="wrapper"]>[data-gj-role="display"]');
                 checkbox = document.createElement('input');
                 checkbox.setAttribute('type', 'checkbox');
-                // wrapper = document.createElement('span');
-                // wrapper.setAttribute('data-gj-role', 'checkbox');
-                // wrapper.appendChild(checkbox);
+                wrapper = document.createElement('span');
+                wrapper.setAttribute('data-gj-role', 'checkbox');
+                wrapper.appendChild(checkbox);
+                expander.parentNode.insertBefore(wrapper, expander);
                 disabled = typeof (record[data.disabledField]) !== 'undefined' && record[data.disabledField].toString().toLowerCase() === 'true';
 
                 checkbox = new GijgoCheckBox(checkbox, {
                     uiLibrary: data.uiLibrary,
                     iconsLibrary: data.iconsLibrary,
                     change: function (e) {
-                        gj.tree.plugins.checkboxes.events.checkboxChange(tree.element, node, record, e.detail.state);
+                        let state = gj.checkbox.methods.state(e.target);
+                        gj.tree.plugins.checkboxes.events.checkboxChange(tree.element, node, record, state);
                     }
                 });
                 if (disabled) {
-                    checkbox.disabled = true;
+                    checkbox.element.disabled = true;
                 }
                 record[data.checkedField] && checkbox.state('checked');
                 checkbox.on('click', function (e) {
-                    let node = checkbox.closest('li'),
-                        state = checkbox.state();
+                    let node = this.closest('li'),
+                        state = gj.checkbox.methods.state(this);
                     if (data.cascadeCheck) {
                         gj.tree.plugins.checkboxes.private.updateChildrenState(node, state);
                         gj.tree.plugins.checkboxes.private.updateParentState(node, state);
                     }
                 });
-                expander.parentNode.insertBefore(wrapper, expander.nextSubling);
             }
         },
 
@@ -150,8 +154,8 @@ gj.tree.plugins.checkboxes = {
 
             parentNode = node.parentNode.parentNode;
             if (parentNode) {
-                parentCheckbox = parentNode.querySelector('> [data-gj-role="wrapper"] > [data-gj-role="checkbox"] input[type="checkbox"]');
-                siblingCheckboxes = node.parentNode.querySelectorAll('> [data-gj-role="wrapper"] > span[data-gj-role="checkbox"] input[type="checkbox"]');
+                parentCheckbox = parentNode.querySelector('[data-gj-role="wrapper"] > [data-gj-role="checkbox"] input[type="checkbox"]');
+                siblingCheckboxes = node.parentNode.querySelectorAll('[data-gj-role="wrapper"] > span[data-gj-role="checkbox"] input[type="checkbox"]');
                 allChecked = (state === 'checked');
                 allUnchecked = (state === 'unchecked');
                 parentState = 'indeterminate';
@@ -346,21 +350,21 @@ gj.tree.plugins.checkboxes = {
 
     configure: function (tree) {
         if (tree.getConfig().checkboxes && gj.checkbox) {
-            this.extend(tree, gj.tree.plugins.checkboxes.public);
-            tree.on('nodeDataBound', function (e, node, id, record) {
-                gj.tree.plugins.checkboxes.private.nodeDataBound(tree, node, id, record);
+            tree.extend(tree, gj.tree.plugins.checkboxes.public);
+            tree.on('nodeDataBound', function (e) {
+                gj.tree.plugins.checkboxes.private.nodeDataBound(tree, e.detail.node, e.detail.id, e.detail.record);
             });
             tree.on('dataBound', function () {
                 gj.tree.plugins.checkboxes.private.dataBound(tree);
             });
-            tree.on('enable', function (e, node) {
-                let checkboxes = node.querySelectorAll('>[data-gj-role="wrapper"]>[data-gj-role="checkbox"] input[type="checkbox"]');
+            tree.on('enable', function (e) {
+                let checkboxes = e.detail.node.querySelectorAll('[data-gj-role="wrapper"]>[data-gj-role="checkbox"] input[type="checkbox"]');
                 for (const chkb of checkboxes) {
                     chkb.disabled = false;
                 }
             });
-            tree.on('disable', function (e, node) {
-                let checkboxes = node.querySelectorAll('>[data-gj-role="wrapper"]>[data-gj-role="checkbox"] input[type="checkbox"]');
+            tree.on('disable', function (e) {
+                let checkboxes = e.detail.node.querySelectorAll('[data-gj-role="wrapper"]>[data-gj-role="checkbox"] input[type="checkbox"]');
                 for (const chkb of checkboxes) {
                     chkb.disabled = true;
                 }

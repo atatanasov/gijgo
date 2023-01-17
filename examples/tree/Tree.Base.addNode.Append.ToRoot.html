@@ -12,9 +12,9 @@
 <body style="padding: 8px;">
  <button onclick="append()" class="gj-button-md">Append To Root</button>
  <br/>
- <div id="tree" data-source="/Locations/Get"></div>
+ <ul id="tree" data-gj-source="/Locations/Get"></ul>
  <script>
-     var tree = new GijgoTree(document.getElementById('tree'), );
+     var tree = new GijgoTree(document.getElementById('tree'));
      function append() {
          tree.addNode({ text: 'New Node' });
      }

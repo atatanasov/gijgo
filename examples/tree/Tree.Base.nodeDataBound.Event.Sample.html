@@ -10,12 +10,12 @@
   <script src="../../dist/modular/js/tree.js"></script>
 </head>
 <body style="padding: 8px;">
- <div id="tree" data-source="/Locations/Get"></div>
+ <ul id="tree" data-gj-source="/Locations/Get"></ul>
  <script>
-     var tree = new GijgoTree(document.getElementById('tree'), );
-     tree.on('nodeDataBound', function (e, node, id, record) {
-         if ((parseInt(id, 10) % 2) === 0) {
-             node.css('background-color', 'red');
+     var tree = new GijgoTree(document.getElementById('tree'));
+     tree.on('nodeDataBound', function (e) {
+         if ((parseInt(e.detail.id, 10) % 2) === 0) {
+             e.detail.node.style.backgroundColor = 'red';
          }
      });
  </script>

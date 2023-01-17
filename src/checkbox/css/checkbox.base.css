@@ -85,6 +85,7 @@
 }
 
 .gj-checkbox-md span {
+    position: relative;
     display: inline-block;
     box-sizing: border-box;
     width: 1.125rem;
@@ -103,11 +104,13 @@
 
 .gj-checkbox-md input[type="checkbox"]:checked + span:after {
     color: #FFF;
-    background-color: #536DFE; /* Indigo A200 */
+    background-color: #536DFE;
     position: absolute;
-    left: 0rem;
-    top: -1.125rem;
+    left: -0.125rem;
+    top: -0.125rem;
     border-radius: 0.125rem;
+    width: 1.125rem;
+    height: 1.125rem;
 }
 
 .gj-checkbox-md input[type="checkbox"]:indeterminate + span {
@@ -117,9 +120,11 @@
 .gj-checkbox-md input[type="checkbox"]:indeterminate + span:after {    
     color: #616161;/*color: rgba(0, 0, 0, 1);*/
     position: absolute;
-    left: -0.02rem;
-    top: -1.0625rem;
+    left: -0.15rem;
+    top: -0.075rem;
     border-radius: 0.125rem;
+    width: 1.125rem;
+    height: 1.125rem;
 }
 
 .gj-checkbox-md input[type="checkbox"][disabled] + span {

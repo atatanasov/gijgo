@@ -11,11 +11,11 @@
 </head>
 <body style="padding: 8px;">
  <p>Select tree node in order to fire the event.</p>
- <div id="tree" data-source="/Locations/Get"></div>
+ <ul id="tree" data-gj-source="/Locations/Get"></ul>
  <script>
-     var tree = new GijgoTree(document.getElementById('tree'), );
-     tree.on('select', function (e, node, id) {
-         alert('select is fired for node with id=' + id);
+     var tree = new GijgoTree(document.getElementById('tree'));
+     tree.on('select', function (e) {
+         alert('select is fired for node with id=' + e.detail.id);
      });
  </script>
 </body>

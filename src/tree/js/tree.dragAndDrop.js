@@ -332,7 +332,7 @@ gj.tree.plugins.dragAndDrop = {
 
 	configure: function (tree) {
 		tree.extend(tree, gj.tree.plugins.dragAndDrop.public);
-		if (tree.data('dragAndDrop') && gj.draggable && gj.droppable) {
+		if (tree.getConfig().dragAndDrop && gj.draggable && gj.droppable) {
 			tree.on('nodeDataBound', function (e, node) {
 				gj.tree.plugins.dragAndDrop.private.nodeDataBound(tree, node);
 			});

@@ -160,7 +160,6 @@ gj.checkbox.methods = {
             wrapper.setAttribute('for', chkb.element.getAttribute('id'));
         }
 
-            
         span = document.createElement('span');
         if (data.style.spanCssClass) {
             gj.core.addClasses(span, data.style.spanCssClass);
@@ -171,20 +170,20 @@ gj.checkbox.methods = {
     state: function (chkb, value) {
         if (value) {
             if ('checked' === value) {
-                chkb.element.checked = true;
-                chkb.element.indeterminate = false;
+                chkb.checked = true;
+                chkb.indeterminate = false;
             } else if ('unchecked' === value) {
-                chkb.element.checked = false;
-                chkb.element.indeterminate = false;
+                chkb.checked = false;
+                chkb.indeterminate = false;
             } else if ('indeterminate' === value) {
-                chkb.element.checked = false;
-                chkb.element.indeterminate = true;
+                chkb.checked = false;
+                chkb.indeterminate = true;
             }
             return chkb;
         } else {
-            if (chkb.element.indeterminate) {
+            if (chkb.indeterminate) {
                 value = 'indeterminate';
-            } else if (chkb.element.checked) {
+            } else if (chkb.checked) {
                 value = 'checked';
             } else {
                 value = 'unchecked';
@@ -281,7 +280,7 @@ GijgoCheckBox = function (element, jsConfig) {
      * </script>
      */
     self.state = function (value) {
-        return methods.state(this, value);
+        return methods.state(this.element, value);
     };
 
     /** Remove checkbox functionality from the element.

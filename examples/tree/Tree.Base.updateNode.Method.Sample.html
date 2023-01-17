@@ -19,8 +19,8 @@
          primaryKey: 'id',
          dataSource: '/Locations/Get'
      });
-     tree.on('select', function (e, node, id) {
-         document.getElementById('nodeName').value = tree.getDataById(id).text;
+     tree.on('select', function (e) {
+         document.getElementById('nodeName').value = tree.getDataById(e.detail.id).text;
      });
      function save() {
          var id = tree.getSelections()[0],

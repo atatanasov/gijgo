@@ -4,7 +4,7 @@
   */
 GijgoTree = function (element, jsConfig) {
     var self = this,
-        methods = gj.datepicker.methods;
+        methods = gj.tree.methods;
 
     self.type = 'tree';
     self.element = element;
@@ -51,9 +51,9 @@ GijgoTree = function (element, jsConfig) {
      * <ul id="tree"></ul>
      * <script>
      *     var tree, onSuccessFunc;
-     *     onSuccessFunc = function (response) {
+     *     onSuccessFunc = function () {
      *         //you can modify the response here if needed
-     *         tree.render(response);
+     *         tree.render(this.response);
      *     };
      *     tree = new GijgoTree(document.getElementById('tree'), {
      *         dataSource: { url: '/Locations/Get', success: onSuccessFunc }
@@ -74,9 +74,9 @@ GijgoTree = function (element, jsConfig) {
      * @example Append.ToRoot <!-- tree -->
      * <button onclick="append()" class="gj-button-md">Append To Root</button>
      * <br/>
-     * <div id="tree" data-source="/Locations/Get"></div>
+     * <ul id="tree" data-gj-source="/Locations/Get"></ul>
      * <script>
-     *     var tree = new GijgoTree(document.getElementById('tree'), );
+     *     var tree = new GijgoTree(document.getElementById('tree'));
      *     function append() {
      *         tree.addNode({ text: 'New Node' });
      *     }
@@ -84,9 +84,9 @@ GijgoTree = function (element, jsConfig) {
      * @example Append.Parent <!-- tree -->
      * <button onclick="append()" class="gj-button-md">Append To Asia</button>
      * <br/>
-     * <div id="tree" data-source="/Locations/Get"></div>
+     * <ul id="tree" data-gj-source="/Locations/Get"></ul>
      * <script>
-     *     var parent, tree = new GijgoTree(document.getElementById('tree'), );
+     *     var parent, tree = new GijgoTree(document.getElementById('tree'));
      *     tree.on('dataBound', function () {
      *         parent = tree.getNodeByText('Asia');
      *         tree.off('dataBound');
@@ -98,9 +98,9 @@ GijgoTree = function (element, jsConfig) {
      * @example Bootstrap <!-- bootstrap, tree -->
      * <button onclick="append()" class="btn btn-default">Append To Asia</button>
      * <br/><br/>
-     * <div id="tree" data-source="/Locations/Get" data-ui-library="bootstrap"></div>
+     * <div id="tree" data-gj-source="/Locations/Get" data-gj-ui-library="bootstrap"></div>
      * <script>
-     *     var parent, tree = new GijgoTree(document.getElementById('tree'), );
+     *     var parent, tree = new GijgoTree(document.getElementById('tree'));
      *     tree.on('dataBound', function () {
      *         parent = tree.getNodeByText('Asia');
      *         tree.off('dataBound');
@@ -112,9 +112,9 @@ GijgoTree = function (element, jsConfig) {
      * @example Prepend <!-- tree -->
      * <button onclick="append()" class="gj-button-md">Prepend in Asia</button>
      * <br/>
-     * <div id="tree" data-source="/Locations/Get"></div>
+     * <ul id="tree" data-gj-source="/Locations/Get"></ul>
      * <script>
-     *     var parent, tree = new GijgoTree(document.getElementById('tree'), );
+     *     var parent, tree = new GijgoTree(document.getElementById('tree'));
      *     tree.on('dataBound', function () {
      *         parent = tree.getNodeByText('Asia');
      *         tree.off('dataBound');
@@ -126,9 +126,9 @@ GijgoTree = function (element, jsConfig) {
      * @example Position <!-- tree -->
      * <button onclick="append()" class="gj-button-md">Append to Asia as second</button>
      * <br/>
-     * <div id="tree" data-source="/Locations/Get"></div>
+     * <ul id="tree" data-gj-source="/Locations/Get"></ul>
      * <script>
-     *     var parent, tree = new GijgoTree(document.getElementById('tree'), );
+     *     var parent, tree = new GijgoTree(document.getElementById('tree'));
      *     tree.on('dataBound', function () {
      *         parent = tree.getNodeByText('Asia');
      *         tree.off('dataBound');
@@ -181,8 +181,8 @@ GijgoTree = function (element, jsConfig) {
      *         primaryKey: 'id',
      *         dataSource: '/Locations/Get'
      *     });
-     *     tree.on('select', function (e, node, id) {
-     *         document.getElementById('nodeName').value = tree.getDataById(id).text;
+     *     tree.on('select', function (e) {
+     *         document.getElementById('nodeName').value = tree.getDataById(e.detail.id).text;
      *     });
      *     function save() {
      *         var id = tree.getSelections()[0],
@@ -306,9 +306,9 @@ GijgoTree = function (element, jsConfig) {
      * <button onclick="tree.expandAll()" class="gj-button-md">Expand All</button>
      * <button onclick="tree.collapseAll()" class="gj-button-md">Collapse All</button>
      * <br/>
-     * <div id="tree" data-source="/Locations/Get"></div>
+     * <ul id="tree" data-gj-source="/Locations/Get"></ul>
      * <script>
-     *     var tree = new GijgoTree(document.getElementById('tree'), );
+     *     var tree = new GijgoTree(document.getElementById('tree'));
      * </script>
      */
     self.expandAll = function () {
@@ -323,9 +323,9 @@ GijgoTree = function (element, jsConfig) {
      * <button onclick="tree.expandAll()" class="gj-button-md">Expand All</button>
      * <button onclick="tree.collapseAll()" class="gj-button-md">Collapse All</button>
      * <br/>
-     * <div id="tree" data-source="/Locations/Get"></div>
+     * <ul id="tree" data-gj-source="/Locations/Get"></ul>
      * <script>
-     *     var tree = new GijgoTree(document.getElementById('tree'), );
+     *     var tree = new GijgoTree(document.getElementById('tree'));
      * </script>
      */
     self.collapseAll = function () {
@@ -346,14 +346,14 @@ GijgoTree = function (element, jsConfig) {
      *         dataSource: '/Locations/Get',
      *         primaryKey: 'id' //define the name of the column that you want to use as ID here.
      *     });
-     *     document.getElementById('#tnGetData').addEventListener('click', function () {
+     *     document.getElementById('btnGetData').addEventListener('click', function () {
      *         var data = tree.getDataById(9);
      *         alert('The population of ' + data.text + ' is ' + data.population);
      *     });
      * </script>
      */
     self.getDataById = function (id) {
-        return methods.getDataById(this, id, this.data('records'));
+        return methods.getDataById(this, id, this.getRecords());
     };
 
     /**
@@ -376,7 +376,7 @@ GijgoTree = function (element, jsConfig) {
      * </script>
      */
     self.getDataByText = function (text) {
-        return methods.getDataByText(this, text, this.data('records'));
+        return methods.getDataByText(this, text, this.getRecords());
     };
 
     /**
@@ -393,12 +393,12 @@ GijgoTree = function (element, jsConfig) {
      *     });
      *     tree.on('dataBound', function() {
      *         var node = tree.getNodeById('1');
-     *         node.css('background-color', 'red');
+     *         node.style.backgroundColor = 'red';
      *     });
      * </script>
      */
     self.getNodeById = function (id) {
-        return methods.getNodeById(this.children('ul'), id);
+        return methods.getNodeById(this.element, id);
     };
 
     /**
@@ -419,7 +419,7 @@ GijgoTree = function (element, jsConfig) {
      * </script>
      */
     self.getNodeByText = function (text) {
-        return methods.getNodeByText(this.children('ul'), text);
+        return methods.getNodeByText(this.element, text);
     };
 
     /**
@@ -438,7 +438,7 @@ GijgoTree = function (element, jsConfig) {
      * </script>
      */
     self.getAll = function () {
-        return this.data('records');
+        return this.getRecords();
     };
 
     /**
@@ -450,7 +450,7 @@ GijgoTree = function (element, jsConfig) {
      * <button onclick="tree.select(northAmerica)" class="gj-button-md">Select North America</button>
      * <button onclick="tree.unselect(northAmerica)" class="gj-button-md">Unselect North America</button>
      * <br/>
-     * <div id="tree" data-source="/Locations/Get"></div>
+     * <ul id="tree" data-gj-source="/Locations/Get"></ul>
      * <script>
      *     var tree, northAmerica;
      *     tree = new GijgoTree(document.getElementById('tree'), {
@@ -477,7 +477,7 @@ GijgoTree = function (element, jsConfig) {
      * <button onclick="tree.select(northAmerica)" class="gj-button-md">Select North America</button>
      * <button onclick="tree.unselect(northAmerica)" class="gj-button-md">Unselect North America</button>
      * <br/>
-     * <div id="tree" data-source="/Locations/Get"></div>
+     * <ul id="tree" data-gj-source="/Locations/Get"></ul>
      * <script>
      *     var tree, northAmerica;
      *     tree = new GijgoTree(document.getElementById('tree'), {
@@ -503,7 +503,7 @@ GijgoTree = function (element, jsConfig) {
      * <button onclick="tree.selectAll()" class="gj-button-md">Select All</button>
      * <button onclick="tree.unselectAll()" class="gj-button-md">Unselect All</button>
      * <br/>
-     * <div id="tree" data-source="/Locations/Get"></div>
+     * <ul id="tree" data-gj-source="/Locations/Get"></ul>
      * <script>
      *     var tree = new GijgoTree(document.getElementById('tree'), {
      *         selectionType: 'multiple'
@@ -525,7 +525,7 @@ GijgoTree = function (element, jsConfig) {
      * <button onclick="tree.selectAll()" class="gj-button-md">Select All</button>
      * <button onclick="tree.unselectAll()" class="gj-button-md">Unselect All</button>
      * <br/>
-     * <div id="tree" data-source="/Locations/Get"></div>
+     * <ul id="tree" data-gj-source="/Locations/Get"></ul>
      * <script>
      *     var tree = new GijgoTree(document.getElementById('tree'), {
      *         selectionType: 'multiple'
@@ -546,19 +546,19 @@ GijgoTree = function (element, jsConfig) {
      * @example Sample <!-- tree -->
      * <button id="btnShowSelection" class="gj-button-md">Show Selections</button>
      * <br/>
-     * <div id="tree" data-source="/Locations/Get"></div>
+     * <ul id="tree" data-gj-source="/Locations/Get"></ul>
      * <script>
      *     var tree = new GijgoTree(document.getElementById('tree'), {
      *         selectionType: 'multiple'
      *     });
-     *     document.getElementById('#btnShowSelection').addEventListener('click', function () {
+     *     document.getElementById('btnShowSelection').addEventListener('click', function () {
      *         var selections = tree.getSelections();
      *         selections && selections.length && alert(selections.join());
      *     });
      * </script>
      */
     self.getSelections = function () {
-        return methods.getSelections(this.children('ul'));
+        return methods.getSelections(this.element);
     };
 
     /**
@@ -593,7 +593,7 @@ GijgoTree = function (element, jsConfig) {
      * </script>
      */
     self.getChildren = function (node, cascade) {
-        return methods.getChildren(this, node, cascade);
+        return methods.getChildren(node, cascade);
     };
 
     /**
@@ -615,8 +615,8 @@ GijgoTree = function (element, jsConfig) {
      * </script>
      */
     self.parents = function (id) {
-        var parents = [], data = this.data();
-        methods.pathFinder(data, data.records, id, parents);
+        var parents = [];
+        methods.pathFinder(data, this.getRecords(), id, parents);
         return parents.reverse();
     };
 
@@ -632,7 +632,7 @@ GijgoTree = function (element, jsConfig) {
      * <button onclick="tree.enable(northAmerica, false)" class="gj-button-md">Enable North America (Non-Cascade)</button>
      * <button onclick="tree.disable(northAmerica, false)" class="gj-button-md">Disable North America (Non-Cascade)</button>
      * <br/>
-     * <div id="tree" data-source="/Locations/Get"></div>
+     * <ul id="tree" data-gj-source="/Locations/Get"></ul>
      * <script>
      *     var tree, northAmerica;
      *     tree = new GijgoTree(document.getElementById('tree'), {
@@ -649,7 +649,7 @@ GijgoTree = function (element, jsConfig) {
      * <button onclick="tree.enable(northAmerica, false)" class="btn btn-default">Enable North America (Non-Cascade)</button>
      * <button onclick="tree.disable(northAmerica, false)" class="btn btn-default">Disable North America (Non-Cascade)</button>
      * <br/>
-     * <div id="tree" data-source="/Locations/Get"></div>
+     * <ul id="tree" data-gj-source="/Locations/Get"></ul>
      * <script>
      *     var tree, northAmerica;
      *     tree = new GijgoTree(document.getElementById('tree'), {
@@ -667,7 +667,7 @@ GijgoTree = function (element, jsConfig) {
      * <button onclick="tree.enable(northAmerica, false)" class="btn btn-default">Enable North America (Non-Cascade)</button>
      * <button onclick="tree.disable(northAmerica, false)" class="btn btn-default">Disable North America (Non-Cascade)</button>
      * <br/><br/>
-     * <div id="tree" data-source="/Locations/Get"></div>
+     * <ul id="tree" data-gj-source="/Locations/Get"></ul>
      * <script>
      *     var tree, northAmerica;
      *     tree = new GijgoTree(document.getElementById('tree'), {
@@ -693,7 +693,7 @@ GijgoTree = function (element, jsConfig) {
      * <button onclick="tree.enableAll()" class="gj-button-md">Enable All</button>
      * <button onclick="tree.disableAll()" class="gj-button-md">Disable All</button>
      * <br/>
-     * <div id="tree" data-source="/Locations/Get"></div>
+     * <ul id="tree" data-gj-source="/Locations/Get"></ul>
      * <script>
      *     var tree = new GijgoTree(document.getElementById('tree'), {
      *         checkboxes: true
@@ -716,7 +716,7 @@ GijgoTree = function (element, jsConfig) {
      * <button onclick="tree.enable(northAmerica, false)" class="gj-button-md">Enable North America (Non-Cascade)</button>
      * <button onclick="tree.disable(northAmerica, false)" class="gj-button-md">Disable North America (Non-Cascade)</button>
      * <br/>
-     * <div id="tree" data-source="/Locations/Get"></div>
+     * <ul id="tree" data-gj-source="/Locations/Get"></ul>
      * <script>
      *     var tree, northAmerica;
      *     tree = new GijgoTree(document.getElementById('tree'), {
@@ -740,7 +740,7 @@ GijgoTree = function (element, jsConfig) {
      * <button onclick="tree.enableAll()" class="gj-button-md">Enable All</button>
      * <button onclick="tree.disableAll()" class="gj-button-md">Disable All</button>
      * <br/>
-     * <div id="tree" data-source="/Locations/Get"></div>
+     * <ul id="tree" data-gj-source="/Locations/Get"></ul>
      * <script>
      *     var tree = new GijgoTree(document.getElementById('tree'), {
      *         checkboxes: true
@@ -751,7 +751,7 @@ GijgoTree = function (element, jsConfig) {
         return methods.disableAll(this);
     };
 
-    if ('tree' !== element.attr('data-type')) {
+    if ('tree' !== element.getAttribute('data-gj-type')) {
         methods.init.call(self, jsConfig);
     }
 
@@ -759,7 +759,7 @@ GijgoTree = function (element, jsConfig) {
 };
 
 GijgoTree.prototype = new gj.widget();
-GijgoTree.constructor = gj.tree.widget;
+GijgoTree.constructor = GijgoTree;
 
 if (typeof (jQuery) !== "undefined") {
     (function ($) {

@@ -12,9 +12,9 @@
 <body style="padding: 8px;">
  <button onclick="tree.destroy()" class="gj-button-md">Destroy</button>
  <br/><br/>
- <div id="tree" data-source="/Locations/Get"></div>
+ <ul id="tree" data-gj-source="/Locations/Get"></ul>
  <script>
-     var tree = new GijgoTree(document.getElementById('tree'), );
+     var tree = new GijgoTree(document.getElementById('tree'));
      tree.on('destroying', function (e) {
          alert('destroying is fired.');
      });

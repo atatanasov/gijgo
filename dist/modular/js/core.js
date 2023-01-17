@@ -343,14 +343,16 @@ let gj = {};
         el.style[prop] = val;
     },
 
-    wrap: function(el, tagName) {
+    wrap: function(el, tagName, config) {
         let wrapper = el.parentNode.getAttribute('data-gj-role') === 'wrapper' ? el.parentNode : null;
         if (!wrapper) {
             wrapper = document.createElement(tagName);
             el.parentNode.insertBefore(wrapper, el);
             wrapper.appendChild(el);
         }
-        gj.core.addClasses(wrapper, this.getConfig().style.wrapper);
+        if (config) {
+            gj.core.addClasses(wrapper, config.style.wrapper);
+        }
         wrapper.setAttribute('data-gj-role', 'wrapper');
         return wrapper;
     },
@@ -361,6 +363,51 @@ let gj = {};
             wrapper.parentNode.insertBefore(el, wrapper);
             wrapper.remove();
         }
+    },
+
+    select: function(el, expression) {
+        let result = null,
+            tags = expression.split('>'),
+            children = el.children,
+            tagName, attr, attrVal;
+        for (const tag of tags) {
+            tagName = tag.substring(0, tag.indexOf('['));
+            attr = tag.substring(tag.indexOf('[') + 1, tag.indexOf('='));
+            attrVal = tag.substring(tag.indexOf('=') + 2, tag.lastIndexOf('"'));
+            for (const chld of children) {
+                if ((!tagName || chld.tagName.toUpperCase() === tagName.toUpperCase())
+                 && (!(attr && attrVal) || chld.getAttribute(attr) == attrVal)) {
+                    result = chld;
+                    children = chld.children;
+                    break;
+                } else {
+                    result = null;
+                }
+            }
+        }
+        return result;
+    },
+
+    selectAll: function(el, expression) {
+        let result = [],
+            tags = expression.split('>'),
+            children = el.children,
+            tagName, attr, attrVal;
+        for (const tag of tags) {
+            tagName = tag.substring(0, tag.indexOf('['));
+            attr = tag.substring(tag.indexOf('[') + 1, tag.indexOf('='));
+            attrVal = tag.substring(tag.indexOf('=') + 2, tag.lastIndexOf('"'));
+            for (const chld of children) {
+                if ((!tagName || chld.tagName.toUpperCase() === tagName.toUpperCase())
+                 && (!(attr && attrVal) || chld.getAttribute(attr) == attrVal)) {
+                    if (tag == tags[tags.length - 1]) {
+                        result.push(chld);
+                    }
+                    children = chld.children;
+                }
+            }
+        }
+        return result;
     }
 };
 
@@ -482,7 +529,7 @@ gj.widget = function () {
     };
 
     self.wrap = function(tagName) {
-        return gj.core.wrap(this.element, tagName);
+        return gj.core.wrap(this.element, tagName, this.getConfig());
     };
 
     self.unwrap = function() {
@@ -517,7 +564,7 @@ gj.widget.prototype.init = function (jsConfig) {
     return this;
 };
 
-gj.widget.prototype.readConfig = function (clientConfig, type) {
+gj.widget.prototype.readConfig = function (clientConfig) {
     let config, uiLibrary, iconsLibrary, plugin, type = this.type;
 
     config = this.extend({}, gj[type].config.base);

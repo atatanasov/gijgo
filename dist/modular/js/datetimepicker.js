@@ -72,8 +72,8 @@ gj.datetimepicker.methods = {
         return this;
     },
 
-    readConfig: function (clientConfig, type) {
-        var config = gj.widget.prototype.readConfig.call(this, clientConfig, type);
+    readConfig: function (clientConfig) {
+        var config = gj.widget.prototype.readConfig.call(this, clientConfig);
 
         uiLibrary = clientConfig.hasOwnProperty('uiLibrary') ? clientConfig.uiLibrary : config.uiLibrary;
         if (gj.datepicker.config[uiLibrary]) {

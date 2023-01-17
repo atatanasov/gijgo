@@ -7,19 +7,17 @@
   <script src="../../dist/modular/js/core.js" type="text/javascript"></script>
   <link href="../../dist/modular/css/core.css" rel="stylesheet" type="text/css">
   <link href="../../dist/modular/css/tree.css" rel="stylesheet" type="text/css">
+  <link href="../../dist/libraries/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
   <script src="../../dist/modular/js/tree.js"></script>
 </head>
 <body style="padding: 8px;">
- <button onclick="tree.selectAll()" class="gj-button-md">Select All</button>
- <button onclick="tree.unselectAll()" class="gj-button-md">Unselect All</button>
- <br/>
- <ul id="tree" data-gj-source="/Locations/Get"></ul>
+ <ul id="tree"></ul>
  <script>
-     var tree = new GijgoTree(document.getElementById('tree'), {
-         selectionType: 'multiple'
-     });
-     tree.on('dataBound', function() {
-         tree.expandAll();
+     new GijgoTree(document.getElementById('tree'), {
+         dataSource: '/Locations/Get',
+         selectionType: 'multiple',
+         cascadeSelection: true,
+         uiLibrary: 'bootstrap'
      });
  </script>
 </body>

@@ -59,6 +59,7 @@ gj.tree.config = {
             list: 'gj-list gj-list-md',
             item: undefined,
             active: 'gj-list-md-active',
+            inactive: 'gj-list-md-inactive',
             leafIcon: undefined,
             border: 'gj-tree-md-border'
         },
@@ -76,6 +77,7 @@ gj.tree.config = {
             list: 'gj-list gj-list-bootstrap list-group',
             item: 'list-group-item',
             active: 'active',
+            inactive: '',
             border: 'gj-tree-bootstrap-border'
         },
         iconsLibrary: 'glyphicons'
@@ -87,6 +89,22 @@ gj.tree.config = {
             list: 'gj-list gj-list-bootstrap',
             item: 'list-group-item',
             active: 'active',
+            inactive: '',
+            border: 'gj-tree-bootstrap-border'
+        },
+        icons: {
+            expand: '<i class="gj-icon plus" />',
+            collapse: '<i class="gj-icon minus" />'
+        }
+    },
+
+    bootstrap5: {
+        style: {
+            wrapper: 'gj-unselectable gj-tree-bootstrap-5',
+            list: 'gj-list gj-list-bootstrap',
+            item: 'list-group-item',
+            active: 'active',
+            inactive: 'inactive',
             border: 'gj-tree-bootstrap-border'
         },
         icons: {
@@ -124,58 +142,58 @@ gj.tree.config = {
 /**  */gj.tree.events = {
 
     /**
-     * Event fires when the tree is initialized     */    initialized: function ($tree) {
-        $tree.triggerHandler('initialized');
+     * Event fires when the tree is initialized     */    initialized: function (el) {
+        el.dispatchEvent(new Event('initialized'));
     },
 
     /**
-     * Event fired before data binding takes place.     */    dataBinding: function ($tree) {
-        $tree.triggerHandler('dataBinding');
+     * Event fired before data binding takes place.     */    dataBinding: function (el) {
+        el.dispatchEvent(new Event('dataBinding'));
     },
 
     /**
-     * Event fires after the loading of the data in the tree.     */    dataBound: function ($tree) {
-        $tree.triggerHandler('dataBound');
+     * Event fires after the loading of the data in the tree.     */    dataBound: function (el) {
+        el.dispatchEvent(new Event('dataBound'));
     },
 
     /**
-     * Event fires after selection of tree node.     */    select: function ($tree, $node, id) {
-        return $tree.triggerHandler('select', [$node, id]);
+     * Event fires after selection of tree node.     */    select: function (el, node, id) {
+        return el.dispatchEvent(new CustomEvent('select', { detail: { node: node, id: id } }));
     },
 
     /**
-     * Event fires on un selection of tree node     */    unselect: function ($tree, $node, id) {
-        return $tree.triggerHandler('unselect', [$node, id]);
+     * Event fires on un selection of tree node     */    unselect: function (el, node, id) {
+        return el.dispatchEvent(new CustomEvent('unselect', { detail: { node: node, id: id } }));
     },
 
     /**
-     * Event fires before node expand.     */    expand: function ($tree, $node, id) {
-        return $tree.triggerHandler('expand', [$node, id]);
+     * Event fires before node expand.     */    expand: function (el, node, id) {
+        return el.dispatchEvent(new CustomEvent('expand', { detail: { node: node, id: id } }));
     },
 
     /**
-     * Event fires before node collapse.     */    collapse: function ($tree, $node, id) {
-        return $tree.triggerHandler('collapse', [$node, id]);
+     * Event fires before node collapse.     */    collapse: function (el, node, id) {
+        return el.dispatchEvent(new CustomEvent('collapse', { detail: { node: node, id: id } }));
     },
 
     /**
-     * Event fires on enable of tree node.     */    enable: function ($tree, $node) {
-        return $tree.triggerHandler('enable', [$node]);
+     * Event fires on enable of tree node.     */    enable: function (el, node) {
+        return el.dispatchEvent(new CustomEvent('enable', { detail: { node: node } }));
     },
 
     /**
-     * Event fires on disable of tree node.     */    disable: function ($tree, $node) {
-        return $tree.triggerHandler('disable', [$node]);
+     * Event fires on disable of tree node.     */    disable: function (el, node) {
+        return el.dispatchEvent(new CustomEvent('disable', { detail: { node: node } }));
     },
 
     /**
-     * Event fires before tree destroy     */    destroying: function ($tree) {
-        return $tree.triggerHandler('destroying');
+     * Event fires before tree destroy     */    destroying: function (el) {
+        return el.dispatchEvent(new Event('destroying'));
     },
 
     /**
-     * Event fires when the data is bound to node.     */    nodeDataBound: function ($tree, $node, id, record) {
-        return $tree.triggerHandler('nodeDataBound', [$node, id, record]);
+     * Event fires when the data is bound to node.     */    nodeDataBound: function (el, node, id, record) {
+        return el.dispatchEvent(new CustomEvent('nodeDataBound', { detail: { node: node, id: id, record: record } }));
     }
 }
 /*global gj $*/
@@ -194,12 +212,13 @@ gj.tree.methods = {
 
     initialize: function () {
         let data = this.getConfig(),
-            wrapper = this.wrap('div');;
+            wrapper = this.wrap('div');
 
         gj.core.addClasses(this.element, data.style.list);
         gj.core.addClasses(wrapper, data.style.wrapper);
+        this.element.setAttribute('data-gj-type', this.type);
         if (data.width) {
-            this.width(data.width);
+            gj.core.css(wrapper, 'width', data.width);
         }
         if (data.border) {
             gj.core.addClasses(wrapper, data.style.border);
@@ -244,7 +263,7 @@ gj.tree.methods = {
     loadData: function (tree) {
         let i, records = tree.getRecords();
 
-        gj.tree.events.dataBinding(tree);
+        gj.tree.events.dataBinding(tree.element);
         //TODO: tree.element.off()
         tree.element.innerHTML = '';
         for (i = 0; i < records.length; i++) {
@@ -352,17 +371,17 @@ gj.tree.methods = {
 
     expand: function (tree, node, cascade) {
         let children, i,
-            expander = node.querySelector('>[data-gj-role="wrapper"]>[data-gj-role="expander"]'),
+            expander = gj.core.select(node, '[data-gj-role="wrapper"]>[data-gj-role="expander"]'),
             data = tree.getConfig(),
             id = node.getAttribute('data-gj-id'),
-            list = node.querySelector('>ul');
+            list = node.querySelector('ul');
 
-        if (gj.tree.events.expand(tree.element, node, id) !== false && list && list.length) {
+        if (gj.tree.events.expand(tree.element, node, id) !== false && list) {
             list.style.display = 'block';
             expander.setAttribute('data-gj-mode', 'open');
             expander.innerHTML = data.icons.collapse;
             if (cascade) {
-                children = node.querySelector('>ul>li');
+                children = node.querySelectorAll('ul>li');
                 for (i = 0; i < children.length; i++) {
                     gj.tree.methods.expand(tree, children[i], cascade);
                 }
@@ -373,16 +392,17 @@ gj.tree.methods = {
 
     collapse: function (tree, node, cascade) {
         let children, i,
-            expander = node.querySelector('>[data-gj-role="wrapper"]>[data-gj-role="expander"]'),
+            expander = gj.core.select(node, '[data-gj-role="wrapper"]>[data-gj-role="expander"]'),
             data = tree.getConfig(),
             id = node.getAttribute('data-gj-id'),
-            list = node.children('ul');
-        if (gj.tree.events.collapse(tree, node, id) !== false && list && list.length) {
+            list = node.querySelector('ul');
+
+        if (gj.tree.events.collapse(tree.element, node, id) !== false && list) {
             list.style.display = 'none';
             expander.setAttribute('data-gj-mode', 'close');
             expander.innerHTML = data.icons.expand;
             if (cascade) {
-                children = node.find('>ul>li>[data-gj-role="wrapper"]>span[data-gj-mode="open"]');
+                children = node.querySelectorAll('ul>li>[data-gj-role="wrapper"]>span[data-gj-mode="open"]');
                 for (i = 0; i < children.length; i++) {
                     gj.tree.methods.collapse(tree, children[i], cascade);
                 }
@@ -392,15 +412,15 @@ gj.tree.methods = {
     },
 
     expandAll: function (tree) {
-        let i, nodes = tree.find('ul>li');
+        let i, nodes = gj.core.selectAll(tree.element, 'li');
         for (i = 0; i < nodes.length; i++) {
-            gj.tree.methods.expand(tree, $(nodes[i]), true);
+            gj.tree.methods.expand(tree, nodes[i], true);
         }
         return tree;
     },
 
     collapseAll: function (tree) {
-        let i, nodes = tree.querySelectorAll('>ul>li>[data-gj-role="wrapper"]>span[data-gj-mode="open"]');
+        let i, nodes = gj.core.selectAll(tree.element, 'li');
         for (i = 0; i < nodes.length; i++) {
             gj.tree.methods.collapse(tree, nodes[i], true);
         }
@@ -433,20 +453,28 @@ gj.tree.methods = {
     },
 
     select: function (tree, node, cascade) {
-        let i, children, data = tree.getConfig();
-        if (node.getAttribute('data-gj-selected') !== 'true' && gj.tree.events.select(tree, node, node.getAttribute('data-gj-id')) !== false) {
-            node.addClass(data.style.active).attr('data-gj-selected', 'true');
-            if (cascade) {
-                children = node.querySelectorAll('ul>li');
-                for (i = 0; i < children.length; i++) {
-                    gj.tree.methods.select(tree, $(children[i]), cascade);
+        let data = tree.getConfig(),
+            allowEvent = gj.tree.events.select(tree.element, node, node.getAttribute('data-gj-id')) !== false;
+        if (node.getAttribute('data-gj-selected') !== 'true' && allowEvent) {
+            gj.core.removeClasses(node, data.style.inactive);
+            gj.core.addClasses(node, data.style.active);
+            node.setAttribute('data-gj-selected', 'true');
+        }
+        if (cascade && allowEvent) {
+            for (let i = 0; i < node.children.length; i++) {
+                if (node.children[i].tagName.toUpperCase() === 'UL') {
+                    for (let j = 0; j < node.children[i].children.length; j++) {
+                        if (node.children[i].children[j].tagName.toUpperCase() === 'LI') {
+                            gj.tree.methods.select(tree, node.children[i].children[j], cascade);
+                        }
+                    }
                 }
             }
         }
     },
     
     unselectAll: function (tree) {
-        let i, nodes = tree.querySelectorAll('>ul>li');
+        let i, nodes = tree.element.querySelectorAll('ul:first-child>li');
         for (i = 0; i < nodes.length; i++) {
             gj.tree.methods.unselect(tree, nodes[i], true);
         }
@@ -454,33 +482,33 @@ gj.tree.methods = {
     },
 
     unselect: function (tree, node, cascade) {
-        let i, children, data = tree.getConfig();
-        if (node.getAttribute('data-gj-selected') === 'true' && gj.tree.events.unselect(tree, node, node.getAttribute('data-gj-id')) !== false) {
-            gj.core.removeClasses(node, data.style.active)
+        let data = tree.getConfig(),
+            allowEvent = gj.tree.events.unselect(tree.element, node, node.getAttribute('data-gj-id')) !== false;
+        if (node.getAttribute('data-gj-selected') === 'true' && allowEvent) {
+            gj.core.removeClasses(node, data.style.active);
+            gj.core.addClasses(node, data.style.inactive);
             node.removeAttribute('data-gj-selected');
-            if (cascade) {
-                children = node.querySelectorAll('>ul>li');
-                for (i = 0; i < children.length; i++) {
-                    gj.tree.methods.unselect(tree, children[i], cascade);
+        }
+        if (cascade && allowEvent) {
+            for (let i = 0; i < node.children.length; i++) {
+                if (node.children[i].tagName.toUpperCase() === 'UL') {
+                    for (let j = 0; j < node.children[i].children.length; j++) {
+                        if (node.children[i].children[j].tagName.toUpperCase() === 'LI') {
+                            gj.tree.methods.unselect(tree, node.children[i].children[j], cascade);
+                        }
+                    }
                 }
             }
         }
     },
 
     getSelections: function (list) {
-        let i, node, children,
-            result = [],
-            nodes = list.children;
+        let result = [],
+            nodes = list.querySelectorAll('li');
         if (nodes && nodes.length) {
-            for (i = 0; i < nodes.length; i++) {
-                node = $(nodes[i]);
-                if (node.getAttribute('data-gj-selected') === 'true') {
-                    result.push(node.getAttribute('data-gj-id'));
-                } else if (node.has('ul')) {
-                    children = gj.tree.methods.getSelections(node.querySelector('>ul'));
-                    if (children.length) {
-                        result = result.concat(children);
-                    }
+            for (let i = 0; i < nodes.length; i++) {
+                if (nodes[i].getAttribute('data-gj-selected') === 'true') {
+                    result.push(nodes[i].getAttribute('data-gj-id'));
                 }
             }
         }
@@ -528,18 +556,13 @@ gj.tree.methods = {
     getNodeById: function (list, id) {
         let i, node,
             result = undefined,
-            nodes = list.children('li');
+            nodes = list.querySelectorAll('li');
         if (nodes && nodes.length) {
             for (i = 0; i < nodes.length; i++) {
-                node = $(nodes[i]);
+                node = nodes[i];
                 if (id == node.getAttribute('data-gj-id')) {
                     result = node;
                     break;
-                } else if (node.has('ul')) {
-                    result = gj.tree.methods.getNodeById(node.querySelector('>ul'), id);
-                    if (result) {
-                        break;
-                    }
                 }
             }
         }
@@ -549,18 +572,13 @@ gj.tree.methods = {
     getNodeByText: function (list, text) {
         let i, node,
             result = undefined,
-            nodes = list.children('li');
+            nodes = list.querySelectorAll('li');
         if (nodes && nodes.length) {
             for (i = 0; i < nodes.length; i++) {
-                node = $(nodes[i]);
-                if (text === node.querySelector('>[data-gj-role="wrapper"]>[data-gj-role="display"]').innerText) {
+                node = nodes[i];
+                if (text === gj.core.select(node, '[data-gj-role="wrapper"]>[data-gj-role="display"]').innerText) {
                     result = node;
                     break;
-                } else if (node.has('ul')) {
-                    result = gj.tree.methods.getNodeByText(node.querySelector('>ul'), text);
-                    if (result) {
-                        break;
-                    }
                 }
             }
         }
@@ -568,18 +586,20 @@ gj.tree.methods = {
     },
 
     addNode: function (tree, nodeData, parent, position) {
-        let level, record, data = tree.getConfig();
+        let level, record, records, data = tree.getConfig();
 
-        if (!parent || !parent.length) {
-            parent = tree.children('ul');
-            tree.setRecords(tree.getRecords().push(nodeData));
+        if (!parent) {
+            parent = tree.element;
+            records = tree.getRecords();
+            records.push(nodeData)
+            tree.setRecords(records);
         } else {
-            if (parent[0].tagName.toLowerCase() === 'li') {
-                if (parent.querySelectorAll('>ul').length === 0) {
+            if (parent.tagName.toUpperCase() === 'LI') {
+                if (!parent.querySelector('ul')) {
                     parent.querySelector('[data-gj-role="expander"]').innerHTML = data.icons.collapse;
                     parent.appendChild(gj.core.addClasses(document.createElement('ul'), data.style.list));
                 }
-                parent = parent.querySelector('>ul');
+                parent = parent.querySelector('ul');
             }
             record = tree.getDataById(parent.parentNode.getAttribute('data-gj-id'));
             if (!record[data.childrenField]) {
@@ -587,7 +607,7 @@ gj.tree.methods = {
             }
             record[data.childrenField].push(nodeData);
         }
-        level = gj.tree.getLevel(parent);
+        level = gj.tree.methods.getLevel(parent);
         if (!data.primaryKey) {
             gj.tree.methods.genAutoId(data, [nodeData]);
         }
@@ -599,10 +619,11 @@ gj.tree.methods = {
 
     getLevel: function(node) {
         let count = 1, el = node.parentNode;
-        while (el && el.getAttribute('data-gj-type') !== 'tree') {
+        while (el && (el.getAttribute('data-gj-type') !== 'tree') && (node.getAttribute('data-gj-type') !== 'tree')) {
             count++;
             el = el.parentNode;
         }
+        return count;
     },
 
     remove: function (tree, node) {
@@ -636,14 +657,14 @@ gj.tree.methods = {
         return tree;
     },
 
-    getChildren: function (tree, node, cascade) {
-        let result = [], i, children,
-            cascade = typeof (cascade) === 'undefined' ? true : cascade;
-
+    getChildren: function (node, cascade) {
+        let result = [], i, children;
+        
+        cascade = typeof (cascade) === 'undefined' ? true : cascade;
         if (cascade) {
             children = node.querySelectorAll('ul li');
         } else {
-            children = node.querySelectorAll('>ul>li');
+            children = node.querySelectorAll('ul:first-child>li');
         }
 
         for (i = 0; i < children.length; i++) {
@@ -663,14 +684,14 @@ gj.tree.methods = {
 
     enableNode: function (tree, node, cascade) {
         let i, children,
-            expander = node.querySelector('>[data-gj-role="wrapper"]>[data-gj-role="expander"]'),
-            display = node.querySelector('>[data-gj-role="wrapper"]>[data-gj-role="display"]'),
-            cascade = typeof (cascade) === 'undefined' ? true : cascade;
-
+            expander = gj.core.select(node, '[data-gj-role="wrapper"]>[data-gj-role="expander"]'),
+            display = gj.core.select(node, '[data-gj-role="wrapper"]>[data-gj-role="display"]');
+        
+        cascade = typeof (cascade) === 'undefined' ? true : cascade;
         node.classList.remove('disabled');
         expander.addEventListener('click', gj.tree.methods.expanderClickHandler(tree));
         display.addEventListener('click', gj.tree.methods.displayClickHandler(tree));
-        gj.tree.events.enable(tree, node);
+        gj.tree.events.enable(tree.element, node);
         if (cascade) {
             children = node.querySelectorAll('ul>li');
             for (i = 0; i < children.length; i++) {
@@ -689,10 +710,10 @@ gj.tree.methods = {
 
     disableNode: function (tree, node, cascade) {
         let i, children,
-            expander = node.querySelector('>[data-gj-role="wrapper"]>[data-gj-role="expander"]'),
-            display = node.querySelector('>[data-gj-role="wrapper"]>[data-gj-role="display"]'),
-            cascade = typeof (cascade) === 'undefined' ? true : cascade;
-
+            expander = node.querySelector('[data-gj-role="wrapper"]>[data-gj-role="expander"]'),
+            display = node.querySelector('[data-gj-role="wrapper"]>[data-gj-role="display"]');
+        
+        cascade = typeof (cascade) === 'undefined' ? true : cascade;
         node.classList.add('disabled');
         //TODO: expander.off('click');
         //TODO: display.off('click');
@@ -711,10 +732,11 @@ gj.tree.methods = {
             gj.tree.events.destroying(tree.element);
             tree.xhr && tree.xhr.abort();
             //TODO: tree.off();
-            tree.removeData();
-            tree.removeAttribute('data-gj-type');
-            tree.removeClass()
-            tree.innerHTML = '';
+            tree.removeConfig();
+            tree.element.removeAttribute('data-gj-guid');
+            tree.element.removeAttribute('data-gj-type');
+            tree.element.setAttribute('class', '');
+            tree.element.innerHTML = '';
         }
         return tree;
     },
@@ -738,7 +760,7 @@ gj.tree.methods = {
 }
 /**  */GijgoTree = function (element, jsConfig) {
     var self = this,
-        methods = gj.datepicker.methods;
+        methods = gj.tree.methods;
 
     self.type = 'tree';
     self.element = element;
@@ -795,27 +817,27 @@ gj.tree.methods = {
 
     /**
      * Return node data by id of the record.     */    self.getDataById = function (id) {
-        return methods.getDataById(this, id, this.data('records'));
+        return methods.getDataById(this, id, this.getRecords());
     };
 
     /**
      * Return node data by text.     */    self.getDataByText = function (text) {
-        return methods.getDataByText(this, text, this.data('records'));
+        return methods.getDataByText(this, text, this.getRecords());
     };
 
     /**
      * Return node by id of the record.     */    self.getNodeById = function (id) {
-        return methods.getNodeById(this.children('ul'), id);
+        return methods.getNodeById(this.element, id);
     };
 
     /**
      * Return node by text.     */    self.getNodeByText = function (text) {
-        return methods.getNodeByText(this.children('ul'), text);
+        return methods.getNodeByText(this.element, text);
     };
 
     /**
      * Return an array with all records presented in the tree.     */    self.getAll = function () {
-        return this.data('records');
+        return this.getRecords();
     };
 
     /**
@@ -840,18 +862,18 @@ gj.tree.methods = {
 
     /**
      * Return an array with the ids of the selected nodes.     */    self.getSelections = function () {
-        return methods.getSelections(this.children('ul'));
+        return methods.getSelections(this.element);
     };
 
     /**
      * Return an array with the ids of all children.     */    self.getChildren = function (node, cascade) {
-        return methods.getChildren(this, node, cascade);
+        return methods.getChildren(node, cascade);
     };
 
     /**
      * Return an array with the names of all parents.     */    self.parents = function (id) {
-        var parents = [], data = this.data();
-        methods.pathFinder(data, data.records, id, parents);
+        var parents = [];
+        methods.pathFinder(data, this.getRecords(), id, parents);
         return parents.reverse();
     };
 
@@ -875,7 +897,7 @@ gj.tree.methods = {
         return methods.disableAll(this);
     };
 
-    if ('tree' !== element.attr('data-type')) {
+    if ('tree' !== element.getAttribute('data-gj-type')) {
         methods.init.call(self, jsConfig);
     }
 
@@ -883,7 +905,7 @@ gj.tree.methods = {
 };
 
 GijgoTree.prototype = new gj.widget();
-GijgoTree.constructor = gj.tree.widget;
+GijgoTree.constructor = GijgoTree;
 
 if (typeof (jQuery) !== "undefined") {
     (function ($) {
@@ -917,14 +939,17 @@ if (typeof (jQuery) !== "undefined") {
 
     private: {
         dataBound: function (tree) {
-            let nodes;
-            if (tree.data('cascadeCheck')) {
-                nodes = tree.find('li[data-gj-role="node"]');
+            let nodes, chkb, state;
+            if (tree.getConfig().cascadeCheck) {
+                nodes = tree.element.querySelectorAll('li[data-gj-role="node"]');
                 for (const node of nodes) {
-                    let state = gj.checkbox.methods.state(node.querySelector('[data-gj-role="checkbox"] input[type="checkbox"]'));
-                    if (state === 'checked') {
-                        gj.tree.plugins.checkboxes.private.updateChildrenState(node, state);
-                        gj.tree.plugins.checkboxes.private.updateParentState(node, state);
+                    chkb = node.querySelector('[data-gj-role="checkbox"] input[type="checkbox"]');
+                    if (chkb) {
+                        state = gj.checkbox.methods.state(chkb);
+                        if (state === 'checked') {
+                            gj.tree.plugins.checkboxes.private.updateChildrenState(node, state);
+                            gj.tree.plugins.checkboxes.private.updateParentState(node, state);
+                        }
                     }
                 }
             }
@@ -933,37 +958,38 @@ if (typeof (jQuery) !== "undefined") {
         nodeDataBound: function (tree, node, id, record) {
             let data, expander, checkbox, wrapper, disabled;
             
-            if (node.querySelector('> [data-gj-role="wrapper"] > [data-gj-role="checkbox"]'))
+            if (!gj.core.select(node, '[data-gj-role="wrapper"]>[data-gj-role="checkbox"]'))
             {
                 data = tree.getConfig();
-                expander = node.querySelector('> [data-gj-role="wrapper"] > [data-gj-role="expander"]');
+                expander = gj.core.select(node, '[data-gj-role="wrapper"]>[data-gj-role="display"]');
                 checkbox = document.createElement('input');
                 checkbox.setAttribute('type', 'checkbox');
-                // wrapper = document.createElement('span');
-                // wrapper.setAttribute('data-gj-role', 'checkbox');
-                // wrapper.appendChild(checkbox);
+                wrapper = document.createElement('span');
+                wrapper.setAttribute('data-gj-role', 'checkbox');
+                wrapper.appendChild(checkbox);
+                expander.parentNode.insertBefore(wrapper, expander);
                 disabled = typeof (record[data.disabledField]) !== 'undefined' && record[data.disabledField].toString().toLowerCase() === 'true';
 
                 checkbox = new GijgoCheckBox(checkbox, {
                     uiLibrary: data.uiLibrary,
                     iconsLibrary: data.iconsLibrary,
                     change: function (e) {
-                        gj.tree.plugins.checkboxes.events.checkboxChange(tree.element, node, record, e.detail.state);
+                        let state = gj.checkbox.methods.state(e.target);
+                        gj.tree.plugins.checkboxes.events.checkboxChange(tree.element, node, record, state);
                     }
                 });
                 if (disabled) {
-                    checkbox.disabled = true;
+                    checkbox.element.disabled = true;
                 }
                 record[data.checkedField] && checkbox.state('checked');
                 checkbox.on('click', function (e) {
-                    let node = checkbox.closest('li'),
-                        state = checkbox.state();
+                    let node = this.closest('li'),
+                        state = gj.checkbox.methods.state(this);
                     if (data.cascadeCheck) {
                         gj.tree.plugins.checkboxes.private.updateChildrenState(node, state);
                         gj.tree.plugins.checkboxes.private.updateParentState(node, state);
                     }
                 });
-                expander.parentNode.insertBefore(wrapper, expander.nextSubling);
             }
         },
 
@@ -972,8 +998,8 @@ if (typeof (jQuery) !== "undefined") {
 
             parentNode = node.parentNode.parentNode;
             if (parentNode) {
-                parentCheckbox = parentNode.querySelector('> [data-gj-role="wrapper"] > [data-gj-role="checkbox"] input[type="checkbox"]');
-                siblingCheckboxes = node.parentNode.querySelectorAll('> [data-gj-role="wrapper"] > span[data-gj-role="checkbox"] input[type="checkbox"]');
+                parentCheckbox = parentNode.querySelector('[data-gj-role="wrapper"] > [data-gj-role="checkbox"] input[type="checkbox"]');
+                siblingCheckboxes = node.parentNode.querySelectorAll('[data-gj-role="wrapper"] > span[data-gj-role="checkbox"] input[type="checkbox"]');
                 allChecked = (state === 'checked');
                 allUnchecked = (state === 'unchecked');
                 parentState = 'indeterminate';
@@ -1067,21 +1093,21 @@ if (typeof (jQuery) !== "undefined") {
 
     configure: function (tree) {
         if (tree.getConfig().checkboxes && gj.checkbox) {
-            this.extend(tree, gj.tree.plugins.checkboxes.public);
-            tree.on('nodeDataBound', function (e, node, id, record) {
-                gj.tree.plugins.checkboxes.private.nodeDataBound(tree, node, id, record);
+            tree.extend(tree, gj.tree.plugins.checkboxes.public);
+            tree.on('nodeDataBound', function (e) {
+                gj.tree.plugins.checkboxes.private.nodeDataBound(tree, e.detail.node, e.detail.id, e.detail.record);
             });
             tree.on('dataBound', function () {
                 gj.tree.plugins.checkboxes.private.dataBound(tree);
             });
-            tree.on('enable', function (e, node) {
-                let checkboxes = node.querySelectorAll('>[data-gj-role="wrapper"]>[data-gj-role="checkbox"] input[type="checkbox"]');
+            tree.on('enable', function (e) {
+                let checkboxes = e.detail.node.querySelectorAll('[data-gj-role="wrapper"]>[data-gj-role="checkbox"] input[type="checkbox"]');
                 for (const chkb of checkboxes) {
                     chkb.disabled = false;
                 }
             });
-            tree.on('disable', function (e, node) {
-                let checkboxes = node.querySelectorAll('>[data-gj-role="wrapper"]>[data-gj-role="checkbox"] input[type="checkbox"]');
+            tree.on('disable', function (e) {
+                let checkboxes = e.detail.node.querySelectorAll('[data-gj-role="wrapper"]>[data-gj-role="checkbox"] input[type="checkbox"]');
                 for (const chkb of checkboxes) {
                     chkb.disabled = true;
                 }
@@ -1360,7 +1386,7 @@ if (typeof (jQuery) !== "undefined") {
 
 	configure: function (tree) {
 		tree.extend(tree, gj.tree.plugins.dragAndDrop.public);
-		if (tree.data('dragAndDrop') && gj.draggable && gj.droppable) {
+		if (tree.getConfig().dragAndDrop && gj.draggable && gj.droppable) {
 			tree.on('nodeDataBound', function (e, node) {
 				gj.tree.plugins.dragAndDrop.private.nodeDataBound(tree, node);
 			});

@@ -179,7 +179,7 @@ gj.slider.methods = {
 
         el.style.display = 'none';
 
-        wrapper = this.wrap();
+        wrapper = this.wrap('div');
 
         if (data.width) {
             gj.core.css(wrapper, 'width', data.width);

@@ -16,8 +16,8 @@
      new GijgoTree(document.getElementById('tree'), {
          primaryKey: 'id',
          dataSource: [ { id: 101, text: 'foo', children: [ { id: 202, text: 'bar' } ] } ],
-         select: function (e, node, id) {
-             alert('Your key is ' + id);
+         select: function (e) {
+             alert('Your key is ' + e.detail.id);
          }
      });
  </script>

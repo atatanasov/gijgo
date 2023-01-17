@@ -290,8 +290,8 @@ gj.grid.methods = {
         return this;
     },
 
-    readConfig: function (jsConfig, type) {
-        let config = gj.widget.prototype.readConfig.call(this, jsConfig, type);
+    readConfig: function (jsConfig) {
+        let config = gj.widget.prototype.readConfig.call(this, jsConfig);
         gj.grid.methods.setDefaultColumnConfig(config.columns, config.defaultColumnSettings);
         return config;
     },
