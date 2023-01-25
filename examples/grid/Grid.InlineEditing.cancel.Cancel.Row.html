@@ -15,19 +15,28 @@
  <script>
      let grid, renderer;
      renderer = function (value, record, cell, displayEl, id) {
-         let editBtn = ('<i class="fa fa-pencil gj-cursor-pointer" data-gj-key="' + id + '"></i>'),
-             cancelBtn = ('<i class="fa fa-undo gj-cursor-pointer" data-gj-key="' + id + '"></i>').hide();
-         editBtn.on('click', function (e) {
-             grid.edit((this).data('key'));
-             editBtn.hide();
-             cancelBtn.show();
+         let editBtn = document.createElement('i'),
+             cancelBtn = document.createElement('i');
+
+         gj.core.addClasses(editBtn, 'fa fa-pencil gj-cursor-pointer');
+         gj.core.addClasses(cancelBtn, 'fa fa-undo gj-cursor-pointer');
+         editBtn.setAttribute('data-gj-key', id);
+         cancelBtn.setAttribute('data-gj-key', id);
+         editBtn.style.display = 'inline-block';
+         cancelBtn.style.display = 'none';
+
+         editBtn.addEventListener('click', function (e) {
+             grid.edit(this.getAttribute('data-gj-key'));
+             editBtn.style.display = 'none';
+             cancelBtn.style.display = 'inline-block';
          });
-         cancelBtn.on('click', function (e) {
-             grid.cancel((this).data('key'));
-             editBtn.show();
-             cancelBtn.hide();
+         cancelBtn.addEventListener('click', function (e) {
+             grid.cancel(this.getAttribute('data-gj-key'));
+             editBtn.style.display = 'inline-block';
+             cancelBtn.style.display = 'none';
          });
-         displayEl.append(editBtn).append(cancelBtn);
+         displayEl.appendChild(editBtn)
+         displayEl.appendChild(cancelBtn);
      }
      grid = new GijgoGrid(document.getElementById('grid'), {
          primaryKey: 'ID',

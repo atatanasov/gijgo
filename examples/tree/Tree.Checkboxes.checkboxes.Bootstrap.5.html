@@ -6,18 +6,19 @@
   <title>Example</title>
   <script src="../../dist/modular/js/core.js" type="text/javascript"></script>
   <link href="../../dist/modular/css/core.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+  <link href="../../dist/modular/css/checkbox.css" rel="stylesheet" type="text/css">
   <link href="../../dist/modular/css/tree.css" rel="stylesheet" type="text/css">
+  <script src="../../dist/modular/js/checkbox.js"></script>
   <script src="../../dist/modular/js/tree.js"></script>
 </head>
 <body style="padding: 8px;">
  <ul id="tree"></ul>
  <script>
-     var tree = new GijgoTree(document.getElementById('tree'), {
-         dataSource: '/Locations/Get'
-     });
-     tree.on('dataBound', function() {
-         var node = tree.getNodeByText('Asia');
-         node.style.backgroundColor = 'red';
+     let tree = new GijgoTree(document.getElementById('tree'), {
+         dataSource: '/Locations/Get',
+         checkboxes: true,
+         uiLibrary: 'bootstrap5'
      });
  </script>
 </body>

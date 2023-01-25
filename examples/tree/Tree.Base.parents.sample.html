@@ -15,6 +15,7 @@
  <script>
      var tree = new GijgoTree(document.getElementById('tree'), {
          dataSource: '/Locations/Get',
+         primaryKey: 'id',
          select: function (e) {
              var parents = tree.parents(e.detail.id);
              document.getElementById('location').innerHTML = parents.join(' / ') + ' / ' + tree.getDataById(e.detail.id).text;

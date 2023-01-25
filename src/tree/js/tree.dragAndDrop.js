@@ -97,7 +97,7 @@ gj.tree.plugins.dragAndDrop = {
 	    createNodeMouseMoveHandler: function (tree, node, display) {
             return function (e) {
                 if (tree.element.getAttribute('data-gj-drag-ready') === 'true') {
-                    let data = tree.getConfig(), dragEl, wrapper, ul, li, offsetTop, offsetLeft;
+                    let data = tree.getConfig(), dragEl, wrapper, ul, li, indicator, offsetTop, offsetLeft;
 
                     tree.element.setAttribute('data-gj-drag-ready', false);
                     dragEl = display.cloneNode();
@@ -115,7 +115,10 @@ gj.tree.plugins.dragAndDrop = {
                     ul.appendChild(li);
                     document.body.appendChild(dragEl);
 
-                    dragEl.find('[data-gj-role="wrapper"]').prepend('<span data-gj-role="indicator" />');
+                    indicator = document.createElement('span');
+                    indicator.setAttribute('data-gj-role', 'indicator');
+                    wrapper.parentNode.insertBefore(indicator, wrapper);
+                    
                     new GijgoDraggable(dragEl, {
                         drag: gj.tree.plugins.dragAndDrop.private.createDragHandler(tree, node, display),
                         stop: gj.tree.plugins.dragAndDrop.private.createDragStopHandler(tree, node, display)

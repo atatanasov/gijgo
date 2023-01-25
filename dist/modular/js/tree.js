@@ -445,7 +445,7 @@ gj.tree.methods = {
     },
 
     selectAll: function (tree) {
-        let i, nodes = tree.querySelectorAll('ul>li');
+        let i, nodes = gj.core.selectAll(tree.element, 'li');
         for (i = 0; i < nodes.length; i++) {
             gj.tree.methods.select(tree, nodes[i], true);
         }
@@ -454,7 +454,7 @@ gj.tree.methods = {
 
     select: function (tree, node, cascade) {
         let data = tree.getConfig(),
-            allowEvent = gj.tree.events.select(tree.element, node, node.getAttribute('data-gj-id')) !== false;
+            allowEvent = gj.tree.events.select(tree.element, node, node.getAttribute('data-gj-id')) !== false && !node.classList.contains('disabled');
         if (node.getAttribute('data-gj-selected') !== 'true' && allowEvent) {
             gj.core.removeClasses(node, data.style.inactive);
             gj.core.addClasses(node, data.style.active);
@@ -474,7 +474,7 @@ gj.tree.methods = {
     },
     
     unselectAll: function (tree) {
-        let i, nodes = tree.element.querySelectorAll('ul:first-child>li');
+        let i, nodes = gj.core.selectAll(tree.element, 'li');
         for (i = 0; i < nodes.length; i++) {
             gj.tree.methods.unselect(tree, nodes[i], true);
         }
@@ -483,7 +483,7 @@ gj.tree.methods = {
 
     unselect: function (tree, node, cascade) {
         let data = tree.getConfig(),
-            allowEvent = gj.tree.events.unselect(tree.element, node, node.getAttribute('data-gj-id')) !== false;
+            allowEvent = gj.tree.events.unselect(tree.element, node, node.getAttribute('data-gj-id')) !== false && !node.classList.contains('disabled');
         if (node.getAttribute('data-gj-selected') === 'true' && allowEvent) {
             gj.core.removeClasses(node, data.style.active);
             gj.core.addClasses(node, data.style.inactive);
@@ -662,9 +662,9 @@ gj.tree.methods = {
         
         cascade = typeof (cascade) === 'undefined' ? true : cascade;
         if (cascade) {
-            children = node.querySelectorAll('ul li');
+            children = node.querySelectorAll('ul>li');
         } else {
-            children = node.querySelectorAll('ul:first-child>li');
+            children = gj.core.selectAll(node, 'ul>li');
         }
 
         for (i = 0; i < children.length; i++) {
@@ -675,7 +675,7 @@ gj.tree.methods = {
     },
 
     enableAll: function (tree) {
-        let i, children = tree.querySelectorAll('ul>li');
+        let i, children = gj.core.selectAll(tree.element, 'li');
         for (i = 0; i < children.length; i++) {
             gj.tree.methods.enableNode(tree, children[i], true);
         }
@@ -687,21 +687,23 @@ gj.tree.methods = {
             expander = gj.core.select(node, '[data-gj-role="wrapper"]>[data-gj-role="expander"]'),
             display = gj.core.select(node, '[data-gj-role="wrapper"]>[data-gj-role="display"]');
         
-        cascade = typeof (cascade) === 'undefined' ? true : cascade;
-        node.classList.remove('disabled');
-        expander.addEventListener('click', gj.tree.methods.expanderClickHandler(tree));
-        display.addEventListener('click', gj.tree.methods.displayClickHandler(tree));
-        gj.tree.events.enable(tree.element, node);
-        if (cascade) {
-            children = node.querySelectorAll('ul>li');
-            for (i = 0; i < children.length; i++) {
-                gj.tree.methods.enableNode(tree, children[i], cascade);
+        if (expander && display) {
+            cascade = typeof (cascade) === 'undefined' ? true : cascade;
+            node.classList.remove('disabled');
+            expander.addEventListener('click', gj.tree.methods.expanderClickHandler(tree));
+            display.addEventListener('click', gj.tree.methods.displayClickHandler(tree));
+            gj.tree.events.enable(tree.element, node);
+            if (cascade) {
+                children = gj.core.selectAll(node, 'ul>li');
+                for (i = 0; i < children.length; i++) {
+                    gj.tree.methods.enableNode(tree, children[i], cascade);
+                }
             }
         }
     },
 
     disableAll: function (tree) {
-        let i, children = tree.querySelectorAll('ul>li');
+        let i, children = gj.core.selectAll(tree.element, 'li');
         for (i = 0; i < children.length; i++) {
             gj.tree.methods.disableNode(tree, children[i], true);
         }
@@ -713,15 +715,17 @@ gj.tree.methods = {
             expander = node.querySelector('[data-gj-role="wrapper"]>[data-gj-role="expander"]'),
             display = node.querySelector('[data-gj-role="wrapper"]>[data-gj-role="display"]');
         
-        cascade = typeof (cascade) === 'undefined' ? true : cascade;
-        node.classList.add('disabled');
-        //TODO: expander.off('click');
-        //TODO: display.off('click');
-        gj.tree.events.disable(tree.element, node);
-        if (cascade) {
-            children = node.querySelectorAll('ul>li');
-            for (i = 0; i < children.length; i++) {
-                gj.tree.methods.disableNode(tree, children[i], cascade);
+        if (expander && display) {
+            cascade = typeof (cascade) === 'undefined' ? true : cascade;
+            node.classList.add('disabled');
+            //TODO: expander.off('click');
+            //TODO: display.off('click');
+            gj.tree.events.disable(tree.element, node);
+            if (cascade) {
+                children = gj.core.selectAll(node, 'ul>li');
+                for (i = 0; i < children.length; i++) {
+                    gj.tree.methods.disableNode(tree, children[i], cascade);
+                }
             }
         }
     },
@@ -748,8 +752,8 @@ gj.tree.methods = {
             if (list[i].id == id) {
                 result = true;
                 break;
-            } else if (gj.tree.methods.pathFinder(data, list[i][data.childrenField], id, parents)) {
-                parents.push(list[i].data[data.textField]);
+            } else if (list[i][data.childrenField] && gj.tree.methods.pathFinder(data, list[i][data.childrenField], id, parents)) {
+                parents.push(list[i][data.textField]);
                 result = true;
                 break;
             }
@@ -873,7 +877,7 @@ gj.tree.methods = {
     /**
      * Return an array with the names of all parents.     */    self.parents = function (id) {
         var parents = [];
-        methods.pathFinder(data, this.getRecords(), id, parents);
+        methods.pathFinder(this.getConfig(), this.getRecords(), id, parents);
         return parents.reverse();
     };
 
@@ -997,7 +1001,7 @@ if (typeof (jQuery) !== "undefined") {
             let parentNode, parentCheckbox, siblingCheckboxes, allChecked, allUnchecked, parentState;
 
             parentNode = node.parentNode.parentNode;
-            if (parentNode) {
+            if (parentNode && parentNode.getAttribute('data-gj-role') === 'node') {
                 parentCheckbox = parentNode.querySelector('[data-gj-role="wrapper"] > [data-gj-role="checkbox"] input[type="checkbox"]');
                 siblingCheckboxes = node.parentNode.querySelectorAll('[data-gj-role="wrapper"] > span[data-gj-role="checkbox"] input[type="checkbox"]');
                 allChecked = (state === 'checked');
@@ -1101,15 +1105,15 @@ if (typeof (jQuery) !== "undefined") {
                 gj.tree.plugins.checkboxes.private.dataBound(tree);
             });
             tree.on('enable', function (e) {
-                let checkboxes = e.detail.node.querySelectorAll('[data-gj-role="wrapper"]>[data-gj-role="checkbox"] input[type="checkbox"]');
-                for (const chkb of checkboxes) {
-                    chkb.disabled = false;
+                let checkbox = e.detail.node.querySelector('[data-gj-role="wrapper"]>[data-gj-role="checkbox"] input[type="checkbox"]');
+                if (checkbox) {
+                    checkbox.disabled = false;
                 }
             });
             tree.on('disable', function (e) {
-                let checkboxes = e.detail.node.querySelectorAll('[data-gj-role="wrapper"]>[data-gj-role="checkbox"] input[type="checkbox"]');
-                for (const chkb of checkboxes) {
-                    chkb.disabled = true;
+                let checkbox = e.detail.node.querySelector('[data-gj-role="wrapper"]>[data-gj-role="checkbox"] input[type="checkbox"]');
+                if (checkbox) {
+                    checkbox.disabled = true;
                 }
             });
         }
@@ -1174,7 +1178,7 @@ if (typeof (jQuery) !== "undefined") {
 	    createNodeMouseMoveHandler: function (tree, node, display) {
             return function (e) {
                 if (tree.element.getAttribute('data-gj-drag-ready') === 'true') {
-                    let data = tree.getConfig(), dragEl, wrapper, ul, li, offsetTop, offsetLeft;
+                    let data = tree.getConfig(), dragEl, wrapper, ul, li, indicator, offsetTop, offsetLeft;
 
                     tree.element.setAttribute('data-gj-drag-ready', false);
                     dragEl = display.cloneNode();
@@ -1192,7 +1196,10 @@ if (typeof (jQuery) !== "undefined") {
                     ul.appendChild(li);
                     document.body.appendChild(dragEl);
 
-                    dragEl.find('[data-gj-role="wrapper"]').prepend('<span data-gj-role="indicator" />');
+                    indicator = document.createElement('span');
+                    indicator.setAttribute('data-gj-role', 'indicator');
+                    wrapper.parentNode.insertBefore(indicator, wrapper);
+                    
                     new GijgoDraggable(dragEl, {
                         drag: gj.tree.plugins.dragAndDrop.private.createDragHandler(tree, node, display),
                         stop: gj.tree.plugins.dragAndDrop.private.createDragStopHandler(tree, node, display)
@@ -1411,7 +1418,7 @@ if (typeof (jQuery) !== "undefined") {
     private: {
         nodeDataBound: function (tree, node, id, record) {
             let data = tree.getConfig(),
-                expander = node.querySelector('> [data-gj-role="wrapper"] > [data-gj-role="expander"]');
+                expander = gj.core.select(node, '[data-gj-role="wrapper"]>[data-gj-role="expander"]');
 
             if (record.hasChildren) {
                 expander.innerHTML = data.icons.expand;
@@ -1419,13 +1426,13 @@ if (typeof (jQuery) !== "undefined") {
         },
 
         createDoneHandler: function (tree, node) {
-            return function (response) {
-                let i, expander, list, data = tree.getConfig();
+            return function () {
+                let i, expander, list, data = tree.getConfig(), response = this.response;
                 if (typeof (response) === 'string' && JSON) {
                     response = JSON.parse(response);
                 }
                 if (response && response.length) {
-                    list = node.children('ul');
+                    list = gj.core.select(node, 'ul');
                     if (list.length === 0) {
                         list = document.createElement('ul');
                         gj.core.addClasses(list, data.style.list);
@@ -1434,7 +1441,7 @@ if (typeof (jQuery) !== "undefined") {
                     for (i = 0; i < response.length; i++) {
                         tree.addNode(response[i], list);
                     }
-                    expander = node.querySelector('>[data-gj-role="wrapper"]>[data-gj-role="expander"]'),
+                    expander = gj.core.select(node, '[data-gj-role="wrapper"]>[data-gj-role="expander"]'),
                     expander.setAttribute('data-gj-mode', 'open');
                     expander.innerHTML = data.icons.collapse;
                     gj.tree.events.dataBound(tree.element);
@@ -1443,17 +1450,21 @@ if (typeof (jQuery) !== "undefined") {
         },
 
         expand: function (tree, node, id) {
-            let ajaxOptions, data = tree.getConfig(), params = {},
-                children = node.querySelectorAll('>ul>li');
+            let url, data = tree.getConfig(), params = {},
+                children = gj.core.selectAll(node, 'ul>li');
 
             if (!children || !children.length) {
                 if (typeof (data.dataSource) === 'string') {
                     params[data.paramNames.parentId] = id;
-                    ajaxOptions = { url: data.dataSource, data: params };
+                    url = data.dataSource + '?' + new URLSearchParams(params).toString();                    
                     if (tree.xhr) {
                         tree.xhr.abort();
                     }
-                    tree.xhr = $.ajax(ajaxOptions).done(gj.tree.plugins.lazyLoading.private.createDoneHandler(tree, node)).fail(tree.createErrorHandler());
+                    tree.xhr = new XMLHttpRequest();
+                    tree.xhr.open('GET', url , true);
+                    tree.xhr.onload = gj.tree.plugins.lazyLoading.private.createDoneHandler(tree, node);
+                    tree.xhr.onerror = tree.createErrorHandler();
+                    tree.xhr.send();
                 }
             }
         }

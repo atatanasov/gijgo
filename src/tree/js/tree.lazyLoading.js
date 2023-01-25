@@ -37,7 +37,7 @@ gj.tree.plugins.lazyLoading = {
     private: {
         nodeDataBound: function (tree, node, id, record) {
             let data = tree.getConfig(),
-                expander = node.querySelector('> [data-gj-role="wrapper"] > [data-gj-role="expander"]');
+                expander = gj.core.select(node, '[data-gj-role="wrapper"]>[data-gj-role="expander"]');
 
             if (record.hasChildren) {
                 expander.innerHTML = data.icons.expand;
@@ -45,13 +45,13 @@ gj.tree.plugins.lazyLoading = {
         },
 
         createDoneHandler: function (tree, node) {
-            return function (response) {
-                let i, expander, list, data = tree.getConfig();
+            return function () {
+                let i, expander, list, data = tree.getConfig(), response = this.response;
                 if (typeof (response) === 'string' && JSON) {
                     response = JSON.parse(response);
                 }
                 if (response && response.length) {
-                    list = node.children('ul');
+                    list = gj.core.select(node, 'ul');
                     if (list.length === 0) {
                         list = document.createElement('ul');
                         gj.core.addClasses(list, data.style.list);
@@ -60,7 +60,7 @@ gj.tree.plugins.lazyLoading = {
                     for (i = 0; i < response.length; i++) {
                         tree.addNode(response[i], list);
                     }
-                    expander = node.querySelector('>[data-gj-role="wrapper"]>[data-gj-role="expander"]'),
+                    expander = gj.core.select(node, '[data-gj-role="wrapper"]>[data-gj-role="expander"]'),
                     expander.setAttribute('data-gj-mode', 'open');
                     expander.innerHTML = data.icons.collapse;
                     gj.tree.events.dataBound(tree.element);
@@ -69,17 +69,21 @@ gj.tree.plugins.lazyLoading = {
         },
 
         expand: function (tree, node, id) {
-            let ajaxOptions, data = tree.getConfig(), params = {},
-                children = node.querySelectorAll('>ul>li');
+            let url, data = tree.getConfig(), params = {},
+                children = gj.core.selectAll(node, 'ul>li');
 
             if (!children || !children.length) {
                 if (typeof (data.dataSource) === 'string') {
                     params[data.paramNames.parentId] = id;
-                    ajaxOptions = { url: data.dataSource, data: params };
+                    url = data.dataSource + '?' + new URLSearchParams(params).toString();                    
                     if (tree.xhr) {
                         tree.xhr.abort();
                     }
-                    tree.xhr = $.ajax(ajaxOptions).done(gj.tree.plugins.lazyLoading.private.createDoneHandler(tree, node)).fail(tree.createErrorHandler());
+                    tree.xhr = new XMLHttpRequest();
+                    tree.xhr.open('GET', url , true);
+                    tree.xhr.onload = gj.tree.plugins.lazyLoading.private.createDoneHandler(tree, node);
+                    tree.xhr.onerror = tree.createErrorHandler();
+                    tree.xhr.send();
                 }
             }
         }

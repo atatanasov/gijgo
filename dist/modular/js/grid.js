@@ -443,7 +443,7 @@ gj.grid.methods = {
             } else {
                 title = document.createElement('div');
                 title.setAttribute('data-gj-role', 'title');
-                title.innerHTML = typeof (columns[i].title) === 'undefined' ? columns[i].field : columns[i].title;
+                title.innerHTML = typeof (columns[i].title) === 'undefined' ? (columns[i].field || '') : columns[i].title;
                 cell.appendChild(title);
                 if (columns[i].sortable) {
                     gj.core.addClasses(title, style.sortable);
@@ -1815,38 +1815,45 @@ gj.grid.plugins.inlineEditing.config = {
         inlineEditing: {
             managementColumnConfig: { width: 280, role: 'managementColumn', align: 'center', renderer: gj.grid.plugins.inlineEditing.renderers.editManager, cssClass: 'gj-grid-management-column' }
         }
+    },
+
+    bootstrap5: {
+        inlineEditing: {
+            managementColumnConfig: { width: 280, role: 'managementColumn', align: 'center', renderer: gj.grid.plugins.inlineEditing.renderers.editManager, cssClass: 'gj-grid-management-column' }
+        }
     }
 };
 
 gj.grid.plugins.inlineEditing.private = {
+    createMdButton: function(role, icon, text) {
+        let btn = document.createElement('button');
+        btn.setAttribute('data-gj-role', role);
+        btn.classList.add('gj-button-md');
+        btn.innerHTML = '<i class="gj-icon ' + icon + '"></i> ' + text.toUpperCase();
+        return btn;
+    },
+
+    createBtButton: function(role, icon, text, leftMargin) {
+        let btn = document.createElement('button');
+        btn.setAttribute('data-gj-role', role);
+        gj.core.addClasses(btn, 'btn btn-default btn-sm');
+        leftMargin && btn.classList.add('gj-button-md');
+        btn.innerHTML = '<span class="glyphicon glyphicon-' + icon + '" aria-hidden="true"></span> ' + text;
+        return btn;
+    },
+
     localization: function (data) {
-        let edit = document.createElement('button'),
-            del = document.createElement('button'),
-            update = document.createElement('button'),
-            cancel = document.createElement('button');
-        
-        edit.setAttribute('data-gj-role', 'edit');
-        del.setAttribute('data-gj-role', 'delete');
-        update.setAttribute('data-gj-role', 'update');
-        cancel.setAttribute('data-gj-role', 'cancel');
+        let methods = gj.grid.plugins.inlineEditing.private;
         if (data.uiLibrary === 'bootstrap') {
-            data.inlineEditing.editButton = '<button role="edit" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> ' + gj.grid.messages[data.locale].Edit + '</button>';
-            data.inlineEditing.deleteButton = '<button role="delete" class="btn btn-default btn-sm gj-margin-left-10"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> ' + gj.grid.messages[data.locale].Delete + '</button>';
-            data.inlineEditing.updateButton = '<button role="update" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> ' + gj.grid.messages[data.locale].Update + '</button>';
-            data.inlineEditing.cancelButton = '<button role="cancel" class="btn btn-default btn-sm gj-margin-left-10"><span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span> ' + gj.grid.messages[data.locale].Cancel + '</button>';
+            data.inlineEditing.editButton = methods.createBtButton('edit', 'pencil', gj.grid.messages[data.locale].Edit);
+            data.inlineEditing.deleteButton = methods.createBtButton('delete', 'remove', gj.grid.messages[data.locale].Delete);
+            data.inlineEditing.updateButton = methods.createBtButton('update', 'ok', gj.grid.messages[data.locale].Update);
+            data.inlineEditing.cancelButton = methods.createBtButton('cancel', 'ban-circle', gj.grid.messages[data.locale].Cancel);
         } else {
-            edit.classList.add('gj-button-md');
-            edit.innerHTML = '<i class="gj-icon pencil" /> ' + gj.grid.messages[data.locale].Edit.toUpperCase();
-            data.inlineEditing.editButton = edit;
-            del.classList.add('gj-button-md');
-            del.innerHTML = '<i class="gj-icon pencil" /> ' + gj.grid.messages[data.locale].Delete.toUpperCase();
-            data.inlineEditing.deleteButton = del;
-            update.classList.add('gj-button-md');
-            update.innerHTML = '<i class="gj-icon pencil" /> ' + gj.grid.messages[data.locale].Update.toUpperCase();
-            data.inlineEditing.updateButton = update;
-            cancel.classList.add('gj-button-md');
-            cancel.innerHTML = '<i class="gj-icon pencil" /> ' + gj.grid.messages[data.locale].Cancel.toUpperCase();
-            data.inlineEditing.cancelButton = cancel;
+            data.inlineEditing.editButton = methods.createMdButton('edit', 'pencil', gj.grid.messages[data.locale].Edit);
+            data.inlineEditing.deleteButton = methods.createMdButton('delete', 'delete', gj.grid.messages[data.locale].Delete);
+            data.inlineEditing.updateButton = methods.createMdButton('update', 'check-circle', gj.grid.messages[data.locale].Update);
+            data.inlineEditing.cancelButton = methods.createMdButton('cancel', 'cancel', gj.grid.messages[data.locale].Cancel);
         }
     },
 
@@ -1959,8 +1966,8 @@ gj.grid.plugins.inlineEditing.private = {
             } else if (column.role === 'managementColumn') {
                 cell.querySelector('[data-gj-role="edit"]').style.display = 'none';
                 cell.querySelector('[data-gj-role="delete"]').style.display = 'none';
-                cell.querySelector('[data-gj-role="update"]').style.display = 'block';
-                cell.querySelector('[data-gj-role="cancel"]').style.display = 'block';
+                cell.querySelector('[data-gj-role="update"]').style.display = 'inline-block';
+                cell.querySelector('[data-gj-role="cancel"]').style.display = 'inline-block';
             }
         }
     },
@@ -2003,8 +2010,8 @@ gj.grid.plugins.inlineEditing.private = {
             if (column.role === 'managementColumn') {
                 cell.querySelector('[data-gj-role="update"]').style.display = 'none';
                 cell.querySelector('[data-gj-role="cancel"]').style.display = 'none';
-                cell.querySelector('[data-gj-role="edit"]').style.display = 'block';
-                cell.querySelector('[data-gj-role="delete"]').style.display = 'block';
+                cell.querySelector('[data-gj-role="edit"]').style.display = 'inline-block';
+                cell.querySelector('[data-gj-role="delete"]').style.display = 'inline-block';
             }
         }
     },
@@ -2014,7 +2021,7 @@ gj.grid.plugins.inlineEditing.private = {
         if (data.inlineEditing.mode !== 'command' && mode !== 'editOnly') {
             editors = grid.element.querySelectorAll('div[data-gj-role="edit"]');
             for (const editor of editors) {
-                if (editor.style.display === 'block') {
+                if (editor.style.display === 'inline-block') {
                     cell = editor.parentNode;
                     column = data.columns[Array.from(cell.parentNode.children).indexOf(cell)];
                     gj.grid.plugins.inlineEditing.private.displayMode(grid, cell, column);
@@ -2100,8 +2107,8 @@ gj.grid.plugins.inlineEditing.public = {
 gj.grid.plugins.inlineEditing.events = {
     /**
      * Event fires after inline edit of a cell in the grid.
-     *     */    cellDataChanged: function (el, cell, column, record, oldValue, newValue) {
-        el.dispatchEvent(new CustomEvent('cellDataChanged', { detail: { cell: cell, column: column, record: record, oldValue: oldValue, newValue: newValue } }));
+     *     */    cellDataChanged: function (el, cell, column, record, newValue) {
+        el.dispatchEvent(new CustomEvent('cellDataChanged', { detail: { cell: cell, column: column, record: record, newValue: newValue } }));
     },
 
     /**

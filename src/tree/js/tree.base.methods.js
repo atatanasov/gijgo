@@ -247,7 +247,7 @@ gj.tree.methods = {
     },
 
     selectAll: function (tree) {
-        let i, nodes = tree.querySelectorAll('ul>li');
+        let i, nodes = gj.core.selectAll(tree.element, 'li');
         for (i = 0; i < nodes.length; i++) {
             gj.tree.methods.select(tree, nodes[i], true);
         }
@@ -256,7 +256,7 @@ gj.tree.methods = {
 
     select: function (tree, node, cascade) {
         let data = tree.getConfig(),
-            allowEvent = gj.tree.events.select(tree.element, node, node.getAttribute('data-gj-id')) !== false;
+            allowEvent = gj.tree.events.select(tree.element, node, node.getAttribute('data-gj-id')) !== false && !node.classList.contains('disabled');
         if (node.getAttribute('data-gj-selected') !== 'true' && allowEvent) {
             gj.core.removeClasses(node, data.style.inactive);
             gj.core.addClasses(node, data.style.active);
@@ -276,7 +276,7 @@ gj.tree.methods = {
     },
     
     unselectAll: function (tree) {
-        let i, nodes = tree.element.querySelectorAll('ul:first-child>li');
+        let i, nodes = gj.core.selectAll(tree.element, 'li');
         for (i = 0; i < nodes.length; i++) {
             gj.tree.methods.unselect(tree, nodes[i], true);
         }
@@ -285,7 +285,7 @@ gj.tree.methods = {
 
     unselect: function (tree, node, cascade) {
         let data = tree.getConfig(),
-            allowEvent = gj.tree.events.unselect(tree.element, node, node.getAttribute('data-gj-id')) !== false;
+            allowEvent = gj.tree.events.unselect(tree.element, node, node.getAttribute('data-gj-id')) !== false && !node.classList.contains('disabled');
         if (node.getAttribute('data-gj-selected') === 'true' && allowEvent) {
             gj.core.removeClasses(node, data.style.active);
             gj.core.addClasses(node, data.style.inactive);
@@ -464,9 +464,9 @@ gj.tree.methods = {
         
         cascade = typeof (cascade) === 'undefined' ? true : cascade;
         if (cascade) {
-            children = node.querySelectorAll('ul li');
+            children = node.querySelectorAll('ul>li');
         } else {
-            children = node.querySelectorAll('ul:first-child>li');
+            children = gj.core.selectAll(node, 'ul>li');
         }
 
         for (i = 0; i < children.length; i++) {
@@ -477,7 +477,7 @@ gj.tree.methods = {
     },
 
     enableAll: function (tree) {
-        let i, children = tree.querySelectorAll('ul>li');
+        let i, children = gj.core.selectAll(tree.element, 'li');
         for (i = 0; i < children.length; i++) {
             gj.tree.methods.enableNode(tree, children[i], true);
         }
@@ -489,21 +489,23 @@ gj.tree.methods = {
             expander = gj.core.select(node, '[data-gj-role="wrapper"]>[data-gj-role="expander"]'),
             display = gj.core.select(node, '[data-gj-role="wrapper"]>[data-gj-role="display"]');
         
-        cascade = typeof (cascade) === 'undefined' ? true : cascade;
-        node.classList.remove('disabled');
-        expander.addEventListener('click', gj.tree.methods.expanderClickHandler(tree));
-        display.addEventListener('click', gj.tree.methods.displayClickHandler(tree));
-        gj.tree.events.enable(tree.element, node);
-        if (cascade) {
-            children = node.querySelectorAll('ul>li');
-            for (i = 0; i < children.length; i++) {
-                gj.tree.methods.enableNode(tree, children[i], cascade);
+        if (expander && display) {
+            cascade = typeof (cascade) === 'undefined' ? true : cascade;
+            node.classList.remove('disabled');
+            expander.addEventListener('click', gj.tree.methods.expanderClickHandler(tree));
+            display.addEventListener('click', gj.tree.methods.displayClickHandler(tree));
+            gj.tree.events.enable(tree.element, node);
+            if (cascade) {
+                children = gj.core.selectAll(node, 'ul>li');
+                for (i = 0; i < children.length; i++) {
+                    gj.tree.methods.enableNode(tree, children[i], cascade);
+                }
             }
         }
     },
 
     disableAll: function (tree) {
-        let i, children = tree.querySelectorAll('ul>li');
+        let i, children = gj.core.selectAll(tree.element, 'li');
         for (i = 0; i < children.length; i++) {
             gj.tree.methods.disableNode(tree, children[i], true);
         }
@@ -515,15 +517,17 @@ gj.tree.methods = {
             expander = node.querySelector('[data-gj-role="wrapper"]>[data-gj-role="expander"]'),
             display = node.querySelector('[data-gj-role="wrapper"]>[data-gj-role="display"]');
         
-        cascade = typeof (cascade) === 'undefined' ? true : cascade;
-        node.classList.add('disabled');
-        //TODO: expander.off('click');
-        //TODO: display.off('click');
-        gj.tree.events.disable(tree.element, node);
-        if (cascade) {
-            children = node.querySelectorAll('ul>li');
-            for (i = 0; i < children.length; i++) {
-                gj.tree.methods.disableNode(tree, children[i], cascade);
+        if (expander && display) {
+            cascade = typeof (cascade) === 'undefined' ? true : cascade;
+            node.classList.add('disabled');
+            //TODO: expander.off('click');
+            //TODO: display.off('click');
+            gj.tree.events.disable(tree.element, node);
+            if (cascade) {
+                children = gj.core.selectAll(node, 'ul>li');
+                for (i = 0; i < children.length; i++) {
+                    gj.tree.methods.disableNode(tree, children[i], cascade);
+                }
             }
         }
     },
@@ -550,8 +554,8 @@ gj.tree.methods = {
             if (list[i].id == id) {
                 result = true;
                 break;
-            } else if (gj.tree.methods.pathFinder(data, list[i][data.childrenField], id, parents)) {
-                parents.push(list[i].data[data.textField]);
+            } else if (list[i][data.childrenField] && gj.tree.methods.pathFinder(data, list[i][data.childrenField], id, parents)) {
+                parents.push(list[i][data.textField]);
                 result = true;
                 break;
             }

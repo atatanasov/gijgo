@@ -21,8 +21,8 @@
          dataBound: function () {
              northAmerica = tree.getNodeByText('North America');
          },
-         select: function (e, node, id) {
-             alert('select is fired for node with id=' + id);
+         select: function (e) {
+             alert('select is fired for node with id=' + e.detail.id);
          }
      });
  </script>

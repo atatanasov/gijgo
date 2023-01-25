@@ -165,7 +165,7 @@ gj.grid.methods = {
             } else {
                 title = document.createElement('div');
                 title.setAttribute('data-gj-role', 'title');
-                title.innerHTML = typeof (columns[i].title) === 'undefined' ? columns[i].field : columns[i].title;
+                title.innerHTML = typeof (columns[i].title) === 'undefined' ? (columns[i].field || '') : columns[i].title;
                 cell.appendChild(title);
                 if (columns[i].sortable) {
                     gj.core.addClasses(title, style.sortable);

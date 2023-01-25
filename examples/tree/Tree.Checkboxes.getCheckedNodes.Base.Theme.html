@@ -19,7 +19,7 @@
          dataSource: '/Locations/Get',
          checkboxes: true
      });
-     ('#btnGet').on('click', function() {
+     document.getElementById('btnGet').addEventListener('click', function() {
          let result = tree.getCheckedNodes();
          alert(result.join());
      });

@@ -12,46 +12,60 @@
 </head>
 <body style="padding: 8px;">
  <table id="grid"></table>
- <script>
-     let grid, editManager, data = [
+ <script>;
+     let grid, data = [
          { 'ID': 1, 'Name': 'Hristo Stoichkov', 'PlaceOfBirth': 'Plovdiv, Bulgaria' },
          { 'ID': 2, 'Name': 'Ronaldo Luís Nazário de Lima', 'PlaceOfBirth': 'Rio de Janeiro, Brazil' },
          { 'ID': 3, 'Name': 'David Platt', 'PlaceOfBirth': 'Chadderton, Lancashire, England' },
          { 'ID': 4, 'Name': 'Manuel Neuer', 'PlaceOfBirth': 'Gelsenkirchen, West Germany' },
          { 'ID': 5, 'Name': 'James Rodríguez', 'PlaceOfBirth': 'Cúcuta, Colombia' },
          { 'ID': 6, 'Name': 'Dimitar Berbatov', 'PlaceOfBirth': 'Blagoevgrad, Bulgaria' }
-     ];
+     ],
+     createButton = function (icon, text, id) {
+         let button = document.createElement('button');
+         button.classList.add('gj-button-md');
+         button.innerHTML = '<i class="material-icons">' + icon + '</i> ' + text;
+         button.setAttribute('data-gj-key', id);
+         return button;
+     },
      editManager = function (value, record, cell, displayEl, id, grid) {
          let data = grid.getConfig(),
-             edit = ('<button class="gj-button-md"><i class="material-icons">mode_edit</i> Edit</button>').attr('data-gj-key', id),
-             delete = ('<button class="gj-button-md"><i class="material-icons">delete</i> Delete</button>').attr('data-gj-key', id),
-             update = ('<button class="gj-button-md"><i class="material-icons">check_circle</i> Update</button>').attr('data-gj-key', id).hide(),
-             cancel = ('<button class="gj-button-md"><i class="material-icons">cancel</i> Cancel</button>').attr('data-gj-key', id).hide();
-         edit.on('click', function (e) {
-             grid.edit((this).data('key'));
-             edit.hide();
-             delete.hide();
-             update.show();
-             cancel.show();
+             edit =  createButton('mode_edit', 'Edit', id),
+             del = createButton('delete', 'Delete', id),
+             update = createButton('check_circle', 'Update', id),
+             cancel = createButton('cancel', 'Cancel', id);
+
+         update.style.display = 'none';
+         cancel.style.display = 'none';
+         edit.addEventListener('click', function (e) {
+             grid.edit(this.getAttribute('data-gj-key'));
+             edit.style.display = 'none';
+             del.style.display = 'none';
+             update.style.display = 'inline-block';
+             cancel.style.display = 'inline-block';
          });
-         delete.on('click', function (e) {
-             grid.removeRow((this).data('key'));
+         del.addEventListener('click', function (e) {
+             grid.removeRow(this.getAttribute('data-gj-key'));
          });
-         update.on('click', function (e) {
-             grid.update((this).data('key'));
-             edit.show();
-             delete.show();
-             update.hide();
-             cancel.hide();
+         update.addEventListener('click', function (e) {
+             grid.update(this.getAttribute('data-gj-key'));
+             edit.style.display = 'inline-block';
+             del.style.display = 'inline-block';
+             update.style.display = 'none';
+             cancel.style.display = 'none';
          });
-         cancel.on('click', function (e) {
-             grid.cancel((this).data('key'));
-             edit.show();
-             delete.show();
-             update.hide();
-             cancel.hide();
+         cancel.addEventListener('click', function (e) {
+             grid.cancel(this.getAttribute('data-gj-key'));
+             edit.style.display = 'inline-block';
+             del.style.display = 'inline-block';
+             update.style.display = 'none';
+             cancel.style.display = 'none';
          });
-         displayEl.empty().append(edit).append(delete).append(update).append(cancel);
+         displayEl.innerHTML = '';
+         displayEl.appendChild(edit);
+         displayEl.appendChild(del);
+         displayEl.appendChild(update);
+         displayEl.appendChild(cancel);
      }
      grid = new GijgoGrid(document.getElementById('grid'), {
          dataSource: data,

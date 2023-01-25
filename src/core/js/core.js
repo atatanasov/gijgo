@@ -449,9 +449,9 @@
             children = el.children,
             tagName, attr, attrVal;
         for (const tag of tags) {
-            tagName = tag.substring(0, tag.indexOf('['));
-            attr = tag.substring(tag.indexOf('[') + 1, tag.indexOf('='));
-            attrVal = tag.substring(tag.indexOf('=') + 2, tag.lastIndexOf('"'));
+            tagName = tag.indexOf('[') === -1 ? tag : tag.substring(0, tag.indexOf('['));
+            attr = tag.indexOf('[') === -1 ? '' : tag.substring(tag.indexOf('[') + 1, tag.indexOf('='));
+            attrVal = tag.indexOf('[') === -1 ? '' : tag.substring(tag.indexOf('=') + 2, tag.lastIndexOf('"'));
             for (const chld of children) {
                 if ((!tagName || chld.tagName.toUpperCase() === tagName.toUpperCase())
                  && (!(attr && attrVal) || chld.getAttribute(attr) == attrVal)) {
@@ -472,9 +472,9 @@
             children = el.children,
             tagName, attr, attrVal;
         for (const tag of tags) {
-            tagName = tag.substring(0, tag.indexOf('['));
-            attr = tag.substring(tag.indexOf('[') + 1, tag.indexOf('='));
-            attrVal = tag.substring(tag.indexOf('=') + 2, tag.lastIndexOf('"'));
+            tagName = tag.indexOf('[') === -1 ? tag : tag.substring(0, tag.indexOf('['));
+            attr = tag.indexOf('[') === -1 ? '' : tag.substring(tag.indexOf('[') + 1, tag.indexOf('='));
+            attrVal = tag.indexOf('[') === -1 ? '' : tag.substring(tag.indexOf('=') + 2, tag.lastIndexOf('"'));
             for (const chld of children) {
                 if ((!tagName || chld.tagName.toUpperCase() === tagName.toUpperCase())
                  && (!(attr && attrVal) || chld.getAttribute(attr) == attrVal)) {

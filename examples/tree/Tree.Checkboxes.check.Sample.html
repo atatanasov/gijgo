@@ -14,7 +14,7 @@
 <body style="padding: 8px;">
  <button onclick="tree.check(tree.getNodeByText('China'))" class="gj-button-md">Check China</button>
  <br/>
- <div id="tree" data-source="/Locations/Get"></div>
+ <ul id="tree" data-gj-source="/Locations/Get"></ul>
  <script>
      let tree = new GijgoTree(document.getElementById('tree'), {
          checkboxes: true

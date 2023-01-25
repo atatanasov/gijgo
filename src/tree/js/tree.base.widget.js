@@ -414,7 +414,7 @@ GijgoTree = function (element, jsConfig) {
      *     });
      *     tree.on('dataBound', function() {
      *         var node = tree.getNodeByText('Asia');
-     *         node.css('background-color', 'red');
+     *         node.style.backgroundColor = 'red';
      *     });
      * </script>
      */
@@ -458,8 +458,8 @@ GijgoTree = function (element, jsConfig) {
      *         dataBound: function () {
      *             northAmerica = tree.getNodeByText('North America');
      *         },
-     *         select: function (e, node, id) {
-     *             alert('select is fired for node with id=' + id);
+     *         select: function (e) {
+     *             alert('select is fired for node with id=' + e.detail.id);
      *         }
      *     });
      * </script>
@@ -485,8 +485,8 @@ GijgoTree = function (element, jsConfig) {
      *         dataBound: function () {
      *             northAmerica = tree.getNodeByText('North America');  
      *         },
-     *         unselect: function (e, node, id) {
-     *             alert('unselect is fired for node with id=' + id);
+     *         unselect: function (e) {
+     *             alert('unselect is fired for node with id=' + e.detail.id);
      *         }
      *     });
      * </script>
@@ -607,6 +607,7 @@ GijgoTree = function (element, jsConfig) {
      * <script>
      *     var tree = new GijgoTree(document.getElementById('tree'), {
      *         dataSource: '/Locations/Get',
+     *         primaryKey: 'id',
      *         select: function (e) {
      *             var parents = tree.parents(e.detail.id);
      *             document.getElementById('location').innerHTML = parents.join(' / ') + ' / ' + tree.getDataById(e.detail.id).text;
@@ -616,7 +617,7 @@ GijgoTree = function (element, jsConfig) {
      */
     self.parents = function (id) {
         var parents = [];
-        methods.pathFinder(data, this.getRecords(), id, parents);
+        methods.pathFinder(this.getConfig(), this.getRecords(), id, parents);
         return parents.reverse();
     };
 
@@ -674,6 +675,25 @@ GijgoTree = function (element, jsConfig) {
      *         checkboxes: true,
      *         primaryKey: 'ID',
      *         uiLibrary: 'bootstrap4',
+     *         iconsLibrary: 'fontawesome',
+     *         dataBound: function () {
+     *             northAmerica = tree.getNodeByText('North America');
+     *         }
+     *     });
+     * </script>
+     * @example Bootstrap.5 <!-- bootstrap5, fontawesome, checkbox, tree -->
+     * <button onclick="tree.enable(northAmerica)" class="btn btn-default">Enable North America (Cascade)</button>
+     * <button onclick="tree.disable(northAmerica)" class="btn btn-default">Disable North America (Cascade)</button>
+     * <button onclick="tree.enable(northAmerica, false)" class="btn btn-default">Enable North America (Non-Cascade)</button>
+     * <button onclick="tree.disable(northAmerica, false)" class="btn btn-default">Disable North America (Non-Cascade)</button>
+     * <br/><br/>
+     * <ul id="tree" data-gj-source="/Locations/Get"></ul>
+     * <script>
+     *     var tree, northAmerica;
+     *     tree = new GijgoTree(document.getElementById('tree'), {
+     *         checkboxes: true,
+     *         primaryKey: 'ID',
+     *         uiLibrary: 'bootstrap5',
      *         iconsLibrary: 'fontawesome',
      *         dataBound: function () {
      *             northAmerica = tree.getNodeByText('North America');

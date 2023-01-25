@@ -12,11 +12,11 @@
   <script src="../../dist/modular/js/tree.js"></script>
 </head>
 <body style="padding: 8px;">
- <div id="tree" data-source="/Locations/Get" data-checkboxes="true"></div>
+ <ul id="tree" data-gj-source="/Locations/Get" data-gj-checkboxes="true"></ul>
  <script>
-     let tree = new GijgoTree(document.getElementById('tree'), );
-     tree.on('checkboxChange', function (e, node, record, state) {
-         alert('The new state of record ' + record.text + ' is ' + state);
+     let tree = new GijgoTree(document.getElementById('tree'));
+     tree.on('checkboxChange', function (e) {
+         alert('The new state of record ' + e.detail.record.text + ' is ' + e.detail.state);
      });
  </script>
 </body>

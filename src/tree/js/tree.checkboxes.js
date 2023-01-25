@@ -34,6 +34,15 @@ gj.tree.plugins.checkboxes = {
               *         uiLibrary: 'bootstrap4'
               *     });
               * </script>
+              * @example Bootstrap.5 <!-- bootstrap5, checkbox, tree -->
+              * <ul id="tree"></ul>
+              * <script>
+              *     let tree = new GijgoTree(document.getElementById('tree'), {
+              *         dataSource: '/Locations/Get',
+              *         checkboxes: true,
+              *         uiLibrary: 'bootstrap5'
+              *     });
+              * </script>
               */
             checkboxes: undefined,
 
@@ -153,7 +162,7 @@ gj.tree.plugins.checkboxes = {
             let parentNode, parentCheckbox, siblingCheckboxes, allChecked, allUnchecked, parentState;
 
             parentNode = node.parentNode.parentNode;
-            if (parentNode) {
+            if (parentNode && parentNode.getAttribute('data-gj-role') === 'node') {
                 parentCheckbox = parentNode.querySelector('[data-gj-role="wrapper"] > [data-gj-role="checkbox"] input[type="checkbox"]');
                 siblingCheckboxes = node.parentNode.querySelectorAll('[data-gj-role="wrapper"] > span[data-gj-role="checkbox"] input[type="checkbox"]');
                 allChecked = (state === 'checked');
@@ -209,7 +218,7 @@ gj.tree.plugins.checkboxes = {
          *         dataSource: '/Locations/Get',
          *         checkboxes: true
          *     });
-         *     ('#btnGet').on('click', function() {
+         *     document.getElementById('btnGet').addEventListener('click', function() {
          *         let result = tree.getCheckedNodes();
          *         alert(result.join());
          *     });
@@ -234,7 +243,7 @@ gj.tree.plugins.checkboxes = {
          * <button onclick="tree.checkAll()" class="gj-button-md">Check All</button>
          * <button onclick="tree.uncheckAll()" class="gj-button-md">Uncheck All</button>
          * <br/><br/>
-         * <div id="tree" data-source="/Locations/Get"></div>
+         * <ul id="tree" data-gj-source="/Locations/Get"></ul>
          * <script>
          *     let tree = new GijgoTree(document.getElementById('tree'), {
          *         checkboxes: true
@@ -260,7 +269,7 @@ gj.tree.plugins.checkboxes = {
          * <button onclick="tree.checkAll()" class="gj-button-md">Check All</button>
          * <button onclick="tree.uncheckAll()" class="gj-button-md">Uncheck All</button>
          * <br/><br/>
-         * <div id="tree" data-source="/Locations/Get"></div>
+         * <ul id="tree" data-gj-source="/Locations/Get"></ul>
          * <script>
          *     let tree = new GijgoTree(document.getElementById('tree'), {
          *         checkboxes: true
@@ -286,7 +295,7 @@ gj.tree.plugins.checkboxes = {
          * @example Sample <!-- checkbox, tree -->
          * <button onclick="tree.check(tree.getNodeByText('China'))" class="gj-button-md">Check China</button>
          * <br/>
-         * <div id="tree" data-source="/Locations/Get"></div>
+         * <ul id="tree" data-gj-source="/Locations/Get"></ul>
          * <script>
          *     let tree = new GijgoTree(document.getElementById('tree'), {
          *         checkboxes: true
@@ -309,7 +318,7 @@ gj.tree.plugins.checkboxes = {
          * @example Sample <!-- checkbox, tree -->
          * <button onclick="tree.uncheck(tree.getNodeByText('China'))" class="gj-button-md">UnCheck China</button>
          * <br/>
-         * <div id="tree" data-source="/Locations/Get"></div>
+         * <ul id="tree" data-gj-source="/Locations/Get"></ul>
          * <script>
          *     let tree = new GijgoTree(document.getElementById('tree'), {
          *         checkboxes: true
@@ -331,15 +340,15 @@ gj.tree.plugins.checkboxes = {
          * Event fires when the checkbox state is changed.
          * @event checkboxChange
          * @param {object} e - event data
-         * @param {object} node - the node object as jQuery element
-         * @param {object} record - the record data
-         * @param {string} state - the new state of the checkbox
+         * @param {object} e.detail.node - the node object as jQuery element
+         * @param {object} e.detail.record - the record data
+         * @param {string} e.detail.state - the new state of the checkbox
          * @example Event.Sample <!-- checkbox, tree -->
-         * <div id="tree" data-source="/Locations/Get" data-checkboxes="true"></div>
+         * <ul id="tree" data-gj-source="/Locations/Get" data-gj-checkboxes="true"></ul>
          * <script>
-         *     let tree = new GijgoTree(document.getElementById('tree'), );
-         *     tree.on('checkboxChange', function (e, node, record, state) {
-         *         alert('The new state of record ' + record.text + ' is ' + state);
+         *     let tree = new GijgoTree(document.getElementById('tree'));
+         *     tree.on('checkboxChange', function (e) {
+         *         alert('The new state of record ' + e.detail.record.text + ' is ' + e.detail.state);
          *     });
          * </script>
          */
@@ -358,15 +367,15 @@ gj.tree.plugins.checkboxes = {
                 gj.tree.plugins.checkboxes.private.dataBound(tree);
             });
             tree.on('enable', function (e) {
-                let checkboxes = e.detail.node.querySelectorAll('[data-gj-role="wrapper"]>[data-gj-role="checkbox"] input[type="checkbox"]');
-                for (const chkb of checkboxes) {
-                    chkb.disabled = false;
+                let checkbox = e.detail.node.querySelector('[data-gj-role="wrapper"]>[data-gj-role="checkbox"] input[type="checkbox"]');
+                if (checkbox) {
+                    checkbox.disabled = false;
                 }
             });
             tree.on('disable', function (e) {
-                let checkboxes = e.detail.node.querySelectorAll('[data-gj-role="wrapper"]>[data-gj-role="checkbox"] input[type="checkbox"]');
-                for (const chkb of checkboxes) {
-                    chkb.disabled = true;
+                let checkbox = e.detail.node.querySelector('[data-gj-role="wrapper"]>[data-gj-role="checkbox"] input[type="checkbox"]');
+                if (checkbox) {
+                    checkbox.disabled = true;
                 }
             });
         }

@@ -456,9 +456,9 @@ let gj = {};
             children = el.children,
             tagName, attr, attrVal;
         for (const tag of tags) {
-            tagName = tag.substring(0, tag.indexOf('['));
-            attr = tag.substring(tag.indexOf('[') + 1, tag.indexOf('='));
-            attrVal = tag.substring(tag.indexOf('=') + 2, tag.lastIndexOf('"'));
+            tagName = tag.indexOf('[') === -1 ? tag : tag.substring(0, tag.indexOf('['));
+            attr = tag.indexOf('[') === -1 ? '' : tag.substring(tag.indexOf('[') + 1, tag.indexOf('='));
+            attrVal = tag.indexOf('[') === -1 ? '' : tag.substring(tag.indexOf('=') + 2, tag.lastIndexOf('"'));
             for (const chld of children) {
                 if ((!tagName || chld.tagName.toUpperCase() === tagName.toUpperCase())
                  && (!(attr && attrVal) || chld.getAttribute(attr) == attrVal)) {
@@ -479,9 +479,9 @@ let gj = {};
             children = el.children,
             tagName, attr, attrVal;
         for (const tag of tags) {
-            tagName = tag.substring(0, tag.indexOf('['));
-            attr = tag.substring(tag.indexOf('[') + 1, tag.indexOf('='));
-            attrVal = tag.substring(tag.indexOf('=') + 2, tag.lastIndexOf('"'));
+            tagName = tag.indexOf('[') === -1 ? tag : tag.substring(0, tag.indexOf('['));
+            attr = tag.indexOf('[') === -1 ? '' : tag.substring(tag.indexOf('[') + 1, tag.indexOf('='));
+            attrVal = tag.indexOf('[') === -1 ? '' : tag.substring(tag.indexOf('=') + 2, tag.lastIndexOf('"'));
             for (const chld of children) {
                 if ((!tagName || chld.tagName.toUpperCase() === tagName.toUpperCase())
                  && (!(attr && attrVal) || chld.getAttribute(attr) == attrVal)) {
@@ -4703,7 +4703,7 @@ gj.grid.methods = {
             } else {
                 title = document.createElement('div');
                 title.setAttribute('data-gj-role', 'title');
-                title.innerHTML = typeof (columns[i].title) === 'undefined' ? columns[i].field : columns[i].title;
+                title.innerHTML = typeof (columns[i].title) === 'undefined' ? (columns[i].field || '') : columns[i].title;
                 cell.appendChild(title);
                 if (columns[i].sortable) {
                     gj.core.addClasses(title, style.sortable);
@@ -7094,46 +7094,60 @@ gj.grid.plugins.inlineEditing.config = {
              * </script>
              * @example False <!-- materialicons, grid -->
              * <table id="grid"></table>
-             * <script>
-             *     let grid, editManager, data = [
+             * <script>;
+             *     let grid, data = [
              *         { 'ID': 1, 'Name': 'Hristo Stoichkov', 'PlaceOfBirth': 'Plovdiv, Bulgaria' },
              *         { 'ID': 2, 'Name': 'Ronaldo Luís Nazário de Lima', 'PlaceOfBirth': 'Rio de Janeiro, Brazil' },
              *         { 'ID': 3, 'Name': 'David Platt', 'PlaceOfBirth': 'Chadderton, Lancashire, England' },
              *         { 'ID': 4, 'Name': 'Manuel Neuer', 'PlaceOfBirth': 'Gelsenkirchen, West Germany' },
              *         { 'ID': 5, 'Name': 'James Rodríguez', 'PlaceOfBirth': 'Cúcuta, Colombia' },
              *         { 'ID': 6, 'Name': 'Dimitar Berbatov', 'PlaceOfBirth': 'Blagoevgrad, Bulgaria' }
-             *     ];
+             *     ],
+             *     createButton = function (icon, text, id) {
+             *         let button = document.createElement('button');
+             *         button.classList.add('gj-button-md');
+             *         button.innerHTML = '<i class="material-icons">' + icon + '</i> ' + text;
+             *         button.setAttribute('data-gj-key', id);
+             *         return button;
+             *     },
              *     editManager = function (value, record, cell, displayEl, id, grid) {
              *         let data = grid.getConfig(),
-             *             edit = ('<button class="gj-button-md"><i class="material-icons">mode_edit</i> Edit</button>').attr('data-gj-key', id),
-             *             delete = ('<button class="gj-button-md"><i class="material-icons">delete</i> Delete</button>').attr('data-gj-key', id),
-             *             update = ('<button class="gj-button-md"><i class="material-icons">check_circle</i> Update</button>').attr('data-gj-key', id).hide(),
-             *             cancel = ('<button class="gj-button-md"><i class="material-icons">cancel</i> Cancel</button>').attr('data-gj-key', id).hide();
-             *         edit.on('click', function (e) {
-             *             grid.edit((this).data('key'));
-             *             edit.hide();
-             *             delete.hide();
-             *             update.show();
-             *             cancel.show();
+             *             edit =  createButton('mode_edit', 'Edit', id),
+             *             del = createButton('delete', 'Delete', id),
+             *             update = createButton('check_circle', 'Update', id),
+             *             cancel = createButton('cancel', 'Cancel', id);
+             *         
+             *         update.style.display = 'none';
+             *         cancel.style.display = 'none';
+             *         edit.addEventListener('click', function (e) {
+             *             grid.edit(this.getAttribute('data-gj-key'));
+             *             edit.style.display = 'none';
+             *             del.style.display = 'none';
+             *             update.style.display = 'inline-block';
+             *             cancel.style.display = 'inline-block';
              *         });
-             *         delete.on('click', function (e) {
-             *             grid.removeRow((this).data('key'));
+             *         del.addEventListener('click', function (e) {
+             *             grid.removeRow(this.getAttribute('data-gj-key'));
              *         });
-             *         update.on('click', function (e) {
-             *             grid.update((this).data('key'));
-             *             edit.show();
-             *             delete.show();
-             *             update.hide();
-             *             cancel.hide();
+             *         update.addEventListener('click', function (e) {
+             *             grid.update(this.getAttribute('data-gj-key'));
+             *             edit.style.display = 'inline-block';
+             *             del.style.display = 'inline-block';
+             *             update.style.display = 'none';
+             *             cancel.style.display = 'none';
              *         });
-             *         cancel.on('click', function (e) {
-             *             grid.cancel((this).data('key'));
-             *             edit.show();
-             *             delete.show();
-             *             update.hide();
-             *             cancel.hide();
+             *         cancel.addEventListener('click', function (e) {
+             *             grid.cancel(this.getAttribute('data-gj-key'));
+             *             edit.style.display = 'inline-block';
+             *             del.style.display = 'inline-block';
+             *             update.style.display = 'none';
+             *             cancel.style.display = 'none';
              *         });
-             *         displayEl.empty().append(edit).append(delete).append(update).append(cancel);
+             *         displayEl.innerHTML = '';
+             *         displayEl.appendChild(edit);
+             *         displayEl.appendChild(del);
+             *         displayEl.appendChild(update);
+             *         displayEl.appendChild(cancel);
              *     }
              *     grid = new GijgoGrid(document.getElementById('grid'), {
              *         dataSource: data,
@@ -7236,38 +7250,45 @@ gj.grid.plugins.inlineEditing.config = {
         inlineEditing: {
             managementColumnConfig: { width: 280, role: 'managementColumn', align: 'center', renderer: gj.grid.plugins.inlineEditing.renderers.editManager, cssClass: 'gj-grid-management-column' }
         }
+    },
+
+    bootstrap5: {
+        inlineEditing: {
+            managementColumnConfig: { width: 280, role: 'managementColumn', align: 'center', renderer: gj.grid.plugins.inlineEditing.renderers.editManager, cssClass: 'gj-grid-management-column' }
+        }
     }
 };
 
 gj.grid.plugins.inlineEditing.private = {
+    createMdButton: function(role, icon, text) {
+        let btn = document.createElement('button');
+        btn.setAttribute('data-gj-role', role);
+        btn.classList.add('gj-button-md');
+        btn.innerHTML = '<i class="gj-icon ' + icon + '"></i> ' + text.toUpperCase();
+        return btn;
+    },
+
+    createBtButton: function(role, icon, text, leftMargin) {
+        let btn = document.createElement('button');
+        btn.setAttribute('data-gj-role', role);
+        gj.core.addClasses(btn, 'btn btn-default btn-sm');
+        leftMargin && btn.classList.add('gj-button-md');
+        btn.innerHTML = '<span class="glyphicon glyphicon-' + icon + '" aria-hidden="true"></span> ' + text;
+        return btn;
+    },
+
     localization: function (data) {
-        let edit = document.createElement('button'),
-            del = document.createElement('button'),
-            update = document.createElement('button'),
-            cancel = document.createElement('button');
-        
-        edit.setAttribute('data-gj-role', 'edit');
-        del.setAttribute('data-gj-role', 'delete');
-        update.setAttribute('data-gj-role', 'update');
-        cancel.setAttribute('data-gj-role', 'cancel');
+        let methods = gj.grid.plugins.inlineEditing.private;
         if (data.uiLibrary === 'bootstrap') {
-            data.inlineEditing.editButton = '<button role="edit" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> ' + gj.grid.messages[data.locale].Edit + '</button>';
-            data.inlineEditing.deleteButton = '<button role="delete" class="btn btn-default btn-sm gj-margin-left-10"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> ' + gj.grid.messages[data.locale].Delete + '</button>';
-            data.inlineEditing.updateButton = '<button role="update" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> ' + gj.grid.messages[data.locale].Update + '</button>';
-            data.inlineEditing.cancelButton = '<button role="cancel" class="btn btn-default btn-sm gj-margin-left-10"><span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span> ' + gj.grid.messages[data.locale].Cancel + '</button>';
+            data.inlineEditing.editButton = methods.createBtButton('edit', 'pencil', gj.grid.messages[data.locale].Edit);
+            data.inlineEditing.deleteButton = methods.createBtButton('delete', 'remove', gj.grid.messages[data.locale].Delete);
+            data.inlineEditing.updateButton = methods.createBtButton('update', 'ok', gj.grid.messages[data.locale].Update);
+            data.inlineEditing.cancelButton = methods.createBtButton('cancel', 'ban-circle', gj.grid.messages[data.locale].Cancel);
         } else {
-            edit.classList.add('gj-button-md');
-            edit.innerHTML = '<i class="gj-icon pencil" /> ' + gj.grid.messages[data.locale].Edit.toUpperCase();
-            data.inlineEditing.editButton = edit;
-            del.classList.add('gj-button-md');
-            del.innerHTML = '<i class="gj-icon pencil" /> ' + gj.grid.messages[data.locale].Delete.toUpperCase();
-            data.inlineEditing.deleteButton = del;
-            update.classList.add('gj-button-md');
-            update.innerHTML = '<i class="gj-icon pencil" /> ' + gj.grid.messages[data.locale].Update.toUpperCase();
-            data.inlineEditing.updateButton = update;
-            cancel.classList.add('gj-button-md');
-            cancel.innerHTML = '<i class="gj-icon pencil" /> ' + gj.grid.messages[data.locale].Cancel.toUpperCase();
-            data.inlineEditing.cancelButton = cancel;
+            data.inlineEditing.editButton = methods.createMdButton('edit', 'pencil', gj.grid.messages[data.locale].Edit);
+            data.inlineEditing.deleteButton = methods.createMdButton('delete', 'delete', gj.grid.messages[data.locale].Delete);
+            data.inlineEditing.updateButton = methods.createMdButton('update', 'check-circle', gj.grid.messages[data.locale].Update);
+            data.inlineEditing.cancelButton = methods.createMdButton('cancel', 'cancel', gj.grid.messages[data.locale].Cancel);
         }
     },
 
@@ -7380,8 +7401,8 @@ gj.grid.plugins.inlineEditing.private = {
             } else if (column.role === 'managementColumn') {
                 cell.querySelector('[data-gj-role="edit"]').style.display = 'none';
                 cell.querySelector('[data-gj-role="delete"]').style.display = 'none';
-                cell.querySelector('[data-gj-role="update"]').style.display = 'block';
-                cell.querySelector('[data-gj-role="cancel"]').style.display = 'block';
+                cell.querySelector('[data-gj-role="update"]').style.display = 'inline-block';
+                cell.querySelector('[data-gj-role="cancel"]').style.display = 'inline-block';
             }
         }
     },
@@ -7424,8 +7445,8 @@ gj.grid.plugins.inlineEditing.private = {
             if (column.role === 'managementColumn') {
                 cell.querySelector('[data-gj-role="update"]').style.display = 'none';
                 cell.querySelector('[data-gj-role="cancel"]').style.display = 'none';
-                cell.querySelector('[data-gj-role="edit"]').style.display = 'block';
-                cell.querySelector('[data-gj-role="delete"]').style.display = 'block';
+                cell.querySelector('[data-gj-role="edit"]').style.display = 'inline-block';
+                cell.querySelector('[data-gj-role="delete"]').style.display = 'inline-block';
             }
         }
     },
@@ -7435,7 +7456,7 @@ gj.grid.plugins.inlineEditing.private = {
         if (data.inlineEditing.mode !== 'command' && mode !== 'editOnly') {
             editors = grid.element.querySelectorAll('div[data-gj-role="edit"]');
             for (const editor of editors) {
-                if (editor.style.display === 'block') {
+                if (editor.style.display === 'inline-block') {
                     cell = editor.parentNode;
                     column = data.columns[Array.from(cell.parentNode.children).indexOf(cell)];
                     gj.grid.plugins.inlineEditing.private.displayMode(grid, cell, column);
@@ -7505,19 +7526,28 @@ gj.grid.plugins.inlineEditing.public = {
      * <script>
      *     let grid, renderer;
      *     renderer = function (value, record, cell, displayEl, id) {
-     *         let editBtn = ('<i class="fa fa-pencil gj-cursor-pointer" data-gj-key="' + id + '"></i>'),
-     *             updateBtn = ('<i class="fa fa-save gj-cursor-pointer" data-gj-key="' + id + '"></i>').hide();
-     *         editBtn.on('click', function (e) {
-     *             grid.edit((this).data('key'));
-     *             editBtn.hide();
-     *             updateBtn.show();
+     *         let editBtn = document.createElement('i'),
+     *             updateBtn = document.createElement('i');
+     *         
+     *         gj.core.addClasses(editBtn, 'fa fa-pencil gj-cursor-pointer');
+     *         gj.core.addClasses(updateBtn, 'fa fa-save gj-cursor-pointer');
+     *         editBtn.setAttribute('data-gj-key', id);
+     *         updateBtn.setAttribute('data-gj-key', id);
+     *         editBtn.style.display = 'inline-block';
+     *         updateBtn.style.display = 'none';
+     * 
+     *         editBtn.addEventListener('click', function (e) {
+     *             grid.edit(this.getAttribute('data-gj-key'));
+     *             editBtn.style.display = 'none';
+     *             updateBtn.style.display = 'inline-block';
      *         });
-     *         updateBtn.on('click', function (e) {
-     *             grid.update((this).data('key'));
-     *             editBtn.show();
-     *             updateBtn.hide();
+     *         updateBtn.addEventListener('click', function (e) {
+     *             grid.update(this.getAttribute('data-gj-key'));
+     *             editBtn.style.display = 'inline-block';
+     *             updateBtn.style.display = 'none';
      *         });
-     *         displayEl.append(editBtn).append(updateBtn);
+     *         displayEl.appendChild(editBtn)
+     *         displayEl.appendChild(updateBtn);
      *     }
      *     grid = new GijgoGrid(document.getElementById('grid'), {
      *         primaryKey: 'ID',
@@ -7556,19 +7586,28 @@ gj.grid.plugins.inlineEditing.public = {
      * <script>
      *     let grid, renderer;
      *     renderer = function (value, record, cell, displayEl, id) {
-     *         let editBtn = ('<i class="fa fa-pencil gj-cursor-pointer" data-gj-key="' + id + '"></i>'),
-     *             updateBtn = ('<i class="fa fa-save gj-cursor-pointer" data-gj-key="' + id + '"></i>').hide();
-     *         editBtn.on('click', function (e) {
-     *             grid.edit((this).data('key'));
-     *             editBtn.hide();
-     *             updateBtn.show();
+     *         let editBtn = document.createElement('i'),
+     *             updateBtn = document.createElement('i');
+     *         
+     *         gj.core.addClasses(editBtn, 'fa fa-pencil gj-cursor-pointer');
+     *         gj.core.addClasses(updateBtn, 'fa fa-save gj-cursor-pointer');
+     *         editBtn.setAttribute('data-gj-key', id);
+     *         updateBtn.setAttribute('data-gj-key', id);
+     *         editBtn.style.display = 'inline-block';
+     *         updateBtn.style.display = 'none';
+     * 
+     *         editBtn.addEventListener('click', function (e) {
+     *             grid.edit(this.getAttribute('data-gj-key'));
+     *             editBtn.style.display = 'none';
+     *             updateBtn.style.display = 'inline-block';
      *         });
-     *         updateBtn.on('click', function (e) {
-     *             grid.update((this).data('key'));
-     *             editBtn.show();
-     *             updateBtn.hide();
+     *         updateBtn.addEventListener('click', function (e) {
+     *             grid.update(this.getAttribute('data-gj-key'));
+     *             editBtn.style.display = 'inline-block';
+     *             updateBtn.style.display = 'none';
      *         });
-     *         displayEl.append(editBtn).append(updateBtn);
+     *         displayEl.appendChild(editBtn)
+     *         displayEl.appendChild(updateBtn);
      *     }
      *     grid = new GijgoGrid(document.getElementById('grid'), {
      *         primaryKey: 'ID',
@@ -7608,19 +7647,28 @@ gj.grid.plugins.inlineEditing.public = {
      * <script>
      *     let grid, renderer;
      *     renderer = function (value, record, cell, displayEl, id) {
-     *         let editBtn = ('<i class="fa fa-pencil gj-cursor-pointer" data-gj-key="' + id + '"></i>'),
-     *             cancelBtn = ('<i class="fa fa-undo gj-cursor-pointer" data-gj-key="' + id + '"></i>').hide();
-     *         editBtn.on('click', function (e) {
-     *             grid.edit((this).data('key'));
-     *             editBtn.hide();
-     *             cancelBtn.show();
+     *         let editBtn = document.createElement('i'),
+     *             cancelBtn = document.createElement('i');
+     *         
+     *         gj.core.addClasses(editBtn, 'fa fa-pencil gj-cursor-pointer');
+     *         gj.core.addClasses(cancelBtn, 'fa fa-undo gj-cursor-pointer');
+     *         editBtn.setAttribute('data-gj-key', id);
+     *         cancelBtn.setAttribute('data-gj-key', id);
+     *         editBtn.style.display = 'inline-block';
+     *         cancelBtn.style.display = 'none';
+     * 
+     *         editBtn.addEventListener('click', function (e) {
+     *             grid.edit(this.getAttribute('data-gj-key'));
+     *             editBtn.style.display = 'none';
+     *             cancelBtn.style.display = 'inline-block';
      *         });
-     *         cancelBtn.on('click', function (e) {
-     *             grid.cancel((this).data('key'));
-     *             editBtn.show();
-     *             cancelBtn.hide();
+     *         cancelBtn.addEventListener('click', function (e) {
+     *             grid.cancel(this.getAttribute('data-gj-key'));
+     *             editBtn.style.display = 'inline-block';
+     *             cancelBtn.style.display = 'none';
      *         });
-     *         displayEl.append(editBtn).append(cancelBtn);
+     *         displayEl.appendChild(editBtn)
+     *         displayEl.appendChild(cancelBtn);
      *     }
      *     grid = new GijgoGrid(document.getElementById('grid'), {
      *         primaryKey: 'ID',
@@ -7671,8 +7719,8 @@ gj.grid.plugins.inlineEditing.events = {
      *     });
      * </script>
      */
-    cellDataChanged: function (el, cell, column, record, oldValue, newValue) {
-        el.dispatchEvent(new CustomEvent('cellDataChanged', { detail: { cell: cell, column: column, record: record, oldValue: oldValue, newValue: newValue } }));
+    cellDataChanged: function (el, cell, column, record, newValue) {
+        el.dispatchEvent(new CustomEvent('cellDataChanged', { detail: { cell: cell, column: column, record: record, newValue: newValue } }));
     },
 
     /**
@@ -11490,7 +11538,7 @@ gj.tree.methods = {
     },
 
     selectAll: function (tree) {
-        let i, nodes = tree.querySelectorAll('ul>li');
+        let i, nodes = gj.core.selectAll(tree.element, 'li');
         for (i = 0; i < nodes.length; i++) {
             gj.tree.methods.select(tree, nodes[i], true);
         }
@@ -11499,7 +11547,7 @@ gj.tree.methods = {
 
     select: function (tree, node, cascade) {
         let data = tree.getConfig(),
-            allowEvent = gj.tree.events.select(tree.element, node, node.getAttribute('data-gj-id')) !== false;
+            allowEvent = gj.tree.events.select(tree.element, node, node.getAttribute('data-gj-id')) !== false && !node.classList.contains('disabled');
         if (node.getAttribute('data-gj-selected') !== 'true' && allowEvent) {
             gj.core.removeClasses(node, data.style.inactive);
             gj.core.addClasses(node, data.style.active);
@@ -11519,7 +11567,7 @@ gj.tree.methods = {
     },
     
     unselectAll: function (tree) {
-        let i, nodes = tree.element.querySelectorAll('ul:first-child>li');
+        let i, nodes = gj.core.selectAll(tree.element, 'li');
         for (i = 0; i < nodes.length; i++) {
             gj.tree.methods.unselect(tree, nodes[i], true);
         }
@@ -11528,7 +11576,7 @@ gj.tree.methods = {
 
     unselect: function (tree, node, cascade) {
         let data = tree.getConfig(),
-            allowEvent = gj.tree.events.unselect(tree.element, node, node.getAttribute('data-gj-id')) !== false;
+            allowEvent = gj.tree.events.unselect(tree.element, node, node.getAttribute('data-gj-id')) !== false && !node.classList.contains('disabled');
         if (node.getAttribute('data-gj-selected') === 'true' && allowEvent) {
             gj.core.removeClasses(node, data.style.active);
             gj.core.addClasses(node, data.style.inactive);
@@ -11707,9 +11755,9 @@ gj.tree.methods = {
         
         cascade = typeof (cascade) === 'undefined' ? true : cascade;
         if (cascade) {
-            children = node.querySelectorAll('ul li');
+            children = node.querySelectorAll('ul>li');
         } else {
-            children = node.querySelectorAll('ul:first-child>li');
+            children = gj.core.selectAll(node, 'ul>li');
         }
 
         for (i = 0; i < children.length; i++) {
@@ -11720,7 +11768,7 @@ gj.tree.methods = {
     },
 
     enableAll: function (tree) {
-        let i, children = tree.querySelectorAll('ul>li');
+        let i, children = gj.core.selectAll(tree.element, 'li');
         for (i = 0; i < children.length; i++) {
             gj.tree.methods.enableNode(tree, children[i], true);
         }
@@ -11732,21 +11780,23 @@ gj.tree.methods = {
             expander = gj.core.select(node, '[data-gj-role="wrapper"]>[data-gj-role="expander"]'),
             display = gj.core.select(node, '[data-gj-role="wrapper"]>[data-gj-role="display"]');
         
-        cascade = typeof (cascade) === 'undefined' ? true : cascade;
-        node.classList.remove('disabled');
-        expander.addEventListener('click', gj.tree.methods.expanderClickHandler(tree));
-        display.addEventListener('click', gj.tree.methods.displayClickHandler(tree));
-        gj.tree.events.enable(tree.element, node);
-        if (cascade) {
-            children = node.querySelectorAll('ul>li');
-            for (i = 0; i < children.length; i++) {
-                gj.tree.methods.enableNode(tree, children[i], cascade);
+        if (expander && display) {
+            cascade = typeof (cascade) === 'undefined' ? true : cascade;
+            node.classList.remove('disabled');
+            expander.addEventListener('click', gj.tree.methods.expanderClickHandler(tree));
+            display.addEventListener('click', gj.tree.methods.displayClickHandler(tree));
+            gj.tree.events.enable(tree.element, node);
+            if (cascade) {
+                children = gj.core.selectAll(node, 'ul>li');
+                for (i = 0; i < children.length; i++) {
+                    gj.tree.methods.enableNode(tree, children[i], cascade);
+                }
             }
         }
     },
 
     disableAll: function (tree) {
-        let i, children = tree.querySelectorAll('ul>li');
+        let i, children = gj.core.selectAll(tree.element, 'li');
         for (i = 0; i < children.length; i++) {
             gj.tree.methods.disableNode(tree, children[i], true);
         }
@@ -11758,15 +11808,17 @@ gj.tree.methods = {
             expander = node.querySelector('[data-gj-role="wrapper"]>[data-gj-role="expander"]'),
             display = node.querySelector('[data-gj-role="wrapper"]>[data-gj-role="display"]');
         
-        cascade = typeof (cascade) === 'undefined' ? true : cascade;
-        node.classList.add('disabled');
-        //TODO: expander.off('click');
-        //TODO: display.off('click');
-        gj.tree.events.disable(tree.element, node);
-        if (cascade) {
-            children = node.querySelectorAll('ul>li');
-            for (i = 0; i < children.length; i++) {
-                gj.tree.methods.disableNode(tree, children[i], cascade);
+        if (expander && display) {
+            cascade = typeof (cascade) === 'undefined' ? true : cascade;
+            node.classList.add('disabled');
+            //TODO: expander.off('click');
+            //TODO: display.off('click');
+            gj.tree.events.disable(tree.element, node);
+            if (cascade) {
+                children = gj.core.selectAll(node, 'ul>li');
+                for (i = 0; i < children.length; i++) {
+                    gj.tree.methods.disableNode(tree, children[i], cascade);
+                }
             }
         }
     },
@@ -11793,8 +11845,8 @@ gj.tree.methods = {
             if (list[i].id == id) {
                 result = true;
                 break;
-            } else if (gj.tree.methods.pathFinder(data, list[i][data.childrenField], id, parents)) {
-                parents.push(list[i].data[data.textField]);
+            } else if (list[i][data.childrenField] && gj.tree.methods.pathFinder(data, list[i][data.childrenField], id, parents)) {
+                parents.push(list[i][data.textField]);
                 result = true;
                 break;
             }
@@ -12219,7 +12271,7 @@ GijgoTree = function (element, jsConfig) {
      *     });
      *     tree.on('dataBound', function() {
      *         var node = tree.getNodeByText('Asia');
-     *         node.css('background-color', 'red');
+     *         node.style.backgroundColor = 'red';
      *     });
      * </script>
      */
@@ -12263,8 +12315,8 @@ GijgoTree = function (element, jsConfig) {
      *         dataBound: function () {
      *             northAmerica = tree.getNodeByText('North America');
      *         },
-     *         select: function (e, node, id) {
-     *             alert('select is fired for node with id=' + id);
+     *         select: function (e) {
+     *             alert('select is fired for node with id=' + e.detail.id);
      *         }
      *     });
      * </script>
@@ -12290,8 +12342,8 @@ GijgoTree = function (element, jsConfig) {
      *         dataBound: function () {
      *             northAmerica = tree.getNodeByText('North America');  
      *         },
-     *         unselect: function (e, node, id) {
-     *             alert('unselect is fired for node with id=' + id);
+     *         unselect: function (e) {
+     *             alert('unselect is fired for node with id=' + e.detail.id);
      *         }
      *     });
      * </script>
@@ -12412,6 +12464,7 @@ GijgoTree = function (element, jsConfig) {
      * <script>
      *     var tree = new GijgoTree(document.getElementById('tree'), {
      *         dataSource: '/Locations/Get',
+     *         primaryKey: 'id',
      *         select: function (e) {
      *             var parents = tree.parents(e.detail.id);
      *             document.getElementById('location').innerHTML = parents.join(' / ') + ' / ' + tree.getDataById(e.detail.id).text;
@@ -12421,7 +12474,7 @@ GijgoTree = function (element, jsConfig) {
      */
     self.parents = function (id) {
         var parents = [];
-        methods.pathFinder(data, this.getRecords(), id, parents);
+        methods.pathFinder(this.getConfig(), this.getRecords(), id, parents);
         return parents.reverse();
     };
 
@@ -12479,6 +12532,25 @@ GijgoTree = function (element, jsConfig) {
      *         checkboxes: true,
      *         primaryKey: 'ID',
      *         uiLibrary: 'bootstrap4',
+     *         iconsLibrary: 'fontawesome',
+     *         dataBound: function () {
+     *             northAmerica = tree.getNodeByText('North America');
+     *         }
+     *     });
+     * </script>
+     * @example Bootstrap.5 <!-- bootstrap5, fontawesome, checkbox, tree -->
+     * <button onclick="tree.enable(northAmerica)" class="btn btn-default">Enable North America (Cascade)</button>
+     * <button onclick="tree.disable(northAmerica)" class="btn btn-default">Disable North America (Cascade)</button>
+     * <button onclick="tree.enable(northAmerica, false)" class="btn btn-default">Enable North America (Non-Cascade)</button>
+     * <button onclick="tree.disable(northAmerica, false)" class="btn btn-default">Disable North America (Non-Cascade)</button>
+     * <br/><br/>
+     * <ul id="tree" data-gj-source="/Locations/Get"></ul>
+     * <script>
+     *     var tree, northAmerica;
+     *     tree = new GijgoTree(document.getElementById('tree'), {
+     *         checkboxes: true,
+     *         primaryKey: 'ID',
+     *         uiLibrary: 'bootstrap5',
      *         iconsLibrary: 'fontawesome',
      *         dataBound: function () {
      *             northAmerica = tree.getNodeByText('North America');
@@ -12621,6 +12693,15 @@ gj.tree.plugins.checkboxes = {
               *         uiLibrary: 'bootstrap4'
               *     });
               * </script>
+              * @example Bootstrap.5 <!-- bootstrap5, checkbox, tree -->
+              * <ul id="tree"></ul>
+              * <script>
+              *     let tree = new GijgoTree(document.getElementById('tree'), {
+              *         dataSource: '/Locations/Get',
+              *         checkboxes: true,
+              *         uiLibrary: 'bootstrap5'
+              *     });
+              * </script>
               */
             checkboxes: undefined,
 
@@ -12740,7 +12821,7 @@ gj.tree.plugins.checkboxes = {
             let parentNode, parentCheckbox, siblingCheckboxes, allChecked, allUnchecked, parentState;
 
             parentNode = node.parentNode.parentNode;
-            if (parentNode) {
+            if (parentNode && parentNode.getAttribute('data-gj-role') === 'node') {
                 parentCheckbox = parentNode.querySelector('[data-gj-role="wrapper"] > [data-gj-role="checkbox"] input[type="checkbox"]');
                 siblingCheckboxes = node.parentNode.querySelectorAll('[data-gj-role="wrapper"] > span[data-gj-role="checkbox"] input[type="checkbox"]');
                 allChecked = (state === 'checked');
@@ -12796,7 +12877,7 @@ gj.tree.plugins.checkboxes = {
          *         dataSource: '/Locations/Get',
          *         checkboxes: true
          *     });
-         *     ('#btnGet').on('click', function() {
+         *     document.getElementById('btnGet').addEventListener('click', function() {
          *         let result = tree.getCheckedNodes();
          *         alert(result.join());
          *     });
@@ -12821,7 +12902,7 @@ gj.tree.plugins.checkboxes = {
          * <button onclick="tree.checkAll()" class="gj-button-md">Check All</button>
          * <button onclick="tree.uncheckAll()" class="gj-button-md">Uncheck All</button>
          * <br/><br/>
-         * <div id="tree" data-source="/Locations/Get"></div>
+         * <ul id="tree" data-gj-source="/Locations/Get"></ul>
          * <script>
          *     let tree = new GijgoTree(document.getElementById('tree'), {
          *         checkboxes: true
@@ -12847,7 +12928,7 @@ gj.tree.plugins.checkboxes = {
          * <button onclick="tree.checkAll()" class="gj-button-md">Check All</button>
          * <button onclick="tree.uncheckAll()" class="gj-button-md">Uncheck All</button>
          * <br/><br/>
-         * <div id="tree" data-source="/Locations/Get"></div>
+         * <ul id="tree" data-gj-source="/Locations/Get"></ul>
          * <script>
          *     let tree = new GijgoTree(document.getElementById('tree'), {
          *         checkboxes: true
@@ -12873,7 +12954,7 @@ gj.tree.plugins.checkboxes = {
          * @example Sample <!-- checkbox, tree -->
          * <button onclick="tree.check(tree.getNodeByText('China'))" class="gj-button-md">Check China</button>
          * <br/>
-         * <div id="tree" data-source="/Locations/Get"></div>
+         * <ul id="tree" data-gj-source="/Locations/Get"></ul>
          * <script>
          *     let tree = new GijgoTree(document.getElementById('tree'), {
          *         checkboxes: true
@@ -12896,7 +12977,7 @@ gj.tree.plugins.checkboxes = {
          * @example Sample <!-- checkbox, tree -->
          * <button onclick="tree.uncheck(tree.getNodeByText('China'))" class="gj-button-md">UnCheck China</button>
          * <br/>
-         * <div id="tree" data-source="/Locations/Get"></div>
+         * <ul id="tree" data-gj-source="/Locations/Get"></ul>
          * <script>
          *     let tree = new GijgoTree(document.getElementById('tree'), {
          *         checkboxes: true
@@ -12918,15 +12999,15 @@ gj.tree.plugins.checkboxes = {
          * Event fires when the checkbox state is changed.
          * @event checkboxChange
          * @param {object} e - event data
-         * @param {object} node - the node object as jQuery element
-         * @param {object} record - the record data
-         * @param {string} state - the new state of the checkbox
+         * @param {object} e.detail.node - the node object as jQuery element
+         * @param {object} e.detail.record - the record data
+         * @param {string} e.detail.state - the new state of the checkbox
          * @example Event.Sample <!-- checkbox, tree -->
-         * <div id="tree" data-source="/Locations/Get" data-checkboxes="true"></div>
+         * <ul id="tree" data-gj-source="/Locations/Get" data-gj-checkboxes="true"></ul>
          * <script>
-         *     let tree = new GijgoTree(document.getElementById('tree'), );
-         *     tree.on('checkboxChange', function (e, node, record, state) {
-         *         alert('The new state of record ' + record.text + ' is ' + state);
+         *     let tree = new GijgoTree(document.getElementById('tree'));
+         *     tree.on('checkboxChange', function (e) {
+         *         alert('The new state of record ' + e.detail.record.text + ' is ' + e.detail.state);
          *     });
          * </script>
          */
@@ -12945,15 +13026,15 @@ gj.tree.plugins.checkboxes = {
                 gj.tree.plugins.checkboxes.private.dataBound(tree);
             });
             tree.on('enable', function (e) {
-                let checkboxes = e.detail.node.querySelectorAll('[data-gj-role="wrapper"]>[data-gj-role="checkbox"] input[type="checkbox"]');
-                for (const chkb of checkboxes) {
-                    chkb.disabled = false;
+                let checkbox = e.detail.node.querySelector('[data-gj-role="wrapper"]>[data-gj-role="checkbox"] input[type="checkbox"]');
+                if (checkbox) {
+                    checkbox.disabled = false;
                 }
             });
             tree.on('disable', function (e) {
-                let checkboxes = e.detail.node.querySelectorAll('[data-gj-role="wrapper"]>[data-gj-role="checkbox"] input[type="checkbox"]');
-                for (const chkb of checkboxes) {
-                    chkb.disabled = true;
+                let checkbox = e.detail.node.querySelector('[data-gj-role="wrapper"]>[data-gj-role="checkbox"] input[type="checkbox"]');
+                if (checkbox) {
+                    checkbox.disabled = true;
                 }
             });
         }
@@ -13059,7 +13140,7 @@ gj.tree.plugins.dragAndDrop = {
 	    createNodeMouseMoveHandler: function (tree, node, display) {
             return function (e) {
                 if (tree.element.getAttribute('data-gj-drag-ready') === 'true') {
-                    let data = tree.getConfig(), dragEl, wrapper, ul, li, offsetTop, offsetLeft;
+                    let data = tree.getConfig(), dragEl, wrapper, ul, li, indicator, offsetTop, offsetLeft;
 
                     tree.element.setAttribute('data-gj-drag-ready', false);
                     dragEl = display.cloneNode();
@@ -13077,7 +13158,10 @@ gj.tree.plugins.dragAndDrop = {
                     ul.appendChild(li);
                     document.body.appendChild(dragEl);
 
-                    dragEl.find('[data-gj-role="wrapper"]').prepend('<span data-gj-role="indicator" />');
+                    indicator = document.createElement('span');
+                    indicator.setAttribute('data-gj-role', 'indicator');
+                    wrapper.parentNode.insertBefore(indicator, wrapper);
+                    
                     new GijgoDraggable(dragEl, {
                         drag: gj.tree.plugins.dragAndDrop.private.createDragHandler(tree, node, display),
                         stop: gj.tree.plugins.dragAndDrop.private.createDragStopHandler(tree, node, display)
@@ -13341,7 +13425,7 @@ gj.tree.plugins.lazyLoading = {
     private: {
         nodeDataBound: function (tree, node, id, record) {
             let data = tree.getConfig(),
-                expander = node.querySelector('> [data-gj-role="wrapper"] > [data-gj-role="expander"]');
+                expander = gj.core.select(node, '[data-gj-role="wrapper"]>[data-gj-role="expander"]');
 
             if (record.hasChildren) {
                 expander.innerHTML = data.icons.expand;
@@ -13349,13 +13433,13 @@ gj.tree.plugins.lazyLoading = {
         },
 
         createDoneHandler: function (tree, node) {
-            return function (response) {
-                let i, expander, list, data = tree.getConfig();
+            return function () {
+                let i, expander, list, data = tree.getConfig(), response = this.response;
                 if (typeof (response) === 'string' && JSON) {
                     response = JSON.parse(response);
                 }
                 if (response && response.length) {
-                    list = node.children('ul');
+                    list = gj.core.select(node, 'ul');
                     if (list.length === 0) {
                         list = document.createElement('ul');
                         gj.core.addClasses(list, data.style.list);
@@ -13364,7 +13448,7 @@ gj.tree.plugins.lazyLoading = {
                     for (i = 0; i < response.length; i++) {
                         tree.addNode(response[i], list);
                     }
-                    expander = node.querySelector('>[data-gj-role="wrapper"]>[data-gj-role="expander"]'),
+                    expander = gj.core.select(node, '[data-gj-role="wrapper"]>[data-gj-role="expander"]'),
                     expander.setAttribute('data-gj-mode', 'open');
                     expander.innerHTML = data.icons.collapse;
                     gj.tree.events.dataBound(tree.element);
@@ -13373,17 +13457,21 @@ gj.tree.plugins.lazyLoading = {
         },
 
         expand: function (tree, node, id) {
-            let ajaxOptions, data = tree.getConfig(), params = {},
-                children = node.querySelectorAll('>ul>li');
+            let url, data = tree.getConfig(), params = {},
+                children = gj.core.selectAll(node, 'ul>li');
 
             if (!children || !children.length) {
                 if (typeof (data.dataSource) === 'string') {
                     params[data.paramNames.parentId] = id;
-                    ajaxOptions = { url: data.dataSource, data: params };
+                    url = data.dataSource + '?' + new URLSearchParams(params).toString();                    
                     if (tree.xhr) {
                         tree.xhr.abort();
                     }
-                    tree.xhr = $.ajax(ajaxOptions).done(gj.tree.plugins.lazyLoading.private.createDoneHandler(tree, node)).fail(tree.createErrorHandler());
+                    tree.xhr = new XMLHttpRequest();
+                    tree.xhr.open('GET', url , true);
+                    tree.xhr.onload = gj.tree.plugins.lazyLoading.private.createDoneHandler(tree, node);
+                    tree.xhr.onerror = tree.createErrorHandler();
+                    tree.xhr.send();
                 }
             }
         }

@@ -15,7 +15,7 @@
  <button onclick="tree.checkAll()" class="gj-button-md">Check All</button>
  <button onclick="tree.uncheckAll()" class="gj-button-md">Uncheck All</button>
  <br/><br/>
- <div id="tree" data-source="/Locations/Get"></div>
+ <ul id="tree" data-gj-source="/Locations/Get"></ul>
  <script>
      let tree = new GijgoTree(document.getElementById('tree'), {
          checkboxes: true
