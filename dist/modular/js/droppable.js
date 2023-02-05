@@ -19,9 +19,9 @@ gj.droppable.methods = {
         gj.widget.prototype.init.call(this, jsConfig);
         this.element.setAttribute('data-gj-droppable', 'true');
         
-        gj.documentManager.subscribeForEvent('mousedown', this.element.getAttribute('data-gj-guid'), gj.droppable.methods.createMouseDownHandler(this));
-        gj.documentManager.subscribeForEvent('mousemove', this.element.getAttribute('data-gj-guid'), gj.droppable.methods.createMouseMoveHandler(this));
-        gj.documentManager.subscribeForEvent('mouseup', this.element.getAttribute('data-gj-guid'), gj.droppable.methods.createMouseUpHandler(this));
+        gj.documentManager.subscribeForEvent('mousedown', 'droppable' + this.element.getAttribute('data-gj-guid'), gj.droppable.methods.createMouseDownHandler(this));
+        gj.documentManager.subscribeForEvent('mousemove', 'droppable' + this.element.getAttribute('data-gj-guid'), gj.droppable.methods.createMouseMoveHandler(this));
+        gj.documentManager.subscribeForEvent('mouseup', 'droppable' + this.element.getAttribute('data-gj-guid'), gj.droppable.methods.createMouseUpHandler(this));
         
         return this;
     },
@@ -36,10 +36,7 @@ gj.droppable.methods = {
         return function (e) {
             if (droppable.isDragging) {
                 let hoverClass = droppable.getConfig().hoverClass,
-                    mousePosition = {
-                        left: droppable.mouseX(e),
-                        top: droppable.mouseY(e)
-                    },
+                    mousePosition = { x: droppable.mouseX(e), y: droppable.mouseY(e) },
                     newIsOver = gj.droppable.methods.isOver(droppable, mousePosition);
                 if (newIsOver != droppable.isOver) {
                     if (newIsOver) {
@@ -62,11 +59,10 @@ gj.droppable.methods = {
     createMouseUpHandler: function (droppable) {
         return function (e) {
             let mousePosition = {
-                left: droppable.mouseX(e),
-                top: droppable.mouseY(e)
+                x: droppable.mouseX(e),
+                y: droppable.mouseY(e)
             };
             droppable.isDragging = false;
-            console.log(gj.droppable.methods.isOver(droppable, mousePosition));
             if (gj.droppable.methods.isOver(droppable, mousePosition)) {
                 gj.droppable.events.drop(droppable.element);
             }
@@ -74,18 +70,18 @@ gj.droppable.methods = {
     },
 
     isOver: function (droppable, mousePosition) {
-        let offsetTop = droppable.element.offsetTop,
-            offsetLeft = droppable.element.offsetLeft;
-        return mousePosition.x > offsetLeft && mousePosition.x < (offsetLeft + gj.core.width(droppable.element))
-            && mousePosition.y > offsetTop && mousePosition.y < (offsetTop + gj.core.height(droppable.element));
+        let result, elementPosition = gj.core.position(droppable.element);
+        result = mousePosition.x > elementPosition.left && mousePosition.x < elementPosition.right
+              && mousePosition.y > elementPosition.top && mousePosition.y < elementPosition.bottom;
+        return result;
     },
 
     destroy: function (droppable) {
         let el = droppable.element;
         if (el.getAttribute('data-gj-droppable') === 'true') {
-            gj.documentManager.unsubscribeForEvent('mousedown', el.getAttribute('data-gj-guid'));
-            gj.documentManager.unsubscribeForEvent('mousemove', el.getAttribute('data-gj-guid'));
-            gj.documentManager.unsubscribeForEvent('mouseup', el.getAttribute('data-gj-guid'));
+            gj.documentManager.unsubscribeForEvent('mousedown', 'droppable' + el.getAttribute('data-gj-guid'));
+            gj.documentManager.unsubscribeForEvent('mousemove', 'droppable' + el.getAttribute('data-gj-guid'));
+            gj.documentManager.unsubscribeForEvent('mouseup', 'droppable' + el.getAttribute('data-gj-guid'));
             droppable.removeConfig();
             el.removeAttribute('data-gj-guid');
             el.removeAttribute('data-gj-droppable');

@@ -15,7 +15,7 @@
 <body style="padding: 8px;">
  <table id="grid"></table>
  <script>
-     let grid = ('#grid').grid({
+     let grid = new GijgoGrid(document.getElementById('grid'), {
          dataSource: '/Players/Get',
          uiLibrary: 'bootstrap4',
          columns: [ { field: 'ID', width: 36 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],

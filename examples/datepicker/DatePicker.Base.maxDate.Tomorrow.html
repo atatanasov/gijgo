@@ -6,17 +6,16 @@
   <title>Example</title>
   <script src="../../dist/modular/js/core.js" type="text/javascript"></script>
   <link href="../../dist/modular/css/core.css" rel="stylesheet" type="text/css">
-  <script src="../../dist/libraries/jquery/jquery.js"></script>
   <link href="../../dist/modular/css/datepicker.css" rel="stylesheet" type="text/css">
   <script src="../../dist/modular/js/datepicker.js"></script>
 </head>
 <body style="padding: 8px;">
  <input id="datepicker" width="312" />
  <script>
-     $('#datepicker').datepicker({
-        minDate: function() {
+     new GijgoDatePicker(document.getElementById('datepicker'), {
+        maxDate: function() {
             var date = new Date();
-            date.setDate(date.getDate()-1);
+            date.setDate(date.getDate()+1);
             return new Date(date.getFullYear(), date.getMonth(), date.getDate());
         }
      });

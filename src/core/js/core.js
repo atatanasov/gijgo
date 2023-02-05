@@ -323,9 +323,8 @@
     },
 
     addClasses: function (el, classes) {
-        let i, arr;
-        if (classes) {
-            arr = classes.split(' ');
+        if (el && classes) {
+            let i, arr = classes.split(' ');
             for (i = 0; i < arr.length; i++) {
                 el.classList.add(arr[i]);
             }
@@ -334,9 +333,8 @@
     },
 
     removeClasses: function (el, classes) {
-        let i, arr;
-        if (classes) {
-            arr = classes.split(' ');
+        if (el && classes) {
+            let i, arr = classes.split(' ');
             for (i = 0; i < arr.length; i++) {
                 el.classList.remove(arr[i]);
             }
@@ -486,6 +484,29 @@
             }
         }
         return result;
+    },
+
+    on: function(el, event, func) {
+        el.addEventListener(event, func);
+        window.gijgoStorage.put(el, event, func);
+        return el;
+        
+    },
+
+    off: function(el, event) {
+        if (event) {
+            el.removeEventListener(event, window.gijgoStorage.get(el, event));
+            window.gijgoStorage.remove(el, event);
+        } else {
+            let funcs = window.gijgoStorage.getAll(el);
+            for (const [key, value] of funcs) {
+                if (typeof(value) === 'function') {
+                    el.removeEventListener(key, value);
+                    window.gijgoStorage.remove(el, key);
+                }
+            }
+        }
+        return el;
     }
 };
 
@@ -499,6 +520,9 @@ window.gijgoStorage = {
     },
     get: function (el, key) {
         return this._storage.get(el).get(key);
+    },
+    getAll: function (el) {
+        return this._storage.get(el);
     },
     has: function (el, key) {
         return this._storage.get(el).has(key);
@@ -539,6 +563,10 @@ gj.widget = function () {
         window.gijgoStorage.put(this.element, 'records', records);
     };
 
+    self.removeRecords = function() {
+        return window.gijgoStorage.remove(this.element, 'records');
+    };
+
     self.getTotalRecords = function() {
         return window.gijgoStorage.get(this.element, 'totalRecords');
     };
@@ -547,14 +575,16 @@ gj.widget = function () {
         window.gijgoStorage.put(this.element, 'totalRecords', records);
     };
 
+    self.removeTotalRecords = function() {
+        return window.gijgoStorage.remove(this.element, 'totalRecords');
+    };
+
     self.on = function(event, func) {
-        this.element.addEventListener(event, func);
-        return this;
+        return gj.core.on(this.element, event, func);
     }
 
-    self.off = function(event, func) {
-        this.element.removeEventListener(event, func);
-        return this;
+    self.off = function(event) {
+        return gj.core.off(this.element, event);
     }
 
     self.generateGUID = function () {

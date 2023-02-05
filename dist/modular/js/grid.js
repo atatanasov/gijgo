@@ -643,7 +643,7 @@ gj.grid.methods = {
             mode = 'update';
             row.classList.remove(data.style.content.rowSelected)
             row.removeAttribute('data-gj-selected')
-            //TODO: row.off('click');
+            gj.core.off(row, 'click');
         }
         id = gj.grid.methods.getId(record, data.primaryKey, (position + 1));
         row.setAttribute('data-gj-position', position + 1);
@@ -686,13 +686,13 @@ gj.grid.methods = {
 
         //remove all event handlers
         if ('update' === mode) {
-            //TODO: $cell.off();
-            //TODO: $displayEl.off();
+            gj.core.off(cell);
+            gj.core.off(displayEl);
         }
         if (column.events) {
             for (key in column.events) {
                 if (column.events.hasOwnProperty(key)) {
-                    cell.addEventListener(key, gj.grid.methods.createCellEventHandler(column, column.events[key], { id: id, field: column.field, record: record }));
+                    gj.core.on(cell, key, gj.grid.methods.createCellEventHandler(column, column.events[key], { id: id, field: column.field, record: record }));
                 }
             }
         }
@@ -1110,11 +1110,13 @@ gj.grid.methods = {
             gj.grid.events.destroying(grid.element);
             gj.grid.methods.stopLoading(grid);
             grid.xhr && grid.xhr.abort();
-            //TODO: grid.off();
+            grid.off();
             if (!keepWrapperTag && grid.element.parentNode.getAttribute('data-gj-role') === 'wrapper') {
                 grid.unwrap();
             }
             grid.removeConfig();
+            grid.removeRecords();
+            grid.removeTotalRecords();
             if (keepTableTag === false) {
                 grid.element.remove();
             } else {
@@ -2186,7 +2188,7 @@ gj.grid.plugins.inlineEditing.configure = function (grid, fullConfig, clientConf
                     param = data.optimisticPersistence.sessionStorage[i];
                     storage.optimisticPersistence[param] = data.params[param];
                 }
-                storage = grid.extend(JSON.parse(sessionStorage.getItem('gj.grid.' + data.guid)), storage);
+                storage = grid.extend(JSON.parse(sessionStorage.getItem('gj.grid.' + data.guid)) || {}, storage);
                 sessionStorage.setItem('gj.grid.' + data.guid, JSON.stringify(storage));
             }
 
@@ -2196,13 +2198,13 @@ gj.grid.plugins.inlineEditing.configure = function (grid, fullConfig, clientConf
                     param = data.optimisticPersistence.localStorage[i];
                     storage.optimisticPersistence[param] = data.params[param];
                 }
-                storage = grid.extend(JSON.parse(localStorage.getItem('gj.grid.' + data.guid)), storage);
+                storage = grid.extend(JSON.parse(localStorage.getItem('gj.grid.' + data.guid)) || {}, storage);
                 localStorage.setItem('gj.grid.' + data.guid, JSON.stringify(storage));
             }
         }
     },
 
-    configure: function (grid, fullConfig, clientConfig) {
+    configure: function (grid, fullConfig) {
         if (fullConfig.guid) {
             if (fullConfig.optimisticPersistence.localStorage || fullConfig.optimisticPersistence.sessionStorage) {
                 gj.grid.plugins.optimisticPersistence.private.applyParams(grid);
@@ -2238,9 +2240,9 @@ gj.grid.plugins.inlineEditing.configure = function (grid, fullConfig, clientConf
                 /** Array that contains the possible page sizes of the grid.
                  * When this setting is set, then a drop down with the options for each page size is visualized in the pager.                 */                sizes: [5, 10, 20, 100],
 
-                /** Array that contains a list with jquery objects that are going to be used on the left side of the pager.                 */                leftControls: undefined,
+                /** Array that contains a list with html element objects that are going to be used on the left side of the pager.                 */                leftControls: undefined,
 
-                /** Array that contains a list with jquery objects that are going to be used on the right side of the pager.                 */                rightControls: undefined
+                /** Array that contains a list with html element objects that are going to be used on the right side of the pager.                 */                rightControls: undefined
             }
         },
 
@@ -2360,51 +2362,26 @@ gj.grid.plugins.inlineEditing.configure = function (grid, fullConfig, clientConf
             }
         },
 
+        createButton: function(classes, role, title, text) {
+            let result = document.createElement('button');
+            gj.core.addClasses(result, classes);
+            result.setAttribute('data-gj-role', role);
+            result.setAttribute('title', title);
+            result.innerHTML = text;
+            return result;
+        },
+
         localizationBootstrap: function (data) {
             let msg = gj.grid.messages[data.locale],
-            parser = new DOMParser(),
-            pageFirst = document.createElement('button'),
-            pagePrevious = document.createElement('button'),
-            pageNext = document.createElement('button'),
-            pageLast = document.createElement('button'),
-            pageRefresh = document.createElement('button'),
-            labelLast = document.createElement('div'),
-            labelPage = document.createElement('div'),
-            labelOf = document.createElement('div'),
-            pageNumber = document.createElement('input'),
-            pager = document.createElement('select');
+                methods = gj.grid.plugins.pagination.private,
+                parser = new DOMParser(),
+                labelLast = document.createElement('div'),
+                labelPage = document.createElement('div'),
+                labelOf = document.createElement('div'),
+                pageNumber = document.createElement('input'),
+                pager = document.createElement('select');
 
             if (typeof (data.pager.leftControls) === 'undefined') {
-                gj.core.addClasses(pageFirst, 'btn btn-default btn-sm');
-                pageFirst.setAttribute('data-gj-role', 'page-first');
-                pageFirst.setAttribute('type', 'button');
-                pageFirst.setAttribute('title', msg.FirstPageTooltip);
-                pageFirst.innerHTML = (data.icons.first || msg.First);
-                
-                gj.core.addClasses(pagePrevious, 'btn btn-default btn-sm');
-                pagePrevious.setAttribute('data-gj-role', 'page-previous');
-                pagePrevious.setAttribute('type', 'button');
-                pagePrevious.setAttribute('title', msg.PreviousPageTooltip);
-                pagePrevious.innerHTML = (data.icons.previous || msg.Previous);
-                
-                gj.core.addClasses(pageNext, 'btn btn-default btn-sm');
-                pageNext.setAttribute('data-gj-role', 'page-next');
-                pageNext.setAttribute('type', 'button');
-                pageNext.setAttribute('title', msg.NextPageTooltip);
-                pageNext.innerHTML = (data.icons.next || msg.Next);
-                
-                gj.core.addClasses(pageLast, 'btn btn-default btn-sm');
-                pageLast.setAttribute('data-gj-role', 'page-last');
-                pageLast.setAttribute('type', 'button');
-                pageLast.setAttribute('title', msg.LastPageTooltip);
-                pageLast.innerHTML = (data.icons.last || msg.Last);
-                
-                gj.core.addClasses(pageRefresh, 'btn btn-default btn-sm');
-                pageRefresh.setAttribute('data-gj-role', 'page-refresh');
-                pageRefresh.setAttribute('type', 'button');
-                pageRefresh.setAttribute('title', msg.Refresh);
-                pageRefresh.innerHTML = (data.icons.refresh || msg.Refresh);
-
                 labelLast.setAttribute('data-gj-role', 'page-label-last');
                 labelLast.innerHTML = '0';
 
@@ -2421,7 +2398,18 @@ gj.grid.plugins.inlineEditing.configure = function (grid, fullConfig, clientConf
                 pager.style.width = '3.75rem';
                 pager.setAttribute('data-gj-role', 'page-size');
 
-                data.pager.leftControls = [pageFirst, pagePrevious, labelPage, pageNumber, labelOf, labelLast, pageNext, pageLast, pageRefresh, pager];
+                data.pager.leftControls = [
+                    methods.createButton('btn btn-default btn-sm', 'page-first', msg.FirstPageTooltip, data.icons.first || msg.First),
+                    methods.createButton('btn btn-default btn-sm', 'page-previous', msg.PreviousPageTooltip, data.icons.previous || msg.Previous),
+                    labelPage,
+                    pageNumber,
+                    labelOf,
+                    labelLast,
+                    methods.createButton('btn btn-default btn-sm', 'page-next', msg.NextPageTooltip, data.icons.next || msg.Next),
+                    methods.createButton('btn btn-default btn-sm', 'page-last', msg.LastPageTooltip, data.icons.last || msg.Last),
+                    methods.createButton('btn btn-default btn-sm', 'page-refresh', msg.Refresh, data.icons.refresh || msg.Refresh),
+                    pager
+                ];
             }
             if (typeof (data.pager.rightControls) === 'undefined') {
                 data.pager.rightControls = [
@@ -2437,12 +2425,8 @@ gj.grid.plugins.inlineEditing.configure = function (grid, fullConfig, clientConf
 
         localizationBootstrap4: function (data) {
             let msg = gj.grid.messages[data.locale],
+                methods = gj.grid.plugins.pagination.private,
                 parser = new DOMParser(),
-                pageFirst = document.createElement('button'),
-                pagePrevious = document.createElement('button'),
-                pageNext = document.createElement('button'),
-                pageLast = document.createElement('button'),
-                pageRefresh = document.createElement('button'),
                 labelLast = document.createElement('div'),
                 labelPage = document.createElement('div'),
                 labelOf = document.createElement('div'),
@@ -2450,31 +2434,6 @@ gj.grid.plugins.inlineEditing.configure = function (grid, fullConfig, clientConf
                 input = document.createElement('input'),
                 pager = document.createElement('select');
             if (typeof (data.pager.leftControls) === 'undefined') {
-                gj.core.addClasses(pageFirst, 'btn btn-default btn-sm gj-cursor-pointer');
-                pageFirst.setAttribute('data-gj-role', 'page-first');
-                pageFirst.setAttribute('title', msg.FirstPageTooltip);
-                pageFirst.innerHTML = (data.icons.first || msg.First);
-                
-                gj.core.addClasses(pagePrevious, 'btn btn-default btn-sm gj-cursor-pointer');
-                pagePrevious.setAttribute('data-gj-role', 'page-previous');
-                pagePrevious.setAttribute('title', msg.PreviousPageTooltip);
-                pagePrevious.innerHTML = (data.icons.previous || msg.Previous);
-                
-                gj.core.addClasses(pageNext, 'btn btn-default btn-sm gj-cursor-pointer');
-                pageNext.setAttribute('data-gj-role', 'page-next');
-                pageNext.setAttribute('title', msg.NextPageTooltip);
-                pageNext.innerHTML = (data.icons.next || msg.Next);
-                
-                gj.core.addClasses(pageLast, 'btn btn-default btn-sm gj-cursor-pointer');
-                pageLast.setAttribute('data-gj-role', 'page-last');
-                pageLast.setAttribute('title', msg.LastPageTooltip);
-                pageLast.innerHTML = (data.icons.last || msg.Last);
-                
-                gj.core.addClasses(pageRefresh, 'btn btn-default btn-sm gj-cursor-pointer');
-                pageRefresh.setAttribute('data-gj-role', 'page-refresh');
-                pageRefresh.setAttribute('title', msg.Refresh);
-                pageRefresh.innerHTML = (data.icons.refresh || msg.Refresh);
-
                 labelLast.setAttribute('data-gj-role', 'page-label-last');
                 labelLast.innerHTML = '0';
 
@@ -2493,7 +2452,18 @@ gj.grid.plugins.inlineEditing.configure = function (grid, fullConfig, clientConf
                 pager.style.width = '3.75rem';
                 pager.setAttribute('data-gj-role', 'page-size');
 
-                data.pager.leftControls = [pageFirst, pagePrevious, labelPage, pageNumber, labelOf, labelLast, pageNext, pageLast, pageRefresh, pager];
+                data.pager.leftControls = [
+                    methods.createButton('btn btn-default btn-sm gj-cursor-pointer', 'page-first', msg.FirstPageTooltip, data.icons.first || msg.First),
+                    methods.createButton('btn btn-default btn-sm gj-cursor-pointer', 'page-previous', msg.PreviousPageTooltip, data.icons.previous || msg.Previous),
+                    labelPage,
+                    pageNumber,
+                    labelOf,
+                    labelLast,
+                    methods.createButton('btn btn-default btn-sm gj-cursor-pointer', 'page-next', msg.NextPageTooltip, data.icons.next || msg.Next),
+                    methods.createButton('btn btn-default btn-sm gj-cursor-pointer', 'page-last', msg.LastPageTooltip, data.icons.last || msg.Last),
+                    methods.createButton('btn btn-default btn-sm gj-cursor-pointer', 'page-refresh', msg.Refresh, data.icons.refresh || msg.Refresh),
+                    pager
+                ];
             }
             if (typeof (data.pager.rightControls) === 'undefined') {
                 data.pager.rightControls = [
@@ -2509,12 +2479,8 @@ gj.grid.plugins.inlineEditing.configure = function (grid, fullConfig, clientConf
 
         localizationBootstrap5: function (data) {
             let msg = gj.grid.messages[data.locale],
+                methods = gj.grid.plugins.pagination.private,
                 parser = new DOMParser(),
-                pageFirst = document.createElement('button'),
-                pagePrevious = document.createElement('button'),
-                pageNext = document.createElement('button'),
-                pageLast = document.createElement('button'),
-                pageRefresh = document.createElement('button'),
                 labelLast = document.createElement('div'),
                 labelPage = document.createElement('div'),
                 labelOf = document.createElement('div'),
@@ -2523,30 +2489,6 @@ gj.grid.plugins.inlineEditing.configure = function (grid, fullConfig, clientConf
                 pager = document.createElement('select');
 
             if (typeof (data.pager.leftControls) === 'undefined') {
-                gj.core.addClasses(pageFirst, 'btn btn-secondary btn-sm gj-cursor-pointer');
-                pageFirst.setAttribute('data-gj-role', 'page-first');
-                pageFirst.setAttribute('title', msg.FirstPageTooltip);
-                pageFirst.innerHTML = (data.icons.first || msg.First);
-                
-                gj.core.addClasses(pagePrevious, 'btn btn-secondary btn-sm gj-cursor-pointer');
-                pagePrevious.setAttribute('data-gj-role', 'page-previous');
-                pagePrevious.setAttribute('title', msg.PreviousPageTooltip);
-                pagePrevious.innerHTML = (data.icons.previous || msg.Previous);
-                
-                gj.core.addClasses(pageNext, 'btn btn-secondary btn-sm gj-cursor-pointer');
-                pageNext.setAttribute('data-gj-role', 'page-next');
-                pageNext.setAttribute('title', msg.NextPageTooltip);
-                pageNext.innerHTML = (data.icons.next || msg.Next);
-                
-                gj.core.addClasses(pageLast, 'btn btn-secondary btn-sm gj-cursor-pointer');
-                pageLast.setAttribute('data-gj-role', 'page-last');
-                pageLast.setAttribute('title', msg.LastPageTooltip);
-                pageLast.innerHTML = (data.icons.last || msg.Last);
-                
-                gj.core.addClasses(pageRefresh, 'btn btn-secondary btn-sm gj-cursor-pointer');
-                pageRefresh.setAttribute('data-gj-role', 'page-refresh');
-                pageRefresh.setAttribute('title', msg.Refresh);
-                pageRefresh.innerHTML = (data.icons.refresh || msg.Refresh);
 
                 labelLast.setAttribute('data-gj-role', 'page-label-last');
                 labelLast.innerHTML = '0';
@@ -2566,7 +2508,18 @@ gj.grid.plugins.inlineEditing.configure = function (grid, fullConfig, clientConf
                 pager.style.width = '3.75rem';
                 pager.setAttribute('data-gj-role', 'page-size');
 
-                data.pager.leftControls = [pageFirst, pagePrevious, labelPage, pageNumber, labelOf, labelLast, pageNext, pageLast, pageRefresh, pager];
+                data.pager.leftControls = [
+                    methods.createButton('btn btn-secondary btn-sm gj-cursor-pointer', 'page-first', msg.FirstPageTooltip, data.icons.first || msg.First),
+                    methods.createButton('btn btn-secondary btn-sm gj-cursor-pointer', 'page-previous', msg.PreviousPageTooltip, data.icons.previous || msg.Previous),
+                    labelPage,
+                    pageNumber,
+                    labelOf,
+                    labelLast,
+                    methods.createButton('btn btn-secondary btn-sm gj-cursor-pointer', 'page-next', msg.NextPageTooltip, data.icons.next || msg.Next),
+                    methods.createButton('btn btn-secondary btn-sm gj-cursor-pointer', 'page-last', msg.LastPageTooltip, data.icons.last || msg.Last),
+                    methods.createButton('btn btn-secondary btn-sm gj-cursor-pointer', 'page-refresh', msg.Refresh, data.icons.refresh || msg.Refresh),
+                    pager
+                ];
             }
             if (typeof (data.pager.rightControls) === 'undefined') {
                 data.pager.rightControls = [
@@ -2582,6 +2535,7 @@ gj.grid.plugins.inlineEditing.configure = function (grid, fullConfig, clientConf
 
         localizationMaterialDesign: function (data) {
             let msg = gj.grid.messages[data.locale],
+                methods = gj.grid.plugins.pagination.private,
                 parser = new DOMParser(),
                 pager = document.createElement('select');
             if (typeof (data.pager.leftControls) === 'undefined') {
@@ -2601,9 +2555,9 @@ gj.grid.plugins.inlineEditing.configure = function (grid, fullConfig, clientConf
                     parser.parseFromString('<span class="gj-grid-mdl-pager-label">' + msg.Of + '</span>', 'text/xml').firstChild,
                     parser.parseFromString('<span data-gj-role="record-total" class="">0</span>', 'text/xml').firstChild,
                     parser.parseFromString('<span class="gj-md-spacer-32"> </span>', 'text/xml').firstChild,
-                    parser.parseFromString('<button class="gj-button-md' + (data.icons.first ? ' gj-button-md-icon' : '') + '" title="' + msg.PreviousPageTooltip + '" data-gj-role="page-previous">' + (data.icons.previous || msg.Previous) + '</button>', 'text/xml').firstChild,
+                    methods.createButton('gj-button-md' + (data.icons.next ? ' gj-button-md-icon' : ''), 'page-previous', msg.PreviousPageTooltip, data.icons.previous || msg.Previous),
                     parser.parseFromString('<span class="gj-md-spacer-24"> </span>', 'text/xml').firstChild,
-                    parser.parseFromString('<button class="gj-button-md' + (data.icons.next ? ' gj-button-md-icon' : '') + '" title="' + msg.NextPageTooltip + '" data-gj-role="page-next">' + (data.icons.next || msg.Next) + '</button>', 'text/xml').firstChild
+                    methods.createButton('gj-button-md' + (data.icons.next ? ' gj-button-md-icon' : ''), 'page-next', msg.NextPageTooltip, data.icons.next || msg.Next)
                 ];
             }
         },
@@ -2721,12 +2675,12 @@ gj.grid.plugins.inlineEditing.configure = function (grid, fullConfig, clientConf
             if (disabled) {
                 gj.core.addClasses(control, style.stateDisabled);
                 control.disabled = true;
-                //control.off('click');
+                gj.core.off(control, 'click');
             } else {
                 gj.core.removeClasses(control, style.stateDisabled);
                 control.disabled = false;
-                // control.off('click');
-                control.addEventListener('click', function () {
+                gj.core.off(control, 'click');
+                gj.core.on(control, 'click', function () {
                     gj.grid.plugins.pagination.private.changePage(grid, newPage);
                 });
             }
@@ -2738,11 +2692,13 @@ gj.grid.plugins.inlineEditing.configure = function (grid, fullConfig, clientConf
                 control.style.display = 'none';
             } else {
                 control.style.display = 'block';
-                control.off('click').text(newPage);
+                gj.core.off(control, 'click');
+                control.innerHTML = newPage;
                 if (newPage === page) {
-                    control.addClass(style.activeButton);
+                    gj.core.addClasses(control, style.activeButton);
                 } else {
-                    control.removeClass(style.activeButton).on('click', function () {
+                    gj.core.removeClasses(control, style.activeButton);
+                    gj.core.on(control, 'click', function () {
                         gj.grid.plugins.pagination.private.changePage(grid, newPage);
                     });
                 }
@@ -2818,8 +2774,8 @@ gj.grid.plugins.inlineEditing.configure = function (grid, fullConfig, clientConf
 
         /**
          * Triggered before the change of the page.
-         *         */        pageChanging: function (el, newSize) {
-            return el.dispatchEvent(new CustomEvent('pageChanging', { detail: { newSize: newSize } }));
+         *         */        pageChanging: function (el, newPage) {
+            return el.dispatchEvent(new CustomEvent('pageChanging', { detail: { newPage: newPage } }));
         }
     },
 
@@ -3095,7 +3051,7 @@ gj.grid.plugins.inlineEditing.configure = function (grid, fullConfig, clientConf
     public: {        
         /**
          * Get or set grid title.         */        title: function (text) {
-            var titleEl = this.parentNode.querySelector('div[data-gj-role="toolbar"] [data-gj-role="title"]');
+            var titleEl = this.element.parentNode.querySelector('div[data-gj-role="toolbar"] [data-gj-role="title"]');
             if (typeof (text) !== 'undefined') {
                 titleEl.innerHTML = text;
                 return this;
@@ -3429,156 +3385,150 @@ gj.grid.plugins.inlineEditing.configure = function (grid, fullConfig, clientConf
     private: {
         init: function (grid) {
             let i, cells = grid.element.querySelectorAll('thead tr th');
+            gj.core.on(document, 'mousemove', gj.grid.plugins.columnReorder.private.createMouseMoveHandler(grid));
+            gj.core.on(document, 'mouseup', gj.grid.plugins.columnReorder.private.createMouseUpHandler(grid));
             for (i = 0; i < cells.length; i++) {
-                cells[i].addEventListener('mousedown', gj.grid.plugins.columnReorder.private.createMouseDownHandler(grid, cells[i]));
-                cells[i].addEventListener('mousemove', gj.grid.plugins.columnReorder.private.createMouseMoveHandler(grid, cells[i]));
-                cells[i].addEventListener('mouseup', gj.grid.plugins.columnReorder.private.createMouseUpHandler(grid, cells[i]));
+                gj.core.on(cells[i], 'mousedown', gj.grid.plugins.columnReorder.private.createMouseDownHandler(grid, cells[i]));
+                new GijgoDroppable(cells[i]);
             }
         },
 
-        createMouseDownHandler: function (grid) {
+        createMouseDownHandler: function (grid, thSource) {
             return function (e) {
-                grid.timeout = setTimeout(function () {
-                    grid.element.setAttribute('data-gj-drag-ready', true);
-                }, 100);
+                let dragEl, srcIndex, elements;
+
+                dragEl = grid.element.cloneNode(true);
+                grid.element.classList.add('gj-unselectable');
+                dragEl.classList.add('gj-unselectable');
+                document.body.appendChild(dragEl);
+                dragEl.setAttribute('data-gj-role', 'draggable-clone')
+                dragEl.style.cursor = 'move';
+                srcIndex = Array.from(thSource.parentNode.children).indexOf(thSource);
+                
+                elements = dragEl.querySelectorAll('thead tr th');
+                for (let i = 0; i < elements.length; i++) {
+                    if (i !== srcIndex) {
+                        elements[i].remove();
+                    }
+                }
+                elements = dragEl.querySelectorAll('tbody tr:not([data-gj-role="row"])');
+                for (let i = 0; i < elements.length; i++) {
+                    elements[i].remove();
+                }
+                
+                elements = dragEl.querySelectorAll('tbody tr');
+                for (let i = 0; i < elements.length; i++) {
+                    for (let index = srcIndex, j = 0; j < elements[i].children.length; j++) {
+                        if (j !== index) {
+                            elements[i].removeChild(elements[i].children[j]);
+                            j--;
+                            index--;
+                        }
+                    }
+                }
+
+                elements = dragEl.querySelector('tfoot');
+                elements && elements.remove();
+
+                dragEl.style.position = 'absolute';
+                dragEl.style.top = thSource.getBoundingClientRect().top + 'px';
+                dragEl.style.left = thSource.getBoundingClientRect().left + 'px';
+                dragEl.style.width = gj.core.width(thSource) + 'px';
+                dragEl.style.zIndex = 1;
+
+                new GijgoDraggable(dragEl, {
+                    stop: gj.grid.plugins.columnReorder.private.createDragStopHandler(grid, thSource, srcIndex)
+                });
+                dragEl.dispatchEvent(new Event('mousedown'));
+
+                grid.element.setAttribute('data-gj-drag-column', 'true');
             }
         },
 
         createMouseUpHandler: function (grid) {
             return function (e) {
-                clearTimeout(grid.timeout);
-                grid.element.setAttribute('data-gj-drag-ready', false);
+                if (grid.element.getAttribute('data-gj-drag-column') === 'true') {
+                    grid.element.setAttribute('data-gj-drag-column', 'false');
+                }
             }
         },
 
-        createMouseMoveHandler: function (grid, thSource) {
+        createMouseMoveHandler: function (grid) {
+            let header = grid.element.querySelector('thead tr'),
+                body = grid.element.querySelector('tbody'),
+                headerPos = gj.core.position(header);
             return function (e) {
-                if (grid.element.getAttribute('data-gj-drag-ready') === 'true') {
-                    let dragEl, srcIndex, elements, srcEl;
-
-                    grid.element.setAttribute('data-gj-drag-ready', false);
-                    dragEl = grid.element.cloneNode(true);
-                    grid.element.classList.add('gj-unselectable');
-                    dragEl.classList.add('gj-unselectable');
-                    document.body.appendChild(dragEl);
-                    dragEl.setAttribute('data-gj-role', 'draggable-clone')
-                    dragEl.style.cursor = 'move';
-                    srcIndex = Array.from(thSource.parentNode.children).indexOf(thSource);
-                    
-                    elements = dragEl.querySelectorAll('thead tr th');
-                    for (let i = 0; i < elements.length; i++) {
-                        if (i !== srcIndex) {
-                            elements[i].remove();
-                        }
-                    }
-                    elements = dragEl.querySelectorAll('tbody tr:not([data-gj-role="row"])');
-                    for (let i = 0; i < elements.length; i++) {
-                        elements[i].remove();
-                    }
-                    
-                    elements = dragEl.querySelectorAll('tbody tr');
-                    for (let i = 0; i < elements.length; i++) {
-                        srcEl = elements[i].children[srcIndex];
-                        for (const element of elements[i].children) {
-                            if (srcEl !== element) {
-                                elements[i].removeChild(element)
+                if (grid.element.getAttribute('data-gj-drag-column') === 'true') {
+                    let mouse = { x: grid.mouseX(e), y: grid.mouseY(e) };
+                    if (mouse.x > headerPos.left && mouse.x < headerPos.right && mouse.y > headerPos.top && mouse.y < headerPos.bottom) {
+                        for (let i = 0; i < header.children.length; i++) {
+                            let middle, thPos = gj.core.position(header.children[i]);
+                            if (mouse.x > thPos.left && mouse.x < thPos.right && mouse.y > thPos.top && mouse.y < thPos.bottom) {                            
+                                middle = (thPos.left + thPos.right) / 2;
+                                gj.grid.plugins.columnReorder.private.addBorder(mouse.x < middle ? 'left' : 'right', header, body, i);
+                                break;
                             }
-                        }
+                        }                        
                     }
-                    elements = dragEl.querySelector('tfoot');
-                    elements && elements.remove();
-
-                    new GijgoDraggable(dragEl, {
-                        stop: gj.grid.plugins.columnReorder.private.createDragStopHandler(grid, thSource)
-                    });
-                    dragEl.style.position = 'absolute';
-                    dragEl.style.top = thSource.getBoundingClientRect().top + 'px';
-                    dragEl.style.left = thSource.getBoundingClientRect().left + 'px';
-                    dragEl.style.width = gj.core.width(thSource) + 'px';
-                    dragEl.style.zIndex = 1;
-                    
-                    if (thSource.getAttribute('data-droppable') === 'true') {
-                        thSource.droppable('destroy');
-                    }
-
-                    for (const dropEl of thSource.parentNode.children) {
-                        if (thSource !== dropEl) {
-                            if (dropEl.getAttribute('data-gj-droppable') === 'true') {
-                                new GijgoDroppable(dropEl).destroy();
-                            }
-                            new GijgoDroppable(dropEl, {
-                                over: gj.grid.plugins.columnReorder.private.createDroppableOverHandler(grid, thSource),
-                                out: gj.grid.plugins.columnReorder.private.droppableOut
-                            });
-                        }
-                    }
-                    dragEl.dispatchEvent(new Event('mousedown'));
                 }
             };
         },
 
-        createDragStopHandler: function (grid, thSource) {
+        addBorder: function (type, header, body, column) {
+            header.children[column].classList.remove(type === 'left' ? 'gj-grid-right-border' : 'gj-grid-left-border');
+            header.children[column].classList.add(type === 'left' ? 'gj-grid-left-border' : 'gj-grid-right-border');
+            gj.core.removeClasses(header.children[column - 1], 'gj-grid-left-border gj-grid-right-border');
+            gj.core.removeClasses(header.children[column + 1], 'gj-grid-left-border gj-grid-right-border');
+            for (let i = 0; i < body.children.length; i++) {
+                body.children[i].children[column].classList.remove(type === 'left' ? 'gj-grid-right-border' : 'gj-grid-left-border');
+                body.children[i].children[column].classList.add(type === 'left' ? 'gj-grid-left-border' : 'gj-grid-right-border');
+                gj.core.removeClasses(body.children[i].children[column - 1], 'gj-grid-left-border gj-grid-right-border');
+                gj.core.removeClasses(body.children[i].children[column + 1], 'gj-grid-left-border gj-grid-right-border');
+            }
+        },
+
+        createDragStopHandler: function (grid, thSource, srcIndex) {            
+            let header = grid.element.querySelector('thead tr'),
+                headerPos = gj.core.position(header),
+                config = grid.getConfig();
+
             return function (e) {
-                let elements = thSource.parentNode.children;
                 document.body.querySelector('table[data-gj-role="draggable-clone"]').remove();
                 grid.element.classList.remove('gj-unselectable');
-                for (const thTarget of elements) {
-                    let data = grid.getConfig(),
-                        targetPosition = gj.grid.methods.getColumnPosition(data.columns, thTarget.getAttribute('data-gj-field')),
-                        sourcePosition = gj.grid.methods.getColumnPosition(data.columns, thSource.getAttribute('data-gj-field'))
-                        droppable = new GijgoDroppable(thTarget);
-
-                    gj.core.removeClasses(thTarget, 'gj-grid-left-border gj-grid-right-border');
-                    if (thTarget.nextElementSibling) {
-                        gj.core.removeClasses(thTarget.nextElementSibling, 'gj-grid-left-border gj-grid-right-border');
-                    }
-                    
-                    if (droppable.isOver(e.detail)) {
-                        if (targetPosition < sourcePosition) {
-                            thTarget.parentNode.insertBefore(thSource, thTarget);
-                        } else {
-                            thTarget.parentNode.insertBefore(thSource, thTarget.nextSibling);
+                grid.element.querySelectorAll('.gj-grid-left-border').forEach((element) => {  element.classList.remove('gj-grid-left-border'); });
+                grid.element.querySelectorAll('.gj-grid-right-border').forEach((element) => {  element.classList.remove('gj-grid-right-border'); });
+                if (e.detail.x > headerPos.left && e.detail.x < headerPos.right && e.detail.y > headerPos.top && e.detail.y < headerPos.bottom) {
+                    for (let i = 0; i < header.children.length; i++) {
+                        let thPos = gj.core.position(header.children[i]);
+                        if (e.detail.x > thPos.left && e.detail.x < thPos.right && e.detail.y > thPos.top && e.detail.y < thPos.bottom) {  
+                            let thIndex = Array.from(header.children).indexOf(header.children[i]);
+                            if (srcIndex != thIndex) {
+                                let middle = (thPos.left + thPos.right) / 2;
+                                if (e.detail.x < middle) {
+                                    header.insertBefore(thSource, header.children[i]);
+                                    gj.grid.plugins.columnReorder.private.moveRowCells(grid, srcIndex, thIndex);
+                                } else {
+                                    header.insertBefore(thSource, header.children[i].nextSibling);
+                                    gj.grid.plugins.columnReorder.private.moveRowCells(grid, srcIndex, thIndex + (thIndex < srcIndex ? 1 : 0));
+                                }
+                                config.columns.splice(thIndex + (thIndex < srcIndex ? 1 : 0), 0, config.columns.splice(srcIndex, 1)[0]);                            
+                            }
+                            break;
                         }
-                        gj.grid.plugins.columnReorder.private.moveRowCells(grid, sourcePosition, targetPosition);
-                        data.columns.splice(targetPosition, 0, data.columns.splice(sourcePosition, 1)[0]);
-                    }
-                    droppable.destroy();
-                };
+                    }                        
+                }
             }
         },
 
         moveRowCells: function (grid, sourcePosition, targetPosition) {
-            let i, row, rows = grid.find('tbody tr[data-gj-role="row"]');
+            let i, rows = grid.element.querySelectorAll('tbody tr[data-gj-role="row"]');
             for (i = 0; i < rows.length; i++) {
-                row = (rows[i]);
                 if (targetPosition < sourcePosition) {
-                    row.find('td:eq(' + targetPosition + ')').before(row.find('td:eq(' + sourcePosition + ')'));
+                    rows[i].insertBefore(rows[i].children[sourcePosition], rows[i].children[targetPosition]);
                 } else {
-                    row.find('td:eq(' + targetPosition + ')').after(row.find('td:eq(' + sourcePosition + ')'));
+                    rows[i].insertBefore(rows[i].children[sourcePosition], rows[i].children[targetPosition].nextSibling);
                 }                
             }
-        },
-
-        createDroppableOverHandler: function (grid, thSource) {
-            return function (e) {
-                let thTarget = (this),
-                    data = grid.getConfig(),
-                    targetPosition = gj.grid.methods.getColumnPosition(data.columns, thTarget.data('field')),
-                    sourcePosition = gj.grid.methods.getColumnPosition(data.columns, thSource.data('field'));
-                if (targetPosition < sourcePosition) {
-                    thTarget.addClass('gj-grid-left-border');
-                    grid.find('tbody tr[data-gj-role="row"] td:nth-child(' + (thTarget.index() + 1) + ')').addClass('gj-grid-left-border');
-                } else {
-                    thTarget.addClass('gj-grid-right-border');
-                    grid.find('tbody tr[data-gj-role="row"] td:nth-child(' + (thTarget.index() + 1) + ')').addClass('gj-grid-right-border');
-                }
-            };
-        },
-
-        droppableOut: function () {
-            let thTarget = (this);
-            thTarget.removeClass('gj-grid-left-border').removeClass('gj-grid-right-border');
-            thTarget.closest('table').find('tbody tr[data-gj-role="row"] td:nth-child(' + (thTarget.index() + 1) + ')').removeClass('gj-grid-left-border').removeClass('gj-grid-right-border');
         }
     },
 

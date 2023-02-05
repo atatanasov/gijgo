@@ -238,7 +238,7 @@ gj.tree.plugins.checkboxes = {
         /**
          * Check all tree nodes
          * @method
-         * @return tree as jQuery object
+         * @return tree as html element object
          * @example Sample <!-- checkbox, tree -->
          * <button onclick="tree.checkAll()" class="gj-button-md">Check All</button>
          * <button onclick="tree.uncheckAll()" class="gj-button-md">Uncheck All</button>
@@ -264,7 +264,7 @@ gj.tree.plugins.checkboxes = {
         /**
          * Uncheck all tree nodes
          * @method
-         * @return tree as jQuery object
+         * @return tree as html element object
          * @example Sample <!-- checkbox, tree -->
          * <button onclick="tree.checkAll()" class="gj-button-md">Check All</button>
          * <button onclick="tree.uncheckAll()" class="gj-button-md">Uncheck All</button>
@@ -290,8 +290,8 @@ gj.tree.plugins.checkboxes = {
         /**
          * Check tree node.
          * @method
-         * @param {object} node - The node as jQuery object
-         * @return tree as jQuery object
+         * @param {object} node - The node as html element object
+         * @return tree as html element object
          * @example Sample <!-- checkbox, tree -->
          * <button onclick="tree.check(tree.getNodeByText('China'))" class="gj-button-md">Check China</button>
          * <br/>
@@ -313,8 +313,8 @@ gj.tree.plugins.checkboxes = {
         /**
          * Uncheck tree node.
          * @method
-         * @param {object} node - The node as jQuery object
-         * @return tree as jQuery object
+         * @param {object} node - The node as html element object
+         * @return tree as html element object
          * @example Sample <!-- checkbox, tree -->
          * <button onclick="tree.uncheck(tree.getNodeByText('China'))" class="gj-button-md">UnCheck China</button>
          * <br/>
@@ -340,7 +340,7 @@ gj.tree.plugins.checkboxes = {
          * Event fires when the checkbox state is changed.
          * @event checkboxChange
          * @param {object} e - event data
-         * @param {object} e.detail.node - the node object as jQuery element
+         * @param {object} e.detail.node - the node object as html element
          * @param {object} e.detail.record - the record data
          * @param {string} e.detail.state - the new state of the checkbox
          * @example Event.Sample <!-- checkbox, tree -->

@@ -45,7 +45,7 @@ gj.grid.plugins.pagination = {
                  *         { 'ID': 2, 'Name': 'Ronaldo Luis Nazario de Lima', 'PlaceOfBirth': 'Rio de Janeiro, Brazil' },
                  *         { 'ID': 3, 'Name': 'David Platt', 'PlaceOfBirth': 'Chadderton, Lancashire, England' }
                  *     ];
-                 *     grid = ('#grid').grid({
+                 *     grid = new GijgoGrid(document.getElementById('grid'), {
                  *         dataSource: data,
                  *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
                  *         pager: { limit: 2, sizes: [2, 5, 10, 100] }
@@ -54,7 +54,7 @@ gj.grid.plugins.pagination = {
                  * @example remote.data <!-- grid, dropdown -->
                  * <table id="grid"></table>
                  * <script>
-                 *     let grid = ('#grid').grid({
+                 *     let grid = new GijgoGrid(document.getElementById('grid'), {
                  *         dataSource: '/Players/Get',
                  *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
                  *         pager: { limit: 2, sizes: [2, 5, 10, 100] }
@@ -71,7 +71,7 @@ gj.grid.plugins.pagination = {
                  * @example Bootstrap.3 <!-- bootstrap, grid, grid.pagination, dropdown  -->
                  * <table id="grid"></table>
                  * <script>
-                 *     let grid = ('#grid').grid({
+                 *     let grid = new GijgoGrid(document.getElementById('grid'), {
                  *         dataSource: '/Players/Get',
                  *         uiLibrary: 'bootstrap',
                  *         columns: [ { field: 'ID', width: 36 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
@@ -81,7 +81,7 @@ gj.grid.plugins.pagination = {
                  * @example Bootstrap.4.FontAwesome <!-- bootstrap4, fontawesome, grid, dropdown  -->
                  * <table id="grid"></table>
                  * <script>
-                 *     let grid = ('#grid').grid({
+                 *     let grid = new GijgoGrid(document.getElementById('grid'), {
                  *         dataSource: '/Players/Get',
                  *         uiLibrary: 'bootstrap4',
                  *         iconsLibrary: 'fontawesome',
@@ -92,9 +92,19 @@ gj.grid.plugins.pagination = {
                  * @example Bootstrap.4.Material.Icons <!-- bootstrap4, grid, dropdown  -->
                  * <table id="grid"></table>
                  * <script>
-                 *     let grid = ('#grid').grid({
+                 *     let grid = new GijgoGrid(document.getElementById('grid'), {
                  *         dataSource: '/Players/Get',
                  *         uiLibrary: 'bootstrap4',
+                 *         columns: [ { field: 'ID', width: 36 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
+                 *         pager: { limit: 2, sizes: [2, 5, 10, 20] }
+                 *     });
+                 * </script>
+                 * @example Bootstrap.5.Material.Icons <!-- bootstrap5, grid, dropdown  -->
+                 * <table id="grid"></table>
+                 * <script>
+                 *     let grid = new GijgoGrid(document.getElementById('grid'), {
+                 *         dataSource: '/Players/Get',
+                 *         uiLibrary: 'bootstrap5',
                  *         columns: [ { field: 'ID', width: 36 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
                  *         pager: { limit: 2, sizes: [2, 5, 10, 20] }
                  *     });
@@ -102,7 +112,7 @@ gj.grid.plugins.pagination = {
                  * @example Material.Design <!-- grid, grid.pagination, dropdown  -->
                  * <table id="grid"></table>
                  * <script>
-                 *     let grid = ('#grid').grid({
+                 *     let grid = new GijgoGrid(document.getElementById('grid'), {
                  *         dataSource: '/Players/Get',
                  *         uiLibrary: 'materialdesign',
                  *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
@@ -112,7 +122,7 @@ gj.grid.plugins.pagination = {
                  */
                 sizes: [5, 10, 20, 100],
 
-                /** Array that contains a list with jquery objects that are going to be used on the left side of the pager.
+                /** Array that contains a list with html element objects that are going to be used on the left side of the pager.
                  * @alias pager.leftControls
                  * @type array
                  * @default array
@@ -123,7 +133,17 @@ gj.grid.plugins.pagination = {
                  * </style>
                  * <table id="grid"></table>
                  * <script>
-                 *     let grid = ('#grid').grid({
+                 * 
+                 *     function createButton(title, role, icon) {
+                 *         let button = document.createElement('div');
+                 *         button.setAttribute('title', title);
+                 *         button.setAttribute('data-gj-role', role);
+                 *         button.classList.add('custom-item');
+                 *         button.innerHTML = '<i class="fa ' + icon + '" aria-hidden="true"></i>';
+                 *         return button;
+                 *     };
+                 * 
+                 *     let grid = new GijgoGrid(document.getElementById('grid'), {
                  *         dataSource: '/Players/Get',
                  *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
                  *         style: {
@@ -135,15 +155,15 @@ gj.grid.plugins.pagination = {
                  *             limit: 2, 
                  *             sizes: [2, 5, 10, 20],
                  *             leftControls: [
-                 *                 ('<div title="First" data-gj-role="page-first" class="custom-item"><i class="fa fa-fast-backward" aria-hidden="true" /></div>'),
-                 *                 ('<div title="Previous" data-gj-role="page-previous" class="custom-item"><i class="fa fa-backward" aria-hidden="true" /></div>'),
+                 *                 createButton('First', 'page-first', 'fa-fast-backward'),
+                 *                 createButton('Previous', 'page-previous', 'fa-backward'),
                  *                 ('<div> Page </div>'),
                  *                 ('<div class="custom-item"></div>').appendChild(('<input type="text" data-gj-role="page-number" style="margin: 0 5px; width: 34px; height: 16px; text-align: right;" value="0">')),
                  *                 ('<div>of&nbsp;</div>'),
                  *                 ('<div data-gj-role="page-label-last" style="margin-right: 5px;">0</div>'),
-                 *                 ('<div title="Next" data-gj-role="page-next" class="custom-item"><i class="fa fa-forward" aria-hidden="true" /></div>'),
-                 *                 ('<div title="Last" data-gj-role="page-last" class="custom-item"><i class="fa fa-fast-forward" aria-hidden="true" /></div>'),
-                 *                 ('<div title="Reload" data-gj-role="page-refresh" class="custom-item"><i class="fa fa-refresh" aria-hidden="true" /></div>'),
+                 *                 createButton('Next', 'page-next', 'fa-forward'),
+                 *                 createButton('Last', 'page-last', 'fa-fast-forward'),
+                 *                 createButton('Reload', 'page-refresh', 'fa-refresh'),
                  *                 ('<div class="custom-item"></div>').appendChild(('<select data-gj-role="page-size" style="margin: 0 5px; width: 50px;"></select>'))
                  *             ],
                  *             rightControls: [
@@ -160,7 +180,7 @@ gj.grid.plugins.pagination = {
                  */
                 leftControls: undefined,
 
-                /** Array that contains a list with jquery objects that are going to be used on the right side of the pager.
+                /** Array that contains a list with html element objects that are going to be used on the right side of the pager.
                  * @alias pager.rightControls
                  * @type array
                  * @default array
@@ -285,51 +305,26 @@ gj.grid.plugins.pagination = {
             }
         },
 
+        createButton: function(classes, role, title, text) {
+            let result = document.createElement('button');
+            gj.core.addClasses(result, classes);
+            result.setAttribute('data-gj-role', role);
+            result.setAttribute('title', title);
+            result.innerHTML = text;
+            return result;
+        },
+
         localizationBootstrap: function (data) {
             let msg = gj.grid.messages[data.locale],
-            parser = new DOMParser(),
-            pageFirst = document.createElement('button'),
-            pagePrevious = document.createElement('button'),
-            pageNext = document.createElement('button'),
-            pageLast = document.createElement('button'),
-            pageRefresh = document.createElement('button'),
-            labelLast = document.createElement('div'),
-            labelPage = document.createElement('div'),
-            labelOf = document.createElement('div'),
-            pageNumber = document.createElement('input'),
-            pager = document.createElement('select');
+                methods = gj.grid.plugins.pagination.private,
+                parser = new DOMParser(),
+                labelLast = document.createElement('div'),
+                labelPage = document.createElement('div'),
+                labelOf = document.createElement('div'),
+                pageNumber = document.createElement('input'),
+                pager = document.createElement('select');
 
             if (typeof (data.pager.leftControls) === 'undefined') {
-                gj.core.addClasses(pageFirst, 'btn btn-default btn-sm');
-                pageFirst.setAttribute('data-gj-role', 'page-first');
-                pageFirst.setAttribute('type', 'button');
-                pageFirst.setAttribute('title', msg.FirstPageTooltip);
-                pageFirst.innerHTML = (data.icons.first || msg.First);
-                
-                gj.core.addClasses(pagePrevious, 'btn btn-default btn-sm');
-                pagePrevious.setAttribute('data-gj-role', 'page-previous');
-                pagePrevious.setAttribute('type', 'button');
-                pagePrevious.setAttribute('title', msg.PreviousPageTooltip);
-                pagePrevious.innerHTML = (data.icons.previous || msg.Previous);
-                
-                gj.core.addClasses(pageNext, 'btn btn-default btn-sm');
-                pageNext.setAttribute('data-gj-role', 'page-next');
-                pageNext.setAttribute('type', 'button');
-                pageNext.setAttribute('title', msg.NextPageTooltip);
-                pageNext.innerHTML = (data.icons.next || msg.Next);
-                
-                gj.core.addClasses(pageLast, 'btn btn-default btn-sm');
-                pageLast.setAttribute('data-gj-role', 'page-last');
-                pageLast.setAttribute('type', 'button');
-                pageLast.setAttribute('title', msg.LastPageTooltip);
-                pageLast.innerHTML = (data.icons.last || msg.Last);
-                
-                gj.core.addClasses(pageRefresh, 'btn btn-default btn-sm');
-                pageRefresh.setAttribute('data-gj-role', 'page-refresh');
-                pageRefresh.setAttribute('type', 'button');
-                pageRefresh.setAttribute('title', msg.Refresh);
-                pageRefresh.innerHTML = (data.icons.refresh || msg.Refresh);
-
                 labelLast.setAttribute('data-gj-role', 'page-label-last');
                 labelLast.innerHTML = '0';
 
@@ -346,7 +341,18 @@ gj.grid.plugins.pagination = {
                 pager.style.width = '3.75rem';
                 pager.setAttribute('data-gj-role', 'page-size');
 
-                data.pager.leftControls = [pageFirst, pagePrevious, labelPage, pageNumber, labelOf, labelLast, pageNext, pageLast, pageRefresh, pager];
+                data.pager.leftControls = [
+                    methods.createButton('btn btn-default btn-sm', 'page-first', msg.FirstPageTooltip, data.icons.first || msg.First),
+                    methods.createButton('btn btn-default btn-sm', 'page-previous', msg.PreviousPageTooltip, data.icons.previous || msg.Previous),
+                    labelPage,
+                    pageNumber,
+                    labelOf,
+                    labelLast,
+                    methods.createButton('btn btn-default btn-sm', 'page-next', msg.NextPageTooltip, data.icons.next || msg.Next),
+                    methods.createButton('btn btn-default btn-sm', 'page-last', msg.LastPageTooltip, data.icons.last || msg.Last),
+                    methods.createButton('btn btn-default btn-sm', 'page-refresh', msg.Refresh, data.icons.refresh || msg.Refresh),
+                    pager
+                ];
             }
             if (typeof (data.pager.rightControls) === 'undefined') {
                 data.pager.rightControls = [
@@ -362,12 +368,8 @@ gj.grid.plugins.pagination = {
 
         localizationBootstrap4: function (data) {
             let msg = gj.grid.messages[data.locale],
+                methods = gj.grid.plugins.pagination.private,
                 parser = new DOMParser(),
-                pageFirst = document.createElement('button'),
-                pagePrevious = document.createElement('button'),
-                pageNext = document.createElement('button'),
-                pageLast = document.createElement('button'),
-                pageRefresh = document.createElement('button'),
                 labelLast = document.createElement('div'),
                 labelPage = document.createElement('div'),
                 labelOf = document.createElement('div'),
@@ -375,31 +377,6 @@ gj.grid.plugins.pagination = {
                 input = document.createElement('input'),
                 pager = document.createElement('select');
             if (typeof (data.pager.leftControls) === 'undefined') {
-                gj.core.addClasses(pageFirst, 'btn btn-default btn-sm gj-cursor-pointer');
-                pageFirst.setAttribute('data-gj-role', 'page-first');
-                pageFirst.setAttribute('title', msg.FirstPageTooltip);
-                pageFirst.innerHTML = (data.icons.first || msg.First);
-                
-                gj.core.addClasses(pagePrevious, 'btn btn-default btn-sm gj-cursor-pointer');
-                pagePrevious.setAttribute('data-gj-role', 'page-previous');
-                pagePrevious.setAttribute('title', msg.PreviousPageTooltip);
-                pagePrevious.innerHTML = (data.icons.previous || msg.Previous);
-                
-                gj.core.addClasses(pageNext, 'btn btn-default btn-sm gj-cursor-pointer');
-                pageNext.setAttribute('data-gj-role', 'page-next');
-                pageNext.setAttribute('title', msg.NextPageTooltip);
-                pageNext.innerHTML = (data.icons.next || msg.Next);
-                
-                gj.core.addClasses(pageLast, 'btn btn-default btn-sm gj-cursor-pointer');
-                pageLast.setAttribute('data-gj-role', 'page-last');
-                pageLast.setAttribute('title', msg.LastPageTooltip);
-                pageLast.innerHTML = (data.icons.last || msg.Last);
-                
-                gj.core.addClasses(pageRefresh, 'btn btn-default btn-sm gj-cursor-pointer');
-                pageRefresh.setAttribute('data-gj-role', 'page-refresh');
-                pageRefresh.setAttribute('title', msg.Refresh);
-                pageRefresh.innerHTML = (data.icons.refresh || msg.Refresh);
-
                 labelLast.setAttribute('data-gj-role', 'page-label-last');
                 labelLast.innerHTML = '0';
 
@@ -418,7 +395,18 @@ gj.grid.plugins.pagination = {
                 pager.style.width = '3.75rem';
                 pager.setAttribute('data-gj-role', 'page-size');
 
-                data.pager.leftControls = [pageFirst, pagePrevious, labelPage, pageNumber, labelOf, labelLast, pageNext, pageLast, pageRefresh, pager];
+                data.pager.leftControls = [
+                    methods.createButton('btn btn-default btn-sm gj-cursor-pointer', 'page-first', msg.FirstPageTooltip, data.icons.first || msg.First),
+                    methods.createButton('btn btn-default btn-sm gj-cursor-pointer', 'page-previous', msg.PreviousPageTooltip, data.icons.previous || msg.Previous),
+                    labelPage,
+                    pageNumber,
+                    labelOf,
+                    labelLast,
+                    methods.createButton('btn btn-default btn-sm gj-cursor-pointer', 'page-next', msg.NextPageTooltip, data.icons.next || msg.Next),
+                    methods.createButton('btn btn-default btn-sm gj-cursor-pointer', 'page-last', msg.LastPageTooltip, data.icons.last || msg.Last),
+                    methods.createButton('btn btn-default btn-sm gj-cursor-pointer', 'page-refresh', msg.Refresh, data.icons.refresh || msg.Refresh),
+                    pager
+                ];
             }
             if (typeof (data.pager.rightControls) === 'undefined') {
                 data.pager.rightControls = [
@@ -434,12 +422,8 @@ gj.grid.plugins.pagination = {
 
         localizationBootstrap5: function (data) {
             let msg = gj.grid.messages[data.locale],
+                methods = gj.grid.plugins.pagination.private,
                 parser = new DOMParser(),
-                pageFirst = document.createElement('button'),
-                pagePrevious = document.createElement('button'),
-                pageNext = document.createElement('button'),
-                pageLast = document.createElement('button'),
-                pageRefresh = document.createElement('button'),
                 labelLast = document.createElement('div'),
                 labelPage = document.createElement('div'),
                 labelOf = document.createElement('div'),
@@ -448,30 +432,6 @@ gj.grid.plugins.pagination = {
                 pager = document.createElement('select');
 
             if (typeof (data.pager.leftControls) === 'undefined') {
-                gj.core.addClasses(pageFirst, 'btn btn-secondary btn-sm gj-cursor-pointer');
-                pageFirst.setAttribute('data-gj-role', 'page-first');
-                pageFirst.setAttribute('title', msg.FirstPageTooltip);
-                pageFirst.innerHTML = (data.icons.first || msg.First);
-                
-                gj.core.addClasses(pagePrevious, 'btn btn-secondary btn-sm gj-cursor-pointer');
-                pagePrevious.setAttribute('data-gj-role', 'page-previous');
-                pagePrevious.setAttribute('title', msg.PreviousPageTooltip);
-                pagePrevious.innerHTML = (data.icons.previous || msg.Previous);
-                
-                gj.core.addClasses(pageNext, 'btn btn-secondary btn-sm gj-cursor-pointer');
-                pageNext.setAttribute('data-gj-role', 'page-next');
-                pageNext.setAttribute('title', msg.NextPageTooltip);
-                pageNext.innerHTML = (data.icons.next || msg.Next);
-                
-                gj.core.addClasses(pageLast, 'btn btn-secondary btn-sm gj-cursor-pointer');
-                pageLast.setAttribute('data-gj-role', 'page-last');
-                pageLast.setAttribute('title', msg.LastPageTooltip);
-                pageLast.innerHTML = (data.icons.last || msg.Last);
-                
-                gj.core.addClasses(pageRefresh, 'btn btn-secondary btn-sm gj-cursor-pointer');
-                pageRefresh.setAttribute('data-gj-role', 'page-refresh');
-                pageRefresh.setAttribute('title', msg.Refresh);
-                pageRefresh.innerHTML = (data.icons.refresh || msg.Refresh);
 
                 labelLast.setAttribute('data-gj-role', 'page-label-last');
                 labelLast.innerHTML = '0';
@@ -491,7 +451,18 @@ gj.grid.plugins.pagination = {
                 pager.style.width = '3.75rem';
                 pager.setAttribute('data-gj-role', 'page-size');
 
-                data.pager.leftControls = [pageFirst, pagePrevious, labelPage, pageNumber, labelOf, labelLast, pageNext, pageLast, pageRefresh, pager];
+                data.pager.leftControls = [
+                    methods.createButton('btn btn-secondary btn-sm gj-cursor-pointer', 'page-first', msg.FirstPageTooltip, data.icons.first || msg.First),
+                    methods.createButton('btn btn-secondary btn-sm gj-cursor-pointer', 'page-previous', msg.PreviousPageTooltip, data.icons.previous || msg.Previous),
+                    labelPage,
+                    pageNumber,
+                    labelOf,
+                    labelLast,
+                    methods.createButton('btn btn-secondary btn-sm gj-cursor-pointer', 'page-next', msg.NextPageTooltip, data.icons.next || msg.Next),
+                    methods.createButton('btn btn-secondary btn-sm gj-cursor-pointer', 'page-last', msg.LastPageTooltip, data.icons.last || msg.Last),
+                    methods.createButton('btn btn-secondary btn-sm gj-cursor-pointer', 'page-refresh', msg.Refresh, data.icons.refresh || msg.Refresh),
+                    pager
+                ];
             }
             if (typeof (data.pager.rightControls) === 'undefined') {
                 data.pager.rightControls = [
@@ -507,6 +478,7 @@ gj.grid.plugins.pagination = {
 
         localizationMaterialDesign: function (data) {
             let msg = gj.grid.messages[data.locale],
+                methods = gj.grid.plugins.pagination.private,
                 parser = new DOMParser(),
                 pager = document.createElement('select');
             if (typeof (data.pager.leftControls) === 'undefined') {
@@ -526,9 +498,9 @@ gj.grid.plugins.pagination = {
                     parser.parseFromString('<span class="gj-grid-mdl-pager-label">' + msg.Of + '</span>', 'text/xml').firstChild,
                     parser.parseFromString('<span data-gj-role="record-total" class="">0</span>', 'text/xml').firstChild,
                     parser.parseFromString('<span class="gj-md-spacer-32"> </span>', 'text/xml').firstChild,
-                    parser.parseFromString('<button class="gj-button-md' + (data.icons.first ? ' gj-button-md-icon' : '') + '" title="' + msg.PreviousPageTooltip + '" data-gj-role="page-previous">' + (data.icons.previous || msg.Previous) + '</button>', 'text/xml').firstChild,
+                    methods.createButton('gj-button-md' + (data.icons.next ? ' gj-button-md-icon' : ''), 'page-previous', msg.PreviousPageTooltip, data.icons.previous || msg.Previous),
                     parser.parseFromString('<span class="gj-md-spacer-24"> </span>', 'text/xml').firstChild,
-                    parser.parseFromString('<button class="gj-button-md' + (data.icons.next ? ' gj-button-md-icon' : '') + '" title="' + msg.NextPageTooltip + '" data-gj-role="page-next">' + (data.icons.next || msg.Next) + '</button>', 'text/xml').firstChild
+                    methods.createButton('gj-button-md' + (data.icons.next ? ' gj-button-md-icon' : ''), 'page-next', msg.NextPageTooltip, data.icons.next || msg.Next)
                 ];
             }
         },
@@ -646,12 +618,12 @@ gj.grid.plugins.pagination = {
             if (disabled) {
                 gj.core.addClasses(control, style.stateDisabled);
                 control.disabled = true;
-                //control.off('click');
+                gj.core.off(control, 'click');
             } else {
                 gj.core.removeClasses(control, style.stateDisabled);
                 control.disabled = false;
-                // control.off('click');
-                control.addEventListener('click', function () {
+                gj.core.off(control, 'click');
+                gj.core.on(control, 'click', function () {
                     gj.grid.plugins.pagination.private.changePage(grid, newPage);
                 });
             }
@@ -663,11 +635,13 @@ gj.grid.plugins.pagination = {
                 control.style.display = 'none';
             } else {
                 control.style.display = 'block';
-                control.off('click').text(newPage);
+                gj.core.off(control, 'click');
+                control.innerHTML = newPage;
                 if (newPage === page) {
-                    control.addClass(style.activeButton);
+                    gj.core.addClasses(control, style.activeButton);
                 } else {
-                    control.removeClass(style.activeButton).on('click', function () {
+                    gj.core.removeClasses(control, style.activeButton);
+                    gj.core.on(control, 'click', function () {
                         gj.grid.plugins.pagination.private.changePage(grid, newPage);
                     });
                 }
@@ -740,18 +714,18 @@ gj.grid.plugins.pagination = {
          *
          * @event pageSizeChange
          * @param {object} e - event data
-         * @param {number} newSize - The new page size
+         * @param {number} e.detail.newSize - The new page size
          * @example sample <!-- bootstrap, grid, grid.pagination -->
          * <table id="grid"></table>
          * <script>
-         *     let grid = ('#grid').grid({
+         *     let grid = new GijgoGrid(document.getElementById('grid'), {
          *         dataSource: '/Players/Get',
          *         uiLibrary: 'bootstrap',
          *         columns: [ { field: 'ID', width: 36 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
          *         pager: { limit: 2, sizes: [2, 5, 10, 20] }
          *     });
-         *     grid.on('pageSizeChange', function (e, newSize) {
-         *         alert('The new page size is ' + newSize + '.');
+         *     grid.on('pageSizeChange', function (e) {
+         *         alert('The new page size is ' + e.detail.newSize + '.');
          *     });
          * </script>
          */
@@ -764,29 +738,29 @@ gj.grid.plugins.pagination = {
          *
          * @event pageChanging
          * @param {object} e - event data
-         * @param {number} newPage - The new page
-         * @example sample <!-- bootstrap4, fontawesome, dropdown, grid, grid.pagination -->
+         * @param {number} e.detail.newPage - The new page
+         * @example sample <!-- bootstrap5, fontawesome, dropdown, grid, grid.pagination -->
          * <table id="grid"></table>
          * <script>
-         *     let grid = ('#grid').grid({
+         *     let grid = new GijgoGrid(document.getElementById('grid'), {
          *         dataSource: '/Players/Get',
-         *         uiLibrary: 'bootstrap4',
+         *         uiLibrary: 'bootstrap5',
          *         iconsLibrary: 'fontawesome',
          *         columns: [ { field: 'ID', width: 56 }, { field: 'Name', sortable: true }, { field: 'PlaceOfBirth' } ],
          *         pager: { limit: 2, sizes: [2, 5, 10, 20] }
          *     });
-         *     grid.on('pageChanging', function (e, newPage) {
-         *         if (isNaN(newPage)) {
+         *     grid.on('pageChanging', function (e) {
+         *         if (isNaN(e.detail.newPage)) {
          *             alert('Invalid page number');
          *             return false;
          *         } else {
-         *             alert(newPage + ' is valid page number.');
+         *             alert(e.detail.newPage + ' is valid page number.');
          *         }
          *     });
          * </script>
          */
-        pageChanging: function (el, newSize) {
-            return el.dispatchEvent(new CustomEvent('pageChanging', { detail: { newSize: newSize } }));
+        pageChanging: function (el, newPage) {
+            return el.dispatchEvent(new CustomEvent('pageChanging', { detail: { newPage: newPage } }));
         }
     },
 

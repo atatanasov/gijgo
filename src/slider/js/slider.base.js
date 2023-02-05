@@ -300,7 +300,7 @@ gj.slider.methods = {
             wrapper.removeChild(wrapper.querySelector('[role="handle"]'));
             wrapper.removeChild(wrapper.querySelector('[role="progress"]'));
             el.unwrap();
-            //TODO: $(el).off();
+            slider.off();
             slider.removeConfig();
             el.removeAttribute('data-type');
             el.removeAttribute('data-gj-guid')

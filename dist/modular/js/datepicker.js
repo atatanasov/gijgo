@@ -193,7 +193,7 @@ gj.datepicker.methods = {
                 rightIcon = gj.core.createElement(data.icons.rightIcon);
             }
             rightIcon.setAttribute('data-gj-role', 'right-icon');
-            rightIcon.addEventListener('click', function (e) {
+            gj.core.on(rightIcon, 'click', function (e) {
                 var calendar = document.body.querySelector('[data-gj-role="picker"][data-gj-guid="' + picker.element.getAttribute('data-gj-guid') + '"]');
                 if (window.getComputedStyle(calendar).display === 'none') {
                     gj.datepicker.methods.open(picker, data);
@@ -205,7 +205,7 @@ gj.datepicker.methods = {
         }
 
         if (data.showOnFocus) {
-            picker.element.addEventListener('focus', function () {
+            gj.core.on(picker.element, 'focus', function () {
                 gj.datepicker.methods.open(picker, data);
             });
         }
@@ -213,24 +213,24 @@ gj.datepicker.methods = {
         calendar = gj.datepicker.methods.createCalendar(picker, data);
 
         if (data.footer !== true) {
-            picker.element.addEventListener('blur', function () {
+            gj.core.on(picker.element, 'blur', function () {
                 picker.timeout = setTimeout(function () {
                     gj.datepicker.methods.close(picker);
                 }, 500);
             });
-            calendar.addEventListener('mousedown', function () {
+            gj.core.on(calendar, 'mousedown', function () {
                 clearTimeout(picker.timeout);
                 document.activeElement !== picker.element && picker.element.focus();
                 return false;
             });
-            calendar.addEventListener('click', function () {
+            gj.core.on(calendar, 'click', function () {
                 clearTimeout(picker.timeout);
                 //document.activeElement !== picker.element && picker.element.focus(); //breaks datetimepicker
             });
         }
 
         if (data.keyboardNavigation) {
-            document.addEventListener('keydown', gj.datepicker.methods.createKeyDownHandler(picker, calendar, data));
+            gj.core.on(document, 'keydown', gj.datepicker.methods.createKeyDownHandler(picker, calendar, data));
         }
     },
 
@@ -1050,6 +1050,7 @@ gj.datepicker.methods = {
         var data = picker.getConfig(), calendar;
         if (data) {
             picker.removeConfig();
+            picker.off();
 
             calendar = document.body.querySelector('[data-gj-role="picker"][data-gj-guid="' + picker.element.getAttribute('data-gj-guid') + '"]');
             if (calendar.parentElement.getAttribute('data-gj-role') === 'modal') {

@@ -66,156 +66,150 @@ gj.grid.plugins.columnReorder = {
     private: {
         init: function (grid) {
             let i, cells = grid.element.querySelectorAll('thead tr th');
+            gj.core.on(document, 'mousemove', gj.grid.plugins.columnReorder.private.createMouseMoveHandler(grid));
+            gj.core.on(document, 'mouseup', gj.grid.plugins.columnReorder.private.createMouseUpHandler(grid));
             for (i = 0; i < cells.length; i++) {
-                cells[i].addEventListener('mousedown', gj.grid.plugins.columnReorder.private.createMouseDownHandler(grid, cells[i]));
-                cells[i].addEventListener('mousemove', gj.grid.plugins.columnReorder.private.createMouseMoveHandler(grid, cells[i]));
-                cells[i].addEventListener('mouseup', gj.grid.plugins.columnReorder.private.createMouseUpHandler(grid, cells[i]));
+                gj.core.on(cells[i], 'mousedown', gj.grid.plugins.columnReorder.private.createMouseDownHandler(grid, cells[i]));
+                new GijgoDroppable(cells[i]);
             }
         },
 
-        createMouseDownHandler: function (grid) {
+        createMouseDownHandler: function (grid, thSource) {
             return function (e) {
-                grid.timeout = setTimeout(function () {
-                    grid.element.setAttribute('data-gj-drag-ready', true);
-                }, 100);
+                let dragEl, srcIndex, elements;
+
+                dragEl = grid.element.cloneNode(true);
+                grid.element.classList.add('gj-unselectable');
+                dragEl.classList.add('gj-unselectable');
+                document.body.appendChild(dragEl);
+                dragEl.setAttribute('data-gj-role', 'draggable-clone')
+                dragEl.style.cursor = 'move';
+                srcIndex = Array.from(thSource.parentNode.children).indexOf(thSource);
+                
+                elements = dragEl.querySelectorAll('thead tr th');
+                for (let i = 0; i < elements.length; i++) {
+                    if (i !== srcIndex) {
+                        elements[i].remove();
+                    }
+                }
+                elements = dragEl.querySelectorAll('tbody tr:not([data-gj-role="row"])');
+                for (let i = 0; i < elements.length; i++) {
+                    elements[i].remove();
+                }
+                
+                elements = dragEl.querySelectorAll('tbody tr');
+                for (let i = 0; i < elements.length; i++) {
+                    for (let index = srcIndex, j = 0; j < elements[i].children.length; j++) {
+                        if (j !== index) {
+                            elements[i].removeChild(elements[i].children[j]);
+                            j--;
+                            index--;
+                        }
+                    }
+                }
+
+                elements = dragEl.querySelector('tfoot');
+                elements && elements.remove();
+
+                dragEl.style.position = 'absolute';
+                dragEl.style.top = thSource.getBoundingClientRect().top + 'px';
+                dragEl.style.left = thSource.getBoundingClientRect().left + 'px';
+                dragEl.style.width = gj.core.width(thSource) + 'px';
+                dragEl.style.zIndex = 1;
+
+                new GijgoDraggable(dragEl, {
+                    stop: gj.grid.plugins.columnReorder.private.createDragStopHandler(grid, thSource, srcIndex)
+                });
+                dragEl.dispatchEvent(new Event('mousedown'));
+
+                grid.element.setAttribute('data-gj-drag-column', 'true');
             }
         },
 
         createMouseUpHandler: function (grid) {
             return function (e) {
-                clearTimeout(grid.timeout);
-                grid.element.setAttribute('data-gj-drag-ready', false);
+                if (grid.element.getAttribute('data-gj-drag-column') === 'true') {
+                    grid.element.setAttribute('data-gj-drag-column', 'false');
+                }
             }
         },
 
-        createMouseMoveHandler: function (grid, thSource) {
+        createMouseMoveHandler: function (grid) {
+            let header = grid.element.querySelector('thead tr'),
+                body = grid.element.querySelector('tbody'),
+                headerPos = gj.core.position(header);
             return function (e) {
-                if (grid.element.getAttribute('data-gj-drag-ready') === 'true') {
-                    let dragEl, srcIndex, elements, srcEl;
-
-                    grid.element.setAttribute('data-gj-drag-ready', false);
-                    dragEl = grid.element.cloneNode(true);
-                    grid.element.classList.add('gj-unselectable');
-                    dragEl.classList.add('gj-unselectable');
-                    document.body.appendChild(dragEl);
-                    dragEl.setAttribute('data-gj-role', 'draggable-clone')
-                    dragEl.style.cursor = 'move';
-                    srcIndex = Array.from(thSource.parentNode.children).indexOf(thSource);
-                    
-                    elements = dragEl.querySelectorAll('thead tr th');
-                    for (let i = 0; i < elements.length; i++) {
-                        if (i !== srcIndex) {
-                            elements[i].remove();
-                        }
-                    }
-                    elements = dragEl.querySelectorAll('tbody tr:not([data-gj-role="row"])');
-                    for (let i = 0; i < elements.length; i++) {
-                        elements[i].remove();
-                    }
-                    
-                    elements = dragEl.querySelectorAll('tbody tr');
-                    for (let i = 0; i < elements.length; i++) {
-                        srcEl = elements[i].children[srcIndex];
-                        for (const element of elements[i].children) {
-                            if (srcEl !== element) {
-                                elements[i].removeChild(element)
+                if (grid.element.getAttribute('data-gj-drag-column') === 'true') {
+                    let mouse = { x: grid.mouseX(e), y: grid.mouseY(e) };
+                    if (mouse.x > headerPos.left && mouse.x < headerPos.right && mouse.y > headerPos.top && mouse.y < headerPos.bottom) {
+                        for (let i = 0; i < header.children.length; i++) {
+                            let middle, thPos = gj.core.position(header.children[i]);
+                            if (mouse.x > thPos.left && mouse.x < thPos.right && mouse.y > thPos.top && mouse.y < thPos.bottom) {                            
+                                middle = (thPos.left + thPos.right) / 2;
+                                gj.grid.plugins.columnReorder.private.addBorder(mouse.x < middle ? 'left' : 'right', header, body, i);
+                                break;
                             }
-                        }
+                        }                        
                     }
-                    elements = dragEl.querySelector('tfoot');
-                    elements && elements.remove();
-
-                    new GijgoDraggable(dragEl, {
-                        stop: gj.grid.plugins.columnReorder.private.createDragStopHandler(grid, thSource)
-                    });
-                    dragEl.style.position = 'absolute';
-                    dragEl.style.top = thSource.getBoundingClientRect().top + 'px';
-                    dragEl.style.left = thSource.getBoundingClientRect().left + 'px';
-                    dragEl.style.width = gj.core.width(thSource) + 'px';
-                    dragEl.style.zIndex = 1;
-                    
-                    if (thSource.getAttribute('data-droppable') === 'true') {
-                        thSource.droppable('destroy');
-                    }
-
-                    for (const dropEl of thSource.parentNode.children) {
-                        if (thSource !== dropEl) {
-                            if (dropEl.getAttribute('data-gj-droppable') === 'true') {
-                                new GijgoDroppable(dropEl).destroy();
-                            }
-                            new GijgoDroppable(dropEl, {
-                                over: gj.grid.plugins.columnReorder.private.createDroppableOverHandler(grid, thSource),
-                                out: gj.grid.plugins.columnReorder.private.droppableOut
-                            });
-                        }
-                    }
-                    dragEl.dispatchEvent(new Event('mousedown'));
                 }
             };
         },
 
-        createDragStopHandler: function (grid, thSource) {
+        addBorder: function (type, header, body, column) {
+            header.children[column].classList.remove(type === 'left' ? 'gj-grid-right-border' : 'gj-grid-left-border');
+            header.children[column].classList.add(type === 'left' ? 'gj-grid-left-border' : 'gj-grid-right-border');
+            gj.core.removeClasses(header.children[column - 1], 'gj-grid-left-border gj-grid-right-border');
+            gj.core.removeClasses(header.children[column + 1], 'gj-grid-left-border gj-grid-right-border');
+            for (let i = 0; i < body.children.length; i++) {
+                body.children[i].children[column].classList.remove(type === 'left' ? 'gj-grid-right-border' : 'gj-grid-left-border');
+                body.children[i].children[column].classList.add(type === 'left' ? 'gj-grid-left-border' : 'gj-grid-right-border');
+                gj.core.removeClasses(body.children[i].children[column - 1], 'gj-grid-left-border gj-grid-right-border');
+                gj.core.removeClasses(body.children[i].children[column + 1], 'gj-grid-left-border gj-grid-right-border');
+            }
+        },
+
+        createDragStopHandler: function (grid, thSource, srcIndex) {            
+            let header = grid.element.querySelector('thead tr'),
+                headerPos = gj.core.position(header),
+                config = grid.getConfig();
+
             return function (e) {
-                let elements = thSource.parentNode.children;
                 document.body.querySelector('table[data-gj-role="draggable-clone"]').remove();
                 grid.element.classList.remove('gj-unselectable');
-                for (const thTarget of elements) {
-                    let data = grid.getConfig(),
-                        targetPosition = gj.grid.methods.getColumnPosition(data.columns, thTarget.getAttribute('data-gj-field')),
-                        sourcePosition = gj.grid.methods.getColumnPosition(data.columns, thSource.getAttribute('data-gj-field'))
-                        droppable = new GijgoDroppable(thTarget);
-
-                    gj.core.removeClasses(thTarget, 'gj-grid-left-border gj-grid-right-border');
-                    if (thTarget.nextElementSibling) {
-                        gj.core.removeClasses(thTarget.nextElementSibling, 'gj-grid-left-border gj-grid-right-border');
-                    }
-                    
-                    if (droppable.isOver(e.detail)) {
-                        if (targetPosition < sourcePosition) {
-                            thTarget.parentNode.insertBefore(thSource, thTarget);
-                        } else {
-                            thTarget.parentNode.insertBefore(thSource, thTarget.nextSibling);
+                grid.element.querySelectorAll('.gj-grid-left-border').forEach((element) => {  element.classList.remove('gj-grid-left-border'); });
+                grid.element.querySelectorAll('.gj-grid-right-border').forEach((element) => {  element.classList.remove('gj-grid-right-border'); });
+                if (e.detail.x > headerPos.left && e.detail.x < headerPos.right && e.detail.y > headerPos.top && e.detail.y < headerPos.bottom) {
+                    for (let i = 0; i < header.children.length; i++) {
+                        let thPos = gj.core.position(header.children[i]);
+                        if (e.detail.x > thPos.left && e.detail.x < thPos.right && e.detail.y > thPos.top && e.detail.y < thPos.bottom) {  
+                            let thIndex = Array.from(header.children).indexOf(header.children[i]);
+                            if (srcIndex != thIndex) {
+                                let middle = (thPos.left + thPos.right) / 2;
+                                if (e.detail.x < middle) {
+                                    header.insertBefore(thSource, header.children[i]);
+                                    gj.grid.plugins.columnReorder.private.moveRowCells(grid, srcIndex, thIndex);
+                                } else {
+                                    header.insertBefore(thSource, header.children[i].nextSibling);
+                                    gj.grid.plugins.columnReorder.private.moveRowCells(grid, srcIndex, thIndex + (thIndex < srcIndex ? 1 : 0));
+                                }
+                                config.columns.splice(thIndex + (thIndex < srcIndex ? 1 : 0), 0, config.columns.splice(srcIndex, 1)[0]);                            
+                            }
+                            break;
                         }
-                        gj.grid.plugins.columnReorder.private.moveRowCells(grid, sourcePosition, targetPosition);
-                        data.columns.splice(targetPosition, 0, data.columns.splice(sourcePosition, 1)[0]);
-                    }
-                    droppable.destroy();
-                };
+                    }                        
+                }
             }
         },
 
         moveRowCells: function (grid, sourcePosition, targetPosition) {
-            let i, row, rows = grid.find('tbody tr[data-gj-role="row"]');
+            let i, rows = grid.element.querySelectorAll('tbody tr[data-gj-role="row"]');
             for (i = 0; i < rows.length; i++) {
-                row = (rows[i]);
                 if (targetPosition < sourcePosition) {
-                    row.find('td:eq(' + targetPosition + ')').before(row.find('td:eq(' + sourcePosition + ')'));
+                    rows[i].insertBefore(rows[i].children[sourcePosition], rows[i].children[targetPosition]);
                 } else {
-                    row.find('td:eq(' + targetPosition + ')').after(row.find('td:eq(' + sourcePosition + ')'));
+                    rows[i].insertBefore(rows[i].children[sourcePosition], rows[i].children[targetPosition].nextSibling);
                 }                
             }
-        },
-
-        createDroppableOverHandler: function (grid, thSource) {
-            return function (e) {
-                let thTarget = (this),
-                    data = grid.getConfig(),
-                    targetPosition = gj.grid.methods.getColumnPosition(data.columns, thTarget.data('field')),
-                    sourcePosition = gj.grid.methods.getColumnPosition(data.columns, thSource.data('field'));
-                if (targetPosition < sourcePosition) {
-                    thTarget.addClass('gj-grid-left-border');
-                    grid.find('tbody tr[data-gj-role="row"] td:nth-child(' + (thTarget.index() + 1) + ')').addClass('gj-grid-left-border');
-                } else {
-                    thTarget.addClass('gj-grid-right-border');
-                    grid.find('tbody tr[data-gj-role="row"] td:nth-child(' + (thTarget.index() + 1) + ')').addClass('gj-grid-right-border');
-                }
-            };
-        },
-
-        droppableOut: function () {
-            let thTarget = (this);
-            thTarget.removeClass('gj-grid-left-border').removeClass('gj-grid-right-border');
-            thTarget.closest('table').find('tbody tr[data-gj-role="row"] td:nth-child(' + (thTarget.index() + 1) + ')').removeClass('gj-grid-left-border').removeClass('gj-grid-right-border');
         }
     },
 

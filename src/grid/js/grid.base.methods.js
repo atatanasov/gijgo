@@ -365,7 +365,7 @@ gj.grid.methods = {
             mode = 'update';
             row.classList.remove(data.style.content.rowSelected)
             row.removeAttribute('data-gj-selected')
-            //TODO: row.off('click');
+            gj.core.off(row, 'click');
         }
         id = gj.grid.methods.getId(record, data.primaryKey, (position + 1));
         row.setAttribute('data-gj-position', position + 1);
@@ -408,13 +408,13 @@ gj.grid.methods = {
 
         //remove all event handlers
         if ('update' === mode) {
-            //TODO: $cell.off();
-            //TODO: $displayEl.off();
+            gj.core.off(cell);
+            gj.core.off(displayEl);
         }
         if (column.events) {
             for (key in column.events) {
                 if (column.events.hasOwnProperty(key)) {
-                    cell.addEventListener(key, gj.grid.methods.createCellEventHandler(column, column.events[key], { id: id, field: column.field, record: record }));
+                    gj.core.on(cell, key, gj.grid.methods.createCellEventHandler(column, column.events[key], { id: id, field: column.field, record: record }));
                 }
             }
         }
@@ -832,11 +832,13 @@ gj.grid.methods = {
             gj.grid.events.destroying(grid.element);
             gj.grid.methods.stopLoading(grid);
             grid.xhr && grid.xhr.abort();
-            //TODO: grid.off();
+            grid.off();
             if (!keepWrapperTag && grid.element.parentNode.getAttribute('data-gj-role') === 'wrapper') {
                 grid.unwrap();
             }
             grid.removeConfig();
+            grid.removeRecords();
+            grid.removeTotalRecords();
             if (keepTableTag === false) {
                 grid.element.remove();
             } else {

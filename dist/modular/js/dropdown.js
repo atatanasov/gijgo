@@ -395,8 +395,9 @@ gj.dropdown.methods = {
             parent = dropdown.element.parentNode;
         if (data) {
             dropdown.xhr && dropdown.xhr.abort();
-            //TODO: remove all event listeners - $dropdown.off();
+            dropdown.off();
             dropdown.removeConfig();
+            dropdown.removeRecords();
             el.removeAttribute('data-gj-type')
             el.removeAttribute('data-gj-guid')
             el.removeAttribute('data-gj-dropdown');

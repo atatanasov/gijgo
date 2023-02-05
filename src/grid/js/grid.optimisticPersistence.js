@@ -79,7 +79,7 @@ gj.grid.plugins.optimisticPersistence = {
                     param = data.optimisticPersistence.sessionStorage[i];
                     storage.optimisticPersistence[param] = data.params[param];
                 }
-                storage = grid.extend(JSON.parse(sessionStorage.getItem('gj.grid.' + data.guid)), storage);
+                storage = grid.extend(JSON.parse(sessionStorage.getItem('gj.grid.' + data.guid)) || {}, storage);
                 sessionStorage.setItem('gj.grid.' + data.guid, JSON.stringify(storage));
             }
 
@@ -89,13 +89,13 @@ gj.grid.plugins.optimisticPersistence = {
                     param = data.optimisticPersistence.localStorage[i];
                     storage.optimisticPersistence[param] = data.params[param];
                 }
-                storage = grid.extend(JSON.parse(localStorage.getItem('gj.grid.' + data.guid)), storage);
+                storage = grid.extend(JSON.parse(localStorage.getItem('gj.grid.' + data.guid)) || {}, storage);
                 localStorage.setItem('gj.grid.' + data.guid, JSON.stringify(storage));
             }
         }
     },
 
-    configure: function (grid, fullConfig, clientConfig) {
+    configure: function (grid, fullConfig) {
         if (fullConfig.guid) {
             if (fullConfig.optimisticPersistence.localStorage || fullConfig.optimisticPersistence.sessionStorage) {
                 gj.grid.plugins.optimisticPersistence.private.applyParams(grid);

@@ -20,13 +20,6 @@ gj.datepicker.config = {
          *        showOtherMonths: true
          *    });
          * </script>
-         * @example jQuery.True <!-- jquery, datepicker -->
-         * <input id="datepicker" width="312" />
-         * <script>
-         *    $('#datepicker').datepicker({
-         *        showOtherMonths: true
-         *    });
-         * </script>
          * @example False <!-- datepicker -->
          * <input id="datepicker" width="312" />
          * <script>
@@ -45,14 +38,6 @@ gj.datepicker.config = {
          * <input id="datepicker" width="312" />
          * <script>
          *    new GijgoDatePicker(document.getElementById('datepicker'), {
-         *        showOtherMonths: true,
-         *        selectOtherMonths: true
-         *    });
-         * </script>
-         * @example jQuery.True <!-- jquery, datepicker -->
-         * <input id="datepicker" width="312" />
-         * <script>
-         *    $('#datepicker').datepicker({
          *        showOtherMonths: true,
          *        selectOtherMonths: true
          *    });
@@ -96,10 +81,10 @@ gj.datepicker.config = {
          *        minDate: today
          *    });
          * </script>
-         * @example jQuery.Yesterday <!-- jquery, datepicker -->
+         * @example Yesterday <!-- datepicker -->
          * <input id="datepicker" width="312" />
          * <script>
-         *     $('#datepicker').datepicker({
+         *     new GijgoDatePicker(document.getElementById('datepicker'), {
          *        minDate: function() {
          *            var date = new Date();
          *            date.setDate(date.getDate()-1);
@@ -149,10 +134,10 @@ gj.datepicker.config = {
          *        maxDate: today
          *    });
          * </script>
-         * @example jQuery.Tomorrow <!-- jquery, datepicker -->
+         * @example Tomorrow <!-- datepicker -->
          * <input id="datepicker" width="312" />
          * <script>
-         *     $('#datepicker').datepicker({ 
+         *     new GijgoDatePicker(document.getElementById('datepicker'), { 
          *        maxDate: function() {
          *            var date = new Date();
          *            date.setDate(date.getDate()+1);
@@ -707,10 +692,10 @@ gj.datepicker.config = {
          * <script>
          *    new GijgoDatePicker(document.getElementById('datepicker'), { header: true, modal: true, footer: true });
          * </script>
-         * @example False <!-- jquery, datepicker -->
+         * @example False <!-- datepicker -->
          * <input id="datepicker" width="312" />
          * <script>
-         *    $('#datepicker').datepicker({ header: false });
+         *    new GijgoDatePicker(document.getElementById('datepicker'), { header: false });
          * </script>
          */
         header: false,
@@ -723,10 +708,10 @@ gj.datepicker.config = {
          * <script>
          *    new GijgoDatePicker(document.getElementById('datepicker'), { footer: true, modal: true, header: true });
          * </script>
-         * @example False <!-- jquery, datepicker -->
+         * @example False <!-- datepicker -->
          * <input id="datepicker" width="312" />
          * <script>
-         *    $('#datepicker').datepicker({ footer: false });
+         *    new GijgoDatePicker(document.getElementById('datepicker'), { footer: false });
          * </script>
          */
         footer: false,
@@ -891,7 +876,7 @@ gj.datepicker.methods = {
                 rightIcon = gj.core.createElement(data.icons.rightIcon);
             }
             rightIcon.setAttribute('data-gj-role', 'right-icon');
-            rightIcon.addEventListener('click', function (e) {
+            gj.core.on(rightIcon, 'click', function (e) {
                 var calendar = document.body.querySelector('[data-gj-role="picker"][data-gj-guid="' + picker.element.getAttribute('data-gj-guid') + '"]');
                 if (window.getComputedStyle(calendar).display === 'none') {
                     gj.datepicker.methods.open(picker, data);
@@ -903,7 +888,7 @@ gj.datepicker.methods = {
         }
 
         if (data.showOnFocus) {
-            picker.element.addEventListener('focus', function () {
+            gj.core.on(picker.element, 'focus', function () {
                 gj.datepicker.methods.open(picker, data);
             });
         }
@@ -911,24 +896,24 @@ gj.datepicker.methods = {
         calendar = gj.datepicker.methods.createCalendar(picker, data);
 
         if (data.footer !== true) {
-            picker.element.addEventListener('blur', function () {
+            gj.core.on(picker.element, 'blur', function () {
                 picker.timeout = setTimeout(function () {
                     gj.datepicker.methods.close(picker);
                 }, 500);
             });
-            calendar.addEventListener('mousedown', function () {
+            gj.core.on(calendar, 'mousedown', function () {
                 clearTimeout(picker.timeout);
                 document.activeElement !== picker.element && picker.element.focus();
                 return false;
             });
-            calendar.addEventListener('click', function () {
+            gj.core.on(calendar, 'click', function () {
                 clearTimeout(picker.timeout);
                 //document.activeElement !== picker.element && picker.element.focus(); //breaks datetimepicker
             });
         }
 
         if (data.keyboardNavigation) {
-            document.addEventListener('keydown', gj.datepicker.methods.createKeyDownHandler(picker, calendar, data));
+            gj.core.on(document, 'keydown', gj.datepicker.methods.createKeyDownHandler(picker, calendar, data));
         }
     },
 
@@ -1748,6 +1733,7 @@ gj.datepicker.methods = {
         var data = picker.getConfig(), calendar;
         if (data) {
             picker.removeConfig();
+            picker.off();
 
             calendar = document.body.querySelector('[data-gj-role="picker"][data-gj-guid="' + picker.element.getAttribute('data-gj-guid') + '"]');
             if (calendar.parentElement.getAttribute('data-gj-role') === 'modal') {

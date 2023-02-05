@@ -160,7 +160,7 @@ gj.grid.plugins.toolbar = {
          * </script>
          */
         title: function (text) {
-            var titleEl = this.parentNode.querySelector('div[data-gj-role="toolbar"] [data-gj-role="title"]');
+            var titleEl = this.element.parentNode.querySelector('div[data-gj-role="toolbar"] [data-gj-role="title"]');
             if (typeof (text) !== 'undefined') {
                 titleEl.innerHTML = text;
                 return this;

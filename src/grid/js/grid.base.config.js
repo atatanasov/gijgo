@@ -16,7 +16,7 @@ gj.grid.config = {
          * If set to array, then the grid is going to use the array as data for rows.
          * @type (string|object|array)
          * @default undefined
-         * @example Remote.JS.Configuration <!-- jquery, grid -->
+         * @example Remote.JS.Configuration <!-- grid -->
          * <table id="grid"></table>
          * <script>
          *     new GijgoGrid(document.getElementById('grid'), {
@@ -24,7 +24,7 @@ gj.grid.config = {
          *         columns: [ { field: 'Name' }, { field: 'PlaceOfBirth' } ]
          *     });
          * </script>
-         * @example Remote.Html.Configuration <!-- jquery, grid -->
+         * @example Remote.Html.Configuration <!-- grid -->
          * <table id="grid" data-gj-source="/Players/Get">
          *     <thead>
          *         <tr>
@@ -80,7 +80,7 @@ gj.grid.config = {
          * <script>
          *     new GijgoGrid(document.getElementById('grid'), { pager: { limit: 2, sizes: [2, 5, 10, 20] }});
          * </script>
-         * @example Remote.Custom.Render <!-- jquery, grid -->
+         * @example Remote.Custom.Render <!-- grid -->
          * <table id="grid"></table>
          * <script>
          *     var grid, onSuccessFunc = function (response) {
@@ -92,7 +92,7 @@ gj.grid.config = {
          *         columns: [ { field: 'Name' }, { field: 'PlaceOfBirth' } ]
          *     });
          * </script>
-         * @example Remote.Custom.Error <!-- jquery, grid -->
+         * @example Remote.Custom.Error <!-- grid -->
          * <table id="grid"></table>
          * <script>
          *     var grid, onErrorFunc = function (response) {
@@ -108,7 +108,7 @@ gj.grid.config = {
 
         /** An array that holds the configurations of each column from the grid.
          * @type array
-         * @example JS.Configuration <!-- jquery, grid -->
+         * @example JS.Configuration <!-- grid -->
          * <table id="grid"></table>
          * <script>
          *     new GijgoGrid(document.getElementById('grid'), {
@@ -121,7 +121,7 @@ gj.grid.config = {
 
         /** Auto generate column for each field in the datasource when set to true.
          * @type array
-         * @example sample <!-- jquery, grid -->
+         * @example sample <!-- grid -->
          * <table id="grid"></table>
          * <script>
          *     new GijgoGrid(document.getElementById('grid'), {
@@ -134,7 +134,7 @@ gj.grid.config = {
 
         /** An object that holds the default configuration settings of each column from the grid.
          * @type object
-         * @example sample <!-- jquery, grid -->
+         * @example sample <!-- grid -->
          * <table id="grid"></table>
          * <script>
          *     new GijgoGrid(document.getElementById('grid'), {
@@ -150,7 +150,7 @@ gj.grid.config = {
              * @alias column.hidden
              * @type boolean
              * @default false
-             * @example sample <!-- jquery, grid -->
+             * @example sample <!-- grid -->
              * <table id="grid"></table>
              * <script>
              *     new GijgoGrid(document.getElementById('grid'), {
@@ -170,7 +170,7 @@ gj.grid.config = {
              * @alias column.width
              * @type number|string
              * @default undefined
-             * @example sample <!-- jquery, grid -->
+             * @example sample <!-- grid -->
              * <table id="grid"></table>
              * <script>
              *     new GijgoGrid(document.getElementById('grid'), {
@@ -190,7 +190,7 @@ gj.grid.config = {
              * @alias column.sortable
              * @type boolean|object
              * @default false
-             * @example Remote <!-- jquery, grid -->
+             * @example Remote <!-- grid -->
              * <table id="grid"></table>
              * <script>
              *     new GijgoGrid(document.getElementById('grid'), {
@@ -202,7 +202,7 @@ gj.grid.config = {
              *         ]
              *     });
              * </script>
-             * @example Local.Custom <!-- jquery, grid -->
+             * @example Local.Custom <!-- grid -->
              * <table id="grid"></table>
              * <script>
              *     var data = [
@@ -227,7 +227,7 @@ gj.grid.config = {
              *         ]
              *     });
              * </script>
-             * @example Remote.Bootstrap.3 <!-- jquery, bootstrap, grid -->
+             * @example Remote.Bootstrap.3 <!-- bootstrap, grid -->
              * <table id="grid"></table>
              * <script>
              *     new GijgoGrid(document.getElementById('grid'), {
@@ -240,7 +240,7 @@ gj.grid.config = {
              *         ]
              *     });
              * </script>
-             * @example Remote.Bootstrap.4.Material.Icons <!-- jquery, bootstrap4, grid -->
+             * @example Remote.Bootstrap.4.Material.Icons <!-- bootstrap4, grid -->
              * <table id="grid"></table>
              * <script>
              *     new GijgoGrid(document.getElementById('grid'), {
@@ -253,7 +253,7 @@ gj.grid.config = {
              *         ]
              *     });
              * </script>
-             * @example Remote.Bootstrap.4.FontAwesome <!-- jquery, bootstrap4, fontawesome, grid -->
+             * @example Remote.Bootstrap.4.FontAwesome <!-- bootstrap4, fontawesome, grid -->
              * <table id="grid"></table>
              * <script>
              *     new GijgoGrid(document.getElementById('grid'), {
@@ -267,7 +267,7 @@ gj.grid.config = {
              *         ]
              *     });
              * </script>
-             * @example Remote.Bootstrap.5.FontAwesome <!-- jquery, bootstrap5, fontawesome, grid -->
+             * @example Remote.Bootstrap.5.FontAwesome <!-- bootstrap5, fontawesome, grid -->
              * <table id="grid"></table>
              * <script>
              *     new GijgoGrid(document.getElementById('grid'), {
@@ -288,7 +288,7 @@ gj.grid.config = {
              * @alias column.type
              * @type text|checkbox|icon|date|time|datetime
              * @default 'text'
-             * @example Bootstrap.3.Icon <!-- jquery, grid, bootstrap -->
+             * @example Bootstrap.3.Icon <!-- grid, bootstrap -->
              * <table id="grid"></table>
              * <script>
              *     new GijgoGrid(document.getElementById('grid'), {
@@ -309,7 +309,7 @@ gj.grid.config = {
              *         ]
              *     });
              * </script>
-             * @example Bootstrap.4.Icon <!-- jquery, grid, bootstrap4, fontawesome -->
+             * @example Bootstrap.4.Icon <!-- grid, bootstrap4, fontawesome -->
              * <table id="grid"></table>
              * <script>
              *     new GijgoGrid(document.getElementById('grid'), {
@@ -330,7 +330,7 @@ gj.grid.config = {
              *         ]
              *     });
              * </script>
-             * @example Bootstrap.3.Checkbox <!-- jquery, grid, checkbox, bootstrap -->
+             * @example Bootstrap.3.Checkbox <!-- grid, checkbox, bootstrap -->
              * <table id="grid"></table>
              * <script>
              *     new GijgoGrid(document.getElementById('grid'), {
@@ -344,7 +344,7 @@ gj.grid.config = {
              *         ]
              *     });
              * </script>
-             * @example Bootstrap.4.Checkbox <!-- jquery, grid, checkbox, bootstrap4 -->
+             * @example Bootstrap.4.Checkbox <!-- grid, checkbox, bootstrap4 -->
              * <table id="grid"></table>
              * <script>
              *     new GijgoGrid(document.getElementById('grid'), {
@@ -358,7 +358,7 @@ gj.grid.config = {
              *         ]
              *     });
              * </script>
-             * @example Bootstrap.5.Checkbox <!-- jquery, grid, checkbox, bootstrap5 -->
+             * @example Bootstrap.5.Checkbox <!-- grid, checkbox, bootstrap5 -->
              * <table id="grid"></table>
              * <script>
              *     new GijgoGrid(document.getElementById('grid'), {
@@ -379,7 +379,7 @@ gj.grid.config = {
              * @alias column.title
              * @type string
              * @default undefined
-             * @example sample <!-- jquery, grid -->
+             * @example sample <!-- grid -->
              * <table id="grid"></table>
              * <script>
              *     new GijgoGrid(document.getElementById('grid'), {
@@ -399,7 +399,7 @@ gj.grid.config = {
              * @alias column.field
              * @type string
              * @default undefined
-             * @example sample <!-- jquery, grid -->
+             * @example sample <!-- grid -->
              * <table id="grid"></table>
              * <script>
              *     new GijgoGrid(document.getElementById('grid'), {
@@ -418,7 +418,7 @@ gj.grid.config = {
              * @alias column.align
              * @type left|right|center|justify|initial|inherit
              * @default undefined
-             * @example Material.Design <!-- jquery, grid -->
+             * @example Material.Design <!-- grid -->
              * <table id="grid"></table>
              * <script>
              *     new GijgoGrid(document.getElementById('grid'), {
@@ -430,7 +430,7 @@ gj.grid.config = {
              *         ]
              *     });
              * </script>
-             * @example Bootstrap.5 <!-- jquery, grid, bootstrap5 -->
+             * @example Bootstrap.5 <!-- grid, bootstrap5 -->
              * <table id="grid"></table>
              * <script>
              *     new GijgoGrid(document.getElementById('grid'), {
@@ -450,7 +450,7 @@ gj.grid.config = {
              * @alias column.cssClass
              * @type string
              * @default undefined
-             * @example sample <!-- jquery, grid -->
+             * @example sample <!-- grid -->
              * <table id="grid"></table>
              * <style>
              * .nowrap { white-space: nowrap }
@@ -473,7 +473,7 @@ gj.grid.config = {
              * @alias column.headerCssClass
              * @type string
              * @default undefined
-             * @example sample <!-- jquery, grid -->
+             * @example sample <!-- grid -->
              * <table id="grid"></table>
              * <style>
              * .italic { font-style: italic }
@@ -495,7 +495,7 @@ gj.grid.config = {
              * @alias column.tooltip
              * @type string
              * @default undefined
-             * @example sample <!-- jquery, grid -->
+             * @example sample <!-- grid -->
              * <table id="grid"></table>
              * <script>
              *     new GijgoGrid(document.getElementById('grid'), {
@@ -620,7 +620,7 @@ gj.grid.config = {
              * @alias column.format
              * @type string
              * @default 'mm/dd/yyyy'
-             * @example sample <!-- jquery, grid -->
+             * @example sample <!-- grid -->
              * <table id="grid"></table>
              * <script>
              *     new GijgoGrid(document.getElementById('grid'), {
@@ -648,7 +648,7 @@ gj.grid.config = {
              * @alias column.tmpl
              * @type string
              * @default undefined
-             * @example sample <!-- jquery, grid -->
+             * @example sample <!-- grid -->
              * <table id="grid"></table>
              * <script>
              *     new GijgoGrid(document.getElementById('grid'), {
@@ -667,7 +667,7 @@ gj.grid.config = {
              * @alias column.stopPropagation
              * @type boolean
              * @default false
-             * @example sample <!-- jquery, bootstrap, grid -->
+             * @example sample <!-- bootstrap, grid -->
              * <table id="grid" data-gj-source="/Players/Get"></table>
              * <script>
              *     new GijgoGrid(document.getElementById('grid'), {
@@ -792,7 +792,7 @@ gj.grid.config = {
          * @additionalinfo The css files for Bootstrap or Material Design should be manually included to the page where the grid is in use.
          * @type (materialdesign|bootstrap|bootstrap4)
          * @default 'materialdesign'
-         * @example Material.Design.With.Icons <!-- jquery, dropdown, grid -->
+         * @example Material.Design.With.Icons <!-- dropdown, grid -->
          * <table id="grid"></table>
          * <script>
          *     new GijgoGrid(document.getElementById('grid'), {
@@ -801,7 +801,7 @@ gj.grid.config = {
          *         pager: { limit: 2, sizes: [2, 5, 10, 20] }
          *     });
          * </script>
-         * @example Material.Design.Without.Icons <!-- jquery, grid -->
+         * @example Material.Design.Without.Icons <!-- grid -->
          * <table id="grid"></table>
          * <script>
          *     new GijgoGrid(document.getElementById('grid'), {
@@ -812,7 +812,7 @@ gj.grid.config = {
          *         pager: { limit: 2, sizes: [2, 5, 10, 20] }
          *     });
          * </script>
-         * @example Bootstrap.3 <!-- jquery, grid, dropdown, bootstrap -->
+         * @example Bootstrap.3 <!-- grid, dropdown, bootstrap -->
          * <div class="container"><table id="grid"></table></div>
          * <script>
          *     new GijgoGrid(document.getElementById('grid'), {
@@ -826,7 +826,7 @@ gj.grid.config = {
          *         pager: { limit: 2, sizes: [2, 5, 10, 20] }
          *     });
          * </script>
-         * @example Bootstrap.4 <!-- jquery, bootstrap4, dropdown, grid -->
+         * @example Bootstrap.4 <!-- bootstrap4, dropdown, grid -->
          * <table id="grid"></table>
          * <script>
          *     new GijgoGrid(document.getElementById('grid'), {
@@ -836,7 +836,7 @@ gj.grid.config = {
          *         pager: { limit: 2, sizes: [2, 5, 10, 20] }
          *     });
          * </script>
-         * @example Bootstrap.4.Font.Awesome <!-- jquery, bootstrap4, fontawesome, dropdown, grid -->
+         * @example Bootstrap.4.Font.Awesome <!-- bootstrap4, fontawesome, dropdown, grid -->
          * <table id="grid"></table>
          * <script>
          *     new GijgoGrid(document.getElementById('grid'), {
@@ -847,7 +847,7 @@ gj.grid.config = {
          *         pager: { limit: 2, sizes: [2, 5, 10, 20] }
          *     });
          * </script>
-         * @example Bootstrap.5 <!-- jquery, bootstrap5, dropdown, grid -->
+         * @example Bootstrap.5 <!-- bootstrap5, dropdown, grid -->
          * <table id="grid"></table>
          * <script>
          *     new GijgoGrid(document.getElementById('grid'), {
@@ -866,7 +866,7 @@ gj.grid.config = {
          * The css files for Material Icons, Font Awesome or Glyphicons should be manually included to the page where the grid is in use.
          * @type (materialicons|fontawesome|glyphicons)
          * @default 'materialicons'
-         * @example Font.Awesome <!-- jquery, fontawesome, grid, dropdown -->
+         * @example Font.Awesome <!-- fontawesome, grid, dropdown -->
          * <table id="grid"></table>
          * <script>
          *     new GijgoGrid(document.getElementById('grid'), {
@@ -883,7 +883,7 @@ gj.grid.config = {
          * If the type is set to multiple the user will be able to select more then one row from the grid.
          * @type (single|multiple)
          * @default 'single'
-         * @example Multiple.Material.Design.Checkbox <!-- jquery, checkbox, grid -->
+         * @example Multiple.Material.Design.Checkbox <!-- checkbox, grid -->
          * <table id="grid"></table>
          * <script>
          *     new GijgoGrid(document.getElementById('grid'), {
@@ -893,7 +893,7 @@ gj.grid.config = {
          *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
          *     });
          * </script>
-         * @example Multiple.Bootstrap.3.Checkbox <!-- jquery, bootstrap, checkbox, grid -->
+         * @example Multiple.Bootstrap.3.Checkbox <!-- bootstrap, checkbox, grid -->
          * <table id="grid"></table>
          * <script>
          *     new GijgoGrid(document.getElementById('grid'), {
@@ -905,7 +905,7 @@ gj.grid.config = {
          *         columns: [ { field: 'ID', width: 32 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
          *     });
          * </script>
-         * @example Multiple.Bootstrap.4.Checkbox <!-- jquery, bootstrap4, checkbox, grid -->
+         * @example Multiple.Bootstrap.4.Checkbox <!-- bootstrap4, checkbox, grid -->
          * <table id="grid"></table>
          * <script>
          *     new GijgoGrid(document.getElementById('grid'), {
@@ -916,7 +916,7 @@ gj.grid.config = {
          *         columns: [ { field: 'ID', width: 42 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
          *     });
          * </script>
-         * @example Multiple.Bootstrap.5.Checkbox <!-- jquery, bootstrap5, checkbox, grid -->
+         * @example Multiple.Bootstrap.5.Checkbox <!-- bootstrap5, checkbox, grid -->
          * <table id="grid"></table>
          * <script>
          *     new GijgoGrid(document.getElementById('grid'), {
@@ -927,7 +927,7 @@ gj.grid.config = {
          *         columns: [ { field: 'ID', width: 42 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
          *     });
          * </script>
-         * @example Single.Checkbox <!-- jquery, checkbox, grid -->
+         * @example Single.Checkbox <!-- checkbox, grid -->
          * <table id="grid"></table>
          * <script>
          *     new GijgoGrid(document.getElementById('grid'), {
@@ -945,7 +945,7 @@ gj.grid.config = {
          * If this setting is set to "checkbox" a column with checkboxes will appear as first row of the grid and when the user select a row, then this row will be highlighted and the checkbox selected.
          * @type (basic|checkbox)
          * @default "basic"
-         * @example sample <!-- jquery, checkbox, grid -->
+         * @example sample <!-- checkbox, grid -->
          * <table id="grid"></table>
          * <script>
          *     new GijgoGrid(document.getElementById('grid'), {
@@ -961,7 +961,7 @@ gj.grid.config = {
         /** When this setting is enabled the content of the grid will be loaded automatically after the creation of the grid.
          * @type boolean
          * @default true
-         * @example disabled <!-- jquery, grid -->
+         * @example disabled <!-- grid -->
          * <table id="grid"></table>
          * <script>
          *     var grid = new GijgoGrid(document.getElementById('grid'), {
@@ -971,7 +971,7 @@ gj.grid.config = {
          *     });
          *     grid.reload(); //call .reload() explicitly in order to load the data in the grid
          * </script>
-         * @example enabled <!-- jquery, grid -->
+         * @example enabled <!-- grid -->
          * <table id="grid"></table>
          * <script>
          *     new GijgoGrid(document.getElementById('grid'), {
@@ -986,7 +986,7 @@ gj.grid.config = {
         /** The text that is going to be displayed if the grid is empty.
          * @type string
          * @default "No records found."
-         * @example sample <!-- jquery, grid -->
+         * @example sample <!-- grid -->
          * <table id="grid"></table>
          * <script>
          *     new GijgoGrid(document.getElementById('grid'), {
@@ -995,7 +995,7 @@ gj.grid.config = {
          *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
          *     });
          * </script>
-         * @example localization <!-- jquery, grid -->
+         * @example localization <!-- grid -->
          * <table id="grid"></table>
          * <script src="../../dist/modular/grid/js/messages/messages.de-de.js"></script>
          * <script>
@@ -1011,7 +1011,7 @@ gj.grid.config = {
         /** Width of the grid.
          * @type number
          * @default undefined
-         * @example sample <!-- jquery, grid -->
+         * @example sample <!-- grid -->
          * <table id="grid"></table>
          * <script>
          *     new GijgoGrid(document.getElementById('grid'), {
@@ -1033,7 +1033,7 @@ gj.grid.config = {
          * Auto scale if set to to 'autogrow'. All body rows are with the same height if set to 'fixed'.
          * @type ('autogrow'|'fixed')
          * @default "fixed"
-         * @example AutoGrow <!-- jquery, grid -->
+         * @example AutoGrow <!-- grid -->
          * <table id="grid"></table>
          * <script>
          *     new GijgoGrid(document.getElementById('grid'), {
@@ -1043,7 +1043,7 @@ gj.grid.config = {
          *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth', title: 'Very very very very long column title', width: 200 } ]
          *     });
          * </script>
-         * @example Fixed <!-- jquery, grid -->
+         * @example Fixed <!-- grid -->
          * <table id="grid"></table>
          * <script>
          *     new GijgoGrid(document.getElementById('grid'), {
@@ -1060,7 +1060,7 @@ gj.grid.config = {
          * Auto scale if set to to 'autogrow'. All body rows are with the same height if set to 'fixed'.
          * @type ('autogrow'|'fixed')
          * @default "autogrow"
-         * @example AutoGrow <!-- jquery, grid -->
+         * @example AutoGrow <!-- grid -->
          * <table id="grid"></table>
          * <script>
          *     new GijgoGrid(document.getElementById('grid'), {
@@ -1070,7 +1070,7 @@ gj.grid.config = {
          *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth', title: 'Very very very very long column title', width: 200 } ]
          *     });
          * </script>
-         * @example Fixed <!-- jquery, grid -->
+         * @example Fixed <!-- grid -->
          * <table id="grid"></table>
          * <script>
          *     new GijgoGrid(document.getElementById('grid'), {
@@ -1086,7 +1086,7 @@ gj.grid.config = {
         /** The size of the font in the grid.
          * @type string
          * @default undefined
-         * @example sample <!-- jquery, grid -->
+         * @example sample <!-- grid -->
          * <table id="grid"></table>
          * <script>
          *     new GijgoGrid(document.getElementById('grid'), {
@@ -1156,7 +1156,7 @@ gj.grid.config = {
         /** The language that needs to be in use.
          * @type string
          * @default 'en-us'
-         * @example German.Bootstrap.Default <!-- jquery, bootstrap, grid, dropdown -->
+         * @example German.Bootstrap.Default <!-- bootstrap, grid, dropdown -->
          * <table id="grid"></table>
          * <script>
          *     new GijgoGrid(document.getElementById('grid'), {
@@ -1171,7 +1171,7 @@ gj.grid.config = {
          *         pager: { limit: 5 }
          *     });
          * </script>
-         * @example French.MaterialDesign.Custom <!-- jquery, grid, dropdown -->
+         * @example French.MaterialDesign.Custom <!-- grid, dropdown -->
          * <table id="grid"></table>
          * <script>
          *     gj.grid.messages['fr-fr'].DisplayingRecords = 'Mes résultats';

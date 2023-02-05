@@ -66,7 +66,7 @@ gj.tree.methods = {
         let i, records = tree.getRecords();
 
         gj.tree.events.dataBinding(tree.element);
-        //TODO: tree.element.off()
+        tree.off();
         tree.element.innerHTML = '';
         for (i = 0; i < records.length; i++) {
             gj.tree.methods.appendNode(tree, tree.element, records[i], 1);
@@ -108,8 +108,8 @@ gj.tree.methods = {
         if (disabled) {
             gj.tree.methods.disableNode(tree, node);
         } else {
-            expander.addEventListener('click', gj.tree.methods.expanderClickHandler(tree));
-            display.addEventListener('click', gj.tree.methods.displayClickHandler(tree));
+            gj.core.on(expander, 'click', gj.tree.methods.expanderClickHandler(tree));
+            gj.core.on(display, 'click', gj.tree.methods.displayClickHandler(tree));
         }
         wrapper.appendChild(expander);
         wrapper.appendChild(display);
@@ -492,8 +492,8 @@ gj.tree.methods = {
         if (expander && display) {
             cascade = typeof (cascade) === 'undefined' ? true : cascade;
             node.classList.remove('disabled');
-            expander.addEventListener('click', gj.tree.methods.expanderClickHandler(tree));
-            display.addEventListener('click', gj.tree.methods.displayClickHandler(tree));
+            gj.core.on(expander, 'click', gj.tree.methods.expanderClickHandler(tree));
+            gj.core.on(display, 'click', gj.tree.methods.displayClickHandler(tree));
             gj.tree.events.enable(tree.element, node);
             if (cascade) {
                 children = gj.core.selectAll(node, 'ul>li');
@@ -520,8 +520,8 @@ gj.tree.methods = {
         if (expander && display) {
             cascade = typeof (cascade) === 'undefined' ? true : cascade;
             node.classList.add('disabled');
-            //TODO: expander.off('click');
-            //TODO: display.off('click');
+            gj.core.off(expander, 'click');
+            gj.core.off(display, 'click');
             gj.tree.events.disable(tree.element, node);
             if (cascade) {
                 children = gj.core.selectAll(node, 'ul>li');
@@ -537,8 +537,10 @@ gj.tree.methods = {
         if (data) {
             gj.tree.events.destroying(tree.element);
             tree.xhr && tree.xhr.abort();
-            //TODO: tree.off();
+            tree.off();
             tree.removeConfig();
+            grid.removeRecords();
+            grid.removeTotalRecords();
             tree.element.removeAttribute('data-gj-guid');
             tree.element.removeAttribute('data-gj-type');
             tree.element.setAttribute('class', '');

@@ -189,7 +189,7 @@ gj.dialog.methods = {
         gj.dialog.methods.setSize(dialog.element, data);
 
         if (data.closeOnEscape) {
-            document.addEventListener('keyup', function (e) {
+            gj.core.on(document, 'keyup', function (e) {
                 if (e.key === 'Escape') {
                     dialog.close();
                 }
@@ -322,7 +322,7 @@ gj.dialog.methods = {
         }
 
         dialog.element.querySelectorAll('[data-gj-role="close"]').forEach(function (el) {
-            el.addEventListener('click', function () {
+            gj.core.on(el, 'click', function () {
                 dialog.close();
             });
         });
@@ -518,6 +518,7 @@ gj.dialog.methods = {
     destroy: function (dialog, keepHtml) {
         var subEl, data = dialog.getConfig(), el = dialog.element;
         if (data) {
+            dialog.off();
             dialog.removeConfig();
             if (keepHtml === false) {
                 dialog.element.remove();

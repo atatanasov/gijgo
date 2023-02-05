@@ -330,9 +330,8 @@ let gj = {};
     },
 
     addClasses: function (el, classes) {
-        let i, arr;
-        if (classes) {
-            arr = classes.split(' ');
+        if (el && classes) {
+            let i, arr = classes.split(' ');
             for (i = 0; i < arr.length; i++) {
                 el.classList.add(arr[i]);
             }
@@ -341,9 +340,8 @@ let gj = {};
     },
 
     removeClasses: function (el, classes) {
-        let i, arr;
-        if (classes) {
-            arr = classes.split(' ');
+        if (el && classes) {
+            let i, arr = classes.split(' ');
             for (i = 0; i < arr.length; i++) {
                 el.classList.remove(arr[i]);
             }
@@ -493,6 +491,29 @@ let gj = {};
             }
         }
         return result;
+    },
+
+    on: function(el, event, func) {
+        el.addEventListener(event, func);
+        window.gijgoStorage.put(el, event, func);
+        return el;
+        
+    },
+
+    off: function(el, event) {
+        if (event) {
+            el.removeEventListener(event, window.gijgoStorage.get(el, event));
+            window.gijgoStorage.remove(el, event);
+        } else {
+            let funcs = window.gijgoStorage.getAll(el);
+            for (const [key, value] of funcs) {
+                if (typeof(value) === 'function') {
+                    el.removeEventListener(key, value);
+                    window.gijgoStorage.remove(el, key);
+                }
+            }
+        }
+        return el;
     }
 };
 
@@ -506,6 +527,9 @@ window.gijgoStorage = {
     },
     get: function (el, key) {
         return this._storage.get(el).get(key);
+    },
+    getAll: function (el) {
+        return this._storage.get(el);
     },
     has: function (el, key) {
         return this._storage.get(el).has(key);
@@ -546,6 +570,10 @@ gj.widget = function () {
         window.gijgoStorage.put(this.element, 'records', records);
     };
 
+    self.removeRecords = function() {
+        return window.gijgoStorage.remove(this.element, 'records');
+    };
+
     self.getTotalRecords = function() {
         return window.gijgoStorage.get(this.element, 'totalRecords');
     };
@@ -554,14 +582,16 @@ gj.widget = function () {
         window.gijgoStorage.put(this.element, 'totalRecords', records);
     };
 
+    self.removeTotalRecords = function() {
+        return window.gijgoStorage.remove(this.element, 'totalRecords');
+    };
+
     self.on = function(event, func) {
-        this.element.addEventListener(event, func);
-        return this;
+        return gj.core.on(this.element, event, func);
     }
 
-    self.off = function(event, func) {
-        this.element.removeEventListener(event, func);
-        return this;
+    self.off = function(event) {
+        return gj.core.off(this.element, event);
     }
 
     self.generateGUID = function () {
@@ -1802,7 +1832,7 @@ gj.dialog.methods = {
         gj.dialog.methods.setSize(dialog.element, data);
 
         if (data.closeOnEscape) {
-            document.addEventListener('keyup', function (e) {
+            gj.core.on(document, 'keyup', function (e) {
                 if (e.key === 'Escape') {
                     dialog.close();
                 }
@@ -1935,7 +1965,7 @@ gj.dialog.methods = {
         }
 
         dialog.element.querySelectorAll('[data-gj-role="close"]').forEach(function (el) {
-            el.addEventListener('click', function () {
+            gj.core.on(el, 'click', function () {
                 dialog.close();
             });
         });
@@ -2131,6 +2161,7 @@ gj.dialog.methods = {
     destroy: function (dialog, keepHtml) {
         var subEl, data = dialog.getConfig(), el = dialog.element;
         if (data) {
+            dialog.off();
             dialog.removeConfig();
             if (keepHtml === false) {
                 dialog.element.remove();
@@ -2323,7 +2354,7 @@ gj.draggable.config = {
          * Only elements that descend from the draggable element are permitted.
          * @type jquery element
          * @default undefined
-         * @example sample <!-- nojquery, draggable -->
+         * @example sample <!-- draggable -->
          * <style>
          * .element { border: 1px solid #999; width: 300px; height: 200px; }
          * .handle { background-color: #DDD; cursor: move; width: 200px; margin: 5px auto 0px auto; text-align: center; padding: 5px; }
@@ -2342,7 +2373,7 @@ gj.draggable.config = {
         /** If set to false, restricts dragging on vertical direction.
          * @type Boolean
          * @default true
-         * @example sample <!-- nojquery, draggable -->
+         * @example sample <!-- draggable -->
          * <style>
          * .element { border: 1px solid #999; width: 300px; height: 200px; cursor: move; text-align: center; background-color: #DDD; }
          * </style>
@@ -2361,7 +2392,7 @@ gj.draggable.config = {
         /** If set to false, restricts dragging on horizontal direction.
          * @type Boolean
          * @default true
-         * @example sample <!-- nojquery, draggable -->
+         * @example sample <!-- draggable -->
          * <style>
          * .element { border: 1px solid #999; width: 300px; height: 200px; cursor: move; text-align: center; background-color: #DDD; }
          * </style>
@@ -2380,7 +2411,7 @@ gj.draggable.config = {
         /** Constrains dragging to within the bounds of the specified element.
          * @type Element
          * @default undefined
-         * @example sample <!-- nojquery, draggable -->
+         * @example sample <!-- draggable -->
          * <style>
          * .container { border: 1px solid #999; width: 600px; height: 600px; }
          * .element { border: 1px solid #999; width: 300px; height: 200px; cursor: move; text-align: center; background-color: #DDD; }
@@ -2704,9 +2735,9 @@ gj.droppable.methods = {
         gj.widget.prototype.init.call(this, jsConfig);
         this.element.setAttribute('data-gj-droppable', 'true');
         
-        gj.documentManager.subscribeForEvent('mousedown', this.element.getAttribute('data-gj-guid'), gj.droppable.methods.createMouseDownHandler(this));
-        gj.documentManager.subscribeForEvent('mousemove', this.element.getAttribute('data-gj-guid'), gj.droppable.methods.createMouseMoveHandler(this));
-        gj.documentManager.subscribeForEvent('mouseup', this.element.getAttribute('data-gj-guid'), gj.droppable.methods.createMouseUpHandler(this));
+        gj.documentManager.subscribeForEvent('mousedown', 'droppable' + this.element.getAttribute('data-gj-guid'), gj.droppable.methods.createMouseDownHandler(this));
+        gj.documentManager.subscribeForEvent('mousemove', 'droppable' + this.element.getAttribute('data-gj-guid'), gj.droppable.methods.createMouseMoveHandler(this));
+        gj.documentManager.subscribeForEvent('mouseup', 'droppable' + this.element.getAttribute('data-gj-guid'), gj.droppable.methods.createMouseUpHandler(this));
         
         return this;
     },
@@ -2721,10 +2752,7 @@ gj.droppable.methods = {
         return function (e) {
             if (droppable.isDragging) {
                 let hoverClass = droppable.getConfig().hoverClass,
-                    mousePosition = {
-                        left: droppable.mouseX(e),
-                        top: droppable.mouseY(e)
-                    },
+                    mousePosition = { x: droppable.mouseX(e), y: droppable.mouseY(e) },
                     newIsOver = gj.droppable.methods.isOver(droppable, mousePosition);
                 if (newIsOver != droppable.isOver) {
                     if (newIsOver) {
@@ -2747,11 +2775,10 @@ gj.droppable.methods = {
     createMouseUpHandler: function (droppable) {
         return function (e) {
             let mousePosition = {
-                left: droppable.mouseX(e),
-                top: droppable.mouseY(e)
+                x: droppable.mouseX(e),
+                y: droppable.mouseY(e)
             };
             droppable.isDragging = false;
-            console.log(gj.droppable.methods.isOver(droppable, mousePosition));
             if (gj.droppable.methods.isOver(droppable, mousePosition)) {
                 gj.droppable.events.drop(droppable.element);
             }
@@ -2759,18 +2786,18 @@ gj.droppable.methods = {
     },
 
     isOver: function (droppable, mousePosition) {
-        let offsetTop = droppable.element.offsetTop,
-            offsetLeft = droppable.element.offsetLeft;
-        return mousePosition.x > offsetLeft && mousePosition.x < (offsetLeft + gj.core.width(droppable.element))
-            && mousePosition.y > offsetTop && mousePosition.y < (offsetTop + gj.core.height(droppable.element));
+        let result, elementPosition = gj.core.position(droppable.element);
+        result = mousePosition.x > elementPosition.left && mousePosition.x < elementPosition.right
+              && mousePosition.y > elementPosition.top && mousePosition.y < elementPosition.bottom;
+        return result;
     },
 
     destroy: function (droppable) {
         let el = droppable.element;
         if (el.getAttribute('data-gj-droppable') === 'true') {
-            gj.documentManager.unsubscribeForEvent('mousedown', el.getAttribute('data-gj-guid'));
-            gj.documentManager.unsubscribeForEvent('mousemove', el.getAttribute('data-gj-guid'));
-            gj.documentManager.unsubscribeForEvent('mouseup', el.getAttribute('data-gj-guid'));
+            gj.documentManager.unsubscribeForEvent('mousedown', 'droppable' + el.getAttribute('data-gj-guid'));
+            gj.documentManager.unsubscribeForEvent('mousemove', 'droppable' + el.getAttribute('data-gj-guid'));
+            gj.documentManager.unsubscribeForEvent('mouseup', 'droppable' + el.getAttribute('data-gj-guid'));
             droppable.removeConfig();
             el.removeAttribute('data-gj-guid');
             el.removeAttribute('data-gj-droppable');
@@ -2945,7 +2972,7 @@ gj.grid.config = {
          * If set to array, then the grid is going to use the array as data for rows.
          * @type (string|object|array)
          * @default undefined
-         * @example Remote.JS.Configuration <!-- jquery, grid -->
+         * @example Remote.JS.Configuration <!-- grid -->
          * <table id="grid"></table>
          * <script>
          *     new GijgoGrid(document.getElementById('grid'), {
@@ -2953,7 +2980,7 @@ gj.grid.config = {
          *         columns: [ { field: 'Name' }, { field: 'PlaceOfBirth' } ]
          *     });
          * </script>
-         * @example Remote.Html.Configuration <!-- jquery, grid -->
+         * @example Remote.Html.Configuration <!-- grid -->
          * <table id="grid" data-gj-source="/Players/Get">
          *     <thead>
          *         <tr>
@@ -3009,7 +3036,7 @@ gj.grid.config = {
          * <script>
          *     new GijgoGrid(document.getElementById('grid'), { pager: { limit: 2, sizes: [2, 5, 10, 20] }});
          * </script>
-         * @example Remote.Custom.Render <!-- jquery, grid -->
+         * @example Remote.Custom.Render <!-- grid -->
          * <table id="grid"></table>
          * <script>
          *     var grid, onSuccessFunc = function (response) {
@@ -3021,7 +3048,7 @@ gj.grid.config = {
          *         columns: [ { field: 'Name' }, { field: 'PlaceOfBirth' } ]
          *     });
          * </script>
-         * @example Remote.Custom.Error <!-- jquery, grid -->
+         * @example Remote.Custom.Error <!-- grid -->
          * <table id="grid"></table>
          * <script>
          *     var grid, onErrorFunc = function (response) {
@@ -3037,7 +3064,7 @@ gj.grid.config = {
 
         /** An array that holds the configurations of each column from the grid.
          * @type array
-         * @example JS.Configuration <!-- jquery, grid -->
+         * @example JS.Configuration <!-- grid -->
          * <table id="grid"></table>
          * <script>
          *     new GijgoGrid(document.getElementById('grid'), {
@@ -3050,7 +3077,7 @@ gj.grid.config = {
 
         /** Auto generate column for each field in the datasource when set to true.
          * @type array
-         * @example sample <!-- jquery, grid -->
+         * @example sample <!-- grid -->
          * <table id="grid"></table>
          * <script>
          *     new GijgoGrid(document.getElementById('grid'), {
@@ -3063,7 +3090,7 @@ gj.grid.config = {
 
         /** An object that holds the default configuration settings of each column from the grid.
          * @type object
-         * @example sample <!-- jquery, grid -->
+         * @example sample <!-- grid -->
          * <table id="grid"></table>
          * <script>
          *     new GijgoGrid(document.getElementById('grid'), {
@@ -3079,7 +3106,7 @@ gj.grid.config = {
              * @alias column.hidden
              * @type boolean
              * @default false
-             * @example sample <!-- jquery, grid -->
+             * @example sample <!-- grid -->
              * <table id="grid"></table>
              * <script>
              *     new GijgoGrid(document.getElementById('grid'), {
@@ -3099,7 +3126,7 @@ gj.grid.config = {
              * @alias column.width
              * @type number|string
              * @default undefined
-             * @example sample <!-- jquery, grid -->
+             * @example sample <!-- grid -->
              * <table id="grid"></table>
              * <script>
              *     new GijgoGrid(document.getElementById('grid'), {
@@ -3119,7 +3146,7 @@ gj.grid.config = {
              * @alias column.sortable
              * @type boolean|object
              * @default false
-             * @example Remote <!-- jquery, grid -->
+             * @example Remote <!-- grid -->
              * <table id="grid"></table>
              * <script>
              *     new GijgoGrid(document.getElementById('grid'), {
@@ -3131,7 +3158,7 @@ gj.grid.config = {
              *         ]
              *     });
              * </script>
-             * @example Local.Custom <!-- jquery, grid -->
+             * @example Local.Custom <!-- grid -->
              * <table id="grid"></table>
              * <script>
              *     var data = [
@@ -3156,7 +3183,7 @@ gj.grid.config = {
              *         ]
              *     });
              * </script>
-             * @example Remote.Bootstrap.3 <!-- jquery, bootstrap, grid -->
+             * @example Remote.Bootstrap.3 <!-- bootstrap, grid -->
              * <table id="grid"></table>
              * <script>
              *     new GijgoGrid(document.getElementById('grid'), {
@@ -3169,7 +3196,7 @@ gj.grid.config = {
              *         ]
              *     });
              * </script>
-             * @example Remote.Bootstrap.4.Material.Icons <!-- jquery, bootstrap4, grid -->
+             * @example Remote.Bootstrap.4.Material.Icons <!-- bootstrap4, grid -->
              * <table id="grid"></table>
              * <script>
              *     new GijgoGrid(document.getElementById('grid'), {
@@ -3182,7 +3209,7 @@ gj.grid.config = {
              *         ]
              *     });
              * </script>
-             * @example Remote.Bootstrap.4.FontAwesome <!-- jquery, bootstrap4, fontawesome, grid -->
+             * @example Remote.Bootstrap.4.FontAwesome <!-- bootstrap4, fontawesome, grid -->
              * <table id="grid"></table>
              * <script>
              *     new GijgoGrid(document.getElementById('grid'), {
@@ -3196,7 +3223,7 @@ gj.grid.config = {
              *         ]
              *     });
              * </script>
-             * @example Remote.Bootstrap.5.FontAwesome <!-- jquery, bootstrap5, fontawesome, grid -->
+             * @example Remote.Bootstrap.5.FontAwesome <!-- bootstrap5, fontawesome, grid -->
              * <table id="grid"></table>
              * <script>
              *     new GijgoGrid(document.getElementById('grid'), {
@@ -3217,7 +3244,7 @@ gj.grid.config = {
              * @alias column.type
              * @type text|checkbox|icon|date|time|datetime
              * @default 'text'
-             * @example Bootstrap.3.Icon <!-- jquery, grid, bootstrap -->
+             * @example Bootstrap.3.Icon <!-- grid, bootstrap -->
              * <table id="grid"></table>
              * <script>
              *     new GijgoGrid(document.getElementById('grid'), {
@@ -3238,7 +3265,7 @@ gj.grid.config = {
              *         ]
              *     });
              * </script>
-             * @example Bootstrap.4.Icon <!-- jquery, grid, bootstrap4, fontawesome -->
+             * @example Bootstrap.4.Icon <!-- grid, bootstrap4, fontawesome -->
              * <table id="grid"></table>
              * <script>
              *     new GijgoGrid(document.getElementById('grid'), {
@@ -3259,7 +3286,7 @@ gj.grid.config = {
              *         ]
              *     });
              * </script>
-             * @example Bootstrap.3.Checkbox <!-- jquery, grid, checkbox, bootstrap -->
+             * @example Bootstrap.3.Checkbox <!-- grid, checkbox, bootstrap -->
              * <table id="grid"></table>
              * <script>
              *     new GijgoGrid(document.getElementById('grid'), {
@@ -3273,7 +3300,7 @@ gj.grid.config = {
              *         ]
              *     });
              * </script>
-             * @example Bootstrap.4.Checkbox <!-- jquery, grid, checkbox, bootstrap4 -->
+             * @example Bootstrap.4.Checkbox <!-- grid, checkbox, bootstrap4 -->
              * <table id="grid"></table>
              * <script>
              *     new GijgoGrid(document.getElementById('grid'), {
@@ -3287,7 +3314,7 @@ gj.grid.config = {
              *         ]
              *     });
              * </script>
-             * @example Bootstrap.5.Checkbox <!-- jquery, grid, checkbox, bootstrap5 -->
+             * @example Bootstrap.5.Checkbox <!-- grid, checkbox, bootstrap5 -->
              * <table id="grid"></table>
              * <script>
              *     new GijgoGrid(document.getElementById('grid'), {
@@ -3308,7 +3335,7 @@ gj.grid.config = {
              * @alias column.title
              * @type string
              * @default undefined
-             * @example sample <!-- jquery, grid -->
+             * @example sample <!-- grid -->
              * <table id="grid"></table>
              * <script>
              *     new GijgoGrid(document.getElementById('grid'), {
@@ -3328,7 +3355,7 @@ gj.grid.config = {
              * @alias column.field
              * @type string
              * @default undefined
-             * @example sample <!-- jquery, grid -->
+             * @example sample <!-- grid -->
              * <table id="grid"></table>
              * <script>
              *     new GijgoGrid(document.getElementById('grid'), {
@@ -3347,7 +3374,7 @@ gj.grid.config = {
              * @alias column.align
              * @type left|right|center|justify|initial|inherit
              * @default undefined
-             * @example Material.Design <!-- jquery, grid -->
+             * @example Material.Design <!-- grid -->
              * <table id="grid"></table>
              * <script>
              *     new GijgoGrid(document.getElementById('grid'), {
@@ -3359,7 +3386,7 @@ gj.grid.config = {
              *         ]
              *     });
              * </script>
-             * @example Bootstrap.5 <!-- jquery, grid, bootstrap5 -->
+             * @example Bootstrap.5 <!-- grid, bootstrap5 -->
              * <table id="grid"></table>
              * <script>
              *     new GijgoGrid(document.getElementById('grid'), {
@@ -3379,7 +3406,7 @@ gj.grid.config = {
              * @alias column.cssClass
              * @type string
              * @default undefined
-             * @example sample <!-- jquery, grid -->
+             * @example sample <!-- grid -->
              * <table id="grid"></table>
              * <style>
              * .nowrap { white-space: nowrap }
@@ -3402,7 +3429,7 @@ gj.grid.config = {
              * @alias column.headerCssClass
              * @type string
              * @default undefined
-             * @example sample <!-- jquery, grid -->
+             * @example sample <!-- grid -->
              * <table id="grid"></table>
              * <style>
              * .italic { font-style: italic }
@@ -3424,7 +3451,7 @@ gj.grid.config = {
              * @alias column.tooltip
              * @type string
              * @default undefined
-             * @example sample <!-- jquery, grid -->
+             * @example sample <!-- grid -->
              * <table id="grid"></table>
              * <script>
              *     new GijgoGrid(document.getElementById('grid'), {
@@ -3549,7 +3576,7 @@ gj.grid.config = {
              * @alias column.format
              * @type string
              * @default 'mm/dd/yyyy'
-             * @example sample <!-- jquery, grid -->
+             * @example sample <!-- grid -->
              * <table id="grid"></table>
              * <script>
              *     new GijgoGrid(document.getElementById('grid'), {
@@ -3577,7 +3604,7 @@ gj.grid.config = {
              * @alias column.tmpl
              * @type string
              * @default undefined
-             * @example sample <!-- jquery, grid -->
+             * @example sample <!-- grid -->
              * <table id="grid"></table>
              * <script>
              *     new GijgoGrid(document.getElementById('grid'), {
@@ -3596,7 +3623,7 @@ gj.grid.config = {
              * @alias column.stopPropagation
              * @type boolean
              * @default false
-             * @example sample <!-- jquery, bootstrap, grid -->
+             * @example sample <!-- bootstrap, grid -->
              * <table id="grid" data-gj-source="/Players/Get"></table>
              * <script>
              *     new GijgoGrid(document.getElementById('grid'), {
@@ -3721,7 +3748,7 @@ gj.grid.config = {
          * @additionalinfo The css files for Bootstrap or Material Design should be manually included to the page where the grid is in use.
          * @type (materialdesign|bootstrap|bootstrap4)
          * @default 'materialdesign'
-         * @example Material.Design.With.Icons <!-- jquery, dropdown, grid -->
+         * @example Material.Design.With.Icons <!-- dropdown, grid -->
          * <table id="grid"></table>
          * <script>
          *     new GijgoGrid(document.getElementById('grid'), {
@@ -3730,7 +3757,7 @@ gj.grid.config = {
          *         pager: { limit: 2, sizes: [2, 5, 10, 20] }
          *     });
          * </script>
-         * @example Material.Design.Without.Icons <!-- jquery, grid -->
+         * @example Material.Design.Without.Icons <!-- grid -->
          * <table id="grid"></table>
          * <script>
          *     new GijgoGrid(document.getElementById('grid'), {
@@ -3741,7 +3768,7 @@ gj.grid.config = {
          *         pager: { limit: 2, sizes: [2, 5, 10, 20] }
          *     });
          * </script>
-         * @example Bootstrap.3 <!-- jquery, grid, dropdown, bootstrap -->
+         * @example Bootstrap.3 <!-- grid, dropdown, bootstrap -->
          * <div class="container"><table id="grid"></table></div>
          * <script>
          *     new GijgoGrid(document.getElementById('grid'), {
@@ -3755,7 +3782,7 @@ gj.grid.config = {
          *         pager: { limit: 2, sizes: [2, 5, 10, 20] }
          *     });
          * </script>
-         * @example Bootstrap.4 <!-- jquery, bootstrap4, dropdown, grid -->
+         * @example Bootstrap.4 <!-- bootstrap4, dropdown, grid -->
          * <table id="grid"></table>
          * <script>
          *     new GijgoGrid(document.getElementById('grid'), {
@@ -3765,7 +3792,7 @@ gj.grid.config = {
          *         pager: { limit: 2, sizes: [2, 5, 10, 20] }
          *     });
          * </script>
-         * @example Bootstrap.4.Font.Awesome <!-- jquery, bootstrap4, fontawesome, dropdown, grid -->
+         * @example Bootstrap.4.Font.Awesome <!-- bootstrap4, fontawesome, dropdown, grid -->
          * <table id="grid"></table>
          * <script>
          *     new GijgoGrid(document.getElementById('grid'), {
@@ -3776,7 +3803,7 @@ gj.grid.config = {
          *         pager: { limit: 2, sizes: [2, 5, 10, 20] }
          *     });
          * </script>
-         * @example Bootstrap.5 <!-- jquery, bootstrap5, dropdown, grid -->
+         * @example Bootstrap.5 <!-- bootstrap5, dropdown, grid -->
          * <table id="grid"></table>
          * <script>
          *     new GijgoGrid(document.getElementById('grid'), {
@@ -3795,7 +3822,7 @@ gj.grid.config = {
          * The css files for Material Icons, Font Awesome or Glyphicons should be manually included to the page where the grid is in use.
          * @type (materialicons|fontawesome|glyphicons)
          * @default 'materialicons'
-         * @example Font.Awesome <!-- jquery, fontawesome, grid, dropdown -->
+         * @example Font.Awesome <!-- fontawesome, grid, dropdown -->
          * <table id="grid"></table>
          * <script>
          *     new GijgoGrid(document.getElementById('grid'), {
@@ -3812,7 +3839,7 @@ gj.grid.config = {
          * If the type is set to multiple the user will be able to select more then one row from the grid.
          * @type (single|multiple)
          * @default 'single'
-         * @example Multiple.Material.Design.Checkbox <!-- jquery, checkbox, grid -->
+         * @example Multiple.Material.Design.Checkbox <!-- checkbox, grid -->
          * <table id="grid"></table>
          * <script>
          *     new GijgoGrid(document.getElementById('grid'), {
@@ -3822,7 +3849,7 @@ gj.grid.config = {
          *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
          *     });
          * </script>
-         * @example Multiple.Bootstrap.3.Checkbox <!-- jquery, bootstrap, checkbox, grid -->
+         * @example Multiple.Bootstrap.3.Checkbox <!-- bootstrap, checkbox, grid -->
          * <table id="grid"></table>
          * <script>
          *     new GijgoGrid(document.getElementById('grid'), {
@@ -3834,7 +3861,7 @@ gj.grid.config = {
          *         columns: [ { field: 'ID', width: 32 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
          *     });
          * </script>
-         * @example Multiple.Bootstrap.4.Checkbox <!-- jquery, bootstrap4, checkbox, grid -->
+         * @example Multiple.Bootstrap.4.Checkbox <!-- bootstrap4, checkbox, grid -->
          * <table id="grid"></table>
          * <script>
          *     new GijgoGrid(document.getElementById('grid'), {
@@ -3845,7 +3872,7 @@ gj.grid.config = {
          *         columns: [ { field: 'ID', width: 42 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
          *     });
          * </script>
-         * @example Multiple.Bootstrap.5.Checkbox <!-- jquery, bootstrap5, checkbox, grid -->
+         * @example Multiple.Bootstrap.5.Checkbox <!-- bootstrap5, checkbox, grid -->
          * <table id="grid"></table>
          * <script>
          *     new GijgoGrid(document.getElementById('grid'), {
@@ -3856,7 +3883,7 @@ gj.grid.config = {
          *         columns: [ { field: 'ID', width: 42 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
          *     });
          * </script>
-         * @example Single.Checkbox <!-- jquery, checkbox, grid -->
+         * @example Single.Checkbox <!-- checkbox, grid -->
          * <table id="grid"></table>
          * <script>
          *     new GijgoGrid(document.getElementById('grid'), {
@@ -3874,7 +3901,7 @@ gj.grid.config = {
          * If this setting is set to "checkbox" a column with checkboxes will appear as first row of the grid and when the user select a row, then this row will be highlighted and the checkbox selected.
          * @type (basic|checkbox)
          * @default "basic"
-         * @example sample <!-- jquery, checkbox, grid -->
+         * @example sample <!-- checkbox, grid -->
          * <table id="grid"></table>
          * <script>
          *     new GijgoGrid(document.getElementById('grid'), {
@@ -3890,7 +3917,7 @@ gj.grid.config = {
         /** When this setting is enabled the content of the grid will be loaded automatically after the creation of the grid.
          * @type boolean
          * @default true
-         * @example disabled <!-- jquery, grid -->
+         * @example disabled <!-- grid -->
          * <table id="grid"></table>
          * <script>
          *     var grid = new GijgoGrid(document.getElementById('grid'), {
@@ -3900,7 +3927,7 @@ gj.grid.config = {
          *     });
          *     grid.reload(); //call .reload() explicitly in order to load the data in the grid
          * </script>
-         * @example enabled <!-- jquery, grid -->
+         * @example enabled <!-- grid -->
          * <table id="grid"></table>
          * <script>
          *     new GijgoGrid(document.getElementById('grid'), {
@@ -3915,7 +3942,7 @@ gj.grid.config = {
         /** The text that is going to be displayed if the grid is empty.
          * @type string
          * @default "No records found."
-         * @example sample <!-- jquery, grid -->
+         * @example sample <!-- grid -->
          * <table id="grid"></table>
          * <script>
          *     new GijgoGrid(document.getElementById('grid'), {
@@ -3924,7 +3951,7 @@ gj.grid.config = {
          *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
          *     });
          * </script>
-         * @example localization <!-- jquery, grid -->
+         * @example localization <!-- grid -->
          * <table id="grid"></table>
          * <script src="../../dist/modular/grid/js/messages/messages.de-de.js"></script>
          * <script>
@@ -3940,7 +3967,7 @@ gj.grid.config = {
         /** Width of the grid.
          * @type number
          * @default undefined
-         * @example sample <!-- jquery, grid -->
+         * @example sample <!-- grid -->
          * <table id="grid"></table>
          * <script>
          *     new GijgoGrid(document.getElementById('grid'), {
@@ -3962,7 +3989,7 @@ gj.grid.config = {
          * Auto scale if set to to 'autogrow'. All body rows are with the same height if set to 'fixed'.
          * @type ('autogrow'|'fixed')
          * @default "fixed"
-         * @example AutoGrow <!-- jquery, grid -->
+         * @example AutoGrow <!-- grid -->
          * <table id="grid"></table>
          * <script>
          *     new GijgoGrid(document.getElementById('grid'), {
@@ -3972,7 +3999,7 @@ gj.grid.config = {
          *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth', title: 'Very very very very long column title', width: 200 } ]
          *     });
          * </script>
-         * @example Fixed <!-- jquery, grid -->
+         * @example Fixed <!-- grid -->
          * <table id="grid"></table>
          * <script>
          *     new GijgoGrid(document.getElementById('grid'), {
@@ -3989,7 +4016,7 @@ gj.grid.config = {
          * Auto scale if set to to 'autogrow'. All body rows are with the same height if set to 'fixed'.
          * @type ('autogrow'|'fixed')
          * @default "autogrow"
-         * @example AutoGrow <!-- jquery, grid -->
+         * @example AutoGrow <!-- grid -->
          * <table id="grid"></table>
          * <script>
          *     new GijgoGrid(document.getElementById('grid'), {
@@ -3999,7 +4026,7 @@ gj.grid.config = {
          *         columns: [ { field: 'ID' }, { field: 'Name' }, { field: 'PlaceOfBirth', title: 'Very very very very long column title', width: 200 } ]
          *     });
          * </script>
-         * @example Fixed <!-- jquery, grid -->
+         * @example Fixed <!-- grid -->
          * <table id="grid"></table>
          * <script>
          *     new GijgoGrid(document.getElementById('grid'), {
@@ -4015,7 +4042,7 @@ gj.grid.config = {
         /** The size of the font in the grid.
          * @type string
          * @default undefined
-         * @example sample <!-- jquery, grid -->
+         * @example sample <!-- grid -->
          * <table id="grid"></table>
          * <script>
          *     new GijgoGrid(document.getElementById('grid'), {
@@ -4085,7 +4112,7 @@ gj.grid.config = {
         /** The language that needs to be in use.
          * @type string
          * @default 'en-us'
-         * @example German.Bootstrap.Default <!-- jquery, bootstrap, grid, dropdown -->
+         * @example German.Bootstrap.Default <!-- bootstrap, grid, dropdown -->
          * <table id="grid"></table>
          * <script>
          *     new GijgoGrid(document.getElementById('grid'), {
@@ -4100,7 +4127,7 @@ gj.grid.config = {
          *         pager: { limit: 5 }
          *     });
          * </script>
-         * @example French.MaterialDesign.Custom <!-- jquery, grid, dropdown -->
+         * @example French.MaterialDesign.Custom <!-- grid, dropdown -->
          * <table id="grid"></table>
          * <script>
          *     gj.grid.messages['fr-fr'].DisplayingRecords = 'Mes résultats';
@@ -4903,7 +4930,7 @@ gj.grid.methods = {
             mode = 'update';
             row.classList.remove(data.style.content.rowSelected)
             row.removeAttribute('data-gj-selected')
-            //TODO: row.off('click');
+            gj.core.off(row, 'click');
         }
         id = gj.grid.methods.getId(record, data.primaryKey, (position + 1));
         row.setAttribute('data-gj-position', position + 1);
@@ -4946,13 +4973,13 @@ gj.grid.methods = {
 
         //remove all event handlers
         if ('update' === mode) {
-            //TODO: $cell.off();
-            //TODO: $displayEl.off();
+            gj.core.off(cell);
+            gj.core.off(displayEl);
         }
         if (column.events) {
             for (key in column.events) {
                 if (column.events.hasOwnProperty(key)) {
-                    cell.addEventListener(key, gj.grid.methods.createCellEventHandler(column, column.events[key], { id: id, field: column.field, record: record }));
+                    gj.core.on(cell, key, gj.grid.methods.createCellEventHandler(column, column.events[key], { id: id, field: column.field, record: record }));
                 }
             }
         }
@@ -5370,11 +5397,13 @@ gj.grid.methods = {
             gj.grid.events.destroying(grid.element);
             gj.grid.methods.stopLoading(grid);
             grid.xhr && grid.xhr.abort();
-            //TODO: grid.off();
+            grid.off();
             if (!keepWrapperTag && grid.element.parentNode.getAttribute('data-gj-role') === 'wrapper') {
                 grid.unwrap();
             }
             grid.removeConfig();
+            grid.removeRecords();
+            grid.removeTotalRecords();
             if (keepTableTag === false) {
                 grid.element.remove();
             } else {
@@ -7861,7 +7890,7 @@ gj.grid.plugins.optimisticPersistence = {
                     param = data.optimisticPersistence.sessionStorage[i];
                     storage.optimisticPersistence[param] = data.params[param];
                 }
-                storage = grid.extend(JSON.parse(sessionStorage.getItem('gj.grid.' + data.guid)), storage);
+                storage = grid.extend(JSON.parse(sessionStorage.getItem('gj.grid.' + data.guid)) || {}, storage);
                 sessionStorage.setItem('gj.grid.' + data.guid, JSON.stringify(storage));
             }
 
@@ -7871,13 +7900,13 @@ gj.grid.plugins.optimisticPersistence = {
                     param = data.optimisticPersistence.localStorage[i];
                     storage.optimisticPersistence[param] = data.params[param];
                 }
-                storage = grid.extend(JSON.parse(localStorage.getItem('gj.grid.' + data.guid)), storage);
+                storage = grid.extend(JSON.parse(localStorage.getItem('gj.grid.' + data.guid)) || {}, storage);
                 localStorage.setItem('gj.grid.' + data.guid, JSON.stringify(storage));
             }
         }
     },
 
-    configure: function (grid, fullConfig, clientConfig) {
+    configure: function (grid, fullConfig) {
         if (fullConfig.guid) {
             if (fullConfig.optimisticPersistence.localStorage || fullConfig.optimisticPersistence.sessionStorage) {
                 gj.grid.plugins.optimisticPersistence.private.applyParams(grid);
@@ -7935,7 +7964,7 @@ gj.grid.plugins.pagination = {
                  *         { 'ID': 2, 'Name': 'Ronaldo Luis Nazario de Lima', 'PlaceOfBirth': 'Rio de Janeiro, Brazil' },
                  *         { 'ID': 3, 'Name': 'David Platt', 'PlaceOfBirth': 'Chadderton, Lancashire, England' }
                  *     ];
-                 *     grid = ('#grid').grid({
+                 *     grid = new GijgoGrid(document.getElementById('grid'), {
                  *         dataSource: data,
                  *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
                  *         pager: { limit: 2, sizes: [2, 5, 10, 100] }
@@ -7944,7 +7973,7 @@ gj.grid.plugins.pagination = {
                  * @example remote.data <!-- grid, dropdown -->
                  * <table id="grid"></table>
                  * <script>
-                 *     let grid = ('#grid').grid({
+                 *     let grid = new GijgoGrid(document.getElementById('grid'), {
                  *         dataSource: '/Players/Get',
                  *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
                  *         pager: { limit: 2, sizes: [2, 5, 10, 100] }
@@ -7961,7 +7990,7 @@ gj.grid.plugins.pagination = {
                  * @example Bootstrap.3 <!-- bootstrap, grid, grid.pagination, dropdown  -->
                  * <table id="grid"></table>
                  * <script>
-                 *     let grid = ('#grid').grid({
+                 *     let grid = new GijgoGrid(document.getElementById('grid'), {
                  *         dataSource: '/Players/Get',
                  *         uiLibrary: 'bootstrap',
                  *         columns: [ { field: 'ID', width: 36 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
@@ -7971,7 +8000,7 @@ gj.grid.plugins.pagination = {
                  * @example Bootstrap.4.FontAwesome <!-- bootstrap4, fontawesome, grid, dropdown  -->
                  * <table id="grid"></table>
                  * <script>
-                 *     let grid = ('#grid').grid({
+                 *     let grid = new GijgoGrid(document.getElementById('grid'), {
                  *         dataSource: '/Players/Get',
                  *         uiLibrary: 'bootstrap4',
                  *         iconsLibrary: 'fontawesome',
@@ -7982,9 +8011,19 @@ gj.grid.plugins.pagination = {
                  * @example Bootstrap.4.Material.Icons <!-- bootstrap4, grid, dropdown  -->
                  * <table id="grid"></table>
                  * <script>
-                 *     let grid = ('#grid').grid({
+                 *     let grid = new GijgoGrid(document.getElementById('grid'), {
                  *         dataSource: '/Players/Get',
                  *         uiLibrary: 'bootstrap4',
+                 *         columns: [ { field: 'ID', width: 36 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
+                 *         pager: { limit: 2, sizes: [2, 5, 10, 20] }
+                 *     });
+                 * </script>
+                 * @example Bootstrap.5.Material.Icons <!-- bootstrap5, grid, dropdown  -->
+                 * <table id="grid"></table>
+                 * <script>
+                 *     let grid = new GijgoGrid(document.getElementById('grid'), {
+                 *         dataSource: '/Players/Get',
+                 *         uiLibrary: 'bootstrap5',
                  *         columns: [ { field: 'ID', width: 36 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
                  *         pager: { limit: 2, sizes: [2, 5, 10, 20] }
                  *     });
@@ -7992,7 +8031,7 @@ gj.grid.plugins.pagination = {
                  * @example Material.Design <!-- grid, grid.pagination, dropdown  -->
                  * <table id="grid"></table>
                  * <script>
-                 *     let grid = ('#grid').grid({
+                 *     let grid = new GijgoGrid(document.getElementById('grid'), {
                  *         dataSource: '/Players/Get',
                  *         uiLibrary: 'materialdesign',
                  *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
@@ -8002,7 +8041,7 @@ gj.grid.plugins.pagination = {
                  */
                 sizes: [5, 10, 20, 100],
 
-                /** Array that contains a list with jquery objects that are going to be used on the left side of the pager.
+                /** Array that contains a list with html element objects that are going to be used on the left side of the pager.
                  * @alias pager.leftControls
                  * @type array
                  * @default array
@@ -8013,7 +8052,17 @@ gj.grid.plugins.pagination = {
                  * </style>
                  * <table id="grid"></table>
                  * <script>
-                 *     let grid = ('#grid').grid({
+                 * 
+                 *     function createButton(title, role, icon) {
+                 *         let button = document.createElement('div');
+                 *         button.setAttribute('title', title);
+                 *         button.setAttribute('data-gj-role', role);
+                 *         button.classList.add('custom-item');
+                 *         button.innerHTML = '<i class="fa ' + icon + '" aria-hidden="true"></i>';
+                 *         return button;
+                 *     };
+                 * 
+                 *     let grid = new GijgoGrid(document.getElementById('grid'), {
                  *         dataSource: '/Players/Get',
                  *         columns: [ { field: 'ID', width: 56 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
                  *         style: {
@@ -8025,15 +8074,15 @@ gj.grid.plugins.pagination = {
                  *             limit: 2, 
                  *             sizes: [2, 5, 10, 20],
                  *             leftControls: [
-                 *                 ('<div title="First" data-gj-role="page-first" class="custom-item"><i class="fa fa-fast-backward" aria-hidden="true" /></div>'),
-                 *                 ('<div title="Previous" data-gj-role="page-previous" class="custom-item"><i class="fa fa-backward" aria-hidden="true" /></div>'),
+                 *                 createButton('First', 'page-first', 'fa-fast-backward'),
+                 *                 createButton('Previous', 'page-previous', 'fa-backward'),
                  *                 ('<div> Page </div>'),
                  *                 ('<div class="custom-item"></div>').appendChild(('<input type="text" data-gj-role="page-number" style="margin: 0 5px; width: 34px; height: 16px; text-align: right;" value="0">')),
                  *                 ('<div>of&nbsp;</div>'),
                  *                 ('<div data-gj-role="page-label-last" style="margin-right: 5px;">0</div>'),
-                 *                 ('<div title="Next" data-gj-role="page-next" class="custom-item"><i class="fa fa-forward" aria-hidden="true" /></div>'),
-                 *                 ('<div title="Last" data-gj-role="page-last" class="custom-item"><i class="fa fa-fast-forward" aria-hidden="true" /></div>'),
-                 *                 ('<div title="Reload" data-gj-role="page-refresh" class="custom-item"><i class="fa fa-refresh" aria-hidden="true" /></div>'),
+                 *                 createButton('Next', 'page-next', 'fa-forward'),
+                 *                 createButton('Last', 'page-last', 'fa-fast-forward'),
+                 *                 createButton('Reload', 'page-refresh', 'fa-refresh'),
                  *                 ('<div class="custom-item"></div>').appendChild(('<select data-gj-role="page-size" style="margin: 0 5px; width: 50px;"></select>'))
                  *             ],
                  *             rightControls: [
@@ -8050,7 +8099,7 @@ gj.grid.plugins.pagination = {
                  */
                 leftControls: undefined,
 
-                /** Array that contains a list with jquery objects that are going to be used on the right side of the pager.
+                /** Array that contains a list with html element objects that are going to be used on the right side of the pager.
                  * @alias pager.rightControls
                  * @type array
                  * @default array
@@ -8175,51 +8224,26 @@ gj.grid.plugins.pagination = {
             }
         },
 
+        createButton: function(classes, role, title, text) {
+            let result = document.createElement('button');
+            gj.core.addClasses(result, classes);
+            result.setAttribute('data-gj-role', role);
+            result.setAttribute('title', title);
+            result.innerHTML = text;
+            return result;
+        },
+
         localizationBootstrap: function (data) {
             let msg = gj.grid.messages[data.locale],
-            parser = new DOMParser(),
-            pageFirst = document.createElement('button'),
-            pagePrevious = document.createElement('button'),
-            pageNext = document.createElement('button'),
-            pageLast = document.createElement('button'),
-            pageRefresh = document.createElement('button'),
-            labelLast = document.createElement('div'),
-            labelPage = document.createElement('div'),
-            labelOf = document.createElement('div'),
-            pageNumber = document.createElement('input'),
-            pager = document.createElement('select');
+                methods = gj.grid.plugins.pagination.private,
+                parser = new DOMParser(),
+                labelLast = document.createElement('div'),
+                labelPage = document.createElement('div'),
+                labelOf = document.createElement('div'),
+                pageNumber = document.createElement('input'),
+                pager = document.createElement('select');
 
             if (typeof (data.pager.leftControls) === 'undefined') {
-                gj.core.addClasses(pageFirst, 'btn btn-default btn-sm');
-                pageFirst.setAttribute('data-gj-role', 'page-first');
-                pageFirst.setAttribute('type', 'button');
-                pageFirst.setAttribute('title', msg.FirstPageTooltip);
-                pageFirst.innerHTML = (data.icons.first || msg.First);
-                
-                gj.core.addClasses(pagePrevious, 'btn btn-default btn-sm');
-                pagePrevious.setAttribute('data-gj-role', 'page-previous');
-                pagePrevious.setAttribute('type', 'button');
-                pagePrevious.setAttribute('title', msg.PreviousPageTooltip);
-                pagePrevious.innerHTML = (data.icons.previous || msg.Previous);
-                
-                gj.core.addClasses(pageNext, 'btn btn-default btn-sm');
-                pageNext.setAttribute('data-gj-role', 'page-next');
-                pageNext.setAttribute('type', 'button');
-                pageNext.setAttribute('title', msg.NextPageTooltip);
-                pageNext.innerHTML = (data.icons.next || msg.Next);
-                
-                gj.core.addClasses(pageLast, 'btn btn-default btn-sm');
-                pageLast.setAttribute('data-gj-role', 'page-last');
-                pageLast.setAttribute('type', 'button');
-                pageLast.setAttribute('title', msg.LastPageTooltip);
-                pageLast.innerHTML = (data.icons.last || msg.Last);
-                
-                gj.core.addClasses(pageRefresh, 'btn btn-default btn-sm');
-                pageRefresh.setAttribute('data-gj-role', 'page-refresh');
-                pageRefresh.setAttribute('type', 'button');
-                pageRefresh.setAttribute('title', msg.Refresh);
-                pageRefresh.innerHTML = (data.icons.refresh || msg.Refresh);
-
                 labelLast.setAttribute('data-gj-role', 'page-label-last');
                 labelLast.innerHTML = '0';
 
@@ -8236,7 +8260,18 @@ gj.grid.plugins.pagination = {
                 pager.style.width = '3.75rem';
                 pager.setAttribute('data-gj-role', 'page-size');
 
-                data.pager.leftControls = [pageFirst, pagePrevious, labelPage, pageNumber, labelOf, labelLast, pageNext, pageLast, pageRefresh, pager];
+                data.pager.leftControls = [
+                    methods.createButton('btn btn-default btn-sm', 'page-first', msg.FirstPageTooltip, data.icons.first || msg.First),
+                    methods.createButton('btn btn-default btn-sm', 'page-previous', msg.PreviousPageTooltip, data.icons.previous || msg.Previous),
+                    labelPage,
+                    pageNumber,
+                    labelOf,
+                    labelLast,
+                    methods.createButton('btn btn-default btn-sm', 'page-next', msg.NextPageTooltip, data.icons.next || msg.Next),
+                    methods.createButton('btn btn-default btn-sm', 'page-last', msg.LastPageTooltip, data.icons.last || msg.Last),
+                    methods.createButton('btn btn-default btn-sm', 'page-refresh', msg.Refresh, data.icons.refresh || msg.Refresh),
+                    pager
+                ];
             }
             if (typeof (data.pager.rightControls) === 'undefined') {
                 data.pager.rightControls = [
@@ -8252,12 +8287,8 @@ gj.grid.plugins.pagination = {
 
         localizationBootstrap4: function (data) {
             let msg = gj.grid.messages[data.locale],
+                methods = gj.grid.plugins.pagination.private,
                 parser = new DOMParser(),
-                pageFirst = document.createElement('button'),
-                pagePrevious = document.createElement('button'),
-                pageNext = document.createElement('button'),
-                pageLast = document.createElement('button'),
-                pageRefresh = document.createElement('button'),
                 labelLast = document.createElement('div'),
                 labelPage = document.createElement('div'),
                 labelOf = document.createElement('div'),
@@ -8265,31 +8296,6 @@ gj.grid.plugins.pagination = {
                 input = document.createElement('input'),
                 pager = document.createElement('select');
             if (typeof (data.pager.leftControls) === 'undefined') {
-                gj.core.addClasses(pageFirst, 'btn btn-default btn-sm gj-cursor-pointer');
-                pageFirst.setAttribute('data-gj-role', 'page-first');
-                pageFirst.setAttribute('title', msg.FirstPageTooltip);
-                pageFirst.innerHTML = (data.icons.first || msg.First);
-                
-                gj.core.addClasses(pagePrevious, 'btn btn-default btn-sm gj-cursor-pointer');
-                pagePrevious.setAttribute('data-gj-role', 'page-previous');
-                pagePrevious.setAttribute('title', msg.PreviousPageTooltip);
-                pagePrevious.innerHTML = (data.icons.previous || msg.Previous);
-                
-                gj.core.addClasses(pageNext, 'btn btn-default btn-sm gj-cursor-pointer');
-                pageNext.setAttribute('data-gj-role', 'page-next');
-                pageNext.setAttribute('title', msg.NextPageTooltip);
-                pageNext.innerHTML = (data.icons.next || msg.Next);
-                
-                gj.core.addClasses(pageLast, 'btn btn-default btn-sm gj-cursor-pointer');
-                pageLast.setAttribute('data-gj-role', 'page-last');
-                pageLast.setAttribute('title', msg.LastPageTooltip);
-                pageLast.innerHTML = (data.icons.last || msg.Last);
-                
-                gj.core.addClasses(pageRefresh, 'btn btn-default btn-sm gj-cursor-pointer');
-                pageRefresh.setAttribute('data-gj-role', 'page-refresh');
-                pageRefresh.setAttribute('title', msg.Refresh);
-                pageRefresh.innerHTML = (data.icons.refresh || msg.Refresh);
-
                 labelLast.setAttribute('data-gj-role', 'page-label-last');
                 labelLast.innerHTML = '0';
 
@@ -8308,7 +8314,18 @@ gj.grid.plugins.pagination = {
                 pager.style.width = '3.75rem';
                 pager.setAttribute('data-gj-role', 'page-size');
 
-                data.pager.leftControls = [pageFirst, pagePrevious, labelPage, pageNumber, labelOf, labelLast, pageNext, pageLast, pageRefresh, pager];
+                data.pager.leftControls = [
+                    methods.createButton('btn btn-default btn-sm gj-cursor-pointer', 'page-first', msg.FirstPageTooltip, data.icons.first || msg.First),
+                    methods.createButton('btn btn-default btn-sm gj-cursor-pointer', 'page-previous', msg.PreviousPageTooltip, data.icons.previous || msg.Previous),
+                    labelPage,
+                    pageNumber,
+                    labelOf,
+                    labelLast,
+                    methods.createButton('btn btn-default btn-sm gj-cursor-pointer', 'page-next', msg.NextPageTooltip, data.icons.next || msg.Next),
+                    methods.createButton('btn btn-default btn-sm gj-cursor-pointer', 'page-last', msg.LastPageTooltip, data.icons.last || msg.Last),
+                    methods.createButton('btn btn-default btn-sm gj-cursor-pointer', 'page-refresh', msg.Refresh, data.icons.refresh || msg.Refresh),
+                    pager
+                ];
             }
             if (typeof (data.pager.rightControls) === 'undefined') {
                 data.pager.rightControls = [
@@ -8324,12 +8341,8 @@ gj.grid.plugins.pagination = {
 
         localizationBootstrap5: function (data) {
             let msg = gj.grid.messages[data.locale],
+                methods = gj.grid.plugins.pagination.private,
                 parser = new DOMParser(),
-                pageFirst = document.createElement('button'),
-                pagePrevious = document.createElement('button'),
-                pageNext = document.createElement('button'),
-                pageLast = document.createElement('button'),
-                pageRefresh = document.createElement('button'),
                 labelLast = document.createElement('div'),
                 labelPage = document.createElement('div'),
                 labelOf = document.createElement('div'),
@@ -8338,30 +8351,6 @@ gj.grid.plugins.pagination = {
                 pager = document.createElement('select');
 
             if (typeof (data.pager.leftControls) === 'undefined') {
-                gj.core.addClasses(pageFirst, 'btn btn-secondary btn-sm gj-cursor-pointer');
-                pageFirst.setAttribute('data-gj-role', 'page-first');
-                pageFirst.setAttribute('title', msg.FirstPageTooltip);
-                pageFirst.innerHTML = (data.icons.first || msg.First);
-                
-                gj.core.addClasses(pagePrevious, 'btn btn-secondary btn-sm gj-cursor-pointer');
-                pagePrevious.setAttribute('data-gj-role', 'page-previous');
-                pagePrevious.setAttribute('title', msg.PreviousPageTooltip);
-                pagePrevious.innerHTML = (data.icons.previous || msg.Previous);
-                
-                gj.core.addClasses(pageNext, 'btn btn-secondary btn-sm gj-cursor-pointer');
-                pageNext.setAttribute('data-gj-role', 'page-next');
-                pageNext.setAttribute('title', msg.NextPageTooltip);
-                pageNext.innerHTML = (data.icons.next || msg.Next);
-                
-                gj.core.addClasses(pageLast, 'btn btn-secondary btn-sm gj-cursor-pointer');
-                pageLast.setAttribute('data-gj-role', 'page-last');
-                pageLast.setAttribute('title', msg.LastPageTooltip);
-                pageLast.innerHTML = (data.icons.last || msg.Last);
-                
-                gj.core.addClasses(pageRefresh, 'btn btn-secondary btn-sm gj-cursor-pointer');
-                pageRefresh.setAttribute('data-gj-role', 'page-refresh');
-                pageRefresh.setAttribute('title', msg.Refresh);
-                pageRefresh.innerHTML = (data.icons.refresh || msg.Refresh);
 
                 labelLast.setAttribute('data-gj-role', 'page-label-last');
                 labelLast.innerHTML = '0';
@@ -8381,7 +8370,18 @@ gj.grid.plugins.pagination = {
                 pager.style.width = '3.75rem';
                 pager.setAttribute('data-gj-role', 'page-size');
 
-                data.pager.leftControls = [pageFirst, pagePrevious, labelPage, pageNumber, labelOf, labelLast, pageNext, pageLast, pageRefresh, pager];
+                data.pager.leftControls = [
+                    methods.createButton('btn btn-secondary btn-sm gj-cursor-pointer', 'page-first', msg.FirstPageTooltip, data.icons.first || msg.First),
+                    methods.createButton('btn btn-secondary btn-sm gj-cursor-pointer', 'page-previous', msg.PreviousPageTooltip, data.icons.previous || msg.Previous),
+                    labelPage,
+                    pageNumber,
+                    labelOf,
+                    labelLast,
+                    methods.createButton('btn btn-secondary btn-sm gj-cursor-pointer', 'page-next', msg.NextPageTooltip, data.icons.next || msg.Next),
+                    methods.createButton('btn btn-secondary btn-sm gj-cursor-pointer', 'page-last', msg.LastPageTooltip, data.icons.last || msg.Last),
+                    methods.createButton('btn btn-secondary btn-sm gj-cursor-pointer', 'page-refresh', msg.Refresh, data.icons.refresh || msg.Refresh),
+                    pager
+                ];
             }
             if (typeof (data.pager.rightControls) === 'undefined') {
                 data.pager.rightControls = [
@@ -8397,6 +8397,7 @@ gj.grid.plugins.pagination = {
 
         localizationMaterialDesign: function (data) {
             let msg = gj.grid.messages[data.locale],
+                methods = gj.grid.plugins.pagination.private,
                 parser = new DOMParser(),
                 pager = document.createElement('select');
             if (typeof (data.pager.leftControls) === 'undefined') {
@@ -8416,9 +8417,9 @@ gj.grid.plugins.pagination = {
                     parser.parseFromString('<span class="gj-grid-mdl-pager-label">' + msg.Of + '</span>', 'text/xml').firstChild,
                     parser.parseFromString('<span data-gj-role="record-total" class="">0</span>', 'text/xml').firstChild,
                     parser.parseFromString('<span class="gj-md-spacer-32"> </span>', 'text/xml').firstChild,
-                    parser.parseFromString('<button class="gj-button-md' + (data.icons.first ? ' gj-button-md-icon' : '') + '" title="' + msg.PreviousPageTooltip + '" data-gj-role="page-previous">' + (data.icons.previous || msg.Previous) + '</button>', 'text/xml').firstChild,
+                    methods.createButton('gj-button-md' + (data.icons.next ? ' gj-button-md-icon' : ''), 'page-previous', msg.PreviousPageTooltip, data.icons.previous || msg.Previous),
                     parser.parseFromString('<span class="gj-md-spacer-24"> </span>', 'text/xml').firstChild,
-                    parser.parseFromString('<button class="gj-button-md' + (data.icons.next ? ' gj-button-md-icon' : '') + '" title="' + msg.NextPageTooltip + '" data-gj-role="page-next">' + (data.icons.next || msg.Next) + '</button>', 'text/xml').firstChild
+                    methods.createButton('gj-button-md' + (data.icons.next ? ' gj-button-md-icon' : ''), 'page-next', msg.NextPageTooltip, data.icons.next || msg.Next)
                 ];
             }
         },
@@ -8536,12 +8537,12 @@ gj.grid.plugins.pagination = {
             if (disabled) {
                 gj.core.addClasses(control, style.stateDisabled);
                 control.disabled = true;
-                //control.off('click');
+                gj.core.off(control, 'click');
             } else {
                 gj.core.removeClasses(control, style.stateDisabled);
                 control.disabled = false;
-                // control.off('click');
-                control.addEventListener('click', function () {
+                gj.core.off(control, 'click');
+                gj.core.on(control, 'click', function () {
                     gj.grid.plugins.pagination.private.changePage(grid, newPage);
                 });
             }
@@ -8553,11 +8554,13 @@ gj.grid.plugins.pagination = {
                 control.style.display = 'none';
             } else {
                 control.style.display = 'block';
-                control.off('click').text(newPage);
+                gj.core.off(control, 'click');
+                control.innerHTML = newPage;
                 if (newPage === page) {
-                    control.addClass(style.activeButton);
+                    gj.core.addClasses(control, style.activeButton);
                 } else {
-                    control.removeClass(style.activeButton).on('click', function () {
+                    gj.core.removeClasses(control, style.activeButton);
+                    gj.core.on(control, 'click', function () {
                         gj.grid.plugins.pagination.private.changePage(grid, newPage);
                     });
                 }
@@ -8630,18 +8633,18 @@ gj.grid.plugins.pagination = {
          *
          * @event pageSizeChange
          * @param {object} e - event data
-         * @param {number} newSize - The new page size
+         * @param {number} e.detail.newSize - The new page size
          * @example sample <!-- bootstrap, grid, grid.pagination -->
          * <table id="grid"></table>
          * <script>
-         *     let grid = ('#grid').grid({
+         *     let grid = new GijgoGrid(document.getElementById('grid'), {
          *         dataSource: '/Players/Get',
          *         uiLibrary: 'bootstrap',
          *         columns: [ { field: 'ID', width: 36 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ],
          *         pager: { limit: 2, sizes: [2, 5, 10, 20] }
          *     });
-         *     grid.on('pageSizeChange', function (e, newSize) {
-         *         alert('The new page size is ' + newSize + '.');
+         *     grid.on('pageSizeChange', function (e) {
+         *         alert('The new page size is ' + e.detail.newSize + '.');
          *     });
          * </script>
          */
@@ -8654,29 +8657,29 @@ gj.grid.plugins.pagination = {
          *
          * @event pageChanging
          * @param {object} e - event data
-         * @param {number} newPage - The new page
-         * @example sample <!-- bootstrap4, fontawesome, dropdown, grid, grid.pagination -->
+         * @param {number} e.detail.newPage - The new page
+         * @example sample <!-- bootstrap5, fontawesome, dropdown, grid, grid.pagination -->
          * <table id="grid"></table>
          * <script>
-         *     let grid = ('#grid').grid({
+         *     let grid = new GijgoGrid(document.getElementById('grid'), {
          *         dataSource: '/Players/Get',
-         *         uiLibrary: 'bootstrap4',
+         *         uiLibrary: 'bootstrap5',
          *         iconsLibrary: 'fontawesome',
          *         columns: [ { field: 'ID', width: 56 }, { field: 'Name', sortable: true }, { field: 'PlaceOfBirth' } ],
          *         pager: { limit: 2, sizes: [2, 5, 10, 20] }
          *     });
-         *     grid.on('pageChanging', function (e, newPage) {
-         *         if (isNaN(newPage)) {
+         *     grid.on('pageChanging', function (e) {
+         *         if (isNaN(e.detail.newPage)) {
          *             alert('Invalid page number');
          *             return false;
          *         } else {
-         *             alert(newPage + ' is valid page number.');
+         *             alert(e.detail.newPage + ' is valid page number.');
          *         }
          *     });
          * </script>
          */
-        pageChanging: function (el, newSize) {
-            return el.dispatchEvent(new CustomEvent('pageChanging', { detail: { newSize: newSize } }));
+        pageChanging: function (el, newPage) {
+            return el.dispatchEvent(new CustomEvent('pageChanging', { detail: { newPage: newPage } }));
         }
     },
 
@@ -9201,7 +9204,7 @@ gj.grid.plugins.toolbar = {
          * </script>
          */
         title: function (text) {
-            var titleEl = this.parentNode.querySelector('div[data-gj-role="toolbar"] [data-gj-role="title"]');
+            var titleEl = this.element.parentNode.querySelector('div[data-gj-role="toolbar"] [data-gj-role="title"]');
             if (typeof (text) !== 'undefined') {
                 titleEl.innerHTML = text;
                 return this;
@@ -9795,156 +9798,150 @@ gj.grid.plugins.columnReorder = {
     private: {
         init: function (grid) {
             let i, cells = grid.element.querySelectorAll('thead tr th');
+            gj.core.on(document, 'mousemove', gj.grid.plugins.columnReorder.private.createMouseMoveHandler(grid));
+            gj.core.on(document, 'mouseup', gj.grid.plugins.columnReorder.private.createMouseUpHandler(grid));
             for (i = 0; i < cells.length; i++) {
-                cells[i].addEventListener('mousedown', gj.grid.plugins.columnReorder.private.createMouseDownHandler(grid, cells[i]));
-                cells[i].addEventListener('mousemove', gj.grid.plugins.columnReorder.private.createMouseMoveHandler(grid, cells[i]));
-                cells[i].addEventListener('mouseup', gj.grid.plugins.columnReorder.private.createMouseUpHandler(grid, cells[i]));
+                gj.core.on(cells[i], 'mousedown', gj.grid.plugins.columnReorder.private.createMouseDownHandler(grid, cells[i]));
+                new GijgoDroppable(cells[i]);
             }
         },
 
-        createMouseDownHandler: function (grid) {
+        createMouseDownHandler: function (grid, thSource) {
             return function (e) {
-                grid.timeout = setTimeout(function () {
-                    grid.element.setAttribute('data-gj-drag-ready', true);
-                }, 100);
+                let dragEl, srcIndex, elements;
+
+                dragEl = grid.element.cloneNode(true);
+                grid.element.classList.add('gj-unselectable');
+                dragEl.classList.add('gj-unselectable');
+                document.body.appendChild(dragEl);
+                dragEl.setAttribute('data-gj-role', 'draggable-clone')
+                dragEl.style.cursor = 'move';
+                srcIndex = Array.from(thSource.parentNode.children).indexOf(thSource);
+                
+                elements = dragEl.querySelectorAll('thead tr th');
+                for (let i = 0; i < elements.length; i++) {
+                    if (i !== srcIndex) {
+                        elements[i].remove();
+                    }
+                }
+                elements = dragEl.querySelectorAll('tbody tr:not([data-gj-role="row"])');
+                for (let i = 0; i < elements.length; i++) {
+                    elements[i].remove();
+                }
+                
+                elements = dragEl.querySelectorAll('tbody tr');
+                for (let i = 0; i < elements.length; i++) {
+                    for (let index = srcIndex, j = 0; j < elements[i].children.length; j++) {
+                        if (j !== index) {
+                            elements[i].removeChild(elements[i].children[j]);
+                            j--;
+                            index--;
+                        }
+                    }
+                }
+
+                elements = dragEl.querySelector('tfoot');
+                elements && elements.remove();
+
+                dragEl.style.position = 'absolute';
+                dragEl.style.top = thSource.getBoundingClientRect().top + 'px';
+                dragEl.style.left = thSource.getBoundingClientRect().left + 'px';
+                dragEl.style.width = gj.core.width(thSource) + 'px';
+                dragEl.style.zIndex = 1;
+
+                new GijgoDraggable(dragEl, {
+                    stop: gj.grid.plugins.columnReorder.private.createDragStopHandler(grid, thSource, srcIndex)
+                });
+                dragEl.dispatchEvent(new Event('mousedown'));
+
+                grid.element.setAttribute('data-gj-drag-column', 'true');
             }
         },
 
         createMouseUpHandler: function (grid) {
             return function (e) {
-                clearTimeout(grid.timeout);
-                grid.element.setAttribute('data-gj-drag-ready', false);
+                if (grid.element.getAttribute('data-gj-drag-column') === 'true') {
+                    grid.element.setAttribute('data-gj-drag-column', 'false');
+                }
             }
         },
 
-        createMouseMoveHandler: function (grid, thSource) {
+        createMouseMoveHandler: function (grid) {
+            let header = grid.element.querySelector('thead tr'),
+                body = grid.element.querySelector('tbody'),
+                headerPos = gj.core.position(header);
             return function (e) {
-                if (grid.element.getAttribute('data-gj-drag-ready') === 'true') {
-                    let dragEl, srcIndex, elements, srcEl;
-
-                    grid.element.setAttribute('data-gj-drag-ready', false);
-                    dragEl = grid.element.cloneNode(true);
-                    grid.element.classList.add('gj-unselectable');
-                    dragEl.classList.add('gj-unselectable');
-                    document.body.appendChild(dragEl);
-                    dragEl.setAttribute('data-gj-role', 'draggable-clone')
-                    dragEl.style.cursor = 'move';
-                    srcIndex = Array.from(thSource.parentNode.children).indexOf(thSource);
-                    
-                    elements = dragEl.querySelectorAll('thead tr th');
-                    for (let i = 0; i < elements.length; i++) {
-                        if (i !== srcIndex) {
-                            elements[i].remove();
-                        }
-                    }
-                    elements = dragEl.querySelectorAll('tbody tr:not([data-gj-role="row"])');
-                    for (let i = 0; i < elements.length; i++) {
-                        elements[i].remove();
-                    }
-                    
-                    elements = dragEl.querySelectorAll('tbody tr');
-                    for (let i = 0; i < elements.length; i++) {
-                        srcEl = elements[i].children[srcIndex];
-                        for (const element of elements[i].children) {
-                            if (srcEl !== element) {
-                                elements[i].removeChild(element)
+                if (grid.element.getAttribute('data-gj-drag-column') === 'true') {
+                    let mouse = { x: grid.mouseX(e), y: grid.mouseY(e) };
+                    if (mouse.x > headerPos.left && mouse.x < headerPos.right && mouse.y > headerPos.top && mouse.y < headerPos.bottom) {
+                        for (let i = 0; i < header.children.length; i++) {
+                            let middle, thPos = gj.core.position(header.children[i]);
+                            if (mouse.x > thPos.left && mouse.x < thPos.right && mouse.y > thPos.top && mouse.y < thPos.bottom) {                            
+                                middle = (thPos.left + thPos.right) / 2;
+                                gj.grid.plugins.columnReorder.private.addBorder(mouse.x < middle ? 'left' : 'right', header, body, i);
+                                break;
                             }
-                        }
+                        }                        
                     }
-                    elements = dragEl.querySelector('tfoot');
-                    elements && elements.remove();
-
-                    new GijgoDraggable(dragEl, {
-                        stop: gj.grid.plugins.columnReorder.private.createDragStopHandler(grid, thSource)
-                    });
-                    dragEl.style.position = 'absolute';
-                    dragEl.style.top = thSource.getBoundingClientRect().top + 'px';
-                    dragEl.style.left = thSource.getBoundingClientRect().left + 'px';
-                    dragEl.style.width = gj.core.width(thSource) + 'px';
-                    dragEl.style.zIndex = 1;
-                    
-                    if (thSource.getAttribute('data-droppable') === 'true') {
-                        thSource.droppable('destroy');
-                    }
-
-                    for (const dropEl of thSource.parentNode.children) {
-                        if (thSource !== dropEl) {
-                            if (dropEl.getAttribute('data-gj-droppable') === 'true') {
-                                new GijgoDroppable(dropEl).destroy();
-                            }
-                            new GijgoDroppable(dropEl, {
-                                over: gj.grid.plugins.columnReorder.private.createDroppableOverHandler(grid, thSource),
-                                out: gj.grid.plugins.columnReorder.private.droppableOut
-                            });
-                        }
-                    }
-                    dragEl.dispatchEvent(new Event('mousedown'));
                 }
             };
         },
 
-        createDragStopHandler: function (grid, thSource) {
+        addBorder: function (type, header, body, column) {
+            header.children[column].classList.remove(type === 'left' ? 'gj-grid-right-border' : 'gj-grid-left-border');
+            header.children[column].classList.add(type === 'left' ? 'gj-grid-left-border' : 'gj-grid-right-border');
+            gj.core.removeClasses(header.children[column - 1], 'gj-grid-left-border gj-grid-right-border');
+            gj.core.removeClasses(header.children[column + 1], 'gj-grid-left-border gj-grid-right-border');
+            for (let i = 0; i < body.children.length; i++) {
+                body.children[i].children[column].classList.remove(type === 'left' ? 'gj-grid-right-border' : 'gj-grid-left-border');
+                body.children[i].children[column].classList.add(type === 'left' ? 'gj-grid-left-border' : 'gj-grid-right-border');
+                gj.core.removeClasses(body.children[i].children[column - 1], 'gj-grid-left-border gj-grid-right-border');
+                gj.core.removeClasses(body.children[i].children[column + 1], 'gj-grid-left-border gj-grid-right-border');
+            }
+        },
+
+        createDragStopHandler: function (grid, thSource, srcIndex) {            
+            let header = grid.element.querySelector('thead tr'),
+                headerPos = gj.core.position(header),
+                config = grid.getConfig();
+
             return function (e) {
-                let elements = thSource.parentNode.children;
                 document.body.querySelector('table[data-gj-role="draggable-clone"]').remove();
                 grid.element.classList.remove('gj-unselectable');
-                for (const thTarget of elements) {
-                    let data = grid.getConfig(),
-                        targetPosition = gj.grid.methods.getColumnPosition(data.columns, thTarget.getAttribute('data-gj-field')),
-                        sourcePosition = gj.grid.methods.getColumnPosition(data.columns, thSource.getAttribute('data-gj-field'))
-                        droppable = new GijgoDroppable(thTarget);
-
-                    gj.core.removeClasses(thTarget, 'gj-grid-left-border gj-grid-right-border');
-                    if (thTarget.nextElementSibling) {
-                        gj.core.removeClasses(thTarget.nextElementSibling, 'gj-grid-left-border gj-grid-right-border');
-                    }
-                    
-                    if (droppable.isOver(e.detail)) {
-                        if (targetPosition < sourcePosition) {
-                            thTarget.parentNode.insertBefore(thSource, thTarget);
-                        } else {
-                            thTarget.parentNode.insertBefore(thSource, thTarget.nextSibling);
+                grid.element.querySelectorAll('.gj-grid-left-border').forEach((element) => {  element.classList.remove('gj-grid-left-border'); });
+                grid.element.querySelectorAll('.gj-grid-right-border').forEach((element) => {  element.classList.remove('gj-grid-right-border'); });
+                if (e.detail.x > headerPos.left && e.detail.x < headerPos.right && e.detail.y > headerPos.top && e.detail.y < headerPos.bottom) {
+                    for (let i = 0; i < header.children.length; i++) {
+                        let thPos = gj.core.position(header.children[i]);
+                        if (e.detail.x > thPos.left && e.detail.x < thPos.right && e.detail.y > thPos.top && e.detail.y < thPos.bottom) {  
+                            let thIndex = Array.from(header.children).indexOf(header.children[i]);
+                            if (srcIndex != thIndex) {
+                                let middle = (thPos.left + thPos.right) / 2;
+                                if (e.detail.x < middle) {
+                                    header.insertBefore(thSource, header.children[i]);
+                                    gj.grid.plugins.columnReorder.private.moveRowCells(grid, srcIndex, thIndex);
+                                } else {
+                                    header.insertBefore(thSource, header.children[i].nextSibling);
+                                    gj.grid.plugins.columnReorder.private.moveRowCells(grid, srcIndex, thIndex + (thIndex < srcIndex ? 1 : 0));
+                                }
+                                config.columns.splice(thIndex + (thIndex < srcIndex ? 1 : 0), 0, config.columns.splice(srcIndex, 1)[0]);                            
+                            }
+                            break;
                         }
-                        gj.grid.plugins.columnReorder.private.moveRowCells(grid, sourcePosition, targetPosition);
-                        data.columns.splice(targetPosition, 0, data.columns.splice(sourcePosition, 1)[0]);
-                    }
-                    droppable.destroy();
-                };
+                    }                        
+                }
             }
         },
 
         moveRowCells: function (grid, sourcePosition, targetPosition) {
-            let i, row, rows = grid.find('tbody tr[data-gj-role="row"]');
+            let i, rows = grid.element.querySelectorAll('tbody tr[data-gj-role="row"]');
             for (i = 0; i < rows.length; i++) {
-                row = (rows[i]);
                 if (targetPosition < sourcePosition) {
-                    row.find('td:eq(' + targetPosition + ')').before(row.find('td:eq(' + sourcePosition + ')'));
+                    rows[i].insertBefore(rows[i].children[sourcePosition], rows[i].children[targetPosition]);
                 } else {
-                    row.find('td:eq(' + targetPosition + ')').after(row.find('td:eq(' + sourcePosition + ')'));
+                    rows[i].insertBefore(rows[i].children[sourcePosition], rows[i].children[targetPosition].nextSibling);
                 }                
             }
-        },
-
-        createDroppableOverHandler: function (grid, thSource) {
-            return function (e) {
-                let thTarget = (this),
-                    data = grid.getConfig(),
-                    targetPosition = gj.grid.methods.getColumnPosition(data.columns, thTarget.data('field')),
-                    sourcePosition = gj.grid.methods.getColumnPosition(data.columns, thSource.data('field'));
-                if (targetPosition < sourcePosition) {
-                    thTarget.addClass('gj-grid-left-border');
-                    grid.find('tbody tr[data-gj-role="row"] td:nth-child(' + (thTarget.index() + 1) + ')').addClass('gj-grid-left-border');
-                } else {
-                    thTarget.addClass('gj-grid-right-border');
-                    grid.find('tbody tr[data-gj-role="row"] td:nth-child(' + (thTarget.index() + 1) + ')').addClass('gj-grid-right-border');
-                }
-            };
-        },
-
-        droppableOut: function () {
-            let thTarget = (this);
-            thTarget.removeClass('gj-grid-left-border').removeClass('gj-grid-right-border');
-            thTarget.closest('table').find('tbody tr[data-gj-role="row"] td:nth-child(' + (thTarget.index() + 1) + ')').removeClass('gj-grid-left-border').removeClass('gj-grid-right-border');
         }
     },
 
@@ -11357,7 +11354,7 @@ gj.tree.methods = {
         let i, records = tree.getRecords();
 
         gj.tree.events.dataBinding(tree.element);
-        //TODO: tree.element.off()
+        tree.off();
         tree.element.innerHTML = '';
         for (i = 0; i < records.length; i++) {
             gj.tree.methods.appendNode(tree, tree.element, records[i], 1);
@@ -11399,8 +11396,8 @@ gj.tree.methods = {
         if (disabled) {
             gj.tree.methods.disableNode(tree, node);
         } else {
-            expander.addEventListener('click', gj.tree.methods.expanderClickHandler(tree));
-            display.addEventListener('click', gj.tree.methods.displayClickHandler(tree));
+            gj.core.on(expander, 'click', gj.tree.methods.expanderClickHandler(tree));
+            gj.core.on(display, 'click', gj.tree.methods.displayClickHandler(tree));
         }
         wrapper.appendChild(expander);
         wrapper.appendChild(display);
@@ -11783,8 +11780,8 @@ gj.tree.methods = {
         if (expander && display) {
             cascade = typeof (cascade) === 'undefined' ? true : cascade;
             node.classList.remove('disabled');
-            expander.addEventListener('click', gj.tree.methods.expanderClickHandler(tree));
-            display.addEventListener('click', gj.tree.methods.displayClickHandler(tree));
+            gj.core.on(expander, 'click', gj.tree.methods.expanderClickHandler(tree));
+            gj.core.on(display, 'click', gj.tree.methods.displayClickHandler(tree));
             gj.tree.events.enable(tree.element, node);
             if (cascade) {
                 children = gj.core.selectAll(node, 'ul>li');
@@ -11811,8 +11808,8 @@ gj.tree.methods = {
         if (expander && display) {
             cascade = typeof (cascade) === 'undefined' ? true : cascade;
             node.classList.add('disabled');
-            //TODO: expander.off('click');
-            //TODO: display.off('click');
+            gj.core.off(expander, 'click');
+            gj.core.off(display, 'click');
             gj.tree.events.disable(tree.element, node);
             if (cascade) {
                 children = gj.core.selectAll(node, 'ul>li');
@@ -11828,8 +11825,10 @@ gj.tree.methods = {
         if (data) {
             gj.tree.events.destroying(tree.element);
             tree.xhr && tree.xhr.abort();
-            //TODO: tree.off();
+            tree.off();
             tree.removeConfig();
+            grid.removeRecords();
+            grid.removeTotalRecords();
             tree.element.removeAttribute('data-gj-guid');
             tree.element.removeAttribute('data-gj-type');
             tree.element.setAttribute('class', '');
@@ -12897,7 +12896,7 @@ gj.tree.plugins.checkboxes = {
         /**
          * Check all tree nodes
          * @method
-         * @return tree as jQuery object
+         * @return tree as html element object
          * @example Sample <!-- checkbox, tree -->
          * <button onclick="tree.checkAll()" class="gj-button-md">Check All</button>
          * <button onclick="tree.uncheckAll()" class="gj-button-md">Uncheck All</button>
@@ -12923,7 +12922,7 @@ gj.tree.plugins.checkboxes = {
         /**
          * Uncheck all tree nodes
          * @method
-         * @return tree as jQuery object
+         * @return tree as html element object
          * @example Sample <!-- checkbox, tree -->
          * <button onclick="tree.checkAll()" class="gj-button-md">Check All</button>
          * <button onclick="tree.uncheckAll()" class="gj-button-md">Uncheck All</button>
@@ -12949,8 +12948,8 @@ gj.tree.plugins.checkboxes = {
         /**
          * Check tree node.
          * @method
-         * @param {object} node - The node as jQuery object
-         * @return tree as jQuery object
+         * @param {object} node - The node as html element object
+         * @return tree as html element object
          * @example Sample <!-- checkbox, tree -->
          * <button onclick="tree.check(tree.getNodeByText('China'))" class="gj-button-md">Check China</button>
          * <br/>
@@ -12972,8 +12971,8 @@ gj.tree.plugins.checkboxes = {
         /**
          * Uncheck tree node.
          * @method
-         * @param {object} node - The node as jQuery object
-         * @return tree as jQuery object
+         * @param {object} node - The node as html element object
+         * @return tree as html element object
          * @example Sample <!-- checkbox, tree -->
          * <button onclick="tree.uncheck(tree.getNodeByText('China'))" class="gj-button-md">UnCheck China</button>
          * <br/>
@@ -12999,7 +12998,7 @@ gj.tree.plugins.checkboxes = {
          * Event fires when the checkbox state is changed.
          * @event checkboxChange
          * @param {object} e - event data
-         * @param {object} e.detail.node - the node object as jQuery element
+         * @param {object} e.detail.node - the node object as html element
          * @param {object} e.detail.record - the record data
          * @param {string} e.detail.state - the new state of the checkbox
          * @example Event.Sample <!-- checkbox, tree -->
@@ -14309,7 +14308,7 @@ gj.dropdown.config = {
          *         dataSource: [ { value: 1, text: 'One' }, { value: 2, text: 'Two' }, { value: 3, text: 'Three' } ]
          *     });
          * </script>
-         * @example Remote.DataSource <!-- jquery, dropdown -->
+         * @example Remote.DataSource <!-- dropdown -->
          * <select id="dropdown" width="200"></select>
          * <script>
          *     new GijgoDropDown(document.getElementById('dropdown'), {
@@ -14399,18 +14398,18 @@ gj.dropdown.config = {
         /** The maximum height of the dropdown list. When set to auto adjust to the screen height.
          * @type Number|'auto'
          * @default 'auto'
-         * @example Auto <!-- jquery, dropdown -->
+         * @example Auto <!-- dropdown -->
          * <p>Note: Minimize the window in order to enable scrolling for the drop down list.</p>
          * <select id="dropdown" width="200"></select>
          * <script>
          *     new GijgoDropDown(document.getElementById('dropdown'), { maxHeight: 'auto', dataSource: '/Locations/GetCountries', valueField: 'id' });
          * </script>
-         * @example Fixed <!-- jquery, dropdown -->
+         * @example Fixed <!-- dropdown -->
          * <select id="dropdown" width="200"></select>
          * <script>
          *     new GijgoDropDown(document.getElementById('dropdown'), { maxHeight: 200, dataSource: '/Locations/GetCountries', valueField: 'id' });
          * </script>
-         * @example Bootstrap.4 <!-- jquery, bootstrap4, dropdown -->
+         * @example Bootstrap.4 <!-- bootstrap4, dropdown -->
          * <select id="dropdown" width="200"></select>
          * <script>
          *     new GijgoDropDown(document.getElementById('dropdown'), { maxHeight: 200, dataSource: '/Locations/GetCountries', valueField: 'id', uiLibrary: 'bootstrap4' });
@@ -14421,22 +14420,22 @@ gj.dropdown.config = {
         /** Placeholder. This label appear only if the value is not set yet.
          * @type string
          * @default undefined
-         * @example JS.Config <!-- jquery, dropdown -->
+         * @example JS.Config <!-- dropdown -->
          * <select id="dropdown"></select>
          * <script>
          *     new GijgoDropDown(document.getElementById('dropdown'), { placeholder: 'Select One...', width: 200, dataSource: '/Locations/GetCountries', valueField: 'id' });
          * </script>
-         * @example HTML.Config <!-- jquery, dropdown -->
+         * @example HTML.Config <!-- dropdown -->
          * <select id="dropdown" placeholder="Select One..." width="200" data-gj-source="/Locations/GetCountries" data-gj-value-field="id"></select>
          * <script>
          *     new GijgoDropDown(document.getElementById('dropdown'));
          * </script>
-         * @example Bootstrap <!-- jquery, bootstrap, dropdown -->
+         * @example Bootstrap <!-- bootstrap, dropdown -->
          * <select id="dropdown" placeholder="Select One..." width="200" data-gj-source="/Locations/GetCountries" data-gj-value-field="id"></select>
          * <script>
          *     new GijgoDropDown(document.getElementById('dropdown'), { uiLibrary: 'bootstrap' });
          * </script>
-         * @example Bootstrap.4 <!-- jquery, bootstrap4, dropdown -->
+         * @example Bootstrap.4 <!-- bootstrap4, dropdown -->
          * <select id="dropdown" placeholder="Select One..." width="200" data-gj-source="/Locations/GetCountries" data-gj-value-field="id"></select>
          * <script>
          *     new GijgoDropDown(document.getElementById('dropdown'), { uiLibrary: 'bootstrap4' });
@@ -14497,7 +14496,7 @@ gj.dropdown.config = {
          * The css files for Material Icons, Font Awesome or Glyphicons should be manually included to the page where the grid is in use.
          * @type (materialicons|fontawesome|glyphicons)
          * @default 'materialicons'
-         * @example Bootstrap.Material.Icons <!-- jquery, bootstrap, dropdown -->
+         * @example Bootstrap.Material.Icons <!-- bootstrap, dropdown -->
          * <select id="dropdown" width="200"></select>
          * <script>
          *     var dropdown = new GijgoDropDown(document.getElementById('dropdown'), {
@@ -14507,7 +14506,7 @@ gj.dropdown.config = {
          *         valueField: 'id'
          *     });
          * </script>
-         * @example Bootstrap.4.Font.Awesome <!-- jquery, bootstrap4, fontawesome, dropdown -->
+         * @example Bootstrap.4.Font.Awesome <!-- bootstrap4, fontawesome, dropdown -->
          * <select id="dropdown" width="200"></select>
          * <script>
          *     var dropdown = new GijgoDropDown(document.getElementById('dropdown'), {
@@ -14525,7 +14524,7 @@ gj.dropdown.config = {
              * @alias icons.dropdown
              * @type String
              * @default '<i class="gj-icon arrow-dropdown" />'
-             * @example Custom.Material.Icon <!-- jquery, materialicons, dropdown -->
+             * @example Custom.Material.Icon <!-- materialicons, dropdown -->
              * <select id="dropdown"></select>
              * <script>
              *     var dropdown = new GijgoDropDown(document.getElementById('dropdown'), {
@@ -14538,7 +14537,7 @@ gj.dropdown.config = {
              *         }
              *     });
              * </script>
-             * @example Custom.Glyphicon.Icon <!-- jquery, bootstrap, dropdown -->
+             * @example Custom.Glyphicon.Icon <!-- bootstrap, dropdown -->
              * <select id="dropdown"></select>
              * <script>
              *     var dropdown = new GijgoDropDown(document.getElementById('dropdown'), {
@@ -14914,8 +14913,9 @@ gj.dropdown.methods = {
             parent = dropdown.element.parentNode;
         if (data) {
             dropdown.xhr && dropdown.xhr.abort();
-            //TODO: remove all event listeners - $dropdown.off();
+            dropdown.off();
             dropdown.removeConfig();
+            dropdown.removeRecords();
             el.removeAttribute('data-gj-type')
             el.removeAttribute('data-gj-guid')
             el.removeAttribute('data-gj-dropdown');
@@ -15093,13 +15093,6 @@ gj.datepicker.config = {
          *        showOtherMonths: true
          *    });
          * </script>
-         * @example jQuery.True <!-- jquery, datepicker -->
-         * <input id="datepicker" width="312" />
-         * <script>
-         *    $('#datepicker').datepicker({
-         *        showOtherMonths: true
-         *    });
-         * </script>
          * @example False <!-- datepicker -->
          * <input id="datepicker" width="312" />
          * <script>
@@ -15118,14 +15111,6 @@ gj.datepicker.config = {
          * <input id="datepicker" width="312" />
          * <script>
          *    new GijgoDatePicker(document.getElementById('datepicker'), {
-         *        showOtherMonths: true,
-         *        selectOtherMonths: true
-         *    });
-         * </script>
-         * @example jQuery.True <!-- jquery, datepicker -->
-         * <input id="datepicker" width="312" />
-         * <script>
-         *    $('#datepicker').datepicker({
          *        showOtherMonths: true,
          *        selectOtherMonths: true
          *    });
@@ -15169,10 +15154,10 @@ gj.datepicker.config = {
          *        minDate: today
          *    });
          * </script>
-         * @example jQuery.Yesterday <!-- jquery, datepicker -->
+         * @example Yesterday <!-- datepicker -->
          * <input id="datepicker" width="312" />
          * <script>
-         *     $('#datepicker').datepicker({
+         *     new GijgoDatePicker(document.getElementById('datepicker'), {
          *        minDate: function() {
          *            var date = new Date();
          *            date.setDate(date.getDate()-1);
@@ -15222,10 +15207,10 @@ gj.datepicker.config = {
          *        maxDate: today
          *    });
          * </script>
-         * @example jQuery.Tomorrow <!-- jquery, datepicker -->
+         * @example Tomorrow <!-- datepicker -->
          * <input id="datepicker" width="312" />
          * <script>
-         *     $('#datepicker').datepicker({ 
+         *     new GijgoDatePicker(document.getElementById('datepicker'), { 
          *        maxDate: function() {
          *            var date = new Date();
          *            date.setDate(date.getDate()+1);
@@ -15780,10 +15765,10 @@ gj.datepicker.config = {
          * <script>
          *    new GijgoDatePicker(document.getElementById('datepicker'), { header: true, modal: true, footer: true });
          * </script>
-         * @example False <!-- jquery, datepicker -->
+         * @example False <!-- datepicker -->
          * <input id="datepicker" width="312" />
          * <script>
-         *    $('#datepicker').datepicker({ header: false });
+         *    new GijgoDatePicker(document.getElementById('datepicker'), { header: false });
          * </script>
          */
         header: false,
@@ -15796,10 +15781,10 @@ gj.datepicker.config = {
          * <script>
          *    new GijgoDatePicker(document.getElementById('datepicker'), { footer: true, modal: true, header: true });
          * </script>
-         * @example False <!-- jquery, datepicker -->
+         * @example False <!-- datepicker -->
          * <input id="datepicker" width="312" />
          * <script>
-         *    $('#datepicker').datepicker({ footer: false });
+         *    new GijgoDatePicker(document.getElementById('datepicker'), { footer: false });
          * </script>
          */
         footer: false,
@@ -15964,7 +15949,7 @@ gj.datepicker.methods = {
                 rightIcon = gj.core.createElement(data.icons.rightIcon);
             }
             rightIcon.setAttribute('data-gj-role', 'right-icon');
-            rightIcon.addEventListener('click', function (e) {
+            gj.core.on(rightIcon, 'click', function (e) {
                 var calendar = document.body.querySelector('[data-gj-role="picker"][data-gj-guid="' + picker.element.getAttribute('data-gj-guid') + '"]');
                 if (window.getComputedStyle(calendar).display === 'none') {
                     gj.datepicker.methods.open(picker, data);
@@ -15976,7 +15961,7 @@ gj.datepicker.methods = {
         }
 
         if (data.showOnFocus) {
-            picker.element.addEventListener('focus', function () {
+            gj.core.on(picker.element, 'focus', function () {
                 gj.datepicker.methods.open(picker, data);
             });
         }
@@ -15984,24 +15969,24 @@ gj.datepicker.methods = {
         calendar = gj.datepicker.methods.createCalendar(picker, data);
 
         if (data.footer !== true) {
-            picker.element.addEventListener('blur', function () {
+            gj.core.on(picker.element, 'blur', function () {
                 picker.timeout = setTimeout(function () {
                     gj.datepicker.methods.close(picker);
                 }, 500);
             });
-            calendar.addEventListener('mousedown', function () {
+            gj.core.on(calendar, 'mousedown', function () {
                 clearTimeout(picker.timeout);
                 document.activeElement !== picker.element && picker.element.focus();
                 return false;
             });
-            calendar.addEventListener('click', function () {
+            gj.core.on(calendar, 'click', function () {
                 clearTimeout(picker.timeout);
                 //document.activeElement !== picker.element && picker.element.focus(); //breaks datetimepicker
             });
         }
 
         if (data.keyboardNavigation) {
-            document.addEventListener('keydown', gj.datepicker.methods.createKeyDownHandler(picker, calendar, data));
+            gj.core.on(document, 'keydown', gj.datepicker.methods.createKeyDownHandler(picker, calendar, data));
         }
     },
 
@@ -16821,6 +16806,7 @@ gj.datepicker.methods = {
         var data = picker.getConfig(), calendar;
         if (data) {
             picker.removeConfig();
+            picker.off();
 
             calendar = document.body.querySelector('[data-gj-role="picker"][data-gj-guid="' + picker.element.getAttribute('data-gj-guid') + '"]');
             if (calendar.parentElement.getAttribute('data-gj-role') === 'modal') {
@@ -17978,7 +17964,7 @@ gj.datetimepicker.config = {
          * @additionalinfo All configuration options that exists on the datetimepicker level are going to override the options at datepicker level.
          * @type object
          * @default undefined
-         * @example Sample <!-- nojquery, datetimepicker -->
+         * @example Sample <!-- datetimepicker -->
          * <input id="picker" width="312" />
          * <script>
          *    new GijgoDateTimePicker(document.getElementById('picker'), {
@@ -17994,22 +17980,22 @@ gj.datetimepicker.config = {
          * @additionalinfo The css file for bootstrap should be manually included if you use bootstrap.
          * @type (materialdesign|bootstrap|bootstrap4)
          * @default materialdesign
-         * @example MaterialDesign <!-- nojquery, datetimepicker -->
+         * @example MaterialDesign <!-- datetimepicker -->
          * <input id="picker" width="312" />
          * <script>
          *    new GijgoDateTimePicker(document.getElementById('picker'), { uiLibrary: 'materialdesign' });
          * </script>
-         * @example MaterialDesign.NoModal <!-- nojquery, datetimepicker -->
+         * @example MaterialDesign.NoModal <!-- datetimepicker -->
          * <input id="picker" width="312" />
          * <script>
          *    new GijgoDateTimePicker(document.getElementById('picker'), { uiLibrary: 'materialdesign', modal: false, footer:false });
          * </script>
-         * @example Bootstrap.3 <!-- nojquery, bootstrap, datetimepicker -->
+         * @example Bootstrap.3 <!-- bootstrap, datetimepicker -->
          * <input id="picker" width="220" />
          * <script>
          *     new GijgoDateTimePicker(document.getElementById('picker'), { uiLibrary: 'bootstrap' });
          * </script>
-         * @example Bootstrap.4 <!-- nojquery, bootstrap4, datetimepicker -->
+         * @example Bootstrap.4 <!-- bootstrap4, datetimepicker -->
          * <input id="picker" width="234" />
          * <script>
          *     new GijgoDateTimePicker(document.getElementById('picker'), { uiLibrary: 'bootstrap4' });
@@ -18025,12 +18011,12 @@ gj.datetimepicker.config = {
         /** The initial datetimepicker value.
          * @type number
          * @default undefined
-         * @example Javascript <!-- nojquery, datetimepicker -->
+         * @example Javascript <!-- datetimepicker -->
          * <input id="picker" width="300" />
          * <script>
          *    new GijgoDateTimePicker(document.getElementById('picker'), { value: '22:10 03/27/2023' });
          * </script>
-         * @example HTML <!-- nojquery, datetimepicker -->
+         * @example HTML <!-- datetimepicker -->
          * <input id="picker" width="300" value="22:10 03/27/2023" />
          * <script>
          *     new GijgoDateTimePicker(document.getElementById('picker'));
@@ -18059,12 +18045,12 @@ gj.datetimepicker.config = {
          * <b>yyyy</b> - Year represented by four digits.<br/>
          * @type String
          * @default 'HH:MM mm/dd/yyyy'
-         * @example Sample <!-- nojquery, datetimepicker -->
+         * @example Sample <!-- datetimepicker -->
          * <input id="input" value="05:50 2023-27-03" width="312" />
          * <script>
          *     new GijgoDateTimePicker(document.getElementById('picker'), { format: 'HH:MM yyyy-dd-mm' });
          * </script>
-         * @example Long.Month.Format <!-- nojquery, datetimepicker -->
+         * @example Long.Month.Format <!-- datetimepicker -->
          * <input id="input" value="10 October 2023 05:50" width="312" />
          * <script>
          *     new GijgoDateTimePicker(document.getElementById('picker'), { format: 'dd mmmm yyyy HH:MM' });
@@ -18075,12 +18061,12 @@ gj.datetimepicker.config = {
         /** The width of the datetimepicker.
          * @type number
          * @default undefined
-         * @example JS.Config <!-- nojquery, datetimepicker -->
+         * @example JS.Config <!-- datetimepicker -->
          * <input id="input" />
          * <script>
          *    new GijgoDateTimePicker(document.getElementById('picker'), { width: 312 });
          * </script>
-         * @example HTML.Config <!-- nojquery, datetimepicker -->
+         * @example HTML.Config <!-- datetimepicker -->
          * <input id="input" width="312" />
          * <script>
          *    new GijgoDateTimePicker(document.getElementById('picker'));
@@ -18091,17 +18077,17 @@ gj.datetimepicker.config = {
         /** If set to true, the datetimepicker will have modal behavior.
          * @type Boolean
          * @default true
-         * @example Material.Design <!-- nojquery, datetimepicker -->
+         * @example Material.Design <!-- datetimepicker -->
          * <input id="picker" width="312" />
          * <script>
          *    new GijgoDateTimePicker(document.getElementById('picker'), { modal: true });
          * </script>
-         * @example Bootstrap <!-- nojquery, bootstrap, datetimepicker -->
+         * @example Bootstrap <!-- bootstrap, datetimepicker -->
          * <input id="picker" width="220" />
          * <script>
          *    new GijgoDateTimePicker(document.getElementById('picker'), { uiLibrary: 'bootstrap', modal: true, footer: true });
          * </script>
-         * @example Bootstrap.4 <!-- nojquery, bootstrap4, datetimepicker -->
+         * @example Bootstrap.4 <!-- bootstrap4, datetimepicker -->
          * <input id="picker" width="234" />
          * <script>
          *    new GijgoDateTimePicker(document.getElementById('picker'), { uiLibrary: 'bootstrap4', modal: true, footer: true });
@@ -18112,12 +18098,12 @@ gj.datetimepicker.config = {
         /** If set to true, add footer with ok and cancel buttons to the datetimepicker.
          * @type Boolean
          * @default true
-         * @example True <!-- nojquery, datetimepicker -->
+         * @example True <!-- datetimepicker -->
          * <input id="picker" width="312" />
          * <script>
          *    new GijgoDateTimePicker(document.getElementById('picker'), { footer: true, modal: true, header: true });
          * </script>
-         * @example False <!-- nojquery, datetimepicker -->
+         * @example False <!-- datetimepicker -->
          * <input id="picker" width="312" />
          * <script>
          *    new GijgoDateTimePicker(document.getElementById('picker'), { footer: false });
@@ -18128,7 +18114,7 @@ gj.datetimepicker.config = {
         /** The size of the datetimepicker input.
          * @type 'small'|'default'|'large'
          * @default 'default'
-         * @example Bootstrap.4 <!-- nojquery, bootstrap4, datetimepicker -->
+         * @example Bootstrap.4 <!-- bootstrap4, datetimepicker -->
          * <p><label for="small">Small Size:</label> <input id="small" width="234" value="10:20 03/20/2023" /></p>
          * <p><label for="default">Default Size:</label> <input id="default" width="234" value="10:20 03/20/2023" /></p>
          * <p><label for="large">Large Size:</label> <input id="large" width="234" value="10:20 03/20/2023" /></p>
@@ -18137,7 +18123,7 @@ gj.datetimepicker.config = {
          *     new GijgoDateTimePicker(document.getElementById('default'), { uiLibrary: 'bootstrap4', size: 'default' });
          *     new GijgoDateTimePicker(document.getElementById('large'), { uiLibrary: 'bootstrap4', size: 'large' });
          * </script>
-         * @example Bootstrap.4.Font.Awesome <!-- nojquery, bootstrap4, fontawesome, datetimepicker -->
+         * @example Bootstrap.4.Font.Awesome <!-- bootstrap4, fontawesome, datetimepicker -->
          * <p><label for="small">Small Size:</label> <input id="small" width="234" value="10:20 03/20/2023" /></p>
          * <p><label for="default">Default Size:</label> <input id="default" width="234" value="10:20 03/20/2023" /></p>
          * <p><label for="large">Large Size:</label> <input id="large" width="234" value="10:20 03/20/2023" /></p>
@@ -18146,7 +18132,7 @@ gj.datetimepicker.config = {
          *     new GijgoDateTimePicker(document.getElementById('default'), { uiLibrary: 'bootstrap4', iconsLibrary: 'fontawesome', size: 'default' });
          *     new GijgoDateTimePicker(document.getElementById('large'), { uiLibrary: 'bootstrap4', iconsLibrary: 'fontawesome', size: 'large' });
          * </script>
-         * @example Bootstrap.3 <!-- nojquery, bootstrap, datetimepicker -->
+         * @example Bootstrap.3 <!-- bootstrap, datetimepicker -->
          * <p><label for="small">Small Size:</label> <input id="small" width="220" value="10:20 03/20/2023" /></p>
          * <p><label for="default">Default Size:</label> <input id="default" width="220" value="10:20 03/20/2023" /></p>
          * <p><label for="large">Large Size:</label> <input id="large" width="220" value="10:20 03/20/2023" /></p>
@@ -18155,7 +18141,7 @@ gj.datetimepicker.config = {
          *     new GijgoDateTimePicker(document.getElementById('default'), { uiLibrary: 'bootstrap', size: 'default' });
          *     new GijgoDateTimePicker(document.getElementById('large'), { uiLibrary: 'bootstrap', size: 'large' });
          * </script>
-         * @example Material.Design <!-- nojquery, datetimepicker -->
+         * @example Material.Design <!-- datetimepicker -->
          * <p><label for="small">Small Size:</label> <input id="small" width="276" value="10:20 03/20/2023" /></p>
          * <p><label for="default">Default Size:</label> <input id="default" width="276" value="10:20 03/20/2023" /></p>
          * <p><label for="large">Large Size:</label> <input id="large" width="276" value="10:20 03/20/2023" /></p>
@@ -18170,7 +18156,7 @@ gj.datetimepicker.config = {
         /** The language that needs to be in use.
          * @type string
          * @default 'en-us'
-         * @example German <!-- nojquery, datetimepicker -->
+         * @example German <!-- datetimepicker -->
          * <input id="picker" width="276" />
          * <script>
          *    new GijgoDateTimePicker(document.getElementById('picker'), {
@@ -18178,7 +18164,7 @@ gj.datetimepicker.config = {
          *        format: 'HH:MM dd mmm yyyy'
          *    });
          * </script>
-         * @example Bulgarian <!-- nojquery, datetimepicker -->
+         * @example Bulgarian <!-- datetimepicker -->
          * <input id="picker" width="276" />
          * <script>
          *    new GijgoDateTimePicker(document.getElementById('picker'), {
@@ -18187,7 +18173,7 @@ gj.datetimepicker.config = {
          *        datepicker: { weekStartDay: 1 }
          *    });
          * </script>
-         * @example Chinise_Simplified <!-- nojquery, datetimepicker -->
+         * @example Chinise_Simplified <!-- datetimepicker -->
          * <input id="picker" width="276" />
          * <script>
          *    new GijgoDateTimePicker(document.getElementById('picker'), {
@@ -18436,7 +18422,7 @@ gj.datetimepicker.events = {
      * @event change
      * @param {object} e - event data
      * @return Boolean
-     * @example sample <!--nojquery, datetimepicker -->
+     * @example sample <!--datetimepicker -->
      * <input id="input" width="312" />
      * <script>
      *     new GijgoDateTimePicker(document.getElementById('picker'), {
@@ -18465,14 +18451,14 @@ GijgoDateTimePicker = function (element, jsConfig) {
      * @method
      * @param {string} value - The value that needs to be selected.
      * @return string
-     * @example Get <!-- nojquery, datetimepicker -->
+     * @example Get <!-- datetimepicker -->
      * <button class="gj-button-md" onclick="alert(datetimepicker.value())">Get Value</button>
      * <hr/>
      * <input id="picker" width="312" value="17:50 03/27/2023" />
      * <script>
      *     var datetimepicker = new GijgoDateTimePicker(document.getElementById('picker'));
      * </script>
-     * @example Set <!-- nojquery, datetimepicker -->
+     * @example Set <!-- datetimepicker -->
      * <button class="gj-button-md" onclick="datetimepicker.value('13:40 08/01/2023')">Set Value</button>
      * <hr/>
      * <input id="picker" width="312" />
@@ -18487,7 +18473,7 @@ GijgoDateTimePicker = function (element, jsConfig) {
     /** Open the calendar.
      * @method
      * @return datetimepicker
-     * @example Open.Close <!-- nojquery, datetimepicker -->
+     * @example Open.Close <!-- datetimepicker -->
      * <button class="gj-button-md" onclick="picker.open()">Open</button>
      * <button class="gj-button-md" onclick="picker.close()">Close</button>
      * <hr/>
@@ -18503,7 +18489,7 @@ GijgoDateTimePicker = function (element, jsConfig) {
     /** Close the calendar.
      * @method
      * @return datetimepicker
-     * @example Open.Close <!-- nojquery, datetimepicker -->
+     * @example Open.Close <!-- datetimepicker -->
      * <button class="gj-button-md" onclick="picker.open()">Open</button>
      * <button class="gj-button-md" onclick="picker.close()">Close</button>
      * <hr/>
@@ -18519,7 +18505,7 @@ GijgoDateTimePicker = function (element, jsConfig) {
     /** Remove datetimepicker functionality from the element.
      * @method
      * @return datetimepicker
-     * @example sample <!-- nojquery, datetimepicker -->
+     * @example sample <!-- datetimepicker -->
      * <button class="gj-button-md" onclick="picker.destroy()">Destroy</button>
      * <input id="picker" width="312" />
      * <script>
@@ -18864,7 +18850,7 @@ gj.slider.methods = {
             wrapper.removeChild(wrapper.querySelector('[role="handle"]'));
             wrapper.removeChild(wrapper.querySelector('[role="progress"]'));
             el.unwrap();
-            //TODO: $(el).off();
+            slider.off();
             slider.removeConfig();
             el.removeAttribute('data-type');
             el.removeAttribute('data-gj-guid')
