@@ -122,14 +122,14 @@ gj.grid.plugins.columnReorder = {
                 });
                 dragEl.dispatchEvent(new Event('mousedown'));
 
-                grid.element.setAttribute('data-gj-drag-column', 'true');
+                grid.element.setAttribute('data-gj-drag-column', srcIndex);
             }
         },
 
         createMouseUpHandler: function (grid) {
             return function (e) {
-                if (grid.element.getAttribute('data-gj-drag-column') === 'true') {
-                    grid.element.setAttribute('data-gj-drag-column', 'false');
+                if (grid.element.hasAttribute('data-gj-drag-column')) {
+                    grid.element.removeAttribute('data-gj-drag-column');
                 }
             }
         },
@@ -139,15 +139,30 @@ gj.grid.plugins.columnReorder = {
                 body = grid.element.querySelector('tbody'),
                 headerPos = gj.core.position(header);
             return function (e) {
-                if (grid.element.getAttribute('data-gj-drag-column') === 'true') {
+                if (grid.element.hasAttribute('data-gj-drag-column')) {
                     let mouse = { x: grid.mouseX(e), y: grid.mouseY(e) };
                     if (mouse.x > headerPos.left && mouse.x < headerPos.right && mouse.y > headerPos.top && mouse.y < headerPos.bottom) {
                         for (let i = 0; i < header.children.length; i++) {
-                            let middle, thPos = gj.core.position(header.children[i]);
-                            if (mouse.x > thPos.left && mouse.x < thPos.right && mouse.y > thPos.top && mouse.y < thPos.bottom) {                            
-                                middle = (thPos.left + thPos.right) / 2;
-                                gj.grid.plugins.columnReorder.private.addBorder(mouse.x < middle ? 'left' : 'right', header, body, i);
-                                break;
+                            let thPos = gj.core.position(header.children[i]) ;
+                            if (mouse.x > thPos.left && mouse.x < thPos.right && mouse.y > thPos.top && mouse.y < thPos.bottom) {       
+                                let thIndex = Array.from(header.children).indexOf(header.children[i]),
+                                    srcIndex = parseInt(grid.element.getAttribute('data-gj-drag-column')),
+                                    isLeft = mouse.x < ((thPos.left + thPos.right) / 2);
+
+                                grid.element.querySelectorAll('.gj-grid-left-border').forEach((element) => {  element.classList.remove('gj-grid-left-border'); });
+                                grid.element.querySelectorAll('.gj-grid-right-border').forEach((element) => {  element.classList.remove('gj-grid-right-border'); });
+                                if (srcIndex < thIndex) {
+                                    if (!isLeft || srcIndex + 1 < thIndex) {
+                                        gj.grid.plugins.columnReorder.private.addBorder(isLeft, header, body, i);
+                                        break;
+                                    }
+                                }
+                                if (srcIndex > thIndex) {
+                                    if (isLeft || thIndex + 1 < srcIndex) {
+                                        gj.grid.plugins.columnReorder.private.addBorder(isLeft, header, body, i);
+                                        break;
+                                    }
+                                }
                             }
                         }                        
                     }
@@ -155,16 +170,10 @@ gj.grid.plugins.columnReorder = {
             };
         },
 
-        addBorder: function (type, header, body, column) {
-            header.children[column].classList.remove(type === 'left' ? 'gj-grid-right-border' : 'gj-grid-left-border');
-            header.children[column].classList.add(type === 'left' ? 'gj-grid-left-border' : 'gj-grid-right-border');
-            gj.core.removeClasses(header.children[column - 1], 'gj-grid-left-border gj-grid-right-border');
-            gj.core.removeClasses(header.children[column + 1], 'gj-grid-left-border gj-grid-right-border');
+        addBorder: function (isLeft, header, body, column) {
+            header.children[column].classList.add(isLeft ? 'gj-grid-left-border' : 'gj-grid-right-border');
             for (let i = 0; i < body.children.length; i++) {
-                body.children[i].children[column].classList.remove(type === 'left' ? 'gj-grid-right-border' : 'gj-grid-left-border');
-                body.children[i].children[column].classList.add(type === 'left' ? 'gj-grid-left-border' : 'gj-grid-right-border');
-                gj.core.removeClasses(body.children[i].children[column - 1], 'gj-grid-left-border gj-grid-right-border');
-                gj.core.removeClasses(body.children[i].children[column + 1], 'gj-grid-left-border gj-grid-right-border');
+                body.children[i].children[column].classList.add(isLeft ? 'gj-grid-left-border' : 'gj-grid-right-border');
             }
         },
 
@@ -182,17 +191,23 @@ gj.grid.plugins.columnReorder = {
                     for (let i = 0; i < header.children.length; i++) {
                         let thPos = gj.core.position(header.children[i]);
                         if (e.detail.x > thPos.left && e.detail.x < thPos.right && e.detail.y > thPos.top && e.detail.y < thPos.bottom) {  
-                            let thIndex = Array.from(header.children).indexOf(header.children[i]);
-                            if (srcIndex != thIndex) {
-                                let middle = (thPos.left + thPos.right) / 2;
-                                if (e.detail.x < middle) {
-                                    header.insertBefore(thSource, header.children[i]);
-                                    gj.grid.plugins.columnReorder.private.moveRowCells(grid, srcIndex, thIndex);
-                                } else {
-                                    header.insertBefore(thSource, header.children[i].nextSibling);
-                                    gj.grid.plugins.columnReorder.private.moveRowCells(grid, srcIndex, thIndex + (thIndex < srcIndex ? 1 : 0));
+                            let thIndex = Array.from(header.children).indexOf(header.children[i]),
+                                isLeft = e.detail.x < ((thPos.left + thPos.right) / 2);
+                            if (srcIndex < thIndex) {
+                                if (!isLeft || srcIndex + 1 < thIndex) {
+                                    header.insertBefore(thSource, isLeft ? header.children[i] : header.children[i].nextSibling);
+                                    gj.grid.plugins.columnReorder.private.moveRowCells(grid, srcIndex, isLeft ? thIndex - 1 : thIndex);
+                                    config.columns.splice(srcIndex, isLeft ? thIndex - 1 : thIndex, 0, config.columns.splice(srcIndex, 1)[0]);
+                                    break;
                                 }
-                                config.columns.splice(thIndex + (thIndex < srcIndex ? 1 : 0), 0, config.columns.splice(srcIndex, 1)[0]);                            
+                            }
+                            if (srcIndex > thIndex) {
+                                if (isLeft || thIndex + 1 < srcIndex) {
+                                    header.insertBefore(thSource, isLeft ? header.children[i] : header.children[i].nextSibling);
+                                    gj.grid.plugins.columnReorder.private.moveRowCells(grid, srcIndex, isLeft ? thIndex : thIndex + 1);
+                                    config.columns.splice(srcIndex, isLeft ? thIndex : thIndex + 1, 0, config.columns.splice(srcIndex, 1)[0]);
+                                    break; 
+                                }
                             }
                             break;
                         }
