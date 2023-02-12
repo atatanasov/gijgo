@@ -40,6 +40,17 @@ gj.grid.plugins.rowReorder = {
              *         columns: [ { field: 'ID', width: 42 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
              *     });
              * </script>
+             * @example Bootstrap.5 <!-- bootstrap5, grid, grid.rowReorder, draggable, droppable -->
+             * <p>Drag and Drop rows in order to reorder them.</p>
+             * <table id="grid"></table>
+             * <script>
+             *     new GijgoGrid(document.getElementById('grid'), {
+             *         dataSource: '/Players/Get',
+             *         rowReorder: true,
+             *         uiLibrary: 'bootstrap5',
+             *         columns: [ { field: 'ID', width: 42 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
+             *     });
+             * </script>
              */
             rowReorder: false,
 
@@ -66,7 +77,7 @@ gj.grid.plugins.rowReorder = {
              * @example Visible.OrderNumber <!-- grid, grid.rowReorder, draggable, droppable -->
              * <table id="grid"></table>
              * <script>
-             *     var data = [
+             *     let data = [
              *         { 'ID': 1, 'OrderNumber': 1, 'Name': 'Hristo Stoichkov', 'PlaceOfBirth': 'Plovdiv, Bulgaria' },
              *         { 'ID': 2, 'OrderNumber': 2, 'Name': 'Ronaldo Luis Nazario de Lima', 'PlaceOfBirth': 'Rio de Janeiro, Brazil' },
              *         { 'ID': 3, 'OrderNumber': 3, 'Name': 'David Platt', 'PlaceOfBirth': 'Chadderton, Lancashire, England' }
@@ -82,7 +93,7 @@ gj.grid.plugins.rowReorder = {
              * <button onclick="alert(JSON.stringify(grid.getAll()))" class="gj-button-md">Show Data</button><br/><br/>
              * <table id="grid"></table>
              * <script>
-             *     var data = [
+             *     let data = [
              *         { 'ID': 1, 'OrderNumber': 1, 'Name': 'Hristo Stoichkov', 'PlaceOfBirth': 'Plovdiv, Bulgaria' },
              *         { 'ID': 2, 'OrderNumber': 2, 'Name': 'Ronaldo Luis Nazario de Lima', 'PlaceOfBirth': 'Rio de Janeiro, Brazil' },
              *         { 'ID': 3, 'OrderNumber': 3, 'Name': 'David Platt', 'PlaceOfBirth': 'Chadderton, Lancashire, England' }
@@ -108,120 +119,166 @@ gj.grid.plugins.rowReorder = {
         init: function (grid) {
             let i, columnPosition,
                 config = grid.getConfig(),
+                methods = gj.grid.plugins.rowReorder.private,
                 rows = grid.element.querySelectorAll('tbody tr[data-gj-role="row"]');
             if (config.rowReorderColumn) {
                 columnPosition = gj.grid.methods.getColumnPosition(config.columns, config.rowReorderColumn);
             }
+            gj.core.on(document, 'mousemove', methods.createMouseMoveHandler(grid));
+            gj.core.on(document, 'mouseup', methods.createMouseUpHandler(grid));
             for (i = 0; i < rows.length; i++) {
                 if (typeof (columnPosition) !== 'undefined') {
-                    rows[i].children[columnPosition].addEventListener('mousedown', gj.grid.plugins.rowReorder.private.createRowMouseDownHandler(grid, rows[i]));
+                    gj.core.on(rows[i].children[columnPosition], 'mousedown', methods.createRowMouseDownHandler(grid, rows[i]));
                 } else {
-                    rows[i].addEventListener('mousedown', gj.grid.plugins.rowReorder.private.createRowMouseDownHandler(grid, rows[i]));
+                    gj.core.on(rows[i], 'mousedown', methods.createRowMouseDownHandler(grid, rows[i]));
                 }
             }
         },
 
         createRowMouseDownHandler: function (grid, trSource) {
             return function (e) {
-                var dragEl = grid.element.cloneNode(true),
-                    columns = grid.getConfig().columns,
-                    i, cells;
+                let dragEl, elements, cells,
+                columns = grid.getConfig().columns,
+                position = trSource.getAttribute('data-gj-position');
+                
                 grid.element.classList.add('gj-unselectable');
-                document.body.appendChild(dragEl);
+
+                dragEl = grid.element.cloneNode(true);
                 dragEl.setAttribute('data-gj-role', 'draggable-clone');
                 dragEl.classList.add('gj-unselectable');
                 dragEl.style.cursor = 'move';
                 dragEl.querySelector('thead').remove();
-                dragEl.querySelector('tfoot').remove();
-                dragEl.querySelector('tbody tr:not([data-gj-position="' + trSource.getAttribute('data-gj-position') + '"])').remove();
+                elements = dragEl.querySelector('tfoot');
+                elements && elements.remove();
+                document.body.appendChild(dragEl);
+
+                elements = dragEl.querySelectorAll('tbody tr:not([data-gj-position="' + position + '"])');                
+                for (let i = 0; i < elements.length; i++) {
+                    elements[i].remove();
+                }
+
                 cells = dragEl.querySelectorAll('tbody tr td');
-                for (i = 0; i < cells.length; i++) {
+                for (let i = 0; i < cells.length; i++) {
                     if (columns[i].width) {
                         cells[i].setAttribute('width', columns[i].width);
                     }
                 }
-                new GijgoDraggable(dragEl, {
-                    stop: gj.grid.plugins.rowReorder.private.createDragStopHandler(grid, $trSource)
-                });
+
                 dragEl.style.position = 'absolute';
-                dragEl.style.top = thSource.getBoundingClientRect().top + 'px';
-                dragEl.style.left = thSource.getBoundingClientRect().left + 'px';
-                dragEl.style.width = gj.core.width(thSource) + 'px';
+                dragEl.style.top = trSource.getBoundingClientRect().top + 'px';
+                dragEl.style.left = trSource.getBoundingClientRect().left + 'px';
+                dragEl.style.width = gj.core.width(trSource) + 'px';
                 dragEl.style.zIndex = 1;
-                if (trSource.getAttribute('data-gj-droppable') === 'true') {
-                    new GijgoDroppable(trSource).destroy();
-                }
-                $trSource.siblings('tr[data-gj-role="row"]').each(function () {
-                    var $dropEl = $(this);
-                    if ($dropEl.attr('data-gj-droppable') === 'true') {
-                        $dropEl.droppable('destroy');
-                    }
-                    $dropEl.droppable({
-                        over: gj.grid.plugins.rowReorder.private.createDroppableOverHandler($trSource),
-                        out: gj.grid.plugins.rowReorder.private.droppableOut
-                    });
+                new GijgoDraggable(dragEl, {
+                    stop: gj.grid.plugins.rowReorder.private.createDragStopHandler(grid, trSource, position - 1)
                 });
-                $dragEl.trigger('mousedown');
+                dragEl.dispatchEvent(new Event('mousedown'));
+
+                grid.element.setAttribute('data-gj-drag-row', position);
             };
         },
 
-        createDragStopHandler: function (grid, $trSource) {
-            return function (e, mousePosition) {
-                $('table[data-gj-role="draggable-clone"]').draggable('destroy').remove();
-                grid.removeClass('gj-unselectable');
-                $trSource.siblings('tr[data-gj-role="row"]').each(function () {
-                    var $trTarget = $(this),
-                        targetPosition = $trTarget.data('position'),
-                        sourcePosition = $trSource.data('position'),
-                        data = grid.getConfig(),
-                        $rows, $row, i, record, id;
-                        
-                    if ($trTarget.droppable('isOver', mousePosition)) {
-                        if (targetPosition < sourcePosition) {
-                            $trTarget.before($trSource);
-                        } else {
-                            $trTarget.after($trSource);
-                        }
-                        data.records.splice(targetPosition - 1, 0, data.records.splice(sourcePosition - 1, 1)[0]);
-                        $rows = $trTarget.parent().find('tr[data-gj-role="row"]');
-                        for (i = 0; i < $rows.length; i++) {
-                            $($rows[i]).attr('data-gj-position', i + 1);
-                        }
-                        if (data.orderNumberField) {
-                            for (i = 0; i < data.records.length; i++) {
-                                data.records[i][data.orderNumberField] = i + 1;
-                            }
-                            for (i = 0; i < $rows.length; i++) {
-                                $row = $($rows[i]);
-                                id = gj.grid.methods.getId($row, data.primaryKey, $row.attr('data-gj-position'));
-                                record = gj.grid.methods.getByPosition(grid, $row.attr('data-gj-position'));
-                                grid.setCellContent(id, data.orderNumberField, record[data.orderNumberField]);
-                            }
-                        }
-                    }
-                    $trTarget.classList.remove('gj-grid-top-border');
-                    $trTarget.classList.remove('gj-grid-bottom-border');
-                    $trTarget.droppable('destroy');
-                });
+        createMouseUpHandler: function (grid) {
+            return function (e) {
+                if (grid.element.hasAttribute('data-gj-drag-row')) {
+                    grid.element.removeAttribute('data-gj-drag-row');
+                }
             }
         },
 
-        createDroppableOverHandler: function (trSource) {
+        createMouseMoveHandler: function (grid) {
+            let body = grid.element.querySelector('tbody'),
+                bodyPos = gj.core.position(body);
             return function (e) {
-                var trTarget = this,
-                    targetPosition = trTarget.getAttribute('data-gj-position'),
-                    sourcePosition = trSource.getAttribute('data-gj-position');
-                if (targetPosition < sourcePosition) {
-                    trTarget.classList.add('gj-grid-top-border');
-                } else {
-                    trTarget.classList.add('gj-grid-bottom-border');
+                if (grid.element.hasAttribute('data-gj-drag-row')) {
+                    let mouse = { x: grid.mouseX(e), y: grid.mouseY(e) };
+                    if (mouse.x > bodyPos.left && mouse.x < bodyPos.right && mouse.y > bodyPos.top && mouse.y < bodyPos.bottom) {
+                        for (let i = 0; i < body.children.length; i++) {
+                            let trPos = gj.core.position(body.children[i]) ;
+                            if (mouse.x > trPos.left && mouse.x < trPos.right && mouse.y > trPos.top && mouse.y < trPos.bottom) {       
+                                let trIndex = Array.from(body.children).indexOf(body.children[i]),
+                                    srcIndex = parseInt(grid.element.getAttribute('data-gj-drag-row')) - 1,
+                                    isTop = mouse.y < ((trPos.top + trPos.bottom) / 2);
+
+                                grid.element.querySelectorAll('.gj-grid-top-border').forEach((element) => {  element.classList.remove('gj-grid-top-border'); });
+                                grid.element.querySelectorAll('.gj-grid-bottom-border').forEach((element) => {  element.classList.remove('gj-grid-bottom-border'); });
+                                if (srcIndex < trIndex) {
+                                    if (!isTop || srcIndex + 1 < trIndex) {
+                                        body.children[i].classList.add(isTop ? 'gj-grid-top-border' : 'gj-grid-bottom-border');
+                                        break;
+                                    }
+                                }
+                                if (srcIndex > trIndex) {
+                                    if (isTop || trIndex + 1 < srcIndex) {
+                                        body.children[i].classList.add(isTop ? 'gj-grid-top-border' : 'gj-grid-bottom-border');
+                                        break;
+                                    }
+                                }
+                            }
+                        }                        
+                    }
                 }
             };
         },
 
-        droppableOut: function () {
-            this.classList.remove('gj-grid-top-border');
-            this.classList.remove('gj-grid-bottom-border');
+        createDragStopHandler: function (grid, trSource, srcIndex) {
+            let body = grid.element.querySelector('tbody'),
+                bodyPos = gj.core.position(body),
+                methods = gj.grid.plugins.rowReorder.private;
+            return function (e) {
+                let records = grid.getRecords();
+                document.body.querySelector('table[data-gj-role="draggable-clone"]').remove();
+                grid.element.classList.remove('gj-unselectable');
+                grid.element.querySelectorAll('.gj-grid-top-border').forEach((element) => {  element.classList.remove('gj-grid-top-border'); });
+                grid.element.querySelectorAll('.gj-grid-bottom-border').forEach((element) => {  element.classList.remove('gj-grid-bottom-border'); });
+                
+                if (e.detail.x > bodyPos.left && e.detail.x < bodyPos.right && e.detail.y > bodyPos.top && e.detail.y < bodyPos.bottom) {
+                    for (let i = 0; i < body.children.length; i++) {
+                        let trPos = gj.core.position(body.children[i]) ;
+                        if (e.detail.x > trPos.left && e.detail.x < trPos.right && e.detail.y > trPos.top && e.detail.y < trPos.bottom) {       
+                            let trIndex = Array.from(body.children).indexOf(body.children[i]),
+                                isTop = e.detail.y < ((trPos.top + trPos.bottom) / 2);
+
+                            grid.element.querySelectorAll('.gj-grid-top-border').forEach((element) => {  element.classList.remove('gj-grid-top-border'); });
+                            grid.element.querySelectorAll('.gj-grid-bottom-border').forEach((element) => {  element.classList.remove('gj-grid-bottom-border'); });
+                            if (srcIndex < trIndex) {
+                                if (!isTop || srcIndex + 1 < trIndex) {
+                                    body.insertBefore(trSource, isTop ? body.children[i] : body.children[i].nextSibling);
+                                    records.splice(isTop ? trIndex - 1 : trIndex, 0, records.splice(srcIndex, 1)[0]);
+                                    methods.updatePositions(grid, records);
+                                    break;
+                                }
+                            }
+                            if (srcIndex > trIndex) {
+                                if (isTop || trIndex + 1 < srcIndex) {
+                                    body.insertBefore(trSource, isTop ? body.children[i] : body.children[i].nextSibling);
+                                    records.splice(isTop ? trIndex : trIndex + 1, 0, records.splice(srcIndex, 1)[0]);
+                                    methods.updatePositions(grid, records);
+                                    break;
+                                }
+                            }
+                        }
+                    }                        
+                }
+            }
+        },
+
+        updatePositions: function (grid, records) {
+            let rows = grid.element.querySelectorAll('tbody tr[data-gj-role="row"]'),
+                config = grid.getConfig();
+            if (config.orderNumberField) {
+                for (i = 0; i < records.length; i++) {
+                    records[i][config.orderNumberField] = i + 1;
+                }
+            }
+            for (let i = 0; i < rows.length; i++) {
+                rows[i].setAttribute('data-gj-position', i + 1);
+                if (config.orderNumberField) {
+                    let id = gj.grid.methods.getId(rows[i], config.primaryKey, i + 1),
+                        record = gj.grid.methods.getByPosition(grid, i + 1);
+                    grid.setCellContent(id, config.orderNumberField, record[data.orderNumberField]);
+                }
+            }
         }
     },
 

@@ -61,7 +61,7 @@ gj.grid.plugins.grouping = {
                   *         dataSource: '/Players/Get',
                   *         uiLibrary: 'bootstrap',
                   *         grouping: { groupBy: 'CountryName' },
-                  *         columns: [ { field: 'Name', sortable: true }, { field: 'DateOfBirth', type: 'date' } ]
+                  *         columns: [ { field: 'Name', sortable: true }, { field: 'DateOfBirth', type: 'date' } ],
                   *         detailTemplate: '<div><b>Place Of Birth:</b> {PlaceOfBirth}</div>'
                   *     });
                   * </script>
@@ -71,6 +71,17 @@ gj.grid.plugins.grouping = {
                   *     new GijgoGrid(document.getElementById('grid'), {
                   *         dataSource: '/Players/Get',
                   *         uiLibrary: 'bootstrap4',
+                  *         iconsLibrary: 'fontawesome',
+                  *         grouping: { groupBy: 'CountryName' },
+                  *         columns: [ { field: 'Name', sortable: true }, { field: 'PlaceOfBirth' } ]
+                  *     });
+                  * </script>
+                  * @example Bootstrap.5 <!-- bootstrap5, fontawesome, grid -->
+                  * <table id="grid"></table>
+                  * <script>
+                  *     new GijgoGrid(document.getElementById('grid'), {
+                  *         dataSource: '/Players/Get',
+                  *         uiLibrary: 'bootstrap5',
                   *         iconsLibrary: 'fontawesome',
                   *         grouping: { groupBy: 'CountryName' },
                   *         columns: [ { field: 'Name', sortable: true }, { field: 'PlaceOfBirth' } ]
@@ -152,17 +163,26 @@ gj.grid.plugins.grouping = {
                     let colspan = gj.grid.methods.countVisibleColumns(grid) - 1,
                         groupRow = document.createElement('tr'),
                         expandCollapseCell = document.createElement('td'),
-                        icon = document.createElement('div');
+                        groupCell = document.createElement('td'),
+                        icon = document.createElement('div'),
+                        display = document.createElement('div'),
+                        position = e.detail.row.getAttribute("data-gj-position");
 
-                    groupRow.setAttribute('data-gj-gj-role', 'group');
+                    groupRow.setAttribute('data-gj-role', 'group');
                     gj.core.addClasses(expandCollapseCell, 'gj-text-align-center gj-unselectable gj-cursor-pointer');
 
                     icon.setAttribute('data-gj-role', 'display');
                     icon.innerHTML = data.icons.collapseGroup;
-                    icon.addEventListener('click', gj.grid.plugins.grouping.private.createExpandCollapseHandler(data));
+                    gj.core.on(icon, 'click', gj.grid.plugins.grouping.private.createExpandCollapseHandler(grid, position));
                     expandCollapseCell.appendChild(icon);
                     groupRow.appendChild(expandCollapseCell);
-                    groupRow.innerHTML += '<td colspan="' + colspan + '"><div data-gj-role="display">' + data.grouping.groupBy + ': ' + e.detail.record[data.grouping.groupBy] + '</div></td>';
+
+                    groupCell.setAttribute('colspan', colspan);
+                    display.setAttribute('data-gj-role', 'display');
+                    display.innerHTML = data.grouping.groupBy + ': ' + e.detail.record[data.grouping.groupBy];
+                    groupCell.appendChild(display);
+                    groupRow.appendChild(groupCell);
+
                     e.detail.row.parentNode.insertBefore(groupRow, e.detail.row);
                     previousValue = e.detail.record[data.grouping.groupBy];
                 }
@@ -178,45 +198,44 @@ gj.grid.plugins.grouping = {
             records.sort(gj.grid.methods.createDefaultSorter(data.grouping.direction, data.grouping.groupBy));
         },
 
-        createExpandCollapseHandler: function (data) {
-            return function (e) {
-                let methods = gj.grid.plugins.grouping.private;
-                if (this.closest('tr:visible').getAttribute('data-gj-role') === 'row') {
-                    methods.collapseGroup(data, this);
+        createExpandCollapseHandler: function (grid, position) {
+            return function () {
+                let methods = gj.grid.plugins.grouping.private,
+                    row = this.parentNode.parentNode.nextSibling;
+                if (row.style.display === 'none') {
+                    methods.expandGroup(grid.getConfig().icons, this);
                 } else {
-                    methods.expandGroup(data, this);
+                    methods.collapseGroup(grid.getConfig().icons, this);
                 }
             };
         },
 
-        collapseGroup: function (data, cell) {
-            let display = cell.querySelector('div[data-gj-role="display"]'),
-                nextEl = cell.parentNode.nextSubling;
+        collapseGroup: function (icons, icon) {
+            let nextEl = icon.parentNode.parentNode.nextSibling;
             
             while (nextEl) {
                 if (nextEl.getAttribute('data-gj-role') === 'group') {
                     break;
                 } else {
                     nextEl.style.display = 'none';
-                    nextEl = nextEl.nextSubling;
+                    nextEl = nextEl.nextSibling;
                 }
             }
-            display.innerHTML = data.icons.expandGroup;
+            icon.innerHTML = icons.expandGroup;
         },
 
-        expandGroup: function (data, cell) {
-            let display = cell.querySelector('div[data-gj-role="display"]'),
-                nextEl = cell.parentNode.nextSubling;
+        expandGroup: function (icons, icon) {
+            let nextEl = icon.parentNode.parentNode.nextSibling;
             
             while (nextEl) {
                 if (nextEl.getAttribute('data-gj-role') === 'group') {
                     break;
                 } else {
-                    nextEl.style.display = 'block';
-                    nextEl = nextEl.nextSubling;
+                    nextEl.style.display = '';
+                    nextEl = nextEl.nextSibling;
                 }
             }
-            display.innerHTML = data.icons.collapseGroup;
+            icon.innerHTML = icons.collapseGroup;
         }
     },
 

@@ -417,14 +417,19 @@ let gj = {};
 
     off: function(el, event) {
         if (event) {
-            el.removeEventListener(event, window.gijgoStorage.get(el, event));
-            window.gijgoStorage.remove(el, event);
+            let func = window.gijgoStorage.get(el, event);
+            if (func) {
+                el.removeEventListener(event, func);
+                window.gijgoStorage.remove(el, event);
+            }
         } else {
             let funcs = window.gijgoStorage.getAll(el);
-            for (const [key, value] of funcs) {
-                if (typeof(value) === 'function') {
-                    el.removeEventListener(key, value);
-                    window.gijgoStorage.remove(el, key);
+            if (funcs) {
+                for (const [key, value] of funcs) {
+                    if (typeof(value) === 'function') {
+                        el.removeEventListener(key, value);
+                        window.gijgoStorage.remove(el, key);
+                    }
                 }
             }
         }
@@ -441,7 +446,12 @@ window.gijgoStorage = {
         this._storage.get(el).set(key, obj);
     },
     get: function (el, key) {
-        return this._storage.get(el).get(key);
+        let result = undefined,
+            store = this._storage.get(el);
+        if (store) {
+            result = store.get(key);
+        }
+        return result;
     },
     getAll: function (el) {
         return this._storage.get(el);

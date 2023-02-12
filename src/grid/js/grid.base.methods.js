@@ -730,7 +730,7 @@ gj.grid.methods = {
         position = gj.grid.methods.getColumnPosition(grid.getConfig().columns, field);
         if (position > -1) {
             row = gj.grid.methods.getRowById(grid, id);
-            result = row.querySelector('td:eq(' + position + ') div[data-gj-role="display"]');
+            result = row.children[position].querySelector('div[data-gj-role="display"]');
         }
         return result;
     },

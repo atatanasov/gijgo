@@ -7,7 +7,7 @@ gj.grid.events = {
      * Event fires before addition of an empty row to the grid.
      * @event beforeEmptyRowInsert
      * @param {object} e - event data
-     * @example sample <!-- jquery, grid -->
+     * @example sample <!-- grid -->
      * <table id="grid"></table>
      * <script>
      *     var grid = new GijgoGrid(document.getElementById('grid'), {
@@ -32,7 +32,7 @@ gj.grid.events = {
      * @event dataBinding
      * @param {object} e - event data
      * @param {array} e.detail.records - the list of records
-     * @example sample <!-- jquery, grid -->
+     * @example sample <!-- grid -->
      * <table id="grid"></table>
      * <script>
      *     var grid = new GijgoGrid(document.getElementById('grid'), {
@@ -55,7 +55,7 @@ gj.grid.events = {
      * @param {object} e - event data
      * @param {array} e.detail.records - the list of records
      * @param {number} e.detail.totalRecords - the number of the all records that can be presented in the grid
-     * @example sample <!-- jquery, grid -->
+     * @example sample <!-- grid -->
      * <table id="grid"></table>
      * <script>
      *     var grid = new GijgoGrid(document.getElementById('grid'), {
@@ -78,7 +78,7 @@ gj.grid.events = {
      * @param {object} e.detail.row - the row element
      * @param {string} e.detail.id - the id of the record
      * @param {object} e.detail.record - the data of the row record
-     * @example sample <!-- jquery, grid -->
+     * @example sample <!-- grid -->
      * <table id="grid"></table>
      * <script>
      *     var grid = new GijgoGrid(document.getElementById('grid'), {
@@ -103,7 +103,7 @@ gj.grid.events = {
      * @param {string} e.detail.id - the id of the record
      * @param {object} e.detail.column - the column configuration data
      * @param {object} e.detail.record - the data of the row record
-     * @example sample <!-- jquery, grid -->
+     * @example sample <!-- grid -->
      * <table id="grid"></table>
      * <script>
      *     var grid = new GijgoGrid(document.getElementById('grid'), {
@@ -132,7 +132,7 @@ gj.grid.events = {
      * @param {object} e.detail.row - the row element
      * @param {string} e.detail.id - the id of the record
      * @param {object} e.detail.record - the data of the row record
-     * @example sample <!-- jquery, checkbox, grid -->
+     * @example sample <!-- checkbox, grid -->
      * <table id="grid"></table>
      * <script>
      *     var grid = new GijgoGrid(document.getElementById('grid'), {
@@ -157,7 +157,7 @@ gj.grid.events = {
      * @param {object} e.detail.row - the row element
      * @param {string} e.detail.id - the id of the record
      * @param {object} e.detail.record - the data of the row record
-     * @example sample <!-- jquery, checkbox, grid -->
+     * @example sample <!-- checkbox, grid -->
      * <table id="grid"></table>
      * <script>
      *     var grid = new GijgoGrid(document.getElementById('grid'), {
@@ -208,7 +208,7 @@ gj.grid.events = {
      *
      * @event destroying
      * @param {object} e - event data
-     * @example sample <!-- jquery, grid -->
+     * @example sample <!-- grid -->
      * <button id="btnDestroy" class="gj-button-md">Destroy</button>
      * <br/><br/>
      * <table id="grid"></table>
@@ -235,7 +235,7 @@ gj.grid.events = {
      * @event columnHide
      * @param {object} e - event data
      * @param {object} e.detail.column - The data about the column that is hidding
-     * @example sample <!-- jquery, grid -->
+     * @example sample <!-- grid -->
      * <table id="grid"></table>
      * <script>
      *     var grid = new GijgoGrid(document.getElementById('grid'), {
@@ -258,7 +258,7 @@ gj.grid.events = {
      * @event columnShow
      * @param {object} e - event data
      * @param {object} e.detail.column - The data about the column that is showing
-     * @example sample <!-- jquery, grid -->
+     * @example sample <!-- grid -->
      * <table id="grid"></table>
      * <script>
      *     var grid = new GijgoGrid(document.getElementById('grid'), {
@@ -280,7 +280,7 @@ gj.grid.events = {
      *
      * @event initialized
      * @param {object} e - event data
-     * @example sample <!-- jquery, grid -->
+     * @example sample <!-- grid -->
      * <table id="grid"></table>
      * <script>
      *     var grid = new GijgoGrid(document.getElementById('grid'), {

@@ -69,7 +69,7 @@ gj.tree.events = {
      * Event fires after selection of tree node.
      * @event select
      * @param {object} e - event data
-     * @param {object} node - the node as jquery object
+     * @param {object} node - the node as html element object
      * @param {string} id - the id of the record
      * @example Event.Sample <!-- tree -->
      * <p>Select tree node in order to fire the event.</p>
@@ -89,7 +89,7 @@ gj.tree.events = {
      * Event fires on un selection of tree node
      * @event unselect
      * @param {object} e - event data
-     * @param {object} node - the node as jquery object
+     * @param {object} node - the node as html element object
      * @param {string} id - the id of the record
      * @example Event.Sample <!-- tree -->
      * <p>Select/Unselect tree node in order to fire the event.</p>
@@ -109,7 +109,7 @@ gj.tree.events = {
      * Event fires before node expand.
      * @event expand
      * @param {object} e - event data
-     * @param {object} node - the node as jquery object
+     * @param {object} node - the node as html element object
      * @param {string} id - the id of the record
      * @example Event.Sample <!-- tree -->
      * <ul id="tree" data-gj-source="/Locations/Get"></ul>
@@ -128,7 +128,7 @@ gj.tree.events = {
      * Event fires before node collapse.
      * @event collapse
      * @param {object} e - event data
-     * @param {object} node - the node as jquery object
+     * @param {object} node - the node as html element object
      * @param {string} id - the id of the record
      * @example Event.Sample <!-- tree -->
      * <ul id="tree" data-gj-source="/Locations/Get"></ul>
@@ -147,7 +147,7 @@ gj.tree.events = {
      * Event fires on enable of tree node.
      * @event enable
      * @param {object} e - event data
-     * @param {object} node - the node as jquery object
+     * @param {object} node - the node as html element object
      * @example Event.Sample <!-- tree -->
      * <button onclick="tree.enable(northAmerica, false)" class="gj-button-md">Enable North America</button>
      * <button onclick="tree.disable(northAmerica, false)" class="gj-button-md">Disable North America</button>
@@ -174,7 +174,7 @@ gj.tree.events = {
      * Event fires on disable of tree node.
      * @event disable
      * @param {object} e - event data
-     * @param {object} node - the node as jquery object
+     * @param {object} node - the node as html element object
      * @example Event.Sample <!-- tree -->
      * <button onclick="tree.enable(northAmerica, false)" class="gj-button-md">Enable North America</button>
      * <button onclick="tree.disable(northAmerica, false)" class="gj-button-md">Disable North America</button>
@@ -220,7 +220,7 @@ gj.tree.events = {
      * Event fires when the data is bound to node.
      * @event nodeDataBound
      * @param {object} e - event data
-     * @param {object} node - the node as jquery object
+     * @param {object} node - the node as html element object
      * @param {string} id - the id of the record
      * @param {object} record - the data of the node record
      * @example Event.Sample <!-- tree -->

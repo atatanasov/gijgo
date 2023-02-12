@@ -11,7 +11,7 @@ gj.grid.plugins.resizableColumns = {
              * @example Material.Design <!-- grid, draggable -->
              * <table id="grid"></table>
              * <script>
-             *     var grid = new GijgoGrid(document.getElementById('grid'), {
+             *     let grid = new GijgoGrid(document.getElementById('grid'), {
              *         dataSource: '/Players/Get',
              *         resizableColumns: true,
              *         columns: [ { field: 'ID', width: 56 }, { field: 'Name', sortable: true }, { field: 'PlaceOfBirth' } ]
@@ -20,7 +20,7 @@ gj.grid.plugins.resizableColumns = {
              * @example Bootstrap <!-- bootstrap, grid, draggable -->
              * <table id="grid"></table>
              * <script>
-             *     var grid = new GijgoGrid(document.getElementById('grid'), {
+             *     let grid = new GijgoGrid(document.getElementById('grid'), {
              *         dataSource: '/Players/Get',
              *         resizableColumns: true,
              *         uiLibrary: 'bootstrap',
@@ -30,21 +30,42 @@ gj.grid.plugins.resizableColumns = {
              * @example Bootstrap.4 <!-- bootstrap4, grid, draggable -->
              * <table id="grid"></table>
              * <script>
-             *     var grid = new GijgoGrid(document.getElementById('grid'), {
+             *     let grid = new GijgoGrid(document.getElementById('grid'), {
              *         dataSource: '/Players/Get',
              *         resizableColumns: true,
              *         uiLibrary: 'bootstrap4',
              *         columns: [ { field: 'ID', width: 42 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
              *     });
              * </script>
+             * @example Bootstrap.5 <!-- bootstrap5, grid, draggable -->
+             * <table id="grid"></table>
+             * <script>
+             *     let grid = new GijgoGrid(document.getElementById('grid'), {
+             *         dataSource: '/Players/Get',
+             *         resizableColumns: true,
+             *         uiLibrary: 'bootstrap5',
+             *         columns: [ { field: 'ID', width: 42 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
+             *     });
+             * </script>
              * @example Bootstrap.4.FixedHeader <!-- bootstrap4, grid, draggable -->
              * <table id="grid" width="900"></table>
              * <script>
-             *     var grid = new GijgoGrid(document.getElementById('grid'), {
+             *     let grid = new GijgoGrid(document.getElementById('grid'), {
              *         dataSource: '/Players/Get',
              *         resizableColumns: true,
              *         fixedHeader: true,
              *         uiLibrary: 'bootstrap4',
+             *         columns: [ { field: 'ID', width: 42 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
+             *     });
+             * </script>
+             * @example Bootstrap.5.FixedHeader <!-- bootstrap5, grid, draggable -->
+             * <table id="grid" width="900"></table>
+             * <script>
+             *     let grid = new GijgoGrid(document.getElementById('grid'), {
+             *         dataSource: '/Players/Get',
+             *         resizableColumns: true,
+             *         fixedHeader: true,
+             *         uiLibrary: 'bootstrap5',
              *         columns: [ { field: 'ID', width: 42 }, { field: 'Name' }, { field: 'PlaceOfBirth' } ]
              *     });
              * </script>
@@ -55,62 +76,63 @@ gj.grid.plugins.resizableColumns = {
 
     private: {
         init: function (grid, config) {
-            var $columns, column, i, $wrapper, $resizer, marginRight;
-            $columns = grid.find('thead tr[data-role="caption"] th');
-            if ($columns.length) {
-                for (i = 0; i < $columns.length - 1; i++) {
-                    $column = $($columns[i]);
-                    $wrapper = $('<div class="gj-grid-column-resizer-wrapper" />');
-                    marginRight = parseInt($column.css('padding-right'), 10) + 3;
-                    $resizer = $('<span class="gj-grid-column-resizer" />').css('margin-right', '-' + marginRight + 'px');
-                    $resizer.draggable({
+            let columns, wrapper, resizer, marginRight;
+            columns = grid.element.querySelectorAll('thead tr[data-gj-role="caption"] th');
+            if (columns.length) {
+                for (let i = 0; i < columns.length - 1; i++) {
+                    wrapper = document.createElement('div');
+                    wrapper.classList.add('gj-grid-column-resizer-wrapper');
+                    marginRight = parseInt(getComputedStyle(columns[i]).paddingRight, 10) + 3;
+                    resizer =  document.createElement('span');
+                    resizer.classList.add('gj-grid-column-resizer');
+                    resizer.style.marginRight = '-' + marginRight + 'px';
+                    new GijgoDraggable(resizer, {
                         start: function () {
                             grid.element.classList.add('gj-unselectable');
                             grid.element.classList.add('gj-grid-resize-cursor');
                         },
                         stop: function () {
-                            grid.removeClass('gj-unselectable');
-                            grid.removeClass('gj-grid-resize-cursor');
+                            grid.element.classList.remove('gj-unselectable');
+                            grid.element.classList.remove('gj-grid-resize-cursor');
                             this.style.removeProperty('top');
                             this.style.removeProperty('left');
                             this.style.removeProperty('position');
                         },
-                        drag: gj.grid.plugins.resizableColumns.private.createResizeHandle(grid, $column, config.columns[i])
+                        drag: gj.grid.plugins.resizableColumns.private.createResizeHandle(grid, columns[i], config.columns, i)
                     });
-                    $column.append($wrapper.append($resizer));
+                    wrapper.appendChild(resizer)
+                    columns[i].appendChild(wrapper);
                 }
-                for (i = 0; i < columns.length; i++) {
+                for (let i = 0; i < columns.length; i++) {
                     if (!columns[i].getAttribute('width')) {
-                        columns[i].setAttribute('width', gj.core.width(column, true));
+                        columns[i].setAttribute('width', gj.core.width(columns[i], true));
                     }
                 }
             }
         },
 
-        createResizeHandle: function (grid, $column, column) {
-            var data = grid.getConfig();
-            return function (e, newPosition) {
-                var i, index, rows, cell, newWidth, nextWidth,
-                    currentWidth = parseInt($column.attr('width'), 10),
+        createResizeHandle: function (grid, column, columnsConfig, index) {
+            let data = grid.getConfig();
+            return function (e) {
+                let i, rows, newWidth, nextWidth,
+                    currentWidth = parseInt(column.getAttribute('width'), 10),
                     position = gj.core.position(this),
-                    offset = { top: newPosition.top - position.top, left: newPosition.left - position.left };
+                    offset = { top: e.detail.newPosition.top - position.top, left: e.detail.newPosition.left - position.left };
                 if (!currentWidth) {
-                    currentWidth = $column.outerWidth();
+                    currentWidth = gj.core.width(column);
                 }
                 if (offset.left) {
                     newWidth = currentWidth + offset.left;
-                    column.width = newWidth;
-                    $column.attr('width', newWidth);
-                    index = $column[0].cellIndex;
-                    cell = $column[0].parentElement.children[index + 1];
-                    nextWidth = parseInt($(cell).attr('width'), 10) - offset.left;
-                    cell.setAttribute('width', nextWidth);
+                    nextWidth = parseInt(column.nextSibling.getAttribute('width'), 10) - offset.left;
+                    columnsConfig[index].width = newWidth;
+                    columnsConfig[index].width = newWidth;
+                    column.setAttribute('width', newWidth);
+                    column.nextSibling.setAttribute('width', nextWidth);
                     if (data.resizableColumns) {
-                        rows = grid[0].tBodies[0].children;
+                        rows = grid.element.querySelectorAll('tbody tr');
                         for (i = 0; i < rows.length; i++) {
-                            rows[i].cells[index].setAttribute('width', newWidth);
-                            cell = rows[i].cells[index + 1];
-                            cell.setAttribute('width', nextWidth);
+                            rows[i].children[index].setAttribute('width', newWidth);
+                            rows[i].children[index + 1].setAttribute('width', nextWidth);
                         }
                     }
                 }

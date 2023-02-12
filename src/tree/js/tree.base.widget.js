@@ -13,7 +13,7 @@ GijgoTree = function (element, jsConfig) {
      * Reload the tree.
      * @method
      * @param {object} params - Params that needs to be send to the server. Only in use for remote data sources.
-     * @return jQuery object
+     * @return html element object
      * @example Method.Sample <!-- tree -->
      * <button onclick="tree.reload()" class="gj-button-md">Click to load</button>
      * <br/><br/>
@@ -68,9 +68,9 @@ GijgoTree = function (element, jsConfig) {
      * Add node to the tree.
      * @method
      * @param {object} data - The node data.
-     * @param {object} parentNode - Parent node as jquery object.
+     * @param {object} parentNode - Parent node as html element object.
      * @param {Number} position - Position where the new node need to be added. 
-     * @return jQuery object
+     * @return html element object
      * @example Append.ToRoot <!-- tree -->
      * <button onclick="append()" class="gj-button-md">Append To Root</button>
      * <br/>
@@ -145,8 +145,8 @@ GijgoTree = function (element, jsConfig) {
     /**
      * Remove node from the tree.
      * @method
-     * @param {object} node - The node as jQuery object
-     * @return jQuery object
+     * @param {object} node - The node as html element object
+     * @return html element object
      * @example Method.Sample <!-- tree -->
      * <button onclick="remove()" class="gj-button-md">Remove USA</button>
      * <br/>
@@ -169,8 +169,8 @@ GijgoTree = function (element, jsConfig) {
      * Update node from the tree.
      * @method
      * @param {string} id - The id of the node that needs to be updated
-     * @param {object} record - The node as jQuery object
-     * @return jQuery object
+     * @param {object} record - The node as html element object
+     * @return html element object
      * @example Method.Sample <!-- tree -->
      * <input type="text" id="nodeName" />
      * <button onclick="save()" class="gj-button-md">Save</button>
@@ -199,7 +199,7 @@ GijgoTree = function (element, jsConfig) {
     /**
      * Destroy the tree.
      * @method
-     * @return jQuery object
+     * @return html element object
      * @example Method.Sample <!-- tree -->
      * <button onclick="tree.destroy()" class="gj-button-md">Destroy</button>
      * <br/>
@@ -217,9 +217,9 @@ GijgoTree = function (element, jsConfig) {
     /**
      * Expand node from the tree.
      * @method
-     * @param {object} node - The node as jQuery object
+     * @param {object} node - The node as html element object
      * @param {boolean} cascade - Expand all children
-     * @return jQuery object
+     * @return html element object
      * @example Method.Sample <!-- tree -->
      * <button onclick="expand()" class="gj-button-md">Expand Asia</button>
      * <button onclick="collapse()" class="gj-button-md">Collapse Asia</button>
@@ -259,9 +259,9 @@ GijgoTree = function (element, jsConfig) {
     /**
      * Collapse node from the tree.
      * @method
-     * @param {object} node - The node as jQuery object
+     * @param {object} node - The node as html element object
      * @param {boolean} cascade - Collapse all children
-     * @return jQuery object
+     * @return html element object
      * @example Method.Sample <!-- tree -->
      * <button onclick="expand()" class="gj-button-md">Expand Asia</button>
      * <button onclick="collapse()" class="gj-button-md">Collapse Asia</button>
@@ -301,7 +301,7 @@ GijgoTree = function (element, jsConfig) {
     /**
      * Expand all tree nodes
      * @method
-     * @return jQuery object
+     * @return html element object
      * @example Sample <!-- tree -->
      * <button onclick="tree.expandAll()" class="gj-button-md">Expand All</button>
      * <button onclick="tree.collapseAll()" class="gj-button-md">Collapse All</button>
@@ -318,7 +318,7 @@ GijgoTree = function (element, jsConfig) {
     /**
      * Collapse all tree nodes
      * @method
-     * @return jQuery object
+     * @return html element object
      * @example Sample <!-- tree -->
      * <button onclick="tree.expandAll()" class="gj-button-md">Expand All</button>
      * <button onclick="tree.collapseAll()" class="gj-button-md">Collapse All</button>
@@ -383,7 +383,7 @@ GijgoTree = function (element, jsConfig) {
      * Return node by id of the record.
      * @method
      * @param {string} id - The id of the node that needs to be returned
-     * @return jQuery object
+     * @return html element object
      * @example sample <!-- tree -->
      * <ul id="tree"></ul>
      * <script>
@@ -405,7 +405,7 @@ GijgoTree = function (element, jsConfig) {
      * Return node by text.
      * @method
      * @param {string} text - The text in the node that needs to be returned
-     * @return jQuery object
+     * @return html element object
      * @example sample <!-- tree -->
      * <ul id="tree"></ul>
      * <script>
@@ -444,8 +444,8 @@ GijgoTree = function (element, jsConfig) {
     /**
      * Select node from the tree.
      * @method
-     * @param {Object} node - The node as jquery object.
-     * @return jQuery Object
+     * @param {Object} node - The node as html element object.
+     * @return html element object
      * @example Select.Method <!-- tree -->
      * <button onclick="tree.select(northAmerica)" class="gj-button-md">Select North America</button>
      * <button onclick="tree.unselect(northAmerica)" class="gj-button-md">Unselect North America</button>
@@ -471,8 +471,8 @@ GijgoTree = function (element, jsConfig) {
     /**
      * Unselect node from the tree.
      * @method
-     * @param {Object} node - The node as jquery object.
-     * @return jQuery Object
+     * @param {Object} node - The node as html element object.
+     * @return html element object
      * @example UnSelect.Method <!-- tree -->
      * <button onclick="tree.select(northAmerica)" class="gj-button-md">Select North America</button>
      * <button onclick="tree.unselect(northAmerica)" class="gj-button-md">Unselect North America</button>
@@ -498,7 +498,7 @@ GijgoTree = function (element, jsConfig) {
     /**
      * Select all tree nodes
      * @method
-     * @return jQuery object
+     * @return html element object
      * @example Sample <!-- tree -->
      * <button onclick="tree.selectAll()" class="gj-button-md">Select All</button>
      * <button onclick="tree.unselectAll()" class="gj-button-md">Unselect All</button>
@@ -520,7 +520,7 @@ GijgoTree = function (element, jsConfig) {
     /**
      * Unselect all tree nodes
      * @method
-     * @return jQuery object
+     * @return html element object
      * @example Sample <!-- tree -->
      * <button onclick="tree.selectAll()" class="gj-button-md">Select All</button>
      * <button onclick="tree.unselectAll()" class="gj-button-md">Unselect All</button>
@@ -564,7 +564,7 @@ GijgoTree = function (element, jsConfig) {
     /**
      * Return an array with the ids of all children.
      * @method
-     * @param {Object} node - The node as jquery object.
+     * @param {Object} node - The node as html element object.
      * @param {Boolean} cascade - Include all nested children. Set to true by default.
      * @return array
      * @example Cascade.True <!-- tree -->
@@ -624,9 +624,9 @@ GijgoTree = function (element, jsConfig) {
     /**
      * Enable node from the tree.
      * @method
-     * @param {Object} node - The node as jquery object.
+     * @param {Object} node - The node as html element object.
      * @param {Boolean} cascade - Enable all children. Set to true by default.
-     * @return jQuery Object
+     * @return html element object
      * @example Material.Design <!-- checkbox, tree -->
      * <button onclick="tree.enable(northAmerica)" class="gj-button-md">Enable North America (Cascade)</button>
      * <button onclick="tree.disable(northAmerica)" class="gj-button-md">Disable North America (Cascade)</button>
@@ -708,7 +708,7 @@ GijgoTree = function (element, jsConfig) {
     /**
      * Enable all nodes from the tree.
      * @method
-     * @return jQuery Object
+     * @return html element object
      * @example Sample <!-- checkbox, tree -->
      * <button onclick="tree.enableAll()" class="gj-button-md">Enable All</button>
      * <button onclick="tree.disableAll()" class="gj-button-md">Disable All</button>
@@ -727,9 +727,9 @@ GijgoTree = function (element, jsConfig) {
     /**
      * Disable node from the tree.
      * @method
-     * @param {Object} node - The node as jquery object.
+     * @param {Object} node - The node as html element object.
      * @param {Boolean} cascade - Disable all children. Set to true by default.
-     * @return jQuery Object
+     * @return html element object
      * @example Sample <!-- checkbox, tree -->
      * <button onclick="tree.enable(northAmerica)" class="gj-button-md">Enable North America (Cascade)</button>
      * <button onclick="tree.disable(northAmerica)" class="gj-button-md">Disable North America (Cascade)</button>
@@ -755,7 +755,7 @@ GijgoTree = function (element, jsConfig) {
     /**
      * Disable all nodes from the tree.
      * @method
-     * @return jQuery Object
+     * @return html element object
      * @example Sample <!-- checkbox, tree -->
      * <button onclick="tree.enableAll()" class="gj-button-md">Enable All</button>
      * <button onclick="tree.disableAll()" class="gj-button-md">Disable All</button>
