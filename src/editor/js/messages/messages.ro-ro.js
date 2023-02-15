@@ -1,4 +1,4 @@
-﻿gj.editor.messages['en-us'] = {
+﻿gj.editor.messages['ro-ro'] = {
     bold: 'Bolduit',
     italic: 'Cursiv',
     strikethrough: 'Tăiat',
