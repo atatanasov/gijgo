@@ -1,0 +1,21 @@
+﻿gj.grid.messages['ro-ro'] = {
+    First: 'Prima',
+    Previous: 'Anterioara',
+    Next: 'Următoarea',
+    Last: 'Ultima',
+    Page: 'Pagină',
+    FirstPageTooltip: 'Prima Pagină',
+    PreviousPageTooltip: 'Pagina Anterioară',
+    NextPageTooltip: 'Următoarea Pagină',
+    LastPageTooltip: 'Ultima Pagină',
+    Refresh: 'Împrospătare',
+    Of: 'din',
+    DisplayingRecords: 'Afișare înregistrări',
+    RowsPerPage: 'Rânduri per pagină:',
+    Edit: 'Editează',
+    Delete: 'Sterge',
+    Update: 'Modifică',
+    Cancel: 'Anulează',
+    NoRecordsFound: 'Nu s-au găsit înregistrări.',
+    Loading: 'Încărcare...'
+};
