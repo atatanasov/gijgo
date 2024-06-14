@@ -118,7 +118,10 @@ gj.editor.config = {
             buttonsGroup: 'gj-button-md-group',
             button: 'gj-button-md',
             buttonActive: 'active'
-        }
+        },
+        
+        /** Allow set read-only mode */
+        contenteditable: true
     },
 
     bootstrap: {
@@ -219,7 +222,7 @@ gj.editor.methods = {
                 body.innerHTML = editor.element.innerText;
             }
         }
-        body.setAttribute('contenteditable', true);
+        body.setAttribute('contenteditable', data.contenteditable);
         body.addEventListener('keydown', function (e) {
             var key = e.keyCode || e.charCode;
             if (gj.editor.events.changing(editor.element) === false && key !== 8 && key !== 46) {
