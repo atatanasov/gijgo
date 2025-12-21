@@ -197,7 +197,7 @@ gj.editor.methods = {
 
         editor.element.style.display = 'none';
 
-        if (editor.element.parentElement.getAttributes('data-gj-role') !== 'wrapper') {
+        if (editor.element.parentElement.attributes["data-gj-role"] !== 'wrapper') {
             wrapper = document.createElement('div');
             wrapper.setAttribute('data-gj-role', 'wrapper');
             editor.element.parentNode.insertBefore(wrapper, editor.element);
