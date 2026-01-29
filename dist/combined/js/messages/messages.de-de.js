@@ -37,7 +37,8 @@ gj.editor.messages['de-de'] = {
     alignRight: 'Rechtsb\u00fcndig ausrichten',
     alignJustify: 'Blocksatz',
     undo: 'R\u00fcckg\u00e4ngig',
-    redo: 'Wiederholen'
+    redo: 'Wiederholen',
+    html: 'HTML bearbeiten'
 };
 gj.core.messages['de-de'] = {
     monthNames: ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'],

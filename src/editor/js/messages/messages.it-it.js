@@ -12,5 +12,6 @@
     alignRight: 'Allineamento a destra',
     alignJustify: 'Giustificato',
     undo: 'Annulla',
-    redo: 'Ripeti'
+    redo: 'Ripeti',
+    html: 'Modifica HTML'
 };

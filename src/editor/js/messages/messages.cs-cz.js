@@ -12,5 +12,6 @@
     alignRight: 'Zarovnat vpravo',
     alignJustify: 'Zarovnat do bloku',
     undo: 'Zpět',
-    redo: 'Znovu'
+    redo: 'Znovu',
+    html: 'Upravit HTML'
 };

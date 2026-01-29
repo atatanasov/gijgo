@@ -39,7 +39,8 @@ gj.editor.messages['ro-ro'] = {
     alignRight: 'Aliniere Dreapta',
     alignJustify: 'Aliniere Egală',
     undo: 'Undo',
-    redo: 'Redo'
+    redo: 'Redo',
+    html: 'Editează HTML'
 };
 
 gj.core.messages['ro-ro'] = {

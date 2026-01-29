@@ -37,7 +37,8 @@ gj.editor.messages['hu-hu'] = {
     alignRight: 'Jobbra igazítás',
     alignJustify: 'Sorkizárás',
     undo: 'Visszavonás',
-    redo: 'Mégis'
+    redo: 'Mégis',
+    html: 'HTML szerkesztése'
 };
 gj.core.messages['hu-hu'] = {
     monthNames: ['Január', 'Február', 'Március', 'Április', 'Május', 'Június', 'Július', 'Augusztus', 'Szeptember', 'Október', 'November', 'December'],

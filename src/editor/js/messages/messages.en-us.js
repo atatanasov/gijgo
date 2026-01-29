@@ -12,5 +12,6 @@
     alignRight: 'Align Right',
     alignJustify: 'Align Justify',
     undo: 'Undo',
-    redo: 'Redo'
+    redo: 'Redo',
+    html: 'Edit HTML'
 };

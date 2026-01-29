@@ -12,5 +12,6 @@ gj.editor.messages['hu-hu'] = {
     alignRight: 'Jobbra igazítás',
     alignJustify: 'Sorkizárás',
     undo: 'Visszavonás',
-    redo: 'Mégis'
+    redo: 'Mégis',
+    html: 'HTML szerkesztése'
 };

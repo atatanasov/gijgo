@@ -12,5 +12,6 @@
     alignRight: 'Rechtsb\u00fcndig ausrichten',
     alignJustify: 'Blocksatz',
     undo: 'R\u00fcckg\u00e4ngig',
-    redo: 'Wiederholen'
+    redo: 'Wiederholen',
+    html: 'HTML bearbeiten'
 };

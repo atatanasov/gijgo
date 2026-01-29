@@ -37,7 +37,8 @@ gj.editor.messages['lv-lv'] = {
 	alignRight: 'Labais līdzinājums',
 	alignJustify: 'Izlīdzināt platumā',
 	undo: 'Atpakaļ',
-	redo: 'Uz priekšu'
+	redo: 'Uz priekšu',
+	html: 'Rediģēt HTML'
 };
 gj.core.messages['lv-lv'] = {
     monthNames: ['Janvaris', 'Februāris', 'Marts', 'Aprīls', 'Maijs', 'Jūnjs', 'Jūlijs', 'Augusts', 'Septembris', 'Oktobris', 'Novembris', 'Decembris'],

@@ -12,5 +12,6 @@ gj.editor.messages['el-gr'] = {
     alignRight: 'Δεξιά Στοίχιση',
     alignJustify: 'Πλήρης Στοίχιση',
     undo: 'Αναίρεση',
-    redo: 'Επανάληψη'
+    redo: 'Επανάληψη',
+    html: 'Επεξεργασία HTML'
 };

@@ -12,5 +12,6 @@
     alignRight: 'Alinhar \u00e0 direita',
     alignJustify: 'Justificar',
     undo: 'Desfazer',
-    redo: 'Refazer'
+    redo: 'Refazer',
+    html: 'Editar HTML'
 };

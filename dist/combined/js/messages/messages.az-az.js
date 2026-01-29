@@ -37,7 +37,8 @@ gj.editor.messages['az-az'] = {
     alignRight: 'Sağa Daya',
     alignJustify: 'Hər iki tərəfə daya',
     undo: 'Geri Al',
-    redo: 'İrəli Al'
+    redo: 'İrəli Al',
+    html: 'HTML Redaktə Et'
 };
 gj.core.messages['az-az'] = {
     monthNames: ['Yanvar', 'Fevral', 'Mart', 'Aprel', 'May', 'İyun', 'İyul', 'Avqust', 'Sentyabr', 'Oktyabr', 'Noyabr', 'Dekabr'],

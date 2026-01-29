@@ -12,5 +12,6 @@ gj.editor.messages['az-az'] = {
     alignRight: 'Sağa Daya',
     alignJustify: 'Hər iki tərəfə daya',
     undo: 'Geri Al',
-    redo: 'İrəli Al'
+    redo: 'İrəli Al',
+    html: 'HTML Redaktə Et'
 };

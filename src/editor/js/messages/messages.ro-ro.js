@@ -12,5 +12,6 @@
     alignRight: 'Aliniere Dreapta',
     alignJustify: 'Aliniere Egală',
     undo: 'Undo',
-    redo: 'Redo'
+    redo: 'Redo',
+    html: 'Editează HTML'
 };

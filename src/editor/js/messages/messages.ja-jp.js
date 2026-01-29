@@ -12,5 +12,6 @@
     alignRight: '右揃え',
     alignJustify: '両端揃え',
     undo: '元に戻す',
-    redo: 'やり直し'
+    redo: 'やり直し',
+    html: 'HTMLを編集'
 };

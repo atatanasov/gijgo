@@ -12,5 +12,6 @@ gj.editor.messages['lv-lv'] = {
 	alignRight: 'Labais līdzinājums',
 	alignJustify: 'Izlīdzināt platumā',
 	undo: 'Atpakaļ',
-	redo: 'Uz priekšu'
+	redo: 'Uz priekšu',
+	html: 'Rediģēt HTML'
 };

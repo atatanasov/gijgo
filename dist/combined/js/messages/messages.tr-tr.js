@@ -37,7 +37,8 @@ gj.editor.messages['tr-tr'] = {
     alignRight: 'Sağ Yasla',
     alignJustify: 'Yay',
     undo: 'Geri Al',
-    redo: 'İleri Al'
+    redo: 'İleri Al',
+    html: 'HTML Düzenle'
 };
 gj.core.messages['tr-tr'] = {
     monthNames: ['Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran', 'Temmuz', 'Ağustos', 'Eylül', 'Ekim', 'Kasım', 'Aralık'],

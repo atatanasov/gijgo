@@ -37,7 +37,8 @@ gj.editor.messages['zh-cn'] = {
     alignRight: '右对齐',
     alignJustify: '两端对齐',
     undo: '撤销',
-    redo: '重做'
+    redo: '重做',
+    html: '编辑HTML'
 };
 gj.core.messages['zh-cn'] = {
     monthNames: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],

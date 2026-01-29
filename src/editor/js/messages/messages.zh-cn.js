@@ -12,5 +12,6 @@
     alignRight: '右对齐',
     alignJustify: '两端对齐',
     undo: '撤销',
-    redo: '重做'
+    redo: '重做',
+    html: '编辑HTML'
 };

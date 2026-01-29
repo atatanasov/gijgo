@@ -70,7 +70,8 @@ gj.editor.config = {
             alignJustify: '<i class="gj-icon align-justify" />',
 
             undo: '<i class="gj-icon undo" />',
-            redo: '<i class="gj-icon redo" />'
+            redo: '<i class="gj-icon redo" />',
+            html: '<i class="gj-icon pencil" />'
         }
     },
 
@@ -92,7 +93,8 @@ gj.editor.config = {
             alignJustify: '<i class="fa fa-align-justify" aria-hidden="true"></i>',
 
             undo: '<i class="fa fa-undo" aria-hidden="true"></i>',
-            redo: '<i class="fa fa-repeat" aria-hidden="true"></i>'
+            redo: '<i class="fa fa-repeat" aria-hidden="true"></i>',
+            html: '<i class="fa fa-code" aria-hidden="true"></i>'
         }
     }
 };
@@ -110,7 +112,9 @@ gj.editor.methods = {
 
         editor.element.style.display = 'none';
 
-        if (editor.element.parentElement.attributes["data-gj-role"] !== 'wrapper') {
+        if (editor.element.parentElement && editor.element.parentElement.getAttribute('data-gj-role') === 'wrapper') {
+            wrapper = editor.element.parentElement;
+        } else {
             wrapper = document.createElement('div');
             wrapper.setAttribute('data-gj-role', 'wrapper');
             editor.element.parentNode.insertBefore(wrapper, editor.element);
@@ -140,9 +144,17 @@ gj.editor.methods = {
             }
         });
         body.addEventListener('mouseup keyup mouseout cut paste', function (e) {
-            self.updateToolbar(editor, toolbar, data);
+            gj.editor.methods.updateToolbar(editor, toolbar, data);
             gj.editor.events.changed(editor);
-            editor.html(body.html());
+            editor.html(body.innerHTML);
+        });
+        
+        // Add event listener for HTML textarea changes
+        wrapper.addEventListener('input', function(e) {
+            if (e.target.getAttribute('data-gj-role') === 'html-editor') {
+                gj.editor.events.changed(editor);
+                editor.html(e.target.value);
+            }
         });
 
         toolbar = wrapper.querySelector('div[data-gj-role="toolbar"]');
@@ -193,16 +205,30 @@ gj.editor.methods = {
                 [
                     '<button type="button" class="' + data.style.button + '" title="' + msg.undo + '" data-gj-role="undo">' + data.icons.undo + '</button>',
                     '<button type="button" class="' + data.style.button + '" title="' + msg.redo + '" data-gj-role="redo">' + data.icons.redo + '</button>'
+                ],
+                [
+                    '<button type="button" class="' + data.style.button + '" title="' + msg.html + '" data-gj-role="html">' + data.icons.html + '</button>'
                 ]
             ];
         }
     },
 
     updateToolbar: function (editor, toolbar, data) {
-        buttons = toolbar.querySelectorAll('[data-gj-role]').forEach(function(btn) {
+        var wrapper = editor.element.parentElement;
+        var htmlTextarea = wrapper.querySelector('textarea[data-gj-role="html-editor"]');
+        var isHtmlMode = htmlTextarea && htmlTextarea.style.display !== 'none';
+        
+        toolbar.querySelectorAll('[data-gj-role]').forEach(function(btn) {
             var cmd = btn.getAttribute('data-gj-role');
-
-            if (cmd && document.queryCommandEnabled(cmd) && document.queryCommandValue(cmd) === "true") {
+            
+            if (cmd === 'html') {
+                // Handle HTML button separately
+                if (isHtmlMode) {
+                    btn.classList.add(data.style.buttonActive);
+                } else {
+                    btn.classList.remove(data.style.buttonActive);
+                }
+            } else if (cmd && document.queryCommandEnabled(cmd) && document.queryCommandValue(cmd) === "true") {
                 btn.classList.add(data.style.buttonActive);
             } else {
                 btn.classList.remove(data.style.buttonActive);
@@ -211,17 +237,75 @@ gj.editor.methods = {
     },
 
     executeCmd: function (editor, body, toolbar, btn, data) {
-        body.focus();
-        document.execCommand(btn.getAttribute('data-gj-role'), false);
-        gj.editor.methods.updateToolbar(editor, toolbar, data);
+        var cmd = btn.getAttribute('data-gj-role');
+        if (cmd === 'html') {
+            gj.editor.methods.toggleHtmlMode(editor, body, toolbar, data);
+        } else {
+            body.focus();
+            document.execCommand(cmd, false);
+            gj.editor.methods.updateToolbar(editor, toolbar, data);
+        }
+    },
+
+    toggleHtmlMode: function (editor, body, toolbar, data) {
+        var wrapper = editor.element.parentElement;
+        var htmlTextarea = wrapper.querySelector('textarea[data-gj-role="html-editor"]');
+        var isHtmlMode = htmlTextarea && htmlTextarea.style.display !== 'none';
+
+        if (isHtmlMode) {
+            // Switch from HTML mode to rich text mode
+            body.innerHTML = htmlTextarea.value;
+            htmlTextarea.style.display = 'none';
+            body.style.display = 'block';
+            body.focus();
+            gj.editor.methods.updateToolbar(editor, toolbar, data);
+        } else {
+            // Switch from rich text mode to HTML mode
+            if (!htmlTextarea) {
+                htmlTextarea = document.createElement('textarea');
+                htmlTextarea.setAttribute('data-gj-role', 'html-editor');
+                htmlTextarea.style.width = '100%';
+                htmlTextarea.style.fontFamily = 'monospace';
+                htmlTextarea.style.fontSize = '12px';
+                htmlTextarea.style.border = '1px solid #ccc';
+                htmlTextarea.style.padding = '5px';
+                htmlTextarea.style.boxSizing = 'border-box';
+                body.parentNode.insertBefore(htmlTextarea, body.nextSibling);
+            }
+            htmlTextarea.value = body.innerHTML;
+            htmlTextarea.style.height = body.style.height;
+            htmlTextarea.style.display = 'block';
+            body.style.display = 'none';
+            htmlTextarea.focus();
+            
+            // Update button state
+            var htmlBtn = toolbar.querySelector('[data-gj-role="html"]');
+            if (htmlBtn) {
+                htmlBtn.classList.add(data.style.buttonActive);
+            }
+        }
     },
 
     content: function (editor, html) {
-        var body = editor.element.parentElement.querySelector('div[data-gj-role="body"]');
+        var wrapper = editor.element.parentElement;
+        var body = wrapper.querySelector('div[data-gj-role="body"]');
+        var htmlTextarea = wrapper.querySelector('textarea[data-gj-role="html-editor"]');
+        var isHtmlMode = htmlTextarea && htmlTextarea.style.display !== 'none';
+        
         if (typeof html === "undefined") {
-            return body.innerHTML;
+            // Get content
+            if (isHtmlMode) {
+                return htmlTextarea.value;
+            } else {
+                return body.innerHTML;
+            }
         } else {
-            body.innerHTML = html;
+            // Set content
+            if (isHtmlMode) {
+                htmlTextarea.value = html;
+            } else {
+                body.innerHTML = html;
+            }
         }
     },
 
@@ -316,7 +400,8 @@ gj.editor.messages['en-us'] = {
     alignRight: 'Align Right',
     alignJustify: 'Align Justify',
     undo: 'Undo',
-    redo: 'Redo'
+    redo: 'Redo',
+    html: 'Edit HTML'
 };
 gj.editor.messages['bg-bg'] = {
 	bold: 'Удебеляване',
@@ -332,7 +417,8 @@ gj.editor.messages['bg-bg'] = {
 	alignRight: 'Подравняване в дясно',
 	alignJustify: 'Изравняване',
 	undo: 'Назад',
-	redo: 'Напред'
+	redo: 'Напред',
+	html: 'Редактиране на HTML'
 };
 gj.editor.messages['fr-fr'] = {
     bold: 'Gras',
@@ -348,7 +434,8 @@ gj.editor.messages['fr-fr'] = {
     alignRight: 'Aligner \u00e0 droite',
     alignJustify: 'Justifier',
     undo: 'Annuler',
-    redo: 'R\u00e9tablir'
+    redo: 'R\u00e9tablir',
+    html: 'Modifier HTML'
 };
 gj.editor.messages['de-de'] = {
     bold: 'Fett',
@@ -364,7 +451,8 @@ gj.editor.messages['de-de'] = {
     alignRight: 'Rechtsb\u00fcndig ausrichten',
     alignJustify: 'Blocksatz',
     undo: 'R\u00fcckg\u00e4ngig',
-    redo: 'Wiederholen'
+    redo: 'Wiederholen',
+    html: 'HTML bearbeiten'
 };
 gj.editor.messages['pt-br'] = {
     bold: 'Negrito',
@@ -380,7 +468,8 @@ gj.editor.messages['pt-br'] = {
     alignRight: 'Alinhar \u00e0 direita',
     alignJustify: 'Justificar',
     undo: 'Desfazer',
-    redo: 'Refazer'
+    redo: 'Refazer',
+    html: 'Editar HTML'
 };
 gj.editor.messages['ru-ru'] = {
 	bold: 'Жирный',
@@ -396,7 +485,8 @@ gj.editor.messages['ru-ru'] = {
 	alignRight: 'Выровнять по правому краю',
 	alignJustify: 'Выровнять по ширине',
 	undo: 'Назад',
-	redo: 'Вперед'
+	redo: 'Вперед',
+	html: 'Редактировать HTML'
 };
 gj.editor.messages['es-es'] = {
     bold: 'Negrita',
@@ -412,7 +502,8 @@ gj.editor.messages['es-es'] = {
     alignRight: 'Alineación derecha',
     alignJustify: 'Alineación justificada',
     undo: 'Deshacer',
-    redo: 'Repetir'
+    redo: 'Repetir',
+    html: 'Editar HTML'
 };
 gj.editor.messages['it-it'] = {
     bold: 'Grassetto',
@@ -428,7 +519,8 @@ gj.editor.messages['it-it'] = {
     alignRight: 'Allineamento a destra',
     alignJustify: 'Giustificato',
     undo: 'Annulla',
-    redo: 'Ripeti'
+    redo: 'Ripeti',
+    html: 'Modifica HTML'
 };
 gj.editor.messages['tr-tr'] = {
     bold: 'Kalın',
@@ -444,7 +536,8 @@ gj.editor.messages['tr-tr'] = {
     alignRight: 'Sağ Yasla',
     alignJustify: 'Yay',
     undo: 'Geri Al',
-    redo: 'İleri Al'
+    redo: 'İleri Al',
+    html: 'HTML Düzenle'
 };
 gj.editor.messages['ja-jp'] = {
     bold: '太字',
@@ -460,7 +553,8 @@ gj.editor.messages['ja-jp'] = {
     alignRight: '右揃え',
     alignJustify: '両端揃え',
     undo: '元に戻す',
-    redo: 'やり直し'
+    redo: 'やり直し',
+    html: 'HTMLを編集'
 };
 gj.editor.messages['zh-cn'] = {
     bold: '粗体',
@@ -476,7 +570,8 @@ gj.editor.messages['zh-cn'] = {
     alignRight: '右对齐',
     alignJustify: '两端对齐',
     undo: '撤销',
-    redo: '重做'
+    redo: '重做',
+    html: '编辑HTML'
 };
 gj.editor.messages['zh-tw'] = {
     bold: '粗體',
@@ -492,7 +587,8 @@ gj.editor.messages['zh-tw'] = {
     alignRight: '右對齊',
     alignJustify: '兩端對齊',
     undo: '撤銷',
-    redo: '重做'
+    redo: '重做',
+    html: '編輯HTML'
 };
 gj.editor.messages['lv-lv'] = {
 	bold: 'Trekns',
@@ -508,7 +604,8 @@ gj.editor.messages['lv-lv'] = {
 	alignRight: 'Labais līdzinājums',
 	alignJustify: 'Izlīdzināt platumā',
 	undo: 'Atpakaļ',
-	redo: 'Uz priekšu'
+	redo: 'Uz priekšu',
+	html: 'Rediģēt HTML'
 };
 gj.editor.messages['cs-cz'] = {
     bold: 'Tučně',
@@ -524,7 +621,8 @@ gj.editor.messages['cs-cz'] = {
     alignRight: 'Zarovnat vpravo',
     alignJustify: 'Zarovnat do bloku',
     undo: 'Zpět',
-    redo: 'Znovu'
+    redo: 'Znovu',
+    html: 'Upravit HTML'
 };
 gj.editor.messages['az-az'] = {
     bold: 'Qalın',
@@ -540,7 +638,8 @@ gj.editor.messages['az-az'] = {
     alignRight: 'Sağa Daya',
     alignJustify: 'Hər iki tərəfə daya',
     undo: 'Geri Al',
-    redo: 'İrəli Al'
+    redo: 'İrəli Al',
+    html: 'HTML Redaktə Et'
 };
 gj.editor.messages['el-gr'] = {
     bold: 'Έντονα',
@@ -556,7 +655,8 @@ gj.editor.messages['el-gr'] = {
     alignRight: 'Δεξιά Στοίχιση',
     alignJustify: 'Πλήρης Στοίχιση',
     undo: 'Αναίρεση',
-    redo: 'Επανάληψη'
+    redo: 'Επανάληψη',
+    html: 'Επεξεργασία HTML'
 };
 gj.editor.messages['hu-hu'] = {
     bold: 'Félkövér',
@@ -572,7 +672,8 @@ gj.editor.messages['hu-hu'] = {
     alignRight: 'Jobbra igazítás',
     alignJustify: 'Sorkizárás',
     undo: 'Visszavonás',
-    redo: 'Mégis'
+    redo: 'Mégis',
+    html: 'HTML szerkesztése'
 };
 gj.editor.messages['nl-nl'] = {
     bold: 'Vet',
@@ -588,7 +689,8 @@ gj.editor.messages['nl-nl'] = {
     alignRight: 'Rechts uitlijnen',
     alignJustify: 'Uitlijnen',
     undo: 'Ongedaan maken',
-    redo: 'Opnieuw'
+    redo: 'Opnieuw',
+    html: 'HTML bewerken'
 };
 
 gj.editor.messages['ro-ro'] = {
@@ -605,6 +707,7 @@ gj.editor.messages['ro-ro'] = {
     alignRight: 'Aliniere Dreapta',
     alignJustify: 'Aliniere Egală',
     undo: 'Undo',
-    redo: 'Redo'
+    redo: 'Redo',
+    html: 'Editează HTML'
 };
 

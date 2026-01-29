@@ -12,5 +12,6 @@
     alignRight: 'Sağ Yasla',
     alignJustify: 'Yay',
     undo: 'Geri Al',
-    redo: 'İleri Al'
+    redo: 'İleri Al',
+    html: 'HTML Düzenle'
 };

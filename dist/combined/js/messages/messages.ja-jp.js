@@ -37,7 +37,8 @@ gj.editor.messages['ja-jp'] = {
     alignRight: '右揃え',
     alignJustify: '両端揃え',
     undo: '元に戻す',
-    redo: 'やり直し'
+    redo: 'やり直し',
+    html: 'HTMLを編集'
 };
 gj.core.messages['ja-jp'] = {
     monthNames: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],

@@ -12,5 +12,6 @@
     alignRight: 'Rechts uitlijnen',
     alignJustify: 'Uitlijnen',
     undo: 'Ongedaan maken',
-    redo: 'Opnieuw'
+    redo: 'Opnieuw',
+    html: 'HTML bewerken'
 };

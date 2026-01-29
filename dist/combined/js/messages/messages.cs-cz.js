@@ -37,7 +37,8 @@ gj.editor.messages['cs-cz'] = {
     alignRight: 'Zarovnat vpravo',
     alignJustify: 'Zarovnat do bloku',
     undo: 'Zpět',
-    redo: 'Znovu'
+    redo: 'Znovu',
+    html: 'Upravit HTML'
 };
 gj.core.messages['cs-cz'] = {
     monthNames: ['Leden', 'Únor', 'Březen', 'Duben', 'Květen', 'Červen', 'Červenec', 'Srpen', 'Září', 'Říjen', 'Listopad', 'Prosinec'],

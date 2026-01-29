@@ -12,5 +12,6 @@
     alignRight: 'Alineación derecha',
     alignJustify: 'Alineación justificada',
     undo: 'Deshacer',
-    redo: 'Repetir'
+    redo: 'Repetir',
+    html: 'Editar HTML'
 };
