@@ -70,3 +70,23 @@
 .gj-picker-bootstrap.datetimepicker [data-gj-role="footer"]> :not(:last-child) {
     margin-right: .25rem;
 }
+
+/* shadcn/ui */
+.gj-picker-shadcn.datetimepicker [data-gj-role="header"] {
+    display: block;
+    padding: 8px 8px 4px;
+    background: transparent;
+    color: #000;
+    font-size: 14px;
+}
+
+.gj-picker-shadcn [data-gj-role="switch"] {
+    color: #737373;
+    background: transparent;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.gj-picker-shadcn [data-gj-role="switch"] .selected {
+    color: #000;
+}

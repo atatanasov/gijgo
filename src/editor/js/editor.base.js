@@ -40,7 +40,7 @@ gj.editor.config = {
 
         /** The name of the UI library that is going to be in use. Currently we support only Material Design and Bootstrap. 
          * @additionalinfo The css files for Bootstrap should be manually included to the page if you use bootstrap as uiLibrary.
-         * @type string (materialdesign|bootstrap|bootstrap4)
+         * @type string (materialdesign|bootstrap|bootstrap4|shadcn)
          * @default 'materialdesign'
          * @example Material.Design <!-- editor, materialicons  -->
          * <textarea id="editor"></textarea>
@@ -59,6 +59,13 @@ gj.editor.config = {
          * <script>
          *     new GijgoEditor(document.getElementById('editor'), {
          *         uiLibrary: 'bootstrap4'
+         *     });
+         * </script>
+         * @example Shadcn <!-- editor -->
+         * <textarea id="editor"></textarea>
+         * <script>
+         *     new GijgoEditor(document.getElementById('editor'), {
+         *         uiLibrary: 'shadcn'
          *     });
          * </script>
          */
@@ -136,6 +143,15 @@ gj.editor.config = {
             buttonsGroup: 'btn-group',
             button: 'btn btn-outline-secondary gj-cursor-pointer',
             buttonActive: 'active'
+        }
+    },
+
+    shadcn: {
+        style: {
+            wrapper: 'gj-editor gj-editor-shadcn',
+            buttonsGroup: 'gj-editor-shadcn-group',
+            button: 'gj-editor-shadcn-button gj-cursor-pointer',
+            buttonActive: 'gj-editor-shadcn-active'
         }
     },
 

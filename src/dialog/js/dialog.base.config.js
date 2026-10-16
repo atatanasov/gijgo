@@ -359,7 +359,7 @@ gj.dialog.config = {
 
         /** The name of the UI library that is going to be in use. Currently we support Material Design and Bootstrap.
          * @additionalinfo The css file for bootstrap should be manually included if you use bootstrap.
-         * @type string (bootstrap|materialdesign)
+         * @type string (bootstrap|bootstrap4|bootstrap5|materialdesign|shadcn)
          * @default undefined
          * @example Bootstrap.3 <!-- draggable, dialog.base, bootstrap -->
          * <div id="dialog">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
@@ -392,6 +392,19 @@ gj.dialog.config = {
          * <script>
          *     var dialog = new GijgoDialog(document.getElementById('dialog'), {
          *         uiLibrary: 'bootstrap5'
+         *     });
+         * </script>
+         * @example Shadcn <!-- draggable, dialog.base -->
+         * <div id="dialog">
+         *     <div data-gj-role="body">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
+         *     <div data-gj-role="footer">
+         *         <button type="button" data-gj-role="close">Cancel</button>
+         *         <button type="button" data-gj-role="close">OK</button>
+         *     </div>
+         * </div>
+         * <script>
+         *     var dialog = new GijgoDialog(document.getElementById('dialog'), {
+         *         uiLibrary: 'shadcn'
          *     });
          * </script>
          * @example Material.Design <!-- draggable, dialog.base  -->
@@ -480,6 +493,18 @@ gj.dialog.config = {
             headerCloseButton: 'btn-close',
             body: 'modal-body',
             footer: 'gj-dialog-footer modal-footer'
+        }
+    },
+
+    shadcn: {
+        style: {
+            modal: 'gj-modal',
+            content: 'gj-dialog-shadcn',
+            header: 'gj-dialog-shadcn-header gj-unselectable',
+            headerTitle: 'gj-dialog-shadcn-title',
+            headerCloseButton: 'gj-dialog-shadcn-close',
+            body: 'gj-dialog-shadcn-body',
+            footer: 'gj-dialog-footer gj-dialog-shadcn-footer'
         }
     }
 };

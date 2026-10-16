@@ -525,13 +525,6 @@ table.gj-grid-shadcn tfoot .gj-dropdown-shadcn [data-gj-role="presenter"] {
     font-size: 14px;
     font-weight: 500;
 }
-
-table.gj-grid-shadcn tfoot .gj-dropdown-shadcn [data-gj-role="presenter"] {
-    height: 28px;
-    border-radius: 6px;
-    font-size: 14px;
-    font-weight: 500;
-}
 .gj-grid thead tr th div.gj-grid-column-resizer-wrapper {
     position: relative;
     width: 100%;

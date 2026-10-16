@@ -7,7 +7,11 @@
  */
 let gj = {};
 
-/**  */ gj.core = {
+/**
+  * @widget Core
+  * @plugin Base
+  */
+ gj.core = {
     messages: {
         'en-us': {
             monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
@@ -23,7 +27,45 @@ let gj = {};
         }
     },
 
-    /**      */    parseDate: function (value, format, locale) {
+    /** 
+     * @method
+     * @example String.1
+     * <div id="date"></div>
+     * <script>
+     *     document.getElementById('date').innerText = gj.core.parseDate('02/03/23', 'mm/dd/yy');
+     * </script>
+     * @example String.2
+     * <div id="date"></div>
+     * <script>
+     *     document.getElementById('date').innerText = gj.core.parseDate('2023 2.3', 'yyyy m.d');
+     * </script>
+     * @example String.dd.mmm.yyyy
+     * <div id="date"></div>
+     * <script>
+     *     document.getElementById('date').innerText = gj.core.parseDate('05 Feb 2023', 'dd mmm yyyy');
+     * </script>
+     * @example String.dd.mmmm.yyyy
+     * <div id="date"></div>
+     * <script>
+     *     document.getElementById('date').innerText = gj.core.parseDate('05 February 2023', 'dd mmmm yyyy');
+     * </script>
+     * @example String.HH:MM
+     * <div id="date"></div>
+     * <script>
+     *     document.getElementById('date').innerText = gj.core.parseDate('10:57', 'HH:MM');
+     * </script>
+     * @example ASP.NET.JSON.Date
+     * <div id="date"></div>
+     * <script>
+     *     document.getElementById('date').innerText = gj.core.parseDate("\/Date(349653600000)\/");
+     * </script>
+     * @example UNIX.Timestamp
+     * <div id="date"></div>
+     * <script>
+     *     document.getElementById('date').innerText = gj.core.parseDate(349653600000);
+     * </script>
+     */
+    parseDate: function (value, format, locale) {
         let i, year = 0, month = 0, date = 1, hour = 0, minute = 0, mode = null, dateParts, formatParts, result;
 
         if (value && typeof value === 'string') {
@@ -80,7 +122,50 @@ let gj = {};
         return result;
     },
 
-    /**      */    formatDate: function (date, format, locale) {
+    /** 
+     * @method
+     * @example Sample.1
+     * <div id="date"></div>
+     * <script>
+     *     document.getElementById('date').innerText = gj.core.formatDate(new Date(2023, 1, 3), 'mm/dd/yy');
+     * </script>
+     * @example Sample.2
+     * <div id="date"></div>
+     * <script>
+     *     document.getElementById('date').innerText = gj.core.formatDate(new Date(2023, 1, 3), 'yyyy m.d');
+     * </script>
+     * @example Sample.dd.mmm.yyyy
+     * <div id="date"></div>
+     * <script>
+     *     document.getElementById('date').innerText = gj.core.formatDate(new Date(2023, 1, 3), 'dd mmm yyyy');
+     * </script>
+     * @example Sample.dd.mmmm.yyyy
+     * <div id="date"></div>
+     * <script>
+     *     document.getElementById('date').innerText = gj.core.formatDate(new Date(2023, 1, 3), 'dd mmmm yyyy');
+     * </script>
+     * @example Sample.5
+     * <div id="date"></div>
+     * <script>
+     *     document.getElementById('date').innerText = gj.core.formatDate(new Date(2023, 1, 3, 20, 43, 53), 'hh:MM:ss tt mm/dd/yyyy');
+     * </script>
+     * @example Sample.6
+     * <div id="date"></div>
+     * <script>
+     *     document.getElementById('date').innerText = gj.core.formatDate(new Date(2023, 1, 3, 20, 43, 53), 'hh:MM TT');
+     * </script>
+     * @example Short.WeekDay
+     * <div id="date"></div>
+     * <script>
+     *     document.getElementById('date').innerText = gj.core.formatDate(new Date(2023, 1, 3), 'ddd, mmm dd');
+     * </script>
+     * @example Full.WeekDay
+     * <div id="date"></div>
+     * <script>
+     *     document.getElementById('date').innerText = gj.core.formatDate(new Date(2023, 1, 3), 'dddd, mmm dd');
+     * </script>
+     */
+    formatDate: function (date, format, locale) {
         let result = '', separator, tmp,
             formatParts = format.split(/[\s,-\.//\:]+/),
             separators = format.split(/s+|M+|H+|h+|t+|T+|d+|m+|y+/);
@@ -896,10 +981,12 @@ gj.picker.widget.prototype = new gj.widget();
 gj.picker.widget.constructor = gj.picker.widget;
 
 gj.picker.widget.prototype.init = function (jsConfig, type, methods) {
-    this.type = type;
+    if (type) {
+        this.type = type;
+    }
     gj.widget.prototype.init.call(this, jsConfig);
-    this.element.setAttribute('data-' + type, 'true');
-    gj.picker.methods.initialize(this, gijgoStorage.get(this.element, this.type), gj[type].methods);
+    this.element.setAttribute('data-' + this.type, 'true');
+    gj.picker.methods.initialize(this, gijgoStorage.get(this.element, this.type), gj[this.type].methods);
     return this;
 };
 
@@ -1178,4 +1265,3 @@ gj.core.messages['ro-ro'] = {
     cancel: 'Anulează',
     titleFormat: 'mmmm yyyy'
 };
-

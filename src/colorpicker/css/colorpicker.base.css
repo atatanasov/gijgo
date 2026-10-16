@@ -22,3 +22,50 @@
     top: 0px;
     font-size: 24px;
 }
+
+/* shadcn/ui */
+.gj-colorpicker-shadcn {
+    position: relative;
+    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-size: 14px;
+    color: #000;
+}
+
+.gj-colorpicker-shadcn [role="input"] {
+    box-sizing: border-box;
+    display: block;
+    width: 100%;
+    height: 36px;
+    margin: 0;
+    padding: 0 36px 0 12px;
+    border: 1px solid #e5e5e5;
+    border-radius: 8px;
+    background-color: #fff;
+    color: #000;
+    font-family: inherit;
+    font-size: 14px;
+    line-height: 36px;
+    outline: none;
+}
+
+.gj-colorpicker-shadcn [role="input"]:focus {
+    border-color: #a1a1a1;
+    box-shadow: 0 0 0 3px rgba(161, 161, 161, 0.5);
+}
+
+.gj-colorpicker-shadcn [role="right-icon"] {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+}
+
+.gj-picker-shadcn.colorpicker {
+    padding: 12px;
+    border: 1px solid #e5e5e5;
+    border-radius: 8px;
+    background-color: #fff;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+}

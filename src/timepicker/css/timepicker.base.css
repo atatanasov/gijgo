@@ -292,3 +292,84 @@
     top: 0.72rem;
     left: 0.7rem;
 }
+
+/* shadcn/ui */
+.gj-timepicker-shadcn {
+    position: relative;
+    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-size: 14px;
+    color: #000;
+}
+
+.gj-timepicker-shadcn [role="input"] {
+    box-sizing: border-box;
+    display: block;
+    width: 100%;
+    height: 36px;
+    margin: 0;
+    padding: 0 36px 0 12px;
+    border: 1px solid #e5e5e5;
+    border-radius: 8px;
+    background-color: #fff;
+    color: #000;
+    font-family: inherit;
+    font-size: 14px;
+    line-height: 36px;
+    outline: none;
+}
+
+.gj-timepicker-shadcn [role="input"]:focus {
+    border-color: #a1a1a1;
+    box-shadow: 0 0 0 3px rgba(161, 161, 161, 0.5);
+}
+
+.gj-timepicker-shadcn [role="right-icon"] {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+}
+
+.gj-picker-shadcn.timepicker {
+    padding: 12px;
+    border: 1px solid #e5e5e5;
+    border-radius: 8px;
+    background-color: #fff;
+    color: #000;
+    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+}
+
+.gj-picker-shadcn.timepicker [role="header"],
+.gj-picker-shadcn.timepicker [data-gj-role="header"] {
+    padding: 8px 0 4px;
+    font-size: 28px;
+    line-height: 32px;
+    color: #000;
+    background: transparent;
+}
+
+.gj-picker-shadcn.timepicker [role="header"] .selected,
+.gj-picker-shadcn.timepicker [data-gj-role="header"] .selected {
+    color: #000;
+}
+
+.gj-picker-shadcn [role="body"] [data-gj-role="dial"],
+.gj-picker-shadcn [data-gj-role="body"] [data-gj-role="dial"] {
+    background: #f5f5f5;
+}
+
+.gj-picker-shadcn [role="body"] [data-gj-role="arrow"],
+.gj-picker-shadcn [data-gj-role="body"] [data-gj-role="arrow"] {
+    background-color: #000;
+}
+
+.gj-picker-shadcn .arrow-begin {
+    background-color: #000;
+}
+
+.gj-picker-shadcn .arrow-end {
+    border: 16px solid #000;
+}

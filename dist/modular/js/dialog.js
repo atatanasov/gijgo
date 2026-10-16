@@ -6,7 +6,11 @@
  * Released under the MIT license
  */
 /* global window alert jQuery */
-/**  */gj.dialog = {
+/** 
+ * @widget Dialog 
+ * @plugin Base
+ */
+gj.dialog = {
     plugins: {},
     messages: {}
 };
@@ -14,38 +18,443 @@
 gj.dialog.config = {
     base: {
         /** If set to true, the dialog will automatically open upon initialization.
-         * If false, the dialog will stay hidden until the open() method is called.         */        autoOpen: true,
+         * If false, the dialog will stay hidden until the open() method is called.
+         * @type boolean
+         * @default true
+         * @example True <!-- nojquery, dialog.base, draggable -->
+         * <div id="dialog">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
+         * <script>
+         *     new GijgoDialog(document.getElementById('dialog'), { autoOpen: true });
+         * </script>
+         * @example False <!-- dialog.base, draggable, bootstrap4 -->
+         * <div id="dialog" style="display: none">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
+         * <button onclick="dialog.open()" class="btn btn-default">Open Dialog</button>
+         * <script>
+         *     var dialog = new GijgoDialog(document.getElementById('dialog'), { uiLibrary: 'bootstrap4', autoOpen: false });
+         * </script>
+         */
+        autoOpen: true,
 
-        /** Specifies whether the dialog should have a close button in right part of dialog header.         */        closeButtonInHeader: true,
+        /** Specifies whether the dialog should have a close button in right part of dialog header.
+         * @type boolean
+         * @default true
+         * @example True <!-- dialog.base, draggable -->
+         * <div id="dialog">
+         *     <div data-gj-role="header"><h4 data-gj-role="title">Dialog</h4></div>
+         *     <div data-gj-role="body">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
+         *     <div data-gj-role="footer">
+         *         <button data-gj-role="close" class="gj-button-md">Ok</button>
+         *         <button data-gj-role="close" class="gj-button-md">Cancel</button>
+         *     </div>
+         * </div>
+         * <script>
+         *     var dialog = new GijgoDialog(document.getElementById('dialog'), {
+         *         closeButtonInHeader: true,
+         *         height: 200
+         *     });
+         * </script>
+         * @example False <!-- dialog.base, draggable -->
+         * <div id="dialog">
+         *     <div data-gj-role="header"><h4 data-gj-role="title">Dialog</h4></div>
+         *     <div data-gj-role="body">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
+         *     <div data-gj-role="footer">
+         *         <button data-gj-role="close" class="gj-button-md">Ok</button>
+         *         <button data-gj-role="close" class="gj-button-md">Cancel</button>
+         *     </div>
+         * </div>
+         * <script>
+         *     var dialog = new GijgoDialog(document.getElementById('dialog'), {
+         *         closeButtonInHeader: false
+         *     });
+         * </script>
+         */
+        closeButtonInHeader: true,
 
-        /** Specifies whether the dialog should close when it has focus and the user presses the escape (ESC) key.         */        closeOnEscape: true,
+        /** Specifies whether the dialog should close when it has focus and the user presses the escape (ESC) key.
+         * @type boolean
+         * @default true
+         * @example True <!-- dialog.base -->
+         * <div id="dialog">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
+         * <script>
+         *     new GijgoDialog(document.getElementById('dialog'), {
+         *         closeOnEscape: true
+         *     });
+         * </script>
+         * @example False <!-- dialog.base, draggable -->
+         * <div id="dialog" style="display: none">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
+         * <script>
+         *     new GijgoDialog(document.getElementById('dialog'), {
+         *         closeOnEscape: false
+         *     });
+         * </script>
+         */
+        closeOnEscape: true,
 
-        /** If set to true, the dialog will be draggable by the title bar.         */        draggable: true,
+        /** If set to true, the dialog will be draggable by the title bar.
+         * @type boolean
+         * @default true
+         * @example True <!-- draggable, dialog.base -->
+         * <div id="dialog">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
+         * <script>
+         *     new GijgoDialog(document.getElementById('dialog'), {
+         *         draggable: true
+         *     });
+         * </script>
+         * @example False <!-- draggable, dialog.base -->
+         * <div id="dialog">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
+         * <script>
+         *     new GijgoDialog(document.getElementById('dialog'), {
+         *         draggable: false
+         *     });
+         * </script>
+         */
+        draggable: true,
 
-        /** The height of the dialog.         */        height: 'auto',
+        /** The height of the dialog.
+         * @additionalinfo Support string and number values. The number value sets the height in pixels.
+         * The only supported string value is "auto" which will allow the dialog height to adjust based on its content.
+         * @type (number|string)
+         * @default "auto"
+         * @example Short.Text <!-- draggable, dialog.base -->
+         * <div id="dialog">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
+         * <script>
+         *     new GijgoDialog(document.getElementById('dialog'), {
+         *         height: 200
+         *     });
+         * </script>
+         * @example Long.Text.Material.Design <!-- draggable, dialog.base -->
+         * <div id="dialog">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus porttitor quam in magna vulputate, vitae laoreet odio ultrices. Phasellus at efficitur magna. Mauris purus dolor, egestas quis leo et, vulputate dictum mauris. Vivamus maximus lectus sollicitudin lorem blandit tempor. Maecenas eget posuere mi. Suspendisse id hendrerit nibh. Morbi eu odio euismod, venenatis ipsum in, egestas nunc. Mauris dignissim metus ac risus porta eleifend. Aliquam tempus libero orci, id placerat odio vehicula eu. Donec tincidunt justo dolor, sit amet tempus turpis varius sit amet. Suspendisse ut ex blandit, hendrerit enim tristique, iaculis ipsum. Vivamus venenatis dolor justo, eget scelerisque lacus dignissim quis. Duis imperdiet ex at aliquet cursus. Proin non ultricies leo. Fusce quam diam, laoreet quis fringilla vitae, viverra id magna. Nam laoreet sem in volutpat rhoncus.</div>
+         * <script>
+         *     new GijgoDialog(document.getElementById('dialog'), {
+         *         height: 350
+         *     });
+         * </script>
+         * @example Long.Text.Bootstrap3 <!-- bootstrap, draggable, dialog.base -->
+         * <div id="dialog">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus porttitor quam in magna vulputate, vitae laoreet odio ultrices. Phasellus at efficitur magna. Mauris purus dolor, egestas quis leo et, vulputate dictum mauris. Vivamus maximus lectus sollicitudin lorem blandit tempor. Maecenas eget posuere mi. Suspendisse id hendrerit nibh. Morbi eu odio euismod, venenatis ipsum in, egestas nunc. Mauris dignissim metus ac risus porta eleifend. Aliquam tempus libero orci, id placerat odio vehicula eu. Donec tincidunt justo dolor, sit amet tempus turpis varius sit amet. Suspendisse ut ex blandit, hendrerit enim tristique, iaculis ipsum. Vivamus venenatis dolor justo, eget scelerisque lacus dignissim quis. Duis imperdiet ex at aliquet cursus. Proin non ultricies leo. Fusce quam diam, laoreet quis fringilla vitae, viverra id magna. Nam laoreet sem in volutpat rhoncus.</div>
+         * <script>
+         *     new GijgoDialog(document.getElementById('dialog'), {
+         *         height: 350,
+         *         uiLibrary: 'bootstrap'
+         *     });
+         * </script>
+         * @example Long.Text.Bootstrap4 <!-- bootstrap4, draggable, dialog.base -->
+         * <div id="dialog" data-gj-ui-library="bootstrap4" height="350">
+         *     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus porttitor quam in magna vulputate, vitae laoreet odio ultrices. Phasellus at efficitur magna. Mauris purus dolor, egestas quis leo et, vulputate dictum mauris. Vivamus maximus lectus sollicitudin lorem blandit tempor. Maecenas eget posuere mi. Suspendisse id hendrerit nibh. Morbi eu odio euismod, venenatis ipsum in, egestas nunc. Mauris dignissim metus ac risus porta eleifend. Aliquam tempus libero orci, id placerat odio vehicula eu. Donec tincidunt justo dolor, sit amet tempus turpis varius sit amet. Suspendisse ut ex blandit, hendrerit enim tristique, iaculis ipsum. Vivamus venenatis dolor justo, eget scelerisque lacus dignissim quis. Duis imperdiet ex at aliquet cursus. Proin non ultricies leo. Fusce quam diam, laoreet quis fringilla vitae, viverra id magna. Nam laoreet sem in volutpat rhoncus.
+         * </div>
+         * <script>
+         *     new GijgoDialog(document.getElementById('dialog'));
+         * </script>
+         */
+        height: 'auto',
 
-        /** The language that needs to be in use.         */        locale: 'en-us',
+        /** The language that needs to be in use.
+         * @type string
+         * @default 'en-us'
+         * @example French.Default <!-- draggable, dialog.base-->
+         * <!-- <script src="../../dist/combined/js/messages/messages.fr-fr.js"></script> -->
+         * <div id="dialog">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
+         * <script>
+         *     new GijgoDialog(document.getElementById('dialog'), {
+         *         locale: 'fr-fr'
+         *     });
+         * </script>
+         * @example French.Custom <!-- draggable, dialog.base -->
+         * <!-- <script src="../../dist/combined/js/messages/messages.fr-fr.js"></script> -->
+         * <div id="dialog">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
+         * <script>
+         *     gj.dialog.messages['fr-fr'].DefaultTitle = 'Titre de la boîte de dialogue';
+         *     new GijgoDialog(document.getElementById('dialog'), {
+         *         locale: 'fr-fr',
+         *         width: 700
+         *     });
+         * </script>
+         */
+        locale: 'en-us',
 
-        /** The maximum height in pixels to which the dialog can be resized.         */        maxHeight: undefined,
+        /** The maximum height in pixels to which the dialog can be resized.
+         * @type number
+         * @default undefined
+         * @example sample <!-- draggable, dialog.base -->
+         * <div id="dialog">The maximum height of this dialog is set to 300 px. Try to resize it for testing.</div>
+         * <script>
+         *     new GijgoDialog(document.getElementById('dialog'), {
+         *         resizable: true,
+         *         height: 200,
+         *         maxHeight: 300
+         *     });
+         * </script>
+         */
+        maxHeight: undefined,
 
-        /** The maximum width in pixels to which the dialog can be resized.         */        maxWidth: undefined,
+        /** The maximum width in pixels to which the dialog can be resized.
+         * @type number
+         * @default undefined
+         * @example sample <!-- draggable, dialog.base -->
+         * <div id="dialog">The maximum width of this dialog is set to 400 px. Try to resize it for testing.</div>
+         * <script>
+         *     new GijgoDialog(document.getElementById('dialog'), {
+         *         resizable: true,
+         *         maxWidth: 400
+         *     });
+         * </script>
+         */
+        maxWidth: undefined,
 
-        /** The minimum height in pixels to which the dialog can be resized.         */        minHeight: undefined,
+        /** The minimum height in pixels to which the dialog can be resized.
+         * @type number
+         * @default undefined
+         * @example sample <!-- draggable, dialog.base -->
+         * <div id="dialog">The minimum height of this dialog is set to 200 px. Try to resize it for testing.</div>
+         * <script>
+         *     new GijgoDialog(document.getElementById('dialog'), {
+         *         resizable: true,
+         *         height: 300,
+         *         minHeight: 200
+         *     });
+         * </script>
+         */
+        minHeight: undefined,
 
-        /** The minimum width in pixels to which the dialog can be resized.         */        minWidth: undefined,
+        /** The minimum width in pixels to which the dialog can be resized.
+         * @type number
+         * @default undefined
+         * @example sample <!-- draggable, dialog.base -->
+         * <div id="dialog">The minimum width of this dialog is set to 200 px. Try to resize it for testing.</div>
+         * <script>
+         *     new GijgoDialog(document.getElementById('dialog'), {
+         *         resizable: true,
+         *         minWidth: 200
+         *     });
+         * </script>
+         */
+        minWidth: undefined,
 
         /** If set to true, the dialog will have modal behavior.
-         * Modal dialogs create an overlay below the dialog, but above other page elements and you can't interact with them.         */        modal: false,
+         * Modal dialogs create an overlay below the dialog, but above other page elements and you can't interact with them.
+         * @type boolean
+         * @default false
+         * @example True.Material.Design <!-- draggable, dialog.base -->
+         * <div id="dialog">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
+         * <script>
+         *     new GijgoDialog(document.getElementById('dialog'), {
+         *         modal: true
+         *     });
+         * </script>
+         * @example True.Bootstrap.4 <!-- bootstrap4, draggable, dialog.base -->
+         * <div id="dialog">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
+         * <script>
+         *     new GijgoDialog(document.getElementById('dialog'), {
+         *         modal: true,
+         *         uiLibrary: 'bootstrap4'
+         *     });
+         * </script>
+         * @example True.Bootstrap.5 <!-- bootstrap5, draggable, dialog.base -->
+         * <div id="dialog">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
+         * <script>
+         *     new GijgoDialog(document.getElementById('dialog'), {
+         *         modal: true,
+         *         uiLibrary: 'bootstrap5',
+         *         height: 300
+         *     });
+         * </script>
+         * @example False <!-- draggable, dialog.base, bootstrap -->
+         * <div id="dialog">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
+         * <script>
+         *     new GijgoDialog(document.getElementById('dialog'), {
+         *         modal: false
+         *     });
+         * </script>
+         */
+        modal: false,
 
-        /** If set to true, the dialog will be resizable.         */        resizable: false,
+        /** If set to true, the dialog will be resizable.
+         * @type boolean
+         * @default false
+         * @example True <!-- draggable, dialog.base -->
+         * <div id="dialog">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
+         * <script>
+         *     new GijgoDialog(document.getElementById('dialog'), {
+         *         resizable: true
+         *     });
+         * </script>
+         * @example True.Bootstrap5 <!-- bootstrap5, draggable, dialog.base -->
+         * <div id="dialog">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
+         * <script>
+         *     new GijgoDialog(document.getElementById('dialog'), {
+         *         resizable: true,
+         *         uiLibrary: 'bootstrap5',
+         *         maxHeight: 500
+         *     });
+         * </script>
+         * @example False <!-- draggable, dialog.base -->
+         * <div id="dialog">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
+         * <script>
+         *     new GijgoDialog(document.getElementById('dialog'), {
+         *         resizable: false
+         *     });
+         * </script>
+         */
+        resizable: false,
 
-        /** If set to true, add vertical scroller to the dialog body.         */        scrollable: false,
+        /** If set to true, add vertical scroller to the dialog body.
+         * @type Boolean
+         * @default false
+         * @example Bootstrap.3 <!-- bootstrap, draggable, dialog.base -->
+         * <div id="dialog">
+         *     <div data-gj-role="body">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus porttitor quam in magna vulputate, vitae laoreet odio ultrices. Phasellus at efficitur magna. Mauris purus dolor, egestas quis leo et, vulputate dictum mauris. Vivamus maximus lectus sollicitudin lorem blandit tempor. Maecenas eget posuere mi. Suspendisse id hendrerit nibh. Morbi eu odio euismod, venenatis ipsum in, egestas nunc. Mauris dignissim metus ac risus porta eleifend. Aliquam tempus libero orci, id placerat odio vehicula eu. Donec tincidunt justo dolor, sit amet tempus turpis varius sit amet. Suspendisse ut ex blandit, hendrerit enim tristique, iaculis ipsum. Vivamus venenatis dolor justo, eget scelerisque lacus dignissim quis. Duis imperdiet ex at aliquet cursus. Proin non ultricies leo. Fusce quam diam, laoreet quis fringilla vitae, viverra id magna. Nam laoreet sem in volutpat rhoncus.</div>
+         *     <div data-gj-role="footer">
+         *         <button class="btn btn-default" data-gj-role="close">Cancel</button>
+         *         <button class="btn btn-default" data-gj-role="close">OK</button>
+         *     </div>
+         * </div>
+         * <script>
+         *     var dialog = new GijgoDialog(document.getElementById('dialog'), {
+         *         scrollable: true,
+         *         height: 300,
+         *         uiLibrary: 'bootstrap'
+         *     });
+         * </script>
+         * @example Bootstrap.5 <!-- bootstrap5, draggable, dialog.base -->
+         * <div id="dialog">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus porttitor quam in magna vulputate, vitae laoreet odio ultrices. Phasellus at efficitur magna. Mauris purus dolor, egestas quis leo et, vulputate dictum mauris. Vivamus maximus lectus sollicitudin lorem blandit tempor. Maecenas eget posuere mi. Suspendisse id hendrerit nibh. Morbi eu odio euismod, venenatis ipsum in, egestas nunc. Mauris dignissim metus ac risus porta eleifend. Aliquam tempus libero orci, id placerat odio vehicula eu. Donec tincidunt justo dolor, sit amet tempus turpis varius sit amet. Suspendisse ut ex blandit, hendrerit enim tristique, iaculis ipsum. Vivamus venenatis dolor justo, eget scelerisque lacus dignissim quis. Duis imperdiet ex at aliquet cursus. Proin non ultricies leo. Fusce quam diam, laoreet quis fringilla vitae, viverra id magna. Nam laoreet sem in volutpat rhoncus.</div>
+         * <script>
+         *     new GijgoDialog(document.getElementById('dialog'), {
+         *         scrollable: true,
+         *         height: 300,
+         *         uiLibrary: 'bootstrap5'
+         *     });
+         * </script>
+         * @example Material.Design <!-- draggable, dialog.base -->
+         * <div id="dialog">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus porttitor quam in magna vulputate, vitae laoreet odio ultrices. Phasellus at efficitur magna. Mauris purus dolor, egestas quis leo et, vulputate dictum mauris. Vivamus maximus lectus sollicitudin lorem blandit tempor. Maecenas eget posuere mi. Suspendisse id hendrerit nibh. Morbi eu odio euismod, venenatis ipsum in, egestas nunc. Mauris dignissim metus ac risus porta eleifend. Aliquam tempus libero orci, id placerat odio vehicula eu. Donec tincidunt justo dolor, sit amet tempus turpis varius sit amet. Suspendisse ut ex blandit, hendrerit enim tristique, iaculis ipsum. Vivamus venenatis dolor justo, eget scelerisque lacus dignissim quis. Duis imperdiet ex at aliquet cursus. Proin non ultricies leo. Fusce quam diam, laoreet quis fringilla vitae, viverra id magna. Nam laoreet sem in volutpat rhoncus.</div>
+         * <script>
+         *     new GijgoDialog(document.getElementById('dialog'), {
+         *         scrollable: true,
+         *         height: 300,
+         *         uiLibrary: 'materialdesign'
+         *     });
+         * </script>
+         */
+        scrollable: false,
 
-        /** The title of the dialog. Can be also set through the title attribute of the html element.         */        title: undefined,
+        /** The title of the dialog. Can be also set through the title attribute of the html element.
+         * @type String
+         * @default "Dialog"
+         * @example Js.Config <!-- draggable, dialog.base -->
+         * <div id="dialog">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
+         * <script>
+         *     new GijgoDialog(document.getElementById('dialog'), {
+         *         title: 'My Custom Title',
+         *         width: 400
+         *     });
+         * </script>
+         * @example Html.Config <!-- draggable, dialog.base -->
+         * <div id="dialog" width="400" title="My Custom Title">
+         *     Lorem ipsum dolor sit amet, consectetur adipiscing elit...
+         * </div>
+         * <script>
+         *     new GijgoDialog(document.getElementById('dialog'));
+         * </script>
+         * @example Html.Config.2 <!-- draggable, dialog.base -->
+         * <div id="dialog" width="400">
+         *     <div data-gj-role="header"><div data-gj-role="title">My Custom Title</div></div>
+         *     Lorem ipsum dolor sit amet, consectetur adipiscing elit...
+         * </div>
+         * <script>
+         *     new GijgoDialog(document.getElementById('dialog'));
+         * </script>
+         */
+        title: undefined,
 
-        /** The name of the UI library that is going to be in use. Currently we support Material Design and Bootstrap.         */        uiLibrary: undefined,
+        /** The name of the UI library that is going to be in use. Currently we support Material Design and Bootstrap.
+         * @additionalinfo The css file for bootstrap should be manually included if you use bootstrap.
+         * @type string (bootstrap|bootstrap4|bootstrap5|materialdesign|shadcn)
+         * @default undefined
+         * @example Bootstrap.3 <!-- draggable, dialog.base, bootstrap -->
+         * <div id="dialog">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
+         * <script>
+         *     new GijgoDialog(document.getElementById('dialog'), {
+         *         uiLibrary: 'bootstrap'
+         *     });
+         * </script>
+         * @example Bootstrap.4 <!-- draggable, dialog.base, bootstrap4 -->
+         * <div id="dialog">
+         *     <div data-gj-role="body">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
+         *     <div data-gj-role="footer">
+         *         <button class="btn btn-default" data-gj-role="close">Cancel</button>
+         *         <button class="btn btn-default" data-gj-role="close">OK</button>
+         *     </div>
+         * </div>
+         * <script>
+         *     var dialog = new GijgoDialog(document.getElementById('dialog'), {
+         *         uiLibrary: 'bootstrap4'
+         *     });
+         * </script>
+         * @example Bootstrap.5 <!-- draggable, dialog.base, bootstrap5 -->
+         * <div id="dialog">
+         *     <div data-gj-role="body">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
+         *     <div data-gj-role="footer">
+         *         <button class="btn btn-secondary" data-gj-role="close">Cancel</button>
+         *         <button class="btn btn-primary" data-gj-role="close">OK</button>
+         *     </div>
+         * </div>
+         * <script>
+         *     var dialog = new GijgoDialog(document.getElementById('dialog'), {
+         *         uiLibrary: 'bootstrap5'
+         *     });
+         * </script>
+         * @example Shadcn <!-- draggable, dialog.base -->
+         * <div id="dialog">
+         *     <div data-gj-role="body">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
+         *     <div data-gj-role="footer">
+         *         <button type="button" data-gj-role="close">Cancel</button>
+         *         <button type="button" data-gj-role="close">OK</button>
+         *     </div>
+         * </div>
+         * <script>
+         *     var dialog = new GijgoDialog(document.getElementById('dialog'), {
+         *         uiLibrary: 'shadcn'
+         *     });
+         * </script>
+         * @example Material.Design <!-- draggable, dialog.base  -->
+         * <div id="dialog">
+         *   <div data-gj-role="body">
+         *     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+         *     Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+         *   </div>
+         *   <div data-gj-role="footer">
+         *     <button class="gj-button-md" data-gj-role="close">OK</button>
+         *     <button class="gj-button-md" data-gj-role="close">Cancel</button>
+         *   </div>
+         * </div>
+         * <script>
+         *     var dialog = new GijgoDialog(document.getElementById('dialog'), {
+         *         uiLibrary: 'materialdesign',
+         *         resizable: true
+         *     });
+         * </script>
+         */
+        uiLibrary: undefined,
 
-        /** The width of the dialog.         */        width: 300,
+        /** The width of the dialog.
+         * @type number
+         * @default 300
+         * @example Fixed.Width <!-- draggable, dialog.base -->
+         * <div id="dialog">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
+         * <script>
+         *     new GijgoDialog(document.getElementById('dialog'), {
+         *         width: 400
+         *     });
+         * </script>
+         * @example Auto.Width <!-- draggable, dialog.base -->
+         * <div id="dialog" title="Wikipedia">
+         *   <img src="https://upload.wikimedia.org/wikipedia/en/thumb/8/80/Wikipedia-logo-v2.svg/1122px-Wikipedia-logo-v2.svg.png" width="420"/>
+         * </div>
+         * <script>
+         *     new GijgoDialog(document.getElementById('dialog'), {
+         *         width: 'auto'
+         *     });
+         * </script>
+         */
+        width: 300,
 
         style: {
             modal: 'gj-modal',
@@ -92,62 +501,294 @@ gj.dialog.config = {
             body: 'modal-body',
             footer: 'gj-dialog-footer modal-footer'
         }
+    },
+
+    shadcn: {
+        style: {
+            modal: 'gj-modal',
+            content: 'gj-dialog-shadcn',
+            header: 'gj-dialog-shadcn-header gj-unselectable',
+            headerTitle: 'gj-dialog-shadcn-title',
+            headerCloseButton: 'gj-dialog-shadcn-close',
+            body: 'gj-dialog-shadcn-body',
+            footer: 'gj-dialog-footer gj-dialog-shadcn-footer'
+        }
     }
 };
-/**   */gj.dialog.events = {
+/** 
+  * @widget Dialog 
+  * @plugin Base
+  */
+gj.dialog.events = {
     /**
      * Triggered when the dialog is initialized.
-     *     */    initialized: function (el) {
+     *
+     * @event initialized
+     * @param {object} e - event data
+     * @example sample <!-- draggable, dialog.base, bootstrap -->
+     * <div id="dialog" style="display: none">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
+     * <button onclick="dialog.open()" class="gj-button-md">Open Dialog</button>
+     * <script>
+     *     var dialog = new GijgoDialog(document.getElementById('dialog'), {
+     *         autoOpen: false,
+     *         initialized: function (e) {
+     *             alert('The initialized event is fired.');
+     *         }
+     *     });
+     * </script>
+     */
+    initialized: function (el) {
         return el.dispatchEvent(new Event('initialized'));
     },
 
     /**
-     * Triggered before the dialog is opened.     */    opening: function (el) {
+     * Triggered before the dialog is opened.
+     * @event opening
+     * @param {object} e - event data
+     * @example sample <!-- draggable, dialog.base, bootstrap -->
+     * <div id="dialog" style="display: none">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
+     * <button onclick="dialog.open()" class="gj-button-md">Open Dialog</button>
+     * <script>
+     *     var dialog = new GijgoDialog(document.getElementById('dialog'), {
+     *         autoOpen: false,
+     *         opening: function (e) {
+     *             alert('The opening event is fired.');
+     *         },
+     *         opened: function (e) {
+     *             alert('The opened event is fired.');
+     *         }
+     *     });
+     * </script>
+     */
+    opening: function (el) {
         return el.dispatchEvent(new Event('opening'));
     },
 
     /**
-     * Triggered when the dialog is opened.     */    opened: function (el) {
+     * Triggered when the dialog is opened.
+     * @event opened
+     * @param {object} e - event data
+     * @example sample <!-- draggable, dialog.base, bootstrap -->
+     * <div id="dialog" style="display: none">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
+     * <button onclick="dialog.open()" class="gj-button-md">Open Dialog</button>
+     * <script>
+     *     var dialog = new GijgoDialog(document.getElementById('dialog'), {
+     *         autoOpen: false,
+     *         opening: function (e) {
+     *             alert('The opening event is fired.');
+     *         },
+     *         opened: function (e) {
+     *             alert('The opened event is fired.');
+     *         }
+     *     });
+     * </script>
+     */
+    opened: function (el) {
         return el.dispatchEvent(new Event('opened'));
     },
 
     /**
-     * Triggered before the dialog is closed.     */    closing: function (el) {
+     * Triggered before the dialog is closed.
+     * @event closing
+     * @param {object} e - event data
+     * @example sample <!-- draggable, dialog.base, bootstrap -->
+     * <div id="dialog" style="display: none">Close the dialog in order to fire closing event.</div>
+     * <button onclick="dialog.open()" class="gj-button-md">Open Dialog</button>
+     * <script>
+     *     var dialog = new GijgoDialog(document.getElementById('dialog'), {
+     *         autoOpen: false,
+     *         closing: function (e) {
+     *             alert('The closing event is fired.');
+     *         },
+     *         closed: function (e) {
+     *             alert('The closed event is fired.');
+     *         }
+     *     });
+     * </script>
+     */
+    closing: function (el) {
         return el.dispatchEvent(new Event('closing'));
     },
 
     /**
-     * Triggered when the dialog is closed.     */    closed: function (el) {
+     * Triggered when the dialog is closed.
+     * @event closed
+     * @param {object} e - event data
+     * @example sample <!-- draggable, dialog.base, bootstrap -->
+     * <div id="dialog" style="display: none">Close the dialog in order to fire closed event.</div>
+     * <button onclick="dialog.open()" class="gj-button-md">Open Dialog</button>
+     * <script>
+     *     var dialog = new GijgoDialog(document.getElementById('dialog'), {
+     *         autoOpen: false,
+     *         closing: function (e) {
+     *             alert('The closing event is fired.');
+     *         },
+     *         closed: function (e) {
+     *             alert('The closed event is fired.');
+     *         }
+     *     });
+     * </script>
+     */
+    closed: function (el) {
         return el.dispatchEvent(new Event('closed'));
     },
 
     /**
-     * Triggered while the dialog is being dragged.     */    drag: function (el) {
+     * Triggered while the dialog is being dragged.
+     * @event drag
+     * @param {object} e - event data
+     * @example sample <!-- draggable, dialog.base, bootstrap -->
+     * <div id="dialog" style="display: none">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
+     * <div id="logPanel" class="col-xs-12 well pre-scrollable" style="height: 200px"></div>
+     * <script>
+     *     var log = document.getElementById('logPanel');
+     *     new GijgoDialog(document.getElementById('dialog'), {
+     *         drag: function (e) {
+     *             log.innerHTML += '<div class="row">The drag event is fired.</div>';
+     *         },
+     *         dragStart: function (e) {
+     *             log.innerHTML += '<div class="row">The dragStart event is fired.</div>';
+     *         },
+     *         dragStop: function (e) {
+     *             log.innerHTML += '<div class="row">The dragStop event is fired.</div>';
+     *         }
+     *     });
+     * </script>
+     */
+    drag: function (el) {
         return el.dispatchEvent(new Event('drag'));
     },
 
     /**
-     * Triggered when the user starts dragging the dialog.     */    dragStart: function (el) {
+     * Triggered when the user starts dragging the dialog.
+     * @event dragStart
+     * @param {object} e - event data
+     * @example sample <!-- draggable, dialog.base, bootstrap -->
+     * <div id="dialog" style="display: none">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
+     * <div id="logPanel" class="col-xs-12 well pre-scrollable" style="height: 200px"></div>
+     * <script>
+     *     var log = document.getElementById('logPanel');
+     *     new GijgoDialog(document.getElementById('dialog'), {
+     *         drag: function (e) {
+     *             log.innerHTML += '<div class="row">The drag event is fired.</div>';
+     *         },
+     *         dragStart: function (e) {
+     *             log.innerHTML += '<div class="row">The dragStart event is fired.</div>';
+     *         },
+     *         dragStop: function (e) {
+     *             log.innerHTML += '<div class="row">The dragStop event is fired.</div>';
+     *         }
+     *     });
+     * </script>
+     */
+    dragStart: function (el) {
         return el.dispatchEvent(new Event('dragStart'));
     },
 
     /**
-     * Triggered after the dialog has been dragged.     */    dragStop: function (el) {
+     * Triggered after the dialog has been dragged.
+     * @event dragStop
+     * @param {object} e - event data
+     * @example sample <!-- draggable, dialog.base, bootstrap -->
+     * <div id="dialog" style="display: none">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
+     * <div id="logPanel" class="col-xs-12 well pre-scrollable" style="height: 200px"></div>
+     * <script>
+     *     var log = document.getElementById('logPanel');
+     *     new GijgoDialog(document.getElementById('dialog'), {
+     *         drag: function (e) {
+     *             log.innerHTML += '<div class="row">The drag event is fired.</div>';
+     *         },
+     *         dragStart: function (e) {
+     *             log.innerHTML += '<div class="row">The dragStart event is fired.</div>';
+     *         },
+     *         dragStop: function (e) {
+     *             log.innerHTML += '<div class="row">The dragStop event is fired.</div>';
+     *         }
+     *     });
+     * </script>
+     */
+    dragStop: function (el) {
         return el.dispatchEvent(new Event('dragStop'));
     },
 
     /**
-     * Triggered while the dialog is being resized.     */    resize: function (el) {
+     * Triggered while the dialog is being resized.
+     * @event resize
+     * @param {object} e - event data
+     * @example sample <!-- draggable, dialog.base, bootstrap -->
+     * <div id="dialog" style="display: none">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
+     * <div id="logPanel" class="col-xs-12 well pre-scrollable" style="height: 200px"></div>
+     * <script>
+     *     var log = document.getElementById('logPanel');
+     *     new GijgoDialog(document.getElementById('dialog'), {
+     *         resizable: true,
+     *         resize: function (e) {
+     *             log.innerHTML += '<div class="row">The resize event is fired.</div>';
+     *         },
+     *         resizeStart: function (e) {
+     *             log.innerHTML += '<div class="row">The resizeStart event is fired.</div>';
+     *         },
+     *         resizeStop: function (e) {
+     *             log.innerHTML += '<div class="row">The resizeStop event is fired.</div>';
+     *         }
+     *     });
+     * </script>
+     */
+    resize: function (el) {
         return el.dispatchEvent(new Event('resize'));
     },
 
     /**
-     * Triggered when the user starts resizing the dialog.     */    resizeStart: function (el) {
+     * Triggered when the user starts resizing the dialog.
+     * @event resizeStart
+     * @param {object} e - event data
+     * @example sample <!-- draggable, dialog.base, bootstrap -->
+     * <div id="dialog" style="display: none">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
+     * <div id="logPanel" class="col-xs-12 well pre-scrollable" style="height: 200px"></div>
+     * <script>
+     *     var log = document.getElementById('logPanel');
+     *     new GijgoDialog(document.getElementById('dialog'), {
+     *         resizable: true,
+     *         resize: function (e) {
+     *             log.innerHTML += '<div class="row">The resize event is fired.</div>';
+     *         },
+     *         resizeStart: function (e) {
+     *             log.innerHTML += '<div class="row">The resizeStart event is fired.</div>';
+     *         },
+     *         resizeStop: function (e) {
+     *             log.innerHTML += '<div class="row">The resizeStop event is fired.</div>';
+     *         }
+     *     });
+     * </script>
+     */
+    resizeStart: function (el) {
         return el.dispatchEvent(new Event('resizeStart'));
     },
 
     /**
-     * Triggered after the dialog has been resized.     */    resizeStop: function (el) {
+     * Triggered after the dialog has been resized.
+     * @event resizeStop
+     * @param {object} e - event data
+     * @example sample <!-- draggable, dialog.base, bootstrap -->
+     * <div id="dialog" style="display: none">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
+     * <div id="logPanel" class="col-xs-12 well pre-scrollable" style="height: 200px"></div>
+     * <script>
+     *     var log = document.getElementById('logPanel');
+     *     new GijgoDialog(document.getElementById('dialog'), {
+     *         resizable: true,
+     *         resize: function (e) {
+     *             log.innerHTML += '<div class="row">The resize event is fired.</div>';
+     *         },
+     *         resizeStart: function (e) {
+     *             log.innerHTML += '<div class="row">The resizeStart event is fired.</div>';
+     *         },
+     *         resizeStop: function (e) {
+     *             log.innerHTML += '<div class="row">The resizeStop event is fired.</div>';
+     *         }
+     *     });
+     * </script>
+     */
+    resizeStop: function (el) {
         return el.dispatchEvent(new Event('resizeStop'));
     }
 };
@@ -537,7 +1178,11 @@ gj.dialog.methods = {
         }
     }
 };
-/**   */GijgoDialog = function (element, jsConfig) {
+/** 
+  * @widget Dialog 
+  * @plugin Base
+  */
+GijgoDialog = function (element, jsConfig) {
     var self = this,
         methods = gj.dialog.methods;
 
@@ -545,27 +1190,114 @@ gj.dialog.methods = {
     self.element = element;
 
     /**
-     * Opens the dialog.     */    self.open = function (title) {
+     * Opens the dialog.
+     * @method
+     * @param {String} title - The dialog title.
+     * @fires opening, opened
+     * @return dialog
+     * @example Sample <!-- draggable, dialog.base, bootstrap -->
+     * <div id="dialog" style="display: none">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
+     * <button onclick="dialog.open()" class="gj-button-md">Open Dialog</button>
+     * <script>
+     *     var dialog = new GijgoDialog(document.getElementById('dialog'), {
+     *         autoOpen: false
+     *     });
+     * </script>
+     * @example Title <!-- draggable, dialog.base, bootstrap -->
+     * <div id="dialog" style="display: none">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
+     * <button onclick="dialog.open('Custom Text')" class="gj-button-md">Open Dialog</button>
+     * <script>
+     *     var dialog = new GijgoDialog(document.getElementById('dialog'), {
+     *         autoOpen: false
+     *     });
+     * </script>
+     */
+    self.open = function (title) {
         return methods.open(this, title);
     };
 
     /**
-     * Close the dialog.     */    self.close = function () {
+     * Close the dialog.
+     * @method
+     * @fires closing, closed
+     * @return dialog
+     * @example sample <!-- draggable, dialog.base, bootstrap -->
+     * <div id="dialog" style="display: none">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
+     * <button onclick="dialog.open()" class="gj-button-md">Open Dialog</button>
+     * <button onclick="dialog.close()" class="gj-button-md">Close Dialog</button>
+     * <script>
+     *     var dialog = new GijgoDialog(document.getElementById('dialog'));
+     * </script>
+     */
+    self.close = function () {
         return methods.close(this);
     };
 
     /**
-     * Check if the dialog is currently open.     */    self.isOpen = function () {
+     * Check if the dialog is currently open.
+     * @method
+     * @return boolean
+     * @example sample <!-- draggable, dialog.base, bootstrap -->
+     * <div id="dialog" style="display: none">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
+     * <button onclick="dialog.open()" class="gj-button-md">Open Dialog</button>
+     * <button onclick="dialog.close()" class="gj-button-md">Close Dialog</button>
+     * <button onclick="alert(dialog.isOpen())" class="gj-button-md">isOpen</button>
+     * <script>
+     *     var dialog = new GijgoDialog(document.getElementById('dialog'));
+     * </script>
+     */
+    self.isOpen = function () {
         return methods.isOpen(this.element);
     };
 
     /**
-     * Gets or set the content of a dialog. Supports chaining when used as a setter.     */    self.content = function (content) {
+     * Gets or set the content of a dialog. Supports chaining when used as a setter.
+     * @method
+     * @param {String} content - The content of the Dialog.
+     * @return String|Dialog
+     * @example sample <!-- draggable, dialog.base, bootstrap -->
+     * <div id="dialog">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
+     * <button onclick="alert(dialog.content())" class="btn btn-default">Get Content</button>
+     * <button onclick="dialog.content('New Test Content Value')" class="btn btn-default">Set Content</button>
+     * <script>
+     *     var dialog = new GijgoDialog(document.getElementById('dialog'), { uiLibrary: 'bootstrap' });
+     * </script>
+     */
+    self.content = function (content) {
         return methods.content(this, content);
     };
 
     /**
-     * Destroy the dialog.     */    self.destroy = function (keepHtml) {
+     * Destroy the dialog.
+     * @method
+     * @param {boolean} keepHtml - If this flag is set to false, the dialog html markup will be removed from the HTML dom tree.
+     * @return void
+     * @example Keep.HTML.Markup <!-- draggable, dialog.base -->
+     * <div id="dialog" style="display: none">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
+     * <button onclick="create()" class="gj-button-md">Create</button>
+     * <button onclick="dialog.destroy()" class="gj-button-md">Destroy</button>
+     * <script>
+     *     var dialog;
+     *     function create() { 
+     *         dialog = new GijgoDialog(document.getElementById('dialog'));
+     *     }
+     * </script>
+     * @example Remove.HTML.Markup <!-- draggable, dialog.base -->
+     * <div id="dialog" style="display: none">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
+     * <button onclick="create()" class="gj-button-md">Create</button>
+     * <button onclick="dialog.destroy(false)" class="gj-button-md">Destroy</button>
+     * <script>
+     *     var dialog;
+     *     function create() {
+     *         if (!document.getElementById('dialog')) {
+     *             alert('The dialog can not be created.');
+     *         } else {
+     *             dialog = new GijgoDialog(document.getElementById('dialog'));
+     *         }
+     *     }
+     * </script>
+     */
+    self.destroy = function (keepHtml) {
         return methods.destroy(this, keepHtml);
     };
 
@@ -678,4 +1410,3 @@ gj.dialog.messages['ro-ro'] = {
     Close: 'Închide',
     DefaultTitle: 'Mesaj'
 };
-

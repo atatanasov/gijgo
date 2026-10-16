@@ -97,7 +97,7 @@ gj.timepicker.config = {
 
         /** The name of the UI library that is going to be in use.
          * @additionalinfo The css file for bootstrap should be manually included if you use bootstrap.
-         * @type (materialdesign|bootstrap|bootstrap4)
+         * @type (materialdesign|bootstrap|bootstrap4|shadcn)
          * @default materialdesign
          * @example MaterialDesign <!-- timepicker -->
          * <input id="timepicker" width="312" />
@@ -113,6 +113,11 @@ gj.timepicker.config = {
          * <input id="timepicker" width="276" />
          * <script>
          *     new GijgoTimePicker(document.getElementById('timepicker'), { uiLibrary: 'bootstrap4' });
+         * </script>
+         * @example Shadcn <!-- timepicker -->
+         * <input id="timepicker" width="280" />
+         * <script>
+         *     new GijgoTimePicker(document.getElementById('timepicker'), { uiLibrary: 'shadcn' });
          * </script>
          */
         uiLibrary: 'materialdesign',
@@ -290,6 +295,20 @@ gj.timepicker.config = {
             footer: 'modal-footer',
             button: 'btn btn-default'
         }
+    },
+
+    shadcn: {
+        style: {
+            wrapper: 'gj-timepicker gj-timepicker-shadcn gj-unselectable',
+            input: 'gj-input-shadcn',
+            clock: 'gj-picker gj-picker-shadcn timepicker',
+            footer: 'gj-picker-shadcn-footer',
+            button: 'gj-button-shadcn'
+        },
+        iconsLibrary: 'shadcn',
+        icons: {
+            rightIcon: '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#737373" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>'
+        }
     }
 };
 
@@ -304,7 +323,7 @@ gj.timepicker.methods = {
     },
 
     initMouse: function (input, popup, data) {
-        var body = popup.querySelector('[data-gj-role="body"]');
+        var body = popup.querySelector('[role="body"], [data-gj-role="body"]');
         body.addEventListener('mousedown', gj.timepicker.methods.mouseDownHandler(popup));
         body.addEventListener('mousemove', gj.timepicker.methods.mouseMoveHandler(input, popup, data));
         body.addEventListener('mouseup', gj.timepicker.methods.mouseUpHandler(input, popup, data));

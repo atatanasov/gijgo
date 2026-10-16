@@ -378,3 +378,198 @@
     top: 0.72rem;
     left: 0.7rem;
 }
+
+/* shadcn/ui */
+.gj-datepicker-shadcn {
+    position: relative;
+    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-size: 14px;
+    color: #000;
+}
+
+.gj-datepicker-shadcn input {
+    box-sizing: border-box;
+    display: block;
+    width: 100%;
+    height: 36px;
+    margin: 0;
+    padding: 0 36px 0 12px;
+    border: 1px solid #e5e5e5;
+    border-radius: 8px;
+    background-color: #fff;
+    color: #000;
+    font-family: inherit;
+    font-size: 14px;
+    line-height: 36px;
+    outline: none;
+}
+
+.gj-datepicker-shadcn input:focus {
+    border-color: #a1a1a1;
+    box-shadow: 0 0 0 3px rgba(161, 161, 161, 0.5);
+}
+
+.gj-datepicker-shadcn [data-gj-role="right-icon"] {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+}
+
+.gj-picker-shadcn.datepicker {
+    box-sizing: border-box;
+    padding: 12px;
+    border: 1px solid #e5e5e5;
+    border-radius: 8px;
+    background-color: #fff;
+    color: #000;
+    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-size: 14px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+}
+
+.gj-picker-shadcn.datepicker [data-gj-role="header"] {
+    display: block;
+    padding: 4px 8px 12px;
+    background: transparent;
+    color: #000;
+}
+
+.gj-picker-shadcn.datepicker [data-gj-role="header"] [data-gj-role="year"] {
+    font-size: 12px;
+    color: #737373;
+    cursor: pointer;
+}
+
+.gj-picker-shadcn.datepicker [data-gj-role="header"] [data-gj-role="date"] {
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.gj-picker-shadcn.datepicker [data-gj-role="header"] .selected {
+    color: #000;
+}
+
+.gj-picker-shadcn div[data-gj-role="navigator"] {
+    height: 32px;
+    align-items: center;
+}
+
+.gj-picker-shadcn div[data-gj-role="navigator"] div:first-child,
+.gj-picker-shadcn div[data-gj-role="navigator"] div:last-child {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-width: 32px;
+    height: 32px;
+    border-radius: 6px;
+}
+
+.gj-picker-shadcn div[data-gj-role="navigator"] div:first-child:hover,
+.gj-picker-shadcn div[data-gj-role="navigator"] div:last-child:hover {
+    background-color: #f5f5f5;
+}
+
+.gj-picker-shadcn div[data-gj-role="navigator"] div[data-gj-role="period"] {
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.gj-picker-shadcn table {
+    width: 100%;
+    margin: 8px 0 0;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.gj-picker-shadcn table th,
+.gj-picker-shadcn table td {
+    padding: 0;
+    border: 0;
+    background: transparent;
+}
+
+.gj-picker-shadcn table tr th div,
+.gj-picker-shadcn table tr td div {
+    display: block;
+    width: 32px;
+    height: 32px;
+    margin: 0 auto;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 32px;
+    text-align: center;
+}
+
+.gj-picker-shadcn table tr th div {
+    color: #737373;
+    font-size: 12.8px;
+}
+
+.gj-picker-shadcn table tr td.gj-cursor-pointer div:hover,
+.gj-picker-shadcn table tr td.focused div {
+    background-color: #f5f5f5;
+    color: #000;
+}
+
+.gj-picker-shadcn table tr td.today div {
+    background-color: #f5f5f5;
+    color: #000;
+}
+
+.gj-picker-shadcn table tr td.selected.gj-cursor-pointer div {
+    background-color: #000;
+    color: #fafafa;
+}
+
+.gj-picker-shadcn table tr td.other-month div,
+.gj-picker-shadcn table tr td.disabled div {
+    color: #737373;
+}
+
+.gj-picker-shadcn table tr td.disabled div {
+    opacity: 0.5;
+}
+
+[type="year"].gj-picker-shadcn table tr td div,
+[type="decade"].gj-picker-shadcn table tr td div,
+[type="century"].gj-picker-shadcn table tr td div {
+    width: 72px;
+    height: 36px;
+    line-height: 36px;
+    cursor: pointer;
+}
+
+.gj-picker-shadcn [data-gj-role="footer"] {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    padding: 12px 4px 4px;
+}
+
+.gj-picker-shadcn [data-gj-role="footer"] button {
+    height: 32px;
+    padding: 0 12px;
+    border: 1px solid #e5e5e5;
+    border-radius: 6px;
+    background-color: #fff;
+    color: #000;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.gj-picker-shadcn [data-gj-role="footer"] button:hover {
+    background-color: #f5f5f5;
+}
+
+.gj-picker-shadcn [data-gj-role="footer"] button:last-child {
+    border-color: #000;
+    background-color: #000;
+    color: #fafafa;
+}

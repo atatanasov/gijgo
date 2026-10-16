@@ -59,6 +59,11 @@ gj.datetimepicker.config = {
          * <script>
          *     new GijgoDateTimePicker(document.getElementById('picker'), { uiLibrary: 'bootstrap5' });
          * </script>
+         * @example Shadcn <!-- datetimepicker -->
+         * <input id="picker" width="280" />
+         * <script>
+         *     new GijgoDateTimePicker(document.getElementById('picker'), { uiLibrary: 'shadcn', modal: false, footer: false });
+         * </script>
          */
         uiLibrary: 'materialdesign',
 
@@ -262,6 +267,12 @@ gj.datetimepicker.config = {
     bootstrap5: {
         style: {
             calendar: 'gj-picker gj-picker-bootstrap datetimepicker gj-unselectable'
+        }
+    },
+
+    shadcn: {
+        style: {
+            calendar: 'gj-picker gj-picker-shadcn datetimepicker gj-unselectable'
         }
     }
 };

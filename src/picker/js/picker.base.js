@@ -118,10 +118,12 @@ gj.picker.widget.prototype = new gj.widget();
 gj.picker.widget.constructor = gj.picker.widget;
 
 gj.picker.widget.prototype.init = function (jsConfig, type, methods) {
-    this.type = type;
+    if (type) {
+        this.type = type;
+    }
     gj.widget.prototype.init.call(this, jsConfig);
-    this.element.setAttribute('data-' + type, 'true');
-    gj.picker.methods.initialize(this, gijgoStorage.get(this.element, this.type), gj[type].methods);
+    this.element.setAttribute('data-' + this.type, 'true');
+    gj.picker.methods.initialize(this, gijgoStorage.get(this.element, this.type), gj[this.type].methods);
     return this;
 };
 

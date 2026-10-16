@@ -452,7 +452,7 @@ gj.tree.config = {
 
         /** The name of the UI library that is going to be in use.
          * @additionalinfo The css file for bootstrap should be manually included if you use bootstrap.
-         * @type (materialdesign|bootstrap|bootstrap4)
+         * @type (materialdesign|bootstrap|bootstrap4|bootstrap5|shadcn)
          * @default materialdesign
          * @example MaterialDesign <!-- tree, checkbox -->
          * <ul id="tree"></ul>
@@ -481,6 +481,16 @@ gj.tree.config = {
          *         dataSource: '/Locations/Get',
          *         width: 500,
          *         uiLibrary: 'bootstrap4',
+         *         checkboxes: true
+         *     });
+         * </script>
+         * @example Shadcn <!-- checkbox, tree -->
+         * <ul id="tree"></ul>
+         * <script>
+         *     var tree = new GijgoTree(document.getElementById('tree'), {
+         *         dataSource: '/Locations/Get',
+         *         width: 500,
+         *         uiLibrary: 'shadcn',
          *         checkboxes: true
          *     });
          * </script>
@@ -610,6 +620,17 @@ gj.tree.config = {
         icons: {
             expand: '<i class="gj-icon plus" />',
             collapse: '<i class="gj-icon minus" />'
+        }
+    },
+
+    shadcn: {
+        style: {
+            wrapper: 'gj-unselectable gj-tree-shadcn',
+            list: 'gj-list gj-list-shadcn',
+            item: '',
+            active: 'gj-list-shadcn-active',
+            inactive: '',
+            border: 'gj-tree-shadcn-border'
         }
     },
 

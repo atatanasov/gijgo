@@ -6,46 +6,589 @@
  * Released under the MIT license
  */
 /* global window alert jQuery gj */
-/**  */gj.datepicker = {
+/**
+  * @widget DatePicker
+  * @plugin Base
+  */
+gj.datepicker = {
     plugins: {}
 };
 
 gj.datepicker.config = {
     base: {
-        /** Whether to display dates in other months at the start or end of the current month.         */        showOtherMonths: false,
+        /** Whether to display dates in other months at the start or end of the current month.
+         * @additionalinfo Set to true by default for Bootstrap.
+         * @type Boolean
+         * @default false
+         * @example JS.True <!-- datepicker -->
+         * <input id="datepicker" width="312" />
+         * <script>
+         *    new GijgoDatePicker(document.getElementById('datepicker'), {
+         *        showOtherMonths: true
+         *    });
+         * </script>
+         * @example False <!-- datepicker -->
+         * <input id="datepicker" width="312" />
+         * <script>
+         *     new GijgoDatePicker(document.getElementById('datepicker'), {
+         *         showOtherMonths: false
+         *     });
+         * </script>
+         */
+        showOtherMonths: false,
 
         /** Whether days in other months shown before or after the current month are selectable.
-         * This only applies if the showOtherMonths option is set to true.         */        selectOtherMonths: true,
+         * This only applies if the showOtherMonths option is set to true.
+         * @type Boolean
+         * @default true
+         * @example JS.True <!-- datepicker -->
+         * <input id="datepicker" width="312" />
+         * <script>
+         *    new GijgoDatePicker(document.getElementById('datepicker'), {
+         *        showOtherMonths: true,
+         *        selectOtherMonths: true
+         *    });
+         * </script>
+         * @example JS.False <!-- datepicker -->
+         * <input id="datepicker" width="312" />
+         * <script>
+         *     new GijgoDatePicker(document.getElementById('datepicker'), {
+         *        showOtherMonths: true,
+         *        selectOtherMonths: false
+         *     });
+         * </script>
+         */
+        selectOtherMonths: true,
 
-        /** The width of the datepicker.         */        width: undefined,
+        /** The width of the datepicker.
+         * @type number
+         * @default undefined
+         * @example JS.Config <!-- datepicker -->
+         * <input id="datepicker" />
+         * <script>
+         *    new GijgoDatePicker(document.getElementById('datepicker'), { width: 312 });
+         * </script>
+         * @example HTML.Config <!-- datepicker -->
+         * <input id="datepicker" width="312" />
+         * <script>
+         *    new GijgoDatePicker(document.getElementById('datepicker'));
+         * </script>
+         */
+        width: undefined,
 
-        /** The minimum selectable date. When not set, there is no minimum.         */        minDate: undefined,
+        /** The minimum selectable date. When not set, there is no minimum.
+         * @additionalinfo If the minDate is set by string, then the date in the string needs to follow the format specified by the 'format' configuration option.
+         * @type Date|String|Function
+         * @default undefined
+         * @example JS.Today <!-- datepicker -->
+         * <input id="datepicker" width="312" />
+         * <script>
+         *    var today = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
+         *    new GijgoDatePicker(document.getElementById('datepicker'), {
+         *        minDate: today
+         *    });
+         * </script>
+         * @example Yesterday <!-- datepicker -->
+         * <input id="datepicker" width="312" />
+         * <script>
+         *     new GijgoDatePicker(document.getElementById('datepicker'), {
+         *        minDate: function() {
+         *            var date = new Date();
+         *            date.setDate(date.getDate()-1);
+         *            return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+         *        }
+         *     });
+         * </script>
+         * @example Bootstrap <!-- bootstrap, datepicker -->
+         * <input id="datepicker" width="220" />
+         * <script>
+         *     new GijgoDatePicker(document.getElementById('datepicker'), {
+         *        format: 'yyyy-mm-dd',
+         *        value: '2023-01-15',
+         *        minDate: '2023-01-12',
+         *        uiLibrary: 'bootstrap'
+         *     });
+         * </script>
+         * @example Bootstrap.4 <!-- bootstrap4, datepicker -->
+         * <input id="datepicker" width="234" />
+         * <script>
+         *     new GijgoDatePicker(document.getElementById('datepicker'), {
+         *        value: '02/15/2023',
+         *        minDate: '02/12/2023',
+         *        uiLibrary: 'bootstrap4'
+         *     });
+         * </script>
+         * @example Bootstrap.5 <!-- bootstrap5, datepicker -->
+         * <input id="datepicker" width="234" />
+         * <script>
+         *     new GijgoDatePicker(document.getElementById('datepicker'), {
+         *        value: '12/15/2022',
+         *        minDate: '12/12/2022',
+         *        uiLibrary: 'bootstrap5'
+         *     });
+         * </script>
+         */
+        minDate: undefined,
 
-        /** The maximum selectable date. When not set, there is no maximum         */        maxDate: undefined,
+        /** The maximum selectable date. When not set, there is no maximum
+         * @type Date|String|Function
+         * @default undefined
+         * @example JS.Today <!-- datepicker -->
+         * <input id="datepicker" width="312" />
+         * <script>
+         *    var today = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
+         *    new GijgoDatePicker(document.getElementById('datepicker'), {
+         *        maxDate: today
+         *    });
+         * </script>
+         * @example Tomorrow <!-- datepicker -->
+         * <input id="datepicker" width="312" />
+         * <script>
+         *     new GijgoDatePicker(document.getElementById('datepicker'), { 
+         *        maxDate: function() {
+         *            var date = new Date();
+         *            date.setDate(date.getDate()+1);
+         *            return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+         *        }
+         *     });
+         * </script>
+         */
+        maxDate: undefined,
 
-        /** Specifies the format, which is used to format the value of the DatePicker displayed in the input.         */        format: 'mm/dd/yyyy',
+        /** Specifies the format, which is used to format the value of the DatePicker displayed in the input.
+         * @additionalinfo <b>d</b> - Day of the month as digits; no leading zero for single-digit days.<br/>
+         * <b>dd</b> - Day of the month as digits; leading zero for single-digit days.<br/>
+         * <b>ddd</b> - Day of the week as a three-letter abbreviation.<br/>
+         * <b>dddd</b> - Day of the week as its full name.<br/>
+         * <b>m</b> - Month as digits; no leading zero for single-digit months.<br/>
+         * <b>mm</b> - Month as digits; leading zero for single-digit months.<br/>
+         * <b>mmm</b> - Month as a three-letter abbreviation.<br/>
+         * <b>mmmm</b> - Month as its full name.<br/>
+         * <b>yy</b> - Year as last two digits; leading zero for years less than 10.<br/>
+         * <b>yyyy</b> - Year represented by four digits.<br/>
+         * @type String
+         * @default 'mm/dd/yyyy'
+         * @example Sample <!-- datepicker -->
+         * <input id="datepicker" value="2023-25-07" width="312" />
+         * <script>
+         *     new GijgoDatePicker(document.getElementById('datepicker'), { format: 'yyyy-dd-mm' });
+         * </script>
+         * @example Short.Month.Format <!-- datepicker -->
+         * <input id="datepicker" value="10 Oct 2023" width="312" />
+         * <script>
+         *     new GijgoDatePicker(document.getElementById('datepicker'), { format: 'dd mmm yyyy' });
+         * </script>
+         * @example Long.Month.Format <!-- datepicker -->
+         * <input id="datepicker" value="10 October 2023" width="312" />
+         * <script>
+         *     new GijgoDatePicker(document.getElementById('datepicker'), { format: 'dd mmmm yyyy' });
+         * </script>
+         */
+        format: 'mm/dd/yyyy',
 
-        /** The name of the UI library that is going to be in use.         */        uiLibrary: 'materialdesign',
+        /** The name of the UI library that is going to be in use.
+         * @additionalinfo The css file for bootstrap should be manually included if you use bootstrap.
+         * @type (materialdesign|bootstrap|bootstrap4|bootstrap5|shadcn)
+         * @default materialdesign
+         * @example MaterialDesign <!-- datepicker -->
+         * <input id="datepicker" width="312" />
+         * <script>
+         *    new GijgoDatePicker(document.getElementById('datepicker'), { uiLibrary: 'materialdesign' });
+         * </script>
+         * @example Bootstrap.3 <!-- bootstrap, datepicker -->
+         * <input id="datepicker" width="220" />
+         * <script>
+         *     new GijgoDatePicker(document.getElementById('datepicker'), { uiLibrary: 'bootstrap' });
+         * </script>
+         * @example Bootstrap.4.Material.Icons <!-- bootstrap4, datepicker -->
+         * <input id="datepicker" width="234" />
+         * <script>
+         *     new GijgoDatePicker(document.getElementById('datepicker'), { uiLibrary: 'bootstrap4' });
+         * </script>
+         * @example Bootstrap.4.FontAwesome <!-- fontawesome, bootstrap4, datepicker -->
+         * <input id="datepicker" width="234" />
+         * <script>
+         *     new GijgoDatePicker(document.getElementById('datepicker'), { uiLibrary: 'bootstrap4', iconsLibrary: 'fontawesome' });
+         * </script>
+         * @example Bootstrap.5.Material.Icons <!-- bootstrap5, datepicker -->
+         * <input id="datepicker" width="234" />
+         * <script>
+         *     new GijgoDatePicker(document.getElementById('datepicker'), { uiLibrary: 'bootstrap5' });
+         * </script>
+         * @example Bootstrap.5.FontAwesome <!-- fontawesome, bootstrap5, datepicker -->
+         * <input id="datepicker" width="234" />
+         * <script>
+         *     new GijgoDatePicker(document.getElementById('datepicker'), { uiLibrary: 'bootstrap5', iconsLibrary: 'fontawesome' });
+         * </script>
+         * @example Shadcn <!-- datepicker -->
+         * <input id="datepicker" width="280" />
+         * <script>
+         *     new GijgoDatePicker(document.getElementById('datepicker'), { uiLibrary: 'shadcn' });
+         * </script>
+         */
+        uiLibrary: 'materialdesign',
 
-        /** The name of the icons library that is going to be in use. Currently we support Material Icons, Font Awesome and Glyphicons.         */        iconsLibrary: 'materialicons',
+        /** The name of the icons library that is going to be in use. Currently we support Material Icons, Font Awesome and Glyphicons.
+         * @additionalinfo If you use Bootstrap 3 as uiLibrary, then the iconsLibrary is set to Glyphicons by default.<br/>
+         * If you use Material Design as uiLibrary, then the iconsLibrary is set to Material Icons by default.<br/>
+         * The css files for Material Icons, Font Awesome or Glyphicons should be manually included to the page where the grid is in use.
+         * @type (materialicons|fontawesome|glyphicons)
+         * @default 'materialicons'
+         * @example Bootstrap.Font.Awesome <!-- bootstrap, fontawesome, datepicker -->
+         * <input id="datepicker" width="220" />
+         * <script>
+         *     new GijgoDatePicker(document.getElementById('datepicker'), {
+         *         uiLibrary: 'bootstrap',
+         *         iconsLibrary: 'fontawesome'
+         *     });
+         * </script>
+         * @example Bootstrap.4.Font.Awesome <!-- bootstrap4, fontawesome, datepicker -->
+         * <input id="datepicker" width="234" />
+         * <script>
+         *     new GijgoDatePicker(document.getElementById('datepicker'), {
+         *         uiLibrary: 'bootstrap4',
+         *         iconsLibrary: 'fontawesome'
+         *     });
+         * </script>
+         * @example Bootstrap.5.Font.Awesome <!-- bootstrap5, fontawesome, datepicker -->
+         * <input id="datepicker" width="234" />
+         * <script>
+         *     new GijgoDatePicker(document.getElementById('datepicker'), {
+         *         uiLibrary: 'bootstrap5',
+         *         iconsLibrary: 'fontawesome'
+         *     });
+         * </script>
+         */
+        iconsLibrary: 'materialicons',
 
-        /** The initial datepicker value.         */        value: undefined,
+        /** The initial datepicker value.
+         * @type String
+         * @default undefined
+         * @example Javascript <!-- datepicker -->
+         * <input id="datepicker" width="312" />
+         * <script>
+         *    new GijgoDatePicker(document.getElementById('datepicker'), {
+         *        value: '01/01/2023'
+         *    });
+         * </script>
+         * @example HTML <!-- datepicker -->
+         * <input id="datepicker" width="312" value="01/01/2023" />
+         * <script>
+         *     new GijgoDatePicker(document.getElementById('datepicker'));
+         * </script>
+         */
+        value: undefined,
 
-        /** Day of the week start. 0 (Sunday) to 6 (Saturday)         */        weekStartDay: 0,
+        /** Day of the week start. 0 (Sunday) to 6 (Saturday)
+         * @type Number
+         * @default 0
+         * @example Monday <!-- datepicker -->
+         * <input id="datepicker" width="312" />
+         * <script>
+         *    new GijgoDatePicker(document.getElementById('datepicker'), {
+         *        weekStartDay: 1
+         *    });
+         * </script>
+         * @example Saturday <!-- datepicker -->
+         * <input id="datepicker" width="312" />
+         * <script>
+         *    new GijgoDatePicker(document.getElementById('datepicker'), {
+         *        weekStartDay: 6
+         *    });
+         * </script>
+         */
+        weekStartDay: 0,
 
-        /** An array or function that will be used to determine which dates to be disabled for selection by the widget.         */        disableDates: undefined,
+        /** An array or function that will be used to determine which dates to be disabled for selection by the widget.
+         * @type Array|Function
+         * @default undefined
+         * @example Array <!-- jquery, datepicker -->
+         * <input id="datepicker" width="312" />
+         * <script>
+         *    $('#datepicker').datepicker({
+         *        value: '11/10/2023',
+         *        disableDates: [new Date(2023,10,11), '11/12/2023']
+         *    });
+         * </script>
+         * @example Function <!-- datepicker -->
+         * <input id="datepicker" width="312" />
+         * <script>
+         *    new GijgoDatePicker(document.getElementById('datepicker'), {
+         *        value: '11/11/2023',
+         *        disableDates:  function (date) {
+         *            var disabled = [10,15,20,25];
+         *            if (disabled.indexOf(date.getDate()) == -1 ) {
+         *                return true;
+         *            } else {
+         *                return false;
+         *            }
+         *        }
+         *    });
+         * </script>
+         */
+        disableDates: undefined,
 
         /** An array that will be used to determine which days of week to be disabled for selection by the widget.
-         * The array needs to contains only numbers where 0 is Sunday, 1 is Monday and etc.         */        disableDaysOfWeek: undefined,
+         * The array needs to contains only numbers where 0 is Sunday, 1 is Monday and etc.
+         * @type Array
+         * @default undefined
+         * @example Saturday.Sunday <!-- datepicker -->
+         * <input id="datepicker" width="312" />
+         * <script>
+         *    new GijgoDatePicker(document.getElementById('datepicker'), {
+         *        disableDaysOfWeek: [0, 6]
+         *    });
+         * </script>
+         */
+        disableDaysOfWeek: undefined,
 
-        /** Whether to display week number in year on the left side of the calendar.         */        calendarWeeks: false,
+        /** Whether to display week number in year on the left side of the calendar.
+         * @type Boolean
+         * @default false
+         * @example Material.Design <!-- datepicker -->
+         * <input id="datepicker" width="356" />
+         * <script>
+         *    new GijgoDatePicker(document.getElementById('datepicker'), {
+         *        calendarWeeks: true,
+         *        modal: true,
+         *        footer: true
+         *    });
+         * </script>
+         * @example Bootstrap <!-- datepicker, bootstrap -->
+         * <input id="datepicker" width="234" />
+         * <script>
+         *    new GijgoDatePicker(document.getElementById('datepicker'), { calendarWeeks: true, uiLibrary: 'bootstrap' });
+         * </script>
+         * @example Bootstrap.4 <!-- bootstrap4, datepicker -->
+         * <input id="datepicker" width="234" />
+         * <script>
+         *    new GijgoDatePicker(document.getElementById('datepicker'), { calendarWeeks: true, uiLibrary: 'bootstrap4' });
+         * </script>
+         * @example Bootstrap.5 <!-- bootstrap5, datepicker -->
+         * <input id="datepicker" width="234" />
+         * <script>
+         *    new GijgoDatePicker(document.getElementById('datepicker'), { calendarWeeks: true, uiLibrary: 'bootstrap5' });
+         * </script>
+         */
+        calendarWeeks: false,
 
-        /** Whether to enable keyboard navigation.         */        keyboardNavigation: true,
+        /** Whether to enable keyboard navigation.
+         * @type Boolean
+         * @default true
+         * @example Material.Design <!-- datepicker -->
+         * <input id="datepicker" width="312" />
+         * <script>
+         *    new GijgoDatePicker(document.getElementById('datepicker'), {
+         *        keyboardNavigation: true
+         *    });
+         * </script>
+         * @example Material.Design.Modal <!-- datepicker -->
+         * <input id="datepicker" width="312" />
+         * <script>
+         *    new GijgoDatePicker(document.getElementById('datepicker'), { keyboardNavigation: true, modal: true, header: true, footer: true });
+         * </script>
+         * @example Bootstrap.4 <!-- bootstrap4, datepicker -->
+         * <input id="datepicker" width="234" />
+         * <script>
+         *    new GijgoDatePicker(document.getElementById('datepicker'), {
+         *        uiLibrary: 'bootstrap4',
+         *        keyboardNavigation: true,
+         *        showOtherMonths: true
+         *    });
+         * </script>
+         * @example Bootstrap.5 <!-- bootstrap5, datepicker -->
+         * <input id="datepicker" width="234" />
+         * <script>
+         *    new GijgoDatePicker(document.getElementById('datepicker'), {
+         *        uiLibrary: 'bootstrap5',
+         *        keyboardNavigation: true,
+         *        showOtherMonths: true
+         *    });
+         * </script>
+         */
+        keyboardNavigation: true,
 
-        /** The language that needs to be in use.         */        locale: 'en-us',
+        /** The language that needs to be in use.
+         * @type string
+         * @default 'en-us'
+         * @example German <!-- datepicker -->
+         * <input id="datepicker" width="276" />
+         * <script>
+         *    new GijgoDatePicker(document.getElementById('datepicker'), {
+         *        locale: 'de-de',
+         *        format: 'dd mmm yyyy'
+         *    });
+         * </script>
+         * @example Bulgarian <!-- datepicker -->
+         * <input id="datepicker" width="276" />
+         * <script>
+         *    new GijgoDatePicker(document.getElementById('datepicker'), {
+         *        locale: 'bg-bg',
+         *        format: 'dd mmm yyyy',
+         *        weekStartDay: 1
+         *    });
+         * </script>
+         * @example French <!-- datepicker -->
+         * <input id="datepicker" width="276" />
+         * <script>
+         *    new GijgoDatePicker(document.getElementById('datepicker'), {
+         *        locale: 'fr-fr',
+         *        format: 'dd mmm yyyy'
+         *    });
+         * </script>
+         * @example Brazil <!-- datepicker -->
+         * <input id="datepicker" width="276" />
+         * <script>
+         *    new GijgoDatePicker(document.getElementById('datepicker'), {
+         *        locale: 'pt-br',
+         *        format: 'dd mmm yyyy'
+         *    });
+         * </script>
+         * @example Russian <!-- datepicker -->
+         * <input id="datepicker" width="276" />
+         * <script>
+         *    new GijgoDatePicker(document.getElementById('datepicker'), {
+         *        locale: 'ru-ru',
+         *        format: 'dd mmm yyyy'
+         *    });
+         * </script>
+         * @example Spanish <!-- datepicker -->
+         * <input id="datepicker" width="276" />
+         * <script>
+         *    new GijgoDatePicker(document.getElementById('datepicker'), {
+         *        locale: 'es-es',
+         *        format: 'dd/mm/yyyy'
+         *    });
+         * </script>
+         * @example Italian <!-- datepicker -->
+         * <input id="datepicker" width="276" />
+         * <script>
+         *    new GijgoDatePicker(document.getElementById('datepicker'), {
+         *        locale: 'it-it',
+         *        format: 'dd/mm/yyyy'
+         *    });
+         * </script>
+         * @example Japanise <!-- datepicker -->
+         * <input id="datepicker" width="276" />
+         * <script>
+         *    new GijgoDatePicker(document.getElementById('datepicker'), {
+         *        locale: 'ja-jp',
+         *        format: 'dd mmmm yyyy'
+         *    });
+         * </script>
+         * @example Chinise_Simplified <!-- datepicker -->
+         * <input id="datepicker" width="276" />
+         * <script>
+         *    new GijgoDatePicker(document.getElementById('datepicker'), {
+         *        locale: 'zh-cn',
+         *        format: 'dd mmmm yyyy'
+         *    });
+         * </script>
+         * @example Chinise_Traditional <!-- datepicker -->
+         * <input id="datepicker" width="276" />
+         * <script>
+         *    new GijgoDatePicker(document.getElementById('datepicker'), {
+         *        locale: 'zh-tw',
+         *        format: 'dd mmmm yyyy'
+         *    });
+         * </script>
+         * @example Latvian <!-- datepicker -->
+         * <input id="datepicker" width="276" />
+         * <script>
+         *    new GijgoDatePicker(document.getElementById('datepicker'), {
+         *        locale: 'lv-lv',
+         *        format: 'yyyy.dd.mm'
+         *    });
+         * </script>
+         * @example Czech <!-- datepicker -->
+         * <input id="datepicker" width="276" />
+         * <script>
+         *    new GijgoDatePicker(document.getElementById('datepicker'), {
+         *        locale: 'cs-cz',
+         *        format: 'dd.mm.yyyy'
+         *    });
+         * </script>
+         * @example Azerbaijani <!-- datepicker -->
+         * <input id="datepicker" width="276" />
+         * <script>
+         *    new GijgoDatePicker(document.getElementById('datepicker'), {
+         *        locale: 'az-az',
+         *        format: 'dd.mm.yyyy'
+         *    });
+         * </script>
+         * @example Greek <!-- datepicker -->
+         * <input id="datepicker" width="276" />
+         * <script>
+         *    new GijgoDatePicker(document.getElementById('datepicker'), {
+         *        locale: 'el-gr',
+         *        format: 'dd/mm/yyyy'
+         *    });
+         * </script>
+         * @example Hungarian <!-- datepicker -->
+         * <input id="datepicker" width="276" />
+         * <script>
+         *    new GijgoDatePicker(document.getElementById('datepicker'), {
+         *        locale: 'hu-hu',
+         *        format: 'dd/mm/yyyy'
+         *    });
+         * </script>
+         * @example Dutch <!-- datepicker -->
+         * <input id="datepicker" width="276" />
+         * <script>
+         *    new GijgoDatePicker(document.getElementById('datepicker'), {
+         *        locale: 'nl-nl',
+         *        format: 'dd/mm/yyyy'
+         *    });
+         * </script>
+         */
+        locale: 'en-us',
 
         icons: {
-            /** datepicker icon definition.             */            rightIcon: '<i class="gj-icon">event</i>',
+            /** datepicker icon definition.
+             * @alias icons.rightIcon
+             * @type String
+             * @default '<i class="gj-icon event" />'
+             * @example Custom.Material.Icon <!-- materialicons, datepicker -->
+             * <input id="datepicker" width="312" />
+             * <script>
+             *     new GijgoDatePicker(document.getElementById('datepicker'), {
+             *         icons: { 
+             *             rightIcon: '<i class="material-icons">date_range</i>'
+             *         }
+             *     });
+             * </script>
+             * @example Custom.Glyphicon.Icon <!-- bootstrap, datepicker -->
+             * <input id="datepicker" width="220" />
+             * <script>
+             *     new GijgoDatePicker(document.getElementById('datepicker'), {
+             *         uiLibrary: 'bootstrap',
+             *         icons: {
+             *             rightIcon: '<span class="glyphicon glyphicon-chevron-down"></span>'
+             *         }
+             *     });
+             * </script>
+             * @example Bootstrap.4 <!-- bootstrap4, materialicons, datepicker -->
+             * <input id="datepicker" width="234" />
+             * <script>
+             *     new GijgoDatePicker(document.getElementById('datepicker'), {
+             *         uiLibrary: 'bootstrap4',
+             *         icons: {
+             *             rightIcon: '<i class="material-icons">date_range</i>'
+             *         }
+             *     });
+             * </script>
+             * @example Bootstrap.5 <!-- bootstrap5, materialicons, datepicker -->
+             * <input id="datepicker" width="234" />
+             * <script>
+             *     new GijgoDatePicker(document.getElementById('datepicker'), {
+             *         uiLibrary: 'bootstrap5',
+             *         icons: {
+             *             rightIcon: '<i class="material-icons">date_range</i>'
+             *         }
+             *     });
+             * </script>
+             */
+            rightIcon: '<i class="gj-icon">event</i>',
 
             previousMonth: '<i class="gj-icon chevron-left"></i>',
             nextMonth: '<i class="gj-icon chevron-right"></i>'
@@ -53,17 +596,169 @@ gj.datepicker.config = {
 
         fontSize: undefined,
 
-        /** The size of the datepicker input.         */        size: 'default',
+        /** The size of the datepicker input.
+         * @type 'small'|'default'|'large'
+         * @default 'default'
+         * @example Bootstrap.5 <!-- bootstrap5, datepicker -->
+         * <p><label for="datepicker-small">Small Size:</label> <input id="datepicker-small" width="234" value="03/20/2023" /></p>
+         * <p><label for="datepicker-default">Default Size:</label> <input id="datepicker-default" width="234" value="03/20/2023" /></p>
+         * <p><label for="datepicker-large">Large Size:</label> <input id="datepicker-large" width="234" value="03/20/2023" /></p>
+         * <script>
+         *     new GijgoDatePicker(document.getElementById('datepicker-small'), { uiLibrary: 'bootstrap5', size: 'small' });
+         *     new GijgoDatePicker(document.getElementById('datepicker-default'), { uiLibrary: 'bootstrap5', size: 'default' });
+         *     new GijgoDatePicker(document.getElementById('datepicker-large'), { uiLibrary: 'bootstrap5', size: 'large' });
+         * </script>
+         * @example Bootstrap.5.Font.Awesome <!-- bootstrap5, fontawesome, datepicker -->
+         * <p><label for="datepicker-small">Small Size:</label> <input id="datepicker-small" width="234" value="03/20/2023" /></p>
+         * <p><label for="datepicker-default">Default Size:</label> <input id="datepicker-default" width="234" value="03/20/2023" /></p>
+         * <p><label for="datepicker-large">Large Size:</label> <input id="datepicker-large" width="234" value="03/20/2023" /></p>
+         * <script>
+         *     new GijgoDatePicker(document.getElementById('datepicker-small'), { uiLibrary: 'bootstrap5', iconsLibrary: 'fontawesome', size: 'small' });
+         *     new GijgoDatePicker(document.getElementById('datepicker-default'), { uiLibrary: 'bootstrap5', iconsLibrary: 'fontawesome', size: 'default' });
+         *     new GijgoDatePicker(document.getElementById('datepicker-large'), { uiLibrary: 'bootstrap5', iconsLibrary: 'fontawesome', size: 'large' });
+         * </script>
+         * @example Bootstrap.4 <!-- bootstrap4, datepicker -->
+         * <p><label for="datepicker-small">Small Size:</label> <input id="datepicker-small" width="234" value="03/20/2023" /></p>
+         * <p><label for="datepicker-default">Default Size:</label> <input id="datepicker-default" width="234" value="03/20/2023" /></p>
+         * <p><label for="datepicker-large">Large Size:</label> <input id="datepicker-large" width="234" value="03/20/2023" /></p>
+         * <script>
+         *     new GijgoDatePicker(document.getElementById('datepicker-small'), { uiLibrary: 'bootstrap4', size: 'small' });
+         *     new GijgoDatePicker(document.getElementById('datepicker-default'), { uiLibrary: 'bootstrap4', size: 'default' });
+         *     new GijgoDatePicker(document.getElementById('datepicker-large'), { uiLibrary: 'bootstrap4', size: 'large' });
+         * </script>
+         * @example Bootstrap.4.Font.Awesome <!-- bootstrap4, fontawesome, datepicker -->
+         * <p><label for="datepicker-small">Small Size:</label> <input id="datepicker-small" width="234" value="03/20/2023" /></p>
+         * <p><label for="datepicker-default">Default Size:</label> <input id="datepicker-default" width="234" value="03/20/2023" /></p>
+         * <p><label for="datepicker-large">Large Size:</label> <input id="datepicker-large" width="234" value="03/20/2023" /></p>
+         * <script>
+         *     new GijgoDatePicker(document.getElementById('datepicker-small'), { uiLibrary: 'bootstrap4', iconsLibrary: 'fontawesome', size: 'small' });
+         *     new GijgoDatePicker(document.getElementById('datepicker-default'), { uiLibrary: 'bootstrap4', iconsLibrary: 'fontawesome', size: 'default' });
+         *     new GijgoDatePicker(document.getElementById('datepicker-large'), { uiLibrary: 'bootstrap4', iconsLibrary: 'fontawesome', size: 'large' });
+         * </script>
+         * @example Bootstrap.3 <!-- bootstrap, datepicker -->
+         * <p><label for="datepicker-small">Small Size:</label> <input id="datepicker-small" width="220" value="03/20/2023" /></p>
+         * <p><label for="datepicker-default">Default Size:</label> <input id="datepicker-default" width="220" value="03/20/2023" /></p>
+         * <p><label for="datepicker-large">Large Size:</label> <input id="datepicker-large" width="220" value="03/20/2023" /></p>
+         * <script>
+         *     new GijgoDatePicker(document.getElementById('datepicker-small'), { uiLibrary: 'bootstrap', size: 'small' });
+         *     new GijgoDatePicker(document.getElementById('datepicker-default'), { uiLibrary: 'bootstrap', size: 'default' });
+         *     new GijgoDatePicker(document.getElementById('datepicker-large'), { uiLibrary: 'bootstrap', size: 'large' });
+         * </script>
+         * @example Material.Design <!-- datepicker -->
+         * <p><label for="datepicker-small">Small Size:</label> <input id="datepicker-small" width="276" value="03/20/2023" /></p>
+         * <p><label for="datepicker-default">Default Size:</label> <input id="datepicker-default" width="276" value="03/20/2023" /></p>
+         * <p><label for="datepicker-large">Large Size:</label> <input id="datepicker-large" width="276" value="03/20/2023" /></p>
+         * <script>
+         *     new GijgoDatePicker(document.getElementById('datepicker-small'), { size: 'small' });
+         *     new GijgoDatePicker(document.getElementById('datepicker-default'), { size: 'default' });
+         *     new GijgoDatePicker(document.getElementById('datepicker-large'), { size: 'large' });
+         * </script>
+         */
+        size: 'default',
 
-        /** If set to true, the datepicker will have modal behavior.         */        modal: false,
+        /** If set to true, the datepicker will have modal behavior.
+         * @type Boolean
+         * @default false
+         * @example Material.Design <!-- datepicker -->
+         * <input id="datepicker" width="312" />
+         * <script>
+         *    new GijgoDatePicker(document.getElementById('datepicker'), { modal: true });
+         * </script>
+         * @example Bootstrap <!-- bootstrap, datepicker -->
+         * <input id="datepicker" width="220" />
+         * <script>
+         *    new GijgoDatePicker(document.getElementById('datepicker'), {
+         *        uiLibrary: 'bootstrap',
+         *        modal: true,
+         *        header: true,
+         *        footer: true
+         *    });
+         * </script>
+         * @example Bootstrap.4 <!-- bootstrap4, datepicker -->
+         * <input id="datepicker" width="234" />
+         * <script>
+         *    new GijgoDatePicker(document.getElementById('datepicker'), {
+         *        uiLibrary: 'bootstrap4',
+         *        modal: true,
+         *        header: true,
+         *        footer: true
+         *    });
+         * @example Bootstrap.5 <!-- bootstrap5, datepicker -->
+         * <input id="datepicker" width="234" />
+         * <script>
+         *    new GijgoDatePicker(document.getElementById('datepicker'), {
+         *        uiLibrary: 'bootstrap5',
+         *        modal: true,
+         *        header: true,
+         *        footer: true
+         *    });
+         * </script>
+         */
+        modal: false,
 
-        /** If set to true, add header to the datepicker.         */        header: false,
+        /** If set to true, add header to the datepicker.
+         * @type Boolean
+         * @default false
+         * @example True <!-- picker, datepicker -->
+         * <input id="datepicker" width="312" />
+         * <script>
+         *    new GijgoDatePicker(document.getElementById('datepicker'), { header: true, modal: true, footer: true });
+         * </script>
+         * @example False <!-- datepicker -->
+         * <input id="datepicker" width="312" />
+         * <script>
+         *    new GijgoDatePicker(document.getElementById('datepicker'), { header: false });
+         * </script>
+         */
+        header: false,
 
-        /** If set to true, add footer with ok and cancel buttons to the datepicker.         */        footer: false,
+        /** If set to true, add footer with ok and cancel buttons to the datepicker.
+         * @type Boolean
+         * @default false
+         * @example True <!-- datepicker -->
+         * <input id="datepicker" width="312" />
+         * <script>
+         *    new GijgoDatePicker(document.getElementById('datepicker'), { footer: true, modal: true, header: true });
+         * </script>
+         * @example False <!-- datepicker -->
+         * <input id="datepicker" width="312" />
+         * <script>
+         *    new GijgoDatePicker(document.getElementById('datepicker'), { footer: false });
+         * </script>
+         */
+        footer: false,
 
-        /** If set to true, show datepicker on input focus.         */        showOnFocus: true,
+        /** If set to true, show datepicker on input focus.
+         * @type Boolean
+         * @default true
+         * @example True <!-- datepicker -->
+         * <input id="datepicker" width="312" />
+         * <script>
+         *    new GijgoDatePicker(document.getElementById('datepicker'), { showOnFocus: true, showRightIcon: false });
+         * </script>
+         * @example False <!-- datepicker -->
+         * <input id="datepicker" width="312" />
+         * <script>
+         *    new GijgoDatePicker(document.getElementById('datepicker'), { showOnFocus: false });
+         * </script>
+         */
+        showOnFocus: true,
 
-        /** If set to true, show datepicker icon on the right side of the input.         */        showRightIcon: true,
+        /** If set to true, show datepicker icon on the right side of the input.
+         * @type Boolean
+         * @default true
+         * @example False <!-- datepicker -->
+         * <input id="datepicker" width="312" />
+         * <script>
+         *    new GijgoDatePicker(document.getElementById('datepicker'), { showOnFocus: true, showRightIcon: false });
+         * </script>
+         * @example True <!-- datepicker -->
+         * <input id="datepicker" width="312" />
+         * <script>
+         *    new GijgoDatePicker(document.getElementById('datepicker'), { showRightIcon: true });
+         * </script>
+         */
+        showRightIcon: true,
 
         style: {
             modal: 'gj-modal',
@@ -107,6 +802,23 @@ gj.datepicker.config = {
             button: 'btn btn-outline-secondary'
         },
         showOtherMonths: true
+    },
+
+    shadcn: {
+        style: {
+            wrapper: 'gj-datepicker gj-datepicker-shadcn gj-unselectable',
+            input: 'gj-input-shadcn',
+            calendar: 'gj-picker gj-picker-shadcn datepicker gj-unselectable',
+            footer: 'gj-picker-shadcn-footer',
+            button: 'gj-button-shadcn'
+        },
+        iconsLibrary: 'shadcn',
+        showOtherMonths: true,
+        icons: {
+            rightIcon: '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#737373" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M16 2v4"/><path d="M8 2v4"/><path d="M3 10h18"/></svg>',
+            previousMonth: '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>',
+            nextMonth: '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>'
+        }
     },
 
     fontawesome: {
@@ -1073,23 +1785,85 @@ gj.datepicker.methods = {
 gj.datepicker.events = {
     /**
      * Triggered when the datepicker value is changed.
-     *     */    change: function (el) {
+     *
+     * @event change
+     * @param {object} e - event data
+     * @example sample <!-- datepicker -->
+     * <input id="datepicker" width="312" />
+     * <script>
+     *     new GijgoDatePicker(document.getElementById('datepicker'), {
+     *         change: function (e) {
+     *             alert('Change is fired');
+     *         }
+     *     });
+     * </script>
+     */
+    change: function (el) {
         return el.dispatchEvent(new Event('change'));
     },
 
     /**
      * Triggered when new value is selected inside the picker.
-     *     */    select: function (el, type) {
+     *
+     * @event select
+     * @param {object} e - event data
+     * @param {string} type - The type of the selection. The options are day, month, year or decade.
+     * @example sample <!-- datepicker -->
+     * <input id="datepicker" width="312" />
+     * <p>Click on the month name in order to select another month.</p>
+     * <script>
+     *     new GijgoDatePicker(document.getElementById('datepicker'), {
+     *         modal: true,
+     *         header: true,
+     *         footer: true,
+     *         change: function (e) {
+     *             alert('Change is fired');
+     *         },
+     *         select: function (e) {
+     *             alert('Select from type of "' + e.detail.type + '" is fired');
+     *         }
+     *     });
+     * </script>
+     */
+    select: function (el, type) {
         return el.dispatchEvent(new CustomEvent('select', { detail: { 'type': type } }));
     },
 
     /**
-     * Event fires when the calendar is opened.     */    open: function (el) {
+     * Event fires when the calendar is opened.
+     * @event open
+     * @param {object} e - event data
+     * @example sample <!-- datepicker -->
+     * <input id="datepicker" width="312" />
+     * <script>
+     *     new GijgoDatePicker(document.getElementById('datepicker'), ({
+     *         modal: true,
+     *         open: function (e) {
+     *             alert('open is fired.');
+     *         }
+     *     });
+     * </script>
+     */
+    open: function (el) {
         return el.dispatchEvent(new Event('open'));
     },
 
     /**
-     * Event fires when the calendar is closed.     */    close: function (el) {
+     * Event fires when the calendar is closed.
+     * @event close
+     * @param {object} e - event data
+     * @example sample <!-- datepicker -->
+     * <input id="datepicker" width="312" />
+     * <script>
+     *     new GijgoDatePicker(document.getElementById('datepicker'), ({
+     *         modal: true,
+     *         close: function (e) {
+     *             alert('Close is fired.');
+     *         }
+     *     });
+     * </script>
+     */
+    close: function (el) {
         return el.dispatchEvent(new Event('close'));
     }
 };
@@ -1101,19 +1875,72 @@ GijgoDatePicker = function (element, jsConfig) {
     self.type = 'datepicker';
     self.element = element;
 
-    /** Gets or sets the value of the datepicker.     */    self.value = function (value) {
+    /** Gets or sets the value of the datepicker.
+     * @method
+     * @param {string} value - The value that needs to be selected.
+     * @return string | datepicker object
+     * @example Get <!-- datepicker -->
+     * <button class="gj-button-md" onclick="alert(datepicker.value())">Get Value</button>
+     * <hr/>
+     * <input id="datepicker" width="312" />
+     * <script>
+     *     var datepicker = new GijgoDatePicker(document.getElementById('datepicker'));
+     * </script>
+     * @example Set <!-- datepicker -->
+     * <button class="gj-button-md" onclick="datepicker.value('03/01/2023')">Set Value</button>
+     * <hr/>
+     * <input id="datepicker" width="312" />
+     * <script>
+     *     var datepicker = new GijgoDatePicker(document.getElementById('datepicker'));
+     * </script>
+     */
+    self.value = function (value) {
         return methods.value(this, value);
     };
 
-    /** Remove datepicker functionality from the element.     */    self.destroy = function () {
+    /** Remove datepicker functionality from the element.
+     * @method
+     * @return jquery element
+     * @example sample <!-- datepicker -->
+     * <button class="gj-button-md" onclick="datepicker.destroy()">Destroy</button>
+     * <input id="datepicker" width="312" />
+     * <script>
+     *     var datepicker = new GijgoDatePicker(document.getElementById('datepicker'), { modal: true });
+     * </script>
+     */
+    self.destroy = function () {
         return methods.destroy(this);
     };
 
-    /** Open the calendar.     */    self.open = function () {
+    /** Open the calendar.
+     * @method
+     * @return datepicker
+     * @example Open.Close <!-- datepicker -->
+     * <button class="gj-button-md" onclick="datepicker.open()">Open</button>
+     * <button class="gj-button-md" onclick="datepicker.close()">Close</button>
+     * <hr/>
+     * <input id="datepicker" width="312" />
+     * <script>
+     *     var datepicker = new GijgoDatePicker(document.getElementById('datepicker'));
+     * </script>
+     */
+    self.open = function () {
         return methods.open(this, this.data());
     };
 
-    /** Close the calendar.     */    self.close = function () {
+    /** Close the calendar.
+     * @method
+     * @return datepicker
+     * @example Open.Close <!-- datepicker -->
+     * <button class="gj-button-md" onclick="datepicker.open()">Open</button>
+     * <button class="gj-button-md" onclick="datepicker.close()">Close</button>
+     * <hr/>
+     * <input id="datepicker" width="312" />
+     * <script>
+     *     var datepicker = new GijgoDatePicker(document.getElementById('datepicker'));
+     * </script>
+     */
+    self.close = function () {
         return methods.close(this);
     };
     
@@ -1146,4 +1973,3 @@ if (typeof (jQuery) !== "undefined") {
         };
     })(jQuery);
 }
-

@@ -6,7 +6,11 @@
  * Released under the MIT license
  */
 /* global window alert jQuery gj */
-/**  */gj.datetimepicker = {
+/**
+  * @widget DateTimePicker
+  * @plugin Base
+  */
+gj.datetimepicker = {
     plugins: {},
     messages: {
         'en-us': {
@@ -17,25 +21,235 @@
 gj.datetimepicker.config = {
     base: {
 
-        /** The datepicker configuration options. Valid only for datepicker specific configuration options.         */        datepicker: gj.datepicker.config.base,
+        /** The datepicker configuration options. Valid only for datepicker specific configuration options.
+         * @additionalinfo All configuration options that exists on the datetimepicker level are going to override the options at datepicker level.
+         * @type object
+         * @default undefined
+         * @example Sample <!-- datetimepicker -->
+         * <input id="picker" width="312" />
+         * <script>
+         *    new GijgoDateTimePicker(document.getElementById('picker'), {
+         *        datepicker: { showOtherMonths: true }
+         *    });
+         * </script>
+         */
+        datepicker: gj.datepicker.config.base,
 
         timepicker: gj.timepicker.config.base,
 
-        /** The name of the UI library that is going to be in use.         */        uiLibrary: 'materialdesign',
+        /** The name of the UI library that is going to be in use.
+         * @additionalinfo The css file for bootstrap should be manually included if you use bootstrap.
+         * @type (materialdesign|bootstrap|bootstrap4)
+         * @default materialdesign
+         * @example MaterialDesign <!-- datetimepicker -->
+         * <input id="picker" width="312" />
+         * <script>
+         *    new GijgoDateTimePicker(document.getElementById('picker'), { uiLibrary: 'materialdesign' });
+         * </script>
+         * @example MaterialDesign.NoModal <!-- datetimepicker -->
+         * <input id="picker" width="312" />
+         * <script>
+         *    new GijgoDateTimePicker(document.getElementById('picker'), { uiLibrary: 'materialdesign', modal: false, footer:false });
+         * </script>
+         * @example Bootstrap.3 <!-- bootstrap, datetimepicker -->
+         * <input id="picker" width="220" />
+         * <script>
+         *     new GijgoDateTimePicker(document.getElementById('picker'), { uiLibrary: 'bootstrap' });
+         * </script>
+         * @example Bootstrap.4 <!-- bootstrap4, datetimepicker -->
+         * <input id="picker" width="234" />
+         * <script>
+         *     new GijgoDateTimePicker(document.getElementById('picker'), { uiLibrary: 'bootstrap4' });
+         * </script>
+         * @example Bootstrap.5 <!-- bootstrap5, datetimepicker -->
+         * <input id="picker" width="234" />
+         * <script>
+         *     new GijgoDateTimePicker(document.getElementById('picker'), { uiLibrary: 'bootstrap5' });
+         * </script>
+         * @example Shadcn <!-- datetimepicker -->
+         * <input id="picker" width="280" />
+         * <script>
+         *     new GijgoDateTimePicker(document.getElementById('picker'), { uiLibrary: 'shadcn', modal: false, footer: false });
+         * </script>
+         */
+        uiLibrary: 'materialdesign',
 
-        /** The initial datetimepicker value.         */        value: undefined,
+        /** The initial datetimepicker value.
+         * @type number
+         * @default undefined
+         * @example Javascript <!-- datetimepicker -->
+         * <input id="picker" width="300" />
+         * <script>
+         *    new GijgoDateTimePicker(document.getElementById('picker'), { value: '22:10 03/27/2023' });
+         * </script>
+         * @example HTML <!-- datetimepicker -->
+         * <input id="picker" width="300" value="22:10 03/27/2023" />
+         * <script>
+         *     new GijgoDateTimePicker(document.getElementById('picker'));
+         * </script>
+         */
+        value: undefined,
 
-        /** Specifies the format, which is used to format the value of the DatePicker displayed in the input.         */        format: 'HH:MM mm/dd/yyyy',
+        /** Specifies the format, which is used to format the value of the DatePicker displayed in the input.
+         * @additionalinfo <b>M</b> - Minutes; no leading zero for single-digit minutes.<br/>
+         * <b>MM</b> - Minutes; leading zero for single-digit minutes.<br/>
+         * <b>H</b> - The hour, using a 24-hour clock from 0 to 23; no leading zero for single-digit hours.<br/>
+         * <b>HH</b> - The hour, using a 24-hour clock from 0 to 23; leading zero for single-digit hours.<br/>
+         * <b>h</b> - The hour, using a 12-hour clock from 1 to 12; no leading zero for single-digit hours.<br/>
+         * <b>hh</b> - The hour, using a 12-hour clock from 1 to 12; leading zero for single-digit hours<br/>
+         * <b>tt</b> - The AM/PM designator; lowercase.<br/>
+         * <b>TT</b> - The AM/PM designator; upercase.<br/>
+         * <b>d</b> - Day of the month as digits; no leading zero for single-digit days.<br/>
+         * <b>dd</b> - Day of the month as digits; leading zero for single-digit days.<br/>
+         * <b>ddd</b> - Day of the week as a three-letter abbreviation.<br/>
+         * <b>dddd</b> - Day of the week as its full name.<br/>
+         * <b>m</b> - Month as digits; no leading zero for single-digit months.<br/>
+         * <b>mm</b> - Month as digits; leading zero for single-digit months.<br/>
+         * <b>mmm</b> - Month as a three-letter abbreviation.<br/>
+         * <b>mmmm</b> - Month as its full name.<br/>
+         * <b>yy</b> - Year as last two digits; leading zero for years less than 10.<br/>
+         * <b>yyyy</b> - Year represented by four digits.<br/>
+         * @type String
+         * @default 'HH:MM mm/dd/yyyy'
+         * @example Sample <!-- datetimepicker -->
+         * <input id="input" value="05:50 2023-27-03" width="312" />
+         * <script>
+         *     new GijgoDateTimePicker(document.getElementById('picker'), { format: 'HH:MM yyyy-dd-mm' });
+         * </script>
+         * @example Long.Month.Format <!-- datetimepicker -->
+         * <input id="input" value="10 October 2023 05:50" width="312" />
+         * <script>
+         *     new GijgoDateTimePicker(document.getElementById('picker'), { format: 'dd mmmm yyyy HH:MM' });
+         * </script>
+         */
+        format: 'HH:MM mm/dd/yyyy',
 
-        /** The width of the datetimepicker.         */        width: undefined,
+        /** The width of the datetimepicker.
+         * @type number
+         * @default undefined
+         * @example JS.Config <!-- datetimepicker -->
+         * <input id="input" />
+         * <script>
+         *    new GijgoDateTimePicker(document.getElementById('picker'), { width: 312 });
+         * </script>
+         * @example HTML.Config <!-- datetimepicker -->
+         * <input id="input" width="312" />
+         * <script>
+         *    new GijgoDateTimePicker(document.getElementById('picker'));
+         * </script>
+         */
+        width: undefined,
 
-        /** If set to true, the datetimepicker will have modal behavior.         */        modal: true,
+        /** If set to true, the datetimepicker will have modal behavior.
+         * @type Boolean
+         * @default true
+         * @example Material.Design <!-- datetimepicker -->
+         * <input id="picker" width="312" />
+         * <script>
+         *    new GijgoDateTimePicker(document.getElementById('picker'), { modal: true });
+         * </script>
+         * @example Bootstrap <!-- bootstrap, datetimepicker -->
+         * <input id="picker" width="220" />
+         * <script>
+         *    new GijgoDateTimePicker(document.getElementById('picker'), { uiLibrary: 'bootstrap', modal: true, footer: true });
+         * </script>
+         * @example Bootstrap.4 <!-- bootstrap4, datetimepicker -->
+         * <input id="picker" width="234" />
+         * <script>
+         *    new GijgoDateTimePicker(document.getElementById('picker'), { uiLibrary: 'bootstrap4', modal: true, footer: true });
+         * </script>
+         */
+        modal: true,
 
-        /** If set to true, add footer with ok and cancel buttons to the datetimepicker.         */        footer: true,
+        /** If set to true, add footer with ok and cancel buttons to the datetimepicker.
+         * @type Boolean
+         * @default true
+         * @example True <!-- datetimepicker -->
+         * <input id="picker" width="312" />
+         * <script>
+         *    new GijgoDateTimePicker(document.getElementById('picker'), { footer: true, modal: true, header: true });
+         * </script>
+         * @example False <!-- datetimepicker -->
+         * <input id="picker" width="312" />
+         * <script>
+         *    new GijgoDateTimePicker(document.getElementById('picker'), { footer: false });
+         * </script>
+         */
+        footer: true,
 
-        /** The size of the datetimepicker input.         */        size: 'default',
+        /** The size of the datetimepicker input.
+         * @type 'small'|'default'|'large'
+         * @default 'default'
+         * @example Bootstrap.4 <!-- bootstrap4, datetimepicker -->
+         * <p><label for="small">Small Size:</label> <input id="small" width="234" value="10:20 03/20/2023" /></p>
+         * <p><label for="default">Default Size:</label> <input id="default" width="234" value="10:20 03/20/2023" /></p>
+         * <p><label for="large">Large Size:</label> <input id="large" width="234" value="10:20 03/20/2023" /></p>
+         * <script>
+         *     new GijgoDateTimePicker(document.getElementById('small'), { uiLibrary: 'bootstrap4', size: 'small' });
+         *     new GijgoDateTimePicker(document.getElementById('default'), { uiLibrary: 'bootstrap4', size: 'default' });
+         *     new GijgoDateTimePicker(document.getElementById('large'), { uiLibrary: 'bootstrap4', size: 'large' });
+         * </script>
+         * @example Bootstrap.4.Font.Awesome <!-- bootstrap4, fontawesome, datetimepicker -->
+         * <p><label for="small">Small Size:</label> <input id="small" width="234" value="10:20 03/20/2023" /></p>
+         * <p><label for="default">Default Size:</label> <input id="default" width="234" value="10:20 03/20/2023" /></p>
+         * <p><label for="large">Large Size:</label> <input id="large" width="234" value="10:20 03/20/2023" /></p>
+         * <script>
+         *     new GijgoDateTimePicker(document.getElementById('small'), { uiLibrary: 'bootstrap4', iconsLibrary: 'fontawesome', size: 'small' });
+         *     new GijgoDateTimePicker(document.getElementById('default'), { uiLibrary: 'bootstrap4', iconsLibrary: 'fontawesome', size: 'default' });
+         *     new GijgoDateTimePicker(document.getElementById('large'), { uiLibrary: 'bootstrap4', iconsLibrary: 'fontawesome', size: 'large' });
+         * </script>
+         * @example Bootstrap.3 <!-- bootstrap, datetimepicker -->
+         * <p><label for="small">Small Size:</label> <input id="small" width="220" value="10:20 03/20/2023" /></p>
+         * <p><label for="default">Default Size:</label> <input id="default" width="220" value="10:20 03/20/2023" /></p>
+         * <p><label for="large">Large Size:</label> <input id="large" width="220" value="10:20 03/20/2023" /></p>
+         * <script>
+         *     new GijgoDateTimePicker(document.getElementById('small'), { uiLibrary: 'bootstrap', size: 'small' });
+         *     new GijgoDateTimePicker(document.getElementById('default'), { uiLibrary: 'bootstrap', size: 'default' });
+         *     new GijgoDateTimePicker(document.getElementById('large'), { uiLibrary: 'bootstrap', size: 'large' });
+         * </script>
+         * @example Material.Design <!-- datetimepicker -->
+         * <p><label for="small">Small Size:</label> <input id="small" width="276" value="10:20 03/20/2023" /></p>
+         * <p><label for="default">Default Size:</label> <input id="default" width="276" value="10:20 03/20/2023" /></p>
+         * <p><label for="large">Large Size:</label> <input id="large" width="276" value="10:20 03/20/2023" /></p>
+         * <script>
+         *     new GijgoDateTimePicker(document.getElementById('small'), { size: 'small' });
+         *     new GijgoDateTimePicker(document.getElementById('default'), { size: 'default' });
+         *     new GijgoDateTimePicker(document.getElementById('large'), { size: 'large' });
+         * </script>
+         */
+        size: 'default',
         
-        /** The language that needs to be in use.         */        locale: 'en-us',
+        /** The language that needs to be in use.
+         * @type string
+         * @default 'en-us'
+         * @example German <!-- datetimepicker -->
+         * <input id="picker" width="276" />
+         * <script>
+         *    new GijgoDateTimePicker(document.getElementById('picker'), {
+         *        locale: 'de-de',
+         *        format: 'HH:MM dd mmm yyyy'
+         *    });
+         * </script>
+         * @example Bulgarian <!-- datetimepicker -->
+         * <input id="picker" width="276" />
+         * <script>
+         *    new GijgoDateTimePicker(document.getElementById('picker'), {
+         *        locale: 'bg-bg',
+         *        format: 'HH:MM dd mmm yyyy',
+         *        datepicker: { weekStartDay: 1 }
+         *    });
+         * </script>
+         * @example Chinise_Simplified <!-- datetimepicker -->
+         * <input id="picker" width="276" />
+         * <script>
+         *    new GijgoDateTimePicker(document.getElementById('picker'), {
+         *        locale: 'zh-cn',
+         *        format: 'HH:MM dd mmm yyyy',
+         *        datepicker: { weekStartDay: 1 }
+         *    });
+         * </script>
+         */
+        locale: 'en-us',
 
         icons: {},
 
@@ -60,6 +274,12 @@ gj.datetimepicker.config = {
     bootstrap5: {
         style: {
             calendar: 'gj-picker gj-picker-bootstrap datetimepicker gj-unselectable'
+        }
+    },
+
+    shadcn: {
+        style: {
+            calendar: 'gj-picker gj-picker-shadcn datetimepicker gj-unselectable'
         }
     }
 };
@@ -270,7 +490,23 @@ gj.datetimepicker.methods = {
 gj.datetimepicker.events = {
     /**
      * Fires when the datetimepicker value changes as a result of selecting a new value.
-     *     */    change: function (el) {
+     *
+     * @event change
+     * @param {object} e - event data
+     * @return Boolean
+     * @example sample <!--datetimepicker -->
+     * <input id="input" width="312" />
+     * <script>
+     *     new GijgoDateTimePicker(document.getElementById('picker'), {
+     *         footer: true,
+     *         modal: true,
+     *         change: function (e) {
+     *             alert('Change is fired');
+     *         }
+     *     });
+     * </script>
+     */
+    change: function (el) {
         return el.dispatchEvent(new Event('change'));
     }
 };
@@ -283,19 +519,72 @@ GijgoDateTimePicker = function (element, jsConfig) {
     self.element = element;
     self.mouseMove = false;
 
-    /** Gets or sets the value of the datetimepicker.     */    self.value = function (value) {
+    /** Gets or sets the value of the datetimepicker.
+     * @method
+     * @param {string} value - The value that needs to be selected.
+     * @return string
+     * @example Get <!-- datetimepicker -->
+     * <button class="gj-button-md" onclick="alert(datetimepicker.value())">Get Value</button>
+     * <hr/>
+     * <input id="picker" width="312" value="17:50 03/27/2023" />
+     * <script>
+     *     var datetimepicker = new GijgoDateTimePicker(document.getElementById('picker'));
+     * </script>
+     * @example Set <!-- datetimepicker -->
+     * <button class="gj-button-md" onclick="datetimepicker.value('13:40 08/01/2023')">Set Value</button>
+     * <hr/>
+     * <input id="picker" width="312" />
+     * <script>
+     *     var datetimepicker = new GijgoDateTimePicker(document.getElementById('picker'));
+     * </script>
+     */
+    self.value = function (value) {
         return methods.value(this, value);
     };
 
-    /** Open the calendar.     */    self.open = function () {
+    /** Open the calendar.
+     * @method
+     * @return datetimepicker
+     * @example Open.Close <!-- datetimepicker -->
+     * <button class="gj-button-md" onclick="picker.open()">Open</button>
+     * <button class="gj-button-md" onclick="picker.close()">Close</button>
+     * <hr/>
+     * <input id="picker" width="312" />
+     * <script>
+     *     var picker = new GijgoDateTimePicker(document.getElementById('picker'));
+     * </script>
+     */
+    self.open = function () {
         gj.datepicker.methods.open(this, this.data().datepicker);
     };
 
-    /** Close the calendar.     */    self.close = function () {
+    /** Close the calendar.
+     * @method
+     * @return datetimepicker
+     * @example Open.Close <!-- datetimepicker -->
+     * <button class="gj-button-md" onclick="picker.open()">Open</button>
+     * <button class="gj-button-md" onclick="picker.close()">Close</button>
+     * <hr/>
+     * <input id="picker" width="312" />
+     * <script>
+     *     var picker = new GijgoDateTimePicker(document.getElementById('picker'));
+     * </script>
+     */
+    self.close = function () {
         gj.datepicker.methods.close(this);
     };
 
-    /** Remove datetimepicker functionality from the element.     */    self.destroy = function () {
+    /** Remove datetimepicker functionality from the element.
+     * @method
+     * @return datetimepicker
+     * @example sample <!-- datetimepicker -->
+     * <button class="gj-button-md" onclick="picker.destroy()">Destroy</button>
+     * <input id="picker" width="312" />
+     * <script>
+     *     var picker = new GijgoDateTimePicker(document.getElementById('picker'));
+     * </script>
+     */
+    self.destroy = function () {
         return methods.destroy(this);
     };
 
@@ -330,4 +619,3 @@ if (typeof jQuery !== "undefined") {
         };
     })(jQuery);
 }
-

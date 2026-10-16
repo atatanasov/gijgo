@@ -6,35 +6,284 @@
  * Released under the MIT license
  */
 /* global window alert jQuery gj */
-/**  */gj.dropdown = {
+/**
+  * @widget DropDown
+  * @plugin Base
+  */
+gj.dropdown = {
     plugins: {}
 };
 
 gj.dropdown.config = {
     base: {
 
-        /** The data source of dropdown.         */        dataSource: undefined,
+        /** The data source of dropdown.
+         * @additionalinfo If set to string, then the dropdown is going to use this string as a url for ajax requests to the server.<br />
+         * If set to object, then the dropdown is going to use this object as settings for the <a href="http://api.jquery.com/jquery.ajax/" target="_new">jquery ajax</a> function.<br />
+         * If set to array, then the dropdown is going to use the array as data for dropdown nodes.
+         * @type (string|object|array)
+         * @default undefined
+         * @example Local.DataSource <!-- dropdown -->
+         * <select id="dropdown" width="200"></select>
+         * <script>
+         *     new GijgoDropDown(document.getElementById('dropdown'), {
+         *         dataSource: [ { value: 1, text: 'One' }, { value: 2, text: 'Two' }, { value: 3, text: 'Three' } ]
+         *     });
+         * </script>
+         * @example Remote.DataSource <!-- dropdown -->
+         * <select id="dropdown" width="200"></select>
+         * <script>
+         *     new GijgoDropDown(document.getElementById('dropdown'), {
+         *         dataSource: '/Locations/Get',
+         *         valueField: 'id'
+         *     });
+         * </script>
+         */
+        dataSource: undefined,
 
-        /** Text field name.         */        textField: 'text',
+        /** Text field name.
+         * @type string
+         * @default 'text'
+         * @example sample <!-- dropdown -->
+         * <select id="dropdown" width="200"></select>
+         * <script>
+         *     new GijgoDropDown(document.getElementById('dropdown'), {
+         *         textField: 'newTextField',
+         *         dataSource: [ { value: 1, newTextField: 'One' }, { value: 2, newTextField: 'Two' }, { value: 3, newTextField: 'Three' } ]
+         *     });
+         * </script>
+         */
+        textField: 'text',
 
-        /** Value field name.         */        valueField: 'value',
+        /** Value field name.
+         * @type string
+         * @default 'value'
+         * @example sample <!-- dropdown -->
+         * <select id="dropdown" width="200"></select>
+         * <script>
+         *     new GijgoDropDown(document.getElementById('dropdown'), {
+         *         valueField: 'newValueField',
+         *         dataSource: [ { newValueField: 1, text: 'One' }, { newValueField: 2, text: 'Two' }, { newValueField: 3, text: 'Three' } ]
+         *     });
+         * </script>
+         */
+        valueField: 'value',
 
-        /** Selected field name.         */        selectedField: 'selected',
+        /** Selected field name.
+         * @type string
+         * @default 'selected'
+         * @example sample <!-- dropdown -->
+         * <select id="dropdown" width="200"></select>
+         * <script>
+         *     new GijgoDropDown(document.getElementById('dropdown'), {
+         *         selectedField: 'newSelectedField',
+         *         dataSource: [ { value: 1, text: 'One' }, { value: 2, text: 'Two', newSelectedField: true }, { value: 3, text: 'Three' } ]
+         *     });
+         * </script>
+         */
+        selectedField: 'selected',
 
-        /** The width of the dropdown.         */        width: undefined,
+        /** The width of the dropdown.
+         * @type number
+         * @default undefined
+         * @example JS.Config <!-- dropdown -->
+         * <select id="dropdown">
+         *     <option value="1">One</option>
+         *     <option value="2">Two</option>
+         *     <option value="3">Three</option>
+         * </select>
+         * <script>
+         *     new GijgoDropDown(document.getElementById('dropdown'), { width: 200 });
+         * </script>
+         * @example HTML.Config <!-- dropdown -->
+         * <select id="dropdown" width="200">
+         *     <option value="1">One</option>
+         *     <option value="2">Two</option>
+         *     <option value="3">Three</option>
+         * </select>
+         * <script>
+         *     new GijgoDropDown(document.getElementById('dropdown'));
+         * </script>
+         * @example 100.Percent <!-- dropdown -->
+         * <select id="dropdown" width="100%">
+         *     <option value=""></option>
+         *     <option value="1">One</option>
+         *     <option value="2">Two</option>
+         *     <option value="3">Three</option>
+         * </select>
+         * <script>
+         *     new GijgoDropDown(document.getElementById('dropdown'));
+         * </script>
+         */
+        width: undefined,
 
-        /** The maximum height of the dropdown list. When set to auto adjust to the screen height.         */        maxHeight: 'auto',
+        /** The maximum height of the dropdown list. When set to auto adjust to the screen height.
+         * @type Number|'auto'
+         * @default 'auto'
+         * @example Auto <!-- dropdown -->
+         * <p>Note: Minimize the window in order to enable scrolling for the drop down list.</p>
+         * <select id="dropdown" width="200"></select>
+         * <script>
+         *     new GijgoDropDown(document.getElementById('dropdown'), { maxHeight: 'auto', dataSource: '/Locations/GetCountries', valueField: 'id' });
+         * </script>
+         * @example Fixed <!-- dropdown -->
+         * <select id="dropdown" width="200"></select>
+         * <script>
+         *     new GijgoDropDown(document.getElementById('dropdown'), { maxHeight: 200, dataSource: '/Locations/GetCountries', valueField: 'id' });
+         * </script>
+         * @example Bootstrap.4 <!-- bootstrap4, dropdown -->
+         * <select id="dropdown" width="200"></select>
+         * <script>
+         *     new GijgoDropDown(document.getElementById('dropdown'), { maxHeight: 200, dataSource: '/Locations/GetCountries', valueField: 'id', uiLibrary: 'bootstrap4' });
+         * </script>
+         */
+        maxHeight: 'auto',
 
-        /** Placeholder. This label appear only if the value is not set yet.         */        placeholder: undefined,
+        /** Placeholder. This label appear only if the value is not set yet.
+         * @type string
+         * @default undefined
+         * @example JS.Config <!-- dropdown -->
+         * <select id="dropdown"></select>
+         * <script>
+         *     new GijgoDropDown(document.getElementById('dropdown'), { placeholder: 'Select One...', width: 200, dataSource: '/Locations/GetCountries', valueField: 'id' });
+         * </script>
+         * @example HTML.Config <!-- dropdown -->
+         * <select id="dropdown" placeholder="Select One..." width="200" data-gj-source="/Locations/GetCountries" data-gj-value-field="id"></select>
+         * <script>
+         *     new GijgoDropDown(document.getElementById('dropdown'));
+         * </script>
+         * @example Bootstrap <!-- bootstrap, dropdown -->
+         * <select id="dropdown" placeholder="Select One..." width="200" data-gj-source="/Locations/GetCountries" data-gj-value-field="id"></select>
+         * <script>
+         *     new GijgoDropDown(document.getElementById('dropdown'), { uiLibrary: 'bootstrap' });
+         * </script>
+         * @example Bootstrap.4 <!-- bootstrap4, dropdown -->
+         * <select id="dropdown" placeholder="Select One..." width="200" data-gj-source="/Locations/GetCountries" data-gj-value-field="id"></select>
+         * <script>
+         *     new GijgoDropDown(document.getElementById('dropdown'), { uiLibrary: 'bootstrap4' });
+         * </script>
+         */
+        placeholder: undefined,
 
         fontSize: undefined,
 
-        /** The name of the UI library that is going to be in use.         */        uiLibrary: 'materialdesign',
+        /** The name of the UI library that is going to be in use.
+         * @additionalinfo The css file for bootstrap should be manually included if you use bootstrap.
+         * @type (materialdesign|bootstrap|bootstrap4|bootstrap5|shadcn)
+         * @default materialdesign
+         * @example MaterialDesign <!-- dropdown -->
+         * <select id="dropdown" width="200">
+         *     <option value="1">One</option>
+         *     <option value="2">Two</option>
+         *     <option value="3">Three</option>
+         * </select>
+         * <script>
+         *     var dropdown = new GijgoDropDown(document.getElementById('dropdown'), {
+         *         uiLibrary: 'materialdesign'
+         *     });
+         * </script>
+         * @example Bootstrap.3 <!-- bootstrap, dropdown -->
+         * <select id="dropdown" width="200">
+         *     <option value="1">One</option>
+         *     <option value="2">Two</option>
+         *     <option value="3">Three</option>
+         * </select>
+         * <script>
+         *     new GijgoDropDown(document.getElementById('dropdown'), { uiLibrary: 'bootstrap' });
+         * </script>
+         * @example Bootstrap.4 <!-- bootstrap4, dropdown -->
+         * <select id="dropdown" width="200">
+         *     <option value="1">One</option>
+         *     <option value="2">Two</option>
+         *     <option value="3">Three</option>
+         * </select>
+         * <script>
+         *     new GijgoDropDown(document.getElementById('dropdown'), { uiLibrary: 'bootstrap4', width: 300 });
+         * </script>
+         * @example Bootstrap.5 <!-- bootstrap5, dropdown -->
+         * <select id="dropdown" width="200">
+         *     <option value="1">One</option>
+         *     <option value="2">Two</option>
+         *     <option value="3">Three</option>
+         * </select>
+         * <script>
+         *     new GijgoDropDown(document.getElementById('dropdown'), { uiLibrary: 'bootstrap5', width: 300 });
+         * </script>
+         * @example Shadcn <!-- dropdown -->
+         * <select id="dropdown" width="200">
+         *     <option value="1">One</option>
+         *     <option value="2">Two</option>
+         *     <option value="3">Three</option>
+         * </select>
+         * <script>
+         *     new GijgoDropDown(document.getElementById('dropdown'), { uiLibrary: 'shadcn', width: 200 });
+         * </script>
+         */
+        uiLibrary: 'materialdesign',
 
-        /** The name of the icons library that is going to be in use. Currently we support Material Icons, Font Awesome and Glyphicons.         */        iconsLibrary: 'materialicons',
+        /** The name of the icons library that is going to be in use. Currently we support Material Icons, Font Awesome and Glyphicons.
+         * @additionalinfo If you use Bootstrap 3 as uiLibrary, then the iconsLibrary is set to Glyphicons by default.<br/>
+         * If you use Material Design as uiLibrary, then the iconsLibrary is set to Material Icons by default.<br/>
+         * The css files for Material Icons, Font Awesome or Glyphicons should be manually included to the page where the grid is in use.
+         * @type (materialicons|fontawesome|glyphicons)
+         * @default 'materialicons'
+         * @example Bootstrap.Material.Icons <!-- bootstrap, dropdown -->
+         * <select id="dropdown" width="200"></select>
+         * <script>
+         *     var dropdown = new GijgoDropDown(document.getElementById('dropdown'), {
+         *         dataSource: '/Locations/Get',
+         *         uiLibrary: 'bootstrap',
+         *         iconsLibrary: 'materialicons',
+         *         valueField: 'id'
+         *     });
+         * </script>
+         * @example Bootstrap.4.Font.Awesome <!-- bootstrap4, fontawesome, dropdown -->
+         * <select id="dropdown" width="200"></select>
+         * <script>
+         *     var dropdown = new GijgoDropDown(document.getElementById('dropdown'), {
+         *         dataSource: '/Locations/Get',
+         *         uiLibrary: 'bootstrap4',
+         *         iconsLibrary: 'fontawesome',
+         *         valueField: 'id'
+         *     });
+         * </script>
+         */
+        iconsLibrary: 'materialicons',
 
         icons: {
-            /** DropDown icon definition.             */            dropdown: '<i class="gj-icon arrow-dropdown" />',
+            /** DropDown icon definition.
+             * @alias icons.dropdown
+             * @type String
+             * @default '<i class="gj-icon arrow-dropdown" />'
+             * @example Custom.Material.Icon <!-- materialicons, dropdown -->
+             * <select id="dropdown"></select>
+             * <script>
+             *     var dropdown = new GijgoDropDown(document.getElementById('dropdown'), {
+             *         dataSource: '/Locations/Get',
+             *         valueField: 'id',
+             *         width: 200,
+             *         icons: { 
+             *             dropup: '<i class="material-icons">keyboard_arrow_up</i>',
+             *             dropdown: '<i class="material-icons">keyboard_arrow_down</i>'
+             *         }
+             *     });
+             * </script>
+             * @example Custom.Glyphicon.Icon <!-- bootstrap, dropdown -->
+             * <select id="dropdown"></select>
+             * <script>
+             *     var dropdown = new GijgoDropDown(document.getElementById('dropdown'), {
+             *         dataSource: '/Locations/Get',
+             *         valueField: 'id',
+             *         uiLibrary: 'bootstrap',
+             *         width: 200,
+             *         icons: { 
+             *             dropup: '<span class="glyphicon glyphicon-triangle-top" />',
+             *             dropdown: '<span class="glyphicon glyphicon-triangle-bottom" />'
+             *         }
+             *     });
+             * </script>
+             */
+            dropdown: '<i class="gj-icon arrow-dropdown" />',
 
             dropup: '<i class="gj-icon arrow-dropup" />'
         },
@@ -430,12 +679,46 @@ gj.dropdown.methods = {
 gj.dropdown.events = {
     /**
      * Triggered when the dropdown value is changed.
-     *     */    change: function (el) {
+     *
+     * @event change
+     * @param {object} e - event data
+     * @example sample <!-- dropdown, materialicons -->
+     * <select id="dropdown" width="200">
+     *     <option value="1">One</option>
+     *     <option value="2" selected>Two</option>
+     *     <option value="3">Three</option>
+     * </select>
+     * <script>
+     *     new GijgoDropDown(document.getElementById('dropdown'), {
+     *         change: function (e) {
+     *             alert('Change is fired');
+     *         }
+     *     });
+     * </script>
+     */
+    change: function (el) {
         return el.dispatchEvent(new Event('change'));
     },
 
     /**
-     * Event fires after the loading of the data in the dropdown.     */    dataBound: function (el) {
+     * Event fires after the loading of the data in the dropdown.
+     * @event dataBound
+     * @param {object} e - event data
+     * @example sample <!-- dropdown, materialicons -->
+     * <select id="dropdown" width="200">
+     *     <option value="1">One</option>
+     *     <option value="2" selected>Two</option>
+     *     <option value="3">Three</option>
+     * </select>
+     * <script>
+     *     new GijgoDropDown(document.getElementById('dropdown'), {
+     *         dataBound: function (e) {
+     *             alert('dataBound is fired.');
+     *         }
+     *     });
+     * </script>
+     */
+    dataBound: function (el) {
         return el.dispatchEvent(new Event('dataBound'));;
     }
 };
@@ -447,7 +730,34 @@ GijgoDropDown = function (element, jsConfig) {
     self.type = 'dropdown';
     self.element = element;
 
-    /** Gets or sets the value of the DropDown.     */    self.value = function (value) {
+    /** Gets or sets the value of the DropDown.
+     * @method
+     * @param {string} value - The value that needs to be selected.
+     * @return string
+     * @example Get <!-- dropdown, materialicons -->
+     * <button class="gj-button-md" onclick="alert(dropdown.value())">Get Value</button>
+     * <hr/>
+     * <select id="dropdown" width="200">
+     *     <option value="1">One</option>
+     *     <option value="2" selected>Two</option>
+     *     <option value="3">Three</option>
+     * </select>
+     * <script>
+     *     var dropdown = new GijgoDropDown(document.getElementById('dropdown'));
+     * </script>
+     * @example Set <!-- dropdown, materialicons -->
+     * <button class="gj-button-md" onclick="dropdown.value('3')">Set Value</button>
+     * <hr/>
+     * <select id="dropdown" width="200">
+     *     <option value="1">One</option>
+     *     <option value="2" selected>Two</option>
+     *     <option value="3">Three</option>
+     * </select>
+     * <script>
+     *     var dropdown = new GijgoDropDown(document.getElementById('dropdown'));
+     * </script>
+     */
+    self.value = function (value) {
         return methods.value(this, value);
     };
 
@@ -459,7 +769,21 @@ GijgoDropDown = function (element, jsConfig) {
         return methods.disable(this);
     };
 
-    /** Remove dropdown functionality from the element.     */    self.destroy = function () {
+    /** Remove dropdown functionality from the element.
+     * @method
+     * @return jquery element
+     * @example sample <!-- dropdown, materialicons -->
+     * <button class="gj-button-md" onclick="dropdown.destroy()">Destroy</button>
+     * <select id="dropdown" width="200">
+     *     <option value="1">One</option>
+     *     <option value="2" selected>Two</option>
+     *     <option value="3">Three</option>
+     * </select>
+     * <script>
+     *     var dropdown = new GijgoDropDown(document.getElementById('dropdown'));
+     * </script>
+     */
+    self.destroy = function () {
         return methods.destroy(this);
     };
 

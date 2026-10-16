@@ -6,7 +6,11 @@
  * Released under the MIT license
  */
 /* global window alert jQuery gj */
-/**  */gj.slider = {
+/**
+  * @widget Slider
+  * @plugin Base
+  */
+gj.slider = {
     plugins: {},
     messages: {
         'en-us': {
@@ -17,17 +21,142 @@
 gj.slider.config = {
     base: {
 
-        /** The minimum value of the Slider.         */        min: 0,
+        /** The minimum value of the Slider.
+         * @type number
+         * @default 0
+         * @example JS.Config <!-- slider -->
+         * <input id="slider" width="300" />
+         * Value: <span id="value"></span>
+         * <script>
+         *    $('#slider').slider({
+         *        min: 5,
+         *        max: 15,
+         *        slide: function (e, value) {
+         *            document.getElementById('value').innerText = value;
+         *        }
+         *    });
+         * </script>
+         */
+        min: 0,
 
-        /** The maximum value of the Slider.         */        max: 100,
+        /** The maximum value of the Slider.
+         * @type number
+         * @default 10
+         * @example JS.Config <!-- slider -->
+         * <input id="slider" width="300" />
+         * Value: <span id="value"></span>
+         * <script>
+         *    $('#slider').slider({
+         *        max: 20,
+         *        slide: function (e, value) {
+         *            document.getElementById('value').innerText = value;
+         *        }
+         *    });
+         * </script>
+         */
+        max: 100,
 
-        /** The width of the slider.         */        width: undefined,
+        /** The width of the slider.
+         * @type number
+         * @default undefined
+         * @example JS.Config <!-- slider -->
+         * <input id="slider" />
+         * <script>
+         *    $('#slider').slider({ width: 400 });
+         * </script>
+         * @example HTML.Config <!-- slider -->
+         * <input id="slider" width="400" />
+         * <script>
+         *    $('#slider').slider();
+         * </script>
+         */
+        width: undefined,
 
-        /** The orientation of a Slider: "horizontal" or "vertical".         */        // TODO orientation
+        /** The orientation of a Slider: "horizontal" or "vertical".
+         * @type (horizontal|vertical)
+         * @default horizontal
+         */
+        // TODO orientation
 
-        /** The name of the UI library that is going to be in use.         */        uiLibrary: 'materialdesign',
+        /** The name of the UI library that is going to be in use.
+         * @additionalinfo The css file for bootstrap should be manually included if you use bootstrap.
+         * @type (materialdesign|bootstrap|bootstrap4|shadcn)
+         * @default materialdesign
+         * @example MaterialDesign <!-- slider -->
+         * <input id="slider" width="300" />
+         * Value: <span id="value"></span>
+         * <script>
+         *    $('#slider').slider({
+         *        uiLibrary: 'materialdesign',
+         *        slide: function (e, value) {
+         *            document.getElementById('value').innerText = value;
+         *        }
+         *    });
+         * </script>
+         * @example Bootstrap.3 <!-- bootstrap, slider -->
+         * <input id="slider" width="300" />
+         * Value: <span id="value"></span>
+         * <script>
+         *    $('#slider').slider({
+         *        uiLibrary: 'bootstrap',
+         *        slide: function (e, value) {
+         *            document.getElementById('value').innerText = value;
+         *        }
+         *    });
+         * </script>
+         * @example Bootstrap.4 <!-- bootstrap4, slider -->
+         * <div class="container" />
+         *     <input id="slider" width="300" />
+         *     Value: <span id="value"></span>
+         * </div>
+         * <script>
+         *    $('#slider').slider({
+         *        uiLibrary: 'bootstrap4',
+         *        slide: function (e, value) {
+         *            document.getElementById('value').innerText = value;
+         *        }
+         *    });
+         * </script>
+         * @example Shadcn <!-- slider -->
+         * <input id="slider" width="300" />
+         * Value: <span id="value"></span>
+         * <script>
+         *    new GijgoSlider(document.getElementById('slider'), {
+         *        uiLibrary: 'shadcn',
+         *        slide: function (e, value) {
+         *            document.getElementById('value').innerText = value;
+         *        }
+         *    });
+         * </script>
+         */
+        uiLibrary: 'materialdesign',
 
-        /** The initial slider value.         */        value: undefined,
+        /** The initial slider value.
+         * @type number
+         * @default undefined
+         * @example Javascript <!-- slider -->
+         * <input id="slider" width="300" />
+         * Value: <span id="value"></span>
+         * <script>
+         *    $('#slider').slider({
+         *        value: 30,
+         *        slide: function (e, value) {
+         *            document.getElementById('value').innerText = value;
+         *        }
+         *    });
+         * </script>
+         * @example HTML <!-- slider -->
+         * <input id="slider" width="300" value="44" />
+         * Value: <span id="value"></span>
+         * <script>
+         *    $('#slider').slider({
+         *        slide: function (e, value) {
+         *            document.getElementById('value').innerText = value;
+         *        }
+         *    });
+         * </script>
+         */
+        value: undefined,
 
         icons: {},
 
@@ -52,6 +181,14 @@ gj.slider.config = {
             progress: 'progress-bar',
             track: 'progress'
         }
+    },
+
+    shadcn: {
+        style: {
+            wrapper: 'gj-slider gj-slider-shadcn',
+            progress: '',
+            track: ''
+        }
     }
 };
 
@@ -59,7 +196,7 @@ gj.slider.methods = {
     init: function (jsConfig) {
         gj.widget.prototype.init.call(this, jsConfig);
         this.element.setAttribute('data-slider', 'true');
-        gj.slider.methods.initialize(this.element, this.getConfig());
+        gj.slider.methods.initialize.call(this, this.element, this.getConfig());
         return this;
     },
 
@@ -204,12 +341,41 @@ gj.slider.methods = {
 gj.slider.events = {
     /**
      * Fires when the slider value changes as a result of selecting a new value with the drag handle, buttons or keyboard.
-     *     */    change: function (el) {
+     *
+     * @event change
+     * @param {object} e - event data
+     * @example sample <!-- nojquery, slider -->
+     * <input id="slider" width="300" />
+     * <script>
+     *     new GijgoSlider(document.getElementById('slider'), {
+     *         change: function (e) {
+     *             alert('Change is fired. The new value is ' + slider.value());
+     *         }
+     *     });
+     * </script>
+     */
+    change: function (el) {
         return el.dispatchEvent(new Event('change'));
     },
 
     /**
-     * Fires when the user drags the drag handle to a new position.     */    slide: function (el, value) {
+     * Fires when the user drags the drag handle to a new position.
+     * @event slide
+     * @param {object} e - event data
+     * @param {object} value - The value of the slider.
+     * @example sample <!-- slider -->
+     * <input id="slider" width="300" />
+     * Value: <span id="value"></span>
+     * <script>
+     *    $('#slider').slider({
+     *        value: 30,
+     *        slide: function (e, value) {
+     *            document.getElementById('value').innerText = value;
+     *        }
+     *    });
+     * </script>
+     */
+    slide: function (el, value) {
         return el.dispatchEvent(new CustomEvent('slide', { 'value': value }));
     }
 };
@@ -221,11 +387,40 @@ GijgoSlider = function (element, jsConfig) {
     self.type = 'slider';
     self.element = element;
 
-    /** Gets or sets the value of the slider.     */    self.value = function (value) {
+    /** Gets or sets the value of the slider.
+     * @method
+     * @param {string} value - The value that needs to be selected.
+     * @return string
+     * @example Get <!-- slider -->
+     * <button class="gj-button-md" onclick="alert($slider.value())">Get Value</button>
+     * <hr/>
+     * <input id="slider" width="300" />
+     * <script>
+     *     var $slider = $('#slider').slider();
+     * </script>
+     * @example Set <!-- slider -->
+     * <button class="gj-button-md" onclick="$slider.value(77)">Set Value</button>
+     * <hr/>
+     * <input id="slider" width="300"  />
+     * <script>
+     *     var $slider = $('#slider').slider();
+     * </script>
+     */
+    self.value = function (value) {
         return methods.value(this.element, this.getConfig(), value);
     };
 
-    /** Remove slider functionality from the element.     */    self.destroy = function () {
+    /** Remove slider functionality from the element.
+     * @method
+     * @return jquery element
+     * @example sample <!-- slider -->
+     * <button class="gj-button-md" onclick="slider.destroy()">Destroy</button>
+     * <input id="slider" width="300" />
+     * <script>
+     *     var slider = $('#slider').slider();
+     * </script>
+     */
+    self.destroy = function () {
         return methods.destroy(this.element);
     };
 

@@ -6,12 +6,32 @@
  * Released under the MIT license
  */
 /* global window alert jQuery */
-/**  */gj.droppable = {
+/** 
+ * @widget Droppable 
+ * @plugin Base
+ */
+gj.droppable = {
     plugins: {}
 };
 
 gj.droppable.config = {
-    /** If specified, the class will be added to the droppable while draggable is being hovered over the droppable.     */    hoverClass: undefined
+    /** If specified, the class will be added to the droppable while draggable is being hovered over the droppable.
+     * @type string
+     * @default undefined
+     * @example sample <!-- droppable, draggable -->
+     * <style>
+     * .draggable { border: 1px solid #999; width: 300px; height: 200px; text-align: center; }
+     * .droppable { border: 1px solid #999; width: 300px; height: 200px; text-align: center; }
+     * .hover { background-color: #FF0000; }
+     * </style>
+     * <div id="droppable" class="droppable">Drop Here</div>
+     * <div id="draggable" class="draggable">Drag Me</div>
+     * <script>
+     *     new GijgoDraggable(document.getElementById('draggable'));
+     *     new GijgoDroppable(document.getElementById('droppable'), { hoverClass: 'hover' });
+     * </script>
+     */
+    hoverClass: undefined
 };
 
 gj.droppable.methods = {
@@ -91,15 +111,78 @@ gj.droppable.methods = {
 };
 
 gj.droppable.events = {
-    /** Triggered when a draggable element is dropped.     */    drop: function (el, offsetX, offsetY) {
+    /** Triggered when a draggable element is dropped.
+     * @event drop
+     * @param {object} e - event data
+     * @example sample <!-- droppable, draggable -->
+     * <style>
+     * .draggable { border: 1px solid #999; width: 300px; height: 200px; text-align: center; }
+     * .droppable { border: 1px solid #999; width: 300px; height: 200px; text-align: center; }
+     * .drop { background-color: #FF0000; }
+     * </style>
+     * <div id="droppable" class="droppable">Drop Here</div>
+     * <div id="draggable" class="draggable">Drag Me</div>
+     * <script>
+     *     new GijgoDraggable(document.getElementById('draggable'));
+     *     new GijgoDroppable(document.getElementById('droppable'), { 
+     *         drop: function() { 
+     *             this.classList.add('drop');
+     *         } 
+     *     });
+     * </script>
+     */
+    drop: function (el, offsetX, offsetY) {
         return el.dispatchEvent(new CustomEvent('drop', { detail: { 'top': offsetY, 'left': offsetX } }));
     },
 
-    /** Triggered when a draggable element is dragged over the droppable.     */    over: function (el, mousePosition) {
+    /** Triggered when a draggable element is dragged over the droppable.
+     * @event over
+     * @param {object} e - event data
+     * @param {object} mousePosition - Current mouse position as { top, left } object.
+     * @example sample <!-- droppable, draggable -->
+     * <style>
+     * .draggable { border: 1px solid #999; width: 300px; height: 200px; text-align: center; }
+     * .droppable { border: 1px solid #999; width: 300px; height: 200px; text-align: center; }
+     * .hover { background-color: #FF0000; }
+     * </style>
+     * <div id="droppable" class="droppable">Drop Here</div>
+     * <div id="draggable" class="draggable">Drag Me</div>
+     * <script>
+     *     new GijgoDraggable(document.getElementById('draggable'));
+     *     new GijgoDroppable(document.getElementById('droppable'), {
+     *         over: function() { 
+     *             this.classList.add('hover')
+     *         },
+     *         out: function() {
+     *             this.classList.remove('hover')
+     *         }
+     *     });
+     * </script>
+     */
+    over: function (el, mousePosition) {
         return el.dispatchEvent(new CustomEvent('over', { detail: { 'mousePosition': mousePosition } }));
     },
 
-    /** Triggered when a draggable element is dragged out of the droppable.     */    out: function (el) {
+    /** Triggered when a draggable element is dragged out of the droppable.
+     * @event out
+     * @param {object} e - event data
+     * @example sample <!-- droppable, draggable -->
+     * <style>
+     * .draggable { border: 1px solid #999; width: 300px; height: 200px; text-align: center; }
+     * .droppable { border: 1px solid #999; width: 300px; height: 200px; text-align: center; }
+     * .hover { background-color: #FF0000; }
+     * </style>
+     * <div id="droppable" class="droppable">Drop Here</div>
+     * <div id="draggable" class="draggable">Drag Me</div>
+     * <script>
+     *     new GijgoDraggable(document.getElementById('draggable'));
+     *     new GijgoDroppable(document.getElementById('droppable'), {
+     *         over: function() { this.classList.add('hover') },
+     *         out: function() { this.classList.remove('hover') }
+     *     });
+     * </script>
+     */
+    out: function (el) {
         return el.dispatchEvent(new Event('out'));
     }
 };
@@ -113,7 +196,32 @@ GijgoDroppable = function (element, jsConfig) {
     self.isOver = false;
     self.isDragging = false;
 
-    /** Removes the droppable functionality.     */    self.destroy = function () {
+    /** Removes the droppable functionality.
+     * @method
+     * @return jquery element
+     * @example sample <!-- draggable, droppable -->
+     * <button onclick="create()" class="gj-button-md">Create</button>
+     * <button onclick="dropEl.destroy()" class="gj-button-md">Destroy</button>
+     * <br/><br/>
+     * <style>
+     * .draggable { border: 1px solid #999; width: 300px; height: 200px; text-align: center; }
+     * .droppable { border: 1px solid #999; width: 300px; height: 200px; text-align: center; }
+     * .hover { background-color: #FF0000; }
+     * </style>
+     * <div id="droppable" class="droppable">Drop Here</div>
+     * <div id="draggable" class="draggable">Drag Me</div>
+     * <script>
+     *     var dropEl;
+     *     new GijgoDraggable(document.getElementById('draggable'));
+     *     function create() {
+     *         dropEl = new GijgoDroppable(document.getElementById('droppable'), {
+     *             hoverClass: 'hover'
+     *         });
+     *     }
+     *     create();
+     * </script>
+     */
+    self.destroy = function () {
         return methods.destroy(this);
     }
 

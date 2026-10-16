@@ -197,3 +197,91 @@
     margin-right: 8px;
     height: 36px;
 }
+
+/* shadcn/ui */
+.gj-dialog-shadcn {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    overflow: hidden;
+    border: 1px solid #e5e5e5;
+    border-radius: 8px;
+    background-color: #fff;
+    color: #000;
+    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+    z-index: 1202;
+}
+
+.gj-dialog-shadcn-header {
+    padding: 24px 24px 0;
+}
+
+.gj-dialog-shadcn-title {
+    display: inline;
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 28px;
+}
+
+.gj-dialog-shadcn-close {
+    float: right;
+    width: 28px;
+    height: 28px;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 6px;
+    background: transparent;
+    color: #737373;
+    font-size: 20px;
+    line-height: 28px;
+    cursor: pointer;
+}
+
+.gj-dialog-shadcn-close:hover {
+    background-color: #f5f5f5;
+    color: #000;
+}
+
+.gj-dialog-shadcn-body {
+    padding: 8px 24px 24px;
+    color: #737373;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 20px;
+}
+
+.gj-dialog-shadcn-footer {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    gap: 8px;
+    box-sizing: border-box;
+    padding: 0 24px 24px;
+}
+
+.gj-dialog-shadcn-footer button {
+    height: 32px;
+    padding: 0 12px;
+    border: 1px solid #e5e5e5;
+    border-radius: 6px;
+    background-color: #fff;
+    color: #000;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.gj-dialog-shadcn-footer button:hover {
+    background-color: #f5f5f5;
+}
+
+.gj-dialog-shadcn-footer button:last-child {
+    border-color: #000;
+    background-color: #000;
+    color: #fafafa;
+}

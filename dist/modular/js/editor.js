@@ -6,7 +6,11 @@
  * Released under the MIT license
  */
 /* global window alert jQuery */
-/**  */gj.editor = {
+/** 
+ * @widget Editor
+ * @plugin Base
+ */
+gj.editor = {
     plugins: {},
     messages: {}
 };
@@ -14,15 +18,112 @@
 gj.editor.config = {
     base: {
 
-        /** The height of the editor. Numeric values are treated as pixels.         */        height: 300,
+        /** The height of the editor. Numeric values are treated as pixels.
+         * @type number|string
+         * @default 300
+         * @example sample <!-- editor -->
+         * <textarea id="editor"></textarea>
+         * <script>
+         *     new GijgoEditor(document.getElementById('editor'), { height: 400 });
+         * </script>
+         */
+        height: 300,
 
-        /** The width of the editor. Numeric values are treated as pixels.         */        width: undefined,
+        /** The width of the editor. Numeric values are treated as pixels.
+         * @type number|string
+         * @default undefined
+         * @example JS <!-- editor -->
+         * <textarea id="editor"></textarea>
+         * <script>
+         *     new GijgoEditor(document.getElementById('editor'), { width: 900 });
+         * </script>
+         * @example HTML <!-- editor -->
+         * <div id="editor" width="900"></div>
+         * <script>
+         *     new GijgoEditor(document.getElementById('editor'));
+         * </script>
+         */
+        width: undefined,
 
-        /** The name of the UI library that is going to be in use. Currently we support only Material Design and Bootstrap.          */        uiLibrary: 'materialdesign',
+        /** The name of the UI library that is going to be in use. Currently we support only Material Design and Bootstrap. 
+         * @additionalinfo The css files for Bootstrap should be manually included to the page if you use bootstrap as uiLibrary.
+         * @type string (materialdesign|bootstrap|bootstrap4|shadcn)
+         * @default 'materialdesign'
+         * @example Material.Design <!-- editor, materialicons  -->
+         * <textarea id="editor"></textarea>
+         * <script>
+         *     new GijgoEditor(document.getElementById('editor'), { uiLibrary: 'materialdesign' });
+         * </script>
+         * @example Bootstrap.3 <!-- bootstrap, editor -->
+         * <textarea id="editor"></textarea>
+         * <script>
+         *     new GijgoEditor(document.getElementById('editor'), {
+         *         uiLibrary: 'bootstrap'
+         *     });
+         * </script>
+         * @example Bootstrap.4 <!-- bootstrap4, editor -->
+         * <textarea id="editor"></textarea>
+         * <script>
+         *     new GijgoEditor(document.getElementById('editor'), {
+         *         uiLibrary: 'bootstrap4'
+         *     });
+         * </script>
+         * @example Shadcn <!-- editor -->
+         * <textarea id="editor"></textarea>
+         * <script>
+         *     new GijgoEditor(document.getElementById('editor'), {
+         *         uiLibrary: 'shadcn'
+         *     });
+         * </script>
+         */
+        uiLibrary: 'materialdesign',
 
-        /** The name of the icons library that is going to be in use. Currently we support Material Icons and Font Awesome.         */        iconsLibrary: 'materialicons',
+        /** The name of the icons library that is going to be in use. Currently we support Material Icons and Font Awesome.
+         * @additionalinfo If you use Bootstrap as uiLibrary, then the iconsLibrary is set to font awesome by default.<br/>
+         * If you use Material Design as uiLibrary, then the iconsLibrary is set to Material Icons by default.<br/>
+         * The css files for Material Icons or Font Awesome should be manually included to the page where the grid is in use.
+         * @type (materialicons|fontawesome)
+         * @default 'materialicons'
+         * @example Bootstrap.4.FontAwesome <!-- bootstrap4, fontawesome, editor -->
+         * <textarea id="editor"></textarea>
+         * <script>
+         *     new GijgoEditor(document.getElementById('editor'), {
+         *         uiLibrary: 'bootstrap4',
+         *         iconsLibrary: 'fontawesome'
+         *     });
+         * </script>
+         * @example Bootstrap.3.FontAwesome <!-- bootstrap, fontawesome, editor -->
+         * <textarea id="editor"></textarea>
+         * <script>
+         *     new GijgoEditor(document.getElementById('editor'), {
+         *         uiLibrary: 'bootstrap',
+         *         iconsLibrary: 'fontawesome'
+         *     });
+         * </script>
+         */
+        iconsLibrary: 'materialicons',
 
-        /** The language that needs to be in use.         */        locale: 'en-us',
+        /** The language that needs to be in use.
+         * @type string
+         * @default 'en-us'
+         * @example French <!-- editor -->
+         * <script src="../../dist/modular/editor/js/messages/messages.fr-fr.js"></script>
+         * <div id="editor">Hover buttons in the toolbar in order to see localized tooltips</div>
+         * <script>
+         *     new GijgoEditor(document.getElementById('editor'), {
+         *         locale: 'fr-fr'
+         *     });
+         * </script>
+         * @example German <!-- editor -->
+         * <script src="../../dist/modular/editor/js/messages/messages.de-de.js"></script>
+         * <div id="editor">Hover <b><u>buttons</u></b> in the toolbar in order to see localized tooltips</div>
+         * <script>
+         *     new GijgoEditor(document.getElementById('editor'), {
+         *         locale: 'de-de'
+         *     });
+         * </script>
+         */
+        locale: 'en-us',
 
         buttons: undefined,
 
@@ -49,6 +150,15 @@ gj.editor.config = {
             buttonsGroup: 'btn-group',
             button: 'btn btn-outline-secondary gj-cursor-pointer',
             buttonActive: 'active'
+        }
+    },
+
+    shadcn: {
+        style: {
+            wrapper: 'gj-editor gj-editor-shadcn',
+            buttonsGroup: 'gj-editor-shadcn-group',
+            button: 'gj-editor-shadcn-button gj-cursor-pointer',
+            buttonActive: 'gj-editor-shadcn-active'
         }
     },
 
@@ -330,13 +440,40 @@ gj.editor.events = {
 
     /**
      * Event fires before change of text in the editor.
-     *     */    changing: function (el) {
+     *
+     * @event changing
+     * @param {object} e - event data
+     * @return {object} - GijgoEditor
+     * @example MaxLength <!-- editor -->
+     * <textarea id="editor"></textarea>
+     * <script>
+     *     var editor = new GijgoEditor(document.getElementById('editor'));
+     *     editor.element.addEventListener('changing', function (e) {
+     *         return editor.content().length < 3;
+     *     });
+     * </script>
+     */
+    changing: function (el) {
         return el.dispatchEvent(new Event('changing'));
     },
 
     /**
      * Event fires after change of text in the editor.
-     *     */    changed: function (el) {
+     *
+     * @event changed
+     * @param {object} e - event data
+     * @return {object} - GijgoEditor
+     * @example sample <!-- editor -->
+     * <textarea id="editor"></textarea>
+     * <script>
+     *     new GijgoEditor(document.getElementById('editor'), {
+     *         changed: function (e) {
+     *             alert('changed is fired');
+     *         }
+     *     });
+     * </script>
+     */
+    changed: function (el) {
         return el.dispatchEvent(new Event('changed'));
     }
 };
@@ -348,11 +485,40 @@ GijgoEditor = function (element, jsConfig) {
     self.type = 'editor';
     self.element = element;
 
-    /** Get or set html content in the body.     */    self.content = function (html) {
+    /** Get or set html content in the body.
+     * @method
+     * @param {string} html - The html content that needs to be set.
+     * @return {object} string | editor
+     * @example Get <!-- editor, materialicons -->
+     * <button class="gj-button-md" onclick="alert(editor.content())">Get Content</button>
+     * <hr/>
+     * <div id="editor">My <b>content</b>.</div>
+     * <script>
+     *     var editor = new GijgoEditor(document.getElementById('editor'));
+     * </script>
+     * @example Set <!-- editor, materialicons -->
+     * <button class="gj-button-md" onclick="editor.content('<h1>new value</h1>')">Set Content</button>
+     * <hr/>
+     * <textarea id="editor"></textarea>
+     * <script>
+     *     var editor = new GijgoEditor(document.getElementById('editor'));
+     * </script>
+     */
+    self.content = function (html) {
         return methods.content(this, html);
     };
 
-    /** Remove editor functionality from the element.     */    self.destroy = function () {
+    /** Remove editor functionality from the element.
+     * @method
+     * @return {GijgoEditor} GijgoEditor
+     * @example sample <!-- editor, materialicons -->
+     * <button class="gj-button-md" onclick="editor.destroy()">Destroy</button><br/>
+     * <textarea id="editor"></textarea>
+     * <script>
+     *     var editor = new GijgoEditor(document.getElementById('editor'));
+     * </script>
+     */
+    self.destroy = function () {
         return methods.destroy(this);
     };
 
@@ -710,4 +876,3 @@ gj.editor.messages['ro-ro'] = {
     redo: 'Redo',
     html: 'Editează HTML'
 };
-

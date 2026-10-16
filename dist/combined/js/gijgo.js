@@ -981,10 +981,12 @@ gj.picker.widget.prototype = new gj.widget();
 gj.picker.widget.constructor = gj.picker.widget;
 
 gj.picker.widget.prototype.init = function (jsConfig, type, methods) {
-    this.type = type;
+    if (type) {
+        this.type = type;
+    }
     gj.widget.prototype.init.call(this, jsConfig);
-    this.element.setAttribute('data-' + type, 'true');
-    gj.picker.methods.initialize(this, gijgoStorage.get(this.element, this.type), gj[type].methods);
+    this.element.setAttribute('data-' + this.type, 'true');
+    gj.picker.methods.initialize(this, gijgoStorage.get(this.element, this.type), gj[this.type].methods);
     return this;
 };
 
@@ -1403,7 +1405,7 @@ gj.dialog.config = {
 
         /** The name of the UI library that is going to be in use. Currently we support Material Design and Bootstrap.
          * @additionalinfo The css file for bootstrap should be manually included if you use bootstrap.
-         * @type string (bootstrap|materialdesign)
+         * @type string (bootstrap|bootstrap4|bootstrap5|materialdesign|shadcn)
          * @default undefined
          * @example Bootstrap.3 <!-- draggable, dialog.base, bootstrap -->
          * <div id="dialog">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
@@ -1436,6 +1438,19 @@ gj.dialog.config = {
          * <script>
          *     var dialog = new GijgoDialog(document.getElementById('dialog'), {
          *         uiLibrary: 'bootstrap5'
+         *     });
+         * </script>
+         * @example Shadcn <!-- draggable, dialog.base -->
+         * <div id="dialog">
+         *     <div data-gj-role="body">Lorem ipsum dolor sit amet, consectetur adipiscing elit...</div>
+         *     <div data-gj-role="footer">
+         *         <button type="button" data-gj-role="close">Cancel</button>
+         *         <button type="button" data-gj-role="close">OK</button>
+         *     </div>
+         * </div>
+         * <script>
+         *     var dialog = new GijgoDialog(document.getElementById('dialog'), {
+         *         uiLibrary: 'shadcn'
          *     });
          * </script>
          * @example Material.Design <!-- draggable, dialog.base  -->
@@ -1524,6 +1539,18 @@ gj.dialog.config = {
             headerCloseButton: 'btn-close',
             body: 'modal-body',
             footer: 'gj-dialog-footer modal-footer'
+        }
+    },
+
+    shadcn: {
+        style: {
+            modal: 'gj-modal',
+            content: 'gj-dialog-shadcn',
+            header: 'gj-dialog-shadcn-header gj-unselectable',
+            headerTitle: 'gj-dialog-shadcn-title',
+            headerCloseButton: 'gj-dialog-shadcn-close',
+            body: 'gj-dialog-shadcn-body',
+            footer: 'gj-dialog-footer gj-dialog-shadcn-footer'
         }
     }
 };
@@ -3242,6 +3269,19 @@ gj.grid.config = {
              *         dataSource: '/Players/Get',
              *         columns: [
              *             { field: 'ID', width: 42 },
+             *             { field: 'Name', sortable: true },
+             *             { field: 'PlaceOfBirth', sortable: false }
+             *         ]
+             *     });
+             * </script>
+             * @example Remote.Shadcn <!-- grid -->
+             * <table id="grid"></table>
+             * <script>
+             *     new GijgoGrid(document.getElementById('grid'), {
+             *         uiLibrary: 'shadcn',
+             *         dataSource: '/Players/Get',
+             *         columns: [
+             *             { field: 'ID', width: 64 },
              *             { field: 'Name', sortable: true },
              *             { field: 'PlaceOfBirth', sortable: false }
              *         ]
@@ -10733,7 +10773,7 @@ gj.tree.config = {
 
         /** The name of the UI library that is going to be in use.
          * @additionalinfo The css file for bootstrap should be manually included if you use bootstrap.
-         * @type (materialdesign|bootstrap|bootstrap4)
+         * @type (materialdesign|bootstrap|bootstrap4|bootstrap5|shadcn)
          * @default materialdesign
          * @example MaterialDesign <!-- tree, checkbox -->
          * <ul id="tree"></ul>
@@ -10762,6 +10802,16 @@ gj.tree.config = {
          *         dataSource: '/Locations/Get',
          *         width: 500,
          *         uiLibrary: 'bootstrap4',
+         *         checkboxes: true
+         *     });
+         * </script>
+         * @example Shadcn <!-- checkbox, tree -->
+         * <ul id="tree"></ul>
+         * <script>
+         *     var tree = new GijgoTree(document.getElementById('tree'), {
+         *         dataSource: '/Locations/Get',
+         *         width: 500,
+         *         uiLibrary: 'shadcn',
          *         checkboxes: true
          *     });
          * </script>
@@ -10891,6 +10941,17 @@ gj.tree.config = {
         icons: {
             expand: '<i class="gj-icon plus" />',
             collapse: '<i class="gj-icon minus" />'
+        }
+    },
+
+    shadcn: {
+        style: {
+            wrapper: 'gj-unselectable gj-tree-shadcn',
+            list: 'gj-list gj-list-shadcn',
+            item: '',
+            active: 'gj-list-shadcn-active',
+            inactive: '',
+            border: 'gj-tree-shadcn-border'
         }
     },
 
@@ -13755,7 +13816,7 @@ gj.editor.config = {
 
         /** The name of the UI library that is going to be in use. Currently we support only Material Design and Bootstrap. 
          * @additionalinfo The css files for Bootstrap should be manually included to the page if you use bootstrap as uiLibrary.
-         * @type string (materialdesign|bootstrap|bootstrap4)
+         * @type string (materialdesign|bootstrap|bootstrap4|shadcn)
          * @default 'materialdesign'
          * @example Material.Design <!-- editor, materialicons  -->
          * <textarea id="editor"></textarea>
@@ -13774,6 +13835,13 @@ gj.editor.config = {
          * <script>
          *     new GijgoEditor(document.getElementById('editor'), {
          *         uiLibrary: 'bootstrap4'
+         *     });
+         * </script>
+         * @example Shadcn <!-- editor -->
+         * <textarea id="editor"></textarea>
+         * <script>
+         *     new GijgoEditor(document.getElementById('editor'), {
+         *         uiLibrary: 'shadcn'
          *     });
          * </script>
          */
@@ -13851,6 +13919,15 @@ gj.editor.config = {
             buttonsGroup: 'btn-group',
             button: 'btn btn-outline-secondary gj-cursor-pointer',
             buttonActive: 'active'
+        }
+    },
+
+    shadcn: {
+        style: {
+            wrapper: 'gj-editor gj-editor-shadcn',
+            buttonsGroup: 'gj-editor-shadcn-group',
+            button: 'gj-editor-shadcn-button gj-cursor-pointer',
+            buttonActive: 'gj-editor-shadcn-active'
         }
     },
 
@@ -15255,7 +15332,7 @@ gj.datepicker.config = {
 
         /** The name of the UI library that is going to be in use.
          * @additionalinfo The css file for bootstrap should be manually included if you use bootstrap.
-         * @type (materialdesign|bootstrap|bootstrap4|bootstrap5)
+         * @type (materialdesign|bootstrap|bootstrap4|bootstrap5|shadcn)
          * @default materialdesign
          * @example MaterialDesign <!-- datepicker -->
          * <input id="datepicker" width="312" />
@@ -15286,6 +15363,11 @@ gj.datepicker.config = {
          * <input id="datepicker" width="234" />
          * <script>
          *     new GijgoDatePicker(document.getElementById('datepicker'), { uiLibrary: 'bootstrap5', iconsLibrary: 'fontawesome' });
+         * </script>
+         * @example Shadcn <!-- datepicker -->
+         * <input id="datepicker" width="280" />
+         * <script>
+         *     new GijgoDatePicker(document.getElementById('datepicker'), { uiLibrary: 'shadcn' });
          * </script>
          */
         uiLibrary: 'materialdesign',
@@ -15864,6 +15946,23 @@ gj.datepicker.config = {
             button: 'btn btn-outline-secondary'
         },
         showOtherMonths: true
+    },
+
+    shadcn: {
+        style: {
+            wrapper: 'gj-datepicker gj-datepicker-shadcn gj-unselectable',
+            input: 'gj-input-shadcn',
+            calendar: 'gj-picker gj-picker-shadcn datepicker gj-unselectable',
+            footer: 'gj-picker-shadcn-footer',
+            button: 'gj-button-shadcn'
+        },
+        iconsLibrary: 'shadcn',
+        showOtherMonths: true,
+        icons: {
+            rightIcon: '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#737373" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M16 2v4"/><path d="M8 2v4"/><path d="M3 10h18"/></svg>',
+            previousMonth: '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>',
+            nextMonth: '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>'
+        }
     },
 
     fontawesome: {
@@ -17118,7 +17217,7 @@ gj.timepicker.config = {
 
         /** The name of the UI library that is going to be in use.
          * @additionalinfo The css file for bootstrap should be manually included if you use bootstrap.
-         * @type (materialdesign|bootstrap|bootstrap4)
+         * @type (materialdesign|bootstrap|bootstrap4|shadcn)
          * @default materialdesign
          * @example MaterialDesign <!-- timepicker -->
          * <input id="timepicker" width="312" />
@@ -17134,6 +17233,11 @@ gj.timepicker.config = {
          * <input id="timepicker" width="276" />
          * <script>
          *     new GijgoTimePicker(document.getElementById('timepicker'), { uiLibrary: 'bootstrap4' });
+         * </script>
+         * @example Shadcn <!-- timepicker -->
+         * <input id="timepicker" width="280" />
+         * <script>
+         *     new GijgoTimePicker(document.getElementById('timepicker'), { uiLibrary: 'shadcn' });
          * </script>
          */
         uiLibrary: 'materialdesign',
@@ -17311,6 +17415,20 @@ gj.timepicker.config = {
             footer: 'modal-footer',
             button: 'btn btn-default'
         }
+    },
+
+    shadcn: {
+        style: {
+            wrapper: 'gj-timepicker gj-timepicker-shadcn gj-unselectable',
+            input: 'gj-input-shadcn',
+            clock: 'gj-picker gj-picker-shadcn timepicker',
+            footer: 'gj-picker-shadcn-footer',
+            button: 'gj-button-shadcn'
+        },
+        iconsLibrary: 'shadcn',
+        icons: {
+            rightIcon: '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#737373" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>'
+        }
     }
 };
 
@@ -17325,7 +17443,7 @@ gj.timepicker.methods = {
     },
 
     initMouse: function (input, popup, data) {
-        var body = popup.querySelector('[data-gj-role="body"]');
+        var body = popup.querySelector('[role="body"], [data-gj-role="body"]');
         body.addEventListener('mousedown', gj.timepicker.methods.mouseDownHandler(popup));
         body.addEventListener('mousemove', gj.timepicker.methods.mouseMoveHandler(input, popup, data));
         body.addEventListener('mouseup', gj.timepicker.methods.mouseUpHandler(input, popup, data));
@@ -18006,6 +18124,11 @@ gj.datetimepicker.config = {
          * <script>
          *     new GijgoDateTimePicker(document.getElementById('picker'), { uiLibrary: 'bootstrap5' });
          * </script>
+         * @example Shadcn <!-- datetimepicker -->
+         * <input id="picker" width="280" />
+         * <script>
+         *     new GijgoDateTimePicker(document.getElementById('picker'), { uiLibrary: 'shadcn', modal: false, footer: false });
+         * </script>
          */
         uiLibrary: 'materialdesign',
 
@@ -18209,6 +18332,12 @@ gj.datetimepicker.config = {
     bootstrap5: {
         style: {
             calendar: 'gj-picker gj-picker-bootstrap datetimepicker gj-unselectable'
+        }
+    },
+
+    shadcn: {
+        style: {
+            calendar: 'gj-picker gj-picker-shadcn datetimepicker gj-unselectable'
         }
     }
 };
@@ -18624,7 +18753,7 @@ gj.slider.config = {
 
         /** The name of the UI library that is going to be in use.
          * @additionalinfo The css file for bootstrap should be manually included if you use bootstrap.
-         * @type (materialdesign|bootstrap|bootstrap4)
+         * @type (materialdesign|bootstrap|bootstrap4|shadcn)
          * @default materialdesign
          * @example MaterialDesign <!-- slider -->
          * <input id="slider" width="300" />
@@ -18656,6 +18785,17 @@ gj.slider.config = {
          * <script>
          *    $('#slider').slider({
          *        uiLibrary: 'bootstrap4',
+         *        slide: function (e, value) {
+         *            document.getElementById('value').innerText = value;
+         *        }
+         *    });
+         * </script>
+         * @example Shadcn <!-- slider -->
+         * <input id="slider" width="300" />
+         * Value: <span id="value"></span>
+         * <script>
+         *    new GijgoSlider(document.getElementById('slider'), {
+         *        uiLibrary: 'shadcn',
          *        slide: function (e, value) {
          *            document.getElementById('value').innerText = value;
          *        }
@@ -18714,6 +18854,14 @@ gj.slider.config = {
             progress: 'progress-bar',
             track: 'progress'
         }
+    },
+
+    shadcn: {
+        style: {
+            wrapper: 'gj-slider gj-slider-shadcn',
+            progress: '',
+            track: ''
+        }
     }
 };
 
@@ -18721,7 +18869,7 @@ gj.slider.methods = {
     init: function (jsConfig) {
         gj.widget.prototype.init.call(this, jsConfig);
         this.element.setAttribute('data-slider', 'true');
-        gj.slider.methods.initialize(this.element, this.getConfig());
+        gj.slider.methods.initialize.call(this, this.element, this.getConfig());
         return this;
     },
 
@@ -18997,7 +19145,7 @@ gj.colorpicker.config = {
 
         /** The name of the UI library that is going to be in use.
          * @additionalinfo The css file for bootstrap should be manually included if you use bootstrap.
-         * @type (materialdesign|bootstrap|bootstrap4)
+         * @type (materialdesign|bootstrap|bootstrap4|shadcn)
          * @default materialdesign
          * @example MaterialDesign <!-- colorpicker -->
          * <input id="colorpicker" width="300" />
@@ -19013,6 +19161,11 @@ gj.colorpicker.config = {
          * <input id="colorpicker" width="300" />
          * <script>
          *     new GijgoColorPicker(document.getElementById('colorpicker'), { uiLibrary: 'bootstrap4' });
+         * </script>
+         * @example Shadcn <!-- colorpicker -->
+         * <input id="colorpicker" width="280" />
+         * <script>
+         *     new GijgoColorPicker(document.getElementById('colorpicker'), { uiLibrary: 'shadcn' });
          * </script>
          */
         uiLibrary: 'materialdesign',
@@ -19053,6 +19206,20 @@ gj.colorpicker.config = {
 
     bootstrap4: {
         style: {}
+    },
+
+    shadcn: {
+        style: {
+            wrapper: 'gj-colorpicker gj-colorpicker-shadcn gj-unselectable',
+            input: 'gj-input-shadcn',
+            picker: 'gj-picker gj-picker-shadcn colorpicker gj-unselectable',
+            footer: '',
+            button: 'gj-button-shadcn'
+        },
+        iconsLibrary: 'shadcn',
+        icons: {
+            rightIcon: '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#737373" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="6.5" r="1.5"/><circle cx="17.5" cy="10.5" r="1.5"/><circle cx="8.5" cy="7.5" r="1.5"/><circle cx="6.5" cy="12.5" r="1.5"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/></svg>'
+        }
     }
 };
 
@@ -19077,7 +19244,7 @@ gj.colorpicker.methods = {
         popup.style.display = 'none';
         document.body.appendChild(popup);
 
-        return ctrl;
+        return popup;
     },
 
     open: function (picker) {

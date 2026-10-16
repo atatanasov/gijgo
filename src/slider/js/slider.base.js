@@ -73,7 +73,7 @@ gj.slider.config = {
 
         /** The name of the UI library that is going to be in use.
          * @additionalinfo The css file for bootstrap should be manually included if you use bootstrap.
-         * @type (materialdesign|bootstrap|bootstrap4)
+         * @type (materialdesign|bootstrap|bootstrap4|shadcn)
          * @default materialdesign
          * @example MaterialDesign <!-- slider -->
          * <input id="slider" width="300" />
@@ -105,6 +105,17 @@ gj.slider.config = {
          * <script>
          *    $('#slider').slider({
          *        uiLibrary: 'bootstrap4',
+         *        slide: function (e, value) {
+         *            document.getElementById('value').innerText = value;
+         *        }
+         *    });
+         * </script>
+         * @example Shadcn <!-- slider -->
+         * <input id="slider" width="300" />
+         * Value: <span id="value"></span>
+         * <script>
+         *    new GijgoSlider(document.getElementById('slider'), {
+         *        uiLibrary: 'shadcn',
          *        slide: function (e, value) {
          *            document.getElementById('value').innerText = value;
          *        }
@@ -163,6 +174,14 @@ gj.slider.config = {
             progress: 'progress-bar',
             track: 'progress'
         }
+    },
+
+    shadcn: {
+        style: {
+            wrapper: 'gj-slider gj-slider-shadcn',
+            progress: '',
+            track: ''
+        }
     }
 };
 
@@ -170,7 +189,7 @@ gj.slider.methods = {
     init: function (jsConfig) {
         gj.widget.prototype.init.call(this, jsConfig);
         this.element.setAttribute('data-slider', 'true');
-        gj.slider.methods.initialize(this.element, this.getConfig());
+        gj.slider.methods.initialize.call(this, this.element, this.getConfig());
         return this;
     },
 

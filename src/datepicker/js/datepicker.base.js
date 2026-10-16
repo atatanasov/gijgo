@@ -181,7 +181,7 @@ gj.datepicker.config = {
 
         /** The name of the UI library that is going to be in use.
          * @additionalinfo The css file for bootstrap should be manually included if you use bootstrap.
-         * @type (materialdesign|bootstrap|bootstrap4|bootstrap5)
+         * @type (materialdesign|bootstrap|bootstrap4|bootstrap5|shadcn)
          * @default materialdesign
          * @example MaterialDesign <!-- datepicker -->
          * <input id="datepicker" width="312" />
@@ -212,6 +212,11 @@ gj.datepicker.config = {
          * <input id="datepicker" width="234" />
          * <script>
          *     new GijgoDatePicker(document.getElementById('datepicker'), { uiLibrary: 'bootstrap5', iconsLibrary: 'fontawesome' });
+         * </script>
+         * @example Shadcn <!-- datepicker -->
+         * <input id="datepicker" width="280" />
+         * <script>
+         *     new GijgoDatePicker(document.getElementById('datepicker'), { uiLibrary: 'shadcn' });
          * </script>
          */
         uiLibrary: 'materialdesign',
@@ -790,6 +795,23 @@ gj.datepicker.config = {
             button: 'btn btn-outline-secondary'
         },
         showOtherMonths: true
+    },
+
+    shadcn: {
+        style: {
+            wrapper: 'gj-datepicker gj-datepicker-shadcn gj-unselectable',
+            input: 'gj-input-shadcn',
+            calendar: 'gj-picker gj-picker-shadcn datepicker gj-unselectable',
+            footer: 'gj-picker-shadcn-footer',
+            button: 'gj-button-shadcn'
+        },
+        iconsLibrary: 'shadcn',
+        showOtherMonths: true,
+        icons: {
+            rightIcon: '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#737373" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M16 2v4"/><path d="M8 2v4"/><path d="M3 10h18"/></svg>',
+            previousMonth: '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>',
+            nextMonth: '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>'
+        }
     },
 
     fontawesome: {
