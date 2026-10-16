@@ -1,4 +1,4 @@
-﻿/* global window alert jQuery */
+/* global window alert jQuery */
 /** 
  * @widget Checkbox 
  * @plugin Base
@@ -9,9 +9,9 @@ gj.checkbox = {
 
 gj.checkbox.config = {
     base: {
-        /** The name of the UI library that is going to be in use. Currently we support only Material Design and Bootstrap. 
+        /** The name of the UI library that is going to be in use. Currently we support Material Design, Bootstrap and shadcn/ui. 
          * @additionalinfo The css files for Bootstrap should be manually included to the page if you use bootstrap as uiLibrary.
-         * @type string (materialdesign|bootstrap|bootstrap4)
+         * @type string (materialdesign|bootstrap|bootstrap4|shadcn)
          * @default 'materialdesign'
          * @example Material.Design <!-- checkbox  -->
          * <input type="checkbox" id="checkbox"/><br/><br/>
@@ -67,6 +67,18 @@ gj.checkbox.config = {
          *         uiLibrary: 'bootstrap5'
          *     });
          * </script>
+         * @example Shadcn <!-- checkbox -->
+         * <input type="checkbox" id="checkbox"/><br/><br/>
+         * <button onclick="chkb.state('checked')" class="gj-button-md">Checked</button>
+         * <button onclick="chkb.state('unchecked')" class="gj-button-md">Unchecked</button>
+         * <button onclick="chkb.state('indeterminate')" class="gj-button-md">Indeterminate</button>
+         * <button onclick="chkb.element.disabled = false" class="gj-button-md">Enable</button>
+         * <button onclick="chkb.element.disabled = true" class="gj-button-md">Disable</button>
+         * <script>
+         *     var chkb = new GijgoCheckBox(document.getElementById('checkbox'), {
+         *         uiLibrary: 'shadcn'
+         *     });
+         * </script>
          */
         uiLibrary: 'materialdesign',
         
@@ -120,6 +132,13 @@ gj.checkbox.config = {
             wrapper: 'gj-checkbox-bootstrap gj-checkbox-bootstrap-4'
         },
         iconsLibrary: 'materialicons'
+    },
+
+    shadcn: {
+        style: {
+            wrapper: 'gj-checkbox-shadcn'
+        },
+        iconsLibrary: 'shadcn'
     },
 
     materialicons: {

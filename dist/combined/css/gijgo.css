@@ -981,6 +981,113 @@ table.gj-grid-md thead th [data-gj-role="sorticon"] i.material-icons {
 table.gj-grid-md thead th.gj-grid-select-all {
     padding-bottom: 3px;
 }
+
+/* shadcn/ui data table */
+table.gj-grid.gj-grid-shadcn {
+    border: 0;
+    border-collapse: separate;
+    border-spacing: 0;
+    overflow: visible;
+    background-color: transparent;
+    color: #000;
+    font-size: 14px;
+    line-height: 1.25rem;
+    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+table.gj-grid-shadcn thead th {
+    height: 40px;
+    padding: 0 8px;
+    box-sizing: border-box;
+    text-align: left;
+    vertical-align: middle;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0;
+    color: #000;
+    background-color: #fff;
+    border: 0;
+    border-top: 1px solid #e5e5e5;
+    border-bottom: 1px solid #e5e5e5;
+    white-space: nowrap;
+}
+
+table.gj-grid-shadcn thead th:first-child {
+    border-left: 1px solid #e5e5e5;
+    border-top-left-radius: 6px;
+}
+
+table.gj-grid-shadcn thead th:last-child {
+    border-right: 1px solid #e5e5e5;
+    border-top-right-radius: 6px;
+}
+
+table.gj-grid-shadcn thead tr:hover th {
+    background-color: #fafafa;
+}
+
+table.gj-grid-shadcn thead th [data-gj-role="title"],
+table.gj-grid-shadcn thead th [data-gj-role="sorticon"] {
+    vertical-align: middle;
+}
+
+table.gj-grid-shadcn thead th [data-gj-role="sorticon"] {
+    margin-left: 6px;
+}
+
+table.gj-grid-shadcn thead th [data-gj-role="sorticon"] i.gj-icon,
+table.gj-grid-shadcn thead th [data-gj-role="sorticon"] i.material-icons {
+    font-size: 14px;
+    color: #737373;
+    vertical-align: middle;
+}
+
+table.gj-grid-shadcn tbody td {
+    height: 40px;
+    padding: 8px;
+    box-sizing: border-box;
+    text-align: left;
+    vertical-align: middle;
+    color: #000;
+    background-color: #fff;
+    border: 0;
+    border-bottom: 1px solid #e5e5e5;
+    white-space: nowrap;
+}
+
+table.gj-grid-shadcn tbody td:first-child {
+    border-left: 1px solid #e5e5e5;
+}
+
+table.gj-grid-shadcn tbody td:last-child {
+    border-right: 1px solid #e5e5e5;
+}
+
+table.gj-grid-shadcn tbody tr:last-child td:first-child {
+    border-bottom-left-radius: 6px;
+}
+
+table.gj-grid-shadcn tbody tr:last-child td:last-child {
+    border-bottom-right-radius: 6px;
+}
+
+table.gj-grid-shadcn tbody tr {
+    transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+table.gj-grid-shadcn tbody tr:hover td {
+    background-color: #fafafa;
+}
+
+table.gj-grid-shadcn tbody tr.gj-grid-shadcn-select td {
+    background-color: #f5f5f5;
+}
+
+table.gj-grid-shadcn tbody div[data-gj-role="display"] {
+    padding: 0;
+    white-space: nowrap;
+    word-break: normal;
+}
 /* Material Design Theme */
 .gj-grid-md tfoot tr th {
     padding-right: 14px;
@@ -1097,6 +1204,107 @@ table.gj-grid-md thead th.gj-grid-select-all {
     height: 34px;
     padding-top: 2px;
     padding-bottom: 6px;
+}
+
+/* shadcn/ui */
+.gj-grid-shadcn-pager {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+table.gj-grid-shadcn tfoot tr[data-gj-role="pager"] th {
+    padding: 12px 0 0;
+    border: 0;
+    background-color: transparent;
+    color: #737373;
+    font-size: 14px;
+    font-weight: 400;
+    letter-spacing: 0;
+    line-height: 28px;
+}
+
+table.gj-grid-shadcn tfoot button.gj-button-shadcn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    height: 28px;
+    min-width: 28px;
+    margin: 0;
+    padding: 0 8px;
+    border: 1px solid #e5e5e5;
+    border-radius: 6px;
+    background-color: #fff;
+    color: #000;
+    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-size: 12.8px;
+    font-weight: 500;
+    line-height: 1;
+    letter-spacing: 0;
+    text-transform: none;
+    box-shadow: none;
+    cursor: pointer;
+}
+
+table.gj-grid-shadcn tfoot button.gj-button-shadcn:hover {
+    background-color: #f5f5f5;
+}
+
+table.gj-grid-shadcn tfoot button.gj-button-shadcn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background-color: #fff;
+}
+
+table.gj-grid-shadcn tfoot button.gj-button-shadcn .gj-icon {
+    font-size: 14px;
+    color: #000;
+}
+
+table.gj-grid-shadcn tfoot .gj-grid-shadcn-page {
+    width: 40px;
+}
+
+table.gj-grid-shadcn tfoot input.gj-input-shadcn {
+    box-sizing: border-box;
+    width: 40px;
+    height: 28px;
+    margin: 0;
+    padding: 0 6px;
+    border: 1px solid #e5e5e5;
+    border-radius: 6px;
+    background-color: #fff;
+    color: #000;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 28px;
+    text-align: center;
+    outline: none;
+}
+
+table.gj-grid-shadcn tfoot input.gj-input-shadcn:focus {
+    border-color: #a1a1a1;
+    box-shadow: 0 0 0 3px rgba(161, 161, 161, 0.5);
+}
+
+table.gj-grid-shadcn tfoot .gj-dropdown-shadcn {
+    width: 4.75rem;
+}
+
+table.gj-grid-shadcn tfoot .gj-dropdown-shadcn [data-gj-role="presenter"] {
+    height: 28px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+table.gj-grid-shadcn tfoot .gj-dropdown-shadcn [data-gj-role="presenter"] {
+    height: 28px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
 }
 .gj-grid thead tr th div.gj-grid-column-resizer-wrapper {
     position: relative;
@@ -1839,6 +2047,91 @@ ul.gj-list-md li.disabled > [data-gj-role="wrapper"] > [data-gj-role="expander"]
     top: 0.03rem;
     left: 0.115rem;
 }
+
+/* shadcn/ui */
+.gj-checkbox-shadcn {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    margin: 0;
+    padding: 0;
+    vertical-align: middle;
+    line-height: 0;
+    font-size: 0;
+    cursor: pointer;
+    user-select: none;
+}
+
+.gj-checkbox-shadcn input[type="checkbox"] {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: 16px;
+    height: 16px;
+    margin: 0;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.gj-checkbox-shadcn span {
+    position: relative;
+    box-sizing: border-box;
+    display: block;
+    width: 16px;
+    height: 16px;
+    margin: 0;
+    border: 1px solid #e5e5e5;
+    border-radius: 4px;
+    background-color: #fff;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 14px 14px;
+    cursor: pointer;
+    outline: none;
+    transition-property: color, background-color, border-color, outline-color;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+}
+
+.gj-checkbox-shadcn span:after {
+    content: "";
+    position: absolute;
+    top: -8px;
+    right: -12px;
+    bottom: -8px;
+    left: -12px;
+}
+
+.gj-checkbox-shadcn input[type="checkbox"]:checked + span {
+    background-color: #000;
+    border-color: #000;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23fafafa' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E");
+}
+
+.gj-checkbox-shadcn input[type="checkbox"]:indeterminate + span {
+    background-color: #000;
+    border-color: #000;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23fafafa' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12h14'/%3E%3C/svg%3E");
+}
+
+.gj-checkbox-shadcn input[type="checkbox"]:focus-visible + span {
+    border-color: #a1a1a1;
+    box-shadow: 0 0 0 3px rgba(161, 161, 161, 0.5);
+}
+
+.gj-checkbox-shadcn input[type="checkbox"]:disabled {
+    cursor: not-allowed;
+}
+
+.gj-checkbox-shadcn input[type="checkbox"]:disabled + span {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
 .gj-editor [data-gj-role="body"] {
     overflow: auto;
     outline: 0px solid transparent;
@@ -2034,6 +2327,101 @@ ul.gj-list-md li.disabled > [data-gj-role="wrapper"] > [data-gj-role="expander"]
     left: 0;
     margin: 0;
     z-index: 1203;
+}
+
+/* shadcn/ui */
+.gj-dropdown-shadcn {
+    display: inline-block;
+    min-width: 4.75rem;
+    vertical-align: middle;
+    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+.gj-dropdown-shadcn [data-gj-role="presenter"] {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    width: 100%;
+    height: 32px;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0 8px 0 10px;
+    border: 1px solid #e5e5e5;
+    border-radius: 8px;
+    background-color: #fff;
+    color: #000;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.25rem;
+    text-align: left;
+    cursor: pointer;
+    outline: none;
+    transition: border-color 150ms, box-shadow 150ms;
+}
+
+.gj-dropdown-shadcn [data-gj-role="presenter"]:focus,
+.gj-dropdown-shadcn [data-gj-role="presenter"]:focus-visible {
+    border-color: #a1a1a1;
+    box-shadow: 0 0 0 3px rgba(161, 161, 161, 0.5);
+}
+
+.gj-dropdown-shadcn [data-gj-role="presenter"] [data-gj-role="display"] {
+    display: block;
+    flex: 1;
+    padding: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.gj-dropdown-shadcn [data-gj-role="presenter"] [data-gj-role="display"] .placeholder {
+    color: #737373;
+}
+
+.gj-dropdown-shadcn [data-gj-role="presenter"] [data-gj-role="expander"] {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    padding: 0;
+}
+
+.gj-dropdown-list-shadcn {
+    position: absolute;
+    z-index: 1203;
+    box-sizing: border-box;
+    min-width: 8rem;
+    margin: 0;
+    padding: 4px;
+    list-style: none;
+    background-color: #fff;
+    color: #000;
+    border: 1px solid #e5e5e5;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+}
+
+.gj-dropdown-list-shadcn li {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.gj-dropdown-list-shadcn li [data-gj-role="display"] {
+    display: block;
+    padding: 4px 8px;
+    font-size: 14px;
+    line-height: 1.25rem;
+    color: #000;
+}
+
+.gj-dropdown-list-shadcn li:hover,
+.gj-dropdown-list-shadcn li.gj-list-shadcn-active {
+    background-color: #f5f5f5;
 }
 .gj-datepicker [data-gj-role="input"]::-ms-clear {
     display: none;

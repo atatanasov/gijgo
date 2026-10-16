@@ -1,0 +1,43 @@
+---
+description: Document new or changed widget behavior with an @example block above the config field or method, matching existing JSDoc examples.
+globs: src/**/*.js
+alwaysApply: false
+---
+
+# Examples live in JSDoc
+
+Grunt `extractExamples` reads `@example` blocks from `src/**/*.js` and writes `examples/<widget>/*.html`. When a change needs a demo, add or update that block in the comment directly above the config field, event, or public method. Do not add a standalone file under `examples/`.
+
+Each source file starts with `@widget` and `@plugin`. The generated file name is `Widget.Plugin.field.ExampleName.html`.
+
+Match the surrounding comment: short description, tags (`@type`, `@default`, `@method`, `@param`, `@return`, `@event`), then one or more examples. Each example line is a JSDoc line (` * ...`).
+
+```javascript
+/** Short description of the option or method.
+ * @type string
+ * @default 'materialdesign'
+ * @example Material.Design <!-- checkbox -->
+ * <input type="checkbox" id="checkbox"/>
+ * <script>
+ *     var chkb = new GijgoCheckBox(document.getElementById('checkbox'), {
+ *         uiLibrary: 'materialdesign'
+ *     });
+ * </script>
+ * @example Bootstrap.5 <!-- bootstrap5, checkbox -->
+ * <input type="checkbox" id="checkbox"/>
+ * <script>
+ *     var chkb = new GijgoCheckBox(document.getElementById('checkbox'), {
+ *         uiLibrary: 'bootstrap5'
+ *     });
+ * </script>
+ */
+uiLibrary: 'materialdesign',
+```
+
+Rules for the tag:
+
+- `@example Name <!-- lib, lib -->` — `Name` is the example title (dots allowed). Omit the name only when copying a neighbor that does.
+- The HTML comment lists libraries the page must load, comma-separated. Use the same tokens as nearby examples: `bootstrap`, `bootstrap4`, `bootstrap5`, `fontawesome`, `materialicons`, `jquery`, `grid`, `tree`, `checkbox`, `dialog.base`, `editor`, `dropdown`, `datepicker`, `timepicker`, `datetimepicker`, `slider`, `colorpicker`, `draggable`, `droppable`.
+- Put markup and a `<script>` that constructs the widget (`new GijgoCheckBox(...)`, `new GijgoGrid(...)`, and so on) and shows the option or method under discussion.
+- Several `@example` blocks may sit in one comment. Keep each one focused on that field or method.
+- Place the comment immediately above the property (`name: value`) or method (`self.name = function`). The extractor binds the example to the next field or `self.* = function`.

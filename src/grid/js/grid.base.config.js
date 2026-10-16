@@ -1,4 +1,4 @@
-﻿/* global window alert jQuery gj */
+/* global window alert jQuery gj */
 /**
   * @widget Grid
   * @plugin Base
@@ -276,6 +276,19 @@ gj.grid.config = {
              *         dataSource: '/Players/Get',
              *         columns: [
              *             { field: 'ID', width: 42 },
+             *             { field: 'Name', sortable: true },
+             *             { field: 'PlaceOfBirth', sortable: false }
+             *         ]
+             *     });
+             * </script>
+             * @example Remote.Shadcn <!-- grid -->
+             * <table id="grid"></table>
+             * <script>
+             *     new GijgoGrid(document.getElementById('grid'), {
+             *         uiLibrary: 'shadcn',
+             *         dataSource: '/Players/Get',
+             *         columns: [
+             *             { field: 'ID', width: 64 },
              *             { field: 'Name', sortable: true },
              *             { field: 'PlaceOfBirth', sortable: false }
              *         ]
@@ -788,9 +801,9 @@ gj.grid.config = {
             direction: 'direction'
         },
 
-        /** The name of the UI library that is going to be in use. Currently we support Bootstrap 3, Bootstrap 4 and Material Design.
+        /** The name of the UI library that is going to be in use. Currently we support Material Design, Bootstrap and shadcn/ui.
          * @additionalinfo The css files for Bootstrap or Material Design should be manually included to the page where the grid is in use.
-         * @type (materialdesign|bootstrap|bootstrap4)
+         * @type (materialdesign|bootstrap|bootstrap4|shadcn)
          * @default 'materialdesign'
          * @example Material.Design.With.Icons <!-- dropdown, grid -->
          * <table id="grid"></table>
@@ -853,6 +866,16 @@ gj.grid.config = {
          *     new GijgoGrid(document.getElementById('grid'), {
          *         dataSource: '/Players/Get',
          *         uiLibrary: 'bootstrap5',
+         *         columns: [ { field: 'ID', width: 64 }, { field: 'Name', sortable: true }, { field: 'PlaceOfBirth' } ],
+         *         pager: { limit: 2, sizes: [2, 5, 10, 20] }
+         *     });
+         * </script>
+         * @example Shadcn <!-- dropdown, grid -->
+         * <table id="grid"></table>
+         * <script>
+         *     new GijgoGrid(document.getElementById('grid'), {
+         *         dataSource: '/Players/Get',
+         *         uiLibrary: 'shadcn',
          *         columns: [ { field: 'ID', width: 64 }, { field: 'Name', sortable: true }, { field: 'PlaceOfBirth' } ],
          *         pager: { limit: 2, sizes: [2, 5, 10, 20] }
          *     });
@@ -1252,6 +1275,16 @@ gj.grid.config = {
 
         defaultIconColumnWidth: 42,
         defaultCheckBoxColumnWidth: 44
+    },
+
+    shadcn: {
+        style: {
+            wrapper: 'gj-grid-wrapper',
+            table: 'gj-grid gj-grid-shadcn',
+            content: {
+                rowSelected: 'gj-grid-shadcn-select'
+            }
+        }
     },
 
     materialicons: {

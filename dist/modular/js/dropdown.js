@@ -77,6 +77,20 @@ gj.dropdown.config = {
         }
     },
 
+    shadcn: {
+        style: {
+            wrapper: 'gj-dropdown gj-dropdown-shadcn gj-unselectable',
+            presenter: 'gj-dropdown-shadcn-trigger',
+            list: 'gj-list gj-list-shadcn gj-dropdown-list-shadcn',
+            active: 'gj-list-shadcn-active'
+        },
+        iconsLibrary: 'shadcn',
+        icons: {
+            dropdown: '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#737373" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>',
+            dropup: '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#737373" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"/></svg>'
+        }
+    },
+
     materialicons: {
         style: {
             expander: 'gj-dropdown-expander-mi'

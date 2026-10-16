@@ -1,4 +1,4 @@
-﻿/* Material Design Theme */
+/* Material Design Theme */
 .gj-grid-md tfoot tr th {
     padding-right: 14px;
 }
@@ -114,4 +114,98 @@
     height: 34px;
     padding-top: 2px;
     padding-bottom: 6px;
+}
+
+/* shadcn/ui */
+.gj-grid-shadcn-pager {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+table.gj-grid-shadcn tfoot tr[data-gj-role="pager"] th {
+    padding: 12px 0 0;
+    border: 0;
+    background-color: transparent;
+    color: #737373;
+    font-size: 14px;
+    font-weight: 400;
+    letter-spacing: 0;
+    line-height: 28px;
+}
+
+table.gj-grid-shadcn tfoot button.gj-button-shadcn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    height: 28px;
+    min-width: 28px;
+    margin: 0;
+    padding: 0 8px;
+    border: 1px solid #e5e5e5;
+    border-radius: 6px;
+    background-color: #fff;
+    color: #000;
+    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-size: 12.8px;
+    font-weight: 500;
+    line-height: 1;
+    letter-spacing: 0;
+    text-transform: none;
+    box-shadow: none;
+    cursor: pointer;
+}
+
+table.gj-grid-shadcn tfoot button.gj-button-shadcn:hover {
+    background-color: #f5f5f5;
+}
+
+table.gj-grid-shadcn tfoot button.gj-button-shadcn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background-color: #fff;
+}
+
+table.gj-grid-shadcn tfoot button.gj-button-shadcn .gj-icon {
+    font-size: 14px;
+    color: #000;
+}
+
+table.gj-grid-shadcn tfoot .gj-grid-shadcn-page {
+    width: 40px;
+}
+
+table.gj-grid-shadcn tfoot input.gj-input-shadcn {
+    box-sizing: border-box;
+    width: 40px;
+    height: 28px;
+    margin: 0;
+    padding: 0 6px;
+    border: 1px solid #e5e5e5;
+    border-radius: 6px;
+    background-color: #fff;
+    color: #000;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 28px;
+    text-align: center;
+    outline: none;
+}
+
+table.gj-grid-shadcn tfoot input.gj-input-shadcn:focus {
+    border-color: #a1a1a1;
+    box-shadow: 0 0 0 3px rgba(161, 161, 161, 0.5);
+}
+
+table.gj-grid-shadcn tfoot .gj-dropdown-shadcn {
+    width: 4.75rem;
+}
+
+table.gj-grid-shadcn tfoot .gj-dropdown-shadcn [data-gj-role="presenter"] {
+    height: 28px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
 }

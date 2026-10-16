@@ -1,4 +1,4 @@
-﻿/* Bootstrap */
+/* Bootstrap */
 .gj-checkbox-bootstrap {
     font-weight: 400;
     margin: 0;
@@ -187,4 +187,89 @@
     position: relative;
     top: 0.03rem;
     left: 0.115rem;
+}
+
+/* shadcn/ui */
+.gj-checkbox-shadcn {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    margin: 0;
+    padding: 0;
+    vertical-align: middle;
+    line-height: 0;
+    font-size: 0;
+    cursor: pointer;
+    user-select: none;
+}
+
+.gj-checkbox-shadcn input[type="checkbox"] {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: 16px;
+    height: 16px;
+    margin: 0;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.gj-checkbox-shadcn span {
+    position: relative;
+    box-sizing: border-box;
+    display: block;
+    width: 16px;
+    height: 16px;
+    margin: 0;
+    border: 1px solid #e5e5e5;
+    border-radius: 4px;
+    background-color: #fff;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 14px 14px;
+    cursor: pointer;
+    outline: none;
+    transition-property: color, background-color, border-color, outline-color;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+}
+
+.gj-checkbox-shadcn span:after {
+    content: "";
+    position: absolute;
+    top: -8px;
+    right: -12px;
+    bottom: -8px;
+    left: -12px;
+}
+
+.gj-checkbox-shadcn input[type="checkbox"]:checked + span {
+    background-color: #000;
+    border-color: #000;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23fafafa' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E");
+}
+
+.gj-checkbox-shadcn input[type="checkbox"]:indeterminate + span {
+    background-color: #000;
+    border-color: #000;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23fafafa' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12h14'/%3E%3C/svg%3E");
+}
+
+.gj-checkbox-shadcn input[type="checkbox"]:focus-visible + span {
+    border-color: #a1a1a1;
+    box-shadow: 0 0 0 3px rgba(161, 161, 161, 0.5);
+}
+
+.gj-checkbox-shadcn input[type="checkbox"]:disabled {
+    cursor: not-allowed;
+}
+
+.gj-checkbox-shadcn input[type="checkbox"]:disabled + span {
+    opacity: 0.5;
+    cursor: not-allowed;
 }

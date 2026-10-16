@@ -6,15 +6,15 @@
  * Released under the MIT license
  */
 /* global window alert jQuery */
-/**  */gj.checkbox = {
+/**  */gj.checkbox = {
     plugins: {}
 };
 
 gj.checkbox.config = {
     base: {
-        /** The name of the UI library that is going to be in use. Currently we support only Material Design and Bootstrap.          */        uiLibrary: 'materialdesign',
+        /** The name of the UI library that is going to be in use. Currently we support Material Design, Bootstrap and shadcn/ui.          */        uiLibrary: 'materialdesign',
         
-        /** The name of the icons library that is going to be in use. Currently we support Material Icons, Font Awesome and Glyphicons.         */        iconsLibrary: 'materialicons',
+        /** The name of the icons library that is going to be in use. Currently we support Material Icons, Font Awesome and Glyphicons.         */        iconsLibrary: 'materialicons',
 
         style: {
             wrapper: 'gj-checkbox-md',
@@ -42,6 +42,13 @@ gj.checkbox.config = {
             wrapper: 'gj-checkbox-bootstrap gj-checkbox-bootstrap-4'
         },
         iconsLibrary: 'materialicons'
+    },
+
+    shadcn: {
+        style: {
+            wrapper: 'gj-checkbox-shadcn'
+        },
+        iconsLibrary: 'shadcn'
     },
 
     materialicons: {
@@ -142,7 +149,7 @@ gj.checkbox.methods = {
 gj.checkbox.events = {
     /**
      * Triggered when the state of the checkbox is changed
-     *     */    change: function (el) {
+     *     */    change: function (el) {
         //Event dispatched by native html input from type=checkbox
     }
 };
@@ -155,15 +162,15 @@ GijgoCheckBox = function (element, jsConfig) {
     self.type = 'checkbox';
     self.element = element;
 
-    /** Toogle the state of the checkbox.     */    self.toggle = function () {
+    /** Toogle the state of the checkbox.     */    self.toggle = function () {
         return methods.toggle(this);
     };
 
-    /** Return state or set state if you pass parameter.     */    self.state = function (value) {
+    /** Return state or set state if you pass parameter.     */    self.state = function (value) {
         return methods.state(this.element, value);
     };
 
-    /** Remove checkbox functionality from the element.     */    self.destroy = function () {
+    /** Remove checkbox functionality from the element.     */    self.destroy = function () {
         return methods.destroy(this);
     };
 

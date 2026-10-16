@@ -162,7 +162,7 @@ gj.dropdown.config = {
 
         /** The name of the UI library that is going to be in use.
          * @additionalinfo The css file for bootstrap should be manually included if you use bootstrap.
-         * @type (materialdesign|bootstrap|bootstrap4)
+         * @type (materialdesign|bootstrap|bootstrap4|bootstrap5|shadcn)
          * @default materialdesign
          * @example MaterialDesign <!-- dropdown -->
          * <select id="dropdown" width="200">
@@ -201,6 +201,15 @@ gj.dropdown.config = {
          * </select>
          * <script>
          *     new GijgoDropDown(document.getElementById('dropdown'), { uiLibrary: 'bootstrap5', width: 300 });
+         * </script>
+         * @example Shadcn <!-- dropdown -->
+         * <select id="dropdown" width="200">
+         *     <option value="1">One</option>
+         *     <option value="2">Two</option>
+         *     <option value="3">Three</option>
+         * </select>
+         * <script>
+         *     new GijgoDropDown(document.getElementById('dropdown'), { uiLibrary: 'shadcn', width: 200 });
          * </script>
          */
         uiLibrary: 'materialdesign',
@@ -307,6 +316,20 @@ gj.dropdown.config = {
             list: 'gj-list gj-list-bootstrap gj-dropdown-list-bootstrap list-group',
             item: 'list-group-item',
             active: 'active'
+        }
+    },
+
+    shadcn: {
+        style: {
+            wrapper: 'gj-dropdown gj-dropdown-shadcn gj-unselectable',
+            presenter: 'gj-dropdown-shadcn-trigger',
+            list: 'gj-list gj-list-shadcn gj-dropdown-list-shadcn',
+            active: 'gj-list-shadcn-active'
+        },
+        iconsLibrary: 'shadcn',
+        icons: {
+            dropdown: '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#737373" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>',
+            dropup: '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#737373" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"/></svg>'
         }
     },
 

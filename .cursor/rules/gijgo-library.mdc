@@ -1,0 +1,32 @@
+---
+description: Gijgo is a JavaScript widget library. Edit source only in src; Grunt generates dist and examples.
+alwaysApply: true
+---
+
+# Gijgo library
+
+Gijgo is a set of JavaScript UI controls (widgets) built on jQuery, with themes for Material Design, Bootstrap 3/4/5, and shadcn. Each control lives under `src/<widget>/` as plain JavaScript and CSS, not a framework component.
+
+Widgets include grid, tree, dialog, editor, checkbox, dropdown, datepicker, timepicker, datetimepicker, slider, colorpicker, draggable, and droppable. Shared code is in `src/core`.
+
+## Where to edit
+
+Change widget behavior, styles, messages, and examples only in `src/`.
+
+- `src/<widget>/js/` — behavior, config, events, methods, and example markup
+- `src/<widget>/css/` — styles
+- `src/core/`, `src/icons/`, `src/fonts/` — shared runtime assets
+
+`dist/` and `examples/` are generated. Do not create or edit files there. A change that only updates those folders will be overwritten on the next build.
+
+`Gruntfile.js` is the build definition. Edit it only to register a new widget or asset in `concat` or `extractExamples`. Do not put widget implementation there.
+
+## Build
+
+From the repo root, after `npm install` and `npm install -g grunt-cli`:
+
+- `grunt` rebuilds `dist/` and `examples/`, then watches `src/**/*.{js,css,txt}`.
+- For a one-shot rebuild without the watcher: `grunt copy extractExamples concat clean replace uglify cssmin`.
+- `node app.js` serves the generated examples at http://localhost:4000/.
+
+Verify a control by rebuilding, then opening the generated example. Do not hand-write the HTML under `examples/`.

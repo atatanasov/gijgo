@@ -6,68 +6,68 @@
  * Released under the MIT license
  */
 /* global window alert jQuery gj */
-/**  */gj.grid = {
+/**  */gj.grid = {
     plugins: {},
     messages: {}
 };
 
 gj.grid.config = {
     base: {
-        /** The data source for the grid.         */        dataSource: undefined,
+        /** The data source for the grid.         */        dataSource: undefined,
 
-        /** An array that holds the configurations of each column from the grid.         */        columns: [],
+        /** An array that holds the configurations of each column from the grid.         */        columns: [],
 
-        /** Auto generate column for each field in the datasource when set to true.         */        autoGenerateColumns: false,
+        /** Auto generate column for each field in the datasource when set to true.         */        autoGenerateColumns: false,
 
-        /** An object that holds the default configuration settings of each column from the grid.         */        defaultColumnSettings: {
+        /** An object that holds the default configuration settings of each column from the grid.         */        defaultColumnSettings: {
 
-            /** If set to true the column will not be displayed in the grid. By default all columns are displayed.             */            hidden: false,
+            /** If set to true the column will not be displayed in the grid. By default all columns are displayed.             */            hidden: false,
 
             /** The width of the column. Numeric values are treated as pixels.
-             * If the width is undefined the width of the column is not set and depends on the with of the table(grid).             */            width: undefined,
+             * If the width is undefined the width of the column is not set and depends on the with of the table(grid).             */            width: undefined,
 
             /** Indicates if the column is sortable.
-             * If set to true the user can click the column header and sort the grid by the column source field.             */            sortable: false,
+             * If set to true the user can click the column header and sort the grid by the column source field.             */            sortable: false,
 
-            /** Indicates the type of the column.             */            type: 'text',
+            /** Indicates the type of the column.             */            type: 'text',
 
-            /** The caption that is going to be displayed in the header of the grid.             */            title: undefined,
+            /** The caption that is going to be displayed in the header of the grid.             */            title: undefined,
 
             /** The field name to which the column is bound.
-             * If the column.title is not defined this value is used as column.title.             */            field: undefined,
+             * If the column.title is not defined this value is used as column.title.             */            field: undefined,
 
-            /** This setting control the alignment of the text in the cell.             */            align: undefined,
+            /** This setting control the alignment of the text in the cell.             */            align: undefined,
 
-            /** The name(s) of css class(es) that are going to be applied to all cells inside that column, except the header cell.             */            cssClass: undefined,
+            /** The name(s) of css class(es) that are going to be applied to all cells inside that column, except the header cell.             */            cssClass: undefined,
 
-            /** The name(s) of css class(es) that are going to be applied to the header cell of that column.             */            headerCssClass: undefined,
+            /** The name(s) of css class(es) that are going to be applied to the header cell of that column.             */            headerCssClass: undefined,
 
-            /** The text for the cell tooltip.             */            tooltip: undefined,
+            /** The text for the cell tooltip.             */            tooltip: undefined,
 
             /** Css class for icon that is going to be in use for the cell.
-             * This setting can be in use only with combination of type icon.             */            icon: undefined,
+             * This setting can be in use only with combination of type icon.             */            icon: undefined,
 
             /** Configuration object with event names as keys and functions as values that are going to be bind to each cell from the column.
-             * Each function is going to receive event information as a parameter with info in the 'data' field for id, field name and record data.             */            events: undefined,
+             * Each function is going to receive event information as a parameter with info in the 'data' field for id, field name and record data.             */            events: undefined,
 
-            /** Format the date when the type of the column is date.             */            format: 'mm/dd/yyyy',
+            /** Format the date when the type of the column is date.             */            format: 'mm/dd/yyyy',
 
-            /** Number of decimal digits after the decimal point.             */            decimalDigits: undefined,
+            /** Number of decimal digits after the decimal point.             */            decimalDigits: undefined,
 
             /** Template for the content in the column.
-             * Use curly brackets '{}' to wrap the names of data source columns from server response.             */            tmpl: undefined,
+             * Use curly brackets '{}' to wrap the names of data source columns from server response.             */            tmpl: undefined,
 
-            /** If set to true stop event propagation when event occur.             */            stopPropagation: false,
+            /** If set to true stop event propagation when event occur.             */            stopPropagation: false,
 
-            /** A renderer is an 'interceptor' function which can be used to transform data (value, appearance, etc.) before it is rendered.             */            renderer: undefined,
+            /** A renderer is an 'interceptor' function which can be used to transform data (value, appearance, etc.) before it is rendered.             */            renderer: undefined,
 
-            /** Function which can be used to customize filtering with local data (javascript sourced data).             */            filter: undefined
+            /** Function which can be used to customize filtering with local data (javascript sourced data).             */            filter: undefined
         },
 
         mapping: {
-            /** The name of the object in the server response, that contains array with records, that needs to be display in the grid.             */            dataField: 'records',
+            /** The name of the object in the server response, that contains array with records, that needs to be display in the grid.             */            dataField: 'records',
 
-            /** The name of the object in the server response, that contains the number of all records on the server.             */            totalRecordsField: 'total'
+            /** The name of the object in the server response, that contains the number of all records on the server.             */            totalRecordsField: 'total'
         },
 
         params: {},
@@ -75,40 +75,40 @@ gj.grid.config = {
         paramNames: {
 
             /** The name of the parameter that is going to send the name of the column for sorting.
-             * The "sortable" setting for at least one column should be enabled in order this parameter to be in use.             */            sortBy: 'sortBy',
+             * The "sortable" setting for at least one column should be enabled in order this parameter to be in use.             */            sortBy: 'sortBy',
 
             /** The name of the parameter that is going to send the direction for sorting.
-             * The "sortable" setting for at least one column should be enabled in order this parameter to be in use.             */            direction: 'direction'
+             * The "sortable" setting for at least one column should be enabled in order this parameter to be in use.             */            direction: 'direction'
         },
 
-        /** The name of the UI library that is going to be in use. Currently we support Bootstrap 3, Bootstrap 4 and Material Design.         */        uiLibrary: 'materialdesign',
+        /** The name of the UI library that is going to be in use. Currently we support Material Design, Bootstrap and shadcn/ui.         */        uiLibrary: 'materialdesign',
 
-        /** The name of the icons library that is going to be in use. Currently we support Material Icons, Font Awesome and Glyphicons.         */        iconsLibrary: 'materialicons',
+        /** The name of the icons library that is going to be in use. Currently we support Material Icons, Font Awesome and Glyphicons.         */        iconsLibrary: 'materialicons',
 
         /** The type of the row selection.<br/>
-         * If the type is set to multiple the user will be able to select more then one row from the grid.         */        selectionType: 'single',
+         * If the type is set to multiple the user will be able to select more then one row from the grid.         */        selectionType: 'single',
 
-        /** The type of the row selection mechanism.         */        selectionMethod: 'basic',
+        /** The type of the row selection mechanism.         */        selectionMethod: 'basic',
 
-        /** When this setting is enabled the content of the grid will be loaded automatically after the creation of the grid.         */        autoLoad: true,
+        /** When this setting is enabled the content of the grid will be loaded automatically after the creation of the grid.         */        autoLoad: true,
 
-        /** The text that is going to be displayed if the grid is empty.         */        notFoundText: undefined,
+        /** The text that is going to be displayed if the grid is empty.         */        notFoundText: undefined,
 
-        /** Width of the grid.         */        width: undefined,
+        /** Width of the grid.         */        width: undefined,
 
-        /** Minimum width of the grid.         */        minWidth: undefined,
+        /** Minimum width of the grid.         */        minWidth: undefined,
 
         /** This configuration option manage the behaviour of the header row height.
-         * Auto scale if set to to 'autogrow'. All body rows are with the same height if set to 'fixed'.         */        headerRowHeight: 'fixed',
+         * Auto scale if set to to 'autogrow'. All body rows are with the same height if set to 'fixed'.         */        headerRowHeight: 'fixed',
 
         /** This configuration option manage the behaviour of the body row height.
-         * Auto scale if set to to 'autogrow'. All body rows are with the same height if set to 'fixed'.         */        bodyRowHeight: 'autogrow',
+         * Auto scale if set to to 'autogrow'. All body rows are with the same height if set to 'fixed'.         */        bodyRowHeight: 'autogrow',
 
-        /** The size of the font in the grid.         */        fontSize: undefined,
+        /** The size of the font in the grid.         */        fontSize: undefined,
 
-        /** Name of column that contains the record id.          */        primaryKey: undefined,
+        /** Name of column that contains the record id.          */        primaryKey: undefined,
 
-        /** The language that needs to be in use.         */        locale: 'en-us',
+        /** The language that needs to be in use.         */        locale: 'en-us',
 
         defaultIconColumnWidth: 70,
         defaultCheckBoxColumnWidth: 70,
@@ -172,6 +172,16 @@ gj.grid.config = {
 
         defaultIconColumnWidth: 42,
         defaultCheckBoxColumnWidth: 44
+    },
+
+    shadcn: {
+        style: {
+            wrapper: 'gj-grid-wrapper',
+            table: 'gj-grid gj-grid-shadcn',
+            content: {
+                rowSelected: 'gj-grid-shadcn-select'
+            }
+        }
     },
 
     materialicons: {
@@ -2264,6 +2274,15 @@ gj.grid.plugins.inlineEditing.configure = function (grid, fullConfig, clientConf
             }
         },
 
+        shadcn: {
+            style: {
+                pager: {
+                    panel: 'gj-grid-shadcn-pager',
+                    stateDisabled: ''
+                }
+            }
+        },
+
         glyphicons: {
             icons: {
                 first: '<span class="glyphicon glyphicon-step-backward"></span>',
@@ -2357,6 +2376,8 @@ gj.grid.plugins.inlineEditing.configure = function (grid, fullConfig, clientConf
                 gj.grid.plugins.pagination.private.localizationBootstrap4(data);
             } else if (data.uiLibrary === 'bootstrap5') {
                 gj.grid.plugins.pagination.private.localizationBootstrap5(data);
+            } else if (data.uiLibrary === 'shadcn') {
+                gj.grid.plugins.pagination.private.localizationShadcn(data);
             } else {
                 gj.grid.plugins.pagination.private.localizationMaterialDesign(data);
             }
@@ -2533,6 +2554,60 @@ gj.grid.plugins.inlineEditing.configure = function (grid, fullConfig, clientConf
             }
         },
 
+        localizationShadcn: function (data) {
+            let msg = gj.grid.messages[data.locale],
+                methods = gj.grid.plugins.pagination.private,
+                parser = new DOMParser(),
+                labelLast = document.createElement('div'),
+                labelPage = document.createElement('div'),
+                labelOf = document.createElement('div'),
+                pageNumber = document.createElement('div'),
+                input = document.createElement('input'),
+                pager = document.createElement('select');
+
+            if (typeof (data.pager.leftControls) === 'undefined') {
+                labelLast.setAttribute('data-gj-role', 'page-label-last');
+                labelLast.innerHTML = '0';
+
+                labelPage.innerHTML = msg.Page;
+
+                labelOf.innerHTML = msg.Of;
+
+                pageNumber.classList.add('gj-grid-shadcn-page');
+                input.setAttribute('data-gj-role', 'page-number');
+                input.setAttribute('type', 'text');
+                input.setAttribute('value', '0');
+                gj.core.addClasses(input, 'gj-input-shadcn');
+                pageNumber.appendChild(input);
+
+                pager.style.width = '4.75rem';
+                pager.setAttribute('data-gj-role', 'page-size');
+
+                data.pager.leftControls = [
+                    methods.createButton('gj-button-shadcn gj-cursor-pointer', 'page-first', msg.FirstPageTooltip, data.icons.first || msg.First),
+                    methods.createButton('gj-button-shadcn gj-cursor-pointer', 'page-previous', msg.PreviousPageTooltip, data.icons.previous || msg.Previous),
+                    labelPage,
+                    pageNumber,
+                    labelOf,
+                    labelLast,
+                    methods.createButton('gj-button-shadcn gj-cursor-pointer', 'page-next', msg.NextPageTooltip, data.icons.next || msg.Next),
+                    methods.createButton('gj-button-shadcn gj-cursor-pointer', 'page-last', msg.LastPageTooltip, data.icons.last || msg.Last),
+                    methods.createButton('gj-button-shadcn gj-cursor-pointer', 'page-refresh', msg.Refresh, data.icons.refresh || msg.Refresh),
+                    pager
+                ];
+            }
+            if (typeof (data.pager.rightControls) === 'undefined') {
+                data.pager.rightControls = [
+                    parser.parseFromString('<div>' + msg.DisplayingRecords + ' </div>', 'text/xml').firstChild,
+                    parser.parseFromString('<div data-gj-role="record-first">0</div>', 'text/xml').firstChild,
+                    parser.parseFromString('<div>-</div>', 'text/xml').firstChild,
+                    parser.parseFromString('<div data-gj-role="record-last">0</div>', 'text/xml').firstChild,
+                    parser.parseFromString('<div>' + msg.Of + '</div>', 'text/xml').firstChild,
+                    parser.parseFromString('<div data-gj-role="record-total">0</div>', 'text/xml').firstChild
+                ];
+            }
+        },
+
         localizationMaterialDesign: function (data) {
             let msg = gj.grid.messages[data.locale],
                 methods = gj.grid.plugins.pagination.private,
@@ -2577,14 +2652,17 @@ gj.grid.plugins.inlineEditing.configure = function (grid, fullConfig, clientConf
                         };
                         control.value = data.params[data.paramNames.limit];
                         if (gj.dropdown) {
-                            new GijgoDropDown(control, {
+                            let dropdownOptions = {
                                 uiLibrary: data.uiLibrary,
                                 iconsLibrary: data.iconsLibrary,
-                                fontSize: window.getComputedStyle(control, null).getPropertyValue('font-size'),
-                                style: {
+                                fontSize: window.getComputedStyle(control, null).getPropertyValue('font-size')
+                            };
+                            if (data.uiLibrary !== 'shadcn') {
+                                dropdownOptions.style = {
                                     presenter: 'btn btn-default btn-sm'
-                                }
-                            });
+                                };
+                            }
+                            new GijgoDropDown(control, dropdownOptions);
                         }
                         control.addEventListener('change', function () {
                             let newSize = parseInt(this.value, 10);

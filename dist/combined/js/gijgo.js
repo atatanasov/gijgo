@@ -3754,9 +3754,9 @@ gj.grid.config = {
             direction: 'direction'
         },
 
-        /** The name of the UI library that is going to be in use. Currently we support Bootstrap 3, Bootstrap 4 and Material Design.
+        /** The name of the UI library that is going to be in use. Currently we support Material Design, Bootstrap and shadcn/ui.
          * @additionalinfo The css files for Bootstrap or Material Design should be manually included to the page where the grid is in use.
-         * @type (materialdesign|bootstrap|bootstrap4)
+         * @type (materialdesign|bootstrap|bootstrap4|shadcn)
          * @default 'materialdesign'
          * @example Material.Design.With.Icons <!-- dropdown, grid -->
          * <table id="grid"></table>
@@ -3819,6 +3819,16 @@ gj.grid.config = {
          *     new GijgoGrid(document.getElementById('grid'), {
          *         dataSource: '/Players/Get',
          *         uiLibrary: 'bootstrap5',
+         *         columns: [ { field: 'ID', width: 64 }, { field: 'Name', sortable: true }, { field: 'PlaceOfBirth' } ],
+         *         pager: { limit: 2, sizes: [2, 5, 10, 20] }
+         *     });
+         * </script>
+         * @example Shadcn <!-- dropdown, grid -->
+         * <table id="grid"></table>
+         * <script>
+         *     new GijgoGrid(document.getElementById('grid'), {
+         *         dataSource: '/Players/Get',
+         *         uiLibrary: 'shadcn',
          *         columns: [ { field: 'ID', width: 64 }, { field: 'Name', sortable: true }, { field: 'PlaceOfBirth' } ],
          *         pager: { limit: 2, sizes: [2, 5, 10, 20] }
          *     });
@@ -4218,6 +4228,16 @@ gj.grid.config = {
 
         defaultIconColumnWidth: 42,
         defaultCheckBoxColumnWidth: 44
+    },
+
+    shadcn: {
+        style: {
+            wrapper: 'gj-grid-wrapper',
+            table: 'gj-grid gj-grid-shadcn',
+            content: {
+                rowSelected: 'gj-grid-shadcn-select'
+            }
+        }
     },
 
     materialicons: {
@@ -8136,6 +8156,15 @@ gj.grid.plugins.pagination = {
             }
         },
 
+        shadcn: {
+            style: {
+                pager: {
+                    panel: 'gj-grid-shadcn-pager',
+                    stateDisabled: ''
+                }
+            }
+        },
+
         glyphicons: {
             icons: {
                 first: '<span class="glyphicon glyphicon-step-backward"></span>',
@@ -8229,6 +8258,8 @@ gj.grid.plugins.pagination = {
                 gj.grid.plugins.pagination.private.localizationBootstrap4(data);
             } else if (data.uiLibrary === 'bootstrap5') {
                 gj.grid.plugins.pagination.private.localizationBootstrap5(data);
+            } else if (data.uiLibrary === 'shadcn') {
+                gj.grid.plugins.pagination.private.localizationShadcn(data);
             } else {
                 gj.grid.plugins.pagination.private.localizationMaterialDesign(data);
             }
@@ -8405,6 +8436,60 @@ gj.grid.plugins.pagination = {
             }
         },
 
+        localizationShadcn: function (data) {
+            let msg = gj.grid.messages[data.locale],
+                methods = gj.grid.plugins.pagination.private,
+                parser = new DOMParser(),
+                labelLast = document.createElement('div'),
+                labelPage = document.createElement('div'),
+                labelOf = document.createElement('div'),
+                pageNumber = document.createElement('div'),
+                input = document.createElement('input'),
+                pager = document.createElement('select');
+
+            if (typeof (data.pager.leftControls) === 'undefined') {
+                labelLast.setAttribute('data-gj-role', 'page-label-last');
+                labelLast.innerHTML = '0';
+
+                labelPage.innerHTML = msg.Page;
+
+                labelOf.innerHTML = msg.Of;
+
+                pageNumber.classList.add('gj-grid-shadcn-page');
+                input.setAttribute('data-gj-role', 'page-number');
+                input.setAttribute('type', 'text');
+                input.setAttribute('value', '0');
+                gj.core.addClasses(input, 'gj-input-shadcn');
+                pageNumber.appendChild(input);
+
+                pager.style.width = '4.75rem';
+                pager.setAttribute('data-gj-role', 'page-size');
+
+                data.pager.leftControls = [
+                    methods.createButton('gj-button-shadcn gj-cursor-pointer', 'page-first', msg.FirstPageTooltip, data.icons.first || msg.First),
+                    methods.createButton('gj-button-shadcn gj-cursor-pointer', 'page-previous', msg.PreviousPageTooltip, data.icons.previous || msg.Previous),
+                    labelPage,
+                    pageNumber,
+                    labelOf,
+                    labelLast,
+                    methods.createButton('gj-button-shadcn gj-cursor-pointer', 'page-next', msg.NextPageTooltip, data.icons.next || msg.Next),
+                    methods.createButton('gj-button-shadcn gj-cursor-pointer', 'page-last', msg.LastPageTooltip, data.icons.last || msg.Last),
+                    methods.createButton('gj-button-shadcn gj-cursor-pointer', 'page-refresh', msg.Refresh, data.icons.refresh || msg.Refresh),
+                    pager
+                ];
+            }
+            if (typeof (data.pager.rightControls) === 'undefined') {
+                data.pager.rightControls = [
+                    parser.parseFromString('<div>' + msg.DisplayingRecords + ' </div>', 'text/xml').firstChild,
+                    parser.parseFromString('<div data-gj-role="record-first">0</div>', 'text/xml').firstChild,
+                    parser.parseFromString('<div>-</div>', 'text/xml').firstChild,
+                    parser.parseFromString('<div data-gj-role="record-last">0</div>', 'text/xml').firstChild,
+                    parser.parseFromString('<div>' + msg.Of + '</div>', 'text/xml').firstChild,
+                    parser.parseFromString('<div data-gj-role="record-total">0</div>', 'text/xml').firstChild
+                ];
+            }
+        },
+
         localizationMaterialDesign: function (data) {
             let msg = gj.grid.messages[data.locale],
                 methods = gj.grid.plugins.pagination.private,
@@ -8449,14 +8534,17 @@ gj.grid.plugins.pagination = {
                         };
                         control.value = data.params[data.paramNames.limit];
                         if (gj.dropdown) {
-                            new GijgoDropDown(control, {
+                            let dropdownOptions = {
                                 uiLibrary: data.uiLibrary,
                                 iconsLibrary: data.iconsLibrary,
-                                fontSize: window.getComputedStyle(control, null).getPropertyValue('font-size'),
-                                style: {
+                                fontSize: window.getComputedStyle(control, null).getPropertyValue('font-size')
+                            };
+                            if (data.uiLibrary !== 'shadcn') {
+                                dropdownOptions.style = {
                                     presenter: 'btn btn-default btn-sm'
-                                }
-                            });
+                                };
+                            }
+                            new GijgoDropDown(control, dropdownOptions);
                         }
                         control.addEventListener('change', function () {
                             let newSize = parseInt(this.value, 10);
@@ -13289,9 +13377,9 @@ gj.checkbox = {
 
 gj.checkbox.config = {
     base: {
-        /** The name of the UI library that is going to be in use. Currently we support only Material Design and Bootstrap. 
+        /** The name of the UI library that is going to be in use. Currently we support Material Design, Bootstrap and shadcn/ui. 
          * @additionalinfo The css files for Bootstrap should be manually included to the page if you use bootstrap as uiLibrary.
-         * @type string (materialdesign|bootstrap|bootstrap4)
+         * @type string (materialdesign|bootstrap|bootstrap4|shadcn)
          * @default 'materialdesign'
          * @example Material.Design <!-- checkbox  -->
          * <input type="checkbox" id="checkbox"/><br/><br/>
@@ -13347,6 +13435,18 @@ gj.checkbox.config = {
          *         uiLibrary: 'bootstrap5'
          *     });
          * </script>
+         * @example Shadcn <!-- checkbox -->
+         * <input type="checkbox" id="checkbox"/><br/><br/>
+         * <button onclick="chkb.state('checked')" class="gj-button-md">Checked</button>
+         * <button onclick="chkb.state('unchecked')" class="gj-button-md">Unchecked</button>
+         * <button onclick="chkb.state('indeterminate')" class="gj-button-md">Indeterminate</button>
+         * <button onclick="chkb.element.disabled = false" class="gj-button-md">Enable</button>
+         * <button onclick="chkb.element.disabled = true" class="gj-button-md">Disable</button>
+         * <script>
+         *     var chkb = new GijgoCheckBox(document.getElementById('checkbox'), {
+         *         uiLibrary: 'shadcn'
+         *     });
+         * </script>
          */
         uiLibrary: 'materialdesign',
         
@@ -13400,6 +13500,13 @@ gj.checkbox.config = {
             wrapper: 'gj-checkbox-bootstrap gj-checkbox-bootstrap-4'
         },
         iconsLibrary: 'materialicons'
+    },
+
+    shadcn: {
+        style: {
+            wrapper: 'gj-checkbox-shadcn'
+        },
+        iconsLibrary: 'shadcn'
     },
 
     materialicons: {
@@ -14318,7 +14425,7 @@ gj.dropdown.config = {
 
         /** The name of the UI library that is going to be in use.
          * @additionalinfo The css file for bootstrap should be manually included if you use bootstrap.
-         * @type (materialdesign|bootstrap|bootstrap4)
+         * @type (materialdesign|bootstrap|bootstrap4|bootstrap5|shadcn)
          * @default materialdesign
          * @example MaterialDesign <!-- dropdown -->
          * <select id="dropdown" width="200">
@@ -14357,6 +14464,15 @@ gj.dropdown.config = {
          * </select>
          * <script>
          *     new GijgoDropDown(document.getElementById('dropdown'), { uiLibrary: 'bootstrap5', width: 300 });
+         * </script>
+         * @example Shadcn <!-- dropdown -->
+         * <select id="dropdown" width="200">
+         *     <option value="1">One</option>
+         *     <option value="2">Two</option>
+         *     <option value="3">Three</option>
+         * </select>
+         * <script>
+         *     new GijgoDropDown(document.getElementById('dropdown'), { uiLibrary: 'shadcn', width: 200 });
          * </script>
          */
         uiLibrary: 'materialdesign',
@@ -14463,6 +14579,20 @@ gj.dropdown.config = {
             list: 'gj-list gj-list-bootstrap gj-dropdown-list-bootstrap list-group',
             item: 'list-group-item',
             active: 'active'
+        }
+    },
+
+    shadcn: {
+        style: {
+            wrapper: 'gj-dropdown gj-dropdown-shadcn gj-unselectable',
+            presenter: 'gj-dropdown-shadcn-trigger',
+            list: 'gj-list gj-list-shadcn gj-dropdown-list-shadcn',
+            active: 'gj-list-shadcn-active'
+        },
+        iconsLibrary: 'shadcn',
+        icons: {
+            dropdown: '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#737373" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>',
+            dropup: '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#737373" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"/></svg>'
         }
     },
 
