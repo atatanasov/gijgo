@@ -1526,6 +1526,9 @@ gj.datepicker.methods = {
     dayClickHandler: function (picker, calendar, data, date) {
         return function (e) {
             e && e.stopPropagation();
+            if (picker.element.matches(':disabled')) {
+                return picker;
+            }
             gj.datepicker.methods.selectDay(picker, calendar, data, date);
             gj.datepicker.events.select(picker.element, 'day');
             if (data.footer !== true && data.autoClose !== false) {
@@ -1536,6 +1539,9 @@ gj.datepicker.methods = {
     },
 
     change: function (picker, calendar, data, date) {
+        if (picker.element.matches(':disabled')) {
+            return;
+        }
         var day = date.getDate(),
             month = date.getMonth(),
             year = date.getFullYear(),

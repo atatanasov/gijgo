@@ -328,6 +328,9 @@ gj.datetimepicker.methods = {
 
         picker.element.addEventListener('select', function (e) {
             var selectedDay, date, value;
+            if (picker.element.matches(':disabled')) {
+                return;
+            }
             if (e.detail.type === 'day') {
                 gj.datetimepicker.methods.createShowHourHandler(picker, popup, data)();
             } else if (e.detail.type === 'minute') {
