@@ -494,7 +494,9 @@ gj.dropdown.methods = {
         li.innerHTML = '<div data-gj-role="wrapper"><span data-gj-role="display">' + text + '</span></div>';
         gj.core.addClasses(li, css);
         li.addEventListener('click', function (e) {
-            gj.dropdown.methods.select(dropdown, value);
+            if (!dropdown.element.matches(':disabled')) {
+                gj.dropdown.methods.select(dropdown, value);
+            }
         });
         list.appendChild(li);
 
